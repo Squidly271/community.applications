@@ -1,0 +1,645 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "community.applications">
+<!ENTITY author    "Andrew Zawadzki">
+<!ENTITY version   "2016.11.09">
+<!ENTITY md5       "fa6527ae784eaa50a6b06d012d41a4c8">
+<!ENTITY launch    "Settings/PluginSettings">
+<!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
+<!ENTITY github    "Squidly271/community.applications">
+<!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
+]>
+
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
+
+<CHANGES>
+###2016.11.05###
+- Infrastructure changes to ultimately allow separate module installation / deinstallation
+
+###2016.10.30###
+- Fixed: Dynamix Bleeding Edge 2016.10.29c compatibility
+
+###2016.10.26###
+- Allow appdata backup source to be any folder on system
+- Updated routines to handle potential incompatibility with PHP and unRaid's generated comments
+
+###2016.10.12###
+- Handle edge case template creation by dockerMan
+
+###2016.09.28###
+- Force redirection of additional backup scripts output console
+
+###2016.09.25a###
+- Speed up appfeed download
+
+###2016.09.25###
+- Added: Selectable delay in days before autoupdating a plugin
+- Added: Backup of old .plg files prior to backup to support edge-case rollbacks if needed
+- Updated: Manual
+
+###2016.09.23###
+- NOTE: All auto update settings will be reset back to defaults with this update.  IE: Only CA and FCP will autoupdate
+- Fixed: CA under certain circumstances would show as not autoupdating in settings when in fact it would
+- Fixed: Under very specific circumstances, some plugins set to not autoupdate could in fact auto update
+- Fixed: PhAzE plugins would not show up as installed if they were
+
+###2016.09.21###
+- Extra security tests on auto updates
+- Implement autoupdate kill switch
+
+###2016.09.17###
+- Compatibility fix for dynamix.bleeding.edge.plg
+
+###2016.09.15###
+- Fixed minor compatibilty issues with 6.2 Final
+- Changed: Only log maximum 10 rsync errors in backup module
+- Fixed: disallow faster rsync option if days to keep backup sets is disabled (or set to 0)
+- Fixed: backup to flashdrive setting (entry could have been possibly corrupted under 2016.09.03)
+- Added: Script to delete old dated backups in addition to ALL backups and error backups only
+- Changed: Update Apps now called Legacy Mode.  Selecting again goes back to appFeed mode
+- Removed: Private Repositories via a GitHub repo.
+- Added: Selectable notifications on autoupdates of plugins
+- Added: XML Branch support while in Legacy Mode
+- Fixed: Display aberrations while in legacy mode if some repositories didn't download
+- Added: Legacy mode will now display any XML's which failed to parse
+
+###2016.09.07###
+- Fixed VM XML's not backing up under certain circumstances
+- Do not delete XML backups if source is no longer available
+- Added Dynamic adjustment of templates based upon user input
+
+###2016.09.06###
+- Fixed Backup/Restore settings module not working
+- Added Selectable display for Random App Of Day
+
+###2016.09.04###
+- Under certain cirumstances, app of the day could crash CA
+- Download compressed version of appfeed
+
+###2016.09.03###
+- Added in VM XML backups
+- Major rewrite of display engine (faster, far smaller)
+- Fix app of day to not possibly display moderated apps if app feed happened to change during the day
+- Fix various buttons not properly getting disabled when forcing update under certain circumstances
+- Fixed search on author where apps would always display as being installed
+- Far too many coding changes to list
+
+###2016.08.13###
+- Maintenance Update
+- Added Apps of the day
+- Fixed display abnormalities in Table Mode under certain conditions / templates
+- Fixed displayed borders on popups
+- Updated manual
+- Removed extraneous code
+- Fixed base image display when in legacy mode
+
+###2016.08.07###
+- Added in ability to flag / pin apps for later viewing
+
+###2016.08.03###
+- Fixed: Restore appdata when using user shares as a destination
+
+###2016.07.31###
+- Support user shares as source and destination for appdata backup on 6.2-rc3+
+
+###2016.07.23###
+- Major revamp to backup/restore appdata module (see thread for details)
+
+###2016.07.16###
+- Better logging for CA Backup
+
+###2016.07.08###
+- Bug fix on dockerHub searches vs recommended applications
+
+###2016.07.04###
+- Fixed cleanup appdata if an installed app doesn't have any volume mappings
+
+###2016.07.01###
+- Support Separate Destinations for Flash Drive Backup
+
+###2016.06.29###
+- Backup Disk Assignments and super.dat (renamed) as part of USB backup
+
+###2016.06.26###
+- Backup options not displaying the set value for save log to flash
+- Fix improper displaying of source and destination on popup (restore)
+- Suppress errors displayed when selecting a UD mount for backup purposes
+- Added in backup of flash drive (sans super.dat) to docker appdata prior to backing up to array
+
+###2016.06.25k###
+- Add directions for backups for UD mounted shares
+
+###2016.06.13###
+- Fix typos
+- Prevent appdata cleanup from deleting parent folders (due to severely misconfigured previous template)
+- Add support and project links back to table mode (not sure how / when they got removed)
+
+###2016.06.12###
+- Miscellaneous enhancements and fixes
+
+###2016.06.11###
+- Added: New module to delete orphaned appdata folders
+- Better appdata determination if running unRaid 6.2+
+
+###2016.06.05###
+- Fixed: Prevent invalid Support and Project URLs from displaying
+
+###2016.06.02###
+- Add in option to speed up backups when using dated backups with automatic deletions
+
+###2016.05.30###
+- Add in automatic deletion of old dated backup sets
+
+###2016.05.12###
+- Add in dated backup of appdata
+
+###2016.05.08###
+- Fixed some bugs with AutoUpdate displays
+
+###2016.05.05###
+- Enhanced: Backup - better logging into syslog
+- Added: Configurable logging options
+- Fixed: Suppress errors if plugins don't have a readme
+
+###2016.05.01###
+- Added Configurable notifications on apppdata backup
+- Added Exluded folders to appdata backup
+- Updated: CA manual
+- Added rsync errors now logged
+- Lowered memory footprint of program
+
+###2016.04.30###
+- Better warnings on overwrites
+- Added ability to set backup destinations to a subfolder
+- Enhanced script selection / share selection
+- Added ability to skip docker.img file on backups
+- Fix autoupdate of applications would not always only display installed plugins
+
+###2016.04.28###
+- Added: Support for manual / scheduled backups of appData
+
+###2016.04.17###
+- Added: Ability to Auto Update Selected Plugins
+
+###2016.04.16###
+- Fix: PHP exception when only a single Config entry is present
+- Fix: Date application updated when in Legacy mode
+
+###2016.04.10###
+- Enhanced: Further security improvements
+- Enhanced: cAdvisor template is now 6.2 compliant
+- Fix: Suppress error if no docker applications running when in resource monitor
+- Added: Ability to install updates for docker applications
+- Enhanced: Better determination of appFeed failure
+- Added: Confirmation on Update Applications button
+- Updated: Manual, Credits
+
+###2016.04.01###
+- Fix: Under certain circumstances, data structures could get corrupted
+- Enhanced: Further security enhancements
+
+###2016.03.31###
+- Security Fix: Prevent arbitrary execution of code from malicious templates
+- Fix: Sanitize all Overview out of specification
+- Fix: Resource monitor not recognizing cAdvisor installed if name changed
+- Fix: Renamed apps will not display usage stats in popup
+- Added: option to show change log for CA when updating itself
+- Changed: default Host port for cAdvisor to 9243 (something oddball that probably won't conflict with anything else)
+- Added: if cAdvisor installed, but not running, abilty to start it within CA
+- Updated: Manual
+
+###2016.03.28###
+- Coding optimizations
+- Fixed: Don't display a support link if no support link available
+- Fixed: Add web-page link if repository authors have a web page
+- Added: Ability to install updates for plugins
+- Fixed: Resource Monitor not displaying icons for customized appFeed apps
+- Fixed: Determination of appdata is now case-insensitive when looking for /config
+- Fixed: dockerHub conversions now follow settings for new tab or same tab
+- Changed: Default value for new tab or same tab is now same tab
+
+###2016.03.26###
+- Fixed: Customized apps (based upon a default one in appfeed) were being tagged as incompatible
+- Enhanced: Friendly reminder if CA is out of date
+
+###2016.03.24###
+- Fixed: Installing previous apps on unRaid 6.2
+- Enhanced: Now fully generates v6.2 compliant xml files for dockerMan
+
+###2016.03.20###
+- Fixed: readmore on searches (regression error)
+- Fixed: private repositories (dockerHub searches) were being saved into wrong folder (regression error)
+- Enhanced: Update Applications (or reversion to legacy mode) will not fail if a single repository fails to download
+- Enhanced: Now include cAdvisor XML template so as to not rely upon smdion's repository
+- Enhanced: Popup descriptions now include links to go to cAdvisor's page for running docker applications
+- Enhanced: Templates passed through to dockerMan are now Moderated to allow CA to fix any errors, typos, etc in the author's template
+- Enhanced: Major overhaul of the XML template generation
+- Enhanced: Continuing code cleanup
+
+###2016.03.13###
+- Properly regress to legacy mode in case of improperly formed appFeed
+- Overhaul of the javascript
+
+###2016.03.12###
+- Remove option to relocate Users menu (and relocate Apps Tab)  Use webUI's display settings instead
+- Remove option to set appdata share.  CA now always prompts to delete appdata if it sees a /config container path
+- Resource Monitor supports appdata's stored anywhere on your system (and within multiple folders)
+- Fixed: Minor display aberration introduced by unRaid 6.2 beta 18
+- Fixed: If a calculation of appdata size was in progress you could not stop the array
+  
+###2016.03.10###
+- Further enhanced Resource Monitor
+
+###2016.03.06###
+- Fixed: Private Repositories now updated every session
+- Added: Resource Monitor for Docker Applications
+
+###2016.03.04###
+- Added: Running docker applications will now dynamically display CPU and memory utilization statistics
+- Various other fixes / enhancements 
+
+###2016.02.20###
+- Fixed: Under certain circumstances, the domain URL listed in a plugin might not be what the author actually specified  (eg: raw.github.com vs raw.githubusercontent.com) causing some plugins to not display in the previously installed section
+
+###2016.02.19###
+- Hot fix for special characters contained within templates
+
+###2016.02.18###
+- Added: Support Licence (and its mispelling of License) in templates
+- Fixed: Under certain circumstances, Reinstall button could show up instead of Install
+
+###2016.02.14###
+- Code Cleanup
+- Don't display dockerHub stars if not starred
+- Hide search dockerHub if in previous / installed apps
+- Fix error in settings if temp directory didn't exist
+
+###2016.02.10###
+- Suppress stars.sh error message
+
+###2016.02.08###
+- Fixed: Issue with going from dockerHub searches to installed / previously installed
+- Fixed: Disallow dockerHub searches if docker not enabled
+- Fixed: Disallow adding a previously installed docker app if docker not enabled
+- Removed: Legacy Code
+- Removed: dockerHub guess at Icons (api broken)
+- Fixed: Suppress an error message due to a bad template
+- Fixed: Remove some extra temp files once not needed anymore
+
+###2016.02.06###
+- Fixed: display abnormality with Firefox
+- Enhanced: More intelligent determination of d/l counts
+- Enhanced: Rearrange display icons
+- Enhanced: Table Mode
+- Added: Ability to display installed apps within available lists
+
+###2016.02.04###
+- Fix issue with duplicate plugin names
+
+###2016.02.03###
+- Suppress docker error messages if docker not running
+- Full information on an app now displays total downloads
+- Add sort by downloads
+
+###2016.02.01###
+- Going forward, unRaid version 6.1+ compatible only
+- Fixed: Applications with 2 identical names could disappear from the lists
+- Added: Uninstall any application within CA
+- Added: Optional deleting of an application's appdata - see manual for details
+- Added: Favourite Repositories
+- Fixed: Moderator Comments Now only download once per session
+- Removed: Local server caching of icons (made no sense to me)
+
+###2016.01.30###
+- Added: Separate Installed Apps from categories
+- Added: Separate Installed Apps from previously installed
+- Added: Incorporate Plugins to installed / previously installed
+- Updated: Manual
+
+###2016.01.28###
+- Added: Ability to manage previously installed docker apps (my* templates)
+
+###2016.01.24###
+- Fix: Under certain circumstances, blank templates would appear
+
+###2016.01.16###
+- Fix: Under certain circumstances, updated moderator comments were not being downloaded
+- Fix: Under certain circumstances, errors would appear on the popup descriptions
+
+###2016.01.13###
+- Fix: Suppress extraneous message on local console during installation
+
+###2016.01.10b###
+- Change: Appfeed now only downloaded if it has changed
+
+###2016.01.10###
+- Add: Option to not redownload appfeed if reloading apps within a certain time period
+- Fix: Alternate icon wasn't displaying properly if template's icon was unavailable
+- Updated: Help / Manual
+
+###2016.01.02###
+- Fix: Prevent malformed templates from displaying
+- Fix: All private containers were being tagged as being incompatible
+- Change AppStore to Apps
+
+###2015.12.18###
+- Add support for enforcement of application OS requirements (see help thread)
+
+###2015.12.12a###
+- Selectable add/edit/settings windows in new tab or not
+
+###2015.12.12###
+- Fix: Minor Icon Issues
+- Fix: Plugin changelogs now same format as within a .plg file
+- Fix: Not all plugins would properly go to the settings page
+- Fix: Plugins not sorting by Author name
+- Update: Help / Manual
+
+###2015.12.08###
+- Minor Bug Fixes
+- Settings Button for already install plugins will take you to the plugin settings
+
+###2015.12.06a###
+- Disable Update Applications button if an update is in progress NOTE: There is normally zero reason to hit this button anyways
+- Fix: Allow user selectable positioning of the AppStore. (Either on the main menu, within settings, or on main menu and move Users to settings)
+
+###2015.12.06###
+THIS IS A REQUIRED UPDATE
+
+- Relocate plugin from docker tab to its own tab (AppStore)
+- Now able to display and install available plugins
+- Docker no longer required to be enabled to browse applications
+
+###2015.12.05###
+- Fixed: System wouldn't let you add any application if a private repository was present
+
+###2015.10.10###
+- Suppress commands executed with /bin/sh appearing on local monitor
+
+###2015.09.29###
+- Fixed memory leak with application feed
+
+###2015.09.20###
+- Add in super categories for beta and private (selectable from settings)
+- More tweaks to docker conversion engine
+- Sanitize the input on searches
+ relocate temporary files to ram
+- various other fixes and tweaks
+
+###2015.09.15###
+- Remove code for unimplemented features
+- Disallow installing dockerHub result if a recommended application uses the same repository
+- Fix: *.xml not found was appearing on local terminal if no private repositories were found
+
+###2015.09.12###
+- Complete rewrite of dockerHub conversion code, adding more exceptions
+- Fix: Clearing search terms no longer displays all containers
+- Added in support for moderator comments on a container
+- Added in ability to blacklist specific containers
+
+###2015.09.01###
+- Implement change required due to dockerHub changing website again (used in dockerHub search mode)
+- Add suggested searches for dockerHub
+- Numerous under the hood improvements
+
+###2015.08.24###
+- Handle new restrictions introduced in RC6
+
+###2015.08.23###
+- Suppress some spurious status messages on unRaid's attached monitor
+- Expanded manual
+- Display dockerHub star ratings for ALL templates
+
+###2015.08.20###
+- Better search results for icons on dockerHub
+- Search for other containers from author (template mode)
+- Resolved issue with spaces in search parameters
+- Internal reorganization
+
+###2015.08.15###
+- Added in BaseOS display when not in appFeed mode
+- Added in Full GUI for searching and converting non-unRaid containers.  (See support thread for details)
+- Miscellaneous fixes
+
+###2015.08.12###
+- Hot Fix for 6.1RC-3
+
+###2015.08.09###
+- Hot fix for templates with duplicate tags
+- Pop up free in appfeed mode
+
+###2015.08.02###
+- Handle blank descriptions, categories, overviews in appFeed mode
+- Fix not able to show changelog on application names containing spaces
+- Integrate searching (and converting) from dockerHub
+
+###2015.07.26a###
+- Hot fix for 6.1 RC-2
+
+###2015.07.25c###
+- Fixed Internet Explorer crashing
+- Added Icon Details view mode
+
+###2015.07.23###
+- Unified UI between icon and table mode
+- Switch between icon and table mode on the fly
+- Faster sorting in icon mode
+- Add sort by date updated
+
+###Note: you must allow your browser to display popups from your server when in appFeed mode###
+
+###2015.07.20###
+- Code unified between tables and icons
+- Added pop up descriptions to table mode, hover descriptions to icon mode
+- Fix intermittent bug where a blank template could appear
+
+###2015.07.19###
+- 6.1rc-1 Broke Community Applications - Fixed
+
+###2015.07.18###
+- Coding Improvements
+- Revamp Icon Mode Descriptions
+- Add support for Project Home Page links
+
+###2015.07.16###
+- Significantly reduce memory footprint
+- Allow private repositories to be used in conjunction with application feed
+- Force Update in application feed mode will temporarily revert to template mode
+- Failure to download application feed will revert system to template mode
+
+###2015.07.15###
+- Added option to automatically update the application list when entering Docker tab
+- Added in support for Kode's real-time application feed update
+- Remove background table lines in icon mode
+- Removed option to automatically fill out template paths
+
+###2015.07.08###
+- Clicking the repository will now open the announcement thread in a new tab
+
+###2015.07.04###
+- Added in option to display small icons in icon mode
+- Optionally overwrite ALL host paths when in experimental overwrite host path mode
+
+###2015.07.02###
+- Fixed display abberation in table mode when searching for application with change log
+###2015.07.01###
+- Added an experimental option to automatically fill in host paths.  See support thread for details.
+
+###2015.06.21###
+- Table Mode: Repository was not displaying (introduced in 2015.06.14) (my bad - never noticed) 
+
+###2015.06.18###
+- Changed to a more intuitive Apply / Done buttons in settings
+
+###2016.06.17###
+- Fixed table header sometimes displaying in Icon Mode
+- Made settings default values consistent between modules
+- Added help text for Icon Mode 
+- Icon mode now default
+
+###2015.06.15###
+- Expanded descriptions in Icon mode
+- Fixed applications in beta repositories not being flagged correctly
+
+###2015.06.14a###
+- Fixed cursor over information icon and application icon (Icon mode)
+- Fixed applications not displaying description if a space was in the name (Icon mode)
+
+###2015.06.14###
+- Added Icon view mode (more mobile friendly!)
+
+###2015.06.11###
+- Coding optimizations
+- Add help text
+
+###2015.06.08###
+- Added support for new / updated containers
+- Expanded settings section
+
+###2015.06.06###
+- Added a settings section
+
+###2015.06.03a###
+- Optional local caching of application icons
+
+###2015.06.03###
+- Initial display is now blank (faster)
+- Going from subcategory to all categories no longer displays all categories
+
+###2015.06.02###
+- Added support for Changes tag
+- Added non-intrusive reminder to update applications after 14 days
+
+###2015.05.31###
+- Renamed DNS Servers to be DNS Client / Servers
+
+###2015.05.30###
+- Miscellaneous download fixes
+
+###2015.05.28###
+- Initial Release
+</CHANGES>
+
+<!-- The 'pre-install' script. -->
+<FILE Run="/usr/bin/php">
+<INLINE>
+<![CDATA[
+<?
+  $version = parse_ini_file("/etc/unraid-version");
+  
+  if ( version_compare($version['version'],"6.1.0", "<") )
+  {
+    echo "********************************************************************\n";
+    echo "\n";
+    echo "Community Applications Requires unRaid version 6.1 or greater to run\n";
+    echo "\n";
+    echo "********************************************************************\n";
+    exit(1);
+  }
+  
+  if ( ! is_file("/boot/config/plugins/community.applications/installed") ) {
+    echo "Removing all traces of old installations\n";
+    exec("rm -rf /usr/local/emhttp/plugins/community.applications");
+
+    echo "**********************************************************\n";
+    echo "Initial installation.  Installing Appdata Cleanup Plugin\n";
+    exec("/usr/local/sbin/installplg https://raw.githubusercontent.com/Squidly271/ca.cleanup.appdata/master/plugins/ca.cleanup.appdata.plg",$output);
+    foreach ($output as $line) {
+      echo "$line\n";
+    }
+    unset($output);
+    echo "**********************************************************\n";
+    echo "Initial installation.  Installing Plugin Auto Update\n";
+    exec("/usr/local/sbin/installplg https://raw.githubusercontent.com/Squidly271/ca.update.applications/master/plugins/ca.update.applications.plg",$output);
+    foreach ($output as $line) {
+      echo "$line\n";
+    }
+    unset($output);
+    echo "**********************************************************\n";
+    echo "Initial installation.  Installing Appdata Backup / Restore\n";
+    exec("/usr/local/sbin/installplg https://raw.githubusercontent.com/Squidly271/ca.backup/master/plugins/ca.backup.plg",$output);
+    foreach ($output as $line) {
+      echo "$line\n";
+    }
+    exec("mkdir -p /boot/config/plugins/community.applications");
+    file_put_contents("/boot/config/plugins/community.applications/installed","Flag file to indicate whether or not to install previously included modules");
+  }
+?>
+]]>
+</INLINE>
+</FILE>
+
+<FILE Run="/bin/bash">
+<INLINE>
+# Remove old 'source' files
+rm -f $(ls /boot/config/plugins/&name;/&name;*.txz 2>/dev/null|grep -v '&version;')
+if [[ -d /boot/config/plugins/repo.update ]]; then rm -rf /boot/config/plugins/repo.update; fi
+if [[ -d /usr/local/emhttp/plugins/repo.update ]]; then rm -rf /usr/local/emhttp/plugins/repo.update; fi
+if [[ -n $(ls /boot/config/plugins/repo.update*.plg 2>/dev/null) ]]; then rm /boot/config/plugins/repo.update*.plg; fi
+
+if [[ -e /tmp/community.applications/tempFiles/templates.json ]]; then rm /tmp/community.applications/tempFiles/templates.json; fi
+</INLINE>
+</FILE>
+
+<!--
+The 'source' file.
+-->
+<FILE Name="/boot/config/plugins/&name;/&name;-&version;.txz" Run="upgradepkg --install-new">
+<URL>https://raw.github.com/&github;/master/archive/&name;-&version;.txz</URL>
+<MD5>&md5;</MD5>
+</FILE>
+
+<!--
+The 'post-install' script
+-->
+<FILE Run="/bin/bash">
+<INLINE>
+echo "Creating Directories"
+mkdir -p /var/lib/docker/unraid/templates-community-apps
+mkdir -p /var/lib/docker/unraid/community.applications.datastore
+mkdir -p /tmp/community.applications/tempFiles
+mkdir -p /boot/config/plugins/community.applications
+
+echo ""
+echo "----------------------------------------------------"
+echo " &name; has been installed."
+echo " Copyright 2015-2016, Andrew Zawadzki"
+echo " Version: &version;"
+echo "----------------------------------------------------"
+echo ""
+</INLINE>
+</FILE>
+
+<!--
+The 'remove' script.
+-->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+/usr/local/emhttp/plugins/community.applications/scripts/removeCron.php
+removepkg &name;-&version;
+rm -rf &plugdir;
+rm -rf /boot/config/plugins/&name;
+rm -rf /var/lib/docker/unraid/templates-community
+</INLINE>
+</FILE> 
+</PLUGIN>

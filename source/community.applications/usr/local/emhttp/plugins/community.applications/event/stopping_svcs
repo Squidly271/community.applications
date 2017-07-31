@@ -1,0 +1,9 @@
+#!/bin/bash
+if [[ -e /tmp/community.applications/tempFiles/appdata/inprogress ]]
+ then
+  logger "Community Applications Calculations of Appdata in progress"
+  PID=`cat /tmp/community.applications/tempFiles/appdata/inprogress`
+  logger "Terminating $PID"
+  kill $PID
+fi
+

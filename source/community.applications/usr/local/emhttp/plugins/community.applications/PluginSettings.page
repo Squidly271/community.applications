@@ -1,0 +1,130 @@
+Menu="CA"
+Title="General Settings"
+Icon="settings.png"
+---
+<?
+
+function download_url($url, $path = "", $bg = false)
+{
+  exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
+  return ($exit_code === 0 ) ? implode("\n", $out) : false;
+}
+
+$vars = parse_ini_file("/var/local/emhttp/var.ini");
+$toolTipsterAllowed = version_compare($vars['version'],"6.3.3",">=") ? "true" : "false";
+
+$plugin = "community.applications";
+$cfg = parse_plugin_cfg($plugin);
+
+# Get the available repositories and setup the display for favourites
+
+if ( ! is_dir("/tmp/community.applications/tempFiles") ) {
+  exec('mkdir -p "/tmp/community.applications/tempFiles"');
+}
+
+$Repositories = "/tmp/community.applications/tempFiles/Repositories.json";
+download_url("https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Repositories.json",$Repositories);
+$Repos = json_decode(@file_get_contents($Repositories),true);
+
+if ( ! $Repos ) {
+  $Repos = array();
+}
+
+$repoName = array();
+
+foreach ($Repos as $Repo) {
+  $repoName[] = $Repo['name'];
+}
+natcasesort($repoName);
+
+$displayOptions = mk_option($cfg['favourite'], "None", "None (default)");
+
+foreach ($repoName as $display) {
+  $optionName = str_replace("'","*",$display);
+  $displayOptions .= mk_option($cfg['favourite'], $optionName, $display);
+}
+
+$unRaid64 = (version_compare($vars['version'],"6.4.0-rc0",">=")) || (is_file("/usr/local/emhttp/plugins/dynamix/styles/dynamix-gray.css")) ? "true" : "false";
+?>
+
+<form markdown="1" method="POST" action="/update.php" target="progressFrame">
+<input type="hidden" name="#file" value="<?=$plugin?>/<?=$plugin?>.cfg">
+
+> For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong>
+
+Time to display applications as new / updated:
+: <select name="timeNew" size="1">
+  <?=mk_option($cfg['timeNew'], "-7 Days", "1 Week")?>
+  <?=mk_option($cfg['timeNew'], "-14 Days", "2 Weeks")?>
+  <?=mk_option($cfg['timeNew'], "-1 Month", "1 Month")?>
+  <?=mk_option($cfg['timeNew'], "-2 Months", "2 Months")?>
+  <?=mk_option($cfg['timeNew'], "-3 Months", "3 Months (Default)")?>
+  </select>
+
+> This setting determines how long an application will be displayed as "new"
+
+Hover Time delay (miliseconds):
+: <input type="number" name="hoverTime" class="narrow" maxlength="5" value="<?=$cfg['hoverTime']?>" placeholder="1000">
+
+> This setting determines how long you have to hover over any element prior to the pop up appearing
+
+Favourite Repository:
+: <select name="favourite" size="1">
+  <?=$displayOptions?>
+  </select>
+
+> Set this option to your favourite repository, so that it's applications will display first
+
+Show already installed apps within available apps:
+: <select name='separateInstalled' size='1'>
+  <?=mk_option($cfg['separateInstalled'], "true", "No (default)")?>
+  <?=mk_option($cfg['separateInstalled'], "false", "Yes")?>
+  </select>
+
+> This setting determines if already installed applications will also appear when displaying available apps
+ 
+Hide Deprecated Applications:
+: <select name='hideDeprecated' size='1'>
+  <?=mk_option($cfg['hideDeprecated'], "true", "Yes (default)")?>
+  <?=mk_option($cfg['hideDeprecated'], "false", "No")?>
+  </select>
+
+> This setting hides deprecated applications from the list of available apps.  Deprecated apps will still however display within the <em>installed</em> and <em>previous</em> apps sections.
+  
+Hide Incompatible Applications:
+: <select name='hideIncompatible' size='1'>
+  <?=mk_option($cfg['hideIncompatible'], "true", "Yes (default)")?>
+  <?=mk_option($cfg['hideIncompatible'], "false", "No")?>
+  </select>
+
+> This setting will hide applications that are listed as being incompatible with your version of unRaid
+
+Display Random App Of The Day:
+: <select name="appOfTheDay" size="1">
+  <?=mk_option($cfg['appOfTheDay'],"no", "No")?>
+  <?=mk_option($cfg['appOfTheDay'],"yes", "Yes (Default)")?>
+  </select>
+
+> This setting chooses whether to display or not a random "app of the day"
+
+<strong>Docker Hub Searching</strong>
+
+Enable additional search results from dockerHub?
+: <select name="dockerSearch" size="1">
+  <?=mk_option($cfg['dockerSearch'], "no", "No (Default)")?>
+  <?=mk_option($cfg['dockerSearch'], "yes", "Yes")?>
+  </select>
+
+> This setting enables CA to retrieve additional search results from dockerHub.  Note that docker must be enabled for this to be operational
+
+
+&nbsp;
+: <input type="submit" name="#apply" value="Apply" id='Apply'><input type="button" id="DONE" value="Done" onclick="done()">
+
+
+<center>For support for this plugin, visit here: <a href="https://forums.lime-technology.com/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
+
+</form>
+<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
+
+

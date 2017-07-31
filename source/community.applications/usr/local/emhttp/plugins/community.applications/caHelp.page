@@ -1,0 +1,22 @@
+Menu="CA"
+Title="Manual"
+Icon="help.png"
+---
+<script>
+var URL = "/plugins/community.applications/include/manualExec.php";
+$(function(){
+  swal({
+    title: "Downloading Manual",
+    showConfirmButton: false,
+    showCancelButton: false
+  });
+  $.post(URL,{action:'getManual'},function(data) {
+    if (data) {
+      $("#manual").html(data);
+      swal.close();
+    }
+  });
+});
+</script>
+<span id='manual'></span>
+
