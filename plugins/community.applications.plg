@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.07.31">
-<!ENTITY md5       "b50dc911eaf6996b1df162789cf04701">
+<!ENTITY version   "2017.08.18">
+<!ENTITY md5       "02032b77e0be8a8633056c5a20a916ad">
 <!ENTITY launch    "Settings/PluginSettings">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017.08.18
+- Better searching for applications
+
 ###2017.07.31
 - Update URL for application feed
 
