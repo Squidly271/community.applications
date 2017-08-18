@@ -1126,7 +1126,7 @@ case 'get_content':
 		if ( $category && ! preg_match($category,$template['Category'])) { continue; }
 
 		if ($filter) {
-			if (preg_match("#$filter#i", $template['Name']) || preg_match("#$filter#i", $template['Author']) || preg_match("#$filter#i", $template['Description']) || preg_match("#$filter#i", $template['RepoName'])) {
+			if ( filterMatch($filter,array($template['Name'],$template['Author'],$template['Description'],$template['RepoName'])) ) {
 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
 				$template['Name'] = highlight($filter, $template['Name']);

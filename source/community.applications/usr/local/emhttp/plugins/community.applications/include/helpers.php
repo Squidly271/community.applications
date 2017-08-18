@@ -612,6 +612,29 @@ function create_ini_file($settings,$mode=false) {
 	return $iniFile;
 }
 
+#######################################################
+#                                                     #
+# Function used to determine if a search term matches #
+#                                                     #
+#######################################################
+function filterMatch($filter,$searchArray) {
+	foreach ($searchArray as $search) {
+		if ( preg_match("#$filter#i",$search) ) {
+			return true;
+		}
+	}
+	if ( strpos($filter," ") ) {
+		$filter = str_replace(" ","",$filter);
+		foreach ($searchArray as $search) {
+			if ( preg_match("#$filter#i",$search) ) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 ############################################################################
 #                                                                          #
 # Function to convert a template's associative tags to static numeric tags #
