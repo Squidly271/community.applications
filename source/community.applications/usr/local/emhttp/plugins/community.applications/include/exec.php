@@ -1295,7 +1295,7 @@ case 'convert_docker':
 		$teststring = substr($teststring,2);
 
 		$docker['Description'] = str_replace("&", "&amp;", $docker['Description']);
-
+    $teststring = str_replace("\\"."\n"," ",$teststring);
 		$dockerFile = explode("\n",$teststring);
 
 		$volumes = array();
@@ -1868,6 +1868,9 @@ case 'statistics':
 
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	if ( is_array($templates) ) {
+		$sortOrder['sortBy'] = "RepoName";
+		$sortOrder['sortDir'] = "Up";
+		usort($templates,"mySort");
 		foreach ($templates as $template) {
 			if ( $template['Deprecated'] ) {
 				$statistics['totalDeprecated']++;
