@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.08.23">
-<!ENTITY md5       "a37a19e3224697b6047e2a881d5a30a1">
+<!ENTITY version   "2017.08.24">
+<!ENTITY md5       "8f853aebf7c5f690699bd1e710a66e13">
 <!ENTITY launch    "Settings/PluginSettings">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017.08.24
+- Improvements to dockerHub conversions
+
 ###2017.08.23
 - Fixed: Ability to reselect branches if reinstalling using default values
 
