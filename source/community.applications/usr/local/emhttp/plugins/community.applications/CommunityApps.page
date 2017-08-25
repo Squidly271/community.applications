@@ -573,6 +573,7 @@ function doSearch(button) {
 	filter = myTrim(filter);
 	$('#searchBox').val(filter);
 	$(".appButtons,#maxPerPage,.allButtons").prop("disabled",false);
+	$(".multi_installDiv").hide();
 	$("#templates_content,#AppsOnly,#templateSortButtons").show();
 	$("#AppStore").prop("disabled",true);
 
