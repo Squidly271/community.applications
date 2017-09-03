@@ -117,6 +117,13 @@ Enable additional search results from dockerHub?
 
 > This setting enables CA to retrieve additional search results from dockerHub.  Note that docker must be enabled for this to be operational
 
+<strong>Advanced</strong>
+
+Enable Template Developer Mode?
+: <select name='maintainer' size='1'>
+  <?=mk_option($cfg['maintainer'],"no","No (Default)")?>
+	<?=mk_option($cfg['maintainer'],"yes","Yes")?>
+	</select>
 
 &nbsp;
 : <input type="submit" name="#apply" value="Apply" id='Apply'><input type="button" id="DONE" value="Done" onclick="done()">

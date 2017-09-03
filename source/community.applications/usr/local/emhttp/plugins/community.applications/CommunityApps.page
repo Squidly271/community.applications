@@ -150,13 +150,8 @@ $(function(){
 		return false;
 	});
 
-	<?if ($tabbed):?>
-		$('.tabs').append("<span id='searchFilter' class='status vhshift' style='display:none'><input type='text' id='searchBox' class='narrow' placeholder='Search' style='margin-left:10px;margin-right:0' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button><input class='ca_staticTips' type='button' id='updateButton' value='Legacy Mode' title='Switches CA to Legacy Mode (until the next appfeed update) - Not generally recommended' onclick='forceUpdateButton()' disabled><?if ( $toolTipsterAllowed == "false"):?><input type='button' value='CA Modules' onclick='caModules();'></span><?endif;?>");
-		for (var x=1; x<last; x++) $('#tab'+x).bind({click:function(){$('#searchFilter').hide();}});
-		$('#tab'+last).bind({click:function(){$('#searchFilter').show();readMore();}});
-	<?else:?>
-		$('div[id=title]').last().append("<span id='searchFilter' class='status vhshift'><input type='text' id='searchBox' class='narrow' placeholder='Search' style='margin-left:10px;margin-right:0' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button><input class='ca_staticTips' type='button' id='updateButton' value='Legacy Mode' title='Switches CA to Legacy Mode (until the next appfeed update) - Not generally recommended' onclick='forceUpdateButton()' disabled><?if ( $toolTipsterAllowed == "false"):?><input type='button' value='CA Modules' onclick='caModules();'><?endif;?>");
-	<?endif;?>
+	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' style='margin-left:10px;margin-right:0' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
+
 	if ( "<?=$firstRun?>" == "true" ) { $("#appWarning").show(); }
 	$("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
 
@@ -534,7 +529,7 @@ function changePage(pageNumber) {
 }
 
 function getWindowWidth() {
-	return $(window).width();
+	return $('.tabs').width();
 }
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
@@ -647,7 +642,7 @@ function forceUpdate() {
 }
 
 function forceUpdateButton() {
-	var mode = $('#updateButton').val();
+	var mode = $('#updateButton').html();
 	if ( mode == 'appFeed Mode' ) {
 		$.post(URL,{action:'force_update_button'},function(data) {
 			if (data) {
@@ -1340,7 +1335,7 @@ function resizeDisplay() {
 <div id='appWarning' style='display:none'><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
 <font size='2' color='red'>Note: All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein</font>
 <br><input type='button' value='Dismiss Warning' onclick='dismissWarning();'></input></center></div>
-<span style='float:right;'><a class='ca_staticTips' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='ca_stats' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='ca_credits' style='cursor:pointer'>Credits</a></span>
+<span style='float:right;'><a class='ca_staticTips' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='ca_stats' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class='ca_credits' style='cursor:pointer'>Credits</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a></span>
 <br>
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br>
 > <img src='/plugins/community.applications/images/SectionIcon.png' height='50px'> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>

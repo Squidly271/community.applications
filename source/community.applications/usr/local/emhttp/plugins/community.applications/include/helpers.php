@@ -545,10 +545,19 @@ function getSortOrder($sortArray) {
 #                                               #
 #################################################
 function caGetMode() {
-	global $communityPaths;
+	global $communityPaths, $communitySettings;
 
-	$caMode = ( is_file($communityPaths['LegacyMode']) ) ? "appFeed Mode" : "Legacy Mode";
-	return "<script>$('#updateButton').val('$caMode');</script>";
+	if ( is_file($communityPaths['LegacyMode']) ) {
+		$script = "$('#updateButton').html('appFeed Mode');";
+	} else {
+		$script = "$('#updateButton').html('Legacy Mode');";
+	}
+  if ( is_file($communityPaths['LegacyMode']) || ($communitySettings['maintainer'] == "yes") ) {
+		$script .= "$('#updateButton').show();";
+	} else {
+		$script .= "$('#updateButton').hide();";
+	}
+	return "<script>$script</script>";
 }
 
 ################################################

@@ -58,6 +58,7 @@ $communityPaths['invalidXML_txt']                = $communityPaths['tempFiles'].
 $communityPaths['noSupport_txt']                 = $communityPaths['tempFiles']."/nosupport.txt";
 $communityPaths['PluginInstallPending']          = $communityPaths['tempFiles']."/plugininstallpending.txt";
 $communityPaths['warningAccepted']               = "/boot/config/plugins/community.applications/accepted";
+$communityPaths['CAdeveloper']                   = "/boot/config/plugins/community.applications/developer";
 
 $communityPaths['newFlag']                       = $communityPaths['tempFiles']."/newFlag";  # flag file to indicate that the "New" Category is being displayed
 

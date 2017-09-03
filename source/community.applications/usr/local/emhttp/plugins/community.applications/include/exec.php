@@ -76,7 +76,7 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 function DownloadCommunityTemplates() {
 	global $communityPaths, $infoFile, $plugin, $communitySettings, $statistics;
 
-	$betaComment = "<font color='purple'>The author of this template has designated it to be a beta.  You may experience issues with this application</font>";
+	$betaComment = "The author of this template has designated it to be a beta.  You may experience issues with this application";
 	$moderation = readJsonFile($communityPaths['moderation']);
 	if ( ! is_array($moderation) ) { $moderation = array(); }
 
@@ -223,7 +223,7 @@ function DownloadCommunityTemplates() {
 function DownloadApplicationFeed() {
 	global $communityPaths, $infoFile, $plugin, $communitySettings, $statistics;
 
-	$betaComment = "<font color='purple'>The author of this template has designated it to be a beta.  You may experience issues with this application</font>";
+	$betaComment = "The author of this template has designated it to be a beta.  You may experience issues with this application";
 	$moderation = readJsonFile($communityPaths['moderation']);
 	if ( ! is_array($moderation) ) {
 		$moderation = array();
@@ -575,7 +575,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		if ( $template['Deprecated'] ) {
 			$template['ModeratorComment'] .= "<br>This application has been deprecated.";
 		}
-		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='red'><b>Moderator Comments:</b></font> ".$template['ModeratorComment'] : "";
+		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='red'><b>Moderator Comments:</b></font> <font color='purple'>".$template['ModeratorComment']."</font>" : "";
 		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=20px>" : "";
 		$template['display_Announcement'] = $template['Forum'] ? "<a class='ca_tooltip' href='".$template['Forum']."' target='_blank' title='Click to go to the repository Announcement thread' >$RepoName $tempLogo</a>" : "$RepoName $tempLogo";
 		$template['display_Stars'] = $template['stars'] ? "<img src='/plugins/$plugin/images/red-star.png' style='height:15px;width:15px'> <strong>".$template['stars']."</strong>" : "";
@@ -781,6 +781,18 @@ function appOfDay($file) {
 	$currentDay = intval(time() / 86400);
 	if ( $oldAppDay == $currentDay ) {
 		$app = readJsonFile($communityPaths['appOfTheDay']);
+		if ( is_array($app) ) {  # test to see if existing apps of day have been moderated / blacklisted, etc.
+			$flag = false;
+			foreach ($app as $testApp) {
+				if ( ! checkRandomApp($testApp,$file) ) {
+					$flag = true;
+					break;
+				}
+			}
+			if ( $flag ) {
+				unset($app);
+			}
+		}	
 	}
 	if ( count($app) < 9 ) { unset($app); }  # For update from old version where only 2 possible apps of day
 	if ( ! $app ) {
@@ -1012,15 +1024,24 @@ case 'get_content':
 		if ( $communitySettings['appFeed'] == "true" ) {
 			DownloadApplicationFeed();
 			if (!file_exists($infoFile)) {
+				@unlink($communityPaths['LegacyMode']);
 #        $communitySettings['appFeed'] = "false";  # Do Not automatically revert.  Toss up a message instead
 				echo "<center><font size='3'><strong>Download of appfeed failed.</strong></font><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  Switching CA to operate in <em>Legacy Mode</em> might temporarily allow you to still utilize CA.<br>";
-				exec("curl --compressed --max-time 60 --insecure --location -o ".$communityPaths['tempFiles']."/failedOutput ".$communityPaths['application-feed'],$out);
-				foreach ($out as $line) {
-					echo "<tt>$line<br>";
+				echo caGetMode();
+				echo "<script>$('#updateButton').show();</script>";
+				if ( is_file($communityPaths['CAdeveloper']) ) {
+					exec("curl --compressed --max-time 60 --insecure --location -o ".$communityPaths['tempFiles']."/failedOutput ".$communityPaths['application-feed'],$out);
+					echo "<br><br>Developer Mode Enabled:<br>";
+					foreach ($out as $line) {
+						echo "<tt>$line<br>";
+					}
+					echo "<br><br>Appfeed Contents:<br>";
+					$out = @file_get_contents($communityPaths['tempFiles']."/failedOutput");
+					$out = str_replace("\n","<br>",$out);
+					echo "<tt>$out</tt>";
+				} else {
+					echo "<br><br>Note: Developer Mode Not Enabled<br><br>";
 				}
-				$out = @file_get_contents($communityPaths['tempFiles']."/failedOutput");
-				$out = str_replace("\n","<br>",$out);
-				echo "<tt>$out</tt>";
 				@unlink($infoFile);
 			}
 		}
@@ -1196,6 +1217,7 @@ case 'force_update':
 	$latestUpdate = readJsonFile($communityPaths['lastUpdated']);
 	if ( ! $latestUpdate['last_updated_timestamp'] ) {
 		$latestUpdate['last_updated_timestamp'] = INF;
+		$badDownload = true;
 		@unlink($communityPaths['lastUpdated']);
 	}
 
@@ -1203,7 +1225,9 @@ case 'force_update':
 		if ( $latestUpdate['last_updated_timestamp'] != INF ) {
 			copy($communityPaths['lastUpdated'],$communityPaths['lastUpdated-old']);
 		}
-		unlink($infoFile);
+		if ( ! $badDownload ) {
+			unlink($infoFile);
+		}
 	} else {
 		moderateTemplates();
 	}
