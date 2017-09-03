@@ -529,7 +529,11 @@ function changePage(pageNumber) {
 }
 
 function getWindowWidth() {
-	return $('.tabs').width();
+	var width = $(window).width();
+	if ( width > 1920 ) {
+		width = 1920;
+	}
+	return width;
 }
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
