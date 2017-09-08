@@ -161,13 +161,8 @@ function DownloadCommunityTemplates() {
 					$o['ModeratorComment'] .= $o['ModeratorComment'] ? "<br><br>$betaComment" : $betaComment;
 				}
 
-				if ( $o['Blacklist'] ) {
-					$statistics['blacklist']++;
-					$blacklist[] = "{$o['Repo']} - <b>{$o['Name']}</b> - {$o['ModeratorComment']}";
-					continue;
-				} else {
-					$statistics['totalApplications']++;
-				}
+				$statistics['totalApplications']++;
+
 				$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
 				$o['Category'] = str_replace("Status:Stable","",$o['Category']);
 				$myTemplates[$o['ID']] = $o;
@@ -305,12 +300,6 @@ function DownloadApplicationFeed() {
 			$file = array_merge($file, $moderation[$o['Repository']]);
 		}
 
-		if ($o['Blacklist']) {
-			$statistics['blacklist']++;
-			$blacklist[] = "{$o['Repo']} - <b>{$o['Name']}</b> - {$o['ModeratorComment']}";
-			continue;
-		}
-
 		if ( $o['Plugin'] ) {
 			$statistics['plugin']++;
 		} else {
@@ -367,7 +356,6 @@ function DownloadApplicationFeed() {
 		$templateXML = makeXML($file);
 		file_put_contents($o['Path'],$templateXML);
 	}
-	writeJsonFile($communityPaths['blacklisted_txt'],$blacklist);
 	writeJsonFile($communityPaths['statistics'],$statistics);
 	if ( $invalidXML ) {
 		writeJsonFile($communityPaths['invalidXML_txt'],$invalidXML);
@@ -536,6 +524,9 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 
 # Create entries for skins
 	foreach ($file as $template) {
+		if ( $template['Blacklist'] ) {
+			continue;
+		}
 		$startingAppCounter++;
 		if ( $startingAppCounter < $startingApp ) {
 			continue;
@@ -1885,6 +1876,7 @@ case 'populateModules':
 #                                         #
 ###########################################
 case 'statistics':
+	@unlink("/tmp/noDescription");
 	$statistics = readJsonFile($communityPaths['statistics']);
 	if ( ! $statistics ) { $statistics = array(); }
 
@@ -1912,7 +1904,17 @@ case 'statistics':
 				$statistics['NoDescription']++;
 				file_put_contents("/tmp/noDescription",$template['Repository'],FILE_APPEND);
 			}
+			if ( $template['Blacklist'] ) {
+				$statistics['blacklist']++;
+				$blacklist[] = "{$template['Repo']} - <b>{$template['Name']}</b> - {$template['ModeratorComment']}";
+			}
 		}
+	}
+	
+	if ( $blacklist) {
+		writeJsonFile($communityPaths['blacklisted_txt'],$blacklist);
+	} else {
+		@unlink($communityPaths['blacklisted_txt']);
 	}
 	if ( $incompatible ) {
 		$incompatible = "<table style='width:auto;border:1px;border-color:red;'><thead><td>Repository</td><td>Application</td><td>Minimum OS</td><td>Maximum OS</td></thead>$incompatible</table>";
