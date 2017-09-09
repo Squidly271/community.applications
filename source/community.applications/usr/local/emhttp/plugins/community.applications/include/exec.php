@@ -805,6 +805,7 @@ function appOfDay($file) {
 			$app[$ii] = $randomApp;
 		}
 	}
+	$app = array_values(array_unique($app));
 	writeJsonFile($communityPaths['appOfTheDay'],$app);
 	return $app;
 }
@@ -1072,7 +1073,11 @@ case 'get_content':
 			$displayApplications = array();
 			if ( count($file) > 200) {
 				$appsOfDay = appOfDay($file);
+				$displayApplications['community'] = array();
 				for ($i=0;$i<$communitySettings['maxDetailColumns'];$i++) {
+					if ( ! $appsOfDay[$i]) {
+						continue;
+					}
 					$displayApplications['community'][] = $file[$appsOfDay[$i]];
 				}
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
