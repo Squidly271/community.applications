@@ -132,7 +132,7 @@ var categoryDesc = {
 	All: "All Available Applications"
 	};
 
-var checkStaleVar = setInterval(function(){ checkStale(); },3000);
+var checkStaleVar = setInterval(function(){ checkStale(); },60000);
 	
 $(function(){
 	$("#sortorder").attr("data-oldWindowWidth",getWindowWidth());
@@ -1191,9 +1191,7 @@ function checkStale() {
 	var webTime = $("#lastUpdated").attr("data-lastUpdated");
 	$.post(URL,{action:'checkStale',webTime:webTime},function(data) {
 		if (data) {
-			$("#debugging").html(data);
 			if (myTrim(data) == "true") {
-				$("#debugging").html("true motherfucker");
 				clearInterval(checkStaleVar);
         myAlert("Database Out Of Sync","Another Browser Tab Has Updated The Application Database.  Reloading The Apps Tab In 10 Seconds.","","",false,false,false,"error");
 				setTimeout(function(){ window.location.reload(); },10000);
