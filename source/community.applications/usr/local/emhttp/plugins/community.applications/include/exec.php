@@ -1018,6 +1018,8 @@ case 'get_content':
 			if (!file_exists($infoFile)) {
 				@unlink($communityPaths['LegacyMode']);
 #        $communitySettings['appFeed'] = "false";  # Do Not automatically revert.  Toss up a message instead
+      	echo "<script>$('#lastUpdated').attr('data-lastUpdated','-1');</script>";
+
 				echo "<center><font size='3'><strong>Download of appfeed failed.</strong></font><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  Switching CA to operate in <em>Legacy Mode</em> might temporarily allow you to still utilize CA.<br>";
 				echo caGetMode();
 				echo "<script>$('#updateButton').show();</script>";
@@ -1045,6 +1047,8 @@ case 'get_content':
 			} else {
 				$lastUpdated['last_updated_timestamp'] = time();
 				writeJsonFile($communityPaths['lastUpdated-old'],$lastUpdated);
+				echo "<script>$('#lastUpdated').attr('data-lastUpdated','{$lastUpdated['last_updated_timestamp']}');</script>";
+
 				if (is_file($communityPaths['updateErrors'])) {
 					echo "<table><td><td colspan='5'><br><center>The following errors occurred:<br><br>";
 					echo "<strong>".file_get_contents($communityPaths['updateErrors'])."</strong></center></td></tr></table>";
@@ -1056,6 +1060,8 @@ case 'get_content':
 		}
 	}
 	getConvertedTemplates();
+	$lastUpdated = readJsonFile($communityPaths['lastUpdated-old']);
+	echo "<script>$('#lastUpdated').attr('data-lastUpdated','{$lastUpdated['last_updated_timestamp']}');</script>";
 
 	$file = readJsonFile($communityPaths['community-templates-info']);
 	if (!is_array($file)) break;
@@ -2000,6 +2006,21 @@ case 'changeViewModeSettings':
 	$communitySettings['viewMode'] = getPost("view",$communitySettings['viewMode']);
 	file_put_contents($communityPaths['pluginSettings'],create_ini_file($communitySettings,false));
 	echo "ok";
+	break;
+
+#############################
+#                           #
+# Checks for stale database #
+#                           #
+#############################
+case 'checkStale':
+  $webTime = getPost("webTime","");
+	$lastUpdate = readJsonFile($communityPaths['lastUpdated-old']);
+	if ( $lastUpdate['last_updated_timestamp'] != $webTime ) {
+		echo "true";
+	} else {
+		echo "false";
+	}
 	break;
 }
 ?>
