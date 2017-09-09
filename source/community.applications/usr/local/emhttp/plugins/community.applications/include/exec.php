@@ -209,6 +209,7 @@ function DownloadCommunityTemplates() {
 	writeJsonFile($communityPaths['blacklisted_txt'],$blacklist);
 	writeJsonFile($communityPaths['statistics'],$statistics);
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
+	
 	file_put_contents($communityPaths['LegacyMode'],"active");
 	return true;
 }
