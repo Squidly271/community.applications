@@ -1888,7 +1888,6 @@ case 'populateModules':
 #                                         #
 ###########################################
 case 'statistics':
-	@unlink("/tmp/noDescription");
 	$statistics = readJsonFile($communityPaths['statistics']);
 	if ( ! $statistics ) { $statistics = array(); }
 
@@ -1912,10 +1911,7 @@ case 'statistics':
 				$statistics['NoSupport']++;
 				$noSupport .= "<tr><td>{$template['Repo']}</td><td><b>{$template['Name']}</b></td></tr>";
 			}
-			if ( ! $template['Description'] && ! $template['Overview'] ) {
-				$statistics['NoDescription']++;
-				file_put_contents("/tmp/noDescription",$template['Repository'],FILE_APPEND);
-			}
+
 			if ( $template['Blacklist'] ) {
 				$statistics['blacklist']++;
 				$blacklist[] = "{$template['Repo']} - <b>{$template['Name']}</b> - {$template['ModeratorComment']}";
@@ -1979,7 +1975,7 @@ case 'statistics':
 	echo "<tr><td><b>{$color}Total Number Of Repositories</b></td><td>$color{$statistics['repository']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Plugins</b></td><td>$color{$statistics['plugin']}</td></tr>";
-	echo "<tr><td>{$color}<a href='/Main/Browse?dir=/boot/config/plugins/community.applications/private' target='_blank'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
+	echo "<tr><td><b>{$color}<a href='/Main/Browse?dir=/boot/config/plugins/community.applications/private' target='_blank'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;showInvalid.php&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Total Number Of Invalid Templates Found</a></b></td><td>$color{$statistics['invalidXML']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;showFixed.php&quot;,&quot;Apps with template errors automatically fixed&quot;);' style='cursor:pointer'>Total Number Of Template Errors Fixed Automatically</a></b></td><td>$color{$statistics['caFixed']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;showBlacklist.php&quot;,&quot;Total Blacklisted Apps Still In Appfeed&quot;);' style='cursor:pointer'>Total Number Of Blacklisted Apps Found In Appfeed</a></b></td><td>$color{$statistics['blacklist']}</td></tr>";
@@ -2019,7 +2015,11 @@ case 'changeViewModeSettings':
 #                           #
 #############################
 case 'checkStale':
-  $webTime = getPost("webTime","");
+  $webTime = getPost("webTime",false);
+	if ( ! $webTime ) {
+		echo "false";
+		return;
+	}
 	$lastUpdate = readJsonFile($communityPaths['lastUpdated-old']);
 	if ( $lastUpdate['last_updated_timestamp'] != $webTime ) {
 		echo "true";

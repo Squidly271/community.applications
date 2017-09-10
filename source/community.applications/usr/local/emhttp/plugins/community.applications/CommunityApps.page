@@ -1467,7 +1467,7 @@ Sort Direction:
 </div>
 </span>
 <span id='sortorder' data-sortorder='' data-docker='' data-section='AppStore' data-main_category='MainCategory' data-selected=''></span>
-<span id='lastUpdated' data-lastUpdated=''></span>
+<span id='lastUpdated' data-lastUpdated='0'></span>
 </body>
 </FORM>
 <span id='debugging'></span>
