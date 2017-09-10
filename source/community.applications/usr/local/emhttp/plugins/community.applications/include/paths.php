@@ -24,6 +24,7 @@ $communityPaths['application-feed']              = "https://tools.linuxserver.io
 $communityPaths['application-feed-last-updated'] = "https://tools.linuxserver.io/unraid-docker-templates.json?last_updated=1";
 $communityPaths['lastUpdated']                   = $communityPaths['tempFiles']."/lastUpdated.json";
 $communityPaths['lastUpdated-old']               = $communityPaths['tempFiles']."/lastUpdated-old.json";
+$communityPaths['lastUpdated-sync']              = $communityPaths['tempFiles']."/lastUpdated-sync";
 $communityPaths['appFeedOverride']               = $communityPaths['tempFiles']."/WhatWouldChodeDo";                   /* flag to override the app feed temporarily */
 $communityPaths['addConverted']                  = $communityPaths['tempFiles']."/TrippingTheRift";                    /* flag to indicate a rescan needed since a dockerHub container was added */
 $communityPaths['convertedTemplates']            = "/boot/config/plugins/".$plugin."/private/";                        /* path to private repositories on flash drive */
