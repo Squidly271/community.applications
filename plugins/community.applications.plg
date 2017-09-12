@@ -13,9 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2017.09.09
+###2017.09.12
+- Added: App info popup now has link to go directly to docker hub page for application
 - Fixed: Prevent possibility of duplicate app appearing in app of the day.
-- Fixed: Previously, app of the day would return errors if unRaid CSS and window width support horizontal resolution greater than 5700 pixels.
+- Enhanced: Previously, app of the day would return errors if unRaid CSS and window width support horizontal resolution greater than 5700 pixels.
 - Fixed: If multiple browser tabs opened to apps tab, detect if app database is out of sync between windows and update tab accordingly.
 - Changed: Allow moderation to whitelist an application without appfeed update
 

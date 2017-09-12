@@ -97,11 +97,16 @@ $templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size=
 $templateDescription .= "</figure>";
 $templateDescription .= "</td><td></td><td><table>";
 $templateDescription .= "<tr><td>$color<strong>Author: </strong></td><td>$color".$template['Author']."</td></tr>";
+if ( ! $template['Plugin'] ) {
+	$repository = explode(":",$template['Repository']);
+	$official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
+	$templateDescription .= "<tr><td>$color<strong>DockerHub: </strong></td><td><a href='https://hub.docker.com/$official/{$repository[0]}' target='_blank'>{$repository[0]}</a></td></tr>";
+}
 $templateDescription .= "<tr><td>$color<strong>Repository: </strong></td><td>$color";
-$templateDescription .= $template['Forum'] ? "<b><a style='color:white;' href='".$template['Forum']."' target='_blank'>".$template['RepoName']."</a></b>" : "<b>{$template['RepoName']}</b>";
+$templateDescription .= $template['Forum'] ? "<b><a href='".$template['Forum']."' target='_blank'>".$template['RepoName']."</a></b>" : "<b>{$template['RepoName']}</b>";
 if ( $template['Profile'] ) {
   $profileDescription = $template['Plugin'] ? "Author" : "Maintainer";
-  $templateDescription .= "&nbsp;&nbsp;&nbsp;&nbsp;<b><a style='color:white' href='{$template['Profile']}' target='_blank'>($profileDescription Profile)</a></b>";
+  $templateDescription .= "&nbsp;&nbsp;&nbsp;&nbsp;<b><a href='{$template['Profile']}' target='_blank'>($profileDescription Profile)</a></b>";
 }
 $templateDescription .= "</td></tr>";
 $templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";

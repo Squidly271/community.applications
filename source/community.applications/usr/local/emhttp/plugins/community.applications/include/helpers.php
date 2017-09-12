@@ -641,7 +641,6 @@ function filterMatch($filter,$searchArray) {
 # Used to update the last time synced to keep browsers up to date #
 #                                                                 #
 ###################################################################
-
 function updateSyncTime($updateSyncFlag) {
 	global $communityPaths;
 	
