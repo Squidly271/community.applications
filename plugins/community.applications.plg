@@ -14,6 +14,7 @@
 
 <CHANGES>
 ###2017.09.12
+- Changed: Clicking Repository from popup will now search for applications contained within the repository
 - Added: App info popup now has link to go directly to docker hub page for application
 - Fixed: Prevent possibility of duplicate app appearing in app of the day.
 - Enhanced: Previously, app of the day would return errors if unRaid CSS and window width support horizontal resolution greater than 5700 pixels.

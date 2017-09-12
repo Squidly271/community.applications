@@ -103,7 +103,8 @@ if ( ! $template['Plugin'] ) {
 	$templateDescription .= "<tr><td>$color<strong>DockerHub: </strong></td><td><a href='https://hub.docker.com/$official/{$repository[0]}' target='_blank'>{$repository[0]}</a></td></tr>";
 }
 $templateDescription .= "<tr><td>$color<strong>Repository: </strong></td><td>$color";
-$templateDescription .= $template['Forum'] ? "<b><a href='".$template['Forum']."' target='_blank'>".$template['RepoName']."</a></b>" : "<b>{$template['RepoName']}</b>";
+$repoSearch = explode("'",$template['RepoName']);
+$templateDescription .= $template['Forum'] ? "<b><a style='cursor:pointer;' onclick='authorSearch(&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a></b>" : "<b>{$template['RepoName']}</b>";
 if ( $template['Profile'] ) {
   $profileDescription = $template['Plugin'] ? "Author" : "Maintainer";
   $templateDescription .= "&nbsp;&nbsp;&nbsp;&nbsp;<b><a href='{$template['Profile']}' target='_blank'>($profileDescription Profile)</a></b>";

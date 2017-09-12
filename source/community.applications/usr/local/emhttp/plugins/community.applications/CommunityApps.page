@@ -23,6 +23,10 @@ $cfg = parse_plugin_cfg($plugin);
 if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
+
+if ( is_file($communityPaths['polling']) ) {
+	$pollingDisabled = "true";
+}
 $vars = parse_ini_file($communityPaths['unRaidVars']);
 $toolTipsterIncluded = version_compare($vars['version'],"6.3.3",">=") ? "true" : "false";
 $unRaid64 = (version_compare($vars['version'],"6.4.0-rc0",">=")) ? "true" : "false";
@@ -1188,16 +1192,18 @@ function updateViewMode(id,buttonClass) {
 }
 
 function checkStale() {
-	var webTime = $("#lastUpdated").attr("data-lastUpdated");
-	$.post(URL,{action:'checkStale',webTime:webTime},function(data) {
-		if (data) {
-			if (myTrim(data) == "true") {
-				clearInterval(checkStaleVar);
-        myAlert("Database Out Of Sync","Another Browser Tab Has Updated The Application Database.  Reloading The Apps Tab In 10 Seconds.","","",false,false,false,"error");
-				setTimeout(function(){ window.location.reload(); },10000);
+	if ( "<?=$polling?>" != "true" ) {
+		var webTime = $("#lastUpdated").attr("data-lastUpdated");
+		$.post(URL,{action:'checkStale',webTime:webTime},function(data) {
+			if (data) {
+				if (myTrim(data) == "true") {
+					clearInterval(checkStaleVar);
+					myAlert("Database Out Of Sync","Another Browser Tab Has Updated The Application Database.  Reloading The Apps Tab In 10 Seconds.","","",false,false,false,"error");
+					setTimeout(function(){ window.location.reload(); },10000);
+				}	
 			}
-		}
-	});
+		});
+	}
 }
 
 function makePlural(string,count) {
