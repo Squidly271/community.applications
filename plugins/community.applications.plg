@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.09.04">
-<!ENTITY md5       "ab75ecfc755b22b0f92a0c5a7816fc20">
+<!ENTITY version   "2017.09.13">
+<!ENTITY md5       "ec82ac4a9f47d5755a6716f7e7a3abfa">
 <!ENTITY launch    "Settings/PluginSettings">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,7 +13,7 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2017.09.12
+###2017.09.13
 - Changed: Clicking Repository from popup will now search for applications contained within the repository
 - Added: App info popup now has link to go directly to docker hub page for application
 - Fixed: Prevent possibility of duplicate app appearing in app of the day.
