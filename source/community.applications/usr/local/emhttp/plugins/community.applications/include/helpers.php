@@ -280,7 +280,11 @@ function fixTemplates($template) {
 		$template['Beta'] = strtolower(stripslashes($template['Beta']));
 	}
 	$template['Date'] = ( $template['Date'] ) ? strtotime( $template['Date'] ) : 0;
-
+	if ( $template['Date'] > strtotime("+2 day") ) {
+		$template['Date'] = 0;
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Invalid Date Updated (More than 2 days in the future) Format used probably not in http://php.net/manual/en/datetime.formats.date.php";
+	}
+	
 	if ( ! $template['MinVer'] ) {
 		$template['MinVer'] = $template['Plugin'] ? "6.1" : "6.0";
 	}
