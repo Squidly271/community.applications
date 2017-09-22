@@ -1977,7 +1977,7 @@ case 'statistics':
 	echo "<table>";
 	echo "<tr><td><b>{$color}Application List Current As Of</b></td><td>$color$updateTime</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Templates</b></td><td>$color{$statistics['totalApplications']}</td></tr>";
-	echo "<tr><td><b>{$color}Total Number Of Repositories</b></td><td>$color{$statistics['repository']}</td></tr>";
+	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;showRepositories.php&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color{$statistics['repository']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Plugins</b></td><td>$color{$statistics['plugin']}</td></tr>";
 	echo "<tr><td><b>{$color}<a href='/Main/Browse?dir=/boot/config/plugins/community.applications/private' target='_blank'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";

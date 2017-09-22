@@ -686,14 +686,15 @@ function pluginDupe($templates) {
 function checkInstalledPlugin($template) {
 	global $communityPaths;
 	
-	if ( ! file_exists("/var/log/plugins/".basename($template['PluginURL'])) ) {
+	$pluginName = basename($template['PluginURL']);
+	if ( ! file_exists("/var/log/plugins/$pluginName") ) {
 		return false;
 	}
 	$dupeList = readJsonFile($communityPaths['pluginDupes']);
-	if ( ! $dupeList[basename($template['PluginURL'])] ) {
+	if ( ! $dupeList[$pluginName] ) {
 		return true;
 	}
-	if ( strtolower(trim(plugin("pluginURL","/var/log/plugins/".basename($template['PluginURL'])))) != strtolower(trim($template['PluginURL']))) {
+	if ( strtolower(trim(plugin("pluginURL","/var/log/plugins/$pluginName"))) != strtolower(trim($template['PluginURL']))) {
 		return false;
 	} else {
 		return true;
