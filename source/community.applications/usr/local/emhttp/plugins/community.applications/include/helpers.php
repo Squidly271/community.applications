@@ -656,6 +656,50 @@ function updateSyncTime($updateSyncFlag) {
 	file_put_contents($communityPaths['lastUpdated-sync'],$updateTime);
 }
 
+##########################################################
+#                                                        #
+# Used to figure out which plugins have duplicated names #
+#                                                        #
+##########################################################
+function pluginDupe($templates) {
+	global $communityPaths;
+	
+	foreach ($templates as $template) {
+		if ( ! $template['Plugin'] ) {
+			continue;
+		}
+		$pluginList[basename($template['Repository'])]++;
+	}
+	foreach (array_keys($pluginList) as $plugin) {
+		if ( $pluginList[$plugin] > 1 ) {
+			$dupeList[$plugin]++;
+		}
+	}
+	writeJsonFile($communityPaths['pluginDupes'],$dupeList);
+}
+
+###################################
+#                                 #
+# Checks if a plugin is installed #
+#                                 #
+###################################
+function checkInstalledPlugin($template) {
+	global $communityPaths;
+	
+	if ( ! file_exists("/var/log/plugins/".basename($template['PluginURL'])) ) {
+		return false;
+	}
+	$dupeList = readJsonFile($communityPaths['pluginDupes']);
+	if ( ! $dupeList[basename($template['PluginURL'])] ) {
+		return true;
+	}
+	if ( strtolower(trim(plugin("pluginURL","/var/log/plugins/".basename($template['PluginURL'])))) != strtolower(trim($template['PluginURL']))) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
 ############################################################################
 #                                                                          #
 # Function to convert a template's associative tags to static numeric tags #

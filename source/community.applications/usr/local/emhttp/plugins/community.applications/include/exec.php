@@ -209,6 +209,7 @@ function DownloadCommunityTemplates() {
 	writeJsonFile($communityPaths['blacklisted_txt'],$blacklist);
 	writeJsonFile($communityPaths['statistics'],$statistics);
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
+	pluginDupe($myTemplates);
 	
 	file_put_contents($communityPaths['LegacyMode'],"active");
 	return true;
@@ -364,6 +365,8 @@ function DownloadApplicationFeed() {
 		@unlink($communityPaths['invalidXML_txt']);
 	}
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
+	pluginDupe($myTemplates);
+
 	@unlink($communityPaths['LegacyMode']);
 	return true;
 }
@@ -603,7 +606,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		}
 		if ( $template['Plugin'] ) {
 			$pluginName = basename($template['PluginURL']);
-			if ( file_exists("/var/log/plugins/$pluginName") ) {
+			if ( checkInstalledPlugin($template) ) {
 				$pluginSettings = isset($template['CAlink']) ? $template['CAlink'] : getPluginLaunch($pluginName);
 				$tmpVar = $pluginSettings ? "" : " disabled ";
 				$template['display_pluginSettings'] = "<input class='ca_tooltip' title='Click to go to the plugin settings' type='submit' $tmpVar style='margin:0px' value='Settings' formtarget='$tabMode' formaction='$pluginSettings' formmethod='post'>";
@@ -1673,7 +1676,7 @@ case 'previous_apps':
 			}
 			$filename = pathinfo($template['Repository'],PATHINFO_BASENAME);
 
-			if ( file_exists("/var/log/plugins/$filename") ) {
+			if ( checkInstalledPlugin($template) ) {
 				if ( $template['Blacklist'] ) {
 					continue;
 				}
@@ -1692,6 +1695,9 @@ case 'previous_apps':
 				if ( $oldplug == pathinfo($template['Repository'],PATHINFO_BASENAME) ) {
 					if ( ! file_exists("/boot/config/plugins/$oldplug") ) {
 						if ( $template['Blacklist'] ) {
+							continue;
+						}
+            if ( strtolower(trim($template['PluginURL'])) != strtolower(trim(plugin("pluginURL","/boot/config/plugins-removed/$oldplug"))) ) {
 							continue;
 						}
 						$template['Removable'] = true;

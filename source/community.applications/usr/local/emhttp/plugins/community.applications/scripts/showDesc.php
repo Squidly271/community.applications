@@ -193,6 +193,21 @@ if ( ($donatelink) && ($donateimg) ) {
   }
 }
 $templateDescription .= "</center>";
+if ($template['Plugin']) {
+	$dupeList = readJsonFile($communityPaths['pluginDupes']);
+	if ( $dupeList[basename($template['Repository'])] == 1 ){
+		$allTemplates = readJsonFile($communityPaths['community-templates-info']);
+		foreach ($allTemplates as $testTemplate) {
+			if ($testTemplate['Repository'] == $template['Repository']) {
+				continue;
+			}
+			if ($testTemplate['Plugin'] && (basename($testTemplate['Repository']) == basename($template['Repository']))) {
+				$duplicated .= $testTemplate['Author']." - ".$testTemplate['Name'];
+			}
+		}
+		$templateDescription .= "<br>This plugin has a duplicated name from another plugin $duplicated.  This will impact your ability to install both plugins simulateously<br>";
+	}
+}
 if ( $template['Changes'] ) {
   if ( $template['Plugin'] ) {
     $appInformation = Markdown($template['Changes']);

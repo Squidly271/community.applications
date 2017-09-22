@@ -56,6 +56,7 @@ $communityPaths['PluginInstallPending']          = $communityPaths['tempFiles'].
 $communityPaths['warningAccepted']               = "/boot/config/plugins/community.applications/accepted";
 $communityPaths['CAdeveloper']                   = "/boot/config/plugins/community.applications/developer";
 $communityPaths['pollingDisabled']               = "/boot/config/plugins/community.applications/pollingDisabled";
+$communityPaths['pluginDupes']                   = $communityPaths['tempFiles']."/pluginDupes";
 
 $communityPaths['newFlag']                       = $communityPaths['tempFiles']."/newFlag";  # flag file to indicate that the "New" Category is being displayed
 
