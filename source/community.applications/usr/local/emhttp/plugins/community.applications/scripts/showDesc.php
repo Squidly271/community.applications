@@ -132,9 +132,9 @@ if ( $template['Date'] && $template['Plugin'] ) {
 }
 $templateDescription .= $template['MinVer'] ? "<tr><td nowrap>$color<b>Minimum OS:</strong></td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
 $templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>$color<strong>Max OS:</strong></td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
-$templateDescription .= "<tr><td>$color<strong>Downloads:</strong></td><td>$color";
-$templateDescription .= $template['downloads'] ? $template['downloads'] : "Could Not Determine";
-$templateDescription .= "</td></tr>";
+if ($template['downloads']) {
+	$templateDescription .= "<tr><td>$color<strong>Downloads:</strong></td><td>$color{$template['downloads']}</td></tr>";
+}
 $templateDescription .= $template['Licence'] ? "<tr><td>$color<strong>Licence:</strong></td><td>$color".$template['Licence']."</td></tr>" : "";
   
 $templateDescription .= "</table></td></tr></table>";
@@ -205,7 +205,7 @@ if ($template['Plugin']) {
 				$duplicated .= $testTemplate['Author']." - ".$testTemplate['Name'];
 			}
 		}
-		$templateDescription .= "<br>This plugin has a duplicated name from another plugin $duplicated.  This will impact your ability to install both plugins simulateously<br>";
+		$templateDescription .= "<br>This plugin has a duplicated name from another plugin $duplicated.  This will impact your ability to install both plugins simultaneously<br>";
 	}
 }
 if ( $template['Changes'] ) {
