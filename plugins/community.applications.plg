@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.09.13">
-<!ENTITY md5       "ec82ac4a9f47d5755a6716f7e7a3abfa">
+<!ENTITY version   "2017.09.22">
+<!ENTITY md5       "1c6e64310ceca89ce626de05f1f1f1e9">
 <!ENTITY launch    "Settings/PluginSettings">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017.09.22
+- Fixed: Correctly handle duplicate named plugins within Installed / Previously Installed sections
+- Changed: Relocate data files from docker.img to RAM to handle some edge-cases
+- Changed: Don't show applications within New / Updated section if date modified is in the future
+- Code cleanup, and minor changes to Stats section
+
 ###2017.09.13
 - Changed: Clicking Repository from popup will now search for applications contained within the repository
 - Added: App info popup now has link to go directly to docker hub page for application

@@ -1959,8 +1959,8 @@ case 'statistics':
 	}
 
 	$color = "<font color='coral'>";
-	echo "<div style='overflow:scroll; max-height:550px; height:550px; overflow-x:hidden; overflow-y:auto;'><center><img height='24px' src='/plugins/community.applications/images/CA.png'><br><font size='4' color='white'>Community Applications</font><br>";
-	echo "<center><font size='3'>Application Feed Statistics</font></center><br><br>";
+	echo "<div style='overflow:scroll; max-height:550px; height:600px; overflow-x:hidden; overflow-y:hidden;'><center><img height='24px' src='/plugins/community.applications/images/CA.png'><br><font size='3' color='white'>Community Applications</font><br>";
+	echo "<center><font size='2'>Application Feed Statistics</font></center><br><br>";
 	echo "<table>";
 	echo "<tr><td><b>{$color}Application List Current As Of</b></td><td>$color$updateTime</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Templates</b></td><td>$color{$statistics['totalApplications']}</td></tr>";
@@ -1975,6 +1975,12 @@ case 'statistics':
 	echo "<tr><td title='You can only install a deprecated application if you have previously installed it'><b>{$color}<a onclick='showModeration(&quot;showDeprecated.php&quot;,&quot;Total Deprecated Applications&quot;);' style='cursor:pointer'>Total Number Of Deprecated Applications</a></b></td><td>$color{$statistics['totalDeprecated']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;showModeration.php&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Total Number Of Moderation Entries</a></b></td><td>$color{$statistics['totalModeration']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;showNoSupport.php&quot;,&quot;Applications With No Support Entries&quot;);' style='cursor:pointer'>Applications without any support thread:</a></b></td><td>$color{$statistics['NoSupport']}</td></tr>";
+	$totalCA = exec("du -h -s /usr/local/emhttp/plugins/community.applications/");
+	$totalTmp = exec(" du -h -s /tmp/community.applications/");
+	$memCA = explode("\t",$totalCA);
+	$memTmp = explode("\t",$totalTmp);
+	echo "<tr><td><b>{$color}<b>Memory Usage (CA / DataFiles)</b></td><td>{$memCA[0]} / {$memTmp[0]}</td></tr>";
+	
 	echo "</table>";
 	echo "<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img height='25px' src='https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif'></a></center>";
 	echo "<center>Ensuring only safe applications are present is a full time job</center><br>";
