@@ -1787,19 +1787,6 @@ case 'uninstall_docker':
 	echo "Uninstalled";
 	break;
 
-##################################
-#                                #
-# Deletes the appdata for an app #
-#                                #
-##################################
-case 'remove_appdata':
-	$appdata = getPost("appdata","");
-	$appdata = trim($appdata);
-
-	$commandLine = $communityPaths['deleteAppdataScript'].' "'.$appdata.'" > /dev/null | at NOW -M >/dev/null 2>&1';
-	exec($commandLine);
-	break;
-
 ##################################################
 #                                                #
 # Pins / Unpins an application for later viewing #

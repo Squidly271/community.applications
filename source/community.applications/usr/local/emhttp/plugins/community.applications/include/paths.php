@@ -5,17 +5,11 @@
 #                                                             #
 ###############################################################
 
-##################################################################################################################################################################################################
-#                                                                                                                                                                                                #
-# Static Variables.  Note that most paths are stored within /var/lib/docker/unraid, which means that any files are actually stored within the docker.img file and are persistent between reboots #
-#                                                                                                                                                                                                #
-##################################################################################################################################################################################################
-
 $plugin = "community.applications";
 
 $communityPaths['tempFiles']                     = "/tmp/community.applications/tempFiles";                            /* path to temporary files */
-$communityPaths['persistentDataStore']           = $communityPaths['tempFiles']."/community.applications.datastore";          /* anything in this folder is NOT deleted upon an update of templates */
-$communityPaths['templates-community']           = $communityPaths['tempFiles']."/templates-community-apps";                  /* templates and temporary files stored here.  Deleted every update of applications */
+$communityPaths['persistentDataStore']           = $communityPaths['tempFiles']."/community.applications.datastore";   /* anything in this folder is NOT deleted upon an update of templates */
+$communityPaths['templates-community']           = $communityPaths['tempFiles']."/templates-community-apps";           /* templates and temporary files stored here.  Deleted every update of applications */
 $communityPaths['community-templates-url']       = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Repositories.json";
 $communityPaths['Repositories']                  = $communityPaths['tempFiles']."/Repositories.json";
 $communityPaths['community-templates-info']      = $communityPaths['tempFiles']."/templates.json";                     /* json file containing all of the templates */
@@ -31,16 +25,15 @@ $communityPaths['convertedTemplates']            = "/boot/config/plugins/".$plug
 $communityPaths['dockerSearchResults']           = $communityPaths['tempFiles']."/docker_search.json";                 /* The displayed docker search results */
 $communityPaths['dockerfilePage']                = $communityPaths['tempFiles']."/dockerfilePage";                     /* the downloaded webpage to scrape the dockerfile from */
 $communityPaths['moderationURL']                 = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Moderation.json";
-$communityPaths['moderation']                    = $communityPaths['persistentDataStore']."/moderation.json";          /* json file that has all of the moderation */
+$communityPaths['moderation']                    = $communityPaths['tempFiles']."/moderation.json";                    /* json file that has all of the moderation */
 $communityPaths['unRaidVersion']                 = "/etc/unraid-version";
 $communityPaths['logos']                         = $communityPaths['tempFiles']."/logos.json";
-$communityPaths['deleteAppdataScript']           = "/usr/local/emhttp/plugins/community.applications/scripts/deleteAppData.sh";
 $communityPaths['unRaidVars']                    = "/var/local/emhttp/var.ini";
 $communityPaths['updateErrors']                  = $communityPaths['tempFiles']."/updateErrors.txt";
 $communityPaths['dockerUpdateStatus']            = "/var/lib/docker/unraid-update-status.json";
 $communityPaths['pinnedRam']                     = $communityPaths['tempFiles']."/pinned_apps.json"; # the ram copy of pinned apps for speed
 $communityPaths['pinned']                        = "/boot/config/plugins/community.applications/pinned_apps.json"; # stored on flash instead of docker.img so it will work without docker running
-$communityPaths['appOfTheDay']                   = $communityPaths['persistentDataStore']."/appOfTheDay.json";
+$communityPaths['appOfTheDay']                   = $communityPaths['tmpeFiles']."/appOfTheDay.json";
 $communityPaths['defaultSkin']                   = "/usr/local/emhttp/plugins/community.applications/skins/default.skin";
 $communityPaths['legacySkin']                    = "/usr/local/emhttp/plugins/community.applications/skins/legacy.skin";
 $communityPaths['LegacyMode']                    = $communityPaths['templates-community']."/legacyModeActive";
@@ -57,10 +50,7 @@ $communityPaths['warningAccepted']               = "/boot/config/plugins/communi
 $communityPaths['CAdeveloper']                   = "/boot/config/plugins/community.applications/developer";
 $communityPaths['pollingDisabled']               = "/boot/config/plugins/community.applications/pollingDisabled";
 $communityPaths['pluginDupes']                   = $communityPaths['tempFiles']."/pluginDupes";
-
 $communityPaths['newFlag']                       = $communityPaths['tempFiles']."/newFlag";  # flag file to indicate that the "New" Category is being displayed
 
 $infoFile                                        = $communityPaths['community-templates-info'];
-$docker_repos                                    = $communityPaths['template-repos'];
-
 ?>
