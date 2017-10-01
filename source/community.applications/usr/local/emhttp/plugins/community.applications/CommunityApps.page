@@ -501,7 +501,7 @@ function caModules() {
 	$("#sortorder").attr("data-section","CAmodules");
 	$("#currentSection").html("Additional CA Modules");
 	clearSearchBox();
-	$("#templates_content,.dockerSearch,#AppsOnly").hide();
+	$("#templates_content,.dockerSearch,#AppsOnly,.multi_installDiv").hide();
 	$("#templates_content").html("<center><font size='3'>Searching</font></center>");
 	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
 	enableIcon("#sortIcon",true);

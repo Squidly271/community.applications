@@ -3,7 +3,7 @@
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
 <!ENTITY version   "2017.10.01">
-<!ENTITY md5       "1bac576a4fea7abb90e3e38f102ceb38">
+<!ENTITY md5       "3f423b16ad099dba7ce5a3149aec3f93">
 <!ENTITY launch    "Settings/PluginSettings">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -14,7 +14,7 @@
 
 <CHANGES>
 ###2017.10.01
-- Fixed: Display abberration when switching from Previous Apps to Pinned Apps
+- Fixed: Display abberration when switching from Previous Apps to Pinned Apps/ca Modules
 
 ###2017.09.22
 - Fixed: Correctly handle duplicate named plugins within Installed / Previously Installed sections
