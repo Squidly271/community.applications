@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.09.22">
-<!ENTITY md5       "1c6e64310ceca89ce626de05f1f1f1e9">
+<!ENTITY version   "2017.10.01">
+<!ENTITY md5       "1bac576a4fea7abb90e3e38f102ceb38">
 <!ENTITY launch    "Settings/PluginSettings">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017.10.01
+- Fixed: Display abberration when switching from Previous Apps to Pinned Apps
+
 ###2017.09.22
 - Fixed: Correctly handle duplicate named plugins within Installed / Previously Installed sections
 - Changed: Relocate data files from docker.img to RAM to handle some edge-cases
