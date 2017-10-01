@@ -14,7 +14,7 @@
 
 <CHANGES>
 ###2017.10.01
-- Fixed: Display abberration when switching from Previous Apps to Pinned Apps/ca Modules
+- Fixed: Display abberration when switching from Previous Apps to Pinned Apps / ca Modules
 
 ###2017.09.22
 - Fixed: Correctly handle duplicate named plugins within Installed / Previously Installed sections
