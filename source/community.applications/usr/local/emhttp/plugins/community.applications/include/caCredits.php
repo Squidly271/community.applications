@@ -45,7 +45,7 @@ $caCredits = "
         <td><font color='coral'>Additional Testing</font></td>
       </tr>
       <tr>
-        <td><img src='https://forums.lime-technology.com/uploads/monthly_2017_02/kumaavatar.jpg.2c6c0e10ac6852b7f2ef0bc3c88b2299.jpg' width='48px' height='48px'></td>
+        <td><img src='https://forums.lime-technology.com/uploads/monthly_2017_09/59cbbf15696ec_spaceinvaderlogo.png.aacf1828fe685979ad8ea1586bfca22f.png' width='48px' height='48px'></td>
         <td><strong><font color='coral'>gridrunner</font></strong></td>
         <td><font color='coral'>Additional Testing</font></td>
       </tr>

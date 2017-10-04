@@ -631,13 +631,16 @@ function create_ini_file($settings,$mode=false) {
 #                                                     #
 #######################################################
 function filterMatch($filter,$searchArray) {
-	$filter = str_replace(" ","",$filter);
-	foreach ($searchArray as $search) {
-		if ( preg_match("#$filter#i",str_replace(" ","",$search)) ) {
-			return true;
-		}
+	$filterwords = explode(" ",$filter);
+	foreach ( $filterwords as $testfilter) {
+		foreach ($searchArray as $search) {
+	  	if ( preg_match("#$testfilter#i",str_replace(" ","",$search)) ) {
+        $foundword++;
+				break;
+			}
+		}	
 	}
-	return false;
+	return ($foundword == count($filterwords));
 }
 
 ###################################################################
