@@ -545,6 +545,7 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	if ( !showCancel )   showCancel = false;
 	if ( !showConfirm )  showConfirm = false;
 	if ( imagesize == "" ) { imagesize = "80x80"; }
+	disableTooltipster();
 	swal({
 		title: description,
 		text: textdescription,
@@ -560,6 +561,7 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 
 function myCloseAlert() {
 	swal.close();
+	enableTooltipster();
 }
 
 function readMore() {
@@ -634,6 +636,13 @@ function doSearch(button) {
 function dismissWarning() {
 	$("#appWarning").hide();
 	$.post(URL,{action:'dismiss_warning'});
+}
+
+function disableTooltipster() {
+  $('.tooltipstered').tooltipster('disable');
+}
+function enableTooltipster() {
+  $('.tooltipstered').tooltipster('enable');
 }
 
 function forceUpdate() {
