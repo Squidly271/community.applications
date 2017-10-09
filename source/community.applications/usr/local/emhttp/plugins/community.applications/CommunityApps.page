@@ -613,7 +613,9 @@ function doSearch(button) {
 		return;
 	}
 	var sortOrder = getSortOrder();
-
+	if ( "<?=$cfg['dockerSearch']?>" == "yes" ) {
+		$('.dockerSearch').show();
+	}
 	myAlert("Searching...", "Searching for <strong><font color=red>"+filter+"</font></strong>","/plugins/community.applications/images/spinner2.gif","40x40");
 
 	$.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,windowWidth:windowWidth,maxPerPage:maxPerPage},function(data) {
@@ -625,10 +627,6 @@ function doSearch(button) {
 			readMore();
 			myCloseAlert();
 			setToolTip();
-		}
-
-		if ( "<?=$cfg['dockerSearch']?>" == "yes" ) {
-			$('.dockerSearch').show();
 		}
 	});
 }

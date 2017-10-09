@@ -701,7 +701,9 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	if ( ! $officialFlag ) {
 		$ct .= "<br>".getPageNavigation($pageNumber,count($file),false)."<br><br><br>";
 	}
-
+  if ( $communitySettings['dockerSearch'] != "yes" ) {
+		$ct .= "<script>$('.dockerSearch').hide();</script>";
+	}
 	return $ct;
 }
 
