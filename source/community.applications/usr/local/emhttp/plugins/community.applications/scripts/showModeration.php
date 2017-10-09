@@ -9,7 +9,7 @@ foreach ($repositories as $repo) {
 	}
 }
 if ( $repoComment ) {
-	echo "<br><center><strong>Global Repository Comments:</strong></center><br><br><tt><table>$repoComment</table><br><br>";
+	echo "<br><center><strong>Global Repository Comments:</strong><br>(Applied to all applications)</center><br><br><tt><table>$repoComment</table><br><br>";
 }
 if ( ! $moderation ) {
   echo "<br><br><center><b>No moderation entries found</b></center>";
