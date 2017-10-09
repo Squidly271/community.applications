@@ -222,6 +222,8 @@ function DownloadCommunityTemplates() {
 function DownloadApplicationFeed() {
 	global $communityPaths, $infoFile, $plugin, $communitySettings, $statistics;
 
+	exec("rm -rf '{$communityPaths['templates-community']}'");
+	exec("mkdir -p '{$communityPaths['templates-community']}'");
 	$betaComment = "The author of this template has designated it to be a beta.  You may experience issues with this application";
 	$moderation = readJsonFile($communityPaths['moderation']);
 	if ( ! is_array($moderation) ) {
