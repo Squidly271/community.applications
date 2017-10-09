@@ -142,6 +142,8 @@ function DownloadCommunityTemplates() {
 				$o['DonateText'] = $o['DonateText'] ? $o['DonateText'] : $Repo['donatetext'];  # Some people can't read the specs correctly
 				$o['DonateLink'] = $o['DonateLink'] ? $o['DonateLink'] : $Repo['donatelink'];
 				$o['DonateImg'] = $o['DonateImg'] ? $o['DonateImg'] : $Repo['donateimg'];
+				$o['RepoURL'] = $Repo['url'];
+			  $o['ModeratorComment'] = $Repo['RepoComment'];
 				$o['WebPageURL'] = $Repo['web'];
 				$o['Logo'] = $Repo['logo'];
 				$o['Profile'] = $Repo['profile'];
@@ -275,12 +277,14 @@ function DownloadApplicationFeed() {
 		}
 		$RepoIndex = searchArray($Repositories,"name",$o['RepoName']);
 		if ( $RepoIndex != false ) {
-			$o['DonateText'] = $Repositories[$RepoIndex]['donatetext'];
-			$o['DonateImg']  = $Repositories[$RepoIndex]['donateimg'];
-			$o['DonateLink'] = $Repositories[$RepoIndex]['donatelink'];
-			$o['WebPageURL'] = $Repositories[$RepoIndex]['web'];
-			$o['Logo']       = $Repositories[$RepoIndex]['logo'];
-			$o['Profile']    = $Repositories[$RepoIndex]['profile'];
+			$o['DonateText']       = $Repositories[$RepoIndex]['donatetext'];
+			$o['DonateImg']        = $Repositories[$RepoIndex]['donateimg'];
+			$o['DonateLink']       = $Repositories[$RepoIndex]['donatelink'];
+			$o['WebPageURL']       = $Repositories[$RepoIndex]['web'];
+			$o['Logo']             = $Repositories[$RepoIndex]['logo'];
+			$o['Profile']          = $Repositories[$RepoIndex]['profile'];
+			$o['RepoURL']          = $Repositories[$RepoIndex]['url'];
+			$o['ModeratorComment'] = $Repositories[$RepoIndex]['RepoComment'];
 		}
 		$o['DonateText'] = $file['DonateText'] ? $file['DonateText'] : $o['DonateText'];
 		$o['DonateLink'] = $file['DonateLink'] ? $file['DonateLink'] : $o['DonateLink'];
@@ -940,7 +944,9 @@ function displaySearchResults($pageNumber,$viewMode) {
 			$t .= "<figure><center><a class='ca_tooltip' href='".$result['DockerHub']."' title='$description' target='_blank'>";
 			$t .= "<img style='width:".$iconSize."px;height:".$iconSize."px;' src='".$result['Icon']."' onError='this.src=\"/plugins/$plugin/images/question.png\";'></a>";
 			$t .= "<figcaption><strong><center><font size='3'><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For Similar Containers'>".$result['Name']."</a></font></center></strong></figcaption></figure>";
-			$t .= "<center><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)' style='margin:0px'></center>";
+			if ( $communitySettings['dockerRunning'] == "true" ) {
+				$t .= "<center><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)' style='margin:0px'></center>";
+			}
 			$t .= "</td>";
 
 			if ( $maxColumn == 2 ) {
