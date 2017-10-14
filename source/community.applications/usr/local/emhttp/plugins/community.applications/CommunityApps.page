@@ -31,6 +31,7 @@ $vars = parse_ini_file($communityPaths['unRaidVars']);
 $toolTipsterIncluded = version_compare($vars['version'],"6.3.3",">=") ? "true" : "false";
 $unRaid64 = (version_compare($vars['version'],"6.4.0-rc0",">=")) ? "true" : "false";
 $unRaid635 = (version_compare($vars['version'],"6.3.5",">=")) ? "true" : "false";
+$backToTop = (version_compare($vars['version'],"6.4.0-rc9f","<=")) ? "false" : "true";
 
 $tabMode = "_self";
 $line_color = $display['theme']=='black' ? '#202020' : '#E8E8E8';
@@ -51,7 +52,9 @@ $pluginInstallPending = @file_get_contents($communityPaths['PluginInstallPending
 <style>
 .searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
 table#templates_list tbody td.topRow{border-top:1px solid <?=$line_color?>;}
+<?if ( $backToTop == "false" ) : ?>
 .back-to-top {background: none;margin: 0;position: fixed;bottom: 40px;right: 0;width: 50px;height: 50px;z-index: 100;display: none;text-decoration: none;color: #ffffff;}
+<?endif;?>
 input.appButtons {margin:0px;}
 input.viewButton {margin:1px;}
 input.sortButton {margin:1px;}
@@ -141,6 +144,7 @@ var checkStaleVar = setInterval(function(){ checkStale(); },60000);
 $(function(){
 	$("#sortorder").attr("data-oldWindowWidth",getWindowWidth());
 
+<?if ( $backToTop == "false" ) : ?>
 	var backtotopoffset = 250;
 	var backtotopduration = 500;
 	$(window).scroll(function() {
@@ -155,6 +159,7 @@ $(function(){
 		$('html, body').animate({scrollTop: 0}, backtotopduration);
 		return false;
 	});
+<?endif;?>
 
 	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' style='margin-left:10px;margin-right:0' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
@@ -1398,7 +1403,9 @@ function resizeDisplay() {
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 <?endif;?>
 </center>
-<a href="#" class="back-to-top" style="display: inline;"><img src='/plugins/community.applications/images/up.png' style='width:30px;height:30px' href="#" class="back-to-top"></img></a>
+<?if ( $backToTop == "false" ) : ?>
+<a href="#" class="back-to-top" style="display: inline;"><i href="#" class="fa fa-arrow-circle-up dynamix_back-to-top" aria-hidden="true" style="color:green;font-size:25px;"></i></a>
+<?endif;?>
 <center><a href='https://forums.lime-technology.com/topic/57181-real-docker-faq/' target='_blank'>Docker FAQ</a></center><br>
 <center>Community Applications Version: <?=$installedVersion?></center></div>
 
