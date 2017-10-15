@@ -30,7 +30,7 @@ $caCredits = "
         <td><font color='coral'>Main Development</font></td>
       </tr>
       <tr>
-        <td></td>
+        <td><img src='https://forums.lime-technology.com/uploads/monthly_2017_02/lime_wire.thumb.png.25ea8d93427793d74b1811b152f5aa34.png' width='48px'; height='48px;'></td>
         <td><strong><font color='coral'>bonienl</font></strong></td>
         <td><font color='coral'>Additional Contributions</font></td>
       </tr>
