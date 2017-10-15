@@ -1106,6 +1106,12 @@ case 'get_content':
 	$display             = array();
 	$official            = array();
 
+	if ( $newApp == "true" ) {
+		file_put_contents($communityPaths['newFlag'],"new category is being displayed");
+	} else {
+		@unlink($communityPaths['newFlag']);
+	}
+	
 	foreach ($file as $template) {
 		if ( $template['Blacklist'] ) {
 			continue;
@@ -1154,11 +1160,7 @@ case 'get_content':
 				$template['MyPath'] = $template['PluginURL'];
 			}
 		}
-		if ( $newApp == "true" ) {
-			file_put_contents($communityPaths['newFlag'],"new category is being displayed");
-		} else {
-			@unlink($communityPaths['newFlag']);
-		}
+
 		if ( ($newApp == "true") && ($template['Date'] < $newAppTime) )  { continue; }
 		if ( $category && ! preg_match($category,$template['Category'])) { continue; }
 
