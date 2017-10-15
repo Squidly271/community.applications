@@ -84,7 +84,7 @@ if ( ! $template['Plugin'] ) {
     }
   }
 }
-    
+$template['Category'] = rtrim(str_replace(":,",",",implode(", ",explode(" ",$template['Category']))),": ,");
 $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/community.applications/images/question.png";
 $template['Description'] = trim($template['Description']);
 

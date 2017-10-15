@@ -555,6 +555,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$previousAppName = $template['Plugin'] ? $template['PluginURL'] : $template['Name'];
 		$checked = $checkedOffApps[$previousAppName] ? "checked" : "";
 
+		$template['Category'] = rtrim(str_replace(":,",",",implode(", ",explode(" ",$template['Category']))),": ,");
 		$RepoName = ( $template['Private'] == "true" ) ? $template['RepoName']."<font color=red> (Private)</font>" : $template['RepoName'];
 		if ( ! $template['DonateText'] ) {
 			$template['DonateText'] = "Donate To Author";
@@ -1974,7 +1975,7 @@ case 'statistics':
 	echo "<div style='overflow:scroll; max-height:550px; height:600px; overflow-x:hidden; overflow-y:hidden;'><center><img height='24px' src='/plugins/community.applications/images/CA.png'><br><font size='3' color='white'>Community Applications</font><br>";
 	echo "<center><font size='2'>Application Feed Statistics</font></center><br><br>";
 	echo "<table>";
-	echo "<tr><td><b>{$color}Application List Current As Of</b></td><td>$color$updateTime</td></tr>";
+	echo "<tr><td><b>{$color}Application List Updated As Of</b></td><td>$color$updateTime</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Templates</b></td><td>$color{$statistics['totalApplications']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;showRepositories.php&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color{$statistics['repository']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";

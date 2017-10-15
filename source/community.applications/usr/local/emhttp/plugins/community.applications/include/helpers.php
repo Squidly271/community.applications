@@ -333,6 +333,10 @@ function fixTemplates($template) {
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No valid Overview Or Description present - Application dropped from CA automatically";
     return false;
 	}
+	if ( ! $template['Icon'] ) {
+		$statistics['caFixed']++;
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "No Icon specified within the application template";
+	}
 	if ( ( stripos($template['RepoName'],' beta') > 0 )  ) {
 		$template['Beta'] = "true";
 	}
