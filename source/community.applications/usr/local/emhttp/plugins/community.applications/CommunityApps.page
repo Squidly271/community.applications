@@ -31,7 +31,6 @@ $vars = parse_ini_file($communityPaths['unRaidVars']);
 $toolTipsterIncluded = version_compare($vars['version'],"6.3.3",">=") ? "true" : "false";
 $unRaid64 = (version_compare($vars['version'],"6.4.0-rc0",">=")) ? "true" : "false";
 $unRaid635 = (version_compare($vars['version'],"6.3.5",">=")) ? "true" : "false";
-$backToTop = (version_compare($vars['version'],"6.4.0-rc9f","<=")) ? "false" : "true";
 
 $tabMode = "_self";
 $line_color = $display['theme']=='black' ? '#202020' : '#E8E8E8';
@@ -144,22 +143,22 @@ var checkStaleVar = setInterval(function(){ checkStale(); },60000);
 $(function(){
 	$("#sortorder").attr("data-oldWindowWidth",getWindowWidth());
 
-<?if ( $backToTop == "false" ) : ?>
-	var backtotopoffset = 250;
-	var backtotopduration = 500;
-	$(window).scroll(function() {
-		if ($(this).scrollTop() > backtotopoffset) {
-			$('.back-to-top').fadeIn(backtotopduration);
-		} else {
-			$('.back-to-top').fadeOut(backtotopduration);
-		}
-	});
-	$('.back-to-top').click(function(event) {
-		event.preventDefault();
-		$('html, body').animate({scrollTop: 0}, backtotopduration);
-		return false;
-	});
-<?endif;?>
+	if ( ! $(".dynamix_back-to-top").length ) {
+		var backtotopoffset = 250;
+		var backtotopduration = 500;
+		$(window).scroll(function() {
+			if ($(this).scrollTop() > backtotopoffset ) {
+				$('.back-to-top').fadeIn(backtotopduration);
+			} else {
+				$('.back-to-top').fadeOut(backtotopduration);
+			}
+		});
+		$('.back-to-top').click(function(event) {
+			event.preventDefault();
+			$('html, body').animate({scrollTop: 0}, backtotopduration);
+			return false;
+		});
+	}
 
 	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' style='margin-left:10px;margin-right:0' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
@@ -1404,7 +1403,7 @@ function resizeDisplay() {
 <?endif;?>
 </center>
 <?if ( $backToTop == "false" ) : ?>
-<a href="#" class="back-to-top" style="display: inline;"><i href="#" class="fa fa-arrow-circle-up dynamix_back-to-top" aria-hidden="true" style="color:green;font-size:25px;"></i></a>
+<a href="#" class="back-to-top" style="display: inline;"><img src='/plugins/community.applications/images/up.png' style='width:30px;height:30px' href="#" class="back-to-top"></img></a>
 <?endif;?>
 <center><a href='https://forums.lime-technology.com/topic/57181-real-docker-faq/' target='_blank'>Docker FAQ</a></center><br>
 <center>Community Applications Version: <?=$installedVersion?></center></div>
