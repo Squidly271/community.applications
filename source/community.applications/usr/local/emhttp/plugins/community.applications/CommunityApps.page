@@ -1403,7 +1403,7 @@ function resizeDisplay() {
 <?endif;?>
 </center>
 <?if ( $backToTop == "false" ) : ?>
-<a href="#" class="back-to-top" style="display: inline;"><img src='/plugins/community.applications/images/up.png' style='width:30px;height:30px' href="#" class="back-to-top"></img></a>
+<a href="#" class="back-to-top" style="display: inline;"><i href="#" class="fa fa-arrow-circle-up dynamix_back-to-top" aria-hidden="true" style="color:green;font-size:25px;"></i></a>
 <?endif;?>
 <center><a href='https://forums.lime-technology.com/topic/57181-real-docker-faq/' target='_blank'>Docker FAQ</a></center><br>
 <center>Community Applications Version: <?=$installedVersion?></center></div>
