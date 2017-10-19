@@ -48,6 +48,8 @@ $template = json_decode(file_get_contents($communityPaths['defaultSkin']),true);
 $pluginInstallPending = @file_get_contents($communityPaths['PluginInstallPending']);
 @unlink($communityPaths['PluginInstallPending']);
 
+$iconDisabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#555555" : "#555555";
+$iconEnabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#990000" : "#990000";
 ?>
 <style>
 .searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
@@ -61,6 +63,8 @@ input.sortButton {margin:1px;}
 input.dirButton {margin:1px;}
 input.allButtons {margin:-1px;}
 input[type=checkbox] {width:20px; height:20px;}
+.enabledIcon { cursor:pointer;background-color:<?=$iconEnabledColor?>;height:35px;border-radius:5px;padding:5px;}
+.disabledIcon { cursor:pointer;background-color:<?=$iconDisabledColor?>;height:35px;border-radius:5px;padding:5px;}
 </style>
 
 <?if ( $toolTipsterIncluded == "false" ) : ?>
@@ -186,9 +190,8 @@ $(function(){
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
-			var source = origin.attr("src");
 
-			if ( source.indexOf("Disabled") > 1 ) {
+			if ( ! isIconEnabled(origin) ) {
 				var displayContent = "Changing Of Views Disabled";
 			} else {
 				var myID = origin.attr('id');
@@ -255,8 +258,7 @@ $(function(){
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
-			var source = origin.attr("src");
-			if ( source.indexOf("Disabled") > 1 ) {
+			if ( !isIconEnabled(origin) ) {
 				var displayContent = "Changing Of Sections Disabled";
 			} else {
 				var currentSection = $("#sortorder").attr("data-section");
@@ -282,8 +284,7 @@ $(function(){
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
-			var source = origin.attr("src");
-			if ( source.indexOf("Disabled") > 1 ) {
+			if ( ! isIconEnabled(origin) ) {
 				var displayContent = "Changing Of Categories Disabled In This Section";
 			} else {
 				var selectedCategory = $("#sortorder").attr("data-selected_category");
@@ -313,8 +314,7 @@ $(function(){
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
-			var source = origin.attr("src");
-			if ( source.indexOf("Disabled") > 1 ) {
+			if ( ! isIconEnabled(origin) ) {
 				var displayContent = "No Subcategories Available To Display";
 			} else {
 				var currentSub = $("#sortorder").attr("data-subcategory");
@@ -360,14 +360,17 @@ $(function(){
 
 function enableIcon(icon,enable) {
 	$(icon).each(function() {
-		var source = $(this).attr("src");
-		source = source.replace(".png","");
-		source = source.replace("Disabled","");
-		if ( ! enable) {
-			source = source + "Disabled";
+		$(this).removeClass("enabledIcon disabledIcon");
+		if ( enable ) {
+			$(this).addClass("enabledIcon");
+		} else {
+			$(this).addClass("disabledIcon");
 		}
-		$(this).attr("src",source + ".png");
 	});
+}
+
+function isIconEnabled(icon) {
+	return $(icon).hasClass("enabledIcon");
 }
 
 function setToolTip() {
@@ -1382,10 +1385,10 @@ function resizeDisplay() {
 > <center>For support for this plugin, visit here: <a title='click for help' href="http://lime-technology.com/forum/index.php?topic=40262.0" target="_blank">http://lime-technology.com/forum/index.php?topic=40262.0</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 
-<img id='sectionIcon' src='/plugins/community.applications/images/SectionIcon.png' height='50px' class='ca_section' style='cursor:pointer;'>
-<img id='sortIcon' class='ca_toolsView' title='change view' height='50px' style='cursor:pointer;position:relative;' src='/plugins/community.applications/images/ViewIcon.png'>
-<img id='categoryIcon' class='ca_categories' title='Select Category' height='50px' style='cursor:pointer;position:relative;' src='/plugins/community.applications/images/CategoryIcon.png'>
-<img id='subcategoryIcon' class='ca_subcategories' title='Select Sub Category' height='50px' style='cursor:pointer;position:relative;' src='/plugins/community.applications/images/SubCategoryIcon.png'>
+<img id='sectionIcon' class='ca_section enabledIcon' src='/plugins/community.applications/images/SectionIcon.png'>
+<img id='categoryIcon' class='ca_categories enabledIcon' src='/plugins/community.applications/images/CategoryIcon.png'>
+<img id='subcategoryIcon' class='ca_subcategories disabledIcon' src='/plugins/community.applications/images/SubCategoryIcon.png'>
+<img id='sortIcon' class='ca_toolsView disabledIcon' height='35px;' src='/plugins/community.applications/images/ViewIcon.png'>
 <font size='2'><b>Current Section: <font color='red'><span id='currentSection'>Available Apps</span></font></b></font>
 <strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option><option value='100'>100</option><option value='-1'>All</option></select></span></span>
 </span><br>
