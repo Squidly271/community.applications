@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.10.07">
-<!ENTITY md5       "e482439d9d26b2bbe87434efd3c5be4b">
+<!ENTITY version   "2017.10.19">
+<!ENTITY md5       "784af2d2f0f399e0cc450c9280c0d7ba">
 <!ENTITY launch    "Settings/PluginSettings">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017.10.19
+- Enhanced: Don't display back to top if dynamix already does
+- Fixed: Remove some excess files when no longer needed
+- Fixed: Don't display get more results from dockerHub when searching if docker is not enabled
+- Under the hood enhancements to the moderation system
+- Coding improvements
+
 ###2017.10.07
 - Prevent user changing sections before display is rendered
 
