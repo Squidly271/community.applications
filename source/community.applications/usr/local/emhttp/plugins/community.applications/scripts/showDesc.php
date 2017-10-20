@@ -123,7 +123,7 @@ if ( ! $template['Base'] ) {
 }
 
 $templateDescription .= "<tr><td nowrap>$color<strong>Base OS: </strong></td><td>$color".$template['Base']."</td></tr>";
-$templateDescription .= $template['stars'] ? "<tr><td nowrap>$color<strong>Star Rating: </strong></td><td>$color<img src='/plugins/community.applications/images/red-star.png' style='height:15px;width:15px'> ".$template['stars']."</td></tr>" : "";
+$templateDescription .= $template['stars'] ? "<tr><td nowrap>$color<strong>DockerHub Stars: </strong></td><td>$color<i class='fa fa-star' style='font-size:15px;color:magenta;'></i> ".$template['stars']."</td></tr>" : "";
 
 # In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 if ( $template['Date'] && $template['Plugin'] ) {

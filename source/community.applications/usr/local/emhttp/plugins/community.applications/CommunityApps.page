@@ -65,6 +65,8 @@ input.allButtons {margin:-1px;}
 input[type=checkbox] {width:20px; height:20px;}
 .enabledIcon { cursor:pointer;background-color:<?=$iconEnabledColor?>;height:35px;border-radius:5px;padding:5px;}
 .disabledIcon { cursor:pointer;background-color:<?=$iconDisabledColor?>;height:35px;border-radius:5px;padding:5px;}
+.pinned { cursor:pointer;font-size:15px;color:green;padding:3px;}
+.unpinned { cursor:pointer;font-size:15px;color:red;padding:3px;}
 </style>
 
 <?if ( $toolTipsterIncluded == "false" ) : ?>
@@ -1129,11 +1131,10 @@ function checkPLGupdate() {
 }
 
 function pinApp(button,repository) {
-	if ($(button).attr("src") == "/plugins/community.applications/images/greenButton.png" ) {
-		$(button).attr("src","/plugins/community.applications/images/redButton.png");
+	$(button).toggleClass("pinned unpinned");
+	if ( $(button).hasClass("unpinned") ) {
 		$(button).attr("title","Click to pin this application");
 	} else {
-		$(button).attr("src","/plugins/community.applications/images/greenButton.png");
 		$(button).attr("title","Click to unpin this application");
 	}
 	$(button).tooltipster('content',$(button).attr("title"));

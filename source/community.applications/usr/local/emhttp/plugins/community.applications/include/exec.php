@@ -580,17 +580,17 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='red'><b>Moderator Comments:</b></font> <font color='purple'>".$template['ModeratorComment']."</font>" : "";
 		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=20px>" : "";
 		$template['display_Announcement'] = $template['Forum'] ? "<a class='ca_tooltip' href='".$template['Forum']."' target='_blank' title='Click to go to the repository Announcement thread' >$RepoName $tempLogo</a>" : "$RepoName $tempLogo";
-		$template['display_Stars'] = $template['stars'] ? "<img src='/plugins/$plugin/images/red-star.png' style='height:15px;width:15px'> <strong>".$template['stars']."</strong>" : "";
+		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star' style='font-size:15px; color:magenta;' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
 		$template['display_Downloads'] = $template['downloads'] ? "<center>".$template['downloads']."</center>" : "<center>Not Available</center>";
 
 		if ( $pinnedApps[$template['Repository']] ) {
-			$pinned = "greenButton.png";
+			$pinned = "pinned";
 			$pinnedTitle = "Click to unpin this application";
 		} else {
-			$pinned = "redButton.png";
+			$pinned = "unpinned";
 			$pinnedTitle = "Click to pin this application";
 		}
-		$template['display_pinButton'] = "<img class='ca_tooltip' src='/plugins/$plugin/images/$pinned' style='height:15px;width:15px;cursor:pointer' title='$pinnedTitle' onclick='pinApp(this,&quot;".$template['Repository']."&quot;);'>";
+		$template['display_pinButton'] = "<i class='ca_tooltip fa fa-thumb-tack $pinned' title='$pinnedTitle' onclick='pinApp(this,&quot;".$template['Repository']."&quot;);' aria-hidden='true'></i>";
 		if ( $template['Uninstall'] ) {
 			$template['display_Uninstall'] = "<img class='ca_tooltip' src='/plugins/dynamix.docker.manager/images/remove.png' title='Uninstall Application' style='width:20px;height:20px;cursor:pointer' ";
 			if ( $template['Plugin'] ) {
@@ -601,7 +601,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		}
 		$template['display_removable'] = $template['Removable'] ? "<img class='ca_tooltip' src='/plugins/dynamix.docker.manager/images/remove.png' title='Remove Application From List' style='width:20px;height:20px;cursor:pointer' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" : "";
 		if ( $template['Date'] > strtotime($communitySettings['timeNew'] ) ) {
-			$template['display_newIcon'] = "<img class='ca_tooltip' src='/plugins/$plugin/images/star.png' style='width:15px;height:15px;' title='New / Updated - ".date("F d Y",$template['Date'])."'></img>";
+			$template['display_newIcon'] = "<i class='fa fa-star ca_tooltip' style='font-size:15px;color:yellow;' title='New / Updated - ".date("F d Y",$template['Date'])."'></i>";
 		}
 		$template['display_changes'] = $template['Changes'] ? " <a style='cursor:pointer'><img class='ca_infoPopup' data-appnumber='$ID' src='/webGui/images/information.png' title='Click for the changelog / more information'></a>" : "";
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
