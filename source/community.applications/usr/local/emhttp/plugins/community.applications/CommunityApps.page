@@ -267,7 +267,8 @@ $(function(){
 				var displayContent = $("#sections").html();
 			}
 			instance.content(displayContent);
-		},functionReady: function(instance,helper) {
+		},
+		functionReady: function(instance,helper) {
 			$(".appButtons").click(function() { $(this).prop("disabled",true); });
 		}
 	});
@@ -293,7 +294,8 @@ $(function(){
 				var displayContent = $("#MainCategory").html();
 			}
 			instance.content(displayContent);
-		},functionReady: function(instance,helper) {
+		},
+		functionReady: function(instance,helper) {
 			$(".allButtons").click(function() {
 				$(this).prop("disabled",true);
 				$("#sortorder").attr("data-selected_category",this.id);
@@ -324,7 +326,8 @@ $(function(){
 				var displayContent = $(currentSub).html();
 			}
 			instance.content(displayContent);
-		},functionReady: function(instance,helper) {
+		},
+		functionReady: function(instance,helper) {
 			$(".allButtons").click(function() {
 				$(this).prop("disabled",true);
 				$("#sortorder").attr("data-selected_subcategory",this.id);
