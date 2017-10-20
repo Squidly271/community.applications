@@ -603,7 +603,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		if ( $template['Date'] > strtotime($communitySettings['timeNew'] ) ) {
 			$template['display_newIcon'] = "<i class='fa fa-star ca_tooltip' style='font-size:15px;color:yellow;' title='New / Updated - ".date("F d Y",$template['Date'])."'></i>";
 		}
-		$template['display_changes'] = $template['Changes'] ? " <a style='cursor:pointer'><img class='ca_infoPopup' data-appnumber='$ID' src='/webGui/images/information.png' title='Click for the changelog / more information'></a>" : "";
+		$template['display_changes'] = $template['Changes'] ? " <i class='ca_infoPopup fa fa-info-circle' data-appnumber='$ID' title='Click for the changelog / more information' aria-hidden='true' style='cursor:pointer;font-size:15px;color:blue;'></i></a>" : "";
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
 
 		$template['display_dateUpdated'] = ($template['Date'] && is_file($communityPaths['newFlag']) ) ? "</b></strong><center><strong>Date Updated: </strong>".$template['display_humanDate']."</center>" : "";
