@@ -659,7 +659,7 @@ function updateSyncTime($updateSyncFlag) {
 	if ( ! $updateTime ) {
 		$updateTime = time();
 	}
- 	echo "<script>$('#lastUpdated').attr('data-lastUpdated',$updateTime);</script>";
+ 	echo "<script>data_lastUpdated = $updateTime;</script>";
 	file_put_contents($communityPaths['lastUpdated-sync'],$updateTime);
 }
 

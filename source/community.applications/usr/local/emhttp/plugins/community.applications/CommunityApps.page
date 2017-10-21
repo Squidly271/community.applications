@@ -154,6 +154,7 @@ var data_selected_category = "";
 var data_subcategory = "";
 var data_selected_subcategory = "";
 var data_selected = "";
+var data_lastUpdated = 0;
 	
 $(function(){
 	<?if ($backTopTopIncluded == "false"):?>
@@ -1211,7 +1212,7 @@ function updateViewMode(id,buttonClass) {
 
 function checkStale() {
 	if ( "<?=$polling?>" != "true" ) {
-		var webTime = $("#lastUpdated").attr("data-lastUpdated");
+		var webTime = data_lastUpdated;
 		$.post(URL,{action:'checkStale',webTime:webTime},function(data) {
 			if (data) {
 				if (myTrim(data) == "true") {
@@ -1493,7 +1494,6 @@ Sort Direction:
 </div>
 </span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
-<span id='lastUpdated' data-lastUpdated='0'></span>
 </body>
 </FORM>
 <span id='debugging'></span>
