@@ -146,10 +146,10 @@ var categoryDesc = {
 	};
 
 var checkStaleVar = setInterval(function(){ checkStale(); },60000);
+
+var data_oldWindowWidth = getWindowWidth();
 	
 $(function(){
-	$("#sortorder").attr("data-oldWindowWidth",getWindowWidth());
-
 	<?if ($backTopTopIncluded == "false"):?>
 		var backtotopoffset = 250;
 		var backtotopduration = 500;
@@ -1345,8 +1345,8 @@ function resizeDisplay() {
 	window.resizeEvt;
 	$(window).resize(function(){
 		var newWidth = getWindowWidth();
-		var oldWidth = $("#sortorder").attr("data-oldWindowWidth");
-		$("#sortorder").attr("data-oldWindowWidth",newWidth);
+		var oldWidth = data_oldWindowWidth;
+		data_oldWindowWidth = newWidth;
 		var view = JSON.parse($("#sortorder").attr("data-sortorder"));
 		switch ( view.viewMode ) {
 			case '#viewDetail':
