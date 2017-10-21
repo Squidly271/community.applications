@@ -504,7 +504,7 @@ function changeCategory(button,subSwitch) {
 
 function caModules() {
 	myAlert("","Searching");
-	$("#sortorder").removeAttr("data-docker");
+	data_docker = "";
 	$(".appButtons").prop("disabled",false);
 	$("#CAmodules").prop("disabled",true);
 	$("#sortorder").attr("data-section","CAmodules");
@@ -582,7 +582,7 @@ function doSearch(button) {
 	var filter = $('#searchBox').val();
 	var maxPerPage = getPerPage();
 	resetSortByDate();
-	$("#sortorder").attr("data-docker","");
+	data_docker = "";
 	filter = filter.replace(/[^a-z0-9]/gi,' ')
 	filter = myTrim(filter);
 	$('#searchBox').val(filter);
@@ -738,7 +738,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 	}
 
 	var sortOrder = getSortOrder();
-	if ( $("#sortorder").attr("data-docker") ) {
+	if ( data_docker ) {
 		changeDockerView(button);
 	} else {
 		$("#Total").html("Rendering... <img src='/plugins/community.applications/images/spinner2.gif' style='height:30px;width:30px'>");
@@ -897,7 +897,7 @@ function mySearch(filter) {
 function initDockerSearch() {
 	$("#maxPerPage").prop("disabled",true);
 	dockerSearch(1);
-	$("#sortorder").attr("data-docker","searching docker");
+	data_docker = "searching docker";
 	$("#sortorder").attr("data-section","");
 	$("#sortorder").attr("data-selected_category","");
 	enableIcon("#categoryIcon,#subcategoryIcon",false);
@@ -906,7 +906,7 @@ function initDockerSearch() {
 function dockerSearch(pageNumber) {
 	var filter = $('#searchBox').val();
 	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
-	$("#sortorder").attr("data-docker","searching docker");
+	data_docker = "searching docker";
 	$(".appButtons").prop("disabled",false);
 	$("#AppStore").prop("disabled",true);
 	$("#AppsOnly,#New,#UNCATEGORIZED,#All,#sortButtons").show();
@@ -980,7 +980,7 @@ function previousApps(button,installed) {
 	resetSortByDate();
 	myAlert("","Searching");
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
-	$("#sortorder").removeAttr("data-docker");
+	data_docker = "";
 	if ( installed ) {
 		$("#currentSection").html("Installed Apps");
 		$(".multi_installDiv").hide();
@@ -989,7 +989,7 @@ function previousApps(button,installed) {
 		$(".multi_installDiv").show();
 		clearMultiInstall();
 	}
-	$("#sortorder").attr("data-docker","");
+
 	clearSearchBox();
 	$(".appButtons,#maxPerPage").prop("disabled",false);
 	$("#"+button).prop("disabled",true);
@@ -1105,7 +1105,7 @@ function appStore() {
 	getContent(true,'INITIALIZE','None Selected');
 	$('#searchBox').keyup(function(e) {if(e.which == 13){doSearch(false);}});
 	$("#Category").html("None Selected");
-	$("#sortorder").removeAttr("data-docker");
+	data_docker = "";
 }
 
 function installPLGupdate(filename,plgName) {
@@ -1146,10 +1146,9 @@ function setPageOne() {
 function pinnedApps(button) {
 	setPageOne();
 	myAlert("","Searching");
-	$("#sortorder").removeAttr("data-docker");
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
 	$("#currentSection").html("Pinned Apps");
-	$("#sortorder").attr("data-docker","");
+	data_docker = "";
 	$("#maxPerPage,.appButtons").prop("disabled",false);
 	$("#"+button).prop("disabled",true);
 	$("#sortorder").attr("data-section",button);
@@ -1489,7 +1488,7 @@ Sort Direction:
 </span>
 </div>
 </span>
-<span id='sortorder' data-sortorder='' data-docker='' data-section='AppStore' data-main_category='MainCategory' data-selected=''></span>
+<span id='sortorder' data-sortorder='' data-section='AppStore' data-main_category='MainCategory' data-selected=''></span>
 <span id='lastUpdated' data-lastUpdated='0'></span>
 </body>
 </FORM>

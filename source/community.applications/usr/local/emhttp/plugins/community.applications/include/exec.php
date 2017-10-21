@@ -928,7 +928,7 @@ function displaySearchResults($pageNumber,$viewMode) {
 				$result['Icon'] = $template['IconWeb'];
 			}
 		}
-		$result['display_stars'] = $result['Stars'] ? "<img src='/plugins/$plugin/images/red-star.png' style='height:20px;width:20px'> <strong>".$result['Stars']."</strong>" : "";
+		$result['display_stars'] = $result['Stars'] ? "<i class='fa fa-star' style='font-size:15px; color:magenta;' aria-hidden='true'></i> <strong>".$result['Stars']."</strong>" : "";
 		$result['display_official'] =  $result['Official'] ? "<strong><font color=red>Official</font> ".$result['Name']." container.</strong><br><br>": "";
 		$result['display_official_short'] = $result['Official'] ? "<font color='red'><strong>Official</strong></font>" : "";
 
