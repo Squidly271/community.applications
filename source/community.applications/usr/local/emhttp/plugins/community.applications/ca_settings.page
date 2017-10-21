@@ -1,4 +1,4 @@
-Menu="CA"
+Menu="hidden"
 Title="General Settings"
 Icon="settings.png"
 ---
@@ -39,9 +39,9 @@ natcasesort($repoName);
 
 $displayOptions = mk_option($cfg['favourite'], "None", "None (default)");
 
-foreach ($repoName as $display) {
-  $optionName = str_replace("'","*",$display);
-  $displayOptions .= mk_option($cfg['favourite'], $optionName, $display);
+foreach ($repoName as $display1) {
+  $optionName = str_replace("'","*",$display1);
+  $displayOptions .= mk_option($cfg['favourite'], $optionName, $display1);
 }
 
 $unRaid64 = (version_compare($vars['version'],"6.4.0-rc0",">=")) || (is_file("/usr/local/emhttp/plugins/dynamix/styles/dynamix-gray.css")) ? "true" : "false";
