@@ -541,6 +541,7 @@ function getPostArray($setting) {
 	return $_POST[$setting];
 }
 function getSortOrder($sortArray) {
+	if ( ! is_array($sortArray) ) { print_r($_POST); }
 	foreach ($sortArray as $sort) {
 		$sortOrder[$sort[0]] = $sort[1];
 	}
