@@ -149,6 +149,7 @@ var checkStaleVar = setInterval(function(){ checkStale(); },60000);
 
 var data_oldWindowWidth = getWindowWidth();
 var data_docker = "";
+var data_section = 'AppStore'
 	
 $(function(){
 	<?if ($backTopTopIncluded == "false"):?>
@@ -261,7 +262,7 @@ $(function(){
 			if ( !isIconEnabled(origin) ) {
 				var displayContent = "Changing Of Sections Disabled";
 			} else {
-				var currentSection = $("#sortorder").attr("data-section");
+				var currentSection = data_section;
 				$(".appButtons").prop("disabled",false);
 				$("#"+currentSection).prop("disabled",true);
 				var displayContent = $("#sections").html();
@@ -508,7 +509,7 @@ function caModules() {
 	data_docker = "";
 	$(".appButtons").prop("disabled",false);
 	$("#CAmodules").prop("disabled",true);
-	$("#sortorder").attr("data-section","CAmodules");
+	data_section = "CAmodules";
 	$("#currentSection").html("Additional CA Modules");
 	clearSearchBox();
 	$("#templates_content,.dockerSearch,#AppsOnly,.multi_installDiv").hide();
@@ -632,7 +633,7 @@ function doSearch(button) {
 		if (data) {
 			enableButtons();
 			$('#templates_content').html(data);
-			$("#sortorder").attr("data-section","AppStore");
+			data_section = "AppStore";
 			$("#currentSection").html("Available Apps");
 			readMore();
 			myCloseAlert();
@@ -899,7 +900,7 @@ function initDockerSearch() {
 	$("#maxPerPage").prop("disabled",true);
 	dockerSearch(1);
 	data_docker = "searching docker";
-	$("#sortorder").attr("data-section","");
+	data_section = "";
 	$("#sortorder").attr("data-selected_category","");
 	enableIcon("#categoryIcon,#subcategoryIcon",false);
 }
@@ -913,6 +914,7 @@ function dockerSearch(pageNumber) {
 	$("#AppsOnly,#New,#UNCATEGORIZED,#All,#sortButtons").show();
 	enableIcon("#sortIcon",true);
 	$(".dockerSearch,#templateSortButtons,.multi_installDiv").hide();
+	$("#currentSection").html("Available Apps");
 	$("#Total").html("Searching... <img src='/plugins/community.applications/images/spinner2.gif' style='height:30px;width:30px'>");
 	$("#Category").html("DockerHub Search Results For <font color='red'>"+filter+"</font> <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
@@ -994,7 +996,7 @@ function previousApps(button,installed) {
 	clearSearchBox();
 	$(".appButtons,#maxPerPage").prop("disabled",false);
 	$("#"+button).prop("disabled",true);
-	$("#sortorder").attr("data-section",button);
+	data_section = button;
 
 	$("#Total").html("Searching... <img src='/plugins/community.applications/images/spinner2.gif' style='height:30px;width:30px'>");
 	$(".dockerSearch,#AppsOnly").hide();
@@ -1095,7 +1097,7 @@ function uninstallDocker(application,humanName) {
 function appStore() {
 	enableIcon("#categoryIcon",true);
 	$("#currentSection").html("Available Apps");
-	$("#sortorder").attr("data-section","AppStore");
+	data_section = "AppStore";
 	$("#sortorder").attr("data-selected_category","");
 	$("#templates_content").html("");
 	$(".appButtons,.allButtons").prop("disabled",false);
@@ -1152,7 +1154,7 @@ function pinnedApps(button) {
 	data_docker = "";
 	$("#maxPerPage,.appButtons").prop("disabled",false);
 	$("#"+button).prop("disabled",true);
-	$("#sortorder").attr("data-section",button);
+	data_section = button;
 	clearSearchBox();
 	$("#templates_content,.dockerSearch,#AppsOnly,.multi_installDiv").hide();
 	$("#templates_content").html("<center><font size='3'>Searching</font></center>");
@@ -1489,7 +1491,7 @@ Sort Direction:
 </span>
 </div>
 </span>
-<span id='sortorder' data-sortorder='' data-section='AppStore' data-main_category='MainCategory' data-selected=''></span>
+<span id='sortorder' data-sortorder='' data-main_category='MainCategory' data-selected=''></span>
 <span id='lastUpdated' data-lastUpdated='0'></span>
 </body>
 </FORM>
