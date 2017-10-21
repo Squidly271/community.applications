@@ -206,7 +206,6 @@ $(function(){
 				setSortOrder();
 				var displayContent = $("#tooltipviews").html();
 				$("#tooltipviews").attr("data-backup",displayContent);
-				$("#tooltipviews").html(""); // Because I'm using id's instead of classes
 			}
 			instance.content(displayContent);
 		},
@@ -215,7 +214,7 @@ $(function(){
 			$(".sortButton,.dirButton").click(function() { changeSortOrder(this.id,$(this).attr("class")); });
 		},
 		functionAfter: function(instance,helper) {
-		  $("#tooltipviews").html($("#tooltipviews").attr("data-backup"));
+			$("#tooltipviews").html($("#tooltipviews").attr("data-backup"));
 			setSortOrder();
 		}
 	});
