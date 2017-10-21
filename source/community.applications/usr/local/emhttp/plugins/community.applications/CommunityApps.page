@@ -148,6 +148,7 @@ var categoryDesc = {
 var checkStaleVar = setInterval(function(){ checkStale(); },60000);
 
 var data_oldWindowWidth = getWindowWidth();
+var data_docker = "";
 	
 $(function(){
 	<?if ($backTopTopIncluded == "false"):?>
@@ -911,7 +912,7 @@ function dockerSearch(pageNumber) {
 	$("#AppStore").prop("disabled",true);
 	$("#AppsOnly,#New,#UNCATEGORIZED,#All,#sortButtons").show();
 	enableIcon("#sortIcon",true);
-	$(".dockerSearch,#templateSortButtons").hide();
+	$(".dockerSearch,#templateSortButtons,.multi_installDiv").hide();
 	$("#Total").html("Searching... <img src='/plugins/community.applications/images/spinner2.gif' style='height:30px;width:30px'>");
 	$("#Category").html("DockerHub Search Results For <font color='red'>"+filter+"</font> <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
