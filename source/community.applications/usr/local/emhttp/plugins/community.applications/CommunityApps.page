@@ -149,7 +149,10 @@ var checkStaleVar = setInterval(function(){ checkStale(); },60000);
 
 var data_oldWindowWidth = getWindowWidth();
 var data_docker = "";
-var data_section = 'AppStore'
+var data_section = "AppStore";
+var data_selected_category = "";
+var data_subcategory = "";
+var data_selected_subcategory = "";
 	
 $(function(){
 	<?if ($backTopTopIncluded == "false"):?>
@@ -289,9 +292,8 @@ $(function(){
 			if ( ! isIconEnabled(origin) ) {
 				var displayContent = "Changing Of Categories Disabled In This Section";
 			} else {
-				var selectedCategory = $("#sortorder").attr("data-selected_category");
 				$(".allButtons").prop("disabled",false);
-				$("#"+selectedCategory).prop("disabled",true);
+				$("#"+data_selected_category).prop("disabled",true);
 				var displayContent = $("#MainCategory").html();
 			}
 			instance.content(displayContent);
@@ -299,7 +301,7 @@ $(function(){
 		functionReady: function(instance,helper) {
 			$(".allButtons").click(function() {
 				$(this).prop("disabled",true);
-				$("#sortorder").attr("data-selected_category",this.id);
+				data_selected_category = this.id;
 				changeCategory(this,false);
 			});
 		}
@@ -320,10 +322,9 @@ $(function(){
 			if ( ! isIconEnabled(origin) ) {
 				var displayContent = "No Subcategories Available To Display";
 			} else {
-				var currentSub = $("#sortorder").attr("data-subcategory");
-				var selectedCategory = $("#sortorder").attr("data-selected_subcategory");
+				var currentSub = data_subcategory;
 				$(".allButtons").prop("disabled",false);
-				$("#"+selectedCategory).prop("disabled",true);
+				$("#"+data_selected_subcategory).prop("disabled",true);
 				var displayContent = $(currentSub).html();
 			}
 			instance.content(displayContent);
@@ -331,7 +332,7 @@ $(function(){
 		functionReady: function(instance,helper) {
 			$(".allButtons").click(function() {
 				$(this).prop("disabled",true);
-				$("#sortorder").attr("data-selected_subcategory",this.id);
+				data_selected_subcategory = this.id;
 				changeCategory(this,true);
 			});
 		}
@@ -471,23 +472,23 @@ function changeCategory(button,subSwitch) {
 		switch (category) {
 			case "network:":
 				enableIcon("#subcategoryIcon",true);
-				$("#sortorder").attr("data-subcategory","#NetworkCategory");
-				$("#sortorder").attr("data-selected_subcategory","network");
+				data_subcategory = "#NetworkCategory";
+				data_selected_subcategory = "network";
 				break;
 			case "MediaApp:":
 				enableIcon("#subcategoryIcon",true);
-				$("#sortorder").attr("data-subcategory","#MediaAppCategory");
-				$("#sortorder").attr("data-selected_subcategory","MediaApp");
+				data_subcategory = "#MediaAppCategory";
+				data_selected_subcategory = "MediaApp";
 				break;
 			case "MediaServer:":
 				enableIcon("#subcategoryIcon",true);
-				$("#sortorder").attr("data-subcategory","#MediaServerCategory");
-				$("#sortorder").attr("data-selected_subcategory","MediaServer");
+				data_subcategory = "#MediaServerCategory";
+				data_selected_subcategory = "MediaServer";
 				break;
 			case "tools:":
 				enableIcon("#subcategoryIcon",true);
-				$("#sortorder").attr("data-subcategory","#ToolsCategory");
-				$("#sortorder").attr("data-selected_subcategory","tools");
+				data_subcategory = "#ToolsCategory";
+				data_selected_subcategory = "tools";
 				break;
 			case "New":
 				enableIcon("#subcategoryIcon",false);
@@ -702,7 +703,7 @@ function forceUpdateButton() {
 
 function enableButtons() {
 	$('.allButtons').prop('disabled', false);
-	$("#sortorder").attr("data-selected_category","");
+	data_selected_category = "";
 }
 
 function changeDockerView(viewButton) {
@@ -901,7 +902,7 @@ function initDockerSearch() {
 	dockerSearch(1);
 	data_docker = "searching docker";
 	data_section = "";
-	$("#sortorder").attr("data-selected_category","");
+	data_selected_category = "";
 	enableIcon("#categoryIcon,#subcategoryIcon",false);
 }
 
@@ -1098,7 +1099,7 @@ function appStore() {
 	enableIcon("#categoryIcon",true);
 	$("#currentSection").html("Available Apps");
 	data_section = "AppStore";
-	$("#sortorder").attr("data-selected_category","");
+	data_selected_category = "";
 	$("#templates_content").html("");
 	$(".appButtons,.allButtons").prop("disabled",false);
 	$("#AppStore").prop("disabled",true);
