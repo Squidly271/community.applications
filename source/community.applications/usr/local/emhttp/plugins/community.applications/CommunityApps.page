@@ -206,6 +206,7 @@ $(function(){
 				setSortOrder();
 				var displayContent = $("#tooltipviews").html();
 				$("#tooltipviews").attr("data-backup",displayContent);
+				$("#tooltipviews").html(""); // The need for backup stems from the fact that we want user to be able to change view modes without having to disable the tooltipster popup.  A race condition can stem without the backup
 			}
 			instance.content(displayContent);
 		},
@@ -651,10 +652,10 @@ function dismissWarning() {
 }
 
 function disableTooltipster() {
-  $('.tooltipstered').tooltipster('disable');
+	$('.tooltipstered').tooltipster('disable');
 }
 function enableTooltipster() {
-  $('.tooltipstered').tooltipster('enable');
+	$('.tooltipstered').tooltipster('enable');
 }
 
 function forceUpdate() {
