@@ -153,6 +153,7 @@ var data_section = "AppStore";
 var data_selected_category = "";
 var data_subcategory = "";
 var data_selected_subcategory = "";
+var data_selected = "";
 	
 $(function(){
 	<?if ($backTopTopIncluded == "false"):?>
@@ -498,7 +499,6 @@ function changeCategory(button,subSwitch) {
 				break;
 			default:
 				enableIcon("#subcategoryIcon",false);
-				$("#sortorder").attr("data-main_category","MainCategory");
 				break;
 		}
 	}
@@ -532,7 +532,7 @@ function changePage(pageNumber) {
 	var sortOrder = getSortOrder();
 	var windowWidth = getWindowWidth();
 	var maxPerPage = getPerPage();
-	var selected = $("#sortorder").attr("data-selected");
+	var selected = data_selected;
 
 	myAlert("","Searching");
 	$("#Total").html("<img src='/plugins/community.applications/images/spinner2.gif' style='height:30px;width:30px'>");
@@ -727,7 +727,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 	var windowWidth = getWindowWidth();
 	var pageNumber = $("#currentPageNumber").html();
 	var maxPerPage = getPerPage();
-	var selected = $("#sortorder").attr("data-selected");
+	var selected = data_selected;
 
 	if ( previousApps != "true" )
 	{
@@ -1233,8 +1233,8 @@ function makePlural(string,count) {
 }
 
 function getSelectedApps() {
-	if ( $("#sortorder").attr("data-selected") ) {
-		var selected = JSON.parse($("#sortorder").attr("data-selected"));
+	if ( data_selected ) {
+		var selected = JSON.parse(data_selected);
 		var docker = selected.docker;
 		var plugin = selected.plugin;
 	} else {
@@ -1264,7 +1264,7 @@ function getSelectedApps() {
 	});
 	selected.docker = uniqueArrayElements(docker);
 	selected.plugin = uniqueArrayElements(plugin);
-	$("#sortorder").attr("data-selected",JSON.stringify(selected));
+	data_selected = JSON.stringify(selected);
 	return selected;
 }
 
@@ -1292,7 +1292,7 @@ function enableMultiInstall() {
 }
 
 function clearMultiInstall() {
-	$("#sortorder").attr("data-selected","");
+	data_selected = "";
 	$(".ca_multiselect").each(function() {
 		$(this).prop("checked",false);
 	});
@@ -1492,7 +1492,7 @@ Sort Direction:
 </span>
 </div>
 </span>
-<span id='sortorder' data-sortorder='' data-main_category='MainCategory' data-selected=''></span>
+<span id='sortorder' data-sortorder='' data-selected=''></span>
 <span id='lastUpdated' data-lastUpdated='0'></span>
 </body>
 </FORM>
