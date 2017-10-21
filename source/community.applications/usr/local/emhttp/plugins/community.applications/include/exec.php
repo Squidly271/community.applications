@@ -124,16 +124,14 @@ function DownloadCommunityTemplates() {
 				if ( ! $o ) {
 					file_put_contents($communityPaths['updateErrors'],"Failed to parse <font color='purple'>$file</font> (errors in XML file?)<br>",FILE_APPEND);
 				}
-				if ( ! $o['Repository'] ) {
-					if ( ! $o['Plugin'] ) {
-						$statistics['invalidXML']++;
-						$invalidXML[] = $o;
-						continue;
-					} else {
-						$statistics['totalApplications']++;
-					}
+				if ( (! $o['Repository']) && (! $o['Plugin']) ) {
+					$statistics['invalidXML']++;
+					$invalidXML[] = $o;
+					continue;
+				} else {
+					$statistics['totalApplications']++;
 				}
-
+				
 				$o['Forum'] = $Repo['forum'];
 				$o['RepoName'] = $Repo['name'];
 				$o['ID'] = $i;
@@ -211,8 +209,7 @@ function DownloadCommunityTemplates() {
 	writeJsonFile($communityPaths['blacklisted_txt'],$blacklist);
 	writeJsonFile($communityPaths['statistics'],$statistics);
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
-	pluginDupe($myTemplates);
-	
+
 	file_put_contents($communityPaths['LegacyMode'],"active");
 	return true;
 }
@@ -371,7 +368,6 @@ function DownloadApplicationFeed() {
 		@unlink($communityPaths['invalidXML_txt']);
 	}
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
-	pluginDupe($myTemplates);
 
 	@unlink($communityPaths['LegacyMode']);
 	return true;
@@ -1291,7 +1287,6 @@ case 'display_content':
 ########################################################################
 case 'change_docker_view':
 	$sortOrder = getSortOrder(getPostArray('sortOrder'));
-
 	if ( ! file_exists($communityPaths['dockerSearchResults']) ) {
 		break;
 	}
@@ -1486,7 +1481,6 @@ case 'search_dockerhub':
 	}
 
 	$i = 0;
-
 	foreach ($pageresults['results'] as $result) {
 		unset($o);
 		$o['Repository'] = $result['name'];
@@ -1808,11 +1802,7 @@ case 'uninstall_docker':
 case "pinApp":
 	$repository = getPost("repository","oops");
 	$pinnedApps = readJsonFile($communityPaths['pinned']);
-	if ( $pinnedApps[$repository] ) {
-		unset($pinnedApps[$repository]);
-	} else {
-		$pinnedApps[$repository] = $repository;
-	}
+	$pinnedApps[$repository] = $pinnedApps[$repository] ? false : $repository;
 	writeJsonFile($communityPaths['pinned'],$pinnedApps);
 	writeJsonFile($communityPaths['pinnedRam'],$pinnedApps);
 	break;
@@ -1899,6 +1889,7 @@ case 'statistics':
 	$statistics['totalModeration'] = count(readJsonFile($communityPaths['moderation']));
 
 	$templates = readJsonFile($communityPaths['community-templates-info']);
+	pluginDupe($templates);
 	if ( is_array($templates) ) {
 		$sortOrder['sortBy'] = "RepoName";
 		$sortOrder['sortDir'] = "Up";

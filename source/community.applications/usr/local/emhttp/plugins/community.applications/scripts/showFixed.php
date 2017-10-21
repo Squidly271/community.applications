@@ -11,7 +11,7 @@ if ( ! $moderation ) {
 	echo "All of these errors found have been fixed automatically.  These errors only affect the operation of Community Applications.  <b>The template <em>may</em> have other errors present</b><br><br><tt>$moderation";
 }
 
-$dupeList = json_decode(file_get_contents($communityPaths['pluginDupes']),true);
+$dupeList = json_decode(@file_get_contents($communityPaths['pluginDupes']),true);
 if ($dupeList) {
 	$templates = json_decode(file_get_contents($communityPaths['community-templates-info']),true);
 	echo "<br><br><b></tt>The following plugins have duplicated filenames and are not able to be installed simultaneously:</b><br><br>";
