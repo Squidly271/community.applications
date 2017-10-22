@@ -64,7 +64,7 @@ input.dirButton {margin:1px;}
 input.allButtons {margin:-1px;}
 input[type=checkbox] {width:20px; height:20px;}
 .enabledIcon { cursor:pointer;background-color:<?=$iconEnabledColor?>;height:35px;border-radius:5px;padding:5px;}
-.disabledIcon { cursor:pointer;background-color:<?=$iconDisabledColor?>;height:35px;border-radius:5px;padding:5px;opacity: 0.2;}
+.disabledIcon { background-color:<?=$iconDisabledColor?>;height:35px;border-radius:5px;padding:5px;opacity: 0.2;}
 .pinned { cursor:pointer;font-size:15px;color:green;padding:3px;}
 .unpinned { cursor:pointer;font-size:15px;color:red;padding:3px; -webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);-o-transform: rotate(20deg);transform: rotate(20deg);}
 .topRightLinks { padding-left:15px; }
