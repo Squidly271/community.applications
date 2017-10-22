@@ -241,7 +241,7 @@ function highlight($text, $search) {
 function fixTemplates($template) {
 	global $statistics;
 
-	$origFixed = $statistics['caFixed'];
+	$origStats = $statistics;
 # this fix must always be the first test
 	if ( is_array($template['Repository']) ) {                 # due to cmer
 		$template['Repository'] = $template['Repository'][0];
@@ -354,6 +354,9 @@ function fixTemplates($template) {
 		}
 	}
 	$template['PopUpDescription'] = fixPopUpDescription($template['Description']);
+	if ( $template['Private'] ) {
+		$statistics = $origStats;
+	}
 	return $template;
 }
 
