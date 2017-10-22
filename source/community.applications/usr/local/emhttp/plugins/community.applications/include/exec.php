@@ -596,7 +596,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 			}
 		} else {
 			if ( $template['Private'] == "true" ) {
-				$template['display_Uninstall'] = "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Remove Private Application' style='width:20px;height:20px;cursor:pointer' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['Author']}&quot;);'>";
+				$template['display_Uninstall'] = "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Remove Private Application' style='width:20px;height:20px;cursor:pointer' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['SortAuthor']}&quot;);'>";
 			}
 		}
 		$template['display_removable'] = $template['Removable'] ? "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Remove Application From List' style='width:20px;height:20px;cursor:pointer' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" : "";
@@ -2036,6 +2036,19 @@ case 'checkStale':
 	} else {
 		echo "false";
 	}
+	break;
+
+#######################################
+#                                     #
+# Removes a private app from the list #
+#                                     #
+#######################################
+case 'removePrivateApp':
+	$path = getPost("path",false);
+	if ( path ) {
+		@unlink($path);
+	}
+	echo "done";
 	break;
 }
 ?>

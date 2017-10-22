@@ -954,7 +954,7 @@ function dockerConvert(dockerID) {
 	$.post(URL,{action:'convert_docker',ID:dockerID},function(data) {
 		if (data) {
 			myCloseAlert();
-			templateURL = "AddContainer?xmlTemplate=default:" + myTrim(data);
+			templateURL = "Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
 			window.open(templateURL,"<?=$tabMode?>");
 			$("#Total").html(totalDisplayed);
 		}
@@ -1064,12 +1064,12 @@ function uninstallApp(application,humanName) {
 		},
 		function() {
 			swal("Uninstalling "+humanName,"","info");
-				$.post(URL,{action:'uninstall_application',application:application}, function(data) {
-					if (data) {
-						swal("","Uninstalled","success");
-						previousApps("InstalledApps",true);
-					}
-				});
+			$.post(URL,{action:'uninstall_application',application:application}, function(data) {
+				if (data) {
+					swal("","Uninstalled","success");
+					previousApps("InstalledApps",true);
+				}
+			});
 		});
 	}
 }
@@ -1087,6 +1087,15 @@ function deletePrivateApp(path,name,author) {
 			closeOnConfirm: false,
 			showLoaderOnConfirm: true,
 			html: true
+	},
+	function() {
+		swal("Removing "+name,"","info");
+		$.post(URL,{action:'removePrivateApp',path:path},function(data) {
+			if (data) {
+				swal("","Removed","success");
+				location.reload();
+			}
+		});
 	});
 }
 
