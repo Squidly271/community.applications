@@ -68,6 +68,7 @@ input[type=checkbox] {width:20px; height:20px;}
 .pinned { cursor:pointer;font-size:15px;color:green;padding:3px;}
 .unpinned { cursor:pointer;font-size:15px;color:red;padding:3px; -webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);-o-transform: rotate(20deg);transform: rotate(20deg);}
 .topRightLinks { padding-left:15px; }
+.appIcons { height:40px; }
 </style>
 
 <?if ( $toolTipsterIncluded == "false" ) : ?>

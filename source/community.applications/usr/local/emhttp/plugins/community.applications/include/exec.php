@@ -613,11 +613,11 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 				$pluginSettings = isset($template['CAlink']) ? $template['CAlink'] : getPluginLaunch($pluginName);
 				$tmpVar = $pluginSettings ? "" : " disabled ";
 				$template['display_pluginSettings'] = "<input class='ca_tooltip' title='Click to go to the plugin settings' type='submit' $tmpVar style='margin:0px' value='Settings' formtarget='$tabMode' formaction='$pluginSettings' formmethod='post'>";
-				$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip' title='Click to go to the plugin settings' href='$pluginSettings'><img src='/plugins/community.applications/images/WebPage.png' height='25px'></a>" : "";
+				$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip' title='Click to go to the plugin settings' href='$pluginSettings'><img src='/plugins/community.applications/images/WebPage.png' class='appIcons'></a>" : "";
 			} else {
 				$buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
 				$template['display_pluginInstall'] = "<input class='ca_tooltip' type='button' value='$buttonTitle' style='margin:0px' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>";
-				$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');><img src='/plugins/community.applications/images/install.png' height='25px'></a>";
+				$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
 			}
 		} else {
 			if ( $communitySettings['dockerRunning'] ) {
@@ -625,21 +625,21 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 					$template['display_dockerDefault']     = "<input class='ca_tooltip' type='submit' value='Default' style='margin:1px' title='Click to reinstall the application using default values' formtarget='$tabMode' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."'>";
 					$template['display_dockerEdit']        = "<input class='ca_tooltip' type='submit' value='Edit' style='margin:1px' title='Click to edit the application values' formtarget='$tabMode' formmethod='post' formaction='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."'>";
 					$template['display_dockerDefault']     = $template['BranchID'] ? "<input class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' value='Add' onclick='displayTags(&quot;$ID&quot;);'>" : $template['display_dockerDefault'];
-					$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' height='25px'></a>";
-					$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' height='25px'></a>" : $template['display_dockerDefaultIcon'];
-					$template['display_dockerEditIcon']    = "<a class='ca_tooltip' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'><img src='/plugins/community.applications/images/edit.png' height='25px'></a>";
+					$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
+					$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>" : $template['display_dockerDefaultIcon'];
+					$template['display_dockerEditIcon']    = "<a class='ca_tooltip' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'><img src='/plugins/community.applications/images/edit.png' class='appIcons'></a>";
 					if ( $info[$name]['url'] && $info[$name]['running'] ) {
-						$template['dockerWebIcon'] = "<a class='ca_tooltip' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'><img src='/plugins/community.applications/images/WebPage.png' height='25px'></a>&nbsp;&nbsp;";
+						$template['dockerWebIcon'] = "<a class='ca_tooltip' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'><img src='/plugins/community.applications/images/WebPage.png' class='appIcons'></a>&nbsp;&nbsp;";
 					}
 				} else {
 					if ( $template['MyPath'] ) {
 						$template['display_dockerReinstall'] = "<input class='ca_tooltip' type='submit' style='margin:0px' title='Click to reinstall the application' value='Reinstall' formtarget='$tabMode' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."'>";
-						$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip' title='Click to reinstall' href='Apps/UpdateContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' height='25px'></a>";
+						$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip' title='Click to reinstall' href='Apps/UpdateContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
 						} else {
 						$template['display_dockerInstall']   = "<input class='ca_tooltip' type='submit' style='margin:0px' title='Click to install the application' value='Add' formtarget='$tabMode' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."'>";
 						$template['display_dockerInstall']   = $template['BranchID'] ? "<input class='ca_tooltip' type='button' style='margin:0px' title='Click to install the application' value='Add' onclick='displayTags(&quot;$ID&quot;);'>" : $template['display_dockerInstall'];
-						$template['display_dockerInstallIcon'] = "<a class='ca_tooltip' title='Click to install' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' height='25px'></a>";
-						$template['display_dockerInstallIcon'] = $template['BranchID'] ? "<a style='cursor:pointer' class='ca_tooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' height='25px'></a>" : $template['display_dockerInstallIcon'];
+						$template['display_dockerInstallIcon'] = "<a class='ca_tooltip' title='Click to install' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
+						$template['display_dockerInstallIcon'] = $template['BranchID'] ? "<a style='cursor:pointer' class='ca_tooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>" : $template['display_dockerInstallIcon'];
 					}
 				}
 			} else {
