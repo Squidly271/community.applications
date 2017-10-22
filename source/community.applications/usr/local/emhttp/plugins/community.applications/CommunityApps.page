@@ -355,7 +355,7 @@ $(function(){
 
 /* Everything is now initialized.  This is the start of the actual "real" code */
 
-	myAlert("Updating Content","Retrieving the latest application Lists","/plugins/community.applications/images/spinner2.gif","40x40");
+	myAlert("Updating Content","Retrieving the latest application Lists",true,"40");
 	$.post(URL,{action:'force_update'}, function(data) {
 		if (data) {
 			if ( "<?=$pluginInstallPending?>" ) {
@@ -540,7 +540,7 @@ function changePage(pageNumber) {
 	var selected = data_selected;
 
 	myAlert("","Searching");
-	$("#Total").html("<img src='/plugins/community.applications/images/spinner2.gif' style='height:30px;width:30px'>");
+	$("#Total").html("<i class='fa fa-spinner fa-spin' style='font-size:20px;color:MediumBlue;' aria-hidden='true'></i>");
 	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,maxPerPage:maxPerPage,selected:selected},function(data3) {
 		if (data3) {
 			$('#templates_content').html(data3);
@@ -561,13 +561,14 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	if ( !outsideClick ) outsideClick = false;
 	if ( !showCancel )   showCancel = false;
 	if ( !showConfirm )  showConfirm = false;
-	if ( imagesize == "" ) { imagesize = "80x80"; }
+	if ( imagesize == "" ) { imagesize = "80"; }
 	disableTooltipster();
+	if ( textimage ) {
+		textdescription = textdescription + "<br><br><center><i class='fa fa-spinner fa-spin' style='font-size:"+imagesize+"px;color:MediumBlue;' aria-hidden='true'></i></center>";
+	}
 	swal({
 		title: description,
 		text: textdescription,
-		imageUrl: textimage,
-		imageSize: imagesize,
 		allowOutsideClick: outsideClick,
 		showConfirmButton: showConfirm,
 		showCancelButton: showCancel,
@@ -613,7 +614,7 @@ function doSearch(button) {
 	}
 
 	$("#Total1").show();
-	$("#Total").html("Searching... <img src='/plugins/community.applications/images/spinner2.gif' style='height:30px;width:30px'>");
+	$("#Total").html("Searching... <i class='fa fa-spinner fa-spin' style='font-size:20px;color:MediumBlue;' aria-hidden='true'></i>");
 	if (filter) {
 		$("#Category").html("<?=$categoryTitle?> (Search Results for <font color='red'>"+filter+"</font>)");
 	} else {
@@ -633,7 +634,7 @@ function doSearch(button) {
 	if ( "<?=$cfg['dockerSearch']?>" == "yes" ) {
 		$('.dockerSearch').show();
 	}
-	myAlert("Searching...", "Searching for <strong><font color=red>"+filter+"</font></strong>","/plugins/community.applications/images/spinner2.gif","40x40");
+	myAlert("Searching...", "Searching for <strong><font color=red>"+filter+"</font></strong>",true,"40");
 
 	$.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,windowWidth:windowWidth,maxPerPage:maxPerPage},function(data) {
 		if (data) {
@@ -678,7 +679,7 @@ function forceUpdateButton() {
 	if ( mode == 'appFeed Mode' ) {
 		$.post(URL,{action:'force_update_button'},function(data) {
 			if (data) {
-				myAlert("Updating Content","Retrieving the latest application Lists","/plugins/community.applications/images/spinner2.gif","40x40");
+				myAlert("Updating Content","Retrieving the latest application Lists",true,"40");
 				forceUpdate();
 			}
 		});
@@ -749,7 +750,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 	if ( data_docker ) {
 		changeDockerView(button);
 	} else {
-		$("#Total").html("Rendering... <img src='/plugins/community.applications/images/spinner2.gif' style='height:30px;width:30px'>");
+		$("#Total").html("Rendering... <i class='fa fa-spinner fa-spin' style='font-size:20px;color:MediumBlue;' aria-hidden='true'></i>");
 
 		$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,maxPerPage:maxPerPage,selected:selected},function(data3) {
 			if (data3) {
@@ -868,7 +869,7 @@ function getContent(init,category,description,newApp) {
 			$("#NetworkCategory,#MediaServerCategory,#MediaAppCategory,#NONE,#ToolsCategory,#Total1").hide();
 			$("#MainCategory,#New").show();
 		}
-		$("#Total").html("Searching...  <img src='/plugins/community.applications/images/spinner2.gif' style='height:30px;width:30px'>");
+		$("#Total").html("Searching...  <i class='fa fa-spinner fa-spin' style='font-size:20px;color:MediumBlue;' aria-hidden='true'></i>");
 
 		if ( (category == "New") || (category == "All") ) { category = ""; }
 
@@ -921,10 +922,10 @@ function dockerSearch(pageNumber) {
 	enableIcon("#sortIcon",true);
 	$(".dockerSearch,#templateSortButtons,.multi_installDiv").hide();
 	$("#currentSection").html("Available Apps");
-	$("#Total").html("Searching... <img src='/plugins/community.applications/images/spinner2.gif' style='height:30px;width:30px'>");
+	$("#Total").html("Searching... <i class='fa fa-spinner fa-spin' style='font-size:20px;color:MediumBlue;' aria-hidden='true'></i>");
 	$("#Category").html("DockerHub Search Results For <font color='red'>"+filter+"</font> <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
-	myAlert("Searching dockerHub", "Retrieving <strong><font color=red>"+filter+"</font></strong> page <strong><font color=red>"+pageNumber+"</font></strong>","/plugins/community.applications/images/spinner2.gif","40x40");
+	myAlert("Searching dockerHub", "Retrieving <strong><font color=red>"+filter+"</font></strong> page <strong><font color=red>"+pageNumber+"</font></strong>",true,"40");
 	$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(data) {
 		if (data) {
 			$('#templates_content').html(data);
@@ -946,7 +947,7 @@ function authorSearch(author) {
 }
 
 function dockerConvert(dockerID) {
-	myAlert("Converting Dockerfile","","/plugins/community.applications/images/spinner2.gif","40x40");
+	myAlert("Converting Dockerfile","",true,"40");
 
 	totalDisplayed = $("#Total").html();
 	$("#Total").html("Converting...");
@@ -1004,7 +1005,7 @@ function previousApps(button,installed) {
 	$("#"+button).prop("disabled",true);
 	data_section = button;
 
-	$("#Total").html("Searching... <img src='/plugins/community.applications/images/spinner2.gif' style='height:30px;width:30px'>");
+	$("#Total").html("Searching... <i class='fa fa-spinner fa-spin' style='font-size:20px;color:MediumBlue;' aria-hidden='true'></i>");
 	$(".dockerSearch,#AppsOnly").hide();
 	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
 	enableIcon("#sortIcon",true);
