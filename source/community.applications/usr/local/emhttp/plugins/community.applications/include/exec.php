@@ -81,7 +81,6 @@ function DownloadCommunityTemplates() {
 	if ( ! is_array($moderation) ) { $moderation = array(); }
 
 	$DockerTemplates = new DockerTemplates();
-
 	if (! $download = download_url($communityPaths['community-templates-url']) ) { return false; }
 	$Repos  = json_decode($download, true);
 	if ( ! is_array($Repos) )                                                    { return false; }
@@ -128,10 +127,7 @@ function DownloadCommunityTemplates() {
 					$statistics['invalidXML']++;
 					$invalidXML[] = $o;
 					continue;
-				} else {
-					$statistics['totalApplications']++;
 				}
-				
 				$o['Forum'] = $Repo['forum'];
 				$o['RepoName'] = $Repo['name'];
 				$o['ID'] = $i;
