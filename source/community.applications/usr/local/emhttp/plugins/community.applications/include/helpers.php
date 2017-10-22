@@ -299,7 +299,6 @@ function fixTemplates($template) {
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Category tags or Category present but empty";
 	}
-
 	if ( !is_string($template['Overview']) ) {
 		unset($template['Overview']);
 	}
@@ -309,7 +308,6 @@ function fixTemplates($template) {
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Authors / Repositories Found";
 	}
-
 	if ( is_array($template['PluginURL']) ) {                  # due to coppit
 		$template['PluginURL'] = $template['PluginURL'][1];
 		$statistics['caFixed']++;
@@ -340,7 +338,6 @@ function fixTemplates($template) {
 	if ( ( stripos($template['RepoName'],' beta') > 0 )  ) {
 		$template['Beta'] = "true";
 	}
-
 	$template['Support'] = validURL($template['Support']);
 	$template['Project'] = validURL($template['Project']);
 	$template['DonateLink'] = validURL($template['DonateLink']);
@@ -491,16 +488,6 @@ function logger($string) {
 	shell_exec("logger ".escapeshellarg($string));
 }
 
-###########################################
-#                                         #
-# Function to send a dynamix notification #
-#                                         #
-###########################################
-function notify($event,$subject,$description,$message,$type="normal") {
-	$command = '/usr/local/emhttp/plugins/dynamix/scripts/notify -e "'.$event.'" -s "'.$subject.'" -d "'.$description.'" -m "'.$message.'" -i "'.$type.'"';
-	shell_exec($command);
-}
-
 #######################################################
 #                                                     #
 # Function to check for a valid URL                   #
@@ -556,16 +543,8 @@ function getSortOrder($sortArray) {
 function caGetMode() {
 	global $communityPaths, $communitySettings;
 
-	if ( is_file($communityPaths['LegacyMode']) ) {
-		$script = "$('#updateButton').html('appFeed Mode');";
-	} else {
-		$script = "$('#updateButton').html('Legacy Mode');";
-	}
-  if ( is_file($communityPaths['LegacyMode']) || ($communitySettings['maintainer'] == "yes") ) {
-		$script .= "$('#updateButton').show();";
-	} else {
-		$script .= "$('#updateButton').hide();";
-	}
+	$script = ( is_file($communityPaths['LegacyMode']) ) ? "$('#updateButton').html('appFeed Mode');" : "$('#updateButton').html('Legacy Mode');";
+  $script .= ( is_file($communityPaths['LegacyMode'] ) || ($communitySettings['maintainer'] == "yes") ) ? "$('#updateButton').show();" : "$('#updateButton').hide();";
 	return "<script>$script</script>";
 }
 
