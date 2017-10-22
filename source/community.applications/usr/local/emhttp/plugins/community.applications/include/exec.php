@@ -588,14 +588,18 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		}
 		$template['display_pinButton'] = "<i class='ca_tooltip fa fa-thumb-tack $pinned' title='$pinnedTitle' onclick='pinApp(this,&quot;".$template['Repository']."&quot;);' aria-hidden='true'></i>";
 		if ( $template['Uninstall'] ) {
-			$template['display_Uninstall'] = "<img class='ca_tooltip' src='/plugins/dynamix.docker.manager/images/remove.png' title='Uninstall Application' style='width:20px;height:20px;cursor:pointer' ";
+			$template['display_Uninstall'] = "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Uninstall Application' style='width:20px;height:20px;cursor:pointer' ";
 			if ( $template['Plugin'] ) {
 				$template['display_Uninstall'] .= "onclick='uninstallApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>";
 			} else {
 				$template['display_Uninstall'] .= "onclick='uninstallDocker(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>";
 			}
+		} else {
+			if ( $template['Private'] == "true" ) {
+				$template['display_Uninstall'] = "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Remove Private Application' style='width:20px;height:20px;cursor:pointer' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['Author']}&quot;);'>";
+			}
 		}
-		$template['display_removable'] = $template['Removable'] ? "<img class='ca_tooltip' src='/plugins/dynamix.docker.manager/images/remove.png' title='Remove Application From List' style='width:20px;height:20px;cursor:pointer' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" : "";
+		$template['display_removable'] = $template['Removable'] ? "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Remove Application From List' style='width:20px;height:20px;cursor:pointer' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" : "";
 		if ( $template['Date'] > strtotime($communitySettings['timeNew'] ) ) {
 			$template['display_newIcon'] = "<i class='fa fa-star ca_tooltip' style='font-size:15px;color:yellow;' title='New / Updated - ".date("F d Y",$template['Date'])."'></i>";
 		}
@@ -1966,7 +1970,7 @@ case 'statistics':
 	echo "<div style='overflow:scroll; max-height:550px; height:600px; overflow-x:hidden; overflow-y:hidden;'><center><img height='24px' src='/plugins/community.applications/images/CA.png'><br><font size='3' color='white'>Community Applications</font><br>";
 	echo "<center><font size='2'>Application Feed Statistics</font></center><br><br>";
 	echo "<table>";
-	echo "<tr><td><b>{$color}Last change to application feed</b></td><td>$color$updateTime</td></tr>";
+	echo "<tr><td><b>{$color}Last Change To Application Feed</b></td><td>$color$updateTime</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Templates</b></td><td>$color{$statistics['totalApplications']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color{$statistics['repository']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";

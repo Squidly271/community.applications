@@ -51,6 +51,7 @@ $communityPaths['CAdeveloper']                   = "/boot/config/plugins/communi
 $communityPaths['pollingDisabled']               = "/boot/config/plugins/community.applications/pollingDisabled";
 $communityPaths['pluginDupes']                   = $communityPaths['tempFiles']."/pluginDupes";
 $communityPaths['newFlag']                       = $communityPaths['tempFiles']."/newFlag";  # flag file to indicate that the "New" Category is being displayed
+$communityPaths['deleteIcon']                    = "/plugins/dynamix.docker.manager/images/remove.png";
 
 $infoFile                                        = $communityPaths['community-templates-info'];
 ?>

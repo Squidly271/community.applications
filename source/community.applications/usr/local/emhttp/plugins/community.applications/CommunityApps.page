@@ -1074,6 +1074,22 @@ function uninstallApp(application,humanName) {
 	}
 }
 
+function deletePrivateApp(path,name,author) {
+	var displayPath = path.replace("/boot/config/plugins/","...");
+	swal({
+		title: "Remove Private Application?",
+		text: "Are you sure you want to remove the private application <em><font color='red'><b>"+name+"</b></font> by <font color='red'><b>"+author+"</b></font>?<br><font size='0'>("+path+")",
+		type: "warning",
+			showCancelButton: true,
+			showConfirmButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "Yes, remove it!",
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,
+			html: true
+	});
+}
+
 function myTrim(x) {
 	return x.replace(/^\s+|\s+$/gm,'');
 }
