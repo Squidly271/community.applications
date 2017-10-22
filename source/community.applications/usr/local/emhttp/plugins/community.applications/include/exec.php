@@ -433,7 +433,6 @@ function getConvertedTemplates() {
 				$o['Private']      = "true";
 				$o['Forum']        = "";
 				$o['Compatible']   = versionCheck($o);
-				$statistics['private']++;
 				fixSecurity($o,$o);
 				$myTemplates[$i]  = $o;
 				$i = ++$i;
@@ -1894,6 +1893,7 @@ case 'statistics':
 
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	pluginDupe($templates);
+	unset($statistics['Private']);
 	if ( is_array($templates) ) {
 		$sortOrder['sortBy'] = "RepoName";
 		$sortOrder['sortDir'] = "Up";
@@ -1911,10 +1911,12 @@ case 'statistics':
 				$statistics['NoSupport']++;
 				$noSupport .= "<tr><td>{$template['Repo']}</td><td><b>{$template['Name']}</b></td></tr>";
 			}
-
 			if ( $template['Blacklist'] ) {
 				$statistics['blacklist']++;
 				$blacklist[] = "{$template['Repo']} - <b>{$template['Name']}</b> - {$template['ModeratorComment']}";
+			}
+			if ( $template['Private'] && ! $template['Blacklist']) {
+				$statistics['private']++;
 			}
 		}
 	}
@@ -2045,9 +2047,28 @@ case 'checkStale':
 #######################################
 case 'removePrivateApp':
 	$path = getPost("path",false);
-	if ( path ) {
-		@unlink($path);
+
+	if ( ! $path ) {
+		echo "something went wrong";
+		break;
 	}
+	$templates = readJsonFile($communityPaths['community-templates-info']);
+	$displayed = readJsonFile($communityPaths['community-templates-displayed']);
+	foreach ( $displayed as &$displayType ) {
+		foreach ( $displayType as &$display ) {
+			if ( $display['Path'] == $path ) {
+				$display['Blacklist'] = true;
+			}
+		}
+	}
+	foreach ( $templates as &$template ) {
+		if ( $template['Path'] == $path ) {
+			$template['Blacklist'] = true;
+		}
+	}
+	writeJsonFile($communityPaths['community-templates-info'],$templates);
+	writeJsonFile($communityPaths['community-templates-displayed'],$displayed);
+	@unlink($path);
 	echo "done";
 	break;
 }

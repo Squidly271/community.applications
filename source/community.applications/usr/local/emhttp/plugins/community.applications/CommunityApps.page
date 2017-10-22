@@ -1093,7 +1093,7 @@ function deletePrivateApp(path,name,author) {
 		$.post(URL,{action:'removePrivateApp',path:path},function(data) {
 			if (data) {
 				swal("","Removed","success");
-				location.reload();
+				changeSortOrder(null,null,null);
 			}
 		});
 	});
