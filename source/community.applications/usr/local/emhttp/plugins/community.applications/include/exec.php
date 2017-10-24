@@ -1852,30 +1852,6 @@ case 'displayTags':
 	}
 	break;
 
-################################################
-#                                              #
-# Specialized search for additional CA Modules #
-#                                              #
-################################################
-case 'populateModules':
-	$file = readJsonFile($communityPaths['community-templates-info']);
-	foreach ($file as $template) {
-		if ($template['CA']) {
-			if ( ! $template['Compatible'] ) {
-				continue;
-			}
-			$filename = basename($template['PluginURL']);
-			if ( is_file("/var/log/plugins/$filename") ) {
-				$template['MyPath'] = "/var/log/plugins/$filename";
-				$template['Uninstall'] = true;
-			}
-			$displayed['community'][] = $template;
-		}
-	}
-	writeJsonFile($communityPaths['community-templates-displayed'],$displayed);
-	echo "done";
-	break;
-
 ###########################################
 #                                         #
 # Displays The Statistics For The Appfeed #

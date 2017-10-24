@@ -510,29 +510,6 @@ function changeCategory(button,subSwitch) {
 	getContent(false,category,description,newFlag);
 }
 
-function caModules() {
-	myAlert("","Searching");
-	data_docker = "";
-	$(".appButtons").prop("disabled",false);
-	$("#CAmodules").prop("disabled",true);
-	data_section = "CAmodules";
-	$("#currentSection").html("Additional CA Modules");
-	clearSearchBox();
-	$("#templates_content,.dockerSearch,#AppsOnly,.multi_installDiv").hide();
-	$("#templates_content").html("<center><font size='3'>Searching</font></center>");
-	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
-	enableIcon("#sortIcon",true);
-	enableIcon("#subcategoryIcon, #categoryIcon",false);
-	$("#Category").html("All Community Application Modules");
-	resetSortByDate();
-	$.post(URL,{action:'populateModules'},function(data) {
-		if (data) {
-			changeSortOrder(null,null,null);
-			myCloseAlert();
-		}
-	});
-}
-
 function changePage(pageNumber) {
 	var sortOrder = getSortOrder();
 	var windowWidth = getWindowWidth();
@@ -1470,7 +1447,6 @@ Sort Direction:
 <input type='button' class='appButtons' id='InstalledApps' value='Installed Apps' onclick='previousApps(this.id,true);'></input>
 <input type='button' class='appButtons' id='OldApps' value='Previous Apps' onclick='previousApps(this.id,false);'></input>
 <input type='button' class='appButtons' id='PinnedApps' value='Pinned Apps' onclick='pinnedApps(this.id);'></input>
-<input type='button' class='appButtons' id='CAmodules' value='CA Modules' onclick='caModules();'>
 </span>
 <div style='display:none;'>
 <span id='MainCategory'>
