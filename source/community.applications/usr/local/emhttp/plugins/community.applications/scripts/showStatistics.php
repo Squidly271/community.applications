@@ -50,6 +50,25 @@ switch ($_GET['arg1']) {
 				echo "<br>";
 			}
 		}
+		$templates = json_decode(file_get_contents($communityPaths['community-templates-info']),true);
+		foreach ($templates as $template) {
+			$count = 0;
+			foreach ($templates as $searchTemplates) {
+				if ( ($template['Repository'] == $searchTemplates['Repository'])  ) {
+					if ( $searchTemplates['BranchName'] || $searchTemplates['Blacklist'] ) {
+						continue;
+					}
+					$count++;
+				}
+			}
+			if ($count > 1) {
+				$dupeRepos .= "Duplicated Template: {$template['RepoName']} - {$template['Repository']} - {$template['Name']}<br>";
+			}
+		}
+		if ( $dupeRepos ) {
+			echo "<br><b></tt>The following docker applications refer to the same docker repository, but may have subtle changes in the template to warrant this</b><br><br><tt>$dupeRepos";
+		}
+
 		break;
 	case 'Blacklist':
 		$moderation = @file_get_contents($communityPaths['blacklisted_txt']);
