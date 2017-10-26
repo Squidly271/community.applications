@@ -471,13 +471,23 @@ function moderateTemplates() {
 
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	$moderation = readJsonFile($communityPaths['moderation']);
+	$repositories = readJsonFile($communityPaths['Repositories']);
+	foreach ($repositories as $repo) {
+		if ( is_array($repo['duplicated']) ) {
+			$duplicatedTemplate[$repo['url']] = $repo;
+		}
+	}
 	if ( ! $templates ) { return; }
 	foreach ($templates as $template) {
+		$templateTMP = $template;
 		if ( is_array($moderation[$template['Repository']]) ) {
-			$o[] = array_merge($template,$moderation[$template['Repository']]);
-		} else {
-			$o[] = $template;
+      $templateTMP = array_merge($template,$moderation[$template['Repository']]);
 		}
+		if ( $duplicatedTemplate[$templateTMP['RepoURL']]['duplicated'][$template['Repository']] ) {
+			$templateTMP['Blacklist'] = true;
+			$templateTMP['ModeratorComment'] = "Duplicated Template";
+		}
+		$o[] = $templateTMP;
 	}
 	writeJsonFile($communityPaths['community-templates-info'],$o);
 }
@@ -488,7 +498,7 @@ function moderateTemplates() {
 #                                          #
 ############################################
 function logger($string) {
-	shell_exec("logger ".escapeshellarg($string));
+	exec("logger ".escapeshellarg($string));
 }
 
 #######################################################
