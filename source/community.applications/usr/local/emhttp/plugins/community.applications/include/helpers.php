@@ -372,7 +372,30 @@ function makeXML($template) {
 			$template['@attributes'] = array("version"=>2);
 		}
 	}
+	# handle the case where there is only a single <Config> entry
+if ( is_array($template['Network']) ) {
+	if ( $template['Network']['@attributes'] ) {
+		$template['Network'][0]['@attributes'] = $template['Network']['@attributes'];
+		if ( $template['Network']['value']) {
+			$template['Network'][0]['value'] = $template['Network']['value'];
+		}
+		unset($template['Network']['@attributes']);
+		unset($template['Network']['value']);
+	}
 
+	# hack to fix differing schema in the appfeed vs what Array2XML class wants
+	if ( $template['Network'] ) {
+		foreach ($template['Network'] as $tempArray) {
+			if ( $tempArray['value'] ) {
+				$tempArray2[] = array('@attributes'=>$tempArray['@attributes'],'@value'=>$tempArray['value']);
+			} else {
+				$tempArray2[] = array('@attributes'=>$tempArray['@attributes']);
+			}
+		}
+		$template['Network'] = $tempArray2;
+	}
+}
+unset($tempArray2);
 	# handle the case where there is only a single <Config> entry
 	if ( $template['Config']['@attributes'] ) {
 		$template['Config'][0]['@attributes'] = $template['Config']['@attributes'];
@@ -394,6 +417,7 @@ function makeXML($template) {
 		}
 		$template['Config'] = $tempArray2;
 	}
+	
 	$Array2XML = new Array2XML();
 	$xml = $Array2XML->createXML("Container",$template);
 	return $xml->saveXML();
