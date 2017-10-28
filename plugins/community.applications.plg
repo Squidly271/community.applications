@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.10.27">
-<!ENTITY md5       "a591c5ac1dd7fb7ab459a0b312fc1623">
+<!ENTITY version   "2017.10.27a">
+<!ENTITY md5       "dbae7d51dd59a62a2889275520302afe">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017.10.27a
+- Rename certain image files to prevent user from having to clear browser cache to get some icons to display correctly
+
 ###2017.10.27
 - Fixed: If author created template on unRaid 6.4, Network mode wouldn't populate correctly
 - Changed: Don't automatically install extra applications on new installation
