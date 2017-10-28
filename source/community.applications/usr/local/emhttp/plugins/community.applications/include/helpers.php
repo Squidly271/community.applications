@@ -372,55 +372,41 @@ function makeXML($template) {
 			$template['@attributes'] = array("version"=>2);
 		}
 	}
-	# handle the case where there is only a single <Config> entry
-if ( is_array($template['Network']) ) {
-	if ( $template['Network']['@attributes'] ) {
-		$template['Network'][0]['@attributes'] = $template['Network']['@attributes'];
-		if ( $template['Network']['value']) {
-			$template['Network'][0]['value'] = $template['Network']['value'];
-		}
-		unset($template['Network']['@attributes']);
-		unset($template['Network']['value']);
+	if ( is_array($template['Network']) ) { # Don't run if no Network available
+		fixAttributes($template,"Network");
 	}
-
-	# hack to fix differing schema in the appfeed vs what Array2XML class wants
-	if ( $template['Network'] ) {
-		foreach ($template['Network'] as $tempArray) {
-			if ( $tempArray['value'] ) {
-				$tempArray2[] = array('@attributes'=>$tempArray['@attributes'],'@value'=>$tempArray['value']);
-			} else {
-				$tempArray2[] = array('@attributes'=>$tempArray['@attributes']);
-			}
-		}
-		$template['Network'] = $tempArray2;
-	}
-}
-unset($tempArray2);
-	# handle the case where there is only a single <Config> entry
-	if ( $template['Config']['@attributes'] ) {
-		$template['Config'][0]['@attributes'] = $template['Config']['@attributes'];
-		if ( $template['Config']['value']) {
-			$template['Config'][0]['value'] = $template['Config']['value'];
-		}
-		unset($template['Config']['@attributes']);
-		unset($template['Config']['value']);
-	}
-
-	# hack to fix differing schema in the appfeed vs what Array2XML class wants
-	if ( $template['Config'] ) {
-		foreach ($template['Config'] as $tempArray) {
-			if ( $tempArray['value'] ) {
-				$tempArray2[] = array('@attributes'=>$tempArray['@attributes'],'@value'=>$tempArray['value']);
-			} else {
-				$tempArray2[] = array('@attributes'=>$tempArray['@attributes']);
-			}
-		}
-		$template['Config'] = $tempArray2;
-	}
+	fixAttributes($template,"Config");
 	
 	$Array2XML = new Array2XML();
 	$xml = $Array2XML->createXML("Container",$template);
 	return $xml->saveXML();
+}
+
+#################################################################################
+#                                                                               #
+# Function to fix differing schema in the appfeed vs what Array2XML class wants #
+#                                                                               #
+#################################################################################
+function fixAttributes(&$template,$attribute) {
+		if ( $template[$attribute]['@attributes'] ) {
+		$template[$attribute][0]['@attributes'] = $template[$attribute]['@attributes'];
+		if ( $template[$attribute]['value']) {
+			$template[$attribute][0]['value'] = $template[$attribute]['value'];
+		}
+		unset($template[$attribute]['@attributes']);
+		unset($template[$attribute]['value']);
+	}
+
+	if ( $template[$attribute] ) {
+		foreach ($template[$attribute] as $tempArray) {
+			if ( $tempArray['value'] ) {
+				$tempArray2[] = array('@attributes'=>$tempArray['@attributes'],'@value'=>$tempArray['value']);
+			} else {
+				$tempArray2[] = array('@attributes'=>$tempArray['@attributes']);
+			}
+		}
+		$template[$attribute] = $tempArray2;
+	}
 }
 
 #################################################################
@@ -496,6 +482,7 @@ function moderateTemplates() {
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	$moderation = readJsonFile($communityPaths['moderation']);
 	$repositories = readJsonFile($communityPaths['Repositories']);
+	file_put_contents("/tmp/blah",print_r($repositories,1));
 	foreach ($repositories as $repo) {
 		if ( is_array($repo['duplicated']) ) {
 			$duplicatedTemplate[$repo['url']] = $repo;

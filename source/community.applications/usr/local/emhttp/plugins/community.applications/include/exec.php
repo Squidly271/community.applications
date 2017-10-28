@@ -1071,6 +1071,7 @@ case 'get_content':
 	}
 	getConvertedTemplates();
 	updateSyncTime($updatedSyncFlag);
+	moderateTemplates();
 
 	$file = readJsonFile($communityPaths['community-templates-info']);
 	if (!is_array($file)) break;
