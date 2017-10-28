@@ -824,36 +824,7 @@ echo "----------------------------------------------------"
 echo ""
 </INLINE>
 </FILE>
-<FILE Run="/usr/bin/php">
-<INLINE>
-<![CDATA[
-<?
-  if ( ! is_file("/boot/config/plugins/community.applications/installed") ) {
 
-    echo "Initial installation.  Installing Appdata Cleanup Plugin\n";
-    exec("/usr/local/sbin/installplg https://raw.githubusercontent.com/Squidly271/ca.cleanup.appdata/master/plugins/ca.cleanup.appdata.plg",$output);
-    foreach ($output as $line) {
-      echo "$line\n";
-    }
-    unset($output);
-    echo "Installing Plugin Auto Update\n";
-    exec("/usr/local/sbin/installplg https://raw.githubusercontent.com/Squidly271/ca.update.applications/master/plugins/ca.update.applications.plg",$output);
-    foreach ($output as $line) {
-      echo "$line\n";
-    }
-    unset($output);
-    echo "Installing Appdata Backup / Restore\n";
-    exec("/usr/local/sbin/installplg https://raw.githubusercontent.com/Squidly271/ca.backup/master/plugins/ca.backup.plg",$output);
-    foreach ($output as $line) {
-      echo "$line\n";
-    }
-    exec("mkdir -p /boot/config/plugins/community.applications");
-    file_put_contents("/boot/config/plugins/community.applications/installed","Flag file to indicate whether or not to install previously included modules");
-  }
-?>
-]]>
-</INLINE>
-</FILE>
 <!--
 The 'remove' script.
 -->
