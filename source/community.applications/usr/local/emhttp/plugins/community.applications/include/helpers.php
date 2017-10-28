@@ -366,13 +366,12 @@ function fixTemplates($template) {
 #                                             #
 ###############################################
 function makeXML($template) {
+	file_put_contents("/tmp/blah",print_r($template,1));
 	# ensure its a v2 template if the Config entries exist
 	if ( $template['Config'] && ! $template['@attributes'] ) {
 		$template['@attributes'] = array("version"=>2);
 	}
-	if ( is_array($template['Network']) ) { # Don't run if no Network available
-		fixAttributes($template,"Network");
-	}
+	fixAttributes($template,"Network");
 	fixAttributes($template,"Config");
 	
 	$Array2XML = new Array2XML();
@@ -386,6 +385,9 @@ function makeXML($template) {
 #                                                                               #
 #################################################################################
 function fixAttributes(&$template,$attribute) {
+	if ( ! is_array($template[$attribute]) ) {
+		return;
+	}
 	if ( $template[$attribute]['@attributes'] ) {
 		$template[$attribute][0]['@attributes'] = $template[$attribute]['@attributes'];
 		if ( $template[$attribute]['value']) {

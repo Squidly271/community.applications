@@ -2,9 +2,9 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.10.19">
-<!ENTITY md5       "784af2d2f0f399e0cc450c9280c0d7ba">
-<!ENTITY launch    "Settings/PluginSettings">
+<!ENTITY version   "2017.10.27">
+<!ENTITY md5       "a591c5ac1dd7fb7ab459a0b312fc1623">
+<!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
@@ -13,6 +13,16 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017.10.27
+- Fixed: If author created template on unRaid 6.4, Network mode wouldn't populate correctly
+- Changed: Don't automatically install extra applications on new installation
+- Enhanced: Ability to blacklist a particular template, not just a particular application
+- Removed: CA Modules.  All CA family of plugins now treated equally to other plugins
+- Fixed: Under certain circumstances, stats displays could be wrong
+- Added: Ability to delete any private docker application from available apps
+- Enhanced: Many CSS improvements and coding improvements
+- Changed: Access to CA's settings is now done via the Apps tab instead of Settings tab
+
 ###2017.10.19
 - Enhanced: Don't display back to top if dynamix already does
 - Fixed: Remove some excess files when no longer needed
