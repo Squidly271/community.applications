@@ -1872,7 +1872,7 @@ case 'statistics':
 		$sortOrder['sortDir'] = "Up";
 		usort($templates,"mySort");
 		foreach ($templates as $template) {
-			if ( $template['Deprecated'] ) {
+			if ( $template['Deprecated'] & ! $template['Blacklist'] ) {
 				$statistics['totalDeprecated']++;
 				$deprecated .= "<tr><td>{$template['Repo']}</td><td><b>{$template['Name']}</b></td><td>".str_replace("<br>","",trim($template['ModeratorComment']))."</td></tr>";
 			}
