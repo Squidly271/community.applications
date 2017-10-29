@@ -1880,7 +1880,7 @@ case 'statistics':
 				$statistics['totalIncompatible']++;
 				$incompatible .= "<td>{$template['Repo']}</td><td><b>{$template['Name']}</b></td><td><center>{$template['MinVer']}</td><td><center>{$template['MaxVer']}</td></tr>";
 			}
-			if ( ! $template['Support'] ) {
+			if ( ! $template['Support'] && ! $template['Blacklist'] ) {
 				$statistics['NoSupport']++;
 				$noSupport .= "<tr><td>{$template['Repo']}</td><td><b>{$template['Name']}</b></td></tr>";
 			}
