@@ -1872,7 +1872,7 @@ case 'statistics':
 		$sortOrder['sortDir'] = "Up";
 		usort($templates,"mySort");
 		foreach ($templates as $template) {
-			if ( $template['Deprecated'] & ! $template['Blacklist'] ) {
+			if ( $template['Deprecated'] ) {
 				$statistics['totalDeprecated']++;
 				$deprecated .= "<tr><td>{$template['Repo']}</td><td><b>{$template['Name']}</b></td><td>".str_replace("<br>","",trim($template['ModeratorComment']))."</td></tr>";
 			}
@@ -1880,7 +1880,7 @@ case 'statistics':
 				$statistics['totalIncompatible']++;
 				$incompatible .= "<td>{$template['Repo']}</td><td><b>{$template['Name']}</b></td><td><center>{$template['MinVer']}</td><td><center>{$template['MaxVer']}</td></tr>";
 			}
-			if ( ! $template['Support'] && ! $template['Blacklist'] ) {
+			if ( ! $template['Support'] ) {
 				$statistics['NoSupport']++;
 				$noSupport .= "<tr><td>{$template['Repo']}</td><td><b>{$template['Name']}</b></td></tr>";
 			}

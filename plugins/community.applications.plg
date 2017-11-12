@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.10.27a">
-<!ENTITY md5       "dbae7d51dd59a62a2889275520302afe">
+<!ENTITY version   "2017.11.12">
+<!ENTITY md5       "8878d493b42b368bb01a65776c5f8136">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017.11.12
+- Fix missing icons in help text
+
 ###2017.10.27a
 - Rename certain image files to prevent user from having to clear browser cache to get some icons to display correctly
 

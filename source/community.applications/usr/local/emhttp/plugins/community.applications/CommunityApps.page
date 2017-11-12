@@ -1387,10 +1387,10 @@ function resizeDisplay() {
 <span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
 <br>
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br>
-> <img src='/plugins/community.applications/images/SectionIcon.png' height='50px'> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
-> <img src='/plugins/community.applications/images/ViewIcon.png' height='50px'> - This chooses how to display the results<br>
-> <img src='/plugins/community.applications/images/CategoryIcon.png' height='50px'> - This selects a category of apps to display<br>
-> <img src='/plugins/community.applications/images/SubCategoryIcon.png' height='50px'> - When available, this selects a subcategory of apps to display<br>
+> <img src='/plugins/community.applications/images/SectionIconNew.png' height='50px'> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
+> <img src='/plugins/community.applications/images/ViewIconNew.png' height='50px'> - This chooses how to display the results<br>
+> <img src='/plugins/community.applications/images/CategoryIconNew.png' height='50px'> - This selects a category of apps to display<br>
+> <img src='/plugins/community.applications/images/SubCategoryIconNew.png' height='50px'> - When available, this selects a subcategory of apps to display<br>
 > <img src='/plugins/community.applications/images/install.png' height='25px'><img src='/plugins/community.applications/images/edit.png' height='25px'><img src='/plugins/community.applications/images/update.png' height='25px'> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
 > <img src='/plugins/community.applications/images/WebPage.png' height='25px'> - Clicking this icon will take you to an application's GUI<br>
 > Hovering over an application's icon (or clicking it) will display more information about the application<br>
