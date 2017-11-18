@@ -208,7 +208,7 @@ if ($template['Plugin']) {
 		$templateDescription .= "<br>This plugin has a duplicated name from another plugin $duplicated.  This will impact your ability to install both plugins simultaneously<br>";
 	}
 }
-if ( $template['Plugin'] && is_file("/var/log/plugins/$pluginName") ) {
+if ( $template['Plugin'] && is_file("/var/log/plugins/$pluginName") && ! $template['Changes'] ) {
 	$template['Changes'] = shell_exec("plugin changes /var/log/plugins/$pluginName");
 }
 if ( $template['Changes'] ) {
