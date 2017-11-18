@@ -52,7 +52,21 @@ $iconDisabledColor = ($display['theme'] == "black") || ($display['theme'] == "gr
 $iconEnabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#990000" : "#990000";
 ?>
 <style>
-.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
+<?if ( $unRaid64 == "true" ):?>
+	<? if ( $display['theme'] == "black" || $display['theme'] == "white"):?>
+		.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
+		#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;}
+	<?endif;?>
+	<? if ( $display['theme'] == "gray" || $display['theme'] == "azure"):?>
+		.searchSubmit{font-family:'FontAwesome';width:29px;height:29px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
+		#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;border:1px solid;border-radius:4px 0px 0px 4px;}
+	<?endif;?>
+<?endif;?>
+<?if ( $unRaid64 == "false" ):?>
+	.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative;top:-2px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
+	#searchBox{margin-left:10px;margin-right:0;position:relative;top:-3px;}
+<?endif;?>
+
 table#templates_list tbody td.topRow{border-top:1px solid <?=$line_color?>;}
 <?if ($backTopTopIncluded == "false"):?>
 	.back-to-top {background: none;margin: 0;position: fixed;bottom: 40px;right: 0;width: 50px;height: 50px;z-index: 100;display: none;text-decoration: none;color: #ffffff;}
@@ -175,7 +189,7 @@ $(function(){
 			return false;
 		});
 	<?endif;?>
-	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' style='margin-left:10px;margin-right:0' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
+	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
 	if ( "<?=$firstRun?>" == "true" ) { $("#appWarning").show(); }
 	$("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
