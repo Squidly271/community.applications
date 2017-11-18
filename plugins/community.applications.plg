@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.11.18b">
-<!ENTITY md5       "42448748a00dfb3ae87b9aaac83e91a7">
+<!ENTITY version   "2017.11.18c">
+<!ENTITY md5       "34dfe36bd75c2d94b4045a2eafa67fa1">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,11 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2017.11.18b
-- If plugin already installed and no changelog in appfeed, display changelog from installed plg
-
 ###2017.11.18
 - Fix CSS on search box when running unRaid 6.4 with White / Black themes
+- If plugin already installed and no changelog in appfeed, display changelog from installed plg
 
 ###2017.11.12
 - Fix missing icons in help text

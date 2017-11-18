@@ -209,7 +209,7 @@ if ($template['Plugin']) {
 	}
 }
 if ( $template['Plugin'] && is_file("/var/log/plugins/$pluginName") && ! $template['Changes'] ) {
-	$template['Changes'] = shell_exec("plugin changes /var/log/plugins/$pluginName");
+	$template['Changes'] = shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin changes /var/log/plugins/$pluginName");
 }
 if ( $template['Changes'] ) {
   if ( $template['Plugin'] ) {
