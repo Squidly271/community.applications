@@ -209,7 +209,7 @@ if ($template['Plugin']) {
 	}
 }
 if ( $template['Plugin'] && is_file("/var/log/plugins/$pluginName") && ! $template['Changes'] ) {
-	$template['Changes'] = shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin changes /var/log/plugins/$pluginName");
+	$template['Changes'] = "This change log is from the already installed version and may not be up to date if an upgrade to the plugin is available\n\n".shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin changes /var/log/plugins/$pluginName");
 }
 if ( $template['Changes'] ) {
   if ( $template['Plugin'] ) {
@@ -220,7 +220,7 @@ if ( $template['Changes'] ) {
     $appInformation = str_replace("[","<",$appInformation);
     $appInformation = str_replace("]",">",$appInformation);
   }
-  $templateDescription .= "</center><hr><font size='2'><b>Change Log</b> <font size='0'>Note: not all maintainers keep up to date on change logs</font><br><br>$appInformation";
+  $templateDescription .= "</center><hr><center><font size='2'><b>Change Log</b><br><font size='0'>Note: not all maintainers keep up to date on change logs</font></center><br><br>$appInformation";
 }
 echo "<div style='overflow:scroll; max-height:450px; height:450px; overflow-x:hidden; overflow-y:auto;'>";
 echo $templateDescription;
