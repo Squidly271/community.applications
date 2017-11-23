@@ -426,7 +426,7 @@ function getConvertedTemplates() {
 				$o['Displayable']  = true;
 				$o['Date']         = ( $o['Date'] ) ? strtotime( $o['Date'] ) : 0;
 				$o['SortAuthor']   = $o['Author'];
-				$o['Private']      = "true";
+				$o['Private']      = true;
 				$o['Forum']        = "";
 				$o['Compatible']   = versionCheck($o);
 				fixSecurity($o,$o);

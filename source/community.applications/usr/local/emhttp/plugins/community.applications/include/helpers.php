@@ -317,10 +317,12 @@ function fixTemplates($template) {
 	} else {
 		$template['Description'] = fixDescription($template['Description']);
 	}
+	if ( $template['Private'] ) {
 	if ( ( ! strlen(trim($template['Overview'])) ) && ( ! strlen(trim($template['Description'])) ) ){
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No valid Overview Or Description present - Application dropped from CA automatically";
     return false;
+	}
 	}
 	if ( ! $template['Icon'] ) {
 		$statistics['caFixed']++;
