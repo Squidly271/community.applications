@@ -606,7 +606,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		if ( $template['Plugin'] ) {
 			$pluginName = basename($template['PluginURL']);
 			if ( checkInstalledPlugin($template) ) {
-				$pluginSettings = isset($template['CAlink']) ? $template['CAlink'] : getPluginLaunch($pluginName);
+				$pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
 				$tmpVar = $pluginSettings ? "" : " disabled ";
 				$template['display_pluginSettings'] = "<input class='ca_tooltip' title='Click to go to the plugin settings' type='submit' $tmpVar style='margin:0px' value='Settings' formtarget='_self' formaction='$pluginSettings' formmethod='post'>";
 				$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip' title='Click to go to the plugin settings' href='$pluginSettings'><img src='/plugins/community.applications/images/WebPage.png' class='appIcons'></a>" : "";

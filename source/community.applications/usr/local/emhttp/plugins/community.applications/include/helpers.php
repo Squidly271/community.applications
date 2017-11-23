@@ -106,15 +106,6 @@ function download_json($url,$path) {
 	return readJsonFile($path);
 }
 
-########################################################
-#                                                      #
-# Helper function to get the plugin's launch entitity. #
-#                                                      #
-########################################################
-function getPluginLaunch($pluginName) {
-	return plugin("launch","/var/log/plugins/$pluginName");
-}
-
 #################################################################
 #                                                               #
 # Helper function to determine if $haystack begins with $needle #

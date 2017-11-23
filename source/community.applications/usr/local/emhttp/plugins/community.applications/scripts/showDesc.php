@@ -164,7 +164,7 @@ if ( $Displayed ) {
   } else {
     $pluginName = basename($template['PluginURL']);
     if ( file_exists("/var/log/plugins/$pluginName") ) {
-      $pluginSettings = isset($template['CAlink']) ? $template['CAlink'] : getPluginLaunch($pluginName);
+      $pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
       if ( $pluginSettings ) {
         $templateDescription .= "<a class='ca_apptooltip' title='Click to go to the plugin settings' href='$pluginSettings'><img src='/plugins/community.applications/images/WebPage.png' height='40px'></a>";
       }
