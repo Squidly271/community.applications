@@ -67,6 +67,8 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 	@unlink($infoFile);
 }
 
+$selectCategoryMessage = "Select a section <img src='/plugins/community.applications/images/SectionIconNew.png' height='30px;'> or Category <img src='/plugins/community.applications/images/CategoryIconNew.png' height='30px;'> above";
+
 #################################################################
 #                                                               #
 # Functions used to download the templates from various sources #
@@ -1074,7 +1076,7 @@ case 'get_content':
 	if (!is_array($file)) break;
 
 	if ( $category === "/NONE/i" ) {
-		echo "<center><font size=4>Select A Category Above</font></center>";
+		echo "<center><font size=4>$selectCategoryMessage</font></center>";
 		if ( $communitySettings['appOfTheDay'] == "yes" ) {
 			$displayApplications = array();
 			if ( count($file) > 200) {
@@ -1269,7 +1271,7 @@ case 'display_content':
 	if ( file_exists($communityPaths['community-templates-displayed']) ) {
 		display_apps($sortOrder['viewMode'],$pageNumber,$selectedApps);
 	} else {
-		echo "<center><font size='4'>Select A Category Above</font></center>";
+		echo "<center><font size='4'>$selectCategoryMessage</font></center>";
 	}
 	break;
 

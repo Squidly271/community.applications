@@ -49,7 +49,7 @@ $pluginInstallPending = @file_get_contents($communityPaths['PluginInstallPending
 @unlink($communityPaths['PluginInstallPending']);
 
 $iconDisabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#555555" : "#555555";
-$iconEnabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#990000" : "#990000";
+$iconEnabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#009900" : "#009900";
 ?>
 <style>
 <?if ( $unRaid64 == "true" ):?>
