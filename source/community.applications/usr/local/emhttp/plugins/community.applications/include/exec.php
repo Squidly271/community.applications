@@ -1267,6 +1267,7 @@ case 'force_update_button':
 #                                                                                  #
 ####################################################################################
 case 'display_content':
+	lockDisplay();
 	$sortOrder = getSortOrder(getPostArray('sortOrder'));
 	$windowWidth = getPost("windowWidth",false);
 	$pageNumber = getPost("pageNumber","1");
@@ -1278,6 +1279,7 @@ case 'display_content':
 	} else {
 		echo "<center><font size='4'>$selectCategoryMessage</font></center>";
 	}
+	lockDisplay(false);
 	break;
 
 ########################################################################
@@ -1529,6 +1531,7 @@ case 'dismiss_warning':
 #                                                             #
 ###############################################################
 case 'previous_apps':
+	lockDisplay();
 	$installed = getPost("installed","");
 	$dockerUpdateStatus = readJsonFile($communityPaths['dockerUpdateStatus']);
 
@@ -1729,6 +1732,7 @@ case 'previous_apps':
 #                                                                                  #
 ####################################################################################
 case 'remove_application':
+	lockDisplay();
 	$application = getPost("application","");
 	@unlink($application);
 	echo "ok";
@@ -1740,6 +1744,7 @@ case 'remove_application':
 #                     #
 #######################
 case 'uninstall_application':
+	lockDisplay();
 	$application = getPost("application","");
 
 	$filename = pathinfo($application,PATHINFO_BASENAME);
@@ -1774,6 +1779,7 @@ case 'updatePLGstatus':
 #                     #
 #######################
 case 'uninstall_docker':
+	lockDisplay();
 	$application = getPost("application","");
 
 # get the name of the container / image
@@ -1997,6 +2003,9 @@ case 'changeViewModeSettings':
 #                           #
 #############################
 case 'checkStale':
+  if (isdisplayLocked() ) {
+		echo "false";
+	}
   $webTime = getPost("webTime",false);
 	if ( ! $webTime ) {
 		echo "false";
@@ -2020,6 +2029,7 @@ case 'checkStale':
 #                                     #
 #######################################
 case 'removePrivateApp':
+	lockDisplay();
 	$path = getPost("path",false);
 
 	if ( ! $path ) {
