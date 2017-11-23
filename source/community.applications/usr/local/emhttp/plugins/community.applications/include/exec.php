@@ -420,15 +420,15 @@ function getConvertedTemplates() {
 			}
 			if (is_file($repoPath.$template)) {
 				$o = readXmlFile($repoPath.$template);
-				$o = fixTemplates($o);
+				$o['Private']      = true;				
 				$o['RepoName']     = $Repo." Repository";
 				$o['ID']           = $i;
 				$o['Displayable']  = true;
 				$o['Date']         = ( $o['Date'] ) ? strtotime( $o['Date'] ) : 0;
 				$o['SortAuthor']   = $o['Author'];
-				$o['Private']      = true;
 				$o['Forum']        = "";
 				$o['Compatible']   = versionCheck($o);
+				$o = fixTemplates($o);
 				fixSecurity($o,$o);
 				$myTemplates[$i]  = $o;
 				$i = ++$i;
