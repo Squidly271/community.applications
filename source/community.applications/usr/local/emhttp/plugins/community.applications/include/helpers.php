@@ -357,7 +357,6 @@ function fixTemplates($template) {
 #                                             #
 ###############################################
 function makeXML($template) {
-	file_put_contents("/tmp/blah",print_r($template,1));
 	# ensure its a v2 template if the Config entries exist
 	if ( $template['Config'] && ! $template['@attributes'] ) {
 		$template['@attributes'] = array("version"=>2);
@@ -473,7 +472,6 @@ function moderateTemplates() {
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	$moderation = readJsonFile($communityPaths['moderation']);
 	$repositories = readJsonFile($communityPaths['Repositories']);
-	file_put_contents("/tmp/blah",print_r($repositories,1));
 	foreach ($repositories as $repo) {
 		if ( is_array($repo['duplicated']) ) {
 			$duplicatedTemplate[$repo['url']] = $repo;
