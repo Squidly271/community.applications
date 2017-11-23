@@ -81,8 +81,10 @@ function DownloadCommunityTemplates() {
 	if ( ! is_array($moderation) ) { $moderation = array(); }
 
 	$DockerTemplates = new DockerTemplates();
-	if (! $download = download_url($communityPaths['community-templates-url']) ) { return false; }
-	$Repos  = json_decode($download, true);
+	$tmpFileName = randomFile();
+	$Repos = download_json($communityPaths['community-templates-url'],$tmpFileName);
+	@unlink($tmpFileName);
+
 	if ( ! is_array($Repos) )                                                    { return false; }
 	$statistics['repository'] = count($Repos);
 
@@ -230,11 +232,8 @@ function DownloadApplicationFeed() {
 	}
 	$statistics['repository'] = count($Repositories);
 	$downloadURL = randomFile();
+  $ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
 
-	if ($download = download_url($communityPaths['application-feed'],$downloadURL) ){
-		return false;
-	}
-	$ApplicationFeed  = readJsonFile($downloadURL);
 	if ( ! is_array($ApplicationFeed) ) {
 		return false;
 	}
@@ -826,6 +825,7 @@ function checkRandomApp($randomApp,$file) {
 	if ( $file[$randomApp]['Blacklist'] )        return false;
 	if ( $file[$randomApp]['ModeratorComment'] ) return false;
 	if ( $file[$randomApp]['Deprecated'] )       return false;
+	if ( $file[$randomApp]['PluginURL'] == "https://raw.githubusercontent.com/Squidly271/community.applications/master/plugins/community.applications.plg" ) return false;
 	return true;
 }
 
@@ -1028,7 +1028,6 @@ case 'get_content':
 			DownloadApplicationFeed();
 			if (!file_exists($infoFile)) {
 				@unlink($communityPaths['LegacyMode']);
-#        $communitySettings['appFeed'] = "false";  # Do Not automatically revert.  Toss up a message instead
 				updateSyncTime(true);
 				echo "<center><font size='3'><strong>Download of appfeed failed.</strong></font><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  Switching CA to operate in <em>Legacy Mode</em> might temporarily allow you to still utilize CA.<br>";
 				echo caGetMode();
@@ -1194,10 +1193,8 @@ case 'get_content':
 ########################################################
 case 'force_update':
 	download_url($communityPaths['moderationURL'],$communityPaths['moderation']);
-	$tmpFileName = randomFile();
-	download_url($communityPaths['community-templates-url'],$tmpFileName);
-	$Repositories = readJsonFile($tmpFileName);
-	writeJsonFile($communityPaths['Repositories'],$Repositories);
+	$Repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
+
 	$repositoriesLogo = $Repositories;
 	if ( ! is_array($repositoriesLogo) ) {
 		$repositoriesLogo = array();
@@ -1209,7 +1206,6 @@ case 'force_update':
 		}
 	}
 	writeJsonFile($communityPaths['logos'],$repoLogo);
-	@unlink($tmpFileName);
 
 	if ( ! file_exists($infoFile) ) {
 		if ( ! file_exists($communityPaths['lastUpdated-old']) ) {
@@ -1226,9 +1222,8 @@ case 'force_update':
 		$lastUpdatedOld['last_updated_timestamp'] = 0;
 	}
 	@unlink($communityPaths['lastUpdated']);
-	download_url($communityPaths['application-feed-last-updated'],$communityPaths['lastUpdated']);
+	$latestUpdate = download_json($communityPaths['application-feed-last-updated'],$communityPaths['lastUpdated']);
 
-	$latestUpdate = readJsonFile($communityPaths['lastUpdated']);
 	if ( ! $latestUpdate['last_updated_timestamp'] ) {
 		$latestUpdate['last_updated_timestamp'] = INF;
 		$badDownload = true;
@@ -1959,7 +1954,7 @@ case 'statistics':
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Total Number Of Moderation Entries</a></b></td><td>$color{$statistics['totalModeration']}+</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;NoSupport&quot;,&quot;Applications With No Support Entries&quot;);' style='cursor:pointer'>Applications without any support thread:</a></b></td><td>$color{$statistics['NoSupport']}</td></tr>";
 	$totalCA = exec("du -h -s /usr/local/emhttp/plugins/community.applications/");
-	$totalTmp = exec(" du -h -s /tmp/community.applications/");
+	$totalTmp = exec("du -h -s /tmp/community.applications/");
 	$memCA = explode("\t",$totalCA);
 	$memTmp = explode("\t",$totalTmp);
 	echo "<tr><td><b>{$color}<b>Memory Usage (CA / DataFiles)</b></td><td>{$memCA[0]} / {$memTmp[0]}</td></tr>";
