@@ -1010,6 +1010,10 @@ case 'get_content':
 	$windowWidth = getPost("windowWidth",false);
 	getMaxColumns($windowWidth);
 
+	if ( $category == "/PRIVATE/i" ) {
+		$category = false;
+		$displayPrivates = true;
+	}
 	$newAppTime = strtotime($communitySettings['timeNew']);
 
 	if ( file_exists($communityPaths['addConverted']) ) {
@@ -1159,7 +1163,8 @@ case 'get_content':
 
 		if ( ($newApp == "true") && ($template['Date'] < $newAppTime) )  { continue; }
 		if ( $category && ! preg_match($category,$template['Category'])) { continue; }
-
+    if ( $displayPrivates && ! $template['Private'] ) { continue; }
+		
 		if ($filter) {
 			if ( filterMatch($filter,array($template['Name'],$template['Author'],$template['Description'],$template['RepoName'])) ) {
 				$template['Description'] = highlight($filter, $template['Description']);
@@ -1945,7 +1950,8 @@ case 'statistics':
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color{$statistics['repository']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Plugins</b></td><td>$color{$statistics['plugin']}</td></tr>";
-	echo "<tr><td><b>{$color}<a href='/Main/Browse?dir=/boot/config/plugins/community.applications/private' target='_blank'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
+	$privateLink = $statistics['private'] ? "<a id='PRIVATE' onclick='changeCategory(this,false);' style='cursor:pointer;' $privateLink><b>Total Number Of Private Docker Applications</b></a>" : "<b>Total Number Of Private Docker Applications</b>";
+	echo "<tr><td><b>{$color}$privateLink</td><td>$color{$statistics['private']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Total Number Of Invalid Templates Found</a></b></td><td>$color{$statistics['invalidXML']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Total Number Of Template Errors</a></b></td><td>$color{$statistics['caFixed']}+</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Blacklist&quot;,&quot;Total Blacklisted Apps Still In Appfeed&quot;);' style='cursor:pointer'>Total Number Of Blacklisted Apps Found In Appfeed</a></b></td><td>$color{$statistics['blacklist']}</td></tr>";
