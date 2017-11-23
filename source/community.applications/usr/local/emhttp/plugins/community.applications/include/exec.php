@@ -1410,7 +1410,7 @@ case 'convert_docker':
 			$dockervolume['Mode'] = "rw";
 			$dockerfile['Data']['Volume'][] = $dockervolume;
 		}
-		$dockerfile['Icon'] = $docker['Icon'];
+		$dockerfile['Icon'] = "https://github.com/Squidly271/community.applications/raw/master/source/community.applications/usr/local/emhttp/plugins/community.applications/images/question.png";
 
 		if ( count($webUI) == 1 ) {
 			$dockerfile['WebUI'] .= "http://[IP]:[PORT:".$webUI[0]."]";
@@ -1435,7 +1435,7 @@ case 'convert_docker':
 		$dockerfile['BindTime'] = "true";
 		$dockerfile['Privileged'] = "false";
 		$dockerfile['Networking']['Mode'] = "bridge";
-		$dockerfile['Icon'] = $docker['Icon'];
+		$dockerfile['Icon'] = "https://github.com/Squidly271/community.applications/raw/master/source/community.applications/usr/local/emhttp/plugins/community.applications/images/question.png";
 	}
 	$dockerXML = makeXML($dockerfile);
 
