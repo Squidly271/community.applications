@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.11.24">
-<!ENTITY md5       "147f162134370ca4a8f17d53f05f79f5">
+<!ENTITY version   "2017.11.24a">
+<!ENTITY md5       "c404701c818aa5b981356dad88b21c0d">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017.11.24a
+- Display aberrations when going from Previous Apps To Private Apps
+- Utilize display engine to display blacklisted, deprecated, etc from the stats popup
+
 ###2017.11.24
 - Coding improvements
 - Minor CSS changes

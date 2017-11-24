@@ -129,7 +129,11 @@ var categorySub = {
 	New:"New",
 	UNCATEGORIZED:"UNCATEGORIZED",
 	All:"All",
-	PRIVATE:"PRIVATE"
+	PRIVATE:"PRIVATE",
+	DEPRECATED:"DEPRECATED",
+	BLACKLIST:"BLACKLIST",
+	NOSUPPORT:"NOSUPPORT",
+	INCOMPATIBLE:"INCOMPATIBLE"
 	};
 
 var categoryDesc = {
@@ -160,7 +164,11 @@ var categoryDesc = {
 	New:"New / Updated Applications (within the last <?=$timeNew?>)",
 	UNCATEGORIZED: "All Uncategorized Applications",
 	All: "All Available Applications",
-	PRIVATE:"All private applications"
+	PRIVATE:"All private applications",
+	DEPRECATED:"All Deprecated Applications",
+	BLACKLIST:"All Blacklisted Applications",
+	NOSUPPORT:"All Applications with no support thread",
+	INCOMPATIBLE: "All Incompatible Applications"
 	};
 
 var checkStaleVar = setInterval(function(){ checkStale(); },60000);
@@ -476,13 +484,15 @@ function setToolTip() {
 	});
 }
 
-function showPrivates(button) {
+function showSpecialCategory(button) {
   $(".allButtons").prop("disabled",false);
+	$(".multi_installDiv").hide();
 	enableIcon("#categoryIcon,#subcategoryIcon",true);
 	data_selected_category = "DOESNTMATTERWHATSHERE";
 	data_section = "AppStore";
 	changeCategory(button,false);
 }
+
 function changeCategory(button,subSwitch) {
 	var description = button.value;
 	var category = button.id;

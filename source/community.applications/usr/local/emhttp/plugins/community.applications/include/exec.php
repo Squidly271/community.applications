@@ -488,7 +488,7 @@ function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
 }
 
 function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
-	global $communityPaths, $info, $communitySettings, $plugin, $unRaid64, $unRaid635;
+	global $communityPaths, $info, $communitySettings, $plugin, $unRaid64, $unRaid635, $displayDeprecated;
 
 	if ( ! $selectedApps ) {
 		$selectedApps = array();
@@ -507,6 +507,12 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	if ( ! $officialFlag ) {
 		$ct = "<br>".getPageNavigation($pageNumber,count($file),false)."<br>";
 	}
+	$specialCategoryComment = @file_get_contents($communityPaths['dontAllowInstalls']);
+	if ( $specialCategoryComment ) {
+		$ct .= "<center><font size='2' color='red'>This display is informational <em>ONLY</em>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</font></center><br>";
+		$ct .= "<center><font size='2' color='red'>$specialCategoryComment</font></center>";
+	}
+
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
 	$displayTemplate = $skin[$viewMode]['template'];
 	if ( $unRaid64 ) {
@@ -524,7 +530,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 
 # Create entries for skins
 	foreach ($file as $template) {
-		if ( $template['Blacklist'] ) {
+		if ( $template['Blacklist'] && ! is_file($communityPaths['dontAllowInstalls']) ) {
 			continue;
 		}
 		$startingAppCounter++;
@@ -605,43 +611,45 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		if (! $communitySettings['dockerRunning'] && ! $template['Plugin']) {
 			unset($template['display_multi_install']);
 		}
-		if ( $template['Plugin'] ) {
-			$pluginName = basename($template['PluginURL']);
-			if ( checkInstalledPlugin($template) ) {
-				$pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
-				$tmpVar = $pluginSettings ? "" : " disabled ";
-				$template['display_pluginSettings'] = "<input class='ca_tooltip' title='Click to go to the plugin settings' type='submit' $tmpVar style='margin:0px' value='Settings' formtarget='_self' formaction='$pluginSettings' formmethod='post'>";
-				$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip' title='Click to go to the plugin settings' href='$pluginSettings'><img src='/plugins/community.applications/images/WebPage.png' class='appIcons'></a>" : "";
-			} else {
-				$buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
-				$template['display_pluginInstall'] = "<input class='ca_tooltip' type='button' value='$buttonTitle' style='margin:0px' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>";
-				$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
-			}
-		} else {
-			if ( $communitySettings['dockerRunning'] ) {
-				if ( $selected ) {
-					$template['display_dockerDefault']     = "<input class='ca_tooltip' type='submit' value='Default' style='margin:1px' title='Click to reinstall the application using default values' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."'>";
-					$template['display_dockerEdit']        = "<input class='ca_tooltip' type='submit' value='Edit' style='margin:1px' title='Click to edit the application values' formtarget='_self' formmethod='post' formaction='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."'>";
-					$template['display_dockerDefault']     = $template['BranchID'] ? "<input class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' value='Add' onclick='displayTags(&quot;$ID&quot;);'>" : $template['display_dockerDefault'];
-					$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
-					$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>" : $template['display_dockerDefaultIcon'];
-					$template['display_dockerEditIcon']    = "<a class='ca_tooltip' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='_self'><img src='/plugins/community.applications/images/edit.png' class='appIcons'></a>";
-					if ( $info[$name]['url'] && $info[$name]['running'] ) {
-						$template['dockerWebIcon'] = "<a class='ca_tooltip' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'><img src='/plugins/community.applications/images/WebPage.png' class='appIcons'></a>&nbsp;&nbsp;";
-					}
+		if ( ! is_file($communityPaths['dontAllowInstalls']) ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
+			if ( $template['Plugin'] ) {
+				$pluginName = basename($template['PluginURL']);
+				if ( checkInstalledPlugin($template) ) {
+					$pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
+					$tmpVar = $pluginSettings ? "" : " disabled ";
+					$template['display_pluginSettings'] = "<input class='ca_tooltip' title='Click to go to the plugin settings' type='submit' $tmpVar style='margin:0px' value='Settings' formtarget='_self' formaction='$pluginSettings' formmethod='post'>";
+					$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip' title='Click to go to the plugin settings' href='$pluginSettings'><img src='/plugins/community.applications/images/WebPage.png' class='appIcons'></a>" : "";
 				} else {
-					if ( $template['MyPath'] ) {
-						$template['display_dockerReinstall'] = "<input class='ca_tooltip' type='submit' style='margin:0px' title='Click to reinstall the application' value='Reinstall' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."'>";
-						$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip' title='Click to reinstall' href='Apps/UpdateContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='_self'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
-						} else {
-						$template['display_dockerInstall']   = "<input class='ca_tooltip' type='submit' style='margin:0px' title='Click to install the application' value='Add' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."'>";
-						$template['display_dockerInstall']   = $template['BranchID'] ? "<input class='ca_tooltip' type='button' style='margin:0px' title='Click to install the application' value='Add' onclick='displayTags(&quot;$ID&quot;);'>" : $template['display_dockerInstall'];
-						$template['display_dockerInstallIcon'] = "<a class='ca_tooltip' title='Click to install' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
-						$template['display_dockerInstallIcon'] = $template['BranchID'] ? "<a style='cursor:pointer' class='ca_tooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>" : $template['display_dockerInstallIcon'];
-					}
+					$buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
+					$template['display_pluginInstall'] = "<input class='ca_tooltip' type='button' value='$buttonTitle' style='margin:0px' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>";
+					$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
 				}
 			} else {
-				$template['display_dockerDisable'] = "<font color='red'>Docker Not Enabled</font>";
+				if ( $communitySettings['dockerRunning'] ) {
+					if ( $selected ) {
+						$template['display_dockerDefault']     = "<input class='ca_tooltip' type='submit' value='Default' style='margin:1px' title='Click to reinstall the application using default values' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."'>";
+						$template['display_dockerEdit']        = "<input class='ca_tooltip' type='submit' value='Edit' style='margin:1px' title='Click to edit the application values' formtarget='_self' formmethod='post' formaction='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."'>";
+						$template['display_dockerDefault']     = $template['BranchID'] ? "<input class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' value='Add' onclick='displayTags(&quot;$ID&quot;);'>" : $template['display_dockerDefault'];
+						$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
+						$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>" : $template['display_dockerDefaultIcon'];
+						$template['display_dockerEditIcon']    = "<a class='ca_tooltip' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='_self'><img src='/plugins/community.applications/images/edit.png' class='appIcons'></a>";
+						if ( $info[$name]['url'] && $info[$name]['running'] ) {
+							$template['dockerWebIcon'] = "<a class='ca_tooltip' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'><img src='/plugins/community.applications/images/WebPage.png' class='appIcons'></a>&nbsp;&nbsp;";
+						}
+					} else {
+						if ( $template['MyPath'] ) {
+							$template['display_dockerReinstall'] = "<input class='ca_tooltip' type='submit' style='margin:0px' title='Click to reinstall the application' value='Reinstall' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."'>";
+							$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip' title='Click to reinstall' href='Apps/UpdateContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='_self'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
+							} else {
+							$template['display_dockerInstall']   = "<input class='ca_tooltip' type='submit' style='margin:0px' title='Click to install the application' value='Add' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."'>";
+							$template['display_dockerInstall']   = $template['BranchID'] ? "<input class='ca_tooltip' type='button' style='margin:0px' title='Click to install the application' value='Add' onclick='displayTags(&quot;$ID&quot;);'>" : $template['display_dockerInstall'];
+							$template['display_dockerInstallIcon'] = "<a class='ca_tooltip' title='Click to install' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
+							$template['display_dockerInstallIcon'] = $template['BranchID'] ? "<a style='cursor:pointer' class='ca_tooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>" : $template['display_dockerInstallIcon'];
+						}
+					}
+				} else {
+					$template['display_dockerDisable'] = "<font color='red'>Docker Not Enabled</font>";
+				}
 			}
 		}
 		if ( ! $template['Compatible'] && ! $template['UnknownCompatible'] ) {
@@ -1014,6 +1022,26 @@ case 'get_content':
 		$category = false;
 		$displayPrivates = true;
 	}
+	@unlink($communityPaths['dontAllowInstalls']);
+	if ( $category == "/DEPRECATED/i") {
+		$category = false;
+		$displayDeprecated = true;
+		file_put_contents($communityPaths['dontAllowInstalls'],"Deprecated Applications are able to still be installed if you have previously had them installed. New installations of these applications are blocked unless you enable Display Deprecated Applications within CA's General Settings<br><br>");
+	}
+	if ( $category == "/BLACKLIST/i") {
+		$category = false;
+		$displayBlacklisted = true;
+		file_put_contents($communityPaths['dontAllowInstalls'],"The following applications are blacklisted.  CA will never allow you to install or reinstall these applications<br><br>");
+	}
+	if ( $category == "/INCOMPATIBLE/i") {
+		$displayIncompatible = true;
+		file_put_contents($communityPaths['dontAllowInstalls'],"<b>While highly not recommended to do</b>, incompatible applications can be installed by enabling Display Incompatible Applications within CA's General Settings<br><br>");
+	}
+	if ( $category == "/NOSUPPORT/i") {
+		$category = false;
+		$displayNoSupport = true;
+		file_put_contents($communityPaths['dontAllowInstalls'],"The following applications do not have any support thread for them (other applications that are also blacklisted / deprecated in addition to having no support thread will not appear here)<br><br>");
+	}
 	$newAppTime = strtotime($communitySettings['timeNew']);
 
 	if ( file_exists($communityPaths['addConverted']) ) {
@@ -1113,18 +1141,29 @@ case 'get_content':
 	}
 	
 	foreach ($file as $template) {
-		if ( $template['Blacklist'] ) {
+		if ( ($template['Blacklist'] && ! $displayBlacklisted) || (! $template['Blacklist'] && $displayBlacklisted) ) {
 			continue;
 		}
-		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated']) ) {
+		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) {
 			continue;                          # ie: only show deprecated apps within previous apps section
+		}
+		if ( $displayDeprecated && ! $template['Deprecated'] ) {
+			continue;
 		}
 		if ( ! $template['Displayable'] ) {
 			continue;
 		}
-		if ( $communitySettings['hideIncompatible'] == "true" && ! $template['Compatible'] ) {
+		if ( $communitySettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) {
 			continue;
 		}
+		if ( ! $template['Compatible'] && $displayIncompatible ) {
+			$display[] = $template;
+			continue;
+		}
+		if ( $template['Support'] && $displayNoSupport ) {
+			continue;
+		}
+		
 		$name = $template['Name'];
 
 # Skip over installed containers
@@ -1465,6 +1504,7 @@ case 'search_dockerhub':
 	$filter     = getPost("filter","");
 	$pageNumber = getPost("page","1");
 	$sortOrder  = getSortOrder(getPostArray('sortOrder'));
+	@unlink($communityPaths['dontAllowInstalls']);
 
 	$communityTemplates = readJsonFile($communityPaths['community-templates-info']);
 	$filter = str_replace(" ","%20",$filter);
@@ -1532,6 +1572,8 @@ case 'dismiss_warning':
 ###############################################################
 case 'previous_apps':
 	lockDisplay();
+	@unlink($communityPaths['dontAllowInstalls']);
+
 	$installed = getPost("installed","");
 	$dockerUpdateStatus = readJsonFile($communityPaths['dockerUpdateStatus']);
 
@@ -1819,6 +1861,8 @@ case "pinApp":
 #                                  #
 ####################################
 case "pinnedApps":
+	@unlink($communityPaths['dontAllowInstalls']);
+	
 	$pinnedApps = getPinnedApps();
 	$file = readJsonFile($communityPaths['community-templates-info']);
 
@@ -1880,49 +1924,22 @@ case 'statistics':
 		foreach ($templates as $template) {
 			if ( $template['Deprecated'] ) {
 				$statistics['totalDeprecated']++;
-				$deprecated .= "<tr><td>{$template['Repo']}</td><td><b>{$template['Name']}</b></td><td>".str_replace("<br>","",trim($template['ModeratorComment']))."</td></tr>";
 			}
 			if ( ! $template['Compatible'] ) {
 				$statistics['totalIncompatible']++;
-				$incompatible .= "<td>{$template['Repo']}</td><td><b>{$template['Name']}</b></td><td><center>{$template['MinVer']}</td><td><center>{$template['MaxVer']}</td></tr>";
 			}
-			if ( ! $template['Support'] ) {
+			if ( ! $template['Support'] && ! $template['Blacklist'] && ! $template['Deprecated'] ) {
 				$statistics['NoSupport']++;
-				$noSupport .= "<tr><td>{$template['Repo']}</td><td><b>{$template['Name']}</b></td></tr>";
 			}
 			if ( $template['Blacklist'] ) {
 				$statistics['blacklist']++;
-				$blacklist[] = "{$template['Repo']} - <b>{$template['Name']}</b> - {$template['ModeratorComment']}";
 			}
 			if ( $template['Private'] && ! $template['Blacklist']) {
 				$statistics['private']++;
 			}
 		}
 	}
-	
-	if ( $blacklist) {
-		writeJsonFile($communityPaths['blacklisted_txt'],$blacklist);
-	} else {
-		@unlink($communityPaths['blacklisted_txt']);
-	}
-	if ( $incompatible ) {
-		$incompatible = "<table style='width:auto;border:1px;border-color:red;'><thead><td>Repository</td><td>Application</td><td>Minimum OS</td><td>Maximum OS</td></thead>$incompatible</table>";
-		file_put_contents($communityPaths['totalIncompatible_txt'],$incompatible);
-	} else {
-		@unlink($communityPaths['totalIcompatible_txt']);
-	}
-	if ( $deprecated ) {
-		$deprecated = "<table style='width:auto'><thead><td style='width:25%'>Repository</td><td>Application</td><td>Comment</td></thead>$deprecated</table>";
-		file_put_contents($communityPaths['totalDeprecated_txt'],$deprecated);
-	} else {
-		@unlink($communityPaths['totalDeprecated_txt']);
-	}
-	if ( $noSupport ) {
-		$noSupport = "<table style='width:auto'>$noSupport</table>";
-		file_put_contents($communityPaths['noSupport_txt'],$noSupport);
-	} else {
-		@unlink($communityPaths['noSupport_txt']);
-	}
+
 	foreach ($statistics as &$stat) {
 		if ( ! $stat ) { $stat = "0"; }
 	}
@@ -1956,14 +1973,14 @@ case 'statistics':
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color{$statistics['repository']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Plugins</b></td><td>$color{$statistics['plugin']}</td></tr>";
-	echo "<tr><td><b>{$color}<a id='PRIVATE' onclick='showPrivates(this);' style='cursor:pointer;'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
+	echo "<tr><td><b>{$color}<a id='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Total Number Of Invalid Templates Found</a></b></td><td>$color{$statistics['invalidXML']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Total Number Of Template Errors</a></b></td><td>$color{$statistics['caFixed']}+</td></tr>";
-	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Blacklist&quot;,&quot;Total Blacklisted Apps Still In Appfeed&quot;);' style='cursor:pointer'>Total Number Of Blacklisted Apps Found In Appfeed</a></b></td><td>$color{$statistics['blacklist']}</td></tr>";
-	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Incompatible&quot;,&quot;Total Incompatible Apps Found&quot;);' style='cursor:pointer'>Total Number Of Incompatible Applications</a></b></td><td>$color{$statistics['totalIncompatible']}</td></tr>";
-	echo "<tr><td title='You can only install a deprecated application if you have previously installed it'><b>{$color}<a onclick='showModeration(&quot;Deprecated&quot;,&quot;Total Deprecated Applications&quot;);' style='cursor:pointer'>Total Number Of Deprecated Applications</a></b></td><td>$color{$statistics['totalDeprecated']}</td></tr>";
+	echo "<tr><td><b>{$color}<a id='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Blacklisted Apps Found In Appfeed</a></b></td><td>$color{$statistics['blacklist']}</td></tr>";
+	echo "<tr><td><b>{$color}<a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Incompatible Applications</a></b></td><td>$color{$statistics['totalIncompatible']}</td></tr>";
+	echo "<tr><td><b>{$color}<a id='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Deprecated Applications</a></b></td><td>$color{$statistics['totalDeprecated']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Total Number Of Moderation Entries</a></b></td><td>$color{$statistics['totalModeration']}+</td></tr>";
-	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;NoSupport&quot;,&quot;Applications With No Support Entries&quot;);' style='cursor:pointer'>Applications without any support thread:</a></b></td><td>$color{$statistics['NoSupport']}</td></tr>";
+	echo "<tr><td><b>{$color}<a id='NOSUPPORT' onclick='showSpecialCategory(this);' style='cursor:pointer'>Applications without any support thread:</a></b></td><td>$color{$statistics['NoSupport']}</td></tr>";
 	$totalCA = exec("du -h -s /usr/local/emhttp/plugins/community.applications/");
 	$totalTmp = exec("du -h -s /tmp/community.applications/");
 	$memCA = explode("\t",$totalCA);

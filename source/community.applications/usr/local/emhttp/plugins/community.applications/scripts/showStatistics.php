@@ -70,32 +70,6 @@ switch ($_GET['arg1']) {
 		}
 
 		break;
-	case 'Blacklist':
-		$moderation = @file_get_contents($communityPaths['blacklisted_txt']);
-		if ( ! $moderation ) {
-			echo "<br><br><center><b>No blacklisted apps found</b></center>";
-			return;
-		}
-		$moderation = str_replace(" ","&nbsp;",$moderation);
-		$moderation = str_replace("\n","<br>",$moderation);
-		echo "These applications are still found within the application feed.  CA will never allow you to install or reinstall these applications<br><br><tt>$moderation";
-		break;
-	case 'Incompatible':
-		$moderation = @file_get_contents($communityPaths['totalIncompatible_txt']);
-		if ( ! $moderation ) {
-			echo "<br><br><center><b>No incompatible apps found</b></center>";
-			return;
-		}
-		echo "<b>While highly not recommended to do</b>, incompatible applications can be installed by enabling Display Incompatible Applications within CA's General Settings<br><br><tt>$moderation";
-		break;
-	case 'Deprecated':
-		$moderation = @file_get_contents($communityPaths['totalDeprecated_txt']);
-		if ( ! $moderation ) {
-			echo "<br><br><center><b>No deprecated apps found</b></center>";
-			return;
-		}
-		echo "Deprecated Applications are able to still be installed if you have previously had them installed.  New installations of these applications are blocked unless you enable Display Deprecated Applications within CA's General Settings<br><br><tt>$moderation";
-		break;
 	case 'Moderation':
 		$moderation = @file_get_contents($communityPaths['moderation']);
 		foreach ($repositories as $repo) {
@@ -113,14 +87,6 @@ switch ($_GET['arg1']) {
 		$moderation = str_replace(" ","&nbsp;",$moderation);
 		$moderation = str_replace("\n","<br>",$moderation);
 		echo "<tt>$moderation";
-		break;
-	case 'NoSupport':
-		$moderation = @file_get_contents($communityPaths['noSupport_txt']);
-		if ( ! $moderation ) {
-			echo "<br><br><center><b>All applications have support threads</b></center>";
-			return;
-		}
-		echo "These applications do not have any support thread specified by the template author.<br><br>$moderation";
 		break;
 }
 ?>

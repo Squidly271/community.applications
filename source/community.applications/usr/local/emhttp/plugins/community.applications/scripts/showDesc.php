@@ -143,7 +143,7 @@ $templateDescription .= "<center>";
 $templateDescription .= "<form method='get'>";
 $templateDescription .= "<input type='hidden' name='csrf_token' value='$csrf_token'>";
 
-if ( $Displayed ) {
+if ( $Displayed && ! is_file($communityPaths['dontAllowInstalls']) ) {
   if ( ! $template['Plugin'] ) {
     if ( $communitySettings['dockerRunning'] ) {
       if ( $selected ) {
