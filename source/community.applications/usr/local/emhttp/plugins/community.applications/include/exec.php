@@ -67,7 +67,7 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 	@unlink($infoFile);
 }
 
-$selectCategoryMessage = "Select a section <img src='/plugins/community.applications/images/SectionIconNew.png' height='30px;'> or Category <img src='/plugins/community.applications/images/CategoryIconNew.png' height='30px;'> above";
+$selectCategoryMessage = "Select a Section <img src='/plugins/community.applications/images/SectionIconNew.png' height='30px;'> or Category <img src='/plugins/community.applications/images/CategoryIconNew.png' height='30px;'> above";
 
 #################################################################
 #                                                               #
