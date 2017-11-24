@@ -1129,7 +1129,7 @@ case 'get_content':
 
 # Skip over installed containers
 
-		if ( $newApp != "true" && $filter == "" && $communitySettings['separateInstalled'] == "true" ) {
+		if ( $newApp != "true" && $filter == "" && $communitySettings['separateInstalled'] == "true" && ! $displayPrivates) {
 			if ( $template['Plugin'] ) {
 				$pluginName = basename($template['PluginURL']);
 
@@ -1956,8 +1956,7 @@ case 'statistics':
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color{$statistics['repository']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Plugins</b></td><td>$color{$statistics['plugin']}</td></tr>";
-	$privateLink = $statistics['private'] ? "<a id='PRIVATE' onclick='changeCategory(this,false);' style='cursor:pointer;' $privateLink><b>Total Number Of Private Docker Applications</b></a>" : "<b>Total Number Of Private Docker Applications</b>";
-	echo "<tr><td><b>{$color}$privateLink</td><td>$color{$statistics['private']}</td></tr>";
+	echo "<tr><td><b>{$color}<a id='PRIVATE' onclick='showPrivates(this);' style='cursor:pointer;'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Total Number Of Invalid Templates Found</a></b></td><td>$color{$statistics['invalidXML']}</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Total Number Of Template Errors</a></b></td><td>$color{$statistics['caFixed']}+</td></tr>";
 	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Blacklist&quot;,&quot;Total Blacklisted Apps Still In Appfeed&quot;);' style='cursor:pointer'>Total Number Of Blacklisted Apps Found In Appfeed</a></b></td><td>$color{$statistics['blacklist']}</td></tr>";
