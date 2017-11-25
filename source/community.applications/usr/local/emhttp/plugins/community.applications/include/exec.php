@@ -400,41 +400,27 @@ function getConvertedTemplates() {
 	if ( ! is_dir($communityPaths['convertedTemplates']) ) {
 		return;
 	}
-	$Repos = dirContents($communityPaths['convertedTemplates']);
 
-	foreach ($Repos as $Repo) {
-		if ( ! is_dir($communityPaths['convertedTemplates'].$Repo) ) {
-			continue;
+	$privateTemplates = glob($communityPaths['convertedTemplates']."*/*.xml");
+	foreach ($privateTemplates as $template) {
+		$o = readXmlFile($template);
+		if ( ! $o['Repository'] ) {
+			continue; 
 		}
-
-		unset($privateTemplates);
-		$repoPath = $communityPaths['convertedTemplates'].$Repo."/";
-
-		$privateTemplates = dirContents($repoPath);
-		if ( empty($privateTemplates) ) {
-			continue;
-		}
-		foreach ($privateTemplates as $template) {
-			if ( strpos($template,".xml") === FALSE ) {
-				continue;
-			}
-			if (is_file($repoPath.$template)) {
-				$o = readXmlFile($repoPath.$template);
-				$o['Private']      = true;				
-				$o['RepoName']     = $Repo." Repository";
-				$o['ID']           = $i;
-				$o['Displayable']  = true;
-				$o['Date']         = ( $o['Date'] ) ? strtotime( $o['Date'] ) : 0;
-				$o['SortAuthor']   = $o['Author'];
-				$o['Forum']        = "";
-				$o['Compatible']   = versionCheck($o);
-				$o = fixTemplates($o);
-				fixSecurity($o,$o);
-				$myTemplates[$i]  = $o;
-				$i = ++$i;
-			}
-		}
+		$o['Private']      = true;				
+		$o['RepoName']     = basename(pathinfo($template,PATHINFO_DIRNAME))." Repository";
+		$o['ID']           = $i;
+		$o['Displayable']  = true;
+		$o['Date']         = ( $o['Date'] ) ? strtotime( $o['Date'] ) : 0;
+		$o['SortAuthor']   = $o['Author'];
+		$o['Forum']        = "";
+		$o['Compatible']   = versionCheck($o);
+		$o = fixTemplates($o);
+		fixSecurity($o,$o);
+		$myTemplates[$i]  = $o;
+		$i = ++$i;
 	}
+
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
 	writeJsonFile($communityPaths['statistics'],$statistics);
 	return true;
@@ -1584,9 +1570,9 @@ case 'previous_apps':
 	$file = readJsonFile($communityPaths['community-templates-info']);
 
 # $info contains all installed containers
-
 # now correlate that to a template;
 # this section handles containers that have not been renamed from the appfeed
+	$all_files = glob("/boot/config/plugins/dockerMan/templates-user/*.xml");
 	if ( $installed == "true" ) {
 		foreach ($info as $installedDocker) {
 			$installedImage = $installedDocker['Image'];
@@ -1611,110 +1597,100 @@ case 'previous_apps':
 				}
 			}
 		}
-		$all_files = dirContents("/boot/config/plugins/dockerMan/templates-user");
 
 # handle renamed containers
 		foreach ($all_files as $xmlfile) {
-			if ( pathinfo($xmlfile,PATHINFO_EXTENSION) == "xml" ) {
-				$o = readXmlFile("/boot/config/plugins/dockerMan/templates-user/$xmlfile",$moderation);
-				$o['MyPath'] = "/boot/config/plugins/dockerMan/templates-user/$xmlfile";
-				$o['UnknownCompatible'] = true;
+			$o = readXmlFile("$xmlfile",$moderation);
+			$o['MyPath'] = "$xmlfile";
+			$o['UnknownCompatible'] = true;
 
-				if ( is_array($moderation[$o['Repository']]) ) {
-					$o = array_merge($o, $moderation[$o['Repository']]);
-				}
-				$flag = false;
-				$containerID = false;
-				foreach ($file as $templateDocker) {
+			if ( is_array($moderation[$o['Repository']]) ) {
+				$o = array_merge($o, $moderation[$o['Repository']]);
+			}
+			$flag = false;
+			$containerID = false;
+			foreach ($file as $templateDocker) {
 # use startsWith to eliminate any version tags (:latest)
-					if ( startsWith($templateDocker['Repository'], $o['Repository']) ) {
-						if ( $templateDocker['Name'] == $o['Name'] ) {
-							$flag = true;
-							$containerID = $template['ID'];
-							break;
+				if ( startsWith($templateDocker['Repository'], $o['Repository']) ) {
+					if ( $templateDocker['Name'] == $o['Name'] ) {
+						$flag = true;
+						$containerID = $template['ID'];
+						break;
+					}
+				}
+			}
+			if ( ! $flag ) {
+				$runningflag = false;
+				foreach ($info as $installedDocker) {
+					$installedImage = $installedDocker['Image'];
+					$installedName = $installedDocker['Name'];
+					if ( startsWith($installedImage, $o['Repository']) ) {
+						if ( $installedName == $o['Name'] ) {
+							$runningflag = true;
+							$searchResult = searchArray($file,'Repository',$o['Repository']);
+							if ( $searchResult !== false ) {
+								$tempPath = $o['MyPath'];
+								$containerID = $file[$searchResult]['ID'];
+								$o = $file[$searchResult];
+								$o['Name'] = $installedName;
+								$o['MyPath'] = $tempPath;
+								$o['SortName'] = $installedName;
+								if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
+									$o['UpdateAvailable'] = true;
+									$o['FullRepo'] = $installedImage;
+								}
+							}
+							break;;
 						}
 					}
 				}
-				if ( ! $flag ) {
-					$runningflag = false;
-					foreach ($info as $installedDocker) {
-						$installedImage = $installedDocker['Image'];
-						$installedName = $installedDocker['Name'];
-
-						if ( startsWith($installedImage, $o['Repository']) ) {
-							if ( $installedName == $o['Name'] ) {
-								$runningflag = true;
-								$searchResult = searchArray($file,'Repository',$o['Repository']);
-								if ( $searchResult !== false ) {
-									$tempPath = $o['MyPath'];
-									$containerID = $file[$searchResult]['ID'];
-									$o = $file[$searchResult];
-									$o['Name'] = $installedName;
-									$o['MyPath'] = $tempPath;
-									$o['SortName'] = $installedName;
-									if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
-										$o['UpdateAvailable'] = true;
-										$o['FullRepo'] = $installedImage;
-									}
-								}
-								break;;
-							}
-						}
+				if ( $runningflag ) {
+					$o['Uninstall'] = true;
+					$o['ID'] = $containerID;
+					if ( $o['Blacklist'] ) {
+						continue;
 					}
-					if ( $runningflag ) {
-						$o['Uninstall'] = true;
-						$o['ID'] = $containerID;
-						if ( $o['Blacklist'] ) {
-							continue;
-						}
-						$displayed[] = $o;
-					}
+					$displayed[] = $o;
 				}
 			}
 		}
 	} else {
 # now get the old not installed docker apps
-
-		$all_files = dirContents("/boot/config/plugins/dockerMan/templates-user");
-
 		foreach ($all_files as $xmlfile) {
-			if ( pathinfo($xmlfile,PATHINFO_EXTENSION) == "xml" ) {
-				$o = readXmlFile("/boot/config/plugins/dockerMan/templates-user/$xmlfile");
-				$o['MyPath'] = "/boot/config/plugins/dockerMan/templates-user/$xmlfile";
-				$o['UnknownCompatible'] = true;
-				$o['Removable'] = true;
+			$o = readXmlFile("$xmlfile");
+			$o['MyPath'] = "$xmlfile";
+			$o['UnknownCompatible'] = true;
+			$o['Removable'] = true;
 # is the container running?
 
-				$flag = false;
-				foreach ($info as $installedDocker) {
-					$installedImage = $installedDocker['Image'];
-					$installedName = $installedDocker['Name'];
-
-					if ( startsWith($installedImage, $o['Repository']) ) {
-						if ( $installedName == $o['Name'] ) {
-							$flag = true;
-							continue;
-						}
-					}
-				}
-				if ( ! $flag ) {
-# now associate the template back to a template in the appfeed
-					foreach ($file as $appTemplate) {
-						if ($appTemplate['Repository'] == $o['Repository']) {
-							$tempPath = $o['MyPath'];
-							$tempName = $o['Name'];
-							$o = $appTemplate;
-							$o['Removable'] = true;
-							$o['MyPath'] = $tempPath;
-							$o['Name'] = $tempName;
-							break;
-						}
-					}
-					if ( $moderation[$o['Repository']]['Blacklist'] ) {
+			$flag = false;
+			foreach ($info as $installedDocker) {
+				$installedImage = $installedDocker['Image'];
+				$installedName = $installedDocker['Name'];
+				if ( startsWith($installedImage, $o['Repository']) ) {
+					if ( $installedName == $o['Name'] ) {
+						$flag = true;
 						continue;
 					}
-					$displayed[] = $o;
 				}
+			}
+			if ( ! $flag ) {
+# now associate the template back to a template in the appfeed
+				foreach ($file as $appTemplate) {
+					if ($appTemplate['Repository'] == $o['Repository']) {
+						$tempPath = $o['MyPath'];
+						$tempName = $o['Name'];
+						$o = $appTemplate;
+						$o['Removable'] = true;
+						$o['MyPath'] = $tempPath;
+						$o['Name'] = $tempName;
+						break;
+					}
+				}
+				if ( $moderation[$o['Repository']]['Blacklist'] ) {
+					continue;
+				}
+				$displayed[] = $o;
 			}
 		}
 	}

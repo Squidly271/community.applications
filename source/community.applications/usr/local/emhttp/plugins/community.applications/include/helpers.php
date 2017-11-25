@@ -9,11 +9,8 @@ require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 
 ##################################################################################################################
-#                                                                                                                #
 # Convert Array("one","two","three") to be Array("one"=>$defaultFlag, "two"=>$defaultFlag, "three"=>$defaultFlag #
-#                                                                                                                #
 ##################################################################################################################
-
 function arrayEntriesToObject($sourceArray,$defaultFlag=true) {
 	if ( ! is_array($sourceArray) ) {
 		return array();
@@ -25,22 +22,17 @@ function arrayEntriesToObject($sourceArray,$defaultFlag=true) {
 }
 
 ####################################################################################################
-#                                                                                                  #
 # 2 Functions because unRaid includes comments in .cfg files starting with # in violation of PHP 7 #
-#                                                                                                  #
 ####################################################################################################
 function my_parse_ini_file($file,$mode=false,$scanner_mode=INI_SCANNER_NORMAL) {
 	return parse_ini_string(preg_replace('/^#.*\\n/m', "", @file_get_contents($file)),$mode,$scanner_mode);
 }
-
 function my_parse_ini_string($string, $mode=false,$scanner_mode=INI_SCANNER_NORMAL) {
 	return parse_ini_string(preg_replace('/^#.*\\n/m', "", $string),$mode,$scanner_mode);
 }
 
 ###########################################################################
-#                                                                         #
 # Helper function to determine if a plugin has an update available or not #
-#                                                                         #
 ###########################################################################
 function checkPluginUpdate($filename) {
 	global $unRaidVersion;
@@ -61,10 +53,8 @@ function checkPluginUpdate($filename) {
 }
 
 #############################################################
-#                                                           #
 # Helper function to return an array of directory contents. #
 # Returns an empty array if the directory does not exist    #
-#                                                           #
 #############################################################
 function dirContents($path) {
 	$dirContents = @scandir($path);
@@ -73,9 +63,7 @@ function dirContents($path) {
 }
 
 ###################################################################################
-#                                                                                 #
 # returns a random file name (/tmp/community.applications/tempFiles/34234234.tmp) #
-#                                                                                 #
 ###################################################################################
 function randomFile() {
 	global $communityPaths;
@@ -84,41 +72,45 @@ function randomFile() {
 }
 
 ##################################################################
-#                                                                #
-# 4 Functions to avoid typing the same lines over and over again #
-#                                                                #
+# 7 Functions to avoid typing the same lines over and over again #
 ##################################################################
 function readJsonFile($filename) {
 	return json_decode(@file_get_contents($filename),true);
 }
-
 function writeJsonFile($filename,$jsonArray) {
 	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 }
-
 function download_url($url, $path = "", $bg = false){
 	exec("curl -H 'Cache-Control: no-cache' --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
 	return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
-
 function download_json($url,$path) {
 	download_url($url,$path);
 	return readJsonFile($path);
 }
+function getPost($setting,$default) {
+	return isset($_POST[$setting]) ? urldecode(($_POST[$setting])) : $default;
+}
+function getPostArray($setting) {
+	return $_POST[$setting];
+}
+function getSortOrder($sortArray) {
+	if ( ! is_array($sortArray) ) { print_r($_POST); }
+	foreach ($sortArray as $sort) {
+		$sortOrder[$sort[0]] = $sort[1];
+	}
+	return $sortOrder;
+}
 
 #################################################################
-#                                                               #
 # Helper function to determine if $haystack begins with $needle #
-#                                                               #
 #################################################################
 function startsWith($haystack, $needle) {
 	return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;
 }
 
 #######################################################################################
-#                                                                                     #
 # Helper function to further remove formatting from descriptions (suitable for popUps #
-#                                                                                     #
 #######################################################################################
 function fixPopUpDescription($PopUpDescription) {
 	$PopUpDescription = str_replace("'","&#39;",$PopUpDescription);
@@ -129,9 +121,7 @@ function fixPopUpDescription($PopUpDescription) {
 }
 
 ###################################################################
-#                                                                 #
 # Helper function to remove any formatting, etc from descriptions #
-#                                                                 #
 ###################################################################
 function fixDescription($Description) {
 	$Description = preg_replace("#\[br\s*\]#i", "{}", $Description);
@@ -149,10 +139,8 @@ function fixDescription($Description) {
 }
 
 ########################################################################
-#                                                                      #
 # Security function to remove any <script> tags from elements that are #
 # displayed as is                                                      #
-#                                                                      #
 ########################################################################
 
 # pass a copy of the original template to relate security violations back to the template
@@ -172,9 +160,7 @@ function fixSecurity(&$template,&$originalTemplate) {
 }
 
 #######################
-#                     #
 # Custom sort routine #
-#                     #
 #######################
 function mySort($a, $b) {
 	global $sortOrder;
@@ -186,7 +172,6 @@ function mySort($a, $b) {
 		$c = $a[$sortOrder['sortBy']];
 		$d = $b[$sortOrder['sortBy']];
 	}
-
 	$return1 = ($sortOrder['sortDir'] == "Down") ? -1 : 1;
 	$return2 = ($sortOrder['sortDir'] == "Down") ? 1 : -1;
 
@@ -196,11 +181,9 @@ function mySort($a, $b) {
 }
 
 ###############################################
-#                                             #
 # Search array for a particular key and value #
 # returns the index number of the array       #
 # return value === false if not found         #
-#                                             #
 ###############################################
 function searchArray($array,$key,$value) {
 	$result = false;
@@ -216,18 +199,14 @@ function searchArray($array,$key,$value) {
 }
 
 #############################
-#                           #
 # Highlights search results #
-#                           #
 #############################
 function highlight($text, $search) {
 	return preg_replace('#'. preg_quote($text,'#') .'#si', '<span style="background-color:#FFFF66; color:#FF0000;font-weight:bold;">\\0</span>', $search);
 }
 
 ########################################################
-#                                                      #
 # Fix common problems (maintainer errors) in templates #
-#                                                      #
 ########################################################
 function fixTemplates($template) {
 	global $statistics;
@@ -275,7 +254,6 @@ function fixTemplates($template) {
 		$template['Date'] = 0;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Invalid Date Updated (More than 2 days in the future) Format used probably not in http://php.net/manual/en/datetime.formats.date.php";
 	}
-	
 	if ( ! $template['MinVer'] ) {
 		$template['MinVer'] = $template['Plugin'] ? "6.1" : "6.0";
 	}
@@ -352,9 +330,7 @@ function fixTemplates($template) {
 }
 
 ###############################################
-#                                             #
 # Function used to create XML's from appFeeds #
-#                                             #
 ###############################################
 function makeXML($template) {
 	# ensure its a v2 template if the Config entries exist
@@ -370,9 +346,7 @@ function makeXML($template) {
 }
 
 #################################################################################
-#                                                                               #
 # Function to fix differing schema in the appfeed vs what Array2XML class wants #
-#                                                                               #
 #################################################################################
 function fixAttributes(&$template,$attribute) {
 	if ( ! is_array($template[$attribute]) ) {
@@ -400,10 +374,8 @@ function fixAttributes(&$template,$attribute) {
 }
 
 #################################################################
-#                                                               #
 # checks the Min/Max version of an app against unRaid's version #
 # Returns: TRUE if it's valid to run, FALSE if not              #
-#                                                               #
 #################################################################
 function versionCheck($template) {
 	global $unRaidVersion;
@@ -414,9 +386,7 @@ function versionCheck($template) {
 }
 
 ###############################################
-#                                             #
 # Function to read a template XML to an array #
-#                                             #
 ###############################################
 function readXmlFile($xmlfile) {
 	global $statistics;
@@ -460,11 +430,9 @@ function readXmlFile($xmlfile) {
 }
 
 ###################################################################
-#                                                                 #
 # Function To Merge Moderation into templates array               #
 # (Because moderation can be updated when templates are not )     #
 # If appfeed is updated, this is done when creating the templates #
-#                                                                 #
 ###################################################################
 function moderateTemplates() {
 	global $communityPaths;
@@ -493,18 +461,14 @@ function moderateTemplates() {
 }
 
 ############################################
-#                                          #
 # Function to write a string to the syslog #
-#                                          #
 ############################################
 function logger($string) {
 	exec("logger ".escapeshellarg($string));
 }
 
 #######################################################
-#                                                     #
 # Function to check for a valid URL                   #
-#                                                     #
 #######################################################
 function validURL($URL) {
 	if ( function_exists("filter_var") ) {  # function only works on unRaid 6.1.8+
@@ -515,9 +479,7 @@ function validURL($URL) {
 }
 
 ####################################################################################
-#                                                                                  #
 # Read the pinned apps from temp files.  If it fails, gets it from the flash drive #
-#                                                                                  #
 ####################################################################################
 function getPinnedApps() {
 	global $communityPaths;
@@ -529,29 +491,8 @@ function getPinnedApps() {
 	return $pinnedApps;
 }
 
-########################################################
-#                                                      #
-# Avoids having to write this line over and over again #
-#                                                      #
-########################################################
-function getPost($setting,$default) {
-	return isset($_POST[$setting]) ? urldecode(($_POST[$setting])) : $default;
-}
-function getPostArray($setting) {
-	return $_POST[$setting];
-}
-function getSortOrder($sortArray) {
-	if ( ! is_array($sortArray) ) { print_r($_POST); }
-	foreach ($sortArray as $sort) {
-		$sortOrder[$sort[0]] = $sort[1];
-	}
-	return $sortOrder;
-}
-
 #################################################
-#                                               #
 # Sets the updateButton to the appropriate Mode #
-#                                               #
 #################################################
 function caGetMode() {
 	global $communityPaths, $communitySettings;
@@ -562,9 +503,7 @@ function caGetMode() {
 }
 
 ################################################
-#                                              #
 # Returns the actual URL after any redirection #
-#                                              #
 ################################################
 # works, but very slow.  Switched to a simple string replace as all redirects are plugin and simply github.com/raw/ vs raw.github.usercontent/
 function getRedirectedURL($url) {
@@ -578,9 +517,7 @@ function getRedirectedURL($url) {
 }
 
 ###########################################################
-#                                                         #
 # Returns the maximum number of columns per display width #
-#                                                         #
 ###########################################################
 function getMaxColumns($windowWidth) {
 	global $communitySettings, $templateSkin, $unRaid64;
@@ -598,9 +535,7 @@ function getMaxColumns($windowWidth) {
 }
 
 #######################
-#                     #
 # Creates an ini file #
-#                     #
 #######################
 function create_ini_file($settings,$mode=false) {
 	if ( $mode ) {
@@ -623,9 +558,7 @@ function create_ini_file($settings,$mode=false) {
 }
 
 #######################################################
-#                                                     #
 # Function used to determine if a search term matches #
-#                                                     #
 #######################################################
 function filterMatch($filter,$searchArray) {
 	$filterwords = explode(" ",$filter);
@@ -641,9 +574,7 @@ function filterMatch($filter,$searchArray) {
 }
 
 ###################################################################
-#                                                                 #
 # Used to update the last time synced to keep browsers up to date #
-#                                                                 #
 ###################################################################
 function updateSyncTime($updateSyncFlag) {
 	global $communityPaths;
@@ -657,9 +588,7 @@ function updateSyncTime($updateSyncFlag) {
 }
 
 ##########################################################
-#                                                        #
 # Used to figure out which plugins have duplicated names #
-#                                                        #
 ##########################################################
 function pluginDupe($templates) {
 	global $communityPaths;
@@ -679,9 +608,7 @@ function pluginDupe($templates) {
 }
 
 ###################################
-#                                 #
 # Checks if a plugin is installed #
-#                                 #
 ###################################
 function checkInstalledPlugin($template) {
 	global $communityPaths;
@@ -702,10 +629,8 @@ function checkInstalledPlugin($template) {
 }
 
 ####################################################################################################################################################################
-#                                                                                                                                                                  #
 # Locking of display is needed because of edge cases with multiple tabs open, and removing applications (which cause a rescan of feed, etc) the possibility exists #
 # for the second tab to recreate displayed.json  Check_stale will not run if display is locked                                                                     #
-#                                                                                                                                                                  #
 ####################################################################################################################################################################
 function lockDisplay($lock = true) {
 	global $communityPaths;
@@ -723,10 +648,8 @@ function isdisplayLocked() {
 }
 
 ############################################################################
-#                                                                          #
 # Function to convert a template's associative tags to static numeric tags #
 # (Because the associate tag order can change depending upon the template) #
-#                                                                          #
 ############################################################################
 function toNumericArray($template) {
 	return array(
@@ -807,8 +730,4 @@ function toNumericArray($template) {
 		$template['display_multi_install']     #75
 	);
 }
-
-
-
-
 ?>
