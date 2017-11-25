@@ -1755,7 +1755,9 @@ case 'previous_apps':
 case 'remove_application':
 	lockDisplay();
 	$application = getPost("application","");
-	@unlink($application);
+	if ( pathinfo($application,PATHINFO_EXTENSION) == "xml" || pathinfo($application,PATHINFO_EXTENSION) == "plg" ) {
+		@unlink($application);
+	}
 	echo "ok";
 	break;
 
