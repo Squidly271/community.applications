@@ -1852,9 +1852,7 @@ case "pinnedApps":
 
 	foreach ($pinnedApps as $pinned) {
 		$index = searchArray($file,"Repository",$pinned);
-		if ( $index === false ) {
-			continue;
-		} else {
+		if ( $index !== false ) {
 			$displayed[] = $file[$index];
 		}
 	}
