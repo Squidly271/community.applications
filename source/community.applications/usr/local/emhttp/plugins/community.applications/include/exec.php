@@ -586,6 +586,9 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 			}
 		}
 		$template['display_removable'] = $template['Removable'] ? "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Remove Application From List' style='width:20px;height:20px;cursor:pointer' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" : "";
+		if ( $template['display_Uninstall'] && $template['display_removable'] ) {
+			unset($template['display_Uninstall']); # prevent previously installed private apps from having 2 x's in previous apps section
+		}
 		if ( $template['Date'] > strtotime($communitySettings['timeNew'] ) ) {
 			$template['display_newIcon'] = "<i class='fa fa-star ca_tooltip' style='font-size:15px;color:yellow;' title='New / Updated - ".date("F d Y",$template['Date'])."'></i>";
 		}
