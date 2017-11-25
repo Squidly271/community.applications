@@ -86,7 +86,7 @@ function DownloadCommunityTemplates() {
 	$Repos = download_json($communityPaths['community-templates-url'],$tmpFileName);
 	@unlink($tmpFileName);
 
-	if ( ! is_array($Repos) )                                                    { return false; }
+	if ( ! is_array($Repos) ) { return false; }
 	$statistics['repository'] = count($Repos);
 
 	$appCount = 0;
@@ -375,14 +375,12 @@ function getConvertedTemplates() {
 # Start by removing any pre-existing private (converted templates)
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	$statistics = readJsonFile($communityPaths['statistics']);
-	unset($statistics['private']);
+
 	if ( ! is_array($templates) ) {
 		return false;
 	}
 	foreach ($templates as $template) {
-		if ( $template['Private'] ) {
-			continue;
-		} else {
+		if ( ! $template['Private'] ) {
 			$myTemplates[] = $template;
 		}
 	}
@@ -575,11 +573,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['display_pinButton'] = "<i class='ca_tooltip fa fa-thumb-tack $pinned' title='$pinnedTitle' onclick='pinApp(this,&quot;".$template['Repository']."&quot;);' aria-hidden='true'></i>";
 		if ( $template['Uninstall'] ) {
 			$template['display_Uninstall'] = "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Uninstall Application' style='width:20px;height:20px;cursor:pointer' ";
-			if ( $template['Plugin'] ) {
-				$template['display_Uninstall'] .= "onclick='uninstallApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>";
-			} else {
-				$template['display_Uninstall'] .= "onclick='uninstallDocker(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>";
-			}
+			$template['display_Uninstall'] .= ( $template['Plugin'] ) ? "onclick='uninstallApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" :	"onclick='uninstallDocker(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>";
 		} else {
 			if ( $template['Private'] == "true" ) {
 				$template['display_Uninstall'] = "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Remove Private Application' style='width:20px;height:20px;cursor:pointer' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['SortAuthor']}&quot;);'>";
@@ -658,12 +652,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
 			$template['display_iconSmall'] = "<img src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/$plugin/images/question.png\";'>";
 		}
-
-		if ( $communitySettings['dockerSearch'] == "yes" && ! $template['Plugin'] ) {
-			$template['display_dockerName'] = "<a class='ca_tooltip' data-appNumber='$ID' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search dockerHub for similar containers'>".$template['Name']."</a>";
-		} else {
-			$template['display_dockerName'] = $template['Name'];
-		}
+		$template['display_dockerName'] = ( $communitySettings['dockerSearch'] == "yes" && ! $template['Plugin'] ) ? "<a class='ca_tooltip' data-appNumber='$ID' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search dockerHub for similar containers'>".$template['Name']."</a>" : $template['Name'];
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
 		if ( ( $template['Beta'] == "true" ) ) {
@@ -740,11 +729,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
 		$endingPage = $totalPages;
 	}
 	for ($i = $startingPage; $i <= $endingPage; $i++) {
-		if ( $i == $pageNumber ) {
-			$o .= "$i";
-		} else {
-			$o .= "<b><a style='cursor:pointer' onclick='{$my_function}(&quot;$i&quot;);' title='Go To Page $i'>$i</a></b>";
-		}
+		$o .= ( $i == $pageNumber ) ? $i : "<b><a style='cursor:pointer' onclick='{$my_function}(&quot;$i&quot;);' title='Go To Page $i'>$i</a></b>";
 		$o .= "&nbsp;&nbsp;&nbsp";
 	}
 	if ( $endingPage != $totalPages) {
@@ -1006,12 +991,12 @@ case 'get_content':
 	$sortOrder   = getSortOrder(getPostArray("sortOrder"));
 	$windowWidth = getPost("windowWidth",false);
 	getMaxColumns($windowWidth);
+	@unlink($communityPaths['dontAllowInstalls']);
 
 	if ( $category == "/PRIVATE/i" ) {
 		$category = false;
 		$displayPrivates = true;
 	}
-	@unlink($communityPaths['dontAllowInstalls']);
 	if ( $category == "/DEPRECATED/i") {
 		$category = false;
 		$displayDeprecated = true;
@@ -1182,11 +1167,9 @@ case 'get_content':
 				}
 			}
 		}
-		if ( $template['Plugin'] ) {
-			if ( file_exists("/var/log/plugins/".basename($template['PluginURL'])) ) {
-				$template['UpdateAvailable'] = checkPluginUpdate($template['PluginURL']);
-				$template['MyPath'] = $template['PluginURL'];
-			}
+		if ( $template['Plugin'] && file_exists("/var/log/plugins/".basename($template['PluginURL'])) ) {
+			$template['UpdateAvailable'] = checkPluginUpdate($template['PluginURL']);
+			$template['MyPath'] = $template['PluginURL'];
 		}
 
 		if ( ($newApp == "true") && ($template['Date'] < $newAppTime) )  { continue; }
@@ -1922,9 +1905,6 @@ case 'statistics':
 		}
 	}
 
-	foreach ($statistics as &$stat) {
-		if ( ! $stat ) { $stat = "0"; }
-	}
 	if ( $statistics['fixedTemplates'] ) {
 		writeJsonFile($communityPaths['fixedTemplates_txt'],$statistics['fixedTemplates']);
 	} else {
