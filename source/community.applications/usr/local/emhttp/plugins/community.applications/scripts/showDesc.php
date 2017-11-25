@@ -17,7 +17,7 @@ $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $csrf_token = $unRaidVars['csrf_token'];
 $communitySettings = parse_plugin_cfg("community.applications");
 $tabMode = $communitySettings['newWindow'];
-if ( is_dir("/var/lib/docker/containers") ) {
+if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
   $communitySettings['dockerRunning'] = true;
 } else {
   unset($communitySettings['dockerRunning']);
