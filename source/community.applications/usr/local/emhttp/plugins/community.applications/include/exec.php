@@ -2027,7 +2027,7 @@ case 'removePrivateApp':
 	lockDisplay();
 	$path = getPost("path",false);
 
-	if ( ! $path ) {
+	if ( ! $path || pathinfo($path,PATHINFO_EXTENSION) != "xml") {
 		echo "something went wrong";
 		break;
 	}
