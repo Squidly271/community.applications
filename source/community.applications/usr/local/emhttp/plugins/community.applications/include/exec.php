@@ -43,7 +43,7 @@ if ( $communitySettings['favourite'] != "None" ) {
 	$officialRepo = str_replace("*","'",$communitySettings['favourite']);
 	$separateOfficial = true;
 }
-if ( is_dir("/var/lib/docker/containers") ) {
+if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 	$communitySettings['dockerRunning'] = "true";
 } else {
 	$communitySettings['dockerSearch'] = "no";
@@ -1576,6 +1576,9 @@ case 'previous_apps':
 # now correlate that to a template;
 # this section handles containers that have not been renamed from the appfeed
 	$all_files = glob("/boot/config/plugins/dockerMan/templates-user/*.xml");
+	if ( ! $all_files ) {
+		$all_files = array();
+	}
 	if ( $installed == "true" ) {
 		foreach ($info as $installedDocker) {
 			$installedImage = $installedDocker['Image'];
