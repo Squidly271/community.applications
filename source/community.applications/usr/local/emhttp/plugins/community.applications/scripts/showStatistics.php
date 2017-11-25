@@ -55,7 +55,7 @@ switch ($_GET['arg1']) {
 			$count = 0;
 			foreach ($templates as $searchTemplates) {
 				if ( ($template['Repository'] == $searchTemplates['Repository'])  ) {
-					if ( $searchTemplates['BranchName'] || $searchTemplates['Blacklist'] ) {
+					if ( $searchTemplates['BranchName'] || $searchTemplates['Blacklist'] || $searchTemplates['Deprecated']) {
 						continue;
 					}
 					$count++;

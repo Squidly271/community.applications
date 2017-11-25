@@ -509,8 +509,8 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	}
 	$specialCategoryComment = @file_get_contents($communityPaths['dontAllowInstalls']);
 	if ( $specialCategoryComment ) {
-		$ct .= "<center><font size='2' color='red'>This display is informational <em>ONLY</em>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</font></center><br>";
-		$ct .= "<center><font size='2' color='red'>$specialCategoryComment</font></center>";
+		$ct .= "<center><font size='2' color='green'>This display is informational <em>ONLY</em>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</font></center><br>";
+		$ct .= "<center><font size='2' color='green'>$specialCategoryComment</font></center>";
 	}
 
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);

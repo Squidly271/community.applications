@@ -37,7 +37,7 @@ $tabMode = "_self";
 $line_color = $display['theme']=='black' ? '#202020' : '#E8E8E8';
 
 $timeNew = str_replace("-","",$cfg['timeNew']);
-$categoryTitle = "Recommended Applications";
+$categoryTitle = "Current Category";
 $viewMode = $cfg['viewMode'];
 $execPath = "/plugins/$plugin/scripts";
 
@@ -628,7 +628,7 @@ function doSearch(button) {
 	$("#Total1").show();
 	$("#Total").html("Searching... <i class='fa fa-spinner fa-spin' style='font-size:20px;color:MediumBlue;' aria-hidden='true'></i>");
 	if (filter) {
-		$("#Category").html("<?=$categoryTitle?> (Search Results for <font color='red'>"+filter+"</font>)");
+		$("#Category").html("<?=$categoryTitle?> (Search Results for <font color='green'>"+filter+"</font>)");
 	} else {
 		$("#Category").html("All Recommended Applications");
 	}
@@ -895,7 +895,7 @@ function getContent(init,category,description,newApp) {
 				myCloseAlert();
 				setToolTip();
 			}
-			description = "<?=$categoryTitle?>: <font color='red'>"+description+"</font>";
+			description = "<?=$categoryTitle?>: <font color='green'>"+description+"</font>";
 			$("#Category").html(description);
 			$("#updateButton").prop("disabled",false);
 		});
@@ -1436,7 +1436,7 @@ function resizeDisplay() {
 <img id='categoryIcon' class='ca_categories enabledIcon' src='/plugins/community.applications/images/CategoryIconNew.png'>
 <img id='subcategoryIcon' class='ca_subcategories disabledIcon' src='/plugins/community.applications/images/SubCategoryIconNew.png'>
 <img id='sortIcon' class='ca_toolsView disabledIcon' height='35px;' src='/plugins/community.applications/images/ViewIconNew.png'>
-<font size='2'><b>Current Section: <font color='red'><span id='currentSection'>Available Apps</span></font></b></font>
+<font size='3'><b>Current Section: <font color='green'><span id='currentSection'>Available Apps</span></font></b></font>
 <strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option><option value='100'>100</option><option value='-1'>All</option></select></span></span>
 </span><br>
 
