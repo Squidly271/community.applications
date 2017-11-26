@@ -39,9 +39,6 @@ if ( ! $appNumber ) {
 }
 
 $repos = readJsonFile($communityPaths['Repositories']);
-if ( ! $repos ) {
-  $repos = array();
-}
 $displayed = readJsonFile($communityPaths['community-templates-displayed']);
 foreach ($displayed as $file) {
   $index = searchArray($file,"ID",$appNumber);

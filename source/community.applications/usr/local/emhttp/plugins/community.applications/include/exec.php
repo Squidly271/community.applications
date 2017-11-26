@@ -79,7 +79,6 @@ function DownloadCommunityTemplates() {
 
 	$betaComment = "The author of this template has designated it to be a beta.  You may experience issues with this application";
 	$moderation = readJsonFile($communityPaths['moderation']);
-	if ( ! is_array($moderation) ) { $moderation = array(); }
 
 	$DockerTemplates = new DockerTemplates();
 	$tmpFileName = randomFile();
@@ -222,15 +221,11 @@ function DownloadApplicationFeed() {
 	exec("mkdir -p '{$communityPaths['templates-community']}'");
 	$betaComment = "The author of this template has designated it to be a beta.  You may experience issues with this application";
 	$moderation = readJsonFile($communityPaths['moderation']);
-	if ( ! is_array($moderation) ) {
-		$moderation = array();
-	}
+
 	$statistics['moderation'] = count($moderation);
 
 	$Repositories = readJsonFile($communityPaths['Repositories']);
-	if ( ! $Repositories ) {
-		$Repositories = array();
-	}
+
 	$statistics['repository'] = count($Repositories);
 	$downloadURL = randomFile();
   $ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
@@ -376,7 +371,7 @@ function getConvertedTemplates() {
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	$statistics = readJsonFile($communityPaths['statistics']);
 
-	if ( ! is_array($templates) ) {
+	if ( empty($templates) ) {
 		return false;
 	}
 	foreach ($templates as $template) {
@@ -384,14 +379,8 @@ function getConvertedTemplates() {
 			$myTemplates[] = $template;
 		}
 	}
-
 	$appCount = count($myTemplates);
-
 	$moderation = readJsonFile($communityPaths['moderation']);
-	if ( ! is_array($moderation) ) {
-		$moderation = array();
-	}
-
 	$i = $appCount;
 	unset($Repos);
 
@@ -1079,7 +1068,7 @@ case 'get_content':
 	moderateTemplates();
 
 	$file = readJsonFile($communityPaths['community-templates-info']);
-	if (!is_array($file)) break;
+	if ( empty($file)) break;
 
 	if ( $category === "/NONE/i" ) {
 		echo "<center><font size=4>$selectCategoryMessage</font></center>";
@@ -1318,9 +1307,7 @@ case 'convert_docker':
 	$dockerID = getPost("ID","");
 
 	$file = readJsonFile($communityPaths['dockerSearchResults']);
-
 	$docker = $file['results'][$dockerID];
-
 	$docker['Description'] = str_replace("&", "&amp;", $docker['Description']);
 
 	if ( ! $docker['Official'] ) {
@@ -1548,9 +1535,7 @@ case 'previous_apps':
 
 	$installed = getPost("installed","");
 	$dockerUpdateStatus = readJsonFile($communityPaths['dockerUpdateStatus']);
-
-	$moderation = ( is_file($communityPaths['moderation']) ) ? readJsonFile($communityPaths['moderation']) : array();
-
+	$moderation = readJsonFile($communityPaths['moderation']);
 	$DockerClient = new DockerClient();
 	$info = $DockerClient->getDockerContainers();
 	$file = readJsonFile($communityPaths['community-templates-info']);
@@ -1819,7 +1804,6 @@ case "pinApp":
 	$pinnedApps = readJsonFile($communityPaths['pinned']);
 	$pinnedApps[$repository] = $pinnedApps[$repository] ? false : $repository;
 	writeJsonFile($communityPaths['pinned'],$pinnedApps);
-	writeJsonFile($communityPaths['pinnedRam'],$pinnedApps);
 	break;
 
 ####################################
@@ -1875,8 +1859,6 @@ case 'displayTags':
 ###########################################
 case 'statistics':
 	$statistics = readJsonFile($communityPaths['statistics']);
-	if ( ! $statistics ) { $statistics = array(); }
-
 	$statistics['totalModeration'] = count(readJsonFile($communityPaths['moderation']));
 
 	$templates = readJsonFile($communityPaths['community-templates-info']);

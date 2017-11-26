@@ -75,7 +75,8 @@ function randomFile() {
 # 7 Functions to avoid typing the same lines over and over again #
 ##################################################################
 function readJsonFile($filename) {
-	return json_decode(@file_get_contents($filename),true);
+	$json = json_decode(@file_get_contents($filename),true);
+	return ( $json ) ? $json : array();
 }
 function writeJsonFile($filename,$jsonArray) {
 	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
@@ -484,11 +485,7 @@ function validURL($URL) {
 function getPinnedApps() {
 	global $communityPaths;
 
-	$pinnedApps = readJsonFile($communityPaths['pinnedRam']);
-	if ( ! $pinnedApps ) {
-		$pinnedApps = readJsonFile($communityPaths['pinned']);
-	}
-	return $pinnedApps;
+	return readJsonFile($communityPaths['pinned']);
 }
 
 #################################################
