@@ -49,6 +49,7 @@ $communityPaths['newFlag']                       = $communityPaths['tempFiles'].
 $communityPaths['deleteIcon']                    = "/plugins/dynamix.docker.manager/images/remove.png";
 $communityPaths['displayLocked']                 = $communityPaths['tempFiles']."/displayLocked"; # when file exists, the background check for stale will not run
 $communityPaths['dontAllowInstalls']             = $communityPaths['tempFiles']."/dontAllowInstalls"; # when file exists, the icons for install/edit/etc will not appear
+$communityPaths['appFeedDownloadError']          = $communityPaths['tempFiles']."/appfeedTemporaryFileForAnalysis";
 
 $infoFile                                        = $communityPaths['community-templates-info'];
 ?>

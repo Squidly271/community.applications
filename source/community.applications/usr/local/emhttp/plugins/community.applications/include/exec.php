@@ -77,7 +77,7 @@ $selectCategoryMessage = "Select a Section <img src='/plugins/community.applicat
 function DownloadCommunityTemplates() {
 	global $communityPaths, $infoFile, $plugin, $communitySettings, $statistics;
 
-	$betaComment = "The author of this template has designated it to be a beta.  You may experience issues with this application";
+	#$betaComment = "The author of this template has designated it to be a beta.  You may experience issues with this application";
 	$moderation = readJsonFile($communityPaths['moderation']);
 
 	$DockerTemplates = new DockerTemplates();
@@ -228,8 +228,9 @@ function DownloadApplicationFeed() {
 	$statistics['repository'] = count($Repositories);
 	$downloadURL = randomFile();
   $ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
-
-	if ( ! is_array($ApplicationFeed) ) {
+	
+	if ( ! is_array($ApplicationFeed['applist']) ) {
+		file_put_contents($communityPaths['appFeedDownloadError'],$downloadURL);
 		return false;
 	}
 
@@ -631,7 +632,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$displayIcon = $template['Icon'];
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/$plugin/images/question.png";
 		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/$plugin/images/question.png\";'></a>";
-		$template['display_iconSelectable'] = "<img src='$displayIcon' onError='this.src=\"/plugins/$plugin/images/question.png\";' style='width:".$iconSize."px;height=".$iconSize."px;'>";
+		$template['display_iconSelectable'] = "<img class='betaApp' src='$displayIcon' onError='this.src=\"/plugins/$plugin/images/question.png\";' style='width:".$iconSize."px;height=".$iconSize."px;'>";
 		$template['display_popupDesc'] = ( $communitySettings['maxColumn'] > 2 ) ? "Click for a full description\n".$template['PopUpDescription'] : "Click for a full description";
 		if ( isset($ID) ) {
 			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' style='cursor:pointer' title='".$template['display_popupDesc']."'>".$template['display_iconSelectable']."</a>";
@@ -644,7 +645,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
 		if ( ( $template['Beta'] == "true" ) ) {
-			$template['display_dockerName'] .= "<span class='ca_tooltip' title='Beta Container &#13;See support forum for potential issues'><font size='1' color='red'><strong>(beta)</strong></font></span>";
+			$template['display_dockerName'] .= "<div class='ca_tooltip animate_flicker' title='Beta Container &#13;See support forum for potential issues'><font size='3' color='red'><strong>BETA</strong></font></div>";
 		}
 # Entries created.  Now display it
 		$t .= vsprintf($displayTemplate,toNumericArray($template));
@@ -1024,18 +1025,31 @@ case 'get_content':
 				@unlink($communityPaths['LegacyMode']);
 				updateSyncTime(true);
 				echo "<center><font size='3'><strong>Download of appfeed failed.</strong></font><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  Switching CA to operate in <em>Legacy Mode</em> might temporarily allow you to still utilize CA.<br>";
+				$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
+				$downloaded = @file_get_contents($tempFile);
+				if (strlen($downloaded) > 100) {
+					echo "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Switch to legacy mode (top right), or try again later)</font>";
+  			}
+				echo "<center>Last JSON error Recorded: ";
+				$jsonDecode = json_decode($downloaded,true);
+				echo "JSON Error: ".jsonError(json_last_error());
+				echo "</center>";
+				@unlink($communityPaths['appFeedDownloadError']);
 				echo caGetMode();
 				echo "<script>$('#updateButton').show();</script>";
-				if ( is_file($communityPaths['CAdeveloper']) ) {
+				if ( $communitySettings['maintainer'] == "yes"  ) {
 					exec("curl --compressed --max-time 60 --insecure --location -o ".$communityPaths['tempFiles']."/failedOutput ".$communityPaths['application-feed'],$out);
-					echo "<br><br>Developer Mode Enabled:<br>";
+					echo "<br><br>Developer Mode Enabled:<br></center>";
 					foreach ($out as $line) {
 						echo "<tt>$line<br>";
 					}
-					echo "<br><br>Appfeed Contents:<br>";
+					echo "<br><br><font size='4'>Appfeed Contents:<br></font>";
+					echo "<div style='height:300px; overflow:auto;'>";
 					$out = @file_get_contents($communityPaths['tempFiles']."/failedOutput");
 					$out = str_replace("\n","<br>",$out);
+					$out = str_replace(" ","&nbsp;",$out);
 					echo "<tt>$out</tt>";
+					echo "</div>";
 				} else {
 					echo "<br><br>Note: Developer Mode Not Enabled<br><br>";
 				}
@@ -1046,6 +1060,7 @@ case 'get_content':
 		if ($communitySettings['appFeed'] == "false" ) {
 			if (!DownloadCommunityTemplates()) {
 				echo "<center><font size='3'><strong>Download of appfeed failed.</strong></font><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling templates (GitHub.com) is temporarily down.";
+
 				break;
 			} else {
 				$lastUpdated['last_updated_timestamp'] = time();
