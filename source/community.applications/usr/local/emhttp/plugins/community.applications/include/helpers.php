@@ -5,9 +5,6 @@
 #                                                             #
 ###############################################################
 
-require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
-require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
-
 ##################################################################################################################
 # Convert Array("one","two","three") to be Array("one"=>$defaultFlag, "two"=>$defaultFlag, "three"=>$defaultFlag #
 ##################################################################################################################
