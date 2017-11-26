@@ -23,7 +23,7 @@ function getLineCount($directory) {
 }
 
 $caCredits = "
-    <center><table align:'center'>
+    <center><table style='margin:-10px 50px;'>
       <tr>
         <td><img src='https://github.com/Squidly271/plugin-repository/raw/master/Chode_300.gif' width='50px';height='48px'></td>
         <td><strong><font color='coral'>Andrew Zawadzki</font></strong></td>

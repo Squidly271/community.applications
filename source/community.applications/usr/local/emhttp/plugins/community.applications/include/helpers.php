@@ -150,7 +150,7 @@ function fixSecurity(&$template,&$originalTemplate) {
 		} else {
 			$tempElement = htmlspecialchars_decode($element);
 			if ( preg_match('#<script(.*?)>(.*?)</script>#is',$tempElement) || preg_match('#<iframe(.*?)>(.*?)</iframe>#is',$tempElement) ) {
-				logger("Alert the maintainers of Community Applications with the following Information:".$originalTemplate['RepoName']." ".$originalTemplate['Name']." ".$originalTemplate['Repository']);
+				logger("VERY IMPORTANT IF YOU SEE THIS: Alert the maintainers of Community Applications with the following Information:".$originalTemplate['RepoName']." ".$originalTemplate['Name']." ".$originalTemplate['Repository']);
 				$originalTemplate['Blacklist'] = true;
 				return;
 			}
