@@ -77,7 +77,6 @@ $selectCategoryMessage = "Select a Section <img src='/plugins/community.applicat
 function DownloadCommunityTemplates() {
 	global $communityPaths, $infoFile, $plugin, $communitySettings, $statistics;
 
-	#$betaComment = "The author of this template has designated it to be a beta.  You may experience issues with this application";
 	$moderation = readJsonFile($communityPaths['moderation']);
 
 	$DockerTemplates = new DockerTemplates();
@@ -155,10 +154,6 @@ function DownloadCommunityTemplates() {
 				}
 				$o['Compatible'] = versionCheck($o);
 
-				if ( $o['Beta'] == "true" ) {
-					$o['ModeratorComment'] .= $o['ModeratorComment'] ? "<br><br>$betaComment" : $betaComment;
-				}
-
 				$statistics['totalApplications']++;
 
 				$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
@@ -218,11 +213,9 @@ function DownloadApplicationFeed() {
 
 	exec("rm -rf '{$communityPaths['templates-community']}'");
 	exec("mkdir -p '{$communityPaths['templates-community']}'");
-	#$betaComment = "The author of this template has designated it to be a beta.  You may experience issues with this application";
+
 	$moderation = readJsonFile($communityPaths['moderation']);
-
 	$statistics['moderation'] = count($moderation);
-
 	$Repositories = readJsonFile($communityPaths['Repositories']);
 
 	$statistics['repository'] = count($Repositories);
@@ -303,10 +296,6 @@ function DownloadApplicationFeed() {
 		}
 
 		$o['Compatible'] = versionCheck($o);
-
-		if ( $o['Beta'] == "true" ) {
-			$o['ModeratorComment'] .= $o['ModeratorComment'] ? "<br><br>$betaComment" : $betaComment;
-		}
 
 		# Update the settings for the template
 
@@ -759,11 +748,10 @@ function appOfDay($file) {
 				}
 			}
 			if ( $flag ) {
-				unset($app);
+				$app = array();
 			}
 		}	
 	}
-	if ( count($app) < 9 ) { unset($app); }  # For update from old version where only 2 possible apps of day
 	if ( ! $app ) {
 		for ( $ii=0; $ii<10; $ii++ ) {
 			$flag = false;
@@ -771,7 +759,7 @@ function appOfDay($file) {
 				$flag = checkRandomApp($app[$ii],$file);
 			}
 			if ( ! $flag ) {
-				while (true ) {
+				for ( $jj = 0; $jj<20; $jj++) { # only give it 20 shots to find an app of the day
 					$randomApp = mt_rand(0,count($file) -1);
 					$flag = checkRandomApp($randomApp,$file);
 					if ( $flag ) {
@@ -779,9 +767,13 @@ function appOfDay($file) {
 					}
 				}
 			}
+			if ( ! $flag ) {
+				continue;
+			}
 			$app[$ii] = $randomApp;
 		}
 	}
+	if (! $app) { $app = array(); } # for the extremely unlikely situation where it can't find any valid apps of the day
 	$app = array_values(array_unique($app));
 	writeJsonFile($communityPaths['appOfTheDay'],$app);
 	return $app;
@@ -796,6 +788,7 @@ function checkRandomApp($randomApp,$file) {
 	if ( $file[$randomApp]['Blacklist'] )        return false;
 	if ( $file[$randomApp]['ModeratorComment'] ) return false;
 	if ( $file[$randomApp]['Deprecated'] )       return false;
+	if ( $file[$randomApp]['Beta'] == "true" )   return false;
 	if ( $file[$randomApp]['PluginURL'] == "https://raw.githubusercontent.com/Squidly271/community.applications/master/plugins/community.applications.plg" ) return false;
 	return true;
 }
@@ -1097,11 +1090,17 @@ case 'get_content':
 					}
 					$displayApplications['community'][] = $file[$appsOfDay[$i]];
 				}
-				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
-				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-				echo "<br><center><font size='4' color='purple'><b>Random Apps Of The Day</b></font><br><br>";
-				echo my_display_apps("detail",$displayApplications['community'],$runningDockers,$imagesDocker);
-				break;
+				if ( $displayApplications['community'] ) {
+					writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
+					echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
+					echo "<br><center><font size='4' color='purple'><b>Random Apps Of The Day</b></font><br><br>";
+					echo my_display_apps("detail",$displayApplications['community'],$runningDockers,$imagesDocker);
+					break;
+				} else {
+					echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
+					echo "<br><center><font size='4' color='purple'><b>An error occurred.  Could not find any Random Apps of the day</b></font><br><br>";				
+					break;
+				}
 			}
 		} else {
 			break;
