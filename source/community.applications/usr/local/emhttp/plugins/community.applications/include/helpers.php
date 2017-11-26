@@ -76,7 +76,8 @@ function randomFile() {
 ##################################################################
 function readJsonFile($filename) {
 	$json = json_decode(@file_get_contents($filename),true);
-	return ( is_array($json) ) ? $json : array();
+	if ( ! is_array($json) ) { $json = array(); }
+	return $json;
 }
 function writeJsonFile($filename,$jsonArray) {
 	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
