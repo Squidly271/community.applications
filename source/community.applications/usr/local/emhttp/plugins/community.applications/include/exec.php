@@ -204,7 +204,6 @@ function DownloadCommunityTemplates() {
 	} else {
 		@unlink($communityPaths['invalidXML_txt']);
 	}
-	writeJsonFile($communityPaths['blacklisted_txt'],$blacklist);
 	writeJsonFile($communityPaths['statistics'],$statistics);
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
 

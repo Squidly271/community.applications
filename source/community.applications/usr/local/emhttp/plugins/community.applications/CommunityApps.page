@@ -14,7 +14,7 @@ require_once("/usr/local/emhttp/plugins/community.applications/include/caCredits
 $plugin = "community.applications";
 
 $installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$plugin.plg");
-$upgradeVersion = (is_file("/tmp/plugins/community.applications.plg")) ? exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /tmp/plugins/$plugin.plg") : "0";
+$upgradeVersion = (is_file("/tmp/plugins/$plugin.plg")) ? exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /tmp/plugins/$plugin.plg") : "0";
 if ( $installedVersion < $upgradeVersion ) {
 	$upgradeAvailable = "true";
 }
@@ -39,9 +39,6 @@ $line_color = $display['theme']=='black' ? '#202020' : '#E8E8E8';
 $timeNew = str_replace("-","",$cfg['timeNew']);
 $categoryTitle = "Current Category";
 $viewMode = $cfg['viewMode'];
-$execPath = "/plugins/$plugin/scripts";
-
-$dockerRunning = (is_dir("/var/lib/docker/containers")) ? "true" : "false";
 
 $template = json_decode(file_get_contents($communityPaths['defaultSkin']),true);
 
@@ -387,7 +384,7 @@ $(function(){
 		if (data) {
 			if ( "<?=$pluginInstallPending?>" ) {
 				myCloseAlert();
-				openBox('/plugins/community.applications/scripts/installMultiPlugin.sh&arg1=<?=$pluginInstallPending?>','Install Plugin Applications',600,900,true);
+				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1=<?=$pluginInstallPending?>','Install Plugin Applications',600,900,true);
 			} else {
 				getContent(true,'INITIALIZE','None Selected');
 				$('#searchBox').keyup(function(e) {if(e.which == 13){doSearch(false);}});
@@ -443,7 +440,7 @@ function setToolTip() {
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
 			var appNumber = origin.attr('data-appNumber');
-			$.post("/plugins/community.applications/scripts/showInfo.php",{action:'none',appNumber:appNumber},function(data) {
+			$.post("/plugins/<?=$plugin?>/scripts/showInfo.php",{action:'none',appNumber:appNumber},function(data) {
 				if (data) {
 					instance.content(data);
 				}
@@ -466,7 +463,7 @@ function setToolTip() {
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
 			var appNumber = origin.attr('data-appNumber');
-			$.post("/plugins/community.applications/scripts/showDesc.php",{action:'none',appNumber:appNumber},function(data) {
+			$.post("/plugins/<?=$plugin?>/scripts/showDesc.php",{action:'none',appNumber:appNumber},function(data) {
 				if (data) {
 					instance.content(data);
 				}
@@ -630,9 +627,7 @@ function doSearch(button) {
 	$("#Total1").show();
 	$("#Total").html("Searching... <i class='fa fa-spinner fa-spin' style='font-size:20px;color:MediumBlue;' aria-hidden='true'></i>");
 	if (filter) {
-		$("#Category").html("<?=$categoryTitle?> (Search Results for <font color='green'>"+filter+"</font>)");
-	} else {
-		$("#Category").html("All Recommended Applications");
+		$("#Category").html(" Search Results for <font color='green'>"+filter+"</font>");
 	}
 
 	$("#sortButtons,#MainCategory").show();
@@ -996,7 +991,7 @@ function my_openBox(cmd,title,height,width,load,func) {
 
 function showModeration(script,title) {
 	$("#sb-nav-close").css("visisbility","visible");
-	my_openBox("/plugins/community.applications/scripts/showStatistics.php?arg1="+script,title,550,900,true,false);
+	my_openBox("/plugins/<?=$plugin?>/scripts/showStatistics.php?arg1="+script,title,550,900,true,false);
 }
 
 function previousApps(button,installed) {
@@ -1161,9 +1156,9 @@ function installPLGupdate(filename,plgName) {
 	$(".ca_appPopup").tooltipster('close');
 	$("#sortorder").attr("data-plgfilename",filename);
 	if ( filename == "community.applications.plg" ) {
-		openBox('/plugins/community.applications/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true);
+		openBox('/plugins/<?=$plugin?>/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true);
 	} else {
-		my_openBox('/plugins/community.applications/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true,"checkPLGupdate()");
+		my_openBox('/plugins/<?=$plugin?>/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true,"checkPLGupdate()");
 	}
 }
 function checkPLGupdate() {
@@ -1378,9 +1373,9 @@ function installMulti() {
 		swal.close();
 		if ( docker.length ) {
 			$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
-			openBox('/plugins/community.applications/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,'Install Docker '+makePlural("Application",dockerCount),600,900,true);
+			openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,'Install Docker '+makePlural("Application",dockerCount),600,900,true);
 		} else {
-			openBox('/plugins/community.applications/scripts/installMultiPlugin.sh&arg1='+plugin,'Install Plugin '+makePlural("Application",pluginCount),600,900,true);
+			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugin,'Install Plugin '+makePlural("Application",pluginCount),600,900,true);
 		}
 	});
 }
