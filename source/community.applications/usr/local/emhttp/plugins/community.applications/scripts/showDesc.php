@@ -130,7 +130,7 @@ if ( $template['Date'] && $template['Plugin'] ) {
 $templateDescription .= $template['MinVer'] ? "<tr><td nowrap>$color<b>Minimum OS:</strong></td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
 $templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>$color<strong>Max OS:</strong></td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
 if ($template['downloads']) {
-	$templateDescription .= "<tr><td>$color<strong>Downloads:</strong></td><td>$color{$template['downloads']}</td></tr>";
+	$templateDescription .= "<tr><td>$color<strong>Downloads:</strong></td><td>$color".number_format($template['downloads'])."</td></tr>";
 }
 $templateDescription .= $template['Licence'] ? "<tr><td>$color<strong>Licence:</strong></td><td>$color".$template['Licence']."</td></tr>" : "";
   

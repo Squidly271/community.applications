@@ -539,7 +539,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=20px>" : "";
 		$template['display_Announcement'] = $template['Forum'] ? "<a class='ca_tooltip' href='".$template['Forum']."' target='_blank' title='Click to go to the repository Announcement thread' >$RepoName $tempLogo</a>" : "$RepoName $tempLogo";
 		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star' style='font-size:15px; color:magenta;' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
-		$template['display_Downloads'] = $template['downloads'] ? "<center>".$template['downloads']."</center>" : "<center>Not Available</center>";
+		$template['display_Downloads'] = $template['downloads'] ? "<center>".number_format($template['downloads'])."</center>" : "<center>Not Available</center>";
 
 		if ( $pinnedApps[$template['Repository']] ) {
 			$pinned = "pinned";
@@ -634,7 +634,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
 		if ( ( $template['Beta'] == "true" ) ) {
-			$template['display_dockerName'] .= "<div class='ca_tooltip animate_flicker' title='Beta Container &#13;See support forum for potential issues'><font size='3' color='red'><strong>BETA</strong></font></div>";
+			$template['display_dockerName'] .= "<span class='ca_tooltip animate_flicker' title='Beta Container &#13;See support forum for potential issues'><font size='3' color='red'><strong><br>BETA</strong></font></span>";
 		}
 # Entries created.  Now display it
 		$t .= vsprintf($displayTemplate,toNumericArray($template));
