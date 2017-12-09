@@ -43,7 +43,9 @@ if ( $communitySettings['favourite'] != "None" ) {
 	$officialRepo = str_replace("*","'",$communitySettings['favourite']);
 	$separateOfficial = true;
 }
-if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
+$dockerDaemon = $unRaid64 ? "/var/run/dockerd.pid" : "/var/run/docker.pid";
+
+if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)) ) {
 	$communitySettings['dockerRunning'] = "true";
 } else {
 	$communitySettings['dockerSearch'] = "no";
