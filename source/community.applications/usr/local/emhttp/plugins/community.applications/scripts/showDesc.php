@@ -17,10 +17,17 @@ $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $csrf_token = $unRaidVars['csrf_token'];
 $communitySettings = parse_plugin_cfg("community.applications");
 $tabMode = $communitySettings['newWindow'];
-if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
-  $communitySettings['dockerRunning'] = true;
+
+$unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
+$unRaidVersion = $unRaidSettings['version'];
+
+$unRaid64 = (version_compare($unRaidVersion,"6.4.0-rc0",">="));
+$dockerDaemon = $unRaid64 ? "/var/run/dockerd.pid" : "/var/run/docker.pid";
+if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)) ) {
+	$communitySettings['dockerRunning'] = "true";
 } else {
-  unset($communitySettings['dockerRunning']);
+	$communitySettings['dockerSearch'] = "no";
+	unset($communitySettings['dockerRunning']);
 }
 if ( $communitySettings['dockerRunning'] ) {
   $DockerTemplates = new DockerTemplates();

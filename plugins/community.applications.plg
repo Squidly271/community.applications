@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.12.09b">
-<!ENTITY md5       "b4844ccf5a74703963062e811f4970cc">
+<!ENTITY version   "2017.12.09c">
+<!ENTITY md5       "7de531010379b2fdcd2402faf2f298fc">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,7 +13,7 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2071.12.09b
+###2071.12.09c
 - Fix unRaid 6.3.5 compatibility
 
 ###2017.12.09a
