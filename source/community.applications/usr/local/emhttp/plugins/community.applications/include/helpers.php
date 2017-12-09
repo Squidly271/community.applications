@@ -454,6 +454,7 @@ function moderateTemplates() {
 			$templateTMP['Blacklist'] = true;
 			$templateTMP['ModeratorComment'] = "Duplicated Template";
 		}
+		$templateTMP['Compatible'] = versionCheck($templateTMP);
 		$o[] = $templateTMP;
 	}
 	writeJsonFile($communityPaths['community-templates-info'],$o);
