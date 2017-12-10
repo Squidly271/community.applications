@@ -261,7 +261,7 @@ function fixTemplates($template) {
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Category tags or Category present but empty";
 	}
-	$template['Category'] = $template['Category'] ? $template['Category'] : "Uncategorized";
+	$template['Category'] = $template['Category'] ?: "Uncategorized";
 	if ( ! is_string($template['Category']) ) {
 		$template['Category'] = "Uncategorized";
 		$statistics['caFixed']++;
@@ -312,7 +312,7 @@ function fixTemplates($template) {
 	$template['DonateImg'] = validURL($template['DonateImg']);
 	$template['DonateText'] = str_replace("'","&#39;",$template['DonateText']);
 	$template['DonateText'] = str_replace('"','&quot;',$template['DonateText']);
-  $template['Date'] = $template['Date'] ? $template['Date'] : $template['DateInstalled'];
+  $template['Date'] = $template['Date'] ?: $template['DateInstalled'];
 	
 	# support v6.2 redefining deprecating the <Beta> tag and moving it to a category
 	if ( stripos($template['Category'],":Beta") ) {

@@ -80,6 +80,8 @@ input[type=checkbox] {width:20px; height:20px;}
 .unpinned { cursor:pointer;font-size:15px;color:red;padding:3px; -webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);-o-transform: rotate(20deg);transform: rotate(20deg);}
 .topRightLinks { padding-left:15px; }
 .appIcons { height:40px; }
+.heartshow { color:red; }
+.hearthide { color:pink; }
 
 @keyframes flickerAnimation {
   0%   { opacity:1; }
@@ -1279,6 +1281,7 @@ function updateViewMode(id,buttonClass) {
 
 function checkStale() {
 	if ( "<?=$polling?>" != "true" ) {
+		$("#heartbeat").toggleClass("heartshow hearthide");
 		var webTime = data_lastUpdated;
 		$.post(URL,{action:'checkStale',webTime:webTime},function(data) {
 			if (data) {
@@ -1444,7 +1447,7 @@ function resizeDisplay() {
 <div id='appWarning' style='display:none'><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
 <font size='2' color='red'>Note: All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein</font>
 <br><input type='button' value='Dismiss Warning' onclick='dismissWarning();'></input></center></div>
-<span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
+<span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a><?if ($cfg['maintainer']=='yes'):?><span id='heartbeat' class='heartshow'>&nbsp;<i class='fa fa-heart'></i></span><?endif;?></span>
 <br>
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br>
 > <img src='/plugins/community.applications/images/SectionIconNew.png' height='50px'> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
