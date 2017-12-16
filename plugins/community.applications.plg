@@ -858,8 +858,6 @@ The 'post-install' script
 <FILE Run="/bin/bash">
 <INLINE>
 echo "Creating Directories"
-mkdir -p /var/lib/docker/unraid/templates-community-apps
-mkdir -p /var/lib/docker/unraid/community.applications.datastore
 mkdir -p /tmp/community.applications/tempFiles
 mkdir -p /boot/config/plugins/community.applications
 rm -rf /usr/local/emhttp/plugins/community.applications/CA.page
