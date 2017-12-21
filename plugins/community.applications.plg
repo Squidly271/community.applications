@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.12.09c">
-<!ENTITY md5       "7de531010379b2fdcd2402faf2f298fc">
+<!ENTITY version   "2017.12.20">
+<!ENTITY md5       "1969baf9d4533b46bf2962f8cd67f872">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,7 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2071.12.09c
+###2017.12.20
+- Suppress error if moderation changes an applications's repository
+- For new/updated apps, if no Date entry in template, use DateInstalled if available
+- Under certain circumstances, app of the day would not display enough apps to fill screen
+
+###2017.12.09c
 - Fix unRaid 6.3.5 compatibility
 
 ###2017.12.09a

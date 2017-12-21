@@ -287,8 +287,9 @@ function DownloadApplicationFeed() {
 # Overwrite any template values with the moderated values
 
 		if ( is_array($moderation[$o['Repository']]) ) {
-			$o = array_merge($o, $moderation[$o['Repository']]);
-			$file = array_merge($file, $moderation[$o['Repository']]);
+			$repositoryTmp = $o['Repository']; # in case moderation changes the repository entry
+			$o = array_merge($o, $moderation[$repositoryTmp]);
+			$file = array_merge($file, $moderation[$repositoryTmp]);
 		}
 
 		if ( $o['Plugin'] ) {
