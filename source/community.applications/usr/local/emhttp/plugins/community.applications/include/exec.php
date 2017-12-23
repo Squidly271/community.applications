@@ -493,7 +493,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	$startingApp = $officialFlag ? 1 : ($pageNumber -1) * $communitySettings['maxPerPage'] + 1;
 	$startingAppCounter = 0;
 
-# Create entries for skins
+# Create entries for skins.  Note that MANY entries are not used in the current skins
 	foreach ($file as $template) {
 		if ( $template['Blacklist'] && ! is_file($communityPaths['dontAllowInstalls']) ) {
 			continue;
@@ -637,7 +637,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
 		if ( ( $template['Beta'] == "true" ) ) {
-			$template['display_dockerName'] .= "<span class='ca_tooltip animate_flicker' title='Beta Container &#13;See support forum for potential issues'><font size='3' color='red'><strong><br>BETA</strong></font></span>";
+			$template['display_dockerName'] .= "<span class='ca_tooltip' title='Beta Container &#13;See support forum for potential issues'><font size='3' color='red'><strong><br>BETA</strong></font></span>";
 		}
 # Entries created.  Now display it
 		$t .= vsprintf($displayTemplate,toNumericArray($template));

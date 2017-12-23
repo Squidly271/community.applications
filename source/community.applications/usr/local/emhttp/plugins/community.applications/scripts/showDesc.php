@@ -97,7 +97,7 @@ if ( $color ) {
   $templateDescription .= "<center><font size='4'><strong>{$template['Name']}</strong></font></center><br><br><br>";
 }
 $templateDescription .= "<center><table><tr><td><figure style='margin:0px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px' onerror='this.src=&quot;/plugins/community.applications/images/question.png&quot;';>";
-$templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='1' color='red'><center><strong>(beta)</strong></center></font></figcaption>" : "";
+$templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
 $templateDescription .= "</figure>";
 $templateDescription .= "</td><td></td><td><table>";
 $templateDescription .= "<tr><td>$color<strong>Author: </strong></td><td>$color".$template['Author']."</td></tr>";

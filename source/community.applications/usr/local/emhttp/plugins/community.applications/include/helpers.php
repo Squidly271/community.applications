@@ -123,7 +123,7 @@ function fixPopUpDescription($PopUpDescription) {
 # Helper function to remove any formatting, etc from descriptions #
 ###################################################################
 function fixDescription($Description) {
-	$Description = preg_replace("#\[br\s*\]#i", "{}", $Description);
+  $Description = preg_replace("#\[br\s*\]#i", "{}", $Description);
 	$Description = preg_replace("#\[b[\\\]*\s*\]#i", "||", $Description);
 	$Description = preg_replace('#\[([^\]]*)\]#', '<$1>', $Description);
 	$Description = preg_replace("#<span.*#si", "", $Description);
@@ -292,11 +292,11 @@ function fixTemplates($template) {
 		$template['Description'] = fixDescription($template['Description']);
 		$template['Overview'] = $template['Description'];
 	} else {
-		$template['Description'] = fixDescription($template['Description']);
+  	$template['Description'] = fixDescription($template['Description']);
 	}
 	if ( ( ! strlen(trim($template['Overview'])) ) && ( ! strlen(trim($template['Description'])) ) && ! $template['Private'] ){
 		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No valid Overview Or Description present - Application dropped from CA automatically";
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No valid Overview Or Description present - Application dropped from CA automatically - Possibly far too many formatting tags present";
     return false;
 	}
 	if ( ! $template['Icon'] ) {
