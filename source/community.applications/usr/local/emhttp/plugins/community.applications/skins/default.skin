@@ -2,7 +2,7 @@
     "icon": {
         "templateWidth": 220,
         "header": "<div>",
-        "sol": "<div style='height:300px;margin:0px;position:static;min-width:%1$spx;'>",
+        "sol": "<div style='height:300px;margin:0px;position:static;min-width:%1$spx;overflow:hidden'>",
         "template": "<div style='width:200px;float:left;margin-left:10px;margin-right:10px;padding:0px;border:0px;position:static;'><center>%75$sAuthor: <strong>%59$s</strong></center><center><font size='1'>%40$s</font></center><center>%43$s%41$s</center><figure><center>%65$s</center><figcaption><strong><center><font size='3'>%66$s</font><br>%46$s%45$s%44$s<br>%68$s%69$s%70$s%71$s%72$s%73$s%74$s</center></strong></figcaption></figure><center><font color='red'>%58$s</font></center><center>%56$s</center></div>",
         "eol": "</div>",
         "footer": "</div>"
