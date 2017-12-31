@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.12.20">
-<!ENTITY md5       "1969baf9d4533b46bf2962f8cd67f872">
+<!ENTITY version   "2017.12.31">
+<!ENTITY md5       "48bac13c503ae696e24643b37374d5cf">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2017.12.31
+- Compatibility release for unRaid 6.4RC19+
+- Icon mode skin fix
+
 ###2017.12.20
 - Suppress error if moderation changes an applications's repository
 - For new/updated apps, if no Date entry in template, use DateInstalled if available
