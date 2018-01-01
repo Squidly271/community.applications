@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2017.12.31a">
-<!ENTITY md5       "9ad2540ef848628f87026bcb7b0093eb">
+<!ENTITY version   "2018.01.01">
+<!ENTITY md5       "58f1341d395080af925b477195906414">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018.01.01
+- Fixed: under certain circumstances, a template could be mistakenly deprecated
+
 ###2017.12.31
 - Compatibility release for unRaid 6.4RC19+
 - Icon mode skin fix

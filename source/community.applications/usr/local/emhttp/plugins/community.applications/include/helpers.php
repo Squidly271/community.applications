@@ -326,6 +326,9 @@ function fixTemplates($template) {
 	if ( $template['Private'] ) {
 		$statistics = $origStats;
 	}
+	# fix where template author includes <Blacklist> or <Deprecated> entries in template (CA used booleans, but appfeed winds up saying "FALSE" which equates to be true
+	$template['Deprecated'] = filter_var($template['Deprecated'],FILTER_VALIDATE_BOOLEAN);
+	$template['Blacklist'] = filter_var($template['Blacklist'],FILTER_VALIDATE_BOOLEAN);
 	return $template;
 }
 
