@@ -607,7 +607,7 @@ function doSearch(button) {
 	resetSortByDate();
 	data_docker = "";
 	filter = filter.replace(/[^a-z0-9]/gi,' ')
-	filter = myTrim(filter);
+	filter = $.trim(filter);
 	$('#searchBox').val(filter);
 	$(".appButtons,#maxPerPage,.allButtons").prop("disabled",false);
 	$(".multi_installDiv").hide();
@@ -966,7 +966,7 @@ function dockerConvert(dockerID) {
 	$.post(URL,{action:'convert_docker',ID:dockerID},function(data) {
 		if (data) {
 			myCloseAlert();
-			templateURL = "Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
+			templateURL = "Apps/AddContainer?xmlTemplate=default:" + $.trim(data);
 			window.open(templateURL,"<?=$tabMode?>");
 			$("#Total").html(totalDisplayed);
 		}
@@ -1109,10 +1109,6 @@ function deletePrivateApp(path,name,author) {
 			}
 		});
 	});
-}
-
-function myTrim(x) {
-	return x.replace(/^\s+|\s+$/gm,'');
 }
 
 function uninstallDocker(application,humanName) {
@@ -1258,7 +1254,7 @@ function checkStale() {
 		var webTime = data_lastUpdated;
 		$.post(URL,{action:'checkStale',webTime:webTime},function(data) {
 			if (data) {
-				if (myTrim(data) == "true") {
+				if ( $.trim(data) == "true") {
 					clearInterval(checkStaleVar);
 					myAlert("Database Out Of Sync","Another Browser Tab Has Updated The Application Database.  Reloading The Apps Tab In 10 Seconds.","","",false,false,false,"error");
 					setTimeout(function(){ window.location.reload(); },10000);

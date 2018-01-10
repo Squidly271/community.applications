@@ -824,11 +824,11 @@ THIS IS A REQUIRED UPDATE
 <?
   $version = parse_ini_file("/etc/unraid-version");
   
-  if ( version_compare($version['version'],"6.1.0", "<") )
+  if ( version_compare($version['version'],"6.1.8", "<") )
   {
     echo "********************************************************************\n";
     echo "\n";
-    echo "Community Applications Requires unRaid version 6.1 or greater to run\n";
+    echo "Community Applications Requires unRaid version 6.1.8 or greater to run\n";
     echo "\n";
     echo "********************************************************************\n";
     exit(1);
