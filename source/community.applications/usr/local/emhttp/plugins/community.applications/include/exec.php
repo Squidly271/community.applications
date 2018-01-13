@@ -1941,8 +1941,6 @@ case 'statistics':
 	echo "<tr><td><b>{$color}<b>Memory Usage (CA / DataFiles)</b></td><td>{$memCA[0]} / {$memTmp[0]}</td></tr>";
 	
 	echo "</table>";
-	echo "<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img height='25px' src='https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif'></a></center>";
-	echo "<center>Ensuring only safe applications are present is a full time job</center><br>";
 	break;
 
 #####################################################################################
