@@ -2,7 +2,7 @@
 
 ###############################################################
 #                                                             #
-# Community Applications copyright 2015-2017, Andrew Zawadzki #
+# Community Applications copyright 2015-2018, Andrew Zawadzki #
 #                                                             #
 ###############################################################
 
@@ -18,13 +18,7 @@ $DockerTemplates = new DockerTemplates();
 
 $unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
 $unRaidVersion = $unRaidSettings['version'];
-if ($unRaidVersion == "6.2") $unRaidVersion = "6.2.0";
-$unRaid64 = (version_compare($unRaidVersion,"6.4.0-rc0",">="));
-$unRaid635 = (version_compare($unRaidVersion,"6.3.5",">="));
 
-if ( ! $unRaid64 ) {
-	$communityPaths['defaultSkin'] = $communityPaths['legacySkin'];
-}
 $templateSkin = readJsonFile($communityPaths['defaultSkin']);   # Global Var used in helpers ( getMaxColumns() )
 
 ################################################################################
@@ -43,7 +37,7 @@ if ( $communitySettings['favourite'] != "None" ) {
 	$officialRepo = str_replace("*","'",$communitySettings['favourite']);
 	$separateOfficial = true;
 }
-$dockerDaemon = $unRaid64 ? "/var/run/dockerd.pid" : "/var/run/docker.pid";
+$dockerDaemon = "/var/run/dockerd.pid";
 
 if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)) ) {
 	$communitySettings['dockerRunning'] = "true";
@@ -453,7 +447,7 @@ function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
 }
 
 function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
-	global $communityPaths, $info, $communitySettings, $plugin, $unRaid64, $unRaid635, $displayDeprecated;
+	global $communityPaths, $info, $communitySettings, $plugin, $displayDeprecated;
 
 	if ( ! $selectedApps ) {
 		$selectedApps = array();
@@ -480,11 +474,10 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
 	$displayTemplate = $skin[$viewMode]['template'];
-	if ( $unRaid64 ) {
-		$communitySettings['maxColumn'] = $communitySettings['maxIconColumns'];
-	}
+	$communitySettings['maxColumn'] = $communitySettings['maxIconColumns'];
+
 	if ( $viewMode == 'detail' ) {
-		$communitySettings['maxColumn'] = $unRaid64 ? $communitySettings['maxDetailColumns'] : 2;
+		$communitySettings['maxColumn'] = $communitySettings['maxDetailColumns'];
 		$communitySettings['viewMode'] = "icon";
 	}
 
@@ -571,7 +564,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
 
 		$template['display_dateUpdated'] = ($template['Date'] && is_file($communityPaths['newFlag']) ) ? "</b></strong><center><strong>Date Updated: </strong>".$template['display_humanDate']."</center>" : "";
-		$template['display_multi_install'] = ($template['Removable'] && $unRaid635) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-type='$appType' $checked>" : "";
+		$template['display_multi_install'] = ($template['Removable']) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-type='$appType' $checked>" : "";
 		if (! $communitySettings['dockerRunning'] && ! $template['Plugin']) {
 			unset($template['display_multi_install']);
 		}

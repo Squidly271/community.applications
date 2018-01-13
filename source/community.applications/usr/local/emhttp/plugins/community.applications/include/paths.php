@@ -1,7 +1,7 @@
 <?PHP
 ###############################################################
 #                                                             #
-# Community Applications copyright 2015-2017, Andrew Zawadzki #
+# Community Applications copyright 2015-2018, Andrew Zawadzki #
 #                                                             #
 ###############################################################
 
@@ -34,7 +34,6 @@ $communityPaths['dockerUpdateStatus']            = "/var/lib/docker/unraid-updat
 $communityPaths['pinned']                        = "/boot/config/plugins/$plugin/pinned_apps.json"; # stored on flash instead of docker.img so it will work without docker running
 $communityPaths['appOfTheDay']                   = $communityPaths['tempFiles']."/appOfTheDay.json";
 $communityPaths['defaultSkin']                   = "/usr/local/emhttp/plugins/$plugin/skins/default.skin";
-$communityPaths['legacySkin']                    = "/usr/local/emhttp/plugins/$plugin/skins/legacy.skin";
 $communityPaths['LegacyMode']                    = $communityPaths['templates-community']."/legacyModeActive";
 $communityPaths['statistics']                    = $communityPaths['tempFiles']."/statistics.json";
 $communityPaths['pluginSettings']                = "/boot/config/plugins/$plugin/$plugin.cfg";
