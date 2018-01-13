@@ -18,6 +18,11 @@ $csrf_token = $unRaidVars['csrf_token'];
 $communitySettings = parse_plugin_cfg("community.applications");
 $tabMode = "_self";
 
+$fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
+$fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";
+$fontAwesomeGUI = "<i class='appIcons fa fa-globe' aria-hidden='true'></i>";
+$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' aria-hidden='true'></i>";
+
 $dockerDaemon = "/var/run/dockerd.pid";
 if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)) ) {
 	$communitySettings['dockerRunning'] = "true";
@@ -147,17 +152,17 @@ if ( $Displayed && ! is_file($communityPaths['dontAllowInstalls']) ) {
   if ( ! $template['Plugin'] ) {
     if ( $communitySettings['dockerRunning'] ) {
       if ( $selected ) {
-        $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to reinstall the application using default values' href='AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' height='40px'></a>&nbsp;&nbsp;";
-        $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to edit the application values' href='UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'><img src='/plugins/community.applications/images/edit.png' height='40px'></a>&nbsp;&nbsp;";
+        $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to reinstall the application using default values' href='AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>$fontAwesomeInstall'</a>&nbsp;&nbsp;";
+        $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to edit the application values' href='UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'>$fontAwesomeEdit</a>&nbsp;&nbsp;";
         if ( $info[$name]['url'] && $info[$name]['running'] ) {
-          $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'><img src='/plugins/community.applications/images/WebPage.png' height='40px'></a>&nbsp;&nbsp;";
+          $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'>$fontAwesomeGUI</a>&nbsp;&nbsp;";
         }
       } else {
         if ( $template['MyPath'] ) {
-          $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to reinstall the application' href='AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' height='40px'></a>&nbsp;&nbsp;";
+          $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to reinstall the application' href='AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>$fontAwesomeInstall</a>&nbsp;&nbsp;";
         } else {
-          $install              = "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to install the application' href='AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' height='40px'></a>&nbsp;&nbsp;";
-          $templateDescription .= $template['BranchID'] ? "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' height='40px'></a>&nbsp;&nbsp;" : $install;
+          $install              = "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to install the application' href='AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>$fontAwesomeInstall</a>&nbsp;&nbsp;";
+          $templateDescription .= $template['BranchID'] ? "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'>$fontAwesomeInstall</a>&nbsp;&nbsp;" : $install;
         }
       } 
     }  
@@ -166,14 +171,14 @@ if ( $Displayed && ! is_file($communityPaths['dontAllowInstalls']) ) {
     if ( file_exists("/var/log/plugins/$pluginName") ) {
       $pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
       if ( $pluginSettings ) {
-        $templateDescription .= "<a class='ca_apptooltip' title='Click to go to the plugin settings' href='$pluginSettings'><img src='/plugins/community.applications/images/WebPage.png' height='40px'></a>";
+        $templateDescription .= "<a class='ca_apptooltip' title='Click to go to the plugin settings' href='$pluginSettings'>$fontAwesomeGUI</a>";
       }
     } else {
       $buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
-      $templateDescription .= "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');><img src='/plugins/community.applications/images/install.png' height='40px'></a>&nbsp;&nbsp;";
+      $templateDescription .= "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>$fontAwesomeInstall</a>&nbsp;&nbsp;";
     }
     if ( checkPluginUpdate($template['PluginURL']) ) {
-      $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Update Available.  Click To Install' onclick='installPLGupdate(&quot;".basename($template['PluginURL'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'><img src='/plugins/community.applications/images/update.png' height='40px'></a>&nbsp;&nbsp;";
+      $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Update Available.  Click To Install' onclick='installPLGupdate(&quot;".basename($template['PluginURL'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>$fontAwesomeUpdate</a>&nbsp;&nbsp;";
     }
   }
 }
