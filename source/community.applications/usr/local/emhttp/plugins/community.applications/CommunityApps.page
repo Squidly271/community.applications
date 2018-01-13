@@ -219,7 +219,7 @@ $(function(){
 		distance: -15,
 		maxWidth:550,
 		minWidth:550,
-		animation: 'fade',
+		animation: 'none',
 		animationDuration: [1500,250],
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
 		interactive: true,
@@ -235,7 +235,7 @@ $(function(){
 		distance: -15,
 		maxWidth:550,
 		minWidth:550,
-		animation: 'fade',
+		animation: 'none',
 		animationDuration: [1500,250],
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
 		interactive: true,
@@ -420,7 +420,7 @@ function setToolTip() {
 		contentAsHTML: true,
 		maxWidth:550,
 		minWidth:550,
-		animation: 'none',
+		animation: 'grow',
 		arrow:true,
 		trigger: 'custom',
 		triggerOpen: {mouseenter:true,click:true,touchstart:true},
@@ -436,17 +436,6 @@ function setToolTip() {
 				if (data) {
 					instance.content(data);
 				}
-			});
-		},
-		functionReady: function(instance,helper) {
-			$('.ca_apptooltip').tooltipster({
-				contentAsHTML:true,
-				delay:[1000,1],
-				timer:15000,
-				animation:'none',
-				arrow:true, trigger:'custom',
-				triggerOpen:{mouseenter: true},
-				triggerClose:{click:true,scroll:true,mouseleave:true}
 			});
 		}
 	});
