@@ -60,8 +60,8 @@ input.sortButton {margin:1px;}
 input.dirButton {margin:1px;}
 input.allButtons {margin:-1px;}
 input[type=checkbox] {width:20px; height:20px;}
-.enabledIcon { cursor:pointer;color:#005500;font-size:35px; }
-.disabledIcon { cursor:pointer;color:#040404;font-size:35px; }
+.enabledIcon { cursor:pointer;color:#005500;font-size:25px; }
+.disabledIcon { cursor:pointer;color:#040404;font-size:25px; }
 .pinned { cursor:pointer;font-size:15px;color:green;padding:3px;}
 .unpinned { cursor:pointer;font-size:15px;color:red;padding:3px; -webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);-o-transform: rotate(20deg);transform: rotate(20deg);}
 .topRightLinks { padding-left:15px; }
@@ -169,9 +169,8 @@ $(function(){
 	$("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
 
 	$('.ca_staticTips').tooltipster({
-	  animationDuration: [2000,350],
 		timer:15000,
-		animation:'fade',
+		animation:'none',
 		arrow:true,
 		trigger:'custom',
 		triggerOpen:{mouseenter: true},
@@ -382,11 +381,10 @@ function setToolTip() {
 	$('.ca_appPopup').attr('title','Loading...');
 	$('.ca_infoPopup').attr('title','Loading...');
 	$('.ca_tooltip').tooltipster({
-		animationDuration: [2000,350],
 		contentAsHTML:true,
 		delay:[<?=$cfg['hoverTime']?>,1],
 		timer:15000,
-		animation:'fade',
+		animation:'none',
 		arrow:true,
 		trigger:'custom',
 		triggerOpen:{mouseenter: true},
@@ -1367,19 +1365,15 @@ function resizeDisplay() {
 <span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
 <br>
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br>
-> <img src='/plugins/community.applications/images/SectionIconNew.png' height='50px'> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
-> <img src='/plugins/community.applications/images/ViewIconNew.png' height='50px'> - This chooses how to display the results<br>
-> <img src='/plugins/community.applications/images/CategoryIconNew.png' height='50px'> - This selects a category of apps to display<br>
-> <img src='/plugins/community.applications/images/SubCategoryIconNew.png' height='50px'> - When available, this selects a subcategory of apps to display<br>
-> <img src='/plugins/community.applications/images/install.png' height='25px'><img src='/plugins/community.applications/images/edit.png' height='25px'><img src='/plugins/community.applications/images/update.png' height='25px'> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
-> <img src='/plugins/community.applications/images/WebPage.png' height='25px'> - Clicking this icon will take you to an application's GUI<br>
+> <i class='fa fa-bars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
+> <i class='fa fa-binoculars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses how to display the results<br>
+> <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This selects a category of apps to display<br>
+> <i class='fa fa-folder-open enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - When available, this selects a subcategory of apps to display<br>
+> <i class='fa fa-download' aria-hidden='true' style='font-size:20px;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:20px;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:20px;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
+> <i class='fa fa-globe' aria-hidden='true' style='font-size:20px;'></i> - Clicking this icon will take you to an application's GUI<br>
 > Hovering over an application's icon (or clicking it) will display more information about the application<br>
 > <center>For support for this plugin, visit here: <a title='click for help' href="http://lime-technology.com/forum/index.php?topic=40262.0" target="_blank">http://lime-technology.com/forum/index.php?topic=40262.0</a></center>
 
-<!-- <img id='sectionIcon' class='ca_section enabledIcon' src='/plugins/community.applications/images/SectionIconNew.png'>
-<img id='categoryIcon' class='ca_categories enabledIcon' src='/plugins/community.applications/images/CategoryIconNew.png'>
-<img id='subcategoryIcon' class='ca_subcategories disabledIcon' src='/plugins/community.applications/images/SubCategoryIconNew.png'>
-<img id='sortIcon' class='ca_toolsView disabledIcon' height='35px;' src='/plugins/community.applications/images/ViewIconNew.png'> -->
 <i id='sectionIcon' class='fa fa-bars ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;

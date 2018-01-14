@@ -33,7 +33,6 @@ $communityPaths['updateErrors']                  = $communityPaths['tempFiles'].
 $communityPaths['dockerUpdateStatus']            = "/var/lib/docker/unraid-update-status.json";
 $communityPaths['pinned']                        = "/boot/config/plugins/$plugin/pinned_apps.json"; # stored on flash instead of docker.img so it will work without docker running
 $communityPaths['appOfTheDay']                   = $communityPaths['tempFiles']."/appOfTheDay.json";
-$communityPaths['defaultSkin']                   = "/usr/local/emhttp/plugins/$plugin/skins/default.skin";
 $communityPaths['LegacyMode']                    = $communityPaths['templates-community']."/legacyModeActive";
 $communityPaths['statistics']                    = $communityPaths['tempFiles']."/statistics.json";
 $communityPaths['pluginSettings']                = "/boot/config/plugins/$plugin/$plugin.cfg";
@@ -48,6 +47,8 @@ $communityPaths['newFlag']                       = $communityPaths['tempFiles'].
 $communityPaths['displayLocked']                 = $communityPaths['tempFiles']."/displayLocked"; # when file exists, the background check for stale will not run
 $communityPaths['dontAllowInstalls']             = $communityPaths['tempFiles']."/dontAllowInstalls"; # when file exists, the icons for install/edit/etc will not appear
 $communityPaths['appFeedDownloadError']          = $communityPaths['tempFiles']."/appfeedTemporaryFileForAnalysis";
+$communityPaths['defaultSkin']                   = "/usr/local/emhttp/plugins/$plugin/skins/default.skin";
+$communityPaths['defaultSkinPHP']                = $communityPaths['defaultSkin'].".php";
 
 $infoFile                                        = $communityPaths['community-templates-info'];
 ?>
