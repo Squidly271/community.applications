@@ -5,7 +5,7 @@
 #                                                             #
 ###############################################################
 
-# my_display_apps() and getPageNavigation() must be present in the skin.php file and must accept the arguments given.
+# my_display_apps(), getPageNavigation(), getSearchResults() must be present in the skin.php file and must accept the arguments given.
 
 function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
 	global $communityPaths, $info, $communitySettings, $plugin, $displayDeprecated;
@@ -288,6 +288,119 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
 
 	return $o;
 }
+
+##############################################################
+#                                                            #
+# function that actually displays the results from dockerHub #
+#                                                            #
+##############################################################
+function displaySearchResults($pageNumber,$viewMode) {
+	global $communityPaths, $communitySettings, $plugin;
+
+	$tempFile = readJsonFile($communityPaths['dockerSearchResults']);
+	$num_pages = $tempFile['num_pages'];
+	$file = $tempFile['results'];
+	$templates = readJsonFile($communityPaths['community-templates-info']);
+
+	echo dockerNavigate($num_pages,$pageNumber);
+	echo "<br><br>";
+
+	$iconSize = $communitySettings['iconSize'];
+	$maxColumn = $communitySettings['maxColumn'];
+
+	switch ($viewMode) {
+		case "icon":
+			$t = "<table>";
+			break;
+		case "table":
+			$t =  "<table class='tablesorter'><thead><th></th><th></th><th>Container</th><th>Author</th><th>Stars</th><th>Description</th></thead>";
+			$iconSize = 48;
+			break;
+		case "detail":
+			$t = "<table class='tablesorter'>";
+			$viewMode = "icon";
+			$maxColumn = 2;
+			break;
+	}
+
+	$column = 0;
+
+	$t .= "<tr>";
+
+	foreach ($file as $result) {
+		$recommended = false;
+		foreach ($templates as $template) {
+			if ( $template['Repository'] == $result['Repository'] ) {
+				$result['Description'] = $template['Description'];
+				$result['Description'] = str_replace("'","&#39;",$result['Description']);
+				$result['Description'] = str_replace('"',"&quot;",$result['Description']);
+				$result['Icon'] = $template['IconWeb'];
+			}
+		}
+		$result['display_stars'] = $result['Stars'] ? "<i class='fa fa-star' style='font-size:15px; color:magenta;' aria-hidden='true'></i> <strong>".$result['Stars']."</strong>" : "";
+		$result['display_official'] =  $result['Official'] ? "<strong><font color=red>Official</font> ".$result['Name']." container.</strong><br><br>": "";
+		$result['display_official_short'] = $result['Official'] ? "<font color='red'><strong>Official</strong></font>" : "";
+
+		if ( $viewMode == "icon" ) {
+			$t .= "<td>";
+			$t .= "<center>".$result['display_official_short']."</center>";
+
+			$t .= "<center>Author: </strong><font size='3'><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For Containers From {$result['Author']}'>{$result['Author']}</a></font></center>";
+			$t .= "<center>".$result['display_stars']."</center>";
+
+			$description = "Click to go to the dockerHub website for this container";
+			if ( $result['Description'] ) {
+				$description = $result['Description']."<br><br>$description";
+			}
+			$description =str_replace("'","&#39;",$description);
+			$description = str_replace('"',"&#34;",$description);
+
+			$t .= "<figure><center><a class='ca_tooltip' href='".$result['DockerHub']."' title='$description' target='_blank'>";
+			$t .= "<img style='width:".$iconSize."px;height:".$iconSize."px;' src='".$result['Icon']."' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
+			$t .= "<figcaption><strong><center><font size='3'><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For Similar Containers'>".$result['Name']."</a></font></center></strong></figcaption></figure>";
+			if ( $communitySettings['dockerRunning'] == "true" ) {
+				$t .= "<center><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)' style='margin:0px'></center>";
+			}
+			$t .= "</td>";
+
+			if ( $maxColumn == 2 ) {
+				$t .= "<td style='display:inline-block;width:350px;text-align:left;'>";
+				$t .= "<br><br><br>";
+				$t .= $result['display_official'];
+
+				if ( $result['Description'] ) {
+					$t .= "<strong><span class='desc_readmore' style='display:block'>".$result['Description']."</span></strong><br><br>";
+				} else {
+					$t .= "<em>Container Overview not available.</em><br><br>";
+				}
+				$t .= "Click container's icon for full description<br><br>";
+				$t .= "</td>";
+			}
+			$column = ++$column;
+			if ( $column == $maxColumn ) {
+				$column = 0;
+				$t .= "</tr><tr>";
+			}
+		}
+		if ( $viewMode == "table" ) {
+			$t .= "<tr><td><a class='ca_tooltip' href='".$result['DockerHub']."' target='_blank' title='Click to go to the dockerHub website for this container'>";
+			$t .= "<img src='".$result['Icon']."' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";' style='width:".$iconSize."px;height:".$iconSize."px;'>";
+			$t .= "</a></td>";
+			$t .= "<td><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)';></td>";
+			$t .= "<td><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search Similar Containers'>".$result['Name']."</a></td>";
+			$t .= "<td><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For More Containers From {$result['Author']}'>{$result['Author']}</a></td>";
+			$t .= "<td>".$result['display_stars']."</td>";
+			$t .= "<td>";
+			$t .= $result['display_official'];
+			$t .= "<strong><span class='desc_readmore' style='display:block'>".$result['Description']."</span></strong></td>";
+			$t .= "</tr>";
+		}
+	}
+	$t .= "</table>";
+	echo $t;
+	echo dockerNavigate($num_pages,$pageNumber);
+}
+
 ############################################################################
 # Function to convert a template's associative tags to static numeric tags #
 # (Because the associate tag order can change depending upon the template) #
