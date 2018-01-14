@@ -89,6 +89,16 @@ if ( ! $template['Plugin'] ) {
     }
   }
 }
+if ( $template['Plugin'] ) {
+	$pluginName = basename($template['PluginURL']);
+	if ( is_file("/var/log/plugins/$pluginName") && ! $template['Changes'] ) {
+		$template['Changes'] = shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin changes /var/log/plugins/$pluginName");
+		if ( $template['Changes'] ) {
+			$template['Changes'] = "This change log is from the already installed version and may not be up to date if an upgrade to the plugin is available\n\n".$template['Changes'];
+		}
+	}
+}
+
 $template['Category'] = rtrim(str_replace(":,",",",implode(", ",explode(" ",$template['Category']))),": ,");
 $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 $template['Description'] = trim($template['Description']);
@@ -133,7 +143,11 @@ $templateDescription .= $template['stars'] ? "<tr><td nowrap>$color<strong>Docke
 # In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 if ( $template['Date'] && $template['Plugin'] ) {
   $niceDate = date("F j, Y",$template['Date']);
-  $templateDescription .= "<tr><td nowrap>$color<strong>Date Updated: </strong><br>See below</td><td>$color$niceDate<br></td></tr>";
+  $templateDescription .= "<tr><td nowrap>$color<strong>Date Updated: </strong>";
+	if ( $template['Changes'] ) {
+		$templateDescription .= "<br>See below";
+	}
+	$templateDescription .= "</td><td>$color$niceDate<br></td></tr>";
 }
 $templateDescription .= $template['MinVer'] ? "<tr><td nowrap>$color<b>Minimum OS:</strong></td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
 $templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>$color<strong>Max OS:</strong></td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
@@ -167,7 +181,6 @@ if ( $Displayed && ! is_file($communityPaths['dontAllowInstalls']) ) {
       } 
     }  
   } else {
-    $pluginName = basename($template['PluginURL']);
     if ( file_exists("/var/log/plugins/$pluginName") ) {
       $pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
       if ( $pluginSettings ) {
@@ -210,9 +223,7 @@ if ($template['Plugin']) {
 		$templateDescription .= "<br>This plugin has a duplicated name from another plugin $duplicated.  This will impact your ability to install both plugins simultaneously<br>";
 	}
 }
-if ( $template['Plugin'] && is_file("/var/log/plugins/$pluginName") && ! $template['Changes'] ) {
-	$template['Changes'] = "This change log is from the already installed version and may not be up to date if an upgrade to the plugin is available\n\n".shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin changes /var/log/plugins/$pluginName");
-}
+
 if ( $template['Changes'] ) {
   if ( $template['Plugin'] ) {
     $appInformation = Markdown($template['Changes']);
