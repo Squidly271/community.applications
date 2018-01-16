@@ -12,6 +12,7 @@ require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerCli
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
+require_once($communityPaths['defaultSkinPHP']);
 
 $plugin = "community.applications";
 $DockerTemplates = new DockerTemplates();
@@ -69,7 +70,7 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 	@unlink($infoFile);
 }
 
-$selectCategoryMessage = "Select a Section <img src='/plugins/community.applications/images/SectionIconNew.png' height='30px;'> or Category <img src='/plugins/community.applications/images/CategoryIconNew.png' height='30px;'> above";
+$selectCategoryMessage = "Select a Section <i id='sectionIcon' class='fa fa-bars enabledIcon' aria-hidden='true' style='font-size:30px;cursor:auto;'></i> or Category <i id='categoryIcon' class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:30px;cursor:auto;'></i> above";
 
 #################################################################
 #                                                               #
