@@ -7,7 +7,7 @@
 
 # skin specific PHP
 #my_display_apps(), getPageNavigation(), displaySearchResults() must accept all parameters
-
+#note that many template entries in my_display_apps() are not actually used in the skin, but are present for future possible use.
 function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
 	global $communityPaths, $info, $communitySettings, $plugin, $unRaid64, $unRaid635, $displayDeprecated;
 

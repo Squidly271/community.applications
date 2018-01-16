@@ -475,11 +475,7 @@ function logger($string) {
 # Function to check for a valid URL                   #
 #######################################################
 function validURL($URL) {
-	if ( function_exists("filter_var") ) {  # function only works on unRaid 6.1.8+
-		return filter_var($URL, FILTER_VALIDATE_URL);
-	} else {
-		return $URL;
-	}
+	return filter_var($URL, FILTER_VALIDATE_URL);
 }
 
 ####################################################################################
