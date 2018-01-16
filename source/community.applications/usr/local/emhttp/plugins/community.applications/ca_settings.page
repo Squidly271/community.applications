@@ -1,5 +1,6 @@
 Menu="hidden"
 Title="General Settings"
+Icon="settings.png"
 ---
 <?
 
@@ -8,6 +9,9 @@ function download_url($url, $path = "", $bg = false)
   exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
   return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
+
+$vars = parse_ini_file("/var/local/emhttp/var.ini");
+$toolTipsterAllowed = version_compare($vars['version'],"6.3.3",">=") ? "true" : "false";
 
 $plugin = "community.applications";
 $cfg = parse_plugin_cfg($plugin);
@@ -39,6 +43,8 @@ foreach ($repoName as $display1) {
   $optionName = str_replace("'","*",$display1);
   $displayOptions .= mk_option($cfg['favourite'], $optionName, $display1);
 }
+
+$unRaid64 = (version_compare($vars['version'],"6.4.0-rc0",">=")) || (is_file("/usr/local/emhttp/plugins/dynamix/styles/dynamix-gray.css")) ? "true" : "false";
 ?>
 
 <form markdown="1" method="POST" action="/update.php" target="progressFrame">
@@ -126,5 +132,6 @@ Enable Template Developer Mode?
 <center>For support for this plugin, visit here: <a href="https://forums.lime-technology.com/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 
 </form>
+<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 
 
