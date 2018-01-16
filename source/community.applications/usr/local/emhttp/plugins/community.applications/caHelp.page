@@ -1,5 +1,6 @@
 Menu="HiddenMenuItem"
-Title="Community Applications Manual"
+Title="Manual"
+Icon="help.png"
 ---
 <script>
 var URL = "/plugins/community.applications/include/manualExec.php";

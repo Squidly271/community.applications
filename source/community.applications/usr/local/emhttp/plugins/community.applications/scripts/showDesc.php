@@ -1,7 +1,7 @@
 <?PHP
 ###############################################################
 #                                                             #
-# Community Applications copyright 2015-2018, Andrew Zawadzki #
+# Community Applications copyright 2015-2017, Andrew Zawadzki #
 #                                                             #
 ###############################################################
  
@@ -16,14 +16,13 @@ require_once 'webGui/include/Markdown.php';
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $csrf_token = $unRaidVars['csrf_token'];
 $communitySettings = parse_plugin_cfg("community.applications");
-$tabMode = "_self";
+$tabMode = $communitySettings['newWindow'];
 
-$fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
-$fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";
-$fontAwesomeGUI = "<i class='appIcons fa fa-globe' aria-hidden='true'></i>";
-$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' aria-hidden='true'></i>";
+$unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
+$unRaidVersion = $unRaidSettings['version'];
 
-$dockerDaemon = "/var/run/dockerd.pid";
+$unRaid64 = (version_compare($unRaidVersion,"6.4.0-rc0",">="));
+$dockerDaemon = $unRaid64 ? "/var/run/dockerd.pid" : "/var/run/docker.pid";
 if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)) ) {
 	$communitySettings['dockerRunning'] = "true";
 } else {
@@ -89,25 +88,15 @@ if ( ! $template['Plugin'] ) {
     }
   }
 }
-if ( $template['Plugin'] ) {
-	$pluginName = basename($template['PluginURL']);
-	if ( is_file("/var/log/plugins/$pluginName") && ! $template['Changes'] ) {
-		$template['Changes'] = shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin changes /var/log/plugins/$pluginName");
-		if ( $template['Changes'] ) {
-			$template['Changes'] = "This change log is from the already installed version and may not be up to date if an upgrade to the plugin is available\n\n".$template['Changes'];
-		}
-	}
-}
-
 $template['Category'] = rtrim(str_replace(":,",",",implode(", ",explode(" ",$template['Category']))),": ,");
-$template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
+$template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/community.applications/images/question.png";
 $template['Description'] = trim($template['Description']);
 
 $templateDescription .= "<style>p { margin-left:20px;margin-right:20px }</style>";
 if ( $color ) {
   $templateDescription .= "<center><font size='4'><strong>{$template['Name']}</strong></font></center><br><br><br>";
 }
-$templateDescription .= "<center><table><tr><td><figure style='margin:0px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;';>";
+$templateDescription .= "<center><table><tr><td><figure style='margin:0px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px' onerror='this.src=&quot;/plugins/community.applications/images/question.png&quot;';>";
 $templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
 $templateDescription .= "</figure>";
 $templateDescription .= "</td><td></td><td><table>";
@@ -143,11 +132,7 @@ $templateDescription .= $template['stars'] ? "<tr><td nowrap>$color<strong>Docke
 # In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 if ( $template['Date'] && $template['Plugin'] ) {
   $niceDate = date("F j, Y",$template['Date']);
-  $templateDescription .= "<tr><td nowrap>$color<strong>Date Updated: </strong>";
-	if ( $template['Changes'] ) {
-		$templateDescription .= "<br>See below";
-	}
-	$templateDescription .= "</td><td>$color$niceDate<br></td></tr>";
+  $templateDescription .= "<tr><td nowrap>$color<strong>Date Updated: </strong><br>See below</td><td>$color$niceDate<br></td></tr>";
 }
 $templateDescription .= $template['MinVer'] ? "<tr><td nowrap>$color<b>Minimum OS:</strong></td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
 $templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>$color<strong>Max OS:</strong></td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
@@ -166,32 +151,33 @@ if ( $Displayed && ! is_file($communityPaths['dontAllowInstalls']) ) {
   if ( ! $template['Plugin'] ) {
     if ( $communitySettings['dockerRunning'] ) {
       if ( $selected ) {
-        $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to reinstall the application using default values' href='AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>$fontAwesomeInstall'</a>&nbsp;&nbsp;";
-        $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to edit the application values' href='UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'>$fontAwesomeEdit</a>&nbsp;&nbsp;";
+        $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to reinstall the application using default values' href='AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' height='40px'></a>&nbsp;&nbsp;";
+        $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to edit the application values' href='UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'><img src='/plugins/community.applications/images/edit.png' height='40px'></a>&nbsp;&nbsp;";
         if ( $info[$name]['url'] && $info[$name]['running'] ) {
-          $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'>$fontAwesomeGUI</a>&nbsp;&nbsp;";
+          $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'><img src='/plugins/community.applications/images/WebPage.png' height='40px'></a>&nbsp;&nbsp;";
         }
       } else {
         if ( $template['MyPath'] ) {
-          $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to reinstall the application' href='AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>$fontAwesomeInstall</a>&nbsp;&nbsp;";
+          $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to reinstall the application' href='AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' height='40px'></a>&nbsp;&nbsp;";
         } else {
-          $install              = "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to install the application' href='AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>$fontAwesomeInstall</a>&nbsp;&nbsp;";
-          $templateDescription .= $template['BranchID'] ? "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'>$fontAwesomeInstall</a>&nbsp;&nbsp;" : $install;
+          $install              = "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to install the application' href='AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'><img src='/plugins/community.applications/images/install.png' height='40px'></a>&nbsp;&nbsp;";
+          $templateDescription .= $template['BranchID'] ? "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' height='40px'></a>&nbsp;&nbsp;" : $install;
         }
       } 
     }  
   } else {
+    $pluginName = basename($template['PluginURL']);
     if ( file_exists("/var/log/plugins/$pluginName") ) {
       $pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
       if ( $pluginSettings ) {
-        $templateDescription .= "<a class='ca_apptooltip' title='Click to go to the plugin settings' href='$pluginSettings'>$fontAwesomeGUI</a>";
+        $templateDescription .= "<a class='ca_apptooltip' title='Click to go to the plugin settings' href='$pluginSettings'><img src='/plugins/community.applications/images/WebPage.png' height='40px'></a>";
       }
     } else {
       $buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
-      $templateDescription .= "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>$fontAwesomeInstall</a>&nbsp;&nbsp;";
+      $templateDescription .= "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');><img src='/plugins/community.applications/images/install.png' height='40px'></a>&nbsp;&nbsp;";
     }
     if ( checkPluginUpdate($template['PluginURL']) ) {
-      $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Update Available.  Click To Install' onclick='installPLGupdate(&quot;".basename($template['PluginURL'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>$fontAwesomeUpdate</a>&nbsp;&nbsp;";
+      $templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Update Available.  Click To Install' onclick='installPLGupdate(&quot;".basename($template['PluginURL'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'><img src='/plugins/community.applications/images/update.png' height='40px'></a>&nbsp;&nbsp;";
     }
   }
 }
@@ -206,6 +192,9 @@ $templateDescription .= $template['WebPageURL'] ? "&nbsp;&nbsp;<a href='".$templ
 
 if ( ($donatelink) && ($donateimg) ) {
   $templateDescription .= "<br><br><center><font size='0'>$donatetext</font><br><a href='$donatelink' target='_blank'><img src='$donateimg' style='max-height:25px;'></a>";
+  if ( $template['RepoName'] != "Squid's plugin Repository" ) {
+    $templateDescription .= "<br><font size='0'>The above link is set by the author of the template, not the author of Community Applications</font></center>";
+  }
 }
 $templateDescription .= "</center>";
 if ($template['Plugin']) {
@@ -223,7 +212,9 @@ if ($template['Plugin']) {
 		$templateDescription .= "<br>This plugin has a duplicated name from another plugin $duplicated.  This will impact your ability to install both plugins simultaneously<br>";
 	}
 }
-
+if ( $template['Plugin'] && is_file("/var/log/plugins/$pluginName") && ! $template['Changes'] ) {
+	$template['Changes'] = "This change log is from the already installed version and may not be up to date if an upgrade to the plugin is available\n\n".shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin changes /var/log/plugins/$pluginName");
+}
 if ( $template['Changes'] ) {
   if ( $template['Plugin'] ) {
     $appInformation = Markdown($template['Changes']);

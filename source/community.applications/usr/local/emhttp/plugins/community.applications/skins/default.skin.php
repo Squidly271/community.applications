@@ -1,14 +1,15 @@
 <?PHP
 ###############################################################
 #                                                             #
-# Community Applications copyright 2015-2018, Andrew Zawadzki #
+# Community Applications copyright 2015-2017, Andrew Zawadzki #
 #                                                             #
 ###############################################################
 
-# my_display_apps(), getPageNavigation(), getSearchResults() must be present in the skin.php file and must accept the arguments given.
+# skin specific PHP
+#my_display_apps(), getPageNavigation(), displaySearchResults() must accept all parameters
 
 function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
-	global $communityPaths, $info, $communitySettings, $plugin, $displayDeprecated;
+	global $communityPaths, $info, $communitySettings, $plugin, $unRaid64, $unRaid635, $displayDeprecated;
 
 	if ( ! $selectedApps ) {
 		$selectedApps = array();
@@ -35,10 +36,11 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
 	$displayTemplate = $skin[$viewMode]['template'];
-	$communitySettings['maxColumn'] = $communitySettings['maxIconColumns'];
-
+	if ( $unRaid64 ) {
+		$communitySettings['maxColumn'] = $communitySettings['maxIconColumns'];
+	}
 	if ( $viewMode == 'detail' ) {
-		$communitySettings['maxColumn'] = $communitySettings['maxDetailColumns'];
+		$communitySettings['maxColumn'] = $unRaid64 ? $communitySettings['maxDetailColumns'] : 2;
 		$communitySettings['viewMode'] = "icon";
 	}
 
@@ -47,13 +49,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	$startingApp = $officialFlag ? 1 : ($pageNumber -1) * $communitySettings['maxPerPage'] + 1;
 	$startingAppCounter = 0;
 
-# Create entries for skins.  Note that MANY entries are not used in the current skin
-	$fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
-	$fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";
-	$fontAwesomeGUI = "<i class='appIcons fa fa-globe' aria-hidden='true'></i>";
-	$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' aria-hidden='true'></i>";
-	$fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true' style='color:maroon; font-size:20px;'></i>";
-
+# Create entries for skins.  Note that MANY entries are not used in the current skins
 	foreach ($file as $template) {
 		if ( $template['Blacklist'] && ! is_file($communityPaths['dontAllowInstalls']) ) {
 			continue;
@@ -113,26 +109,25 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		}
 		$template['display_pinButton'] = "<i class='ca_tooltip fa fa-thumb-tack $pinned' title='$pinnedTitle' onclick='pinApp(this,&quot;".$template['Repository']."&quot;);' aria-hidden='true'></i>";
 		if ( $template['Uninstall'] ) {
-			$template['display_Uninstall'] = "<a class='ca_tooltip' title='Uninstall Application' style='cursor:pointer' ";
+			$template['display_Uninstall'] = "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Uninstall Application' style='width:20px;height:20px;cursor:pointer' ";
 			$template['display_Uninstall'] .= ( $template['Plugin'] ) ? "onclick='uninstallApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" :	"onclick='uninstallDocker(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>";
-			$template['display_Uninstall'] .= $fontAwesomeDelete."</a>";
 		} else {
 			if ( $template['Private'] == "true" ) {
-				$template['display_Uninstall'] = "<a class='ca_tooltip' title='Remove Private Application' style='cursor:pointer' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['SortAuthor']}&quot;);'>$fontAwesomeDelete</a>";
+				$template['display_Uninstall'] = "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Remove Private Application' style='width:20px;height:20px;cursor:pointer' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['SortAuthor']}&quot;);'>";
 			}
 		}
-		$template['display_removable'] = $template['Removable'] ? "<a class='ca_tooltip' title='Remove Application From List' style='cursor:pointer' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>$fontAwesomeDelete</a>" : "";
+		$template['display_removable'] = $template['Removable'] ? "<img class='ca_tooltip' src='{$communityPaths['deleteIcon']}' title='Remove Application From List' style='width:20px;height:20px;cursor:pointer' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" : "";
 		if ( $template['display_Uninstall'] && $template['display_removable'] ) {
 			unset($template['display_Uninstall']); # prevent previously installed private apps from having 2 x's in previous apps section
 		}
 		if ( $template['Date'] > strtotime($communitySettings['timeNew'] ) ) {
-			$template['display_newIcon'] = "<i class='fa fa-star ca_tooltip' style='font-size:15px;color:darkkhaki;' title='New / Updated - ".date("F d Y",$template['Date'])."'></i>";
+			$template['display_newIcon'] = "<i class='fa fa-star ca_tooltip' style='font-size:15px;color:yellow;' title='New / Updated - ".date("F d Y",$template['Date'])."'></i>";
 		}
 		$template['display_changes'] = $template['Changes'] ? " <i class='ca_infoPopup fa fa-info-circle' data-appnumber='$ID' title='Click for the changelog / more information' aria-hidden='true' style='cursor:pointer;font-size:15px;color:blue;'></i></a>" : "";
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
 
 		$template['display_dateUpdated'] = ($template['Date'] && is_file($communityPaths['newFlag']) ) ? "</b></strong><center><strong>Date Updated: </strong>".$template['display_humanDate']."</center>" : "";
-		$template['display_multi_install'] = ($template['Removable']) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-type='$appType' $checked>" : "";
+		$template['display_multi_install'] = ($template['Removable'] && $unRaid635) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-type='$appType' $checked>" : "";
 		if (! $communitySettings['dockerRunning'] && ! $template['Plugin']) {
 			unset($template['display_multi_install']);
 		}
@@ -143,11 +138,11 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 					$pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
 					$tmpVar = $pluginSettings ? "" : " disabled ";
 					$template['display_pluginSettings'] = "<input class='ca_tooltip' title='Click to go to the plugin settings' type='submit' $tmpVar style='margin:0px' value='Settings' formtarget='_self' formaction='$pluginSettings' formmethod='post'>";
-					$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip' title='Click to go to the plugin settings' href='$pluginSettings'>$fontAwesomeGUI</a>" : "";
+					$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip' title='Click to go to the plugin settings' href='$pluginSettings'><img src='/plugins/community.applications/images/WebPage.png' class='appIcons'></a>" : "";
 				} else {
 					$buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
 					$template['display_pluginInstall'] = "<input class='ca_tooltip' type='button' value='$buttonTitle' style='margin:0px' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>";
-					$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>$fontAwesomeInstall</a>";
+					$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
 				}
 			} else {
 				if ( $communitySettings['dockerRunning'] ) {
@@ -155,21 +150,21 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 						$template['display_dockerDefault']     = "<input class='ca_tooltip' type='submit' value='Default' style='margin:1px' title='Click to reinstall the application using default values' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."'>";
 						$template['display_dockerEdit']        = "<input class='ca_tooltip' type='submit' value='Edit' style='margin:1px' title='Click to edit the application values' formtarget='_self' formmethod='post' formaction='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."'>";
 						$template['display_dockerDefault']     = $template['BranchID'] ? "<input class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' value='Add' onclick='displayTags(&quot;$ID&quot;);'>" : $template['display_dockerDefault'];
-						$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'>$fontAwesomeInstall</a>&nbsp;";
-						$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'>$fontAwesomeInstall</a>&nbsp;" : $template['display_dockerDefaultIcon'];
-						$template['display_dockerEditIcon']    = "<a class='ca_tooltip' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='_self'>$fontAwesomeEdit</a>&nbsp;";
+						$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
+						$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>" : $template['display_dockerDefaultIcon'];
+						$template['display_dockerEditIcon']    = "<a class='ca_tooltip' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='_self'><img src='/plugins/community.applications/images/edit.png' class='appIcons'></a>";
 						if ( $info[$name]['url'] && $info[$name]['running'] ) {
-							$template['dockerWebIcon'] = "<a class='ca_tooltip' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'>$fontAwesomeGUI</a>&nbsp;&nbsp;";
+							$template['dockerWebIcon'] = "<a class='ca_tooltip' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'><img src='/plugins/community.applications/images/WebPage.png' class='appIcons'></a>&nbsp;&nbsp;";
 						}
 					} else {
 						if ( $template['MyPath'] ) {
 							$template['display_dockerReinstall'] = "<input class='ca_tooltip' type='submit' style='margin:0px' title='Click to reinstall the application' value='Reinstall' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."'>";
-							$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip' title='Click to reinstall' href='Apps/UpdateContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='_self'>$fontAwesomeInstall</a>&nbsp;";
+							$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip' title='Click to reinstall' href='Apps/UpdateContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='_self'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
 							} else {
 							$template['display_dockerInstall']   = "<input class='ca_tooltip' type='submit' style='margin:0px' title='Click to install the application' value='Add' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."'>";
 							$template['display_dockerInstall']   = $template['BranchID'] ? "<input class='ca_tooltip' type='button' style='margin:0px' title='Click to install the application' value='Add' onclick='displayTags(&quot;$ID&quot;);'>" : $template['display_dockerInstall'];
-							$template['display_dockerInstallIcon'] = "<a class='ca_tooltip' title='Click to install' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'>$fontAwesomeInstall</a>&nbsp;";
-							$template['display_dockerInstallIcon'] = $template['BranchID'] ? "<a style='cursor:pointer' class='ca_tooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'>$fontAwesomeInstall</a>&nbsp;" : $template['display_dockerInstallIcon'];
+							$template['display_dockerInstallIcon'] = "<a class='ca_tooltip' title='Click to install' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>";
+							$template['display_dockerInstallIcon'] = $template['BranchID'] ? "<a style='cursor:pointer' class='ca_tooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'><img src='/plugins/community.applications/images/install.png' class='appIcons'></a>" : $template['display_dockerInstallIcon'];
 						}
 					}
 				} else {
@@ -183,16 +178,16 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		}
 		$template['display_author'] = "<a class='ca_tooltip' style='cursor:pointer' onclick='authorSearch(this.innerHTML);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
 		$displayIcon = $template['Icon'];
-		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
-		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
-		$template['display_iconSelectable'] = "<img src='$displayIcon' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";' style='width:".$iconSize."px;height=".$iconSize."px;'>";
+		$displayIcon = $displayIcon ? $displayIcon : "/plugins/$plugin/images/question.png";
+		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/$plugin/images/question.png\";'></a>";
+		$template['display_iconSelectable'] = "<img class='betaApp' src='$displayIcon' onError='this.src=\"/plugins/$plugin/images/question.png\";' style='width:".$iconSize."px;height=".$iconSize."px;'>";
 		$template['display_popupDesc'] = ( $communitySettings['maxColumn'] > 2 ) ? "Click for a full description\n".$template['PopUpDescription'] : "Click for a full description";
 		if ( isset($ID) ) {
 			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' style='cursor:pointer' title='".$template['display_popupDesc']."'>".$template['display_iconSelectable']."</a>";
-			$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
+			$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/$plugin/images/question.png\";'></a>";
 		} else {
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
-			$template['display_iconSmall'] = "<img src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'>";
+			$template['display_iconSmall'] = "<img src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/$plugin/images/question.png\";'>";
 		}
 		$template['display_dockerName'] = ( $communitySettings['dockerSearch'] == "yes" && ! $template['Plugin'] ) ? "<a class='ca_tooltip' data-appNumber='$ID' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search dockerHub for similar containers'>".$template['Name']."</a>" : $template['Name'];
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
@@ -289,6 +284,15 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
 	return $o;
 }
 
+########################################################################################
+#                                                                                      #
+# function used to display the navigation (page up/down buttons) for dockerHub results #
+#                                                                                      #
+########################################################################################
+function dockerNavigate($num_pages, $pageNumber) {
+	return getPageNavigation($pageNumber,$num_pages * 25, true);
+}
+
 ##############################################################
 #                                                            #
 # function that actually displays the results from dockerHub #
@@ -356,7 +360,7 @@ function displaySearchResults($pageNumber,$viewMode) {
 			$description = str_replace('"',"&#34;",$description);
 
 			$t .= "<figure><center><a class='ca_tooltip' href='".$result['DockerHub']."' title='$description' target='_blank'>";
-			$t .= "<img style='width:".$iconSize."px;height:".$iconSize."px;' src='".$result['Icon']."' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
+			$t .= "<img style='width:".$iconSize."px;height:".$iconSize."px;' src='".$result['Icon']."' onError='this.src=\"/plugins/$plugin/images/question.png\";'></a>";
 			$t .= "<figcaption><strong><center><font size='3'><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For Similar Containers'>".$result['Name']."</a></font></center></strong></figcaption></figure>";
 			if ( $communitySettings['dockerRunning'] == "true" ) {
 				$t .= "<center><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)' style='margin:0px'></center>";
@@ -384,7 +388,7 @@ function displaySearchResults($pageNumber,$viewMode) {
 		}
 		if ( $viewMode == "table" ) {
 			$t .= "<tr><td><a class='ca_tooltip' href='".$result['DockerHub']."' target='_blank' title='Click to go to the dockerHub website for this container'>";
-			$t .= "<img src='".$result['Icon']."' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";' style='width:".$iconSize."px;height:".$iconSize."px;'>";
+			$t .= "<img src='".$result['Icon']."' onError='this.src=\"/plugins/$plugin/images/question.png\";' style='width:".$iconSize."px;height:".$iconSize."px;'>";
 			$t .= "</a></td>";
 			$t .= "<td><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)';></td>";
 			$t .= "<td><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search Similar Containers'>".$result['Name']."</a></td>";
@@ -485,3 +489,4 @@ function toNumericArray($template) {
 	);
 }
 ?>
+

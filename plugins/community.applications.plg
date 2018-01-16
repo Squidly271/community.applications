@@ -876,7 +876,7 @@ rm -rf /usr/local/emhttp/plugins/community.applications/CA.page
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."
-echo " Copyright 2015-2017, Andrew Zawadzki"
+echo " Copyright 2015-2018, Andrew Zawadzki"
 echo " Version: &version;"
 echo "----------------------------------------------------"
 echo ""

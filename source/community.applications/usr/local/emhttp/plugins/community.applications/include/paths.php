@@ -1,7 +1,7 @@
 <?PHP
 ###############################################################
 #                                                             #
-# Community Applications copyright 2015-2018, Andrew Zawadzki #
+# Community Applications copyright 2015-2017, Andrew Zawadzki #
 #                                                             #
 ###############################################################
 
@@ -33,6 +33,8 @@ $communityPaths['updateErrors']                  = $communityPaths['tempFiles'].
 $communityPaths['dockerUpdateStatus']            = "/var/lib/docker/unraid-update-status.json";
 $communityPaths['pinned']                        = "/boot/config/plugins/$plugin/pinned_apps.json"; # stored on flash instead of docker.img so it will work without docker running
 $communityPaths['appOfTheDay']                   = $communityPaths['tempFiles']."/appOfTheDay.json";
+$communityPaths['defaultSkin']                   = "/usr/local/emhttp/plugins/$plugin/skins/default.skin";
+$communityPaths['legacySkin']                    = "/usr/local/emhttp/plugins/$plugin/skins/legacy.skin";
 $communityPaths['LegacyMode']                    = $communityPaths['templates-community']."/legacyModeActive";
 $communityPaths['statistics']                    = $communityPaths['tempFiles']."/statistics.json";
 $communityPaths['pluginSettings']                = "/boot/config/plugins/$plugin/$plugin.cfg";
@@ -44,11 +46,10 @@ $communityPaths['CAdeveloper']                   = "/boot/config/plugins/$plugin
 $communityPaths['pollingDisabled']               = "/boot/config/plugins/$plugin/pollingDisabled";
 $communityPaths['pluginDupes']                   = $communityPaths['tempFiles']."/pluginDupes";
 $communityPaths['newFlag']                       = $communityPaths['tempFiles']."/newFlag";  # flag file to indicate that the "New" Category is being displayed
+$communityPaths['deleteIcon']                    = "/plugins/dynamix.docker.manager/images/remove.png";
 $communityPaths['displayLocked']                 = $communityPaths['tempFiles']."/displayLocked"; # when file exists, the background check for stale will not run
 $communityPaths['dontAllowInstalls']             = $communityPaths['tempFiles']."/dontAllowInstalls"; # when file exists, the icons for install/edit/etc will not appear
 $communityPaths['appFeedDownloadError']          = $communityPaths['tempFiles']."/appfeedTemporaryFileForAnalysis";
-$communityPaths['defaultSkin']                   = "/usr/local/emhttp/plugins/$plugin/skins/default.skin";
-$communityPaths['defaultSkinPHP']                = $communityPaths['defaultSkin'].".php";
 
 $infoFile                                        = $communityPaths['community-templates-info'];
 ?>

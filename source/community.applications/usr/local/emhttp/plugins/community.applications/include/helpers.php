@@ -1,7 +1,7 @@
 <?PHP
 ###############################################################
 #                                                             #
-# Community Applications copyright 2015-2018, Andrew Zawadzki #
+# Community Applications copyright 2015-2017, Andrew Zawadzki #
 #                                                             #
 ###############################################################
 
@@ -475,7 +475,11 @@ function logger($string) {
 # Function to check for a valid URL                   #
 #######################################################
 function validURL($URL) {
-	return filter_var($URL, FILTER_VALIDATE_URL);
+	if ( function_exists("filter_var") ) {  # function only works on unRaid 6.1.8+
+		return filter_var($URL, FILTER_VALIDATE_URL);
+	} else {
+		return $URL;
+	}
 }
 
 ####################################################################################
@@ -516,8 +520,13 @@ function getRedirectedURL($url) {
 # Returns the maximum number of columns per display width #
 ###########################################################
 function getMaxColumns($windowWidth) {
-	global $communitySettings, $templateSkin;
+	global $communitySettings, $templateSkin, $unRaid64;
 
+	if ( ! $unRaid64 ) {
+		$communitySettings['maxDetailColumns'] = 2;
+		$communitySettings['maxIconColumns'] = 5;
+		return;
+	}
 	$communitySettings['windowWidth'] = $windowWidth;
 	$communitySettings['maxDetailColumns'] = floor($windowWidth / $templateSkin['detail']['templateWidth']);
 	$communitySettings['maxIconColumns'] = floor($windowWidth / $templateSkin['icon']['templateWidth']);

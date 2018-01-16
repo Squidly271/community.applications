@@ -1,11 +1,11 @@
 Menu="Apps"
-Icon="CA.png"
+Icon="community.applications.png"
 Title="Community Applications"
 ---
 <?
 ###############################################################
 #                                                             #
-# Community Applications copyright 2015-2018, Andrew Zawadzki #
+# Community Applications copyright 2015-2017, Andrew Zawadzki #
 #                                                             #
 ###############################################################
 
@@ -27,6 +27,11 @@ if ( ! is_file($communityPaths['warningAccepted']) ) {
 if ( is_file($communityPaths['polling']) ) {
 	$pollingDisabled = "true";
 }
+$vars = parse_ini_file($communityPaths['unRaidVars']);
+$toolTipsterIncluded = version_compare($vars['version'],"6.3.3",">=") ? "true" : "false";
+$unRaid64 = (version_compare($vars['version'],"6.4.0-rc0",">=")) ? "true" : "false";
+$unRaid635 = (version_compare($vars['version'],"6.3.5",">=")) ? "true" : "false";
+$backTopTopIncluded = (version_compare($vars['version'],"6.4.0-rc9f","<=")) ? "false" : "true";
 
 $tabMode = "_self";
 $line_color = $display['theme']=='black' ? '#202020' : '#E8E8E8';
@@ -44,31 +49,46 @@ $iconDisabledColor = ($display['theme'] == "black") || ($display['theme'] == "gr
 $iconEnabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#009900" : "#009900";
 ?>
 <style>
-<? if ( $display['theme'] == "black" || $display['theme'] == "white"):?>
-	.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
-	#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;}
+<?if ( $unRaid64 == "true" ):?>
+	<? if ( $display['theme'] == "black" || $display['theme'] == "white"):?>
+		.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
+		#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;}
+	<?endif;?>
+	<? if ( $display['theme'] == "gray" || $display['theme'] == "azure"):?>
+		.searchSubmit{font-family:'FontAwesome';width:29px;height:29px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
+		#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;border:1px solid;border-radius:4px 0px 0px 4px;}
+	<?endif;?>
 <?endif;?>
-<? if ( $display['theme'] == "gray" || $display['theme'] == "azure"):?>
-	.searchSubmit{font-family:'FontAwesome';width:29px;height:29px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
-	#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;border:1px solid;border-radius:4px 0px 0px 4px;}
+<?if ( $unRaid64 == "false" ):?>
+	.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative;top:-2px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
+	#searchBox{margin-left:10px;margin-right:0;position:relative;top:-3px;}
 <?endif;?>
 
 table#templates_list tbody td.topRow{border-top:1px solid <?=$line_color?>;}
+<?if ($backTopTopIncluded == "false"):?>
+	.back-to-top {background: none;margin: 0;position: fixed;bottom: 40px;right: 0;width: 50px;height: 50px;z-index: 100;display: none;text-decoration: none;color: #ffffff;}
+<?endif;?>
 input.appButtons {margin:0px;}
 input.viewButton {margin:1px;}
 input.sortButton {margin:1px;}
 input.dirButton {margin:1px;}
 input.allButtons {margin:-1px;}
 input[type=checkbox] {width:20px; height:20px;}
-.enabledIcon { cursor:pointer;color:#005500;font-size:25px; }
-.disabledIcon { cursor:pointer;color:#040404;font-size:25px; }
+.enabledIcon { cursor:pointer;background-color:<?=$iconEnabledColor?>;height:35px;border-radius:5px;padding:5px;}
+.disabledIcon { background-color:<?=$iconDisabledColor?>;height:35px;border-radius:5px;padding:5px;opacity: 0.2;}
 .pinned { cursor:pointer;font-size:15px;color:green;padding:3px;}
 .unpinned { cursor:pointer;font-size:15px;color:red;padding:3px; -webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);-o-transform: rotate(20deg);transform: rotate(20deg);}
 .topRightLinks { padding-left:15px; }
-.appIcons { font-size:25px; }
+.appIcons { height:40px; }
+.heartshow { color:red; }
+.hearthide { color:pink; }
 
 </style>
 
+<?if ( $toolTipsterIncluded == "false" ) : ?>
+<script src="/plugins/community.applications/javascript/tooltipster.bundle.min.js"></script>
+<link type="text/css" rel="stylesheet" href="/plugins/community.applications/styles/tooltipster.css">
+<?endif;?>
 <script>
 var URL = "/plugins/<?=$plugin?>/include/exec.php";
 var last = $('input[name$="tabs"]').length;
@@ -163,14 +183,31 @@ var data_selected = "";
 var data_lastUpdated = 0;
 	
 $(function(){
+	<?if ($backTopTopIncluded == "false"):?>
+		var backtotopoffset = 250;
+		var backtotopduration = 500;
+		$(window).scroll(function() {
+			if ($(this).scrollTop() > backtotopoffset ) {
+				$('.back-to-top').fadeIn(backtotopduration);
+			} else {
+				$('.back-to-top').fadeOut(backtotopduration);
+			}
+		});
+		$('.back-to-top').click(function(event) {
+			event.preventDefault();
+			$('html, body').animate({scrollTop: 0}, backtotopduration);
+			return false;
+		});
+	<?endif;?>
 	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
 	if ( "<?=$firstRun?>" == "true" ) { $("#appWarning").show(); }
 	$("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
 
 	$('.ca_staticTips').tooltipster({
+	  animationDuration: [2000,350],
 		timer:15000,
-		animation:'none',
+		animation:'fade',
 		arrow:true,
 		trigger:'custom',
 		triggerOpen:{mouseenter: true},
@@ -216,7 +253,7 @@ $(function(){
 		distance: -15,
 		maxWidth:550,
 		minWidth:550,
-		animation: 'none',
+		animation: 'fade',
 		animationDuration: [1500,250],
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
 		interactive: true,
@@ -232,7 +269,7 @@ $(function(){
 		distance: -15,
 		maxWidth:550,
 		minWidth:550,
-		animation: 'none',
+		animation: 'fade',
 		animationDuration: [1500,250],
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
 		interactive: true,
@@ -381,10 +418,11 @@ function setToolTip() {
 	$('.ca_appPopup').attr('title','Loading...');
 	$('.ca_infoPopup').attr('title','Loading...');
 	$('.ca_tooltip').tooltipster({
+		animationDuration: [2000,350],
 		contentAsHTML:true,
 		delay:[<?=$cfg['hoverTime']?>,1],
 		timer:15000,
-		animation:'none',
+		animation:'fade',
 		arrow:true,
 		trigger:'custom',
 		triggerOpen:{mouseenter: true},
@@ -416,7 +454,7 @@ function setToolTip() {
 		contentAsHTML: true,
 		maxWidth:550,
 		minWidth:550,
-		animation: 'grow',
+		animation: 'none',
 		arrow:true,
 		trigger: 'custom',
 		triggerOpen: {mouseenter:true,click:true,touchstart:true},
@@ -432,6 +470,17 @@ function setToolTip() {
 				if (data) {
 					instance.content(data);
 				}
+			});
+		},
+		functionReady: function(instance,helper) {
+			$('.ca_apptooltip').tooltipster({
+				contentAsHTML:true,
+				delay:[1000,1],
+				timer:15000,
+				animation:'none',
+				arrow:true, trigger:'custom',
+				triggerOpen:{mouseenter: true},
+				triggerClose:{click:true,scroll:true,mouseleave:true}
 			});
 		}
 	});
@@ -517,7 +566,9 @@ function changePage(pageNumber) {
 }
 
 function getWindowWidth() {
-	return $('.tabs').width();
+	var width = $('.tabs').width();
+
+	return width;
 }
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
@@ -556,7 +607,7 @@ function doSearch(button) {
 	resetSortByDate();
 	data_docker = "";
 	filter = filter.replace(/[^a-z0-9]/gi,' ')
-	filter = $.trim(filter);
+	filter = myTrim(filter);
 	$('#searchBox').val(filter);
 	$(".appButtons,#maxPerPage,.allButtons").prop("disabled",false);
 	$(".multi_installDiv").hide();
@@ -915,7 +966,7 @@ function dockerConvert(dockerID) {
 	$.post(URL,{action:'convert_docker',ID:dockerID},function(data) {
 		if (data) {
 			myCloseAlert();
-			templateURL = "Apps/AddContainer?xmlTemplate=default:" + $.trim(data);
+			templateURL = "Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
 			window.open(templateURL,"<?=$tabMode?>");
 			$("#Total").html(totalDisplayed);
 		}
@@ -1060,6 +1111,10 @@ function deletePrivateApp(path,name,author) {
 	});
 }
 
+function myTrim(x) {
+	return x.replace(/^\s+|\s+$/gm,'');
+}
+
 function uninstallDocker(application,humanName) {
 	swal({
 		title: "Uninstall Application?",
@@ -1199,10 +1254,11 @@ function updateViewMode(id,buttonClass) {
 
 function checkStale() {
 	if ( "<?=$polling?>" != "true" ) {
+		$("#heartbeat").toggleClass("heartshow hearthide");
 		var webTime = data_lastUpdated;
 		$.post(URL,{action:'checkStale',webTime:webTime},function(data) {
 			if (data) {
-				if ($.trim(data) == "true") {
+				if (myTrim(data) == "true") {
 					clearInterval(checkStaleVar);
 					myAlert("Database Out Of Sync","Another Browser Tab Has Updated The Application Database.  Reloading The Apps Tab In 10 Seconds.","","",false,false,false,"error");
 					setTimeout(function(){ window.location.reload(); },10000);
@@ -1329,6 +1385,7 @@ function installMulti() {
 }
 
 function resizeDisplay() {
+	<?if ( $unRaid64 == "true" ) : ?>            // function to resize everything on demand
 	window.resizeEvt;
 	$(window).resize(function(){
 		var newWidth = getWindowWidth();
@@ -1354,6 +1411,7 @@ function resizeDisplay() {
 			changeSortOrder(null,null,null);
 		}, 100);
 	});
+	<?endif;?>
 }
 
 </script>
@@ -1362,23 +1420,23 @@ function resizeDisplay() {
 <div id='appWarning' style='display:none'><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
 <font size='2' color='red'>Note: All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein</font>
 <br><input type='button' value='Dismiss Warning' onclick='dismissWarning();'></input></center></div>
-<span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
+<span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a><?if ($cfg['maintainer']=='yes'):?><span id='heartbeat' class='heartshow'>&nbsp;<i class='fa fa-heart'></i></span><?endif;?></span>
 <br>
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br>
-> <i class='fa fa-bars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
-> <i class='fa fa-binoculars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses how to display the results<br>
-> <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This selects a category of apps to display<br>
-> <i class='fa fa-folder-open enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - When available, this selects a subcategory of apps to display<br>
-> <i class='fa fa-download' aria-hidden='true' style='font-size:20px;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:20px;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:20px;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
-> <i class='fa fa-globe' aria-hidden='true' style='font-size:20px;'></i> - Clicking this icon will take you to an application's GUI<br>
+> <img src='/plugins/community.applications/images/SectionIconNew.png' height='50px'> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
+> <img src='/plugins/community.applications/images/ViewIconNew.png' height='50px'> - This chooses how to display the results<br>
+> <img src='/plugins/community.applications/images/CategoryIconNew.png' height='50px'> - This selects a category of apps to display<br>
+> <img src='/plugins/community.applications/images/SubCategoryIconNew.png' height='50px'> - When available, this selects a subcategory of apps to display<br>
+> <img src='/plugins/community.applications/images/install.png' height='25px'><img src='/plugins/community.applications/images/edit.png' height='25px'><img src='/plugins/community.applications/images/update.png' height='25px'> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
+> <img src='/plugins/community.applications/images/WebPage.png' height='25px'> - Clicking this icon will take you to an application's GUI<br>
 > Hovering over an application's icon (or clicking it) will display more information about the application<br>
 > <center>For support for this plugin, visit here: <a title='click for help' href="http://lime-technology.com/forum/index.php?topic=40262.0" target="_blank">http://lime-technology.com/forum/index.php?topic=40262.0</a></center>
+> <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 
-<i id='sectionIcon' class='fa fa-bars ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
-<i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;
-<i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;
-<i id='sortIcon' class='fa fa-binoculars ca_toolsView disabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;
-
+<img id='sectionIcon' class='ca_section enabledIcon' src='/plugins/community.applications/images/SectionIconNew.png'>
+<img id='categoryIcon' class='ca_categories enabledIcon' src='/plugins/community.applications/images/CategoryIconNew.png'>
+<img id='subcategoryIcon' class='ca_subcategories disabledIcon' src='/plugins/community.applications/images/SubCategoryIconNew.png'>
+<img id='sortIcon' class='ca_toolsView disabledIcon' height='35px;' src='/plugins/community.applications/images/ViewIconNew.png'>
 <font size='3'><b>Current Section: <font color='green'><span id='currentSection'>Available Apps</span></font></b></font>
 <strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option><option value='100'>100</option><option value='-1'>All</option></select></span></span>
 </span><br>
@@ -1387,9 +1445,13 @@ function resizeDisplay() {
 <span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style=cursor:pointer>HERE</a> to install the update  <i class='ca_infoPopup fa fa-info-circle' data-appnumber='CA' style='cursor:pointer;font-size:15px;color:blue;'></i></center></font></span>
 <?endif;?>
 <div class='dockerSearch' style='display:none'><center><figure><i class='fa fa-docker initDockerSearch' style='font-size:50px;color:DarkCyan;cursor:pointer;'></i><figcaption class='initDockerSearch' style='cursor:pointer;'>Get More Results From DockerHub</figcaption></figure></center></div>
+<?if ($unRaid635 == "true"):?>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
+<?endif;?>
 <div style='width:100%;' id='templates_content'></div>
+<?if ($unRaid635 == "true"):?>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
+<?endif;?>
 </center>
 <?if ($backTopTopIncluded == "false"):?>
 <a href="#" class="back-to-top" style="display:none;"><i href="#" class="fa fa-arrow-circle-up dynamix_back-to-top" aria-hidden="true" style="color:green;font-size:25px;"></i></a>
