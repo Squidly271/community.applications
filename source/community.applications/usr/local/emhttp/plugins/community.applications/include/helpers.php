@@ -453,6 +453,9 @@ function moderateTemplates() {
 		$templateTMP = $template;
 		if ( is_array($moderation[$template['Repository']]) ) {
       $templateTMP = array_merge($template,$moderation[$template['Repository']]);
+			if ( $templateTMP['CAComment'] ) {
+				$templateTMP['ModeratorComment'] = $templateTMP['CAComment'];
+			}
 		}
 		if ( $duplicatedTemplate[$templateTMP['RepoURL']]['duplicated'][$template['Repository']] ) {
 			$templateTMP['Blacklist'] = true;
