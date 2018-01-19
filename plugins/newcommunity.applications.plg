@@ -3,7 +3,7 @@
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
 <!ENTITY version   "2018.01.19">
-<!ENTITY md5       "9a4430a92b25b6b3ac2ef2a52a0ced86">
+<!ENTITY md5       "40d823c4962d14daa287d165b1ac103d">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -864,7 +864,7 @@ The 'source' file.
 <MD5>&md5;</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/&name;/ca-tooltipster.txz" Run="upgradepkg --install-new" Max="6.3.2">
+<FILE Name="/boot/config/plugins/&name;/ca-tooltipster.txz" Run="upgradepkg --install-new" Max="6.4.0">
 <URL>https://github.com/Squidly271/ca-tooltipster/raw/master/archive/ca-tooltipster.txz</URL>
 <MD5>73f7c8e9cbfcb169915b268c5cddb8c6</MD5>
 </FILE>
