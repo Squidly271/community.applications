@@ -49,5 +49,6 @@ $communityPaths['dontAllowInstalls']             = $communityPaths['tempFiles'].
 $communityPaths['appFeedDownloadError']          = $communityPaths['tempFiles']."/appfeedTemporaryFileForAnalysis";
 $communityPaths['defaultSkin']                   = "/usr/local/emhttp/plugins/$plugin/skins/default.skin";
 $communityPaths['defaultSkinPHP']                = $communityPaths['defaultSkin'].".php";
+
 $infoFile                                        = $communityPaths['community-templates-info'];
 ?>
