@@ -947,7 +947,7 @@ case 'convert_docker':
 
 			if ( validURL($testline) ) {
 				$tst = str_replace("github.com","raw.githubusercontent.com",$testline);
-				if (strpos($tst,"githubusercontent")) {
+				if (strpos($tst,"raw.githubusercontent.com")) {
 					#logger("Trying $tst/master/Dockerfile");
 					download_url("$tst/master/Dockerfile",$communityPaths['Dockerfile']);
 					if ( is_file($communityPaths['Dockerfile']) ) {
