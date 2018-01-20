@@ -70,7 +70,7 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 	@unlink($infoFile);
 }
 
-$selectCategoryMessage = "Select a Section <i id='sectionIcon' class='fa fa-bars enabledIcon' aria-hidden='true' style='font-size:30px;cursor:auto;'></i> or Category <i id='categoryIcon' class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:30px;cursor:auto;'></i> above";
+$selectCategoryMessage = "Select a Section <i class='fa fa-bars enabledIcon' aria-hidden='true' style='font-size:30px;cursor:auto;'></i> or Category <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:30px;cursor:auto;'></i> above";
 
 #################################################################
 #                                                               #
