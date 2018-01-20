@@ -958,6 +958,8 @@ case 'convert_docker':
 		}
 		$dockerfileContents = @file_get_contents($communityPaths['Dockerfile']);
 		$dockerfileContents = $dockerfileContents ?: "";
+		$dockerfileContents = str_replace("\\\n"," ",$dockerfileContents); # get rid of readability newlines
+		file_put_contents("/tmp/blah",$dockerfileContents);
 		$dockerFile = explode("\n",$dockerfileContents);
 
 		$volumes = array();
