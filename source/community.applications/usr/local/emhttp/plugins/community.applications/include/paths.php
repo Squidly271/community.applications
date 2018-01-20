@@ -24,6 +24,7 @@ $communityPaths['addConverted']                  = $communityPaths['tempFiles'].
 $communityPaths['convertedTemplates']            = "/boot/config/plugins/$plugin/private/";                        /* path to private repositories on flash drive */
 $communityPaths['dockerSearchResults']           = $communityPaths['tempFiles']."/docker_search.json";                 /* The displayed docker search results */
 $communityPaths['dockerfilePage']                = $communityPaths['tempFiles']."/dockerfilePage";                     /* the downloaded webpage to scrape the dockerfile from */
+$communityPaths['Dockerfile']                    = $communityPaths['tempFiles']."/Dockerfile";
 $communityPaths['moderationURL']                 = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Moderation.json";
 $communityPaths['moderation']                    = $communityPaths['tempFiles']."/moderation.json";                    /* json file that has all of the moderation */
 $communityPaths['unRaidVersion']                 = "/etc/unraid-version";

@@ -929,31 +929,36 @@ case 'convert_docker':
 	$file = readJsonFile($communityPaths['dockerSearchResults']);
 	$docker = $file['results'][$dockerID];
 	$docker['Description'] = str_replace("&", "&amp;", $docker['Description']);
+	@unlink($communityPaths['Dockerfile']);
 
 	if ( ! $docker['Official'] ) {
-		$dockerURL = $docker['DockerHub']."~/dockerfile/";
+ 		$dockerURL = $docker['DockerHub'];
 		download_url($dockerURL,$communityPaths['dockerfilePage']);
 
-		$mystring = file_get_contents($communityPaths['dockerfilePage']);
+		$dockerPage = file_get_contents($communityPaths['dockerfilePage']);
+		@unlink($communityPaths['dockerfilePage']); # raw page not needed anymore
+		
+		$regex = '/".*?"|\'.*?\'/';  #regex that finds all quoted items
+		preg_match_all($regex,$dockerPage,$quoted);
+		@unlink($communityPaths['Dockerfile']);
+		foreach ($quoted[0] as $testline) {
+			$testline = str_replace('\u002F',"/",$testline);
+			$testline = str_replace('"',"",$testline);
 
-		@unlink($communityPaths['dockerfilePage']);
-
-		$thisstring = strstr($mystring,'"dockerfile":"');
-		$thisstring = trim($thisstring);
-		$thisstring = explode("}",$thisstring);
-		$thisstring = explode(":",$thisstring[0]);
-		unset($thisstring[0]);
-		$teststring = implode(":",$thisstring);
-
-		$teststring = str_replace('\n',"\n",$teststring);
-		$teststring = str_replace("\u002F", "/", $teststring);
-		$teststring = trim($teststring,'"');
-		$teststring = stripslashes($teststring);
-		$teststring = substr($teststring,2);
-
-		$docker['Description'] = str_replace("&", "&amp;", $docker['Description']);
-    $teststring = str_replace("\\"."\n"," ",$teststring);
-		$dockerFile = explode("\n",$teststring);
+			if ( validURL($testline) ) {
+				$tst = str_replace("github.com","raw.githubusercontent.com",$testline);
+				if (strpos($tst,"githubusercontent")) {
+					#logger("Trying $tst/master/Dockerfile");
+					download_url("$tst/master/Dockerfile",$communityPaths['Dockerfile']);
+					if ( is_file($communityPaths['Dockerfile']) ) {
+						break;
+					}
+				}
+			}
+		}
+		$dockerfileContents = @file_get_contents($communityPaths['Dockerfile']);
+		$dockerfileContents = $dockerfileContents ?: "";
+		$dockerFile = explode("\n",$dockerfileContents);
 
 		$volumes = array();
 		$ports = array();
