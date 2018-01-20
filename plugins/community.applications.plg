@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.01.01">
-<!ENTITY md5       "58f1341d395080af925b477195906414">
+<!ENTITY version   "2018.01.20">
+<!ENTITY md5       "092e6f58eaa6f8b715dd2672db1b20e5">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018.01.20
+- Make get more results from dockerHub more obvious that its a link
+- Fixed: Install / Edit icons from app popups didn't return to apps tab when done
+- Remove some development only code
+- Remove compatibility code for unRaid &lt; 6.3.3 (Now separately downloaded if required)
+- Remove all png icons and switch to font-awesome exclusively (download size now 52k vs 144k)
+
 ###2018.01.01
 - Fixed: under certain circumstances, a template could be mistakenly deprecated
 
@@ -862,6 +869,11 @@ The 'source' file.
 <FILE Name="/boot/config/plugins/&name;/&name;-&version;.txz" Run="upgradepkg --install-new">
 <URL>https://raw.github.com/&github;/master/archive/&name;-&version;.txz</URL>
 <MD5>&md5;</MD5>
+</FILE>
+
+<FILE Name="/boot/config/plugins/&name;/ca-tooltipster.txz" Run="upgradepkg --install-new" Max="6.3.2">
+<URL>https://github.com/Squidly271/ca-tooltipster/raw/master/archive/ca-tooltipster.txz</URL>
+<MD5>73f7c8e9cbfcb169915b268c5cddb8c6</MD5>
 </FILE>
 
 <!--
