@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.01.20">
-<!ENTITY md5       "092e6f58eaa6f8b715dd2672db1b20e5">
+<!ENTITY version   "2018.01.20a">
+<!ENTITY md5       "97d4c9665a8e72d8a39fcaced0beccb6">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,12 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
-###2018.01.20
+###2018.01.20a
 - Make get more results from dockerHub more obvious that its a link
 - Fixed: Install / Edit icons from app popups didn't return to apps tab when done
 - Remove some development only code
 - Remove compatibility code for unRaid &lt; 6.3.3 (Now separately downloaded if required)
 - Remove all png icons and switch to font-awesome exclusively (download size now 52k vs 144k)
+- Fixed: New / Updated displaying apps created in 1969
 
 ###2018.01.01
 - Fixed: under certain circumstances, a template could be mistakenly deprecated

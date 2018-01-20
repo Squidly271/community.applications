@@ -312,7 +312,9 @@ function fixTemplates($template) {
 	$template['DonateImg'] = validURL($template['DonateImg']);
 	$template['DonateText'] = str_replace("'","&#39;",$template['DonateText']);
 	$template['DonateText'] = str_replace('"','&quot;',$template['DonateText']);
-  $template['Date'] = $template['Date'] ?: (is_numeric($template['DateInstalled'])) ?: 0;
+	if ( ! $template['Date'] ) {
+		$template['Date'] = (is_numeric($template['DateInstalled'])) ? $template['DateInstalled'] : 0;
+	}
 	
 	# support v6.2 redefining deprecating the <Beta> tag and moving it to a category
 	if ( stripos($template['Category'],":Beta") ) {
