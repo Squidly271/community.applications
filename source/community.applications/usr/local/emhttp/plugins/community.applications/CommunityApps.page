@@ -416,11 +416,10 @@ function setToolTip() {
 	$('.ca_appPopup').attr('title','Loading...');
 	$('.ca_infoPopup').attr('title','Loading...');
 	$('.ca_tooltip').tooltipster({
-		animationDuration: [2000,350],
 		contentAsHTML:true,
 		delay:[<?=$cfg['hoverTime']?>,1],
 		timer:15000,
-		animation:'fade',
+		animation:'none',
 		arrow:true,
 		trigger:'custom',
 		triggerOpen:{mouseenter: true},
