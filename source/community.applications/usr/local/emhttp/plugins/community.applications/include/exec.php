@@ -936,15 +936,13 @@ case 'convert_docker':
 		download_url($dockerURL,$communityPaths['dockerfilePage']);
 
 		$dockerPage = file_get_contents($communityPaths['dockerfilePage']);
-		@unlink($communityPaths['dockerfilePage']); # raw page not needed anymore
-		
 		$regex = '/".*?"|\'.*?\'/';  #regex that finds all quoted items
 		preg_match_all($regex,$dockerPage,$quoted);
 		@unlink($communityPaths['Dockerfile']);
 		foreach ($quoted[0] as $testline) {
 			$testline = str_replace('\u002F',"/",$testline);
 			$testline = str_replace('"',"",$testline);
-
+#can only download from specific place, as if we search for and download the entire contents, it *could* be multi-megabyte/gigabyte download
 			if ( validURL($testline) ) {
 				$tst = str_replace("github.com","raw.githubusercontent.com",$testline);
 				if (strpos($tst,"raw.githubusercontent.com")) {
@@ -962,7 +960,7 @@ case 'convert_docker':
 			}
 		}
 		if ( ! is_file($communityPaths['Dockerfile']) ) {  #couldn't easily locate dockerfile.  Revert to scraping webpage
-			logger("Community Applications: Could not locate dockerfile.  Attempting to scrape web-page");
+			logger("Community Applications: Could not locate dockerfile.  Falling back to scraping web-page");
 			$mystring = $dockerPage;
 			logger($mystring);
 			$thisstring = strstr($mystring,'"dockerfile":"');
@@ -978,7 +976,6 @@ case 'convert_docker':
 			$teststring = substr($teststring,2);
 			$docker['Description'] = str_replace("&", "&amp;", $docker['Description']);
 			$teststring = str_replace("\\\n"," ",$teststring);
-#			$dockerFile = explode("\n",$teststring);
 			file_put_contents($communityPaths['Dockerfile'],$teststring);
 		}
 		$dockerfileContents = @file_get_contents($communityPaths['Dockerfile']);
