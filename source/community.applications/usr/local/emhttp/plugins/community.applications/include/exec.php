@@ -39,6 +39,7 @@ $communitySettings['appFeed']       = "true"; # set default for deprecated setti
 $communitySettings['maxPerPage']    = getPost("maxPerPage",$communitySettings['maxPerPage']);  # Global POST.  Used damn near everywhere
 $communitySettings['iconSize']      = 96;
 $communitySettings['maxColumn']     = 5; # Pointless on 6.3  Gets overridden on 6.4 anyways
+$communitySettings['unRaidVersion'] = $unRaidVersion;
 
 if ( $communitySettings['favourite'] != "None" ) {
 	$officialRepo = str_replace("*","'",$communitySettings['favourite']);

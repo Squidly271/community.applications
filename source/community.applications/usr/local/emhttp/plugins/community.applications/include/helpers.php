@@ -208,7 +208,7 @@ function highlight($text, $search) {
 # Fix common problems (maintainer errors) in templates #
 ########################################################
 function fixTemplates($template) {
-	global $statistics;
+	global $statistics, $communitySettings;
 
 	$origStats = $statistics;
 # this fix must always be the first test
@@ -328,9 +328,14 @@ function fixTemplates($template) {
 	if ( $template['Private'] ) {
 		$statistics = $origStats;
 	}
+
 	# fix where template author includes <Blacklist> or <Deprecated> entries in template (CA used booleans, but appfeed winds up saying "FALSE" which equates to be true
 	$template['Deprecated'] = filter_var($template['Deprecated'],FILTER_VALIDATE_BOOLEAN);
 	$template['Blacklist'] = filter_var($template['Blacklist'],FILTER_VALIDATE_BOOLEAN);
+
+	if ( $template['DeprecatedMaxVer'] && version_compare($communitySettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") ) {
+		$template['Deprecated'] = true;
+	}
 	return $template;
 }
 
@@ -440,7 +445,7 @@ function readXmlFile($xmlfile) {
 # If appfeed is updated, this is done when creating the templates #
 ###################################################################
 function moderateTemplates() {
-	global $communityPaths;
+	global $communityPaths,$communitySettings;
 
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	$moderation = readJsonFile($communityPaths['moderation']);
@@ -464,6 +469,9 @@ function moderateTemplates() {
 			$templateTMP['ModeratorComment'] = "Duplicated Template";
 		}
 		$templateTMP['Compatible'] = versionCheck($templateTMP);
+		if ( $templateTMP["DeprecatedMaxVer"] && version_compare($communitySettings['unRaidVersion'],$templateTMP["DeprecatedMaxVer"],">") ) {
+			$templateTMP['Deprecated'] = true;
+		}
 		$o[] = $templateTMP;
 	}
 	writeJsonFile($communityPaths['community-templates-info'],$o);
