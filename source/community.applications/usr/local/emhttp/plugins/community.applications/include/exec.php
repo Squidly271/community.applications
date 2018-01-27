@@ -460,7 +460,7 @@ function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
 #                           #
 #############################
 function appOfDay($file) {
-	global $communityPaths, $info;
+	global $communityPaths;
 
 	$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
 	$oldAppDay = $oldAppDay ? $oldAppDay : 1;
