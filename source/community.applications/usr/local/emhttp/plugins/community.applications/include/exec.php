@@ -950,7 +950,7 @@ case 'convert_docker':
 						continue;
 					}
 					$alreadyAttempted[$testline] = true;
-					logger("Community Applications: Attempting download $tst/master/Dockerfile");
+					logger("Community Applications: Attempting download of dockerfile");
 					download_url("$tst/master/Dockerfile",$communityPaths['Dockerfile']);
 					if ( is_file($communityPaths['Dockerfile']) ) {
 						logger("Community Applications: Download succeeded");
@@ -962,7 +962,6 @@ case 'convert_docker':
 		if ( ! is_file($communityPaths['Dockerfile']) ) {  #couldn't easily locate dockerfile.  Revert to scraping webpage
 			logger("Community Applications: Could not locate dockerfile.  Falling back to scraping web-page");
 			$mystring = $dockerPage;
-			logger($mystring);
 			$thisstring = strstr($mystring,'"dockerfile":"');
 			$thisstring = trim($thisstring);
 			$thisstring = explode("}",$thisstring);

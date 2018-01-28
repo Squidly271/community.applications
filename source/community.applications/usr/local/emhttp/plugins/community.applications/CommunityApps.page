@@ -74,13 +74,8 @@ input.sortButton {margin:1px;}
 input.dirButton {margin:1px;}
 input.allButtons {margin:-1px;}
 input[type=checkbox] {width:20px; height:20px;}
-<?if ( $display['theme'] == "azure" || $display['theme'] == "white" ):?>
-.enabledIcon { cursor:pointer;color:#005500;font-size:35px; }
-.disabledIcon { cursor:pointer;color:#606E7F;font-size:35px; }
-<?else:?>
 .enabledIcon { cursor:pointer;color:#005500;font-size:35px; }
 .disabledIcon { cursor:pointer;color:#040404;font-size:35px; }
-<?endif;?>
 .pinned { cursor:pointer;font-size:15px;color:green;padding:3px;}
 .unpinned { cursor:pointer;font-size:15px;color:red;padding:3px; -webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);-o-transform: rotate(20deg);transform: rotate(20deg);}
 .topRightLinks { padding-left:15px; }
@@ -251,7 +246,7 @@ $(function(){
 	});
 	$('.ca_credits').tooltipster({
 		trigger: 'custom',
-		triggerOpen: {mouseenter:false,click:true,touchstart:true},
+		triggerOpen: {mouseenter:true,click:true,touchstart:true},
 		contentAsHTML: true,
 		distance: -15,
 		maxWidth:550,
@@ -267,7 +262,7 @@ $(function(){
 	});
 	$('.ca_stats').tooltipster({
 		trigger: 'custom',
-		triggerOpen: {mouseenter:false,click:true,touchstart:true},
+		triggerOpen: {mouseenter:true,click:true,touchstart:true},
 		contentAsHTML: true,
 		distance: -15,
 		maxWidth:550,
