@@ -20,8 +20,7 @@ $fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true' style='co
 
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $csrf_token = $unRaidVars['csrf_token'];
-$communitySettings = parse_plugin_cfg("community.applications");
-$tabMode = $communitySettings['newWindow'];
+$tabMode = '_self';
 
 $unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
 $unRaidVersion = $unRaidSettings['version'];

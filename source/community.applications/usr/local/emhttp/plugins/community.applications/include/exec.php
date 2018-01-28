@@ -14,7 +14,6 @@ require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHel
 require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
 require_once($communityPaths['defaultSkinPHP']);
 
-$plugin = "community.applications";
 $DockerTemplates = new DockerTemplates();
 
 $unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
@@ -34,7 +33,7 @@ $templateSkin = readJsonFile($communityPaths['defaultSkin']);   # Global Var use
 #                                                                              #
 ################################################################################
 
-$communitySettings = parse_plugin_cfg("$plugin");
+$communitySettings = parse_plugin_cfg("community.applications");
 $communitySettings['appFeed']       = "true"; # set default for deprecated setting
 $communitySettings['maxPerPage']    = getPost("maxPerPage",$communitySettings['maxPerPage']);  # Global POST.  Used damn near everywhere
 $communitySettings['iconSize']      = 96;
@@ -79,7 +78,7 @@ $selectCategoryMessage = "Select a Section <i class='fa fa-bars enabledIcon' ari
 #                                                               #
 #################################################################
 function DownloadCommunityTemplates() {
-	global $communityPaths, $infoFile, $plugin, $communitySettings, $statistics;
+	global $communityPaths, $infoFile, $communitySettings, $statistics;
 
 	$moderation = readJsonFile($communityPaths['moderation']);
 
@@ -213,7 +212,7 @@ function DownloadCommunityTemplates() {
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
 function DownloadApplicationFeed() {
-	global $communityPaths, $infoFile, $plugin, $communitySettings, $statistics;
+	global $communityPaths, $infoFile, $communitySettings, $statistics;
 
 	exec("rm -rf '{$communityPaths['templates-community']}'");
 	exec("mkdir -p '{$communityPaths['templates-community']}'");
@@ -359,7 +358,7 @@ function DownloadApplicationFeed() {
 }
 
 function getConvertedTemplates() {
-	global $communityPaths, $infoFile, $plugin, $communitySettings, $statistics;
+	global $communityPaths, $infoFile, $communitySettings, $statistics;
 
 # Start by removing any pre-existing private (converted templates)
 	$templates = readJsonFile($communityPaths['community-templates-info']);
@@ -1340,20 +1339,20 @@ case 'previous_apps':
 			}
 		}
 	} else {
-		$all_plugs = dirContents("/boot/config/plugins-removed/");
+		$all_plugs = glob("/boot/config/plugins-removed/*.plg");
 
 		foreach ($all_plugs as $oldplug) {
 			foreach ($file as $template) {
-				if ( $oldplug == pathinfo($template['Repository'],PATHINFO_BASENAME) ) {
-					if ( ! file_exists("/boot/config/plugins/$oldplug") ) {
+				if ( basename($oldplug) == basename($template['Repository']) ) {
+					if ( ! file_exists("/boot/config/plugins/".basename($oldplug)) ) {
 						if ( $template['Blacklist'] ) {
 							continue;
 						}
-            if ( strtolower(trim($template['PluginURL'])) != strtolower(trim(plugin("pluginURL","/boot/config/plugins-removed/$oldplug"))) ) {
+            if ( strtolower(trim($template['PluginURL'])) != strtolower(trim(plugin("pluginURL","$oldplug"))) ) {
 							continue;
 						}
 						$template['Removable'] = true;
-						$template['MyPath'] = "/boot/config/plugins-removed/$oldplug";
+						$template['MyPath'] = $oldplug;
 
 						$displayed[] = $template;
 						break;
@@ -1391,8 +1390,8 @@ case 'uninstall_application':
 	lockDisplay();
 	$application = getPost("application","");
 
-	$filename = pathinfo($application,PATHINFO_BASENAME);
-	shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin remove '$filename'");
+	$filename = basename($application);
+	shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin remove ".escapeshellarg($filename));
 	echo "ok";
 	break;
 
@@ -1580,7 +1579,6 @@ case 'statistics':
 	$memCA = explode("\t",$totalCA);
 	$memTmp = explode("\t",$totalTmp);
 	echo "<tr><td><b>{$color}<b>Memory Usage (CA / DataFiles)</b></td><td>{$memCA[0]} / {$memTmp[0]}</td></tr>";
-	
 	echo "</table>";
 	echo "<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img height='25px' src='https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif'></a></center>";
 	echo "<center>Ensuring only safe applications are present is a full time job</center><br>";

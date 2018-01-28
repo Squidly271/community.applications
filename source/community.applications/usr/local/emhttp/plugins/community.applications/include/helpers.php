@@ -49,16 +49,6 @@ function checkPluginUpdate($filename) {
 	return false;
 }
 
-#############################################################
-# Helper function to return an array of directory contents. #
-# Returns an empty array if the directory does not exist    #
-#############################################################
-function dirContents($path) {
-	$dirContents = @scandir($path);
-	if ( ! $dirContents ) { $dirContents = array(); }
-	return array_diff($dirContents,array(".",".."));
-}
-
 ###################################################################################
 # returns a random file name (/tmp/community.applications/tempFiles/34234234.tmp) #
 ###################################################################################
