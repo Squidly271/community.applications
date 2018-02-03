@@ -246,12 +246,12 @@ $(function(){
 	});
 	$('.ca_credits').tooltipster({
 		trigger: 'custom',
-		triggerOpen: {mouseenter:true,click:true,touchstart:true},
+		triggerOpen: {mouseenter:false,click:true,touchstart:true},
 		contentAsHTML: true,
 		distance: -15,
 		maxWidth:550,
 		minWidth:550,
-		animation: 'fade',
+		animation: 'none',
 		animationDuration: [1500,250],
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
 		interactive: true,
@@ -262,12 +262,12 @@ $(function(){
 	});
 	$('.ca_stats').tooltipster({
 		trigger: 'custom',
-		triggerOpen: {mouseenter:true,click:true,touchstart:true},
+		triggerOpen: {mouseenter:false,click:true,touchstart:true},
 		contentAsHTML: true,
 		distance: -15,
 		maxWidth:550,
 		minWidth:550,
-		animation: 'fade',
+		animation: 'none',
 		animationDuration: [1500,250],
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
 		interactive: true,

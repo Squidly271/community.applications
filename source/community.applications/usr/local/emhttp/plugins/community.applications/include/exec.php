@@ -55,7 +55,6 @@ if ( $communitySettings['dockerRunning'] ) {
 	$DockerClient = new DockerClient();
 	$dockerRunning = $DockerClient->getDockerContainers();
 } else {
-	$info = array();
 	$dockerRunning = array();
 }
 
