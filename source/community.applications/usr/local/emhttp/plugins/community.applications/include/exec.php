@@ -14,8 +14,6 @@ require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHel
 require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
 require_once($communityPaths['defaultSkinPHP']);
 
-$DockerTemplates = new DockerTemplates();
-
 $unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
 $unRaidVersion = $unRaidSettings['version'];
 if ($unRaidVersion == "6.2") $unRaidVersion = "6.2.0";
@@ -54,7 +52,6 @@ if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)
 }
 
 if ( $communitySettings['dockerRunning'] ) {
-	$info = $DockerTemplates->getAllInfo();
 	$DockerClient = new DockerClient();
 	$dockerRunning = $DockerClient->getDockerContainers();
 } else {
