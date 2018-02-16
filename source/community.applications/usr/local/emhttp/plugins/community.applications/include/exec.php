@@ -1308,7 +1308,9 @@ case 'previous_apps':
 				if ( $moderation[$o['Repository']]['Blacklist'] ) {
 					continue;
 				}
-				$displayed[] = $o;
+				if ( ! $o['Blacklist'] ) {
+					$displayed[] = $o;
+				}
 			}
 		}
 	}
