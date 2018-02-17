@@ -189,12 +189,12 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['display_author'] = "<a class='ca_tooltip' style='cursor:pointer' onclick='authorSearch(this.innerHTML);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
 		$displayIcon = $template['Icon'];
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
-		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
+		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
 		$template['display_iconSelectable'] = "<img class='betaApp' src='$displayIcon' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";' style='width:".$iconSize."px;height=".$iconSize."px;'>";
 		$template['display_popupDesc'] = ( $communitySettings['maxColumn'] > 2 ) ? "Click for a full description\n".$template['PopUpDescription'] : "Click for a full description";
 		if ( isset($ID) ) {
-			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' style='cursor:pointer' title='".$template['display_popupDesc']."'>".$template['display_iconSelectable']."</a>";
-			$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
+			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' style='cursor:pointer' title='".$template['display_popupDesc']."'>".$template['display_iconSelectable']."</a>";
+			$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
 		} else {
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
 			$template['display_iconSmall'] = "<img src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'>";

@@ -185,6 +185,7 @@ function DownloadCommunityTemplates() {
 						file_put_contents($subBranch['Path'],makeXML($subBranch));
 					}
 					unset($o['Branch']);
+
 					$o['Path'] = $communityPaths['templates-community']."/".$o['ID'].".xml";
 					file_put_contents($o['Path'],makeXML($o));
 					$myTemplates[$o['ID']] = $o;
@@ -229,7 +230,8 @@ function DownloadApplicationFeed() {
 	unlink($downloadURL);
 	$i = 0;
 	$statistics['totalApplications'] = count($ApplicationFeed['applist']);
-
+  $lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];
+	writeJsonFile($communityPaths['lastUpdated-old'],$lastUpdated);
 	$myTemplates = array();
 
 	foreach ($ApplicationFeed['applist'] as $file) {
@@ -249,7 +251,9 @@ function DownloadApplicationFeed() {
 		$o['SortName']      = $o['Name'];
 		$o['Licence']       = $file['License']; # Support Both Spellings
 		$o['Licence']       = $file['Licence'];
-		$o['Path']          = $communityPaths['templates-community']."/".$i.".xml";
+		$o['Path']          = $communityPaths['templates-community']."/{$o['RepoName']}/{$o['Name']}.xml";
+		$o['Path'] = str_replace("'","",$o['Path']);
+		$o['Path'] = str_replace(" ","",$o['Path']);
 		if ( $o['Plugin'] ) {
 			$o['Author']        = $o['PluginAuthor'];
 			$o['Repository']    = $o['PluginURL'];
@@ -339,6 +343,7 @@ function DownloadApplicationFeed() {
 		$myTemplates[$o['ID']] = $o;
 		$i = ++$i;
 		$templateXML = makeXML($file);
+		exec("mkdir -p ".escapeshellarg(dirname($o['Path'])));
 		file_put_contents($o['Path'],$templateXML);
 	}
 	writeJsonFile($communityPaths['statistics'],$statistics);
@@ -812,20 +817,17 @@ case 'force_update':
 	}
 	writeJsonFile($communityPaths['logos'],$repoLogo);
 
-	if ( ! file_exists($infoFile) ) {
+/* 	if ( ! file_exists($infoFile) ) {
 		if ( ! file_exists($communityPaths['lastUpdated-old']) ) {
 			$latestUpdate['last_updated_timestamp'] = time();
 			writeJsonFile($communityPaths['lastUpdated-old'],$latestUpdate);
 		}
 		echo "ok";
 		break;
-	}
+	} */
 
-	if ( file_exists($communityPaths['lastUpdated-old']) ) {
-		$lastUpdatedOld = readJsonFile($communityPaths['lastUpdated-old']);
-	} else {
-		$lastUpdatedOld['last_updated_timestamp'] = 0;
-	}
+	$lastUpdatedOld = readJsonFile($communityPaths['lastUpdated-old']);
+
 	@unlink($communityPaths['lastUpdated']);
 	$latestUpdate = download_json($communityPaths['application-feed-last-updated'],$communityPaths['lastUpdated']);
 
@@ -840,7 +842,8 @@ case 'force_update':
 			copy($communityPaths['lastUpdated'],$communityPaths['lastUpdated-old']);
 		}
 		if ( ! $badDownload ) {
-			unlink($infoFile);
+			@unlink($infoFile);
+			file_put_contents("/tmp/blah","forcing update of appfeed");
 		}
 	} else {
 		moderateTemplates();
@@ -856,8 +859,10 @@ case 'force_update':
 case 'force_update_button':
 	if ( ! is_file($communityPaths['LegacyMode']) ) {
 		file_put_contents($communityPaths['appFeedOverride'],"dunno");
+	} else {
+		exec("rm -rf ".escapeshellarg($communityPaths['tempFiles']));
 	}
-	@unlink($infoFile);
+	@unlink($communityPaths['community-templates-info']);
 	echo "ok";
 	break;
 
@@ -1587,32 +1592,6 @@ case 'changeViewModeSettings':
 	$communitySettings['viewMode'] = getPost("view",$communitySettings['viewMode']);
 	file_put_contents($communityPaths['pluginSettings'],create_ini_file($communitySettings,false));
 	echo "ok";
-	break;
-
-#############################
-#                           #
-# Checks for stale database #
-#                           #
-#############################
-case 'checkStale':
-  if (isdisplayLocked() ) {
-		echo "false";
-	}
-  $webTime = getPost("webTime",false);
-	if ( ! $webTime ) {
-		echo "false";
-		return;
-	}
-	$lastUpdate = @file_get_contents($communityPaths['lastUpdated-sync']);
-	if ( ! $lastUpdate ) {
-		echo "false";
-		return;
-	}
-	if ( $lastUpdate != $webTime ) {
-		echo "true";
-	} else {
-		echo "false";
-	}
 	break;
 
 #######################################

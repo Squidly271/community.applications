@@ -169,8 +169,6 @@ var categoryDesc = {
 	INCOMPATIBLE: "All Incompatible Applications"
 	};
 
-var checkStaleVar = setInterval(function(){ checkStale(); },60000);
-
 var data_oldWindowWidth = getWindowWidth();
 var data_docker = "";
 var data_section = "AppStore";
@@ -462,7 +460,7 @@ function setToolTip() {
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
-			var appNumber = origin.attr('data-appNumber');
+			var appNumber = origin.attr('data-appPath');
 			$.post("/plugins/<?=$plugin?>/scripts/showDesc.php",{action:'none',appNumber:appNumber},function(data) {
 				if (data) {
 					instance.content(data);
@@ -1247,21 +1245,6 @@ function updateViewMode(id,buttonClass) {
 			changeSortOrder(id,buttonClass);
 		}
 	});
-}
-
-function checkStale() {
-	if ( "<?=$polling?>" != "true" ) {
-		var webTime = data_lastUpdated;
-		$.post(URL,{action:'checkStale',webTime:webTime},function(data) {
-			if (data) {
-				if (myTrim(data) == "true") {
-					clearInterval(checkStaleVar);
-					myAlert("Database Out Of Sync","Another Browser Tab Has Updated The Application Database.  Reloading The Apps Tab In 10 Seconds.","","",false,false,false,"error");
-					setTimeout(function(){ window.location.reload(); },10000);
-				}	
-			}
-		});
-	}
 }
 
 function makePlural(string,count) {

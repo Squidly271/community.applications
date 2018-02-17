@@ -49,10 +49,11 @@ if ( ! $appNumber ) {
   $color="<font color='white'>";
 }
 
+# $appNumber is actually the path to the template.  It's pretty much always going to be the same even if the database is out of sync.
 $repos = readJsonFile($communityPaths['Repositories']);
 $displayed = readJsonFile($communityPaths['community-templates-displayed']);
 foreach ($displayed as $file) {
-  $index = searchArray($file,"ID",$appNumber);
+  $index = searchArray($file,"Path",$appNumber);
   if ( $index === false ) {
     continue;
   } else {
@@ -64,16 +65,16 @@ foreach ($displayed as $file) {
 # handle case where the app being asked to display isn't on the most recent displayed list (ie: multiple browser tabs open)
 if ( ! $template ) {
   $file = readJsonFile($communityPaths['community-templates-info']);
-  $index = searchArray($file,"ID",$appNumber);
+  $index = searchArray($file,"Path",$appNumber);
   if ( $index === false ) {
-    echo "Something really wrong happened";
+    echo "Something really wrong happened<br>Reloading the Apps tab will probably fix the problem";
     return;
   }
   $template = $file[$index];
   $Displayed = false;
 }
 
-$ID = $appNumber;
+$ID = $template['ID'];
 $repoIndex = searchArray($repos,"name",$template['RepoName']);
 $webPageURL = $repos[$repoIndex]['web'];
 
