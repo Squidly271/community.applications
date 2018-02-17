@@ -467,7 +467,7 @@ function toNumericArray($template) {
 		$template['display_Uninstall'],       #44
 		$template['display_removable'],       #45
 		$template['display_newIcon'],         #46
-		$template['display_changes'],         #47
+		$template['display_changes'],         #47 # Do not use -> not updated to handle db inconsistencies
 		$template['display_webPage'],         #48
 		$template['display_humanDate'],       #49
 		$template['display_pluginSettings'],  #50

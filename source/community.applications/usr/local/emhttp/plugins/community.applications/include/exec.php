@@ -872,7 +872,6 @@ case 'force_update_button':
 #                                                                                  #
 ####################################################################################
 case 'display_content':
-	lockDisplay();
 	$sortOrder = getSortOrder(getPostArray('sortOrder'));
 	$windowWidth = getPost("windowWidth",false);
 	$pageNumber = getPost("pageNumber","1");
@@ -884,7 +883,6 @@ case 'display_content':
 	} else {
 		echo "<center><font size='4'>$selectCategoryMessage</font></center>";
 	}
-	lockDisplay(false);
 	break;
 
 ########################################################################
@@ -1163,7 +1161,6 @@ case 'dismiss_warning':
 #                                                             #
 ###############################################################
 case 'previous_apps':
-	lockDisplay();
 	@unlink($communityPaths['dontAllowInstalls']);
 
 	$installed = getPost("installed","");
@@ -1362,7 +1359,6 @@ case 'previous_apps':
 #                                                                                  #
 ####################################################################################
 case 'remove_application':
-	lockDisplay();
 	$application = getPost("application","");
 	if ( pathinfo($application,PATHINFO_EXTENSION) == "xml" || pathinfo($application,PATHINFO_EXTENSION) == "plg" ) {
 		@unlink($application);
@@ -1376,7 +1372,6 @@ case 'remove_application':
 #                     #
 #######################
 case 'uninstall_application':
-	lockDisplay();
 	$application = getPost("application","");
 
 	$filename = basename($application);
@@ -1411,7 +1406,6 @@ case 'updatePLGstatus':
 #                     #
 #######################
 case 'uninstall_docker':
-	lockDisplay();
 	$application = getPost("application","");
 
 # get the name of the container / image
@@ -1600,7 +1594,6 @@ case 'changeViewModeSettings':
 #                                     #
 #######################################
 case 'removePrivateApp':
-	lockDisplay();
 	$path = getPost("path",false);
 
 	if ( ! $path || pathinfo($path,PATHINFO_EXTENSION) != "xml") {

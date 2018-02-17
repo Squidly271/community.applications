@@ -42,10 +42,10 @@ if ( $communitySettings['dockerRunning'] ) {
   $info = array();
   $dockerRunning = array();
 }
-$appNumber =  urldecode($_GET['appNumber']);
+$appNumber =  urldecode($_GET['appPath']);
 $appName = urldecode($_GET['appName']);
 if ( ! $appNumber ) {
-  $appNumber = $_POST['appNumber'];
+  $appNumber = $_POST['appPath'];
   $color="<font color='white'>";
 }
 

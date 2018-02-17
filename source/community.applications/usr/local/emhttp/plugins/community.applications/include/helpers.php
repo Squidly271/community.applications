@@ -629,26 +629,9 @@ function checkInstalledPlugin($template) {
 		return true;
 	}
 }
-
-####################################################################################################################################################################
-# Locking of display is needed because of edge cases with multiple tabs open, and removing applications (which cause a rescan of feed, etc) the possibility exists #
-# for the second tab to recreate displayed.json  Check_stale will not run if display is locked                                                                     #
-####################################################################################################################################################################
-function lockDisplay($lock = true) {
-	global $communityPaths;
-	
-	if ($lock) {
-		file_put_contents($communityPaths['displayLocked'],"No changes allowed to display.json");
-	} else {
-		@unlink($communityPaths['displayLocked']);
-	}
-}
-function isdisplayLocked() {
-	global $communityPaths;
-	
-	return is_file($communityPaths['displayLocked']);
-}
-
+######################################
+# Returns human readable JSON errors #
+######################################
 function jsonError($error) {
 	switch ( $error ) {
 		case JSON_ERROR_NONE:
