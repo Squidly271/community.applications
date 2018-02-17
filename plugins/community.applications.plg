@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.01.28a">
-<!ENTITY md5       "0a34c8d64d88f27d0caf9ad9f9f148e2">
+<!ENTITY version   "2018.02.16">
+<!ENTITY md5       "3082bbe48e47e1fb74a3dea126b8d1f1">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018.02.16
+- Code Clean Up
+- Fixed: Official Containers would not appear in installed apps section
+- Fixed: Prevent Previously Installed But Now Blacklisted Apps from throwing out Total # found in Previous Apps
+- Minor changes to links at top right to improve usability
+
 ###2018.01.28
 - Minor fixes / skin enhancements
 - More accurate dockerHub conversions for majority of containers
