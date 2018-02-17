@@ -633,22 +633,6 @@ case 'get_content':
 				@unlink($communityPaths['appFeedDownloadError']);
 				echo caGetMode();
 				echo "<script>$('#updateButton').show();</script>";
-				if ( $communitySettings['maintainer'] == "yes"  ) {
-					exec("curl --compressed --max-time 60 --insecure --location -o ".$communityPaths['tempFiles']."/failedOutput ".$communityPaths['application-feed'],$out);
-					echo "<br><br>Developer Mode Enabled:<br></center>";
-					foreach ($out as $line) {
-						echo "<tt>$line<br>";
-					}
-					echo "<br><br><font size='4'>Appfeed Contents:<br></font>";
-					echo "<div style='height:300px; overflow:auto;'>";
-					$out = @file_get_contents($communityPaths['tempFiles']."/failedOutput");
-					$out = str_replace("\n","<br>",$out);
-					$out = str_replace(" ","&nbsp;",$out);
-					echo "<tt>$out</tt>";
-					echo "</div>";
-				} else {
-					echo "<br><br>Note: Developer Mode Not Enabled<br><br>";
-				}
 				@unlink($infoFile);
 			}
 		}
@@ -1218,8 +1202,8 @@ case 'previous_apps':
 
 # handle renamed containers
 		foreach ($all_files as $xmlfile) {
-			$o = readXmlFile("$xmlfile",$moderation);
-			$o['MyPath'] = "$xmlfile";
+			$o = readXmlFile($xmlfile,$moderation);
+			$o['MyPath'] = $xmlfile;
 			$o['UnknownCompatible'] = true;
 
 			if ( is_array($moderation[$o['Repository']]) ) {
@@ -1275,8 +1259,8 @@ case 'previous_apps':
 	} else {
 # now get the old not installed docker apps
 		foreach ($all_files as $xmlfile) {
-			$o = readXmlFile("$xmlfile");
-			$o['MyPath'] = "$xmlfile";
+			$o = readXmlFile($xmlfile);
+			$o['MyPath'] = $xmlfile;
 			$o['UnknownCompatible'] = true;
 			$o['Removable'] = true;
 # is the container running?
