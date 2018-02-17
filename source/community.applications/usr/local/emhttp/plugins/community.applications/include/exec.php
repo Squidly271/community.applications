@@ -1179,6 +1179,9 @@ case 'previous_apps':
 		foreach ($info as $installedDocker) {
 			$installedImage = $installedDocker['Image'];
 			$installedName = $installedDocker['Name'];
+			if ( startsWith($installedImage,"library/") ) { # official images are in DockerClient as library/mysql eg but template just shows mysql
+				$installedImage = str_replace("library/","",$installedImage);
+			}
 
 			foreach ($file as $template) {
 				if ( $installedName == $template['Name'] ) {
