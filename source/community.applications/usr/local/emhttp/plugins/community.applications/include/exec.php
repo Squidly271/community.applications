@@ -707,7 +707,10 @@ case 'get_content':
 	} else {
 		@unlink($communityPaths['newFlag']);
 	}
-	
+	$communitySettingsBackup = $communitySettings;
+	if ( $displayBlacklisted || $displayDeprecated || $displayIncompatible || $displayPrivates ) {
+		$communitySettings['separateInstalled'] = false; # show installed containers in the "special" categories
+	}
 	foreach ($file as $template) {
 		if ( ($template['Blacklist'] && ! $displayBlacklisted) || (! $template['Blacklist'] && $displayBlacklisted) ) {
 			continue;
@@ -788,7 +791,7 @@ case 'get_content':
 			$display[] = $template;
 		}
 	}
-
+	$communitySettings = $communitySettingsBackup; # restore backup settings
 	$displayApplications['official']  = $official;
 	$displayApplications['community'] = $display;
 
