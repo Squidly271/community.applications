@@ -460,8 +460,8 @@ function setToolTip() {
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
-			var appNumber = origin.attr('data-appPath');
-			$.post("/plugins/<?=$plugin?>/scripts/showDesc.php",{action:'none',appNumber:appNumber},function(data) {
+			var appPath = origin.attr('data-appPath');
+			$.post("/plugins/<?=$plugin?>/scripts/showDesc.php",{action:'none',appPath:appPath},function(data) {
 				if (data) {
 					instance.content(data);
 				}
@@ -900,7 +900,6 @@ function getContent(init,category,description,newApp) {
 }
 
 function mySearch(filter) {
-<!-- remove any html tags from the filter -->
 	filter = filter.replace(/<(?:.|\n)*?>/gm, '');
 	$('#searchBox').val(filter);
 
