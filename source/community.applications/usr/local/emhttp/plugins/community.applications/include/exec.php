@@ -583,28 +583,30 @@ case 'get_content':
 	getMaxColumns($windowWidth);
 	@unlink($communityPaths['dontAllowInstalls']);
 
-	if ( $category == "/PRIVATE/i" ) {
-		$category = false;
-		$displayPrivates = true;
-	}
-	if ( $category == "/DEPRECATED/i") {
-		$category = false;
-		$displayDeprecated = true;
-		file_put_contents($communityPaths['dontAllowInstalls'],"Deprecated Applications are able to still be installed if you have previously had them installed. New installations of these applications are blocked unless you enable Display Deprecated Applications within CA's General Settings<br><br>");
-	}
-	if ( $category == "/BLACKLIST/i") {
-		$category = false;
-		$displayBlacklisted = true;
-		file_put_contents($communityPaths['dontAllowInstalls'],"The following applications are blacklisted.  CA will never allow you to install or reinstall these applications<br><br>");
-	}
-	if ( $category == "/INCOMPATIBLE/i") {
-		$displayIncompatible = true;
-		file_put_contents($communityPaths['dontAllowInstalls'],"<b>While highly not recommended to do</b>, incompatible applications can be installed by enabling Display Incompatible Applications within CA's General Settings<br><br>");
-	}
-	if ( $category == "/NOSUPPORT/i") {
-		$category = false;
-		$displayNoSupport = true;
-		file_put_contents($communityPaths['dontAllowInstalls'],"The following applications do not have any support thread for them (other applications that are also blacklisted / deprecated in addition to having no support thread will not appear here)<br><br>");
+	switch ($category) {
+		case "/PRIVATE/i":
+			$category = false;
+			$displayPrivates = true;
+			break;
+		case "/DEPRECATED/i":
+			$category = false;
+			$displayDeprecated = true;
+			file_put_contents($communityPaths['dontAllowInstalls'],"Deprecated Applications are able to still be installed if you have previously had them installed. New installations of these applications are blocked unless you enable Display Deprecated Applications within CA's General Settings<br><br>");
+			break;
+		case "/BLACKLIST/i":
+			$category = false;
+			$displayBlacklisted = true;
+			file_put_contents($communityPaths['dontAllowInstalls'],"The following applications are blacklisted.  CA will never allow you to install or reinstall these applications<br><br>");
+			break;
+		case "/INCOMPATIBLE/i":
+			$displayIncompatible = true;
+			file_put_contents($communityPaths['dontAllowInstalls'],"<b>While highly not recommended to do</b>, incompatible applications can be installed by enabling Display Incompatible Applications within CA's General Settings<br><br>");
+			break;
+		case "/NOSUPPORT/i":
+			$category = false;
+			$displayNoSupport = true;
+			file_put_contents($communityPaths['dontAllowInstalls'],"The following applications do not have any support thread for them (other applications that are also blacklisted / deprecated in addition to having no support thread will not appear here)<br><br>");
+			break;
 	}
 	$newAppTime = strtotime($communitySettings['timeNew']);
 
@@ -708,7 +710,7 @@ case 'get_content':
 		@unlink($communityPaths['newFlag']);
 	}
 	$communitySettingsBackup = $communitySettings;
-	if ( $displayBlacklisted || $displayDeprecated || $displayIncompatible || $displayPrivates ) {
+	if ( $displayBlacklisted || $displayDeprecated || $displayIncompatible || $displayPrivates || $displayNoSupport) {
 		$communitySettings['separateInstalled'] = false; # show installed containers in the "special" categories
 	}
 	foreach ($file as $template) {
