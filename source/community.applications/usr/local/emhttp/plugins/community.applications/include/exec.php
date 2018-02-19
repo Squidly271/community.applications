@@ -1168,6 +1168,7 @@ case 'previous_apps':
 # $info contains all installed containers
 # now correlate that to a template;
 # this section handles containers that have not been renamed from the appfeed
+if ( $communitySettings['dockerRunning'] ) {
 	$all_files = glob("/boot/config/plugins/dockerMan/templates-user/*.xml");
 	if ( ! $all_files ) {
 		$all_files = array();
@@ -1298,7 +1299,7 @@ case 'previous_apps':
 			}
 		}
 	}
-
+}
 # Now work on plugins
 
 	if ( $installed == "true" ) {
@@ -1326,7 +1327,7 @@ case 'previous_apps':
 			foreach ($file as $template) {
 				if ( basename($oldplug) == basename($template['Repository']) ) {
 					if ( ! file_exists("/boot/config/plugins/".basename($oldplug)) ) {
-						if ( $template['Blacklist'] ) {
+						if ( $template['Blacklist'] || ( ($communitySettings['hideIncompatible'] == "true") && (! $template['Compatible']) ) ) {
 							continue;
 						}
             if ( strtolower(trim($template['PluginURL'])) != strtolower(trim(plugin("pluginURL","$oldplug"))) ) {
