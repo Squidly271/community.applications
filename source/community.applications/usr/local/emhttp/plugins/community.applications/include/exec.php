@@ -822,15 +822,6 @@ case 'force_update':
 	}
 	writeJsonFile($communityPaths['logos'],$repoLogo);
 
-/* 	if ( ! file_exists($infoFile) ) {
-		if ( ! file_exists($communityPaths['lastUpdated-old']) ) {
-			$latestUpdate['last_updated_timestamp'] = time();
-			writeJsonFile($communityPaths['lastUpdated-old'],$latestUpdate);
-		}
-		echo "ok";
-		break;
-	} */
-
 	$lastUpdatedOld = readJsonFile($communityPaths['lastUpdated-old']);
 
 	@unlink($communityPaths['lastUpdated']);
@@ -1450,14 +1441,20 @@ case "pinApp":
 ####################################
 case "pinnedApps":
 	@unlink($communityPaths['dontAllowInstalls']);
-	
 	$pinnedApps = getPinnedApps();
 	$file = readJsonFile($communityPaths['community-templates-info']);
-
+	$startIndex = 0;
 	foreach ($pinnedApps as $pinned) {
-		$index = searchArray($file,"Repository",$pinned);
-		if ( $index !== false ) {
-			$displayed[] = $file[$index];
+		for ($i=0;$i<10;$i++) {
+			$index = searchArray($file,"Repository",$pinned,$startIndex);
+			if ( $index !== false ) {
+				if ( $file[$index]['Blacklist'] ) { #This handles things like duplicated templates
+					$startIndex = $index + 1;
+					continue;
+				}
+				$displayed[] = $file[$index];
+				break;
+			}
 		}
 	}
 	$displayedApplications['community'] = $displayed;
