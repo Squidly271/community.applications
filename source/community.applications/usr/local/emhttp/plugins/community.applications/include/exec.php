@@ -132,10 +132,10 @@ function DownloadCommunityTemplates() {
 				$o['RepoName'] = $Repo['name'];
 				$o['ID'] = $i;
 				$o['Displayable'] = true;
-				$o['Support'] = $o['Support'] ? $o['Support'] : $o['Forum'];
-				$o['DonateText'] = $o['DonateText'] ? $o['DonateText'] : $Repo['donatetext'];  # Some people can't read the specs correctly
-				$o['DonateLink'] = $o['DonateLink'] ? $o['DonateLink'] : $Repo['donatelink'];
-				$o['DonateImg'] = $o['DonateImg'] ? $o['DonateImg'] : $Repo['donateimg'];
+				$o['Support'] = $o['Support'] ?: $o['Forum'];
+				$o['DonateText'] = $o['DonateText'] ?: $Repo['donatetext'];  # Some people can't read the specs correctly
+				$o['DonateLink'] = $o['DonateLink'] ?: $Repo['donatelink'];
+				$o['DonateImg'] = $o['DonateImg'] ?: $Repo['donateimg'];
 				$o['RepoURL'] = $Repo['url'];
 			  $o['ModeratorComment'] = $Repo['RepoComment'];
 				$o['WebPageURL'] = $Repo['web'];
@@ -272,11 +272,11 @@ function DownloadApplicationFeed() {
 			$o['RepoURL']          = $Repositories[$RepoIndex]['url'];
 			$o['ModeratorComment'] = $Repositories[$RepoIndex]['RepoComment'];
 		}
-		$o['DonateText'] = $file['DonateText'] ? $file['DonateText'] : $o['DonateText'];
-		$o['DonateLink'] = $file['DonateLink'] ? $file['DonateLink'] : $o['DonateLink'];
+		$o['DonateText'] = $file['DonateText'] ?: $o['DonateText'];
+		$o['DonateLink'] = $file['DonateLink'] ?: $o['DonateLink'];
 
 		if ( ($file['DonateImg']) || ($file['DonateImage']) ) {  #because Sparklyballs can't read the tag documentation
-			$o['DonateImg'] = $file['DonateImage'] ? $file['DonateImage'] : $file['DonateImg'];
+			$o['DonateImg'] = $file['DonateImage'] ?: $file['DonateImg'];
 		}
 
 		fixSecurity($o,$o); # Apply various fixes to the templates for CA use
@@ -463,7 +463,7 @@ function appOfDay($file) {
 	global $communityPaths;
 
 	$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
-	$oldAppDay = $oldAppDay ? $oldAppDay : 1;
+	$oldAppDay = $oldAppDay ?: 1;
 	$oldAppDay = intval($oldAppDay / 86400);
 	$currentDay = intval(time() / 86400);
 	if ( $oldAppDay == $currentDay ) {
@@ -502,7 +502,7 @@ function appOfDay($file) {
 			$app[$ii] = $randomApp;
 		}
 	}
-	if (! $app) { $app = array(); } # for the extremely unlikely situation where it can't find any valid apps of the day
+	if (! $app) { $app = array(); }
 	$app = array_values(array_unique($app));
 	writeJsonFile($communityPaths['appOfTheDay'],$app);
 	return $app;
