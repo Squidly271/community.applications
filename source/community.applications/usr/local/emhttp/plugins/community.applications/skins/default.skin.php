@@ -11,8 +11,12 @@
 function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
 	global $communityPaths, $communitySettings, $plugin, $unRaid64, $unRaid635, $displayDeprecated;
 	
-  $DockerTemplates = new DockerTemplates();
-	$info = $DockerTemplates->getAllInfo();
+	if ( $communitySettings['dockerRunning'] ) {
+		$DockerTemplates = new DockerTemplates();
+		$info = $DockerTemplates->getAllInfo();
+	} else {
+		$info = array();
+	}
 
 	$fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
 	$fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";

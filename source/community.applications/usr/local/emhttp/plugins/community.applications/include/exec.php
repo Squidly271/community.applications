@@ -50,7 +50,6 @@ if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)
 	$communitySettings['dockerSearch'] = "no";
 	unset($communitySettings['dockerRunning']);
 }
-
 if ( $communitySettings['dockerRunning'] ) {
 	$DockerClient = new DockerClient();
 	$dockerRunning = $DockerClient->getDockerContainers();
@@ -956,7 +955,6 @@ case 'convert_docker':
 		$dockerfileContents = @file_get_contents($communityPaths['Dockerfile']);
 		$dockerfileContents = $dockerfileContents ?: "";
 		$dockerfileContents = str_replace("\\\n"," ",$dockerfileContents); # get rid of readability newlines
-		file_put_contents("/tmp/blah",$dockerfileContents);
 		$dockerFile = explode("\n",$dockerfileContents);
 
 		$volumes = array();
@@ -1159,8 +1157,12 @@ case 'previous_apps':
 	$installed = getPost("installed","");
 	$dockerUpdateStatus = readJsonFile($communityPaths['dockerUpdateStatus']);
 	$moderation = readJsonFile($communityPaths['moderation']);
-	$DockerClient = new DockerClient();
-	$info = $DockerClient->getDockerContainers();
+	if ( $communitySettings['dockerRunning'] ) {
+		$DockerClient = new DockerClient();
+		$info = $DockerClient->getDockerContainers();
+	} else {
+		$info = array();
+	}
 	$file = readJsonFile($communityPaths['community-templates-info']);
 
 # $info contains all installed containers
