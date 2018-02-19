@@ -714,9 +714,6 @@ case 'get_content':
 		$communitySettings['separateInstalled'] = false; # show installed containers in the "special" categories
 	}
 	foreach ($file as $template) {
-		if ( ($template['Blacklist'] && ! $displayBlacklisted) || (! $template['Blacklist'] && $displayBlacklisted) ) {
-			continue;
-		}
 		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) {
 			continue;                          # ie: only show deprecated apps within previous apps section
 		}
@@ -727,6 +724,9 @@ case 'get_content':
 			continue;
 		}
 		if ( $communitySettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) {
+			continue;
+		}
+		if ( ($template['Blacklist'] && ! $displayBlacklisted) || (! $template['Blacklist'] && $displayBlacklisted) ) {
 			continue;
 		}
 		if ( ! $template['Compatible'] && $displayIncompatible ) {
@@ -1509,7 +1509,7 @@ case 'statistics':
 			if ( ! $template['Compatible'] ) {
 				$statistics['totalIncompatible']++;
 			}
-			if ( ! $template['Support'] && ! $template['Blacklist'] && ! $template['Deprecated'] ) {
+			if ( ! $template['Support'] && ! $template['Blacklist'] && ! $template['Deprecated'] && $template['Compatible'] ) {
 				$statistics['NoSupport']++;
 			}
 			if ( $template['Blacklist'] ) {
