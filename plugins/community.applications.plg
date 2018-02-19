@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.02.16">
-<!ENTITY md5       "3082bbe48e47e1fb74a3dea126b8d1f1">
+<!ENTITY version   "2018.02.19">
+<!ENTITY md5       "83cea91666ba399c009b42bae9123f64">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,15 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018.02.19
+- Changed: Don't display previously installed docker apps if docker service isn't running
+- Fixed: Only display incompatible plugins in previous apps section if CA Settings allow display of incompatible apps
+- Fixed: Regression error if docker isn't running (error messages would have appeared)
+- Many Code optimizations
+- Fixed: Minor stats count inconsistencies
+- Fixed: Pinning an app that also had a duplicated (but blacklisted) template wouldn't work
+- Fixed: Previously possible for CA to believe it had downloaded an updated application feed, but due to 3rd party caching the feed may have been an older version
+
 ###2018.02.16
 - Code Clean Up
 - Fixed: Official Containers would not appear in installed apps section
