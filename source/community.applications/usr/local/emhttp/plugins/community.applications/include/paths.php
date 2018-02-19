@@ -41,7 +41,6 @@ $communityPaths['fixedTemplates_txt']            = $communityPaths['tempFiles'].
 $communityPaths['invalidXML_txt']                = $communityPaths['tempFiles']."/invalidxml.txt";
 $communityPaths['PluginInstallPending']          = $communityPaths['tempFiles']."/plugininstallpending.txt";
 $communityPaths['warningAccepted']               = "/boot/config/plugins/$plugin/accepted";
-$communityPaths['pollingDisabled']               = "/boot/config/plugins/$plugin/pollingDisabled";
 $communityPaths['pluginDupes']                   = $communityPaths['tempFiles']."/pluginDupes";
 $communityPaths['newFlag']                       = $communityPaths['tempFiles']."/newFlag";  # flag file to indicate that the "New" Category is being displayed
 $communityPaths['displayLocked']                 = $communityPaths['tempFiles']."/displayLocked"; # when file exists, the background check for stale will not run

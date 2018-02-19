@@ -9,9 +9,10 @@ Title="Community Applications"
 #                                                             #
 ###############################################################
 
-require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
-require_once("/usr/local/emhttp/plugins/community.applications/include/caCredits.php");
 $plugin = "community.applications";
+
+require_once("/usr/local/emhttp/plugins/$plugin/include/paths.php");
+require_once("/usr/local/emhttp/plugins/$plugin/include/caCredits.php");
 
 $installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$plugin.plg");
 $upgradeVersion = (is_file("/tmp/plugins/$plugin.plg")) ? exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /tmp/plugins/$plugin.plg") : "0";
@@ -24,9 +25,6 @@ if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
 
-if ( is_file($communityPaths['polling']) ) {
-	$pollingDisabled = "true";
-}
 $vars = parse_ini_file($communityPaths['unRaidVars']);
 $toolTipsterIncluded = version_compare($vars['version'],"6.3.3",">=") ? "true" : "false";
 $unRaid64 = (version_compare($vars['version'],"6.4.0-rc0",">=")) ? "true" : "false";
