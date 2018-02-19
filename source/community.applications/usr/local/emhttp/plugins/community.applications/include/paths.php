@@ -18,7 +18,6 @@ $communityPaths['application-feed']              = "https://tools.linuxserver.io
 $communityPaths['application-feed-last-updated'] = "https://tools.linuxserver.io/unraid-docker-templates.json?last_updated=1";
 $communityPaths['lastUpdated']                   = $communityPaths['tempFiles']."/lastUpdated.json";
 $communityPaths['lastUpdated-old']               = $communityPaths['tempFiles']."/lastUpdated-old.json";
-$communityPaths['lastUpdated-sync']              = $communityPaths['tempFiles']."/lastUpdated-sync";
 $communityPaths['appFeedOverride']               = $communityPaths['tempFiles']."/WhatWouldChodeDo";                   /* flag to override the app feed temporarily */
 $communityPaths['addConverted']                  = $communityPaths['tempFiles']."/TrippingTheRift";                    /* flag to indicate a rescan needed since a dockerHub container was added */
 $communityPaths['convertedTemplates']            = "/boot/config/plugins/$plugin/private/";                        /* path to private repositories on flash drive */
@@ -43,7 +42,6 @@ $communityPaths['PluginInstallPending']          = $communityPaths['tempFiles'].
 $communityPaths['warningAccepted']               = "/boot/config/plugins/$plugin/accepted";
 $communityPaths['pluginDupes']                   = $communityPaths['tempFiles']."/pluginDupes";
 $communityPaths['newFlag']                       = $communityPaths['tempFiles']."/newFlag";  # flag file to indicate that the "New" Category is being displayed
-$communityPaths['displayLocked']                 = $communityPaths['tempFiles']."/displayLocked"; # when file exists, the background check for stale will not run
 $communityPaths['dontAllowInstalls']             = $communityPaths['tempFiles']."/dontAllowInstalls"; # when file exists, the icons for install/edit/etc will not appear
 $communityPaths['appFeedDownloadError']          = $communityPaths['tempFiles']."/appfeedTemporaryFileForAnalysis";
 $communityPaths['legacySkin']                    = "/usr/local/emhttp/plugins/$plugin/skins/legacy.skin";

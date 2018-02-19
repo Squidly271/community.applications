@@ -575,20 +575,6 @@ function filterMatch($filter,$searchArray) {
 	return ($foundword == count($filterwords));
 }
 
-###################################################################
-# Used to update the last time synced to keep browsers up to date #
-###################################################################
-function updateSyncTime($updateSyncFlag) {
-	global $communityPaths;
-	
-	$updateTime = $updateSyncFlag ? time() : @file_get_contents($communityPaths['lastUpdated-sync']);
-	if ( ! $updateTime ) {
-		$updateTime = time();
-	}
- 	echo "<script>data_lastUpdated = $updateTime;</script>";
-	file_put_contents($communityPaths['lastUpdated-sync'],$updateTime);
-}
-
 ##########################################################
 # Used to figure out which plugins have duplicated names #
 ##########################################################

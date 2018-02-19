@@ -626,7 +626,6 @@ case 'get_content':
 			DownloadApplicationFeed();
 			if (!file_exists($infoFile)) {
 				@unlink($communityPaths['LegacyMode']);
-				updateSyncTime(true);
 				echo "<center><font size='3'><strong>Download of appfeed failed.</strong></font><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  Switching CA to operate in <em>Legacy Mode</em> might temporarily allow you to still utilize CA.<br>";
 				$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
 				$downloaded = @file_get_contents($tempFile);
@@ -652,7 +651,6 @@ case 'get_content':
 			} else {
 				$lastUpdated['last_updated_timestamp'] = time();
 				writeJsonFile($communityPaths['lastUpdated-old'],$lastUpdated);
-				updateSyncTime(true);
 
 				if (is_file($communityPaths['updateErrors'])) {
 					echo "<table><td><td colspan='5'><br><center>The following errors occurred:<br><br>";
@@ -665,7 +663,6 @@ case 'get_content':
 		}
 	}
 	getConvertedTemplates();
-	updateSyncTime($updatedSyncFlag);
 	moderateTemplates();
 
 	$file = readJsonFile($communityPaths['community-templates-info']);
