@@ -35,8 +35,8 @@ function checkPluginUpdate($filename) {
 	global $unRaidVersion;
 
 	$filename = basename($filename);
-	$installedVersion = plugin("version","/var/log/plugins/$filename");
 	$upgradeVersion = (is_file("/tmp/plugins/$filename")) ? plugin("version","/tmp/plugins/$filename") : "0";
+	$installedVersion = $upgradeVersion ? plugin("version","/var/log/plugins/$filename") : 0;
 
 	if ( $installedVersion < $upgradeVersion ) {
 		$unRaid = plugin("unRAID","/tmp/plugins/$filename");
