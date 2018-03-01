@@ -251,8 +251,9 @@ function DownloadApplicationFeed() {
 		$o['Licence']       = $file['License']; # Support Both Spellings
 		$o['Licence']       = $file['Licence'];
 		$o['Path']          = $communityPaths['templates-community']."/{$o['RepoName']}/{$o['Name']}.xml";
-		$o['Path'] = str_replace("'","",$o['Path']);
-		$o['Path'] = str_replace(" ","",$o['Path']);
+		$o['Path']          = str_replace("'","",$o['Path']);
+		$o['Path']          = str_replace(" ","",$o['Path']);
+		$o['Path']          = str_replace(":","",$o['Path']);
 		if ( $o['Plugin'] ) {
 			$o['Author']        = $o['PluginAuthor'];
 			$o['Repository']    = $o['PluginURL'];
@@ -1543,7 +1544,7 @@ case 'statistics':
 	}
 
 	$color = "<font color='coral'>";
-	echo "<div style='overflow:scroll; max-height:550px; height:600px; overflow-x:hidden; overflow-y:hidden;'><center><img height='24px' src='/plugins/community.applications/images/CA.png'><br><font size='3' color='white'>Community Applications</font><br>";
+	echo "<div style='overflow:scroll; max-height:550px; height:600px; overflow-x:hidden; overflow-y:hidden;'><center><img height='24px' src='/plugins/community.applications/images/community.applications.png'><br><font size='3' color='white'>Community Applications</font><br>";
 	echo "<center><font size='2'>Application Feed Statistics</font></center><br><br>";
 	echo "<table>";
 	echo "<tr><td><b>{$color}<a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td>$color$updateTime</td></tr>";
