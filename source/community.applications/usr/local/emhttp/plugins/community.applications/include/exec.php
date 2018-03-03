@@ -250,10 +250,7 @@ function DownloadApplicationFeed() {
 		$o['SortName']      = $o['Name'];
 		$o['Licence']       = $file['License']; # Support Both Spellings
 		$o['Licence']       = $file['Licence'];
-		$o['Path']          = $communityPaths['templates-community']."/{$o['RepoName']}/{$o['Name']}.xml";
-		$o['Path']          = str_replace("'","",$o['Path']);
-		$o['Path']          = str_replace(" ","",$o['Path']);
-		$o['Path']          = str_replace(":","",$o['Path']);
+		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
 		if ( $o['Plugin'] ) {
 			$o['Author']        = $o['PluginAuthor'];
 			$o['Repository']    = $o['PluginURL'];
@@ -416,8 +413,8 @@ function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
 	global $communityPaths, $separateOfficial, $officialRepo, $communitySettings;
 
 	$file = readJsonFile($communityPaths['community-templates-displayed']);
-	$officialApplications = $file['official'];
-	$communityApplications = $file['community'];
+	$officialApplications = is_array($file['official']) ? $file['official'] : array();
+	$communityApplications = is_array($file['community']) ? $file['community'] : array();
 	$totalApplications = count($officialApplications) + count($communityApplications);
 	$navigate = array();
 

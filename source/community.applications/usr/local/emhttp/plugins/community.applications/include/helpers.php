@@ -116,17 +116,21 @@ function fixPopUpDescription($PopUpDescription) {
 # Helper function to remove any formatting, etc from descriptions #
 ###################################################################
 function fixDescription($Description) {
-  $Description = preg_replace("#\[br\s*\]#i", "{}", $Description);
-	$Description = preg_replace("#\[b[\\\]*\s*\]#i", "||", $Description);
-	$Description = preg_replace('#\[([^\]]*)\]#', '<$1>', $Description);
-	$Description = preg_replace("#<span.*#si", "", $Description);
-	$Description = preg_replace("#<[^>]*>#i", '', $Description);
-	$Description = preg_replace("#"."{}"."#i", '<br>', $Description);
-	$Description = preg_replace("#"."\|\|"."#i", '<b>', $Description);
-	$Description = str_replace("&lt;","<",$Description);
-	$Description = str_replace("&gt;",">",$Description);
-	$Description = strip_tags($Description);
-	$Description = trim($Description);
+	if ( is_string($Description) ) {
+		$Description = preg_replace("#\[br\s*\]#i", "{}", $Description);
+		$Description = preg_replace("#\[b[\\\]*\s*\]#i", "||", $Description);
+		$Description = preg_replace('#\[([^\]]*)\]#', '<$1>', $Description);
+		$Description = preg_replace("#<span.*#si", "", $Description);
+		$Description = preg_replace("#<[^>]*>#i", '', $Description);
+		$Description = preg_replace("#"."{}"."#i", '<br>', $Description);
+		$Description = preg_replace("#"."\|\|"."#i", '<b>', $Description);
+		$Description = str_replace("&lt;","<",$Description);
+		$Description = str_replace("&gt;",">",$Description);
+		$Description = strip_tags($Description);
+		$Description = trim($Description);
+	} else {
+		return "";
+	}
 	return $Description;
 }
 
@@ -227,8 +231,8 @@ function fixTemplates($template) {
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Author is not a string";
 	}
 	if ( is_array($template['Description']) ) {
-		$template['Description']="";
 		if ( count($template['Description']) > 1 ) {
+			$template['Description']="";
 			$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple Description tags present";
 			$statistics['caFixed']++;
       return false;
@@ -287,6 +291,8 @@ function fixTemplates($template) {
 	} else {
   	$template['Description'] = fixDescription($template['Description']);
 	}
+	$template['Overview'] = is_string($template['Overview']) ? $template['Overview'] : "";
+	$template['Description'] = is_string($template['Description']) ? $template['Description'] : "";
 	if ( ( ! strlen(trim($template['Overview'])) ) && ( ! strlen(trim($template['Description'])) ) && ! $template['Private'] ){
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No valid Overview Or Description present - Application dropped from CA automatically - Possibly far too many formatting tags present";
@@ -615,6 +621,14 @@ function checkInstalledPlugin($template) {
 		return true;
 	}
 }
+
+###########################################################
+# Returns a string with only alphanumeric characters only #
+###########################################################
+function alphaNumeric($string) {
+	return preg_replace("/[^a-zA-Z0-9]+/", "", $string);
+}
+
 ######################################
 # Returns human readable JSON errors #
 ######################################
