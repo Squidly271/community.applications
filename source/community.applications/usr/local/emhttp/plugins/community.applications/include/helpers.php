@@ -153,6 +153,11 @@ function fixSecurity(&$template,&$originalTemplate) {
 			}
 		}
 	}
+	$postArgs = explode(";",$template['PostArgs']);
+	if ( $postArgs[1] ) {
+		logger("VERY IMPORTANT IF YOU SEE THIS: Alert the maintainers of Community Applications with the following Information:".$originalTemplate['RepoName']." ".$originalTemplate['Name']." ".$originalTemplate['Repository']);
+		$originalTemplate['Blacklist'] = true;
+	}
 }
 
 #######################
