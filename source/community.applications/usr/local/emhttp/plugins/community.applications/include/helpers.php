@@ -153,6 +153,13 @@ function fixSecurity(&$template,&$originalTemplate) {
 			}
 		}
 	}
+	if ( is_array($template['PostArgs']) ) {
+		if ( ! count($template['PostArgs']) ) {
+			$template['PostArgs'] = "";
+		} else {
+			$template['PostArgs'] = $template['PostArgs'][0];
+		}
+	}
 	$postArgs = explode(";",$template['PostArgs']);
 	if ( $postArgs[1] ) {
 		logger("VERY IMPORTANT IF YOU SEE THIS: Alert the maintainers of Community Applications with the following Information:".$originalTemplate['RepoName']." ".$originalTemplate['Name']." ".$originalTemplate['Repository']);
@@ -328,6 +335,7 @@ function fixTemplates($template) {
 			$template['Category'] .= " Status:Beta";
 		}
 	}
+
 	$template['PopUpDescription'] = fixPopUpDescription($template['Description']);
 	if ( $template['Private'] ) {
 		$statistics = $origStats;
@@ -340,6 +348,8 @@ function fixTemplates($template) {
 	if ( $template['DeprecatedMaxVer'] && version_compare($communitySettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") ) {
 		$template['Deprecated'] = true;
 	}
+	
+
 	return $template;
 }
 
