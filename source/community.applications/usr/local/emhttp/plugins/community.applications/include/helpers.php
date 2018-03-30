@@ -101,6 +101,17 @@ function startsWith($haystack, $needle) {
 	return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;
 }
 
+###################################################################
+# Helper function to only replace the first occurance in a string #
+###################################################################
+function first_str_replace($haystack, $needle, $replace) {
+	$pos = strpos($haystack, $needle);
+	if ($pos !== false) {
+		return substr_replace($haystack, $replace, $pos, strlen($needle));
+	}
+	return $haystack;
+}
+
 #######################################################################################
 # Helper function to further remove formatting from descriptions (suitable for popUps #
 #######################################################################################

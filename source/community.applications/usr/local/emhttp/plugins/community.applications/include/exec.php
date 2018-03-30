@@ -833,7 +833,6 @@ case 'force_update':
 		}
 		if ( ! $badDownload ) {
 			@unlink($infoFile);
-			file_put_contents("/tmp/blah","forcing update of appfeed");
 		}
 	} else {
 		moderateTemplates();
@@ -952,28 +951,29 @@ case 'convert_docker':
 		}
 		$dockerfileContents = @file_get_contents($communityPaths['Dockerfile']);
 		$dockerfileContents = $dockerfileContents ?: "";
-		$dockerfileContents = str_replace("\\\n"," ",$dockerfileContents); # get rid of readability newlines
+		$dockerfileContents = str_replace("\\\n","*",$dockerfileContents); # get rid of readability newlines
 		$dockerFile = explode("\n",$dockerfileContents);
 
 		$volumes = array();
 		$ports = array();
+		$env = array();
 
 		foreach ( $dockerFile as $dockerLine ) {
 			$dockerCompare = trim(strtoupper($dockerLine));
-
 			$dockerCmp = strpos($dockerCompare, "VOLUME");
 			if ( $dockerCmp === 0 ) {
+				$dockerLine = str_replace("*"," ",$dockerLine);
 				$dockerLine = str_replace("'", " ", $dockerLine);
 				$dockerLine = str_replace("[", " ", $dockerLine);
 				$dockerLine = str_replace("]", " ", $dockerLine);
 				$dockerLine = str_replace(",", " ", $dockerLine);
 				$dockerLine = str_replace('"', " ", $dockerLine);
-
 				$volumes[] = $dockerLine;
 			}
 
 			$dockerCmp = strpos($dockerCompare, "EXPOSE");
 			if ( $dockerCmp === 0 ) {
+				$dockerLine = str_replace("*"," ", $dockerLine);
 				$dockerLine = str_replace("'", " ", $dockerLine);
 				$dockerLine = str_replace("[", " ", $dockerLine);
 				$dockerLine = str_replace("]", " ", $dockerLine);
@@ -981,8 +981,22 @@ case 'convert_docker':
 				$dockerLine = str_replace('"', " ", $dockerLine);
 				$ports[] = $dockerLine;
 			}
+			
+			$dockerCmp = strpos($dockerCompare,"ENV");
+			if ( $dockerCmp === 0 ) {
+				if (strpos($dockerLine,"*") ) {
+					$tempLine = str_replace("*","\n",$dockerLine);
+					$environments = parse_ini_string($tempLine);
+					$keys = array_keys($environments);
+					foreach ($keys as $key) {
+						$env[] = "ENV $key {$environments[$key]}";
+					}
+				} else {
+					$env[] = $dockerLine;
+				}
+			}
 		}
-
+		
 		$allVolumes = array();
 		foreach ( $volumes as $volume ) {
 			$volumeList = explode(" ", $volume);
@@ -999,13 +1013,35 @@ case 'convert_docker':
 			$portList = explode(" ", $portList);
 			unset($portList[0]);
 			foreach ( $portList as $myPort ) {
+				if ( ! is_numeric($myPort) ) {
+					continue;
+				}
 				$allPorts[] = $myPort;
+			}
+		}
+		
+		$allEnvironments = array();
+		foreach ( $env as $environment ) {
+			$environment = first_str_replace($environment,"ENV ","");
+			if ( ! strpos($environment,"=") ) {
+				$environment = first_str_replace($environment," ","=");
+			}
+			$envRaw = explode("=",$environment);
+			for ( $i = 0; $i<=count($envRaw); $i+=2) {
+				$envVar[0] = $envRaw[$i];
+				if ( $glue == "=" ) {
+					$envVar[1] = str_replace('"',"",$envRaw[$i+1]);
+				} else {
+					unset($envRaw[$i]);
+					$envVar[1] = implode("=",$envRaw);
+				}
+				$allEnvironments[] = $envVar;
 			}
 		}
 
 		$dockerfile['Name'] = $docker['Name'];
 		$dockerfile['Support'] = $docker['DockerHub'];
-		$dockerfile['Description'] = $docker['Description']."\n\n[b]Converted By Community Applications[/b]";
+		$dockerfile['Description'] = $docker['Description']."[br][br][b]Converted By Community Applications[/b][br][br]Always verify this template (and values) against the dockerhub support page for the container";
 		$dockerfile['Overview'] = $dockerfile['Description'];
 		$dockerfile['Registry'] = $dockerURL;
 		$dockerfile['Repository'] = $docker['Repository'];
@@ -1035,25 +1071,33 @@ case 'convert_docker':
 			$dockervolume['Mode'] = "rw";
 			$dockerfile['Data']['Volume'][] = $dockervolume;
 		}
+		foreach ($allEnvironments as $environment) {
+			$variable['Name'] = $environment[0];
+			$variable['Value'] = str_replace('"',"",$environment[1]);
+			$dockerfile['Environment']['Variable'][] = $variable;
+		}
+			
 		$dockerfile['Icon'] = "https://github.com/Squidly271/community.applications/raw/master/source/community.applications/usr/local/emhttp/plugins/community.applications/images/question.png";
 
-		if ( count($webUI) == 1 ) {
-			$dockerfile['WebUI'] .= "http://[IP]:[PORT:".$webUI[0]."]";
-		}
-		if ( count($webUI) > 1 ) {
-			foreach ($webUI as $web) {
-				if ( $web[0] == "8" ) {
-					$webPort = $web;
-				}
+		if ( is_array($webUI) ) {
+			if ( count($webUI) == 1 ) {
+				$dockerfile['WebUI'] .= "http://[IP]:[PORT:".$webUI[0]."]";
 			}
-			$dockerfile['WebUI'] .= "http://[IP]:[PORT:".$webPort."]";
+			if ( count($webUI) > 1 ) {
+				foreach ($webUI as $web) {
+					if ( $web[0] == "8" ) {
+						$webPort = $web;
+					}
+				}
+				$dockerfile['WebUI'] .= "http://[IP]:[PORT:".$webPort."]";
+			}
 		}
 	} else {
 # Container is Official.  Add it as such
 		$dockerURL = $docker['DockerHub'];
 		$dockerfile['Name'] = $docker['Name'];
 		$dockerfile['Support'] = $docker['DockerHub'];
-		$dockerfile['Overview'] = $docker['Description']."\n[b]Converted By Community Applications[/b]";
+		$dockerfile['Overview'] = $docker['Description']."\n[b]Converted By Community Applications[/b][br][br]Always verify this template (and values) against the dockerhub support page for the container";
 		$dockerfile['Description'] = $dockerfile['Overview'];
 		$dockerfile['Registry'] = $dockerURL;
 		$dockerfile['Repository'] = $docker['Repository'];

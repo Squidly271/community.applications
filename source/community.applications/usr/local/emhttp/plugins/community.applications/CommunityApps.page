@@ -590,7 +590,7 @@ function myCloseAlert() {
 }
 
 function readMore() {
-	$('.desc_readmore').readmore({maxHeight:100,moreLink:"<a href='#' style='text-align:right' title='Show More'><i class='fa fa-chevron-down'></i></a>",lessLink:"<a href='#' style='text-align:right' title='Show Less'><i class='fa fa-chevron-up'></i></a>"});
+	$('.desc_readmore').readmore({maxHeight:100});
 }
 
 function doSearch(button) {
@@ -957,6 +957,7 @@ function dockerConvert(dockerID) {
 	$("#Total").html("Converting...");
 	$.post(URL,{action:'convert_docker',ID:dockerID},function(data) {
 		if (data) {
+		$("#debugging").html(data);
 			myCloseAlert();
 			templateURL = "Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
 			window.open(templateURL,"<?=$tabMode?>");
