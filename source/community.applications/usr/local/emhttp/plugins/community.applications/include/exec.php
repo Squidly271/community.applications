@@ -989,7 +989,7 @@ case 'convert_docker':
 					$environments = parse_ini_string($tempLine);
 					$keys = array_keys($environments);
 					foreach ($keys as $key) {
-						$env[] = "ENV $key {$environments[$key]}";
+						$env[] = "$key {$environments[$key]}";
 					}
 				} else {
 					$env[] = $dockerLine;
