@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.03.15">
-<!ENTITY md5       "9f5e898cfdb8eb397e115b1246273a43">
+<!ENTITY version   "2018.03.30">
+<!ENTITY md5       "7a33e17e74ce3fbde88db9830a49038a">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018.03.30
+- Support environment variables in dockerhub conversions
+
 ###2018.03.14
 - Security Fix: Prevent a malicious template from arbitrarily executing commands
 
