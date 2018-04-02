@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.03.30a">
-<!ENTITY md5       "8795f15e1fda1bef22e59de8f97ec1a9">
+<!ENTITY version   "2018.04.02">
+<!ENTITY md5       "e4c64160cee41ba52413f97e34169b7f">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,14 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018.04.02
+- Revamp of how legacy mode downloads
+- Fix stats display when bouncing back and forth between legacy mode and appfeed mode
+- Suppress PHP errors when appfeed download fails and you display the stats
+- Lower download timeouts from 60 seconds to 45
+- Don't allow CA to operate unless you've accepted the disclaimer
+- Ability to display a Public Service Announcement if the appfeed fails to download
+
 ###2018.03.30
 - Support environment variables in dockerhub conversions
 
