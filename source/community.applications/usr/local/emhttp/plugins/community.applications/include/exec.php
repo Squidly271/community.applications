@@ -1,5 +1,4 @@
 <?PHP
-
 ###############################################################
 #                                                             #
 # Community Applications copyright 2015-2018, Andrew Zawadzki #
@@ -19,6 +18,7 @@ $unRaidVersion = $unRaidSettings['version'];
 if ($unRaidVersion == "6.2") $unRaidVersion = "6.2.0";
 $unRaid64 = (version_compare($unRaidVersion,"6.4.0-rc0",">="));
 $unRaid635 = (version_compare($unRaidVersion,"6.3.5",">="));
+$unRaid65 = (version_compare($unRaidVersion,"6.5.0-rc3",">="));
 
 if ( ! $unRaid64 ) {
 	$communityPaths['defaultSkin'] = $communityPaths['legacySkin'];
@@ -67,494 +67,6 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 
 $selectCategoryMessage = "Select a Section <i class='fa fa-bars enabledIcon' aria-hidden='true' style='font-size:30px;cursor:auto;'></i> or Category <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:30px;cursor:auto;'></i> above";
 
-#################################################################
-#                                                               #
-# Functions used to download the templates from various sources #
-#                                                               #
-#################################################################
-function DownloadCommunityTemplates() {
-	global $communityPaths, $infoFile, $communitySettings, $statistics;
-
-	$moderation = readJsonFile($communityPaths['moderation']);
-
-	$DockerTemplates = new DockerTemplates();
-	$tmpFileName = randomFile();
-	$Repos = download_json($communityPaths['community-templates-url'],$tmpFileName);
-	@unlink($tmpFileName);
-
-	if ( ! is_array($Repos) ) { return false; }
-	$statistics['repository'] = count($Repos);
-
-	$appCount = 0;
-	$myTemplates = array();
-
-	exec("rm -rf '{$communityPaths['templates-community']}'");
-	@unlink($communityPaths['updateErrors']);
-
-	$templates = array();
-	foreach ($Repos as $downloadRepo) {
-		$downloadURL = randomFile();
-		file_put_contents($downloadURL, $downloadRepo['url']);
-		$friendlyName = str_replace(" ","",$downloadRepo['name']);
-		$friendlyName = str_replace("'","",$friendlyName);
-		$friendlyName = str_replace('"',"",$friendlyName);
-		$friendlyName = str_replace('\\',"",$friendlyName);
-		$friendlyName = str_replace("/","",$friendlyName);
-
-		if ( ! $downloaded = $DockerTemplates->downloadTemplates($communityPaths['templates-community']."/templates/$friendlyName", $downloadURL) ){
-			file_put_contents($communityPaths['updateErrors'],"Failed to download <font color='purple'>".$downloadRepo['name']."</font> ".$downloadRepo['url']."<br>",FILE_APPEND);
-			@unlink($downloadURL);
-		} else {
-			$templates = array_merge($templates,$downloaded);
-			unlink($downloadURL);
-		}
-	}
-
-	@unlink($downloadURL);
-	$i = $appCount;
-	foreach ($Repos as $Repo) {
-		if ( ! is_array($templates[$Repo['url']]) ) {
-			continue;
-		}
-		foreach ($templates[$Repo['url']] as $file) {
-			if (is_file($file)){
-				$o = readXmlFile($file);
-				if ( ! $o ) {
-					file_put_contents($communityPaths['updateErrors'],"Failed to parse <font color='purple'>$file</font> (errors in XML file?)<br>",FILE_APPEND);
-				}
-				if ( (! $o['Repository']) && (! $o['Plugin']) ) {
-					$statistics['invalidXML']++;
-					$invalidXML[] = $o;
-					continue;
-				}
-				$o['Forum'] = $Repo['forum'];
-				$o['RepoName'] = $Repo['name'];
-				$o['ID'] = $i;
-				$o['Displayable'] = true;
-				$o['Support'] = $o['Support'] ?: $o['Forum'];
-				$o['DonateText'] = $o['DonateText'] ?: $Repo['donatetext'];  # Some people can't read the specs correctly
-				$o['DonateLink'] = $o['DonateLink'] ?: $Repo['donatelink'];
-				$o['DonateImg'] = $o['DonateImg'] ?: $Repo['donateimg'];
-				$o['RepoURL'] = $Repo['url'];
-			  $o['ModeratorComment'] = $Repo['RepoComment'];
-				$o['WebPageURL'] = $Repo['web'];
-				$o['Logo'] = $Repo['logo'];
-				$o['Profile'] = $Repo['profile'];
-				fixSecurity($o,$o);
-				$o = fixTemplates($o);
-        if ( ! $o ) {
-          continue;
-        }
-
-				# Overwrite any template values with the moderated values
-				if ( is_array($moderation[$o['Repository']]) ) {
-					$o = array_merge($o, $moderation[$o['Repository']]);
-				}
-				$o['Compatible'] = versionCheck($o);
-
-				$statistics['totalApplications']++;
-
-				$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
-				$o['Category'] = str_replace("Status:Stable","",$o['Category']);
-				$myTemplates[$o['ID']] = $o;
-				if ( is_array($o['Branch']) ) {
-					if ( ! $o['Branch'][0] ) {
-						$tmp = $o['Branch'];
-						unset($o['Branch']);
-						$o['Branch'][] = $tmp;
-					}
-					foreach($o['Branch'] as $branch) {
-						$i = ++$i;
-						$subBranch = $o;
-						$masterRepository = explode(":",$subBranch['Repository']);
-						$o['BranchDefault'] = $masterRepository[1];
-						$subBranch['Repository'] = $masterRepository[0].":".$branch['Tag']; #This takes place before any xml elements are overwritten by additional entries in the branch, so you can actually change the repo the app draws from
-						$subBranch['BranchName'] = $branch['Tag'];
-						$subBranch['BranchDescription'] = $branch['TagDescription'] ? $branch['TagDescription'] : $branch['Tag'];
-						$subBranch['Path'] = $communityPaths['templates-community']."/".$i.".xml";
-						$subBranch['Displayable'] = false;
-						$subBranch['ID'] = $i;
-						$replaceKeys = array_diff(array_keys($branch),array("Tag","TagDescription"));
-						foreach ($replaceKeys as $key) {
-							$subBranch[$key] = $branch[$key];
-						}
-						unset($subBranch['Branch']);
-						$myTemplates[$i] = $subBranch;
-						$o['BranchID'][] = $i;
-						file_put_contents($subBranch['Path'],makeXML($subBranch));
-					}
-					unset($o['Branch']);
-
-					$o['Path'] = $communityPaths['templates-community']."/".$o['ID'].".xml";
-					file_put_contents($o['Path'],makeXML($o));
-					$myTemplates[$o['ID']] = $o;
-				}
-				$i = ++$i;
-			}
-		}
-	}
-	if ( $invalidXML ) {
-		writeJsonFile($communityPaths['invalidXML_txt'],$invalidXML);
-	} else {
-		@unlink($communityPaths['invalidXML_txt']);
-	}
-	writeJsonFile($communityPaths['statistics'],$statistics);
-	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
-
-	file_put_contents($communityPaths['LegacyMode'],"active");
-	return true;
-}
-
-#  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
-
-function DownloadApplicationFeed() {
-	global $communityPaths, $infoFile, $communitySettings, $statistics;
-
-	exec("rm -rf '{$communityPaths['templates-community']}'");
-	exec("mkdir -p '{$communityPaths['templates-community']}'");
-
-	$moderation = readJsonFile($communityPaths['moderation']);
-	$statistics['moderation'] = count($moderation);
-	$Repositories = readJsonFile($communityPaths['Repositories']);
-
-	$statistics['repository'] = count($Repositories);
-	$downloadURL = randomFile();
-  $ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
-	
-	if ( ! is_array($ApplicationFeed['applist']) ) {
-		file_put_contents($communityPaths['appFeedDownloadError'],$downloadURL);
-		return false;
-	}
-
-	unlink($downloadURL);
-	$i = 0;
-	$statistics['totalApplications'] = count($ApplicationFeed['applist']);
-  $lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];
-	writeJsonFile($communityPaths['lastUpdated-old'],$lastUpdated);
-	$myTemplates = array();
-
-	foreach ($ApplicationFeed['applist'] as $file) {
-		if ( (! $file['Repository']) && (! $file['Plugin']) ){
-			$statistics['invalidXML']++;
-			$invalidXML[] = $file;
-			continue;
-		}
-		# Move the appropriate stuff over into a CA data file
-		$o = $file;
-		$o['ID']            = $i;
-		$o['Displayable']   = true;
-		$o['Author']        = preg_replace("#/.*#", "", $o['Repository']);
-		$o['DockerHubName'] = strtolower($file['Name']);
-		$o['RepoName']      = $file['Repo'];
-		$o['SortAuthor']    = $o['Author'];
-		$o['SortName']      = $o['Name'];
-		$o['Licence']       = $file['License']; # Support Both Spellings
-		$o['Licence']       = $file['Licence'];
-		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
-		if ( $o['Plugin'] ) {
-			$o['Author']        = $o['PluginAuthor'];
-			$o['Repository']    = $o['PluginURL'];
-			$o['Category']      .= " Plugins: ";
-			$o['SortAuthor']    = $o['Author'];
-			$o['SortName']      = $o['Name'];
-		}
-		$RepoIndex = searchArray($Repositories,"name",$o['RepoName']);
-		if ( $RepoIndex != false ) {
-			$o['DonateText']       = $Repositories[$RepoIndex]['donatetext'];
-			$o['DonateImg']        = $Repositories[$RepoIndex]['donateimg'];
-			$o['DonateLink']       = $Repositories[$RepoIndex]['donatelink'];
-			$o['WebPageURL']       = $Repositories[$RepoIndex]['web'];
-			$o['Logo']             = $Repositories[$RepoIndex]['logo'];
-			$o['Profile']          = $Repositories[$RepoIndex]['profile'];
-			$o['RepoURL']          = $Repositories[$RepoIndex]['url'];
-			$o['ModeratorComment'] = $Repositories[$RepoIndex]['RepoComment'];
-		}
-		$o['DonateText'] = $file['DonateText'] ?: $o['DonateText'];
-		$o['DonateLink'] = $file['DonateLink'] ?: $o['DonateLink'];
-
-		if ( ($file['DonateImg']) || ($file['DonateImage']) ) {  #because Sparklyballs can't read the tag documentation
-			$o['DonateImg'] = $file['DonateImage'] ?: $file['DonateImg'];
-		}
-
-		fixSecurity($o,$o); # Apply various fixes to the templates for CA use
-		$o = fixTemplates($o);
-    if ( ! $o ) {
-      continue;
-    }
-
-# Overwrite any template values with the moderated values
-
-		if ( is_array($moderation[$o['Repository']]) ) {
-			$repositoryTmp = $o['Repository']; # in case moderation changes the repository entry
-			$o = array_merge($o, $moderation[$repositoryTmp]);
-			$file = array_merge($file, $moderation[$repositoryTmp]);
-		}
-
-		if ( $o['Plugin'] ) {
-			$statistics['plugin']++;
-		} else {
-			$statistics['docker']++;
-		}
-
-		$o['Compatible'] = versionCheck($o);
-
-		# Update the settings for the template
-
-		$file['Compatible'] = $o['Compatible'];
-		$file['Beta'] = $o['Beta'];
-		$file['MinVer'] = $o['MinVer'];
-		$file['MaxVer'] = $o['MaxVer'];
-		$file['Category'] = $o['Category'];
-		$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
-		$o['Category'] = str_replace("Status:Stable","",$o['Category']);
-		$myTemplates[$i] = $o;
-
-		if ( is_array($file['Branch']) ) {
-			if ( ! $file['Branch'][0] ) {
-				$tmp = $file['Branch'];
-				unset($file['Branch']);
-				$file['Branch'][] = $tmp;
-			}
-			foreach($file['Branch'] as $branch) {
-				$i = ++$i;
-				$subBranch = $file;
-				$masterRepository = explode(":",$subBranch['Repository']);
-				$o['BranchDefault'] = $masterRepository[1];
-				$subBranch['Repository'] = $masterRepository[0].":".$branch['Tag']; #This takes place before any xml elements are overwritten by additional entries in the branch, so you can actually change the repo the app draws from
-				$subBranch['BranchName'] = $branch['Tag'];
-				$subBranch['BranchDescription'] = $branch['TagDescription'] ? $branch['TagDescription'] : $branch['Tag'];
-				$subBranch['Path'] = $communityPaths['templates-community']."/".$i.".xml";
-				$subBranch['Displayable'] = false;
-				$subBranch['ID'] = $i;
-				$replaceKeys = array_diff(array_keys($branch),array("Tag","TagDescription"));
-				foreach ($replaceKeys as $key) {
-					$subBranch[$key] = $branch[$key];
-				}
-				unset($subBranch['Branch']);
-				$myTemplates[$i] = $subBranch;
-				$o['BranchID'][] = $i;
-				file_put_contents($subBranch['Path'],makeXML($subBranch));
-			}
-		}
-		unset($file['Branch']);
-		$myTemplates[$o['ID']] = $o;
-		$i = ++$i;
-		$templateXML = makeXML($file);
-		exec("mkdir -p ".escapeshellarg(dirname($o['Path'])));
-		file_put_contents($o['Path'],$templateXML);
-	}
-	writeJsonFile($communityPaths['statistics'],$statistics);
-	if ( $invalidXML ) {
-		writeJsonFile($communityPaths['invalidXML_txt'],$invalidXML);
-	} else {
-		@unlink($communityPaths['invalidXML_txt']);
-	}
-	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
-
-	@unlink($communityPaths['LegacyMode']);
-	return true;
-}
-
-function getConvertedTemplates() {
-	global $communityPaths, $infoFile, $communitySettings, $statistics;
-
-# Start by removing any pre-existing private (converted templates)
-	$templates = readJsonFile($communityPaths['community-templates-info']);
-	$statistics = readJsonFile($communityPaths['statistics']);
-
-	if ( empty($templates) ) {
-		return false;
-	}
-	foreach ($templates as $template) {
-		if ( ! $template['Private'] ) {
-			$myTemplates[] = $template;
-		}
-	}
-	$appCount = count($myTemplates);
-	$moderation = readJsonFile($communityPaths['moderation']);
-	$i = $appCount;
-	unset($Repos);
-
-	if ( ! is_dir($communityPaths['convertedTemplates']) ) {
-		return;
-	}
-
-	$privateTemplates = glob($communityPaths['convertedTemplates']."*/*.xml");
-	foreach ($privateTemplates as $template) {
-		$o = readXmlFile($template);
-		if ( ! $o['Repository'] ) {
-			continue; 
-		}
-		$o['Private']      = true;				
-		$o['RepoName']     = basename(pathinfo($template,PATHINFO_DIRNAME))." Repository";
-		$o['ID']           = $i;
-		$o['Displayable']  = true;
-		$o['Date']         = ( $o['Date'] ) ? strtotime( $o['Date'] ) : 0;
-		$o['SortAuthor']   = $o['Author'];
-		$o['Forum']        = "";
-		$o['Compatible']   = versionCheck($o);
-		$o = fixTemplates($o);
-		fixSecurity($o,$o);
-		$myTemplates[$i]  = $o;
-		$i = ++$i;
-	}
-
-	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
-	writeJsonFile($communityPaths['statistics'],$statistics);
-	return true;
-}
-
-############################################################
-#                                                          #
-# Routines that actually displays the template containers. #
-#                                                          #
-############################################################
-function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
-	global $communityPaths, $separateOfficial, $officialRepo, $communitySettings;
-
-	$file = readJsonFile($communityPaths['community-templates-displayed']);
-	$officialApplications = is_array($file['official']) ? $file['official'] : array();
-	$communityApplications = is_array($file['community']) ? $file['community'] : array();
-	$totalApplications = count($officialApplications) + count($communityApplications);
-	$navigate = array();
-
-	if ( $separateOfficial ) {
-		if ( count($officialApplications) ) {
-			$navigate[] = "doesn't matter what's here -> first element gets deleted anyways";
-			$display = "<center><b>";
-
-			$logos = readJsonFile($communityPaths['logos']);
-			$display .= $logos[$officialRepo] ? "<img src='".$logos[$officialRepo]."' style='width:48px'>&nbsp;&nbsp;" : "";
-			$display .= "<font size='4' color='purple' id='OFFICIAL'>$officialRepo</font></b></center><br>";
-			$display .= my_display_apps($viewMode,$officialApplications,1,true,$selectedApps);
-		}
-	}
-
-	if ( count($communityApplications) ) {
-		if ( $separateOfficial ) {
-			$navigate[] = "<a href='#COMMUNITY'>Community Supported Applications</a>";
-			$display .= "<center><b><font size='4' color='purple' id='COMMUNITY'>Community Supported Applications</font></b></center><br>";
-		}
-		$display .= my_display_apps($viewMode,$communityApplications,$pageNumber,false,$selectedApps);
-	}
-	unset($navigate[0]);
-
-	if ( count($navigate) ) {
-		$bookmark = "Jump To: ".implode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$navigate);
-	}
-	$display .= ( $totalApplications == 0 ) ? "<center><font size='3'>No Matching Content Found</font></center>" : "";
-
-	$totalApps = "$totalApplications";
-
-	$display .= "<script>$('#Total').html('$totalApps');</script>";
-	echo $bookmark;
-	echo $display;
-}
-
-#############################
-#                           #
-# Selects an app of the day #
-#                           #
-#############################
-function appOfDay($file) {
-	global $communityPaths;
-
-	$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
-	$oldAppDay = $oldAppDay ?: 1;
-	$oldAppDay = intval($oldAppDay / 86400);
-	$currentDay = intval(time() / 86400);
-	if ( $oldAppDay == $currentDay ) {
-		$app = readJsonFile($communityPaths['appOfTheDay']);
-		if ( is_array($app) ) {  # test to see if existing apps of day have been moderated / blacklisted, etc.
-			$flag = false;
-			foreach ($app as $testApp) {
-				if ( ! checkRandomApp($testApp,$file) ) {
-					$flag = true;
-					break;
-				}
-			}
-			if ( $flag ) {
-				$app = array();
-			}
-		}	
-	}
-	if ( ! $app ) {
-		for ( $ii=0; $ii<10; $ii++ ) {
-			$flag = false;
-			if ( $app[$ii] ) {
-				$flag = checkRandomApp($app[$ii],$file);
-			}
-			if ( ! $flag ) {
-				for ( $jj = 0; $jj<20; $jj++) { # only give it 20 shots to find an app of the day
-					$randomApp = mt_rand(0,count($file) -1);
-					$flag = checkRandomApp($randomApp,$file);
-					if ( $flag ) {
-						break;
-					}
-				}
-			}
-			if ( ! $flag ) {
-				continue;
-			}
-			$app[$ii] = $randomApp;
-		}
-	}
-	if (! $app) { $app = array(); }
-	$app = array_values(array_unique($app));
-	writeJsonFile($communityPaths['appOfTheDay'],$app);
-	return $app;
-}
-
-#####################################################
-# Checks selected app for eligibility as app of day #
-#####################################################
-function checkRandomApp($randomApp,$file) {
-	if ( ! $file[$randomApp]['Displayable'] )    return false;
-	if ( ! $file[$randomApp]['Compatible'] )     return false;
-	if ( $file[$randomApp]['Blacklist'] )        return false;
-	if ( $file[$randomApp]['ModeratorComment'] ) return false;
-	if ( $file[$randomApp]['Deprecated'] )       return false;
-	if ( $file[$randomApp]['Beta'] == "true" )   return false;
-	if ( $file[$randomApp]['PluginURL'] == "https://raw.githubusercontent.com/Squidly271/community.applications/master/plugins/community.applications.plg" ) return false;
-	return true;
-}
-
-##########################################################################
-#                                                                        #
-# function that comes up with alternate search suggestions for dockerHub #
-#                                                                        #
-##########################################################################
-function suggestSearch($filter,$displayFlag) {
-	$dockerFilter = str_replace("_","-",$filter);
-	$dockerFilter = str_replace("%20","",$dockerFilter);
-	$dockerFilter = str_replace("/","-",$dockerFilter);
-	$otherSearch = explode("-",$dockerFilter);
-
-	if ( count($otherSearch) > 1 ) {
-		$returnSearch .= "Suggested Searches: ";
-
-		foreach ( $otherSearch as $suggestedSearch) {
-			$returnSearch .= "<a style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For $suggestedSearch'><font color='blue'>$suggestedSearch</font></a>&nbsp;&nbsp;&nbsp;&nbsp;";
-		}
-	} else {
-		$otherSearch = preg_split('/(?=[A-Z])/',$dockerFilter);
-
-		if ( count($otherSearch) > 1 ) {
-			$returnSearch .= "Suggested Searches: ";
-
-			foreach ( $otherSearch as $suggestedSearch) {
-				if ( strlen($suggestedSearch) > 1 ) {
-					$returnSearch .= "<a style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For $suggestedSearch'><font color='blue'>$suggestedSearch</font></a>&nbsp;&nbsp;&nbsp;&nbsp;";
-				}
-			}
-		} else {
-			if ( $displayFlag ) {
-				$returnSearch .= "Suggested Searches: Unknown";
-			}
-		}
-	}
-	return $returnSearch;
-}
 
 ############################################
 ############################################
@@ -623,11 +135,11 @@ case 'get_content':
 			DownloadApplicationFeed();
 			if (!file_exists($infoFile)) {
 				@unlink($communityPaths['LegacyMode']);
-				echo "<center><font size='3'><strong>Download of appfeed failed.</strong></font><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  Switching CA to operate in <em>Legacy Mode</em> might temporarily allow you to still utilize CA.<br>";
+				echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  <font color='green'>Switching CA to operate in <b><em><a style='cursor:pointer;' onclick='forceUpdateButton();'>Legacy Mode</a></em></b> might temporarily allow you to still utilize CA.</font><br>";
 				$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
 				$downloaded = @file_get_contents($tempFile);
 				if (strlen($downloaded) > 100) {
-					echo "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Switch to legacy mode (top right), or try again later)</font>";
+					echo "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Switch to a style='cursor:pointer;' onclick='forceUpdateButton();'>Legacy Mode</a>, or try again later)</font>";
   			}
 				echo "<center>Last JSON error Recorded: ";
 				$jsonDecode = json_decode($downloaded,true);
@@ -637,11 +149,12 @@ case 'get_content':
 				echo caGetMode();
 				echo "<script>$('#updateButton').show();</script>";
 				@unlink($infoFile);
+				@unlink($communityPaths['statistics']);
 			}
 		}
 
 		if ($communitySettings['appFeed'] == "false" ) {
-			if (!DownloadCommunityTemplates()) {
+			if (!ProcessCommunityTemplates()) {
 				echo "<center><font size='3'><strong>Download of appfeed failed.</strong></font><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling templates (GitHub.com) is temporarily down.";
 
 				break;
@@ -651,7 +164,7 @@ case 'get_content':
 
 				if (is_file($communityPaths['updateErrors'])) {
 					echo "<table><td><td colspan='5'><br><center>The following errors occurred:<br><br>";
-					echo "<strong>".file_get_contents($communityPaths['updateErrors'])."</strong></center></td></tr></table>";
+					echo "<strong>".file_get_contents($communityPaths['updateErrors'])."</strong><br><br>The apps contained in the Repository(s) above will be unavailable</br></center></td></tr></table>";
 					echo "<script>$('#templateSortButtons,#total1').hide();$('#sortButtons').hide();</script>";
 					echo caGetMode();
 					break;
@@ -694,7 +207,6 @@ case 'get_content':
 			break;
 		}
 	}
-
 	$display             = array();
 	$official            = array();
 
@@ -1186,6 +698,7 @@ case 'search_dockerhub':
 #####################################################################
 case 'dismiss_warning':
 	file_put_contents($communityPaths['warningAccepted'],"warning dismissed");
+	echo "warning dismissed";
 	break;
 
 ###############################################################
@@ -1536,7 +1049,7 @@ case 'displayTags':
 case 'statistics':
 	$statistics = readJsonFile($communityPaths['statistics']);
 	$statistics['totalModeration'] = count(readJsonFile($communityPaths['moderation']));
-
+  $repositories = readJsonFile($communityPaths['Repositories']);
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	pluginDupe($templates);
 	unset($statistics['Private']);
@@ -1571,7 +1084,7 @@ case 'statistics':
 	if ( is_file($communityPaths['lastUpdated-old']) ) {
 		$appFeedTime = readJsonFile($communityPaths['lastUpdated-old']);
 	} else {
-		$appFeedTime['last_updated_timestamp'] = filemtime($communityPaths['community-templates-info']);
+		$appFeedTime['last_updated_timestamp'] = @filemtime($communityPaths['community-templates-info']);
 	}
 	$updateTime = date("F d Y H:i",$appFeedTime['last_updated_timestamp']);
 	$updateTime = ( is_file($communityPaths['LegacyMode']) ) ? "N/A - Legacy Mode Active" : $updateTime;
@@ -1590,7 +1103,7 @@ case 'statistics':
 	echo "<table>";
 	echo "<tr><td><b>{$color}<a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td>$color$updateTime</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Templates</b></td><td>$color{$statistics['totalApplications']}</td></tr>";
-	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color{$statistics['repository']}</td></tr>";
+	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color".count($repositories)."</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";
 	echo "<tr><td><b>{$color}Total Number Of Plugins</b></td><td>$color{$statistics['plugin']}</td></tr>";
 	echo "<tr><td><b>{$color}<a id='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
@@ -1663,5 +1176,457 @@ case 'removePrivateApp':
 	@unlink($path);
 	echo "done";
 	break;
+
+case 'downloadRepositories':
+  file_put_contents($communityPaths['appFeedOverride'],"dunno");
+	$Repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
+  if ( empty($Repositories) ) {
+		echo "failed";
+	} else {
+		echo json_encode($Repositories, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+	}
+	@unlink($communityPaths['legacyTemplatesTmp']);
+	@unlink($communityPaths['updateErrors']);
+	exec("rm -rf '{$communityPaths['templates-community']}'");
+	break;
+	
+case 'downloadRepo':
+	$repoURL = getPost("repoURL","oops");
+	$repoName =getPost("repoName","oops");
+	
+	$DockerTemplates = new DockerTemplates();
+
+	$templates = readJsonFile($communityPaths['legacyTemplatesTmp']);
+
+	$downloadURL = randomFile();
+	file_put_contents($downloadURL, $repoURL);
+	$friendlyName = str_replace(" ","",$repoName);
+	$friendlyName = str_replace("'","",$friendlyName);
+	$friendlyName = str_replace('"',"",$friendlyName);
+	$friendlyName = str_replace('\\',"",$friendlyName);
+	$friendlyName = str_replace("/","",$friendlyName);
+	if ( ! $downloaded = $DockerTemplates->downloadTemplates($communityPaths['templates-community']."/templates/$friendlyName", $downloadURL) ){
+		file_put_contents($communityPaths['updateErrors'],"Failed to download <font color='purple'>$repoName</font> $repoURL<br>",FILE_APPEND);
+		@unlink($downloadURL);
+	} else {
+		$templates = array_merge($templates,$downloaded);
+		@unlink($downloadURL);
+	}
+	writeJsonFile($communityPaths['legacyTemplatesTmp'],$templates);
+	echo "downloaded";
+	break;
+}
+
+#################################################################
+#                                                               #
+# Functions used to download the templates from various sources #
+#                                                               #
+#################################################################
+function ProcessCommunityTemplates() {
+	global $communityPaths, $infoFile, $communitySettings, $statistics;
+
+	$moderation = readJsonFile($communityPaths['moderation']);
+
+	$DockerTemplates = new DockerTemplates();
+
+	$Repos = readJsonFile($communityPaths['Repositories']);
+	$myTemplates = array();
+	$templates = readJsonFile($communityPaths['legacyTemplatesTmp']);
+	$i = 0
+	;
+	foreach ($Repos as $Repo) {
+		if ( ! is_array($templates[$Repo['url']]) ) {
+			continue;
+		}
+		foreach ($templates[$Repo['url']] as $file) {
+			if (is_file($file)){
+				$o = readXmlFile($file);
+				if ( ! $o ) {
+					file_put_contents($communityPaths['updateErrors'],"Failed to parse <font color='purple'>$file</font> (errors in XML file?)<br>",FILE_APPEND);
+				}
+				if ( (! $o['Repository']) && (! $o['Plugin']) ) {
+					$statistics['invalidXML']++;
+					$invalidXML[] = $o;
+					continue;
+				}
+				$o['Forum'] = $Repo['forum'];
+				$o['RepoName'] = $Repo['name'];
+				$o['ID'] = $i;
+				$o['Displayable'] = true;
+				$o['Support'] = $o['Support'] ?: $o['Forum'];
+				$o['DonateText'] = $o['DonateText'] ?: $Repo['donatetext'];  # Some people can't read the specs correctly
+				$o['DonateLink'] = $o['DonateLink'] ?: $Repo['donatelink'];
+				$o['DonateImg'] = $o['DonateImg'] ?: $Repo['donateimg'];
+				$o['RepoURL'] = $Repo['url'];
+			  $o['ModeratorComment'] = $Repo['RepoComment'];
+				$o['WebPageURL'] = $Repo['web'];
+				$o['Logo'] = $Repo['logo'];
+				$o['Profile'] = $Repo['profile'];
+				fixSecurity($o,$o);
+				$o = fixTemplates($o);
+        if ( ! $o ) {
+          continue;
+        }
+
+				# Overwrite any template values with the moderated values
+				if ( is_array($moderation[$o['Repository']]) ) {
+					$o = array_merge($o, $moderation[$o['Repository']]);
+				}
+				$o['Compatible'] = versionCheck($o);
+
+				$statistics['totalApplications']++;
+
+				$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
+				$o['Category'] = str_replace("Status:Stable","",$o['Category']);
+				$myTemplates[$o['ID']] = $o;
+				if ( is_array($o['Branch']) ) {
+					if ( ! $o['Branch'][0] ) {
+						$tmp = $o['Branch'];
+						unset($o['Branch']);
+						$o['Branch'][] = $tmp;
+					}
+					foreach($o['Branch'] as $branch) {
+						$i = ++$i;
+						$subBranch = $o;
+						$masterRepository = explode(":",$subBranch['Repository']);
+						$o['BranchDefault'] = $masterRepository[1];
+						$subBranch['Repository'] = $masterRepository[0].":".$branch['Tag']; #This takes place before any xml elements are overwritten by additional entries in the branch, so you can actually change the repo the app draws from
+						$subBranch['BranchName'] = $branch['Tag'];
+						$subBranch['BranchDescription'] = $branch['TagDescription'] ? $branch['TagDescription'] : $branch['Tag'];
+						$subBranch['Path'] = $communityPaths['templates-community']."/".$i.".xml";
+						$subBranch['Displayable'] = false;
+						$subBranch['ID'] = $i;
+						$replaceKeys = array_diff(array_keys($branch),array("Tag","TagDescription"));
+						foreach ($replaceKeys as $key) {
+							$subBranch[$key] = $branch[$key];
+						}
+						unset($subBranch['Branch']);
+						$myTemplates[$i] = $subBranch;
+						$o['BranchID'][] = $i;
+						file_put_contents($subBranch['Path'],makeXML($subBranch));
+					}
+					unset($o['Branch']);
+
+					$o['Path'] = $communityPaths['templates-community']."/".$o['ID'].".xml";
+					file_put_contents($o['Path'],makeXML($o));
+					$myTemplates[$o['ID']] = $o;
+				}
+				$i = ++$i;
+			}
+		}
+	}
+	if ( $invalidXML ) {
+		writeJsonFile($communityPaths['invalidXML_txt'],$invalidXML);
+	} else {
+		@unlink($communityPaths['invalidXML_txt']);
+	}
+	writeJsonFile($communityPaths['statistics'],$statistics);
+	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
+
+	file_put_contents($communityPaths['LegacyMode'],"active");
+	return true;
+}
+
+#  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
+
+function DownloadApplicationFeed() {
+	global $communityPaths, $infoFile, $communitySettings, $statistics;
+
+	exec("rm -rf '{$communityPaths['templates-community']}'");
+	exec("mkdir -p '{$communityPaths['templates-community']}'");
+
+	$moderation = readJsonFile($communityPaths['moderation']);
+	$Repositories = readJsonFile($communityPaths['Repositories']);
+
+	$downloadURL = randomFile();
+  $ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
+	
+	if ( ! is_array($ApplicationFeed['applist']) ) {
+		file_put_contents($communityPaths['appFeedDownloadError'],$downloadURL);
+		return false;
+	}
+
+	@unlink($downloadURL);
+	$i = 0;
+	$statistics['totalApplications'] = count($ApplicationFeed['applist']);
+  $lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];
+	writeJsonFile($communityPaths['lastUpdated-old'],$lastUpdated);
+	$myTemplates = array();
+
+	foreach ($ApplicationFeed['applist'] as $file) {
+		if ( (! $file['Repository']) && (! $file['Plugin']) ){
+			$statistics['invalidXML']++;
+			$invalidXML[] = $file;
+			continue;
+		}
+		# Move the appropriate stuff over into a CA data file
+		$o = $file;
+		$o['ID']            = $i;
+		$o['Displayable']   = true;
+		$o['Author']        = preg_replace("#/.*#", "", $o['Repository']);
+		$o['DockerHubName'] = strtolower($file['Name']);
+		$o['RepoName']      = $file['Repo'];
+		$o['SortAuthor']    = $o['Author'];
+		$o['SortName']      = $o['Name'];
+		$o['Licence']       = $file['License']; # Support Both Spellings
+		$o['Licence']       = $file['Licence'];
+		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
+		if ( $o['Plugin'] ) {
+			$o['Author']        = $o['PluginAuthor'];
+			$o['Repository']    = $o['PluginURL'];
+			$o['Category']      .= " Plugins: ";
+			$o['SortAuthor']    = $o['Author'];
+			$o['SortName']      = $o['Name'];
+		}
+		$RepoIndex = searchArray($Repositories,"name",$o['RepoName']);
+		if ( $RepoIndex != false ) {
+			$o['DonateText']       = $Repositories[$RepoIndex]['donatetext'];
+			$o['DonateImg']        = $Repositories[$RepoIndex]['donateimg'];
+			$o['DonateLink']       = $Repositories[$RepoIndex]['donatelink'];
+			$o['WebPageURL']       = $Repositories[$RepoIndex]['web'];
+			$o['Logo']             = $Repositories[$RepoIndex]['logo'];
+			$o['Profile']          = $Repositories[$RepoIndex]['profile'];
+			$o['RepoURL']          = $Repositories[$RepoIndex]['url'];
+			$o['ModeratorComment'] = $Repositories[$RepoIndex]['RepoComment'];
+		}
+		$o['DonateText'] = $file['DonateText'] ?: $o['DonateText'];
+		$o['DonateLink'] = $file['DonateLink'] ?: $o['DonateLink'];
+
+		if ( ($file['DonateImg']) || ($file['DonateImage']) ) {  #because Sparklyballs can't read the tag documentation
+			$o['DonateImg'] = $file['DonateImage'] ?: $file['DonateImg'];
+		}
+
+		fixSecurity($o,$o); # Apply various fixes to the templates for CA use
+		$o = fixTemplates($o);
+    if ( ! $o ) {
+      continue;
+    }
+
+# Overwrite any template values with the moderated values
+
+		if ( is_array($moderation[$o['Repository']]) ) {
+			$repositoryTmp = $o['Repository']; # in case moderation changes the repository entry
+			$o = array_merge($o, $moderation[$repositoryTmp]);
+			$file = array_merge($file, $moderation[$repositoryTmp]);
+		}
+
+		if ( $o['Plugin'] ) {
+			$statistics['plugin']++;
+		} else {
+			$statistics['docker']++;
+		}
+
+		$o['Compatible'] = versionCheck($o);
+
+		# Update the settings for the template
+
+		$file['Compatible'] = $o['Compatible'];
+		$file['Beta'] = $o['Beta'];
+		$file['MinVer'] = $o['MinVer'];
+		$file['MaxVer'] = $o['MaxVer'];
+		$file['Category'] = $o['Category'];
+		$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
+		$o['Category'] = str_replace("Status:Stable","",$o['Category']);
+		$myTemplates[$i] = $o;
+
+		if ( is_array($file['Branch']) ) {
+			if ( ! $file['Branch'][0] ) {
+				$tmp = $file['Branch'];
+				unset($file['Branch']);
+				$file['Branch'][] = $tmp;
+			}
+			foreach($file['Branch'] as $branch) {
+				$i = ++$i;
+				$subBranch = $file;
+				$masterRepository = explode(":",$subBranch['Repository']);
+				$o['BranchDefault'] = $masterRepository[1];
+				$subBranch['Repository'] = $masterRepository[0].":".$branch['Tag']; #This takes place before any xml elements are overwritten by additional entries in the branch, so you can actually change the repo the app draws from
+				$subBranch['BranchName'] = $branch['Tag'];
+				$subBranch['BranchDescription'] = $branch['TagDescription'] ? $branch['TagDescription'] : $branch['Tag'];
+				$subBranch['Path'] = $communityPaths['templates-community']."/".$i.".xml";
+				$subBranch['Displayable'] = false;
+				$subBranch['ID'] = $i;
+				$replaceKeys = array_diff(array_keys($branch),array("Tag","TagDescription"));
+				foreach ($replaceKeys as $key) {
+					$subBranch[$key] = $branch[$key];
+				}
+				unset($subBranch['Branch']);
+				$myTemplates[$i] = $subBranch;
+				$o['BranchID'][] = $i;
+				file_put_contents($subBranch['Path'],makeXML($subBranch));
+			}
+		}
+		unset($file['Branch']);
+		$myTemplates[$o['ID']] = $o;
+		$i = ++$i;
+		$templateXML = makeXML($file);
+		exec("mkdir -p ".escapeshellarg(dirname($o['Path'])));
+		file_put_contents($o['Path'],$templateXML);
+	}
+	writeJsonFile($communityPaths['statistics'],$statistics);
+	if ( $invalidXML ) {
+		writeJsonFile($communityPaths['invalidXML_txt'],$invalidXML);
+	} else {
+		@unlink($communityPaths['invalidXML_txt']);
+	}
+	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
+
+	@unlink($communityPaths['LegacyMode']);
+	return true;
+}
+
+function getConvertedTemplates() {
+	global $communityPaths, $infoFile, $communitySettings, $statistics;
+
+# Start by removing any pre-existing private (converted templates)
+	$templates = readJsonFile($communityPaths['community-templates-info']);
+	$statistics = readJsonFile($communityPaths['statistics']);
+
+	if ( empty($templates) ) {
+		return false;
+	}
+	foreach ($templates as $template) {
+		if ( ! $template['Private'] ) {
+			$myTemplates[] = $template;
+		}
+	}
+	$appCount = count($myTemplates);
+	$moderation = readJsonFile($communityPaths['moderation']);
+	$i = $appCount;
+	unset($Repos);
+
+	if ( ! is_dir($communityPaths['convertedTemplates']) ) {
+		return;
+	}
+
+	$privateTemplates = glob($communityPaths['convertedTemplates']."*/*.xml");
+	foreach ($privateTemplates as $template) {
+		$o = readXmlFile($template);
+		if ( ! $o['Repository'] ) {
+			continue; 
+		}
+		$o['Private']      = true;				
+		$o['RepoName']     = basename(pathinfo($template,PATHINFO_DIRNAME))." Repository";
+		$o['ID']           = $i;
+		$o['Displayable']  = true;
+		$o['Date']         = ( $o['Date'] ) ? strtotime( $o['Date'] ) : 0;
+		$o['SortAuthor']   = $o['Author'];
+		$o['Forum']        = "";
+		$o['Compatible']   = versionCheck($o);
+		$o = fixTemplates($o);
+		fixSecurity($o,$o);
+		$myTemplates[$i]  = $o;
+		$i = ++$i;
+	}
+
+	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
+	writeJsonFile($communityPaths['statistics'],$statistics);
+	return true;
+}
+
+
+#############################
+#                           #
+# Selects an app of the day #
+#                           #
+#############################
+function appOfDay($file) {
+	global $communityPaths;
+
+	$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
+	$oldAppDay = $oldAppDay ?: 1;
+	$oldAppDay = intval($oldAppDay / 86400);
+	$currentDay = intval(time() / 86400);
+	if ( $oldAppDay == $currentDay ) {
+		$app = readJsonFile($communityPaths['appOfTheDay']);
+		if ( is_array($app) ) {  # test to see if existing apps of day have been moderated / blacklisted, etc.
+			$flag = false;
+			foreach ($app as $testApp) {
+				if ( ! checkRandomApp($testApp,$file) ) {
+					$flag = true;
+					break;
+				}
+			}
+			if ( $flag ) {
+				$app = array();
+			}
+		}	
+	}
+	if ( ! $app ) {
+		for ( $ii=0; $ii<10; $ii++ ) {
+			$flag = false;
+			if ( $app[$ii] ) {
+				$flag = checkRandomApp($app[$ii],$file);
+			}
+			if ( ! $flag ) {
+				for ( $jj = 0; $jj<20; $jj++) { # only give it 20 shots to find an app of the day
+					$randomApp = mt_rand(0,count($file) -1);
+					$flag = checkRandomApp($randomApp,$file);
+					if ( $flag ) {
+						break;
+					}
+				}
+			}
+			if ( ! $flag ) {
+				continue;
+			}
+			$app[$ii] = $randomApp;
+		}
+	}
+	if (! $app) { $app = array(); }
+	$app = array_values(array_unique($app));
+	writeJsonFile($communityPaths['appOfTheDay'],$app);
+	return $app;
+}
+
+#####################################################
+# Checks selected app for eligibility as app of day #
+#####################################################
+function checkRandomApp($randomApp,$file) {
+	if ( ! $file[$randomApp]['Displayable'] )    return false;
+	if ( ! $file[$randomApp]['Compatible'] )     return false;
+	if ( $file[$randomApp]['Blacklist'] )        return false;
+	if ( $file[$randomApp]['ModeratorComment'] ) return false;
+	if ( $file[$randomApp]['Deprecated'] )       return false;
+	if ( $file[$randomApp]['Beta'] == "true" )   return false;
+	if ( $file[$randomApp]['PluginURL'] == "https://raw.githubusercontent.com/Squidly271/community.applications/master/plugins/community.applications.plg" ) return false;
+	return true;
+}
+
+##########################################################################
+#                                                                        #
+# function that comes up with alternate search suggestions for dockerHub #
+#                                                                        #
+##########################################################################
+function suggestSearch($filter,$displayFlag) {
+	$dockerFilter = str_replace("_","-",$filter);
+	$dockerFilter = str_replace("%20","",$dockerFilter);
+	$dockerFilter = str_replace("/","-",$dockerFilter);
+	$otherSearch = explode("-",$dockerFilter);
+
+	if ( count($otherSearch) > 1 ) {
+		$returnSearch .= "Suggested Searches: ";
+
+		foreach ( $otherSearch as $suggestedSearch) {
+			$returnSearch .= "<a style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For $suggestedSearch'><font color='blue'>$suggestedSearch</font></a>&nbsp;&nbsp;&nbsp;&nbsp;";
+		}
+	} else {
+		$otherSearch = preg_split('/(?=[A-Z])/',$dockerFilter);
+
+		if ( count($otherSearch) > 1 ) {
+			$returnSearch .= "Suggested Searches: ";
+
+			foreach ( $otherSearch as $suggestedSearch) {
+				if ( strlen($suggestedSearch) > 1 ) {
+					$returnSearch .= "<a style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For $suggestedSearch'><font color='blue'>$suggestedSearch</font></a>&nbsp;&nbsp;&nbsp;&nbsp;";
+				}
+			}
+		} else {
+			if ( $displayFlag ) {
+				$returnSearch .= "Suggested Searches: Unknown";
+			}
+		}
+	}
+	return $returnSearch;
 }
 ?>

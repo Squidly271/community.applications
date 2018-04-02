@@ -47,5 +47,8 @@ $communityPaths['appFeedDownloadError']          = $communityPaths['tempFiles'].
 $communityPaths['legacySkin']                    = "/usr/local/emhttp/plugins/$plugin/skins/legacy.skin";
 $communityPaths['defaultSkin']                   = "/usr/local/emhttp/plugins/$plugin/skins/default.skin";
 $communityPaths['defaultSkinPHP']                = $communityPaths['defaultSkin'].".php";
+$communityPaths['legacyTemplatesTmp']            = $communityPaths['tempFiles']."/pathsToTemplates.json";
+
 $infoFile                                        = $communityPaths['community-templates-info'];
+
 ?>

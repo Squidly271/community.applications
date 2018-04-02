@@ -69,11 +69,11 @@ function readJsonFile($filename) {
 function writeJsonFile($filename,$jsonArray) {
 	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 }
-function download_url($url, $path = "", $bg = false,$requestNoCache=false){
+function download_url($url, $path = "", $bg = false){
 	if ( ! strpos($url,"?") ) {
 		$url .= "?".time(); # append time to always wind up requesting a non cached version
 	}
-	exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
+	exec("curl --compressed --max-time 45 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
 	return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
 function download_json($url,$path) {
@@ -613,6 +613,7 @@ function filterMatch($filter,$searchArray) {
 function pluginDupe($templates) {
 	global $communityPaths;
 	
+	$pluginList = array();
 	foreach ($templates as $template) {
 		if ( ! $template['Plugin'] ) {
 			continue;

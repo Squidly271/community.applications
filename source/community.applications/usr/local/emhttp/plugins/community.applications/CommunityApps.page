@@ -195,7 +195,6 @@ $(function(){
 	<?endif;?>
 	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
-	if ( "<?=$firstRun?>" == "true" ) { $("#appWarning").show(); }
 	$("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
 
 	$('.ca_staticTips').tooltipster({
@@ -375,19 +374,42 @@ $(function(){
 	if ( "<?=$cfg['viewMode']?>" == "detail" ) $("#viewDetail").prop("disabled",true);
 
 /* Everything is now initialized.  This is the start of the actual "real" code */
-
-	myAlert("Updating Content","Retrieving the latest application Lists",true,"40");
-	$.post(URL,{action:'force_update'}, function(data) {
-		if (data) {
-			if ( "<?=$pluginInstallPending?>" ) {
-				myCloseAlert();
-				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1=<?=$pluginInstallPending?>','Install Plugin Applications',600,900,true);
+  if ( "<?=$firstRun?>" == "true" ) {
+		swal({
+			title: 'Disclaimer',
+			text: 'All applications listed here are 3rd party additions to unRaid.  Neither the authors of CA nor Limetech make any warranty as to the suitability of any application listed here. <br><em>Every attempt is made to ensure that only safe and compatible applications are present</em><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>',
+			html: true,
+			type: 'error',
+			footer: "test",
+			showCancelButton: true,
+			showConfirmButton: true,
+			confirmButtonText: 'I Understand'
+		}, 
+		function (isConfirm) {
+			if ( isConfirm ) {
+				$.post(URL,{action:'dismiss_warning'},function(data) {
+				  if (data) {
+						location.reload();
+					}
+				});
 			} else {
-				getContent(true,'INITIALIZE','None Selected');
-				$('#searchBox').keyup(function(e) {if(e.which == 13){doSearch(false);}});
+				$("#myForm,#appWarningForm").toggle();
 			}
-		}
-	});
+		});
+	} else {
+		myAlert("Updating Content","Retrieving the latest application Lists",true,"40");
+		$.post(URL,{action:'force_update'}, function(data) {
+			if (data) {
+				if ( "<?=$pluginInstallPending?>" ) {
+					myCloseAlert();
+					openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1=<?=$pluginInstallPending?>','Install Plugin Applications',600,900,true);
+				} else {
+					getContent(true,'INITIALIZE','None Selected');
+					$('#searchBox').keyup(function(e) {if(e.which == 13){doSearch(false);}});
+				}
+			}
+		});
+	}
 });
 
 function enableIcon(icon,enable) {
@@ -654,11 +676,6 @@ function doSearch(button) {
 	});
 }
 
-function dismissWarning() {
-	$("#appWarning").hide();
-	$.post(URL,{action:'dismiss_warning'});
-}
-
 function disableTooltipster() {
 	$('.tooltipstered').tooltipster('disable');
 }
@@ -691,7 +708,7 @@ function forceUpdateButton() {
 	} else {
 		swal({
 			title: "Switch To Legacy Mode?",
-			text: "<strong>This will force CA to manually download the application templates.  Normally there is no reason to do this as CA automatically downloads the latest application list whenever it starts up (updated every two hours)</strong><br><br><font color='red'>This process once begun cannot be aborted and will take 2-3 minutes</font>",
+			text: "<strong>This will force CA to manually download the application templates.</strong><br><br><font color='red'>This process once begun cannot be aborted and may take a minute or so</font>",
 			type: "warning",
 			confirmButtonColor: "#DD6B55",
 			confirmButtonText: "Update Lists",
@@ -705,11 +722,36 @@ function forceUpdateButton() {
 		function(isConfirm) {
 			if (isConfirm) {
 				$.post(URL,{action:'force_update_button'});
-				swal("Updating Applications","This will take a few minutes","info");
-				forceUpdate();
+				myAlert("Switching to Legacy Mode","Downloading <span id='downloadStatus'>Repository List</span>");
+				$.post(URL,{action:'downloadRepositories'},function(data) {
+					if (data) {
+						repositories = JSON.parse(data);
+						downloadRepo(repositories,0);
+					}
+				});
 			}
 		});
 	}
+}
+
+function downloadRepo(repositories,index) {
+	var percentage = parseInt(index / repositories.length * 100);
+	$("#downloadStatus").html(percentage+"%<br>"+repositories[index].name+"<br><font size='0'>"+repositories[index].url);
+	$.post(URL,{action:'downloadRepo',repoURL:repositories[index].url,repoName:repositories[index].name}, function(data) {
+		if ( data ) {
+			if ( repositories[index+1] ) {
+				downloadRepo(repositories,index+1);
+			} else {
+				processLegacyMode();
+			}
+		}
+	});
+}
+
+function processLegacyMode() {
+	myCloseAlert();
+	$(".appButtons").prop("disabled",false);
+	getContent(true,'INITIALIZE','None Selected');
 }
 
 function enableButtons() {
@@ -1321,7 +1363,6 @@ function clearMultiInstall() {
 	enableMultiInstall();
 }
 
-
 function installMulti() {
 	var docker = new Array();
 	var plugin = "";
@@ -1394,9 +1435,6 @@ function resizeDisplay() {
 </script>
 <FORM method="get" id="myForm">
 <body onresize='resizeDisplay();'>
-<div id='appWarning' style='display:none'><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
-<font size='2' color='red'>Note: All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein</font>
-<br><input type='button' value='Dismiss Warning' onclick='dismissWarning();'></input></center></div>
 <span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
 <br>
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br>
@@ -1514,5 +1552,11 @@ Sort Direction:
 </span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
 </body>
-</FORM>
-<span id='debugging'></span>
+</FORM><span id='debugging'></span>
+<form id='appWarningForm' style='display:none;'>
+<br><br><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
+<font size='4' color='red'>All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein.
+<br><em>Every attempt is made to ensure that only safe and compatible applications are present</em>
+<br><br>You must accept the disclaimer before you can utilize this plugin</font>
+<br><br><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first  
+</form>

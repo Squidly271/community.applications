@@ -1,7 +1,8 @@
 <?PHP
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
+require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
 echo "<body bgcolor='white'>";
-$repositories = json_decode(file_get_contents($communityPaths['Repositories']),true);
+$repositories = readJsonFile($communityPaths['Repositories']);
 
 switch ($_GET['arg1']) {
 	case 'Repository':
@@ -36,9 +37,9 @@ switch ($_GET['arg1']) {
 			echo "All of these errors found have been fixed automatically.  These errors only affect the operation of Community Applications.  <b>The template <em>may</em> have other errors present</b><br><br><tt>$moderation";
 		}
 
-		$dupeList = json_decode(@file_get_contents($communityPaths['pluginDupes']),true);
+		$dupeList = readJsonFile($communityPaths['pluginDupes']);
 		if ($dupeList) {
-			$templates = json_decode(file_get_contents($communityPaths['community-templates-info']),true);
+			$templates = readJsonFile($communityPaths['community-templates-info']);
 			echo "<br><br><b></tt>The following plugins have duplicated filenames and are not able to be installed simultaneously:</b><br><br>";
 			foreach (array_keys($dupeList) as $dupe) {
 				echo "<b>$dupe</b><br>";
@@ -50,7 +51,7 @@ switch ($_GET['arg1']) {
 				echo "<br>";
 			}
 		}
-		$templates = json_decode(file_get_contents($communityPaths['community-templates-info']),true);
+		$templates = readJsonFile($communityPaths['community-templates-info']);
 		foreach ($templates as $template) {
 			$count = 0;
 			foreach ($templates as $searchTemplates) {

@@ -5,6 +5,53 @@
 #                                                             #
 ###############################################################
 
+############################################################
+#                                                          #
+# Routines that actually displays the template containers. #
+#                                                          #
+############################################################
+function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
+	global $communityPaths, $separateOfficial, $officialRepo, $communitySettings;
+
+	$file = readJsonFile($communityPaths['community-templates-displayed']);
+	$officialApplications = is_array($file['official']) ? $file['official'] : array();
+	$communityApplications = is_array($file['community']) ? $file['community'] : array();
+	$totalApplications = count($officialApplications) + count($communityApplications);
+	$navigate = array();
+
+	if ( $separateOfficial ) {
+		if ( count($officialApplications) ) {
+			$navigate[] = "doesn't matter what's here -> first element gets deleted anyways";
+			$display = "<center><b>";
+
+			$logos = readJsonFile($communityPaths['logos']);
+			$display .= $logos[$officialRepo] ? "<img src='".$logos[$officialRepo]."' style='width:48px'>&nbsp;&nbsp;" : "";
+			$display .= "<font size='4' color='purple' id='OFFICIAL'>$officialRepo</font></b></center><br>";
+			$display .= my_display_apps($viewMode,$officialApplications,1,true,$selectedApps);
+		}
+	}
+
+	if ( count($communityApplications) ) {
+		if ( $separateOfficial ) {
+			$navigate[] = "<a href='#COMMUNITY'>Community Supported Applications</a>";
+			$display .= "<center><b><font size='4' color='purple' id='COMMUNITY'>Community Supported Applications</font></b></center><br>";
+		}
+		$display .= my_display_apps($viewMode,$communityApplications,$pageNumber,false,$selectedApps);
+	}
+	unset($navigate[0]);
+
+	if ( count($navigate) ) {
+		$bookmark = "Jump To: ".implode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$navigate);
+	}
+	$display .= ( $totalApplications == 0 ) ? "<center><font size='3'>No Matching Content Found</font></center>" : "";
+
+	$totalApps = "$totalApplications";
+
+	$display .= "<script>$('#Total').html('$totalApps');</script>";
+	echo $bookmark;
+	echo $display;
+}
+
 # skin specific PHP
 #my_display_apps(), getPageNavigation(), displaySearchResults() must accept all parameters
 #note that many template entries in my_display_apps() are not actually used in the skin, but are present for future possible use.
