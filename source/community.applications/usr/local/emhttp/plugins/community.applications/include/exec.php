@@ -135,6 +135,10 @@ case 'get_content':
 			DownloadApplicationFeed();
 			if (!file_exists($infoFile)) {
 				@unlink($communityPaths['LegacyMode']);
+				$tmpfile = randomFile();
+				download_url($communityPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
+				$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
+				@unlink($tmpfile);
 				echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  <font color='green'>Switching CA to operate in <b><em><a style='cursor:pointer;' onclick='forceUpdateButton();'>Legacy Mode</a></em></b> might temporarily allow you to still utilize CA.</font><br>";
 				$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
 				$downloaded = @file_get_contents($tempFile);
@@ -144,6 +148,9 @@ case 'get_content':
 				echo "<center>Last JSON error Recorded: ";
 				$jsonDecode = json_decode($downloaded,true);
 				echo "JSON Error: ".jsonError(json_last_error());
+				if ( $publicServiceAnnouncement ) {
+					echo "<br><font size='5' color='purple'>$publicServiceAnnouncement</font>";
+				}
 				echo "</center>";
 				@unlink($communityPaths['appFeedDownloadError']);
 				echo caGetMode();
