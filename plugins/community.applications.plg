@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.04.02">
-<!ENTITY md5       "e4c64160cee41ba52413f97e34169b7f">
+<!ENTITY version   "2018.04.08">
+<!ENTITY md5       "10a9f153214459828ae467eec34fe2a4">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
 
 <CHANGES>
+###2018.04.08
+- Fixed: Regression error where if a duplicated plugin was installed (eg: libvirt hotplug), both plugins would display instead of only the proper one
+
 ###2018.04.02
 - Revamp of how legacy mode downloads
 - Fix stats display when bouncing back and forth between legacy mode and appfeed mode

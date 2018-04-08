@@ -500,6 +500,7 @@ function moderateTemplates() {
 		$o[] = $templateTMP;
 	}
 	writeJsonFile($communityPaths['community-templates-info'],$o);
+	pluginDupe($o);
 }
 
 ############################################
