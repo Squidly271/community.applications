@@ -17,9 +17,8 @@ $cfg = parse_plugin_cfg($plugin);
 
 # Get the available repositories and setup the display for favourites
 
-if ( ! is_dir("/tmp/community.applications/tempFiles") ) {
-  exec('mkdir -p "/tmp/community.applications/tempFiles"');
-}
+@mkdir("/tmp/community.applications/tempFiles",0777,true);
+
 
 $Repositories = "/tmp/community.applications/tempFiles/Repositories.json";
 download_url("https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Repositories.json",$Repositories);

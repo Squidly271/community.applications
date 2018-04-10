@@ -57,11 +57,11 @@ if ( $communitySettings['dockerRunning'] ) {
 	$dockerRunning = array();
 }
 
-exec("mkdir -p ".$communityPaths['tempFiles']);
-exec("mkdir -p ".$communityPaths['persistentDataStore']);
+@mkdir($communityPaths['tempFiles'],0777,true);
+@mkdir($communityPaths['persistentDataStore'],0777,true);
 
 if ( !is_dir($communityPaths['templates-community']) ) {
-	exec("mkdir -p ".$communityPaths['templates-community']);
+	@mkdir($communityPaths['templates-community'],0777,true);
 	@unlink($infoFile);
 }
 
@@ -628,9 +628,7 @@ case 'convert_docker':
 	$dockerXML = makeXML($dockerfile);
 
 	$xmlFile = $communityPaths['convertedTemplates']."DockerHub/";
-	if ( ! is_dir($xmlFile) ) {
-		exec("mkdir -p ".$xmlFile);
-	}
+	@mkdir($xmlFile,0777,true);
 	$xmlFile .= str_replace("/","-",$docker['Repository']).".xml";
 	file_put_contents($xmlFile,$dockerXML);
 	file_put_contents($communityPaths['addConverted'],"Dante");
@@ -1340,7 +1338,7 @@ function DownloadApplicationFeed() {
 	global $communityPaths, $infoFile, $communitySettings, $statistics;
 
 	exec("rm -rf '{$communityPaths['templates-community']}'");
-	exec("mkdir -p '{$communityPaths['templates-community']}'");
+	@mkdir($communityPaths['templates-community'],0777,true);
 
 	$moderation = readJsonFile($communityPaths['moderation']);
 	$Repositories = readJsonFile($communityPaths['Repositories']);
@@ -1467,7 +1465,7 @@ function DownloadApplicationFeed() {
 		$myTemplates[$o['ID']] = $o;
 		$i = ++$i;
 		$templateXML = makeXML($file);
-		exec("mkdir -p ".escapeshellarg(dirname($o['Path'])));
+		@mkdir(dirname($o['Path']),0777,true);
 		file_put_contents($o['Path'],$templateXML);
 	}
 	writeJsonFile($communityPaths['statistics'],$statistics);
