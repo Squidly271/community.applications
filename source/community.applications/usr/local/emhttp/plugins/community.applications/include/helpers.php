@@ -221,7 +221,7 @@ function searchArray($array,$key,$value,$startingIndex=0) {
 # Highlights search results #
 #############################
 function highlight($text, $search) {
-	return preg_replace('#'. preg_quote($text,'#') .'#si', '<span style="background-color:#FFFF66; color:#FF0000;font-weight:bold;">\\0</span>', $search);
+	return preg_replace('#'. preg_quote($text,'#') .'#si', '<span style="color:#FF0000;font-weight:bold;">\\0</span>', $search);
 }
 
 ########################################################
