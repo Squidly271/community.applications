@@ -596,7 +596,7 @@ case 'convert_docker':
 			$dockerfile['Environment']['Variable'][] = $variable;
 		}
 			
-		$dockerfile['Icon'] = "https://github.com/Squidly271/community.applications/raw/master/source/community.applications/usr/local/emhttp/plugins/community.applications/images/question.png";
+		$dockerfile['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
 
 		if ( is_array($webUI) ) {
 			if ( count($webUI) == 1 ) {
@@ -623,7 +623,7 @@ case 'convert_docker':
 		$dockerfile['BindTime'] = "true";
 		$dockerfile['Privileged'] = "false";
 		$dockerfile['Networking']['Mode'] = "bridge";
-		$dockerfile['Icon'] = "https://github.com/Squidly271/community.applications/raw/master/source/community.applications/usr/local/emhttp/plugins/community.applications/images/question.png";
+		$dockerfile['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
 	}
 	$dockerXML = makeXML($dockerfile);
 
