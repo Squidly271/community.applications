@@ -20,9 +20,6 @@ $unRaid64 = (version_compare($unRaidVersion,"6.4.0-rc0",">="));
 $unRaid635 = (version_compare($unRaidVersion,"6.3.5",">="));
 $unRaid65 = (version_compare($unRaidVersion,"6.5.0-rc3",">="));
 
-if ( ! $unRaid64 ) {
-	$communityPaths['defaultSkin'] = $communityPaths['legacySkin'];
-}
 $templateSkin = readJsonFile($communityPaths['defaultSkin']);   # Global Var used in helpers ( getMaxColumns() )
 
 ################################################################################
@@ -42,7 +39,7 @@ if ( $communitySettings['favourite'] != "None" ) {
 	$officialRepo = str_replace("*","'",$communitySettings['favourite']);
 	$separateOfficial = true;
 }
-$dockerDaemon = $unRaid64 ? "/var/run/dockerd.pid" : "/var/run/docker.pid";
+$dockerDaemon = "/var/run/dockerd.pid";
 
 if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)) ) {
 	$communitySettings['dockerRunning'] = "true";

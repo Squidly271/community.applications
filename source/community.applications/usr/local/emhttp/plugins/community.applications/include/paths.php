@@ -45,7 +45,6 @@ $communityPaths['pluginDupes']                   = $communityPaths['tempFiles'].
 $communityPaths['newFlag']                       = $communityPaths['tempFiles']."/newFlag";  # flag file to indicate that the "New" Category is being displayed
 $communityPaths['dontAllowInstalls']             = $communityPaths['tempFiles']."/dontAllowInstalls"; # when file exists, the icons for install/edit/etc will not appear
 $communityPaths['appFeedDownloadError']          = $communityPaths['tempFiles']."/appfeedTemporaryFileForAnalysis";
-$communityPaths['legacySkin']                    = "/usr/local/emhttp/plugins/$plugin/skins/legacy.skin";
 $communityPaths['defaultSkin']                   = "/usr/local/emhttp/plugins/$plugin/skins/default.skin";
 $communityPaths['defaultSkinPHP']                = $communityPaths['defaultSkin'].".php";
 $communityPaths['legacyTemplatesTmp']            = $communityPaths['tempFiles']."/pathsToTemplates.json";

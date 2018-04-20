@@ -22,11 +22,7 @@ $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $csrf_token = $unRaidVars['csrf_token'];
 $tabMode = '_self';
 
-$unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
-$unRaidVersion = $unRaidSettings['version'];
-
-$unRaid64 = (version_compare($unRaidVersion,"6.4.0-rc0",">="));
-$dockerDaemon = $unRaid64 ? "/var/run/dockerd.pid" : "/var/run/docker.pid";
+$dockerDaemon = "/var/run/dockerd.pid";
 if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)) ) {
 	$communitySettings['dockerRunning'] = "true";
 } else {

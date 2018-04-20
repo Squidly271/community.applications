@@ -56,7 +56,7 @@ function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
 #my_display_apps(), getPageNavigation(), displaySearchResults() must accept all parameters
 #note that many template entries in my_display_apps() are not actually used in the skin, but are present for future possible use.
 function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
-	global $communityPaths, $communitySettings, $plugin, $unRaid64, $unRaid635, $displayDeprecated;
+	global $communityPaths, $communitySettings, $plugin, $displayDeprecated;
 	
 	if ( $communitySettings['dockerRunning'] ) {
 		$DockerTemplates = new DockerTemplates();
@@ -72,12 +72,10 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	$fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true' style='color:maroon; font-size:20px;cursor:pointer;'></i>";
 	
 	$skin = readJsonFile($communityPaths['defaultSkin']);
-	
-	if ( $unRaid64 ) {
-		$communitySettings['maxColumn'] = $communitySettings['maxIconColumns'];
-	}
+	$communitySettings['maxColumn'] = $communitySettings['maxIconColumns'];
+
 	if ( $viewMode == 'detail' ) {
-		$communitySettings['maxColumn'] = $unRaid64 ? $communitySettings['maxDetailColumns'] : 2;
+		$communitySettings['maxColumn'] = $communitySettings['maxDetailColumns'];
 		$communitySettings['viewMode'] = "icon";
 	}
 	$selectedApps = $selectedApps ?: array();
@@ -188,7 +186,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
 
 		$template['display_dateUpdated'] = ($template['Date'] && is_file($communityPaths['newFlag']) ) ? "</b></strong><center><strong>Date Updated: </strong>".$template['display_humanDate']."</center>" : "";
-		$template['display_multi_install'] = ($template['Removable'] && $unRaid635) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-type='$appType' $checked>" : "";
+		$template['display_multi_install'] = ($template['Removable']) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-type='$appType' $checked>" : "";
 		if (! $communitySettings['dockerRunning'] && ! $template['Plugin']) {
 			unset($template['display_multi_install']);
 		}

@@ -9,9 +9,6 @@ function download_url($url, $path = "", $bg = false)
   return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
 
-$vars = parse_ini_file("/var/local/emhttp/var.ini");
-$toolTipsterAllowed = version_compare($vars['version'],"6.3.3",">=") ? "true" : "false";
-
 $plugin = "community.applications";
 $cfg = parse_plugin_cfg($plugin);
 
@@ -42,7 +39,6 @@ foreach ($repoName as $display1) {
   $displayOptions .= mk_option($cfg['favourite'], $optionName, $display1);
 }
 
-$unRaid64 = (version_compare($vars['version'],"6.4.0-rc0",">=")) || (is_file("/usr/local/emhttp/plugins/dynamix/styles/dynamix-gray.css")) ? "true" : "false";
 ?>
 
 <form markdown="1" method="POST" action="/update.php" target="progressFrame">
