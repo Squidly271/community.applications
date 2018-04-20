@@ -71,11 +71,19 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' aria-hidden='true'></i>";
 	$fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true' style='color:maroon; font-size:20px;cursor:pointer;'></i>";
 	
-	if ( ! $selectedApps ) {
-		$selectedApps = array();
+	$skin = readJsonFile($communityPaths['defaultSkin']);
+	
+	if ( $unRaid64 ) {
+		$communitySettings['maxColumn'] = $communitySettings['maxIconColumns'];
 	}
+	if ( $viewMode == 'detail' ) {
+		$communitySettings['maxColumn'] = $unRaid64 ? $communitySettings['maxDetailColumns'] : 2;
+		$communitySettings['viewMode'] = "icon";
+	}
+	$selectedApps = $selectedApps ?: array();
 
-	$templateFormatArray = array(1 => $communitySettings['windowWidth']);      # this array is only used on header, sol, eol, footer
+	$leftMargin = ($communitySettings['windowWidth'] - $communitySettings['maxColumn'] * $skin[$viewMode]['templateWidth']) / 2;
+	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2 => $leftMargin);      # this array is only used on header, sol, eol, footer
 
 	$pinnedApps = getPinnedApps();
 	$iconSize = $communitySettings['iconSize'];
@@ -84,7 +92,6 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 
 	$communitySettings['viewMode'] = $viewMode;
 
-	$skin = readJsonFile($communityPaths['defaultSkin']);
 	if ( ! $officialFlag ) {
 		$ct = "<br>".getPageNavigation($pageNumber,count($file),false)."<br>";
 	}
@@ -96,13 +103,6 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
 	$displayTemplate = $skin[$viewMode]['template'];
-	if ( $unRaid64 ) {
-		$communitySettings['maxColumn'] = $communitySettings['maxIconColumns'];
-	}
-	if ( $viewMode == 'detail' ) {
-		$communitySettings['maxColumn'] = $unRaid64 ? $communitySettings['maxDetailColumns'] : 2;
-		$communitySettings['viewMode'] = "icon";
-	}
 
 	$columnNumber = 0;
 	$appCount = 0;
@@ -134,9 +134,9 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 
 		$template['Category'] = rtrim(str_replace(":,",",",implode(", ",explode(" ",$template['Category']))),": ,");
 		$RepoName = ( $template['Private'] == "true" ) ? $template['RepoName']."<font color=red> (Private)</font>" : $template['RepoName'];
-		if ( ! $template['DonateText'] ) {
-			$template['DonateText'] = "Donate To Author";
-		}
+
+		$template['DonateText'] = $template['DonateText'] ?: "Donate To Author";
+
 		$template['display_DonateLink'] = $template['DonateLink'] ? "<font size='0'><a class='ca_tooltip' href='".$template['DonateLink']."' target='_blank' title='".$template['DonateText']."'>Donate To Author</a></font>" : "";
 		$template['display_Project'] = $template['Project'] ? "<a class='ca_tooltip' target='_blank' title='Click to go the the Project Home Page' href='".$template['Project']."'><font color=red>Project Home Page</font></a>" : "";
 		$template['display_Support'] = $template['Support'] ? "<a class='ca_tooltip' href='".$template['Support']."' target='_blank' title='Click to go to the support thread'><font color=red>Support Thread</font></a>" : "";
@@ -238,8 +238,8 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 			$template['display_compatibleShort'] = "Incompatible";
 		}
 		$template['display_author'] = "<a class='ca_tooltip' style='cursor:pointer' onclick='authorSearch(this.innerHTML);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
-		$displayIcon = $template['Icon'];
-		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
+
+		$displayIcon = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
 		$template['display_iconSelectable'] = "<img class='betaApp' src='$displayIcon' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";' style='width:".$iconSize."px;height=".$iconSize."px;'>";
 		$template['display_popupDesc'] = ( $communitySettings['maxColumn'] > 2 ) ? "Click for a full description\n".$template['PopUpDescription'] : "Click for a full description";

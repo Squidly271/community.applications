@@ -201,7 +201,7 @@ case 'get_content':
 				if ( $displayApplications['community'] ) {
 					writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 					echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-					echo "<br><center><font size='4' color='purple'><b>Random Apps Of The Day</b></font><br><br>";
+					echo "<br><center><font size='4' color='purple'><b>Random Apps Of The Day</b></font></center><br><br>";
 					echo my_display_apps("detail",$displayApplications['community'],"1",$runningDockers,$imagesDocker);
 					break;
 				} else {
