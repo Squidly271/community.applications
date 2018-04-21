@@ -30,7 +30,7 @@ $line_color = $display['theme']=='black' ? '#202020' : '#E8E8E8';
 
 $timeNew = str_replace("-","",$cfg['timeNew']);
 $categoryTitle = "Current Category";
-$viewMode = $cfg['viewMode'];
+if ( $cfg['viewMode'] == "icon" ) { $cfg['viewMode'] = "detail"; } # removed icon display mode
 
 $template = json_decode(file_get_contents($communityPaths['defaultSkin']),true);
 
@@ -1378,9 +1378,6 @@ function resizeDisplay() {
 			case '#viewDetail':
 				var divisor = <?=$template['detail']['templateWidth']?>;
 				break;
-			case '#viewIcon':
-				var divisor = <?=$template['icon']['templateWidth']?>;
-				break;
 			default:
 				return;
 				break;
@@ -1437,7 +1434,6 @@ function resizeDisplay() {
 <span id='sortButtons'>View Mode:
 <input type='button' class='viewButton' value='Tables' id='viewTable'>
 <input type='button' class='viewButton' value='Icon Details' id='viewDetail'>
-<input type='button' class='viewButton' value='Icons' id='viewIcon'>
 <span id='templateSortButtons'>Sort By:
 <input type='button' class='sortButton' id='Name' value='Name' disabled>
 <input type='button' class='sortButton' id='RepoName' value='Repository'>

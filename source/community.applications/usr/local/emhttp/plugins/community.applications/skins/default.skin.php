@@ -155,7 +155,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		}
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='red'><b>Moderator Comments:</b></font> <font color='purple'>".$template['ModeratorComment']."</font>" : "";
 		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=20px>" : "";
-		$template['display_Announcement'] = $template['Forum'] ? "<a class='ca_tooltip' href='".$template['Forum']."' target='_blank' title='Click to go to the repository Announcement thread' >$RepoName $tempLogo</a>" : "$RepoName $tempLogo";
+		$template['display_Repository'] = "$RepoName $tempLogo";
 		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star' style='font-size:15px; color:magenta;' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
 		$template['display_Downloads'] = $template['downloads'] ? "<center>".number_format($template['downloads'])."</center>" : "<center>Not Available</center>";
 
@@ -510,7 +510,7 @@ function toNumericArray($template) {
 		$template['display_Support'],         #37
 		$template['display_UpdateAvailable'], #38
 		$template['display_ModeratorComment'],#39
-		$template['display_Announcement'],    #40
+		$template['display_Repository'],      #40
 		$template['display_Stars'],           #41
 		$template['display_Downloads'],       #42
 		$template['display_pinButton'],       #43

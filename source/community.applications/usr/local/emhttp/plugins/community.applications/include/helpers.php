@@ -559,9 +559,7 @@ function getMaxColumns($windowWidth) {
 
 	$communitySettings['windowWidth'] = $windowWidth;
 	$communitySettings['maxDetailColumns'] = floor($windowWidth / $templateSkin['detail']['templateWidth']);
-	$communitySettings['maxIconColumns'] = floor($windowWidth / $templateSkin['icon']['templateWidth']);
 	if ( ! $communitySettings['maxDetailColumns'] ) $communitySettings['maxDetailColumns'] = 1;
-	if ( ! $communitySettings['maxIconColumns'] ) $communitySettings['maxIconColumns'] = 1;
 }
 
 #######################
