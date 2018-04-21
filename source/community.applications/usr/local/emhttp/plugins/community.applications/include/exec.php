@@ -20,6 +20,9 @@ $unRaid64 = (version_compare($unRaidVersion,"6.4.0-rc0",">="));
 $unRaid635 = (version_compare($unRaidVersion,"6.3.5",">="));
 $unRaid65 = (version_compare($unRaidVersion,"6.5.0-rc3",">="));
 
+if ( ! $unRaid64 ) {
+	$communityPaths['defaultSkin'] = $communityPaths['legacySkin'];
+}
 $templateSkin = readJsonFile($communityPaths['defaultSkin']);   # Global Var used in helpers ( getMaxColumns() )
 
 ################################################################################
@@ -39,7 +42,7 @@ if ( $communitySettings['favourite'] != "None" ) {
 	$officialRepo = str_replace("*","'",$communitySettings['favourite']);
 	$separateOfficial = true;
 }
-$dockerDaemon = "/var/run/dockerd.pid";
+$dockerDaemon = $unRaid64 ? "/var/run/dockerd.pid" : "/var/run/docker.pid";
 
 if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)) ) {
 	$communitySettings['dockerRunning'] = "true";
@@ -198,7 +201,7 @@ case 'get_content':
 				if ( $displayApplications['community'] ) {
 					writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 					echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-					echo "<br><center><font size='4' color='purple'><b>Random Apps Of The Day</b></font></center><br><br>";
+					echo "<br><center><font size='4' color='purple'><b>Random Apps Of The Day</b></font><br><br>";
 					echo my_display_apps("detail",$displayApplications['community'],"1",$runningDockers,$imagesDocker);
 					break;
 				} else {

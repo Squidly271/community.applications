@@ -1,0 +1,23 @@
+{
+    "icon": {
+        "header": "<table>",
+        "sol": "<tr>",
+        "template": "<td><center>%75$sAuthor: <strong>%59$s</strong></center><center><font size='1'>%40$s</font></center><center>%43$s%41$s</center><figure><center>%65$s</center><figcaption><strong><center><font size='3'>%66$s</font><br>%46$s%45$s%44$s<br>%68$s%69$s%70$s%71$s%72$s%73$s%74$s</center></strong></figcaption></figure><center><font color='red'>%58$s</font></center><center>%56$s</center></td>",
+        "eol": "</tr>",
+        "footer": "</table>"
+    },
+    "detail": {
+        "header": "<table style='table-layout: fixed;'>",
+        "sol": "<tr>",
+        "template": "<td style='width:600px;'><div style='width:200px;float:left;'><center>%75$sAuthor: <strong>%59$s</strong></center><center><font size='1'>%40$s</font></center><center>%43$s%41$s</center><figure><center>%65$s</center><figcaption><strong><center><font size='3'>%66$s</font><br>%46$s%45$s%44$s</center></strong></figcaption></figure><center><font color='red'>%58$s</font></center><center>%56$s</center></div><div style='width:340px;text-align:left; float:left;'><strong>Categories: </strong>%21$s<br><span class='desc_readmore' style='display:block'><font color='red'>%57$s<br></font>%22$s%64$s</span><br>%39$s%38$s</b></strong><center>%68$s%69$s%70$s%71$s%72$s%73$s%74$s</center><br><center>%37$s%36$s%48$s<br>%35$s</center><font></div><td>",
+        "eol": "</tr><tr><td><br></td></tr>",
+        "footer": "</table>"
+    },
+    "table": {
+        "header": "<table class='tablesorter' style='table-layout: fixed;'><thead><th style='width:85px'>Application</th><th style='width:48px'></th><th style='width:100px'></th><th style='width:75px'>Downloads</th><th style='width:75px'>Author</th><th style='width:50%%'>Description</th><th>Repository</th></tr></thead><tr>",
+        "sol": "<tr>",
+        "template": "<td><center>%75$s<font size=larger>%66$s</font><br>%47$s %46$s %45$s %44$s &nbsp;&nbsp;%43$s <br>%41$s </center><td style='margin:0;padding:0'> %60$s </td><td><center><font color='red'> %58$s </font></center>%68$s%69$s%70$s%71$s%72$s%73$s%74$s</td><td> %42$s</td><td> %59$s </td><td><b>Categories: </b>%21$s<br><br><span class='desc_readmore' style='display:block'>%22$s'</span><br>%39$s %38$s</b></strong><center>%37$s&nbsp;&nbsp;&nbsp;&nbsp;%36$s&nbsp;&nbsp;&nbsp;&nbsp;%48$s&nbsp;&nbsp;&nbsp;&nbsp;%35$s</td><td style='text-align:left'><font size=1px>%40$s </font></td>",
+        "eol": "</tr>",
+        "footer": "</table>"
+    }
+}

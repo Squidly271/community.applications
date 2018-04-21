@@ -555,8 +555,13 @@ function getRedirectedURL($url) {
 # Returns the maximum number of columns per display width #
 ###########################################################
 function getMaxColumns($windowWidth) {
-	global $communitySettings, $templateSkin;
+	global $communitySettings, $templateSkin, $unRaid64;
 
+	if ( ! $unRaid64 ) {
+		$communitySettings['maxDetailColumns'] = 2;
+		$communitySettings['maxIconColumns'] = 5;
+		return;
+	}
 	$communitySettings['windowWidth'] = $windowWidth;
 	$communitySettings['maxDetailColumns'] = floor($windowWidth / $templateSkin['detail']['templateWidth']);
 	$communitySettings['maxIconColumns'] = floor($windowWidth / $templateSkin['icon']['templateWidth']);

@@ -9,8 +9,8 @@
     },
     "detail": {
         "templateWidth": 580,
-        "header": "<div style='display:block;overflow:hidden;margin-left:%2$spx;min-width:%1$spx'>",
-        "sol": "<div style='height:300px;overflow:auto;margin:0px;display:inline-block;'>",
+        "header": "<div style='display:block;overflow:hidden;margin-left:auto;width:%1$spx;'>",
+        "sol": "<div style='height:300px;overflow:auto;display:inline-block;margin:0px;'>",
         "template": "<div style='width:200px;float:left;display:inline-block;'><center>%75$sAuthor: <strong>%59$s</strong></center><center><font size='1'>%40$s</font></center><center>%43$s%41$s</center><figure><center>%65$s</center><figcaption><strong><center><font size='3'>%66$s</font><br>%46$s%45$s%44$s</center></strong></figcaption></figure><center><font color='red'>%58$s</font></center><center>%56$s</center></div><div style='display:inline-block;width:370px;text-align:left; float:left; overflow:auto;'><strong>Categories: </strong>%21$s<br><span class='desc_readmore' style='display:block'><font color='red'>%57$s<br></font>%22$s%64$s</span><br>%39$s%38$s</b></strong><center>%68$s%69$s%70$s%71$s%72$s%73$s%74$s</center><br><center>%37$s%36$s%48$s<br>%35$s</center><font></div>",
         "eol": "</div>",
         "footer": "</div>"
