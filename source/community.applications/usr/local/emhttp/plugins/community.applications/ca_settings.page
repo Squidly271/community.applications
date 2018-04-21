@@ -10,7 +10,6 @@ function download_url($url, $path = "", $bg = false)
 }
 
 $vars = parse_ini_file("/var/local/emhttp/var.ini");
-$toolTipsterAllowed = version_compare($vars['version'],"6.3.3",">=") ? "true" : "false";
 
 $plugin = "community.applications";
 $cfg = parse_plugin_cfg($plugin);

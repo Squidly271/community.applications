@@ -25,12 +25,6 @@ if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
 
-$vars = parse_ini_file($communityPaths['unRaidVars']);
-$toolTipsterIncluded = version_compare($vars['version'],"6.3.3",">=") ? "true" : "false";
-$unRaid64 = (version_compare($vars['version'],"6.4.0-rc0",">=")) ? "true" : "false";
-$unRaid635 = (version_compare($vars['version'],"6.3.5",">=")) ? "true" : "false";
-$backTopTopIncluded = (version_compare($vars['version'],"6.4.0-rc9f","<=")) ? "false" : "true";
-
 $tabMode = "_self";
 $line_color = $display['theme']=='black' ? '#202020' : '#E8E8E8';
 
@@ -47,7 +41,6 @@ $iconDisabledColor = ($display['theme'] == "black") || ($display['theme'] == "gr
 $iconEnabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#009900" : "#009900";
 ?>
 <style>
-<?if ( $unRaid64 == "true" ):?>
 	<? if ( $display['theme'] == "black" || $display['theme'] == "white"):?>
 		.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
 		#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;}
@@ -56,16 +49,8 @@ $iconEnabledColor = ($display['theme'] == "black") || ($display['theme'] == "gra
 		.searchSubmit{font-family:'FontAwesome';width:29px;height:29px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
 		#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;border:1px solid;border-radius:4px 0px 0px 4px;}
 	<?endif;?>
-<?endif;?>
-<?if ( $unRaid64 == "false" ):?>
-	.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative;top:-2px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
-	#searchBox{margin-left:10px;margin-right:0;position:relative;top:-3px;}
-<?endif;?>
 
 table#templates_list tbody td.topRow{border-top:1px solid <?=$line_color?>;}
-<?if ($backTopTopIncluded == "false"):?>
-	.back-to-top {background: none;margin: 0;position: fixed;bottom: 40px;right: 0;width: 50px;height: 50px;z-index: 100;display: none;text-decoration: none;color: #ffffff;}
-<?endif;?>
 input.appButtons {margin:0px;}
 input.viewButton {margin:1px;}
 input.sortButton {margin:1px;}
@@ -81,10 +66,6 @@ input[type=checkbox] {width:20px; height:20px;}
 
 </style>
 
-<?if ( $toolTipsterIncluded == "false" ) : ?>
-<script src="/plugins/community.applications/javascript/tooltipster.bundle.min.js"></script>
-<link type="text/css" rel="stylesheet" href="/plugins/community.applications/styles/tooltipster.css">
-<?endif;?>
 <script>
 var URL = "/plugins/<?=$plugin?>/include/exec.php";
 var last = $('input[name$="tabs"]').length;
@@ -177,22 +158,6 @@ var data_selected = "";
 var data_lastUpdated = 0;
 	
 $(function(){
-	<?if ($backTopTopIncluded == "false"):?>
-		var backtotopoffset = 250;
-		var backtotopduration = 500;
-		$(window).scroll(function() {
-			if ($(this).scrollTop() > backtotopoffset ) {
-				$('.back-to-top').fadeIn(backtotopduration);
-			} else {
-				$('.back-to-top').fadeOut(backtotopduration);
-			}
-		});
-		$('.back-to-top').click(function(event) {
-			event.preventDefault();
-			$('html, body').animate({scrollTop: 0}, backtotopduration);
-			return false;
-		});
-	<?endif;?>
 	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
 	$("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
@@ -1403,7 +1368,6 @@ function installMulti() {
 }
 
 function resizeDisplay() {
-	<?if ( $unRaid64 == "true" ) : ?>            // function to resize everything on demand
 	window.resizeEvt;
 	$(window).resize(function(){
 		var newWidth = getWindowWidth();
@@ -1429,7 +1393,6 @@ function resizeDisplay() {
 			changeSortOrder(null,null,null);
 		}, 100);
 	});
-	<?endif;?>
 }
 
 </script>
@@ -1460,17 +1423,10 @@ function resizeDisplay() {
 <span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style=cursor:pointer>HERE</a> to install the update  <i class='ca_infoPopup fa fa-info-circle' data-appnumber='CA' style='cursor:pointer;font-size:15px;color:blue;'></i></center></font></span>
 <?endif;?>
 <div class='dockerSearch' style='display:none'><center><figure><i class='fa fa-docker initDockerSearch' style='font-size:50px;color:DarkCyan;cursor:pointer;'></i><figcaption class='initDockerSearch' style='cursor:pointer;'><a>Click Here To Get More Results From DockerHub</a></figcaption></figure></center></div>
-<?if ($unRaid635 == "true"):?>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
-<?endif;?>
-<center><div style='width:100%;' id='templates_content'></div></center>
-<?if ($unRaid635 == "true"):?>
+<div style='width:100%;' id='templates_content'></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
-<?endif;?>
 </center>
-<?if ($backTopTopIncluded == "false"):?>
-<a href="#" class="back-to-top" style="display:none;"><i href="#" class="fa fa-arrow-circle-up dynamix_back-to-top" aria-hidden="true" style="color:green;font-size:25px;"></i></a>
-<?endif;?>
 <center><a href='https://forums.lime-technology.com/topic/57181-real-docker-faq/' target='_blank'>Docker FAQ</a></center><br>
 <center>Community Applications Version: <?=$installedVersion?></center></div>
 
