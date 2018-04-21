@@ -556,6 +556,11 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	if ( !showConfirm )  showConfirm = false;
 	if ( imagesize == "" ) { imagesize = "80"; }
 	disableTooltipster();
+	if ( ! textdescription && textimage ) {
+		sweetAlertBackground("transparent");
+	} else {
+		sweetAlertBackground("white");
+	}
 	if ( textimage ) {
 		textdescription = textdescription + "<br><br><center><i class='fa fa-spinner fa-spin' style='font-size:"+imagesize+"px;color:#DEB887;' aria-hidden='true'></i></center>";
 	}
@@ -577,7 +582,6 @@ function myCloseAlert() {
 }
 
 function mySpinner() {
-	sweetAlertBackground("transparent");
 	myAlert("",""," ",150);
 }
 
@@ -674,7 +678,6 @@ function forceUpdateButton() {
 	if ( mode == 'appFeed Mode' ) {
 		$.post(URL,{action:'force_update_button'},function(data) {
 			if (data) {
-				sweetAlertBackground("white");
 				myAlert("Updating Content","Retrieving the latest application Lists",true,"40");
 				forceUpdate();
 			}
@@ -697,7 +700,6 @@ function forceUpdateButton() {
 		function(isConfirm) {
 			if (isConfirm) {
 				$.post(URL,{action:'force_update_button'});
-				sweetAlertBackground("white");
 				myAlert("Switching to Legacy Mode","Downloading <span id='downloadStatus'>Repository List</span>");
 				$.post(URL,{action:'downloadRepositories'},function(data) {
 					if (data) {
@@ -1065,7 +1067,6 @@ function removeApp(application, humanName) {
 
 function uninstallApp(application,humanName) {
 	if ( humanName == "Community Applications" ) {
-		sweetAlertBackground("white");
 		myAlert("AE-35 Error","<b><font color='red'>"+humanName+"</font></b> cannot be uninstalled this way.  You must go to the plugins tab and remove Community Applications from there.  <em><font color='purple'>But, why would you ever want to uninstall CA?</font></em>",null,null,true,false,true,"error");
 	} else {
 		sweetAlertBackground("white");
