@@ -1463,7 +1463,7 @@ function resizeDisplay() {
 <?if ($unRaid635 == "true"):?>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 <?endif;?>
-<div style='width:100%;' id='templates_content'></div>
+<center><div style='width:100%;' id='templates_content'></div></center>
 <?if ($unRaid635 == "true"):?>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 <?endif;?>

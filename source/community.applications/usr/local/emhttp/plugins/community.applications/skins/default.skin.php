@@ -80,8 +80,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	}
 	$selectedApps = $selectedApps ?: array();
 
-	$leftMargin = ($communitySettings['windowWidth'] - $communitySettings['maxColumn'] * $skin[$viewMode]['templateWidth']) / 2;
-	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2 => $leftMargin);      # this array is only used on header, sol, eol, footer
+	$templateFormatArray = array(1 => $communitySettings['windowWidth']);      # this array is only used on header, sol, eol, footer
 
 	$pinnedApps = getPinnedApps();
 	$iconSize = $communitySettings['iconSize'];
