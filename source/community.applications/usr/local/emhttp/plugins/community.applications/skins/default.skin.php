@@ -75,11 +75,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	if ( ! $selectedApps ) {
 		$selectedApps = array();
 	}
-  $leftMargin = ($communitySettings['windowWidth'] - $communitySettings['maxDetailColumns']*$skin[$viewMode]['templateWidth']) / 2;
-	$leftMargin = $leftMargin < 0 ? 0 : intval($leftMargin); # safety precaution if something messes up
-	$leftMargin = $communitySettings['windowWidth'] <= 1080 ? 0 : $leftMargin; # minimum window with supported by Dynamix
 
-	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
 
 	$pinnedApps = getPinnedApps();
 	$iconSize = $communitySettings['iconSize'];
@@ -95,16 +91,11 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$ct .= "<center><font size='2' color='green'>This display is informational <em>ONLY</em>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</font></center><br>";
 		$ct .= "<center><font size='2' color='green'>$specialCategoryComment</font></center>";
 	}
-
-	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
-	$displayTemplate = $skin[$viewMode]['template'];
-
 	$columnNumber = 0;
 	$appCount = 0;
 	$startingApp = $officialFlag ? 1 : ($pageNumber -1) * $communitySettings['maxPerPage'] + 1;
 	$startingAppCounter = 0;
-
-# Create entries for skins.  Note that MANY entries are not used in the current skins
+	
 	foreach ($file as $template) {
 		if ( $template['Blacklist'] && ! is_file($communityPaths['dontAllowInstalls']) ) {
 			continue;
@@ -113,6 +104,19 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		if ( $startingAppCounter < $startingApp ) {
 			continue;
 		}
+		$displayedTemplates[] = $template;
+	}
+	$maxColumnDisplayed = count($displayedTemplates) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($displayedTemplates);
+  $leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']) / 2;
+	$leftMargin = $leftMargin < 0 ? 0 : intval($leftMargin); # safety precaution if something messes up
+	$leftMargin = $communitySettings['windowWidth'] <= 1080 ? 0 : $leftMargin; # minimum window with supported by Dynamix
+
+	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
+	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
+	$displayTemplate = $skin[$viewMode]['template'];
+
+# Create entries for skins.  Note that MANY entries are not used in the current skins
+	foreach ($displayedTemplates as $template) {
 		if ( $columnNumber == 0 ) {
 			$ct .= vsprintf($skin[$viewMode]['sol'],$templateFormatArray);
 		}
