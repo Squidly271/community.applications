@@ -1434,7 +1434,7 @@ function resizeDisplay() {
 <div style='width:100%;' id='templates_content'></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 </center>
-<center><a href='https://forums.lime-technology.com/topic/57181-real-docker-faq/' target='_blank'>Docker FAQ</a></center><br>
+<center><a href='https://lime-technology.com/forums/topic/38582-plug-in-community-applications/' target='_blank'>Support Thread</a></center><br>
 <center>Community Applications Version: <?=$installedVersion?></center></div>
 
 <span id='miscScript'></span>

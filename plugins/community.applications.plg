@@ -2,17 +2,28 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.04.08">
-<!ENTITY md5       "10a9f153214459828ae467eec34fe2a4">
+<!ENTITY version   "2018.04.22">
+<!ENTITY md5       "aedb5defa1693a126e7a9cf371cf2080">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
 ]>
 
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;">
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0">
 
 <CHANGES>
+###2018.04.22
+- Drop compatibility with unRaid 6.3.x / 6.2 / 6.1.  Minimum OS required now 6.4.0
+- Remove all compatibility code
+- Less annoying highlights on search results
+- Fixed reference to URL for alternative app icon image
+- Removed Icon display mode
+- Always have the apps displayed centered, regardless of browser width or number of results
+- Revamp of 'Searching' info popups
+- Removed link to announcement thread for repositories
+- Added ability to display changelogs on plugins when an update is available
+
 ###2018.04.08
 - Fixed: Regression error where if a duplicated plugin was installed (eg: libvirt hotplug), both plugins would display instead of only the proper one
 
@@ -874,11 +885,11 @@ THIS IS A REQUIRED UPDATE
 <?
   $version = parse_ini_file("/etc/unraid-version");
   
-  if ( version_compare($version['version'],"6.1.8", "<") )
+  if ( version_compare($version['version'],"6.4.0", "<") )
   {
     echo "********************************************************************\n";
     echo "\n";
-    echo "Community Applications Requires unRaid version 6.1.8 or greater to run\n";
+    echo "Community Applications Requires unRaid version 6.4.0 or greater to run\n";
     echo "\n";
     echo "********************************************************************\n";
     exit(1);
@@ -912,11 +923,6 @@ The 'source' file.
 <FILE Name="/boot/config/plugins/&name;/&name;-&version;.txz" Run="upgradepkg --install-new">
 <URL>https://raw.github.com/&github;/master/archive/&name;-&version;.txz</URL>
 <MD5>&md5;</MD5>
-</FILE>
-
-<FILE Name="/boot/config/plugins/&name;/ca-tooltipster.txz" Run="upgradepkg --install-new" Max="6.3.2">
-<URL>https://github.com/Squidly271/ca-tooltipster/raw/master/archive/ca-tooltipster.txz</URL>
-<MD5>73f7c8e9cbfcb169915b268c5cddb8c6</MD5>
 </FILE>
 
 <!--
