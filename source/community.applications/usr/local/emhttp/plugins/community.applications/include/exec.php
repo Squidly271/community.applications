@@ -28,7 +28,6 @@ $templateSkin = readJsonFile($communityPaths['defaultSkin']);   # Global Var use
 $communitySettings = parse_plugin_cfg("community.applications");
 $communitySettings['appFeed']       = "true"; # set default for deprecated setting
 $communitySettings['maxPerPage']    = getPost("maxPerPage",$communitySettings['maxPerPage']);  # Global POST.  Used damn near everywhere
-$communitySettings['iconSize']      = 96;
 $communitySettings['maxColumn']     = 5; # Pointless on 6.3  Gets overridden on 6.4 anyways
 $communitySettings['unRaidVersion'] = $unRaidVersion;
 

@@ -555,8 +555,9 @@ function getRedirectedURL($url) {
 # Returns the maximum number of columns per display width #
 ###########################################################
 function getMaxColumns($windowWidth) {
-	global $communitySettings, $templateSkin;
+	global $communitySettings, $communityPaths;
 
+	$templateSkin = readJsonFile($communityPaths['defaultSkin']);   # Global Var used in helpers ( getMaxColumns() )
 	$communitySettings['windowWidth'] = $windowWidth;
 	$communitySettings['maxDetailColumns'] = floor($windowWidth / $templateSkin['detail']['templateWidth']);
 	if ( ! $communitySettings['maxDetailColumns'] ) $communitySettings['maxDetailColumns'] = 1;
