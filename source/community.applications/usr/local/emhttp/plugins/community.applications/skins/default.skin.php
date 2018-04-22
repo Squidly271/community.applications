@@ -65,12 +65,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$info = array();
 	}
 
-	$fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
-	$fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";
-	$fontAwesomeGUI = "<i class='appIcons fa fa-globe' aria-hidden='true'></i>";
-	$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' aria-hidden='true'></i>";
-	$fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true' style='color:maroon; font-size:20px;cursor:pointer;'></i>";
-	
+
 	if ( ! $selectedApps ) {
 		$selectedApps = array();
 	}
@@ -96,12 +91,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
 	$displayTemplate = $skin[$viewMode]['template'];
-	$communitySettings['maxColumn'] = $communitySettings['maxIconColumns'];
-
-	if ( $viewMode == 'detail' ) {
-		$communitySettings['maxColumn'] = $communitySettings['maxDetailColumns'];
-		$communitySettings['viewMode'] = "icon";
-	}
+	$communitySettings['maxColumn'] = $communitySettings['maxDetailColumns'];
 
 	$columnNumber = 0;
 	$appCount = 0;
@@ -183,9 +173,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		if ( $template['Date'] > strtotime($communitySettings['timeNew'] ) ) {
 			$template['display_newIcon'] = "<i class='fa fa-star ca_tooltip' style='font-size:15px;color:yellow;' title='New / Updated - ".date("F d Y",$template['Date'])."'></i>&nbsp;";
 		}
-		$template['display_changes'] = $template['Changes'] ? " <i class='ca_infoPopup fa fa-info-circle' data-appnumber='$ID' title='Click for the changelog / more information' aria-hidden='true' style='cursor:pointer;font-size:15px;color:blue;'></i></a>" : "";
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
-
 		$template['display_dateUpdated'] = ($template['Date'] && is_file($communityPaths['newFlag']) ) ? "</b></strong><center><strong>Date Updated: </strong>".$template['display_humanDate']."</center>" : "";
 		$template['display_multi_install'] = ($template['Removable']) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-type='$appType' $checked>" : "";
 		if (! $communitySettings['dockerRunning'] && ! $template['Plugin']) {
@@ -260,7 +248,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 
 		$columnNumber=++$columnNumber;
 
-		if ( $communitySettings['viewMode'] == "icon" ) {
+		if ( $communitySettings['viewMode'] == "detail" ) {
 			if ( $columnNumber == $communitySettings['maxColumn'] ) {
 				$columnNumber = 0;
 				$t .= vsprintf($skin[$viewMode]['eol'],$templateFormatArray);
@@ -517,7 +505,7 @@ function toNumericArray($template) {
 		$template['display_Uninstall'],       #44
 		$template['display_removable'],       #45
 		$template['display_newIcon'],         #46
-		$template['display_changes'],         #47 # Do not use -> not updated to handle db inconsistencies
+		$template['display_changes'],         #47 # Do not use -> no longer implemented
 		$template['display_webPage'],         #48
 		$template['display_humanDate'],       #49
 		$template['display_pluginSettings'],  #50

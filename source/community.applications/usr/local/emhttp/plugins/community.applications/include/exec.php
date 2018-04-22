@@ -12,6 +12,7 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
 require_once($communityPaths['defaultSkinPHP']);
+require_once("/usr/local/emhttp/plugins/community.applications/include/fontAwesome.php");
 
 $unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
 $unRaidVersion = $unRaidSettings['version'];

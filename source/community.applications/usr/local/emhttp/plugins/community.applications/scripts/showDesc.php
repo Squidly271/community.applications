@@ -11,12 +11,7 @@ require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerCli
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once 'webGui/include/Markdown.php';
-
-$fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
-$fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";
-$fontAwesomeGUI = "<i class='appIcons fa fa-globe' aria-hidden='true'></i>";
-$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' aria-hidden='true'></i>";
-$fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true' style='color:maroon; font-size:20px;'></i>";
+require_once("/usr/local/emhttp/plugins/community.applications/include/fontAwesome.php");
 
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $csrf_token = $unRaidVars['csrf_token'];

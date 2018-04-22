@@ -41,14 +41,14 @@ $iconDisabledColor = ($display['theme'] == "black") || ($display['theme'] == "gr
 $iconEnabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#009900" : "#009900";
 ?>
 <style>
-	<? if ( $display['theme'] == "black" || $display['theme'] == "white"):?>
-		.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
-		#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;}
-	<?endif;?>
-	<? if ( $display['theme'] == "gray" || $display['theme'] == "azure"):?>
-		.searchSubmit{font-family:'FontAwesome';width:29px;height:29px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
-		#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;border:1px solid;border-radius:4px 0px 0px 4px;}
-	<?endif;?>
+<? if ( $display['theme'] == "black" || $display['theme'] == "white"):?>
+	.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
+	#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;}
+<?endif;?>
+<? if ( $display['theme'] == "gray" || $display['theme'] == "azure"):?>
+	.searchSubmit{font-family:'FontAwesome';width:29px;height:29px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
+	#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;border:1px solid;border-radius:4px 0px 0px 4px;}
+<?endif;?>
 
 table#templates_list tbody td.topRow{border-top:1px solid <?=$line_color?>;}
 input.appButtons {margin:0px;}
@@ -63,7 +63,7 @@ input[type=checkbox] {width:20px; height:20px;}
 .unpinned { cursor:pointer;font-size:15px;color:red;padding:3px; -webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);-o-transform: rotate(20deg);transform: rotate(20deg);}
 .topRightLinks { padding-left:15px; }
 .appIcons { font-size:25px; }
-
+.myReadmore { text-align:center; }
 </style>
 
 <script>
@@ -590,7 +590,7 @@ function sweetAlertBackground(color) {
 }
 
 function readMore() {
-	$('.desc_readmore').readmore({maxHeight:100,moreLink:"<a href='#' style='text-align:right' title='Show More'><i class='fa fa-chevron-down'></i></a>",lessLink:"<a href='#' style='text-align:right' title='Show Less'><i class='fa fa-chevron-up'></i></a>"});
+	$('.desc_readmore').readmore({maxHeight:100,moreLink:"<a href='#' class='myReadmore' title='Show More'><i class='fa fa-chevron-down'></i></a>",lessLink:"<a class='myReadmore' href='#' title='Show Less'><i class='fa fa-chevron-up'></i></a>"});
 }
 
 function doSearch(button) {
@@ -1408,7 +1408,7 @@ function resizeDisplay() {
 <span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
 <br>
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br>
-<i class='fa fa-bars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
+> <i class='fa fa-bars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
 > <i class='fa fa-binoculars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses how to display the results<br>
 > <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This selects a category of apps to display<br>
 > <i class='fa fa-folder-open enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - When available, this selects a subcategory of apps to display<br>
