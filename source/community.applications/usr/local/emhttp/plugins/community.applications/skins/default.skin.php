@@ -138,7 +138,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 			$template['display_webPage'] = "&nbsp;&nbsp;&nbsp;".$template['display_webPage'];
 		}
 		if ( $template['UpdateAvailable'] ) {
-			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><center><font color='red'><b>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</b></center></font>" : "<br><center><font color='red'><b>Update Available.  Click <a href='Docker'>Here</a> to install</b></font></center>";
+			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><center><font color='red'><b>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</b> <i class='ca_infoPopup fa fa-info-circle' data-app='".basename($template['MyPath'])."' data-name='{$template['Name']}' style='cursor:pointer;font-size:15px;color:#486DBA;'></i></center></font>" : "<br><center><font color='red'><b>Update Available.  Click <a href='Docker'>Here</a> to install</b></font></center>";
 		}
 		if ( $template['Deprecated'] ) {
 			$template['ModeratorComment'] .= "<br>This application has been deprecated.";

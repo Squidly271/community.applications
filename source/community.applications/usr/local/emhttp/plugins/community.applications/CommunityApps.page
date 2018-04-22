@@ -415,15 +415,16 @@ function setToolTip() {
 		distance:-10,
 		animation: 'none',
 		trigger: 'custom',
-		triggerOpen: {mouseenter:true,click:true,touchstart:true},
+		triggerOpen: {mouseenter:false,click:true,touchstart:true},
 		triggerClose:{click:true,scroll:true,mouseleave:true},
 		delay:[<?=$cfg['hoverTime']?>,1],
 		interactive: true,
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
-			var appNumber = origin.attr('data-appNumber');
-			$.post("/plugins/<?=$plugin?>/scripts/showInfo.php",{action:'none',appNumber:appNumber},function(data) {
+			var app = origin.attr('data-app');
+			var name = origin.attr('data-name');
+			$.post("/plugins/<?=$plugin?>/scripts/showInfo.php",{action:'none',app:app,name:name},function(data) {
 				if (data) {
 					instance.content(data);
 				}
@@ -1427,7 +1428,7 @@ function resizeDisplay() {
 </span><br>
 
 <?if ( $upgradeAvailable ) :?>
-<span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style=cursor:pointer>HERE</a> to install the update  <i class='ca_infoPopup fa fa-info-circle' data-appnumber='CA' style='cursor:pointer;font-size:15px;color:blue;'></i></center></font></span>
+<span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style=cursor:pointer>HERE</a> to install the update  <i class='ca_infoPopup fa fa-info-circle' data-app='community.applications.plg' data-name='Community Applications' style='cursor:pointer;font-size:15px;color:blue;'></i></center></font></span>
 <?endif;?>
 <div class='dockerSearch' style='display:none'><center><figure><i class='fa fa-docker initDockerSearch' style='font-size:50px;color:DarkCyan;cursor:pointer;'></i><figcaption class='initDockerSearch' style='cursor:pointer;'><a>Click Here To Get More Results From DockerHub</a></figcaption></figure></center></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
