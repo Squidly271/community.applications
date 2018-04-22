@@ -64,22 +64,24 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	} else {
 		$info = array();
 	}
+	$communitySettings['viewMode'] = $viewMode;
 
+	$skin = readJsonFile($communityPaths['defaultSkin']);
 
 	if ( ! $selectedApps ) {
 		$selectedApps = array();
 	}
-
-	$templateFormatArray = array(1 => $communitySettings['windowWidth']);      # this array is only used on header, sol, eol, footer
+  $leftMargin = ($communitySettings['windowWidth'] - $communitySettings['maxDetailColumns']*$skin[$viewMode]['templateWidth']) / 2;
+	$leftMargin = $leftMargin < 0 ? 0 : intval($leftMargin);
+	$leftMargin = $communitySettings['windowWidth'] <= 1080 ? 0 : $leftMargin; # minimum window with supported by Dynamix
+	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
 
 	$pinnedApps = getPinnedApps();
 	$iconSize = $communitySettings['iconSize'];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
 	usort($file,"mySort");
 
-	$communitySettings['viewMode'] = $viewMode;
 
-	$skin = readJsonFile($communityPaths['defaultSkin']);
 	if ( ! $officialFlag ) {
 		$ct = "<br>".getPageNavigation($pageNumber,count($file),false)."<br>";
 	}
@@ -91,7 +93,6 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
 	$displayTemplate = $skin[$viewMode]['template'];
-	$communitySettings['maxColumn'] = $communitySettings['maxDetailColumns'];
 
 	$columnNumber = 0;
 	$appCount = 0;
@@ -229,7 +230,6 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
 		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
 		$template['display_iconSelectable'] = "<img class='betaApp' src='$displayIcon' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";' style='width:".$iconSize."px;height=".$iconSize."px;'>";
-		$template['display_popupDesc'] = ( $communitySettings['maxColumn'] > 2 ) ? "Click for a full description\n".$template['PopUpDescription'] : "Click for a full description";
 		if ( isset($ID) ) {
 			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' style='cursor:pointer' title='".$template['display_popupDesc']."'>".$template['display_iconSelectable']."</a>";
 			$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
@@ -249,7 +249,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$columnNumber=++$columnNumber;
 
 		if ( $communitySettings['viewMode'] == "detail" ) {
-			if ( $columnNumber == $communitySettings['maxColumn'] ) {
+			if ( $columnNumber == $communitySettings['maxDetailColumns'] ) {
 				$columnNumber = 0;
 				$t .= vsprintf($skin[$viewMode]['eol'],$templateFormatArray);
 			}
@@ -361,9 +361,6 @@ function displaySearchResults($pageNumber,$viewMode) {
 	$maxColumn = $communitySettings['maxColumn'];
 
 	switch ($viewMode) {
-		case "icon":
-			$t = "<table>";
-			break;
 		case "table":
 			$t =  "<table class='tablesorter'><thead><th></th><th></th><th>Container</th><th>Author</th><th>Stars</th><th>Description</th></thead>";
 			$iconSize = 48;
@@ -520,7 +517,7 @@ function toNumericArray($template) {
 		$template['display_author'],          #59
 		$template['display_iconSmall'],       #60
 		$template['display_iconSelectable'],  #61
-		$template['display_popupDesc'],       #62
+		$template['display_popupDesc'],       #62  # Do not use -> no longer implemented
 		$template['display_updateAvail'],     #63  *** NO LONGER USED - USE #38 instead
 		$template['display_dateUpdated'],     #64
 		$template['display_iconClickable'],   #65

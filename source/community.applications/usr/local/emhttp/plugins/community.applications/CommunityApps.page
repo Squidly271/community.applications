@@ -1393,8 +1393,7 @@ function resizeDisplay() {
 				return;
 				break;
 		}
-		if ( Math.floor( newWidth / divisor ) == Math.floor( oldWidth / divisor ) ) { return; }
-		$("#templates_content").html("");
+		$("#templates_content").html(" ");
 		clearTimeout(window.resizeEvt);
 		window.resizeEvt = setTimeout(function(){
 			$("#templates_content").html(" ");
