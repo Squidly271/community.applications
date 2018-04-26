@@ -201,6 +201,7 @@ $(function(){
 		},
 		functionAfter: function(instance,helper) {
 			$("#tooltipviews").html($("#tooltipviews").attr("data-backup"));
+			focusOnSearch();
 			setSortOrder();
 		}
 	});
@@ -218,6 +219,9 @@ $(function(){
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
 			instance.content("<div style='overflow:scroll; max-height:550px; height:550px; overflow-x:hidden; overflow-y:auto;'><center><img src='/plugins/community.applications/images/community.applications.png'><br><font size='6' color='white'>Community Applications</font><br><br><?=$caCredits?></div>");
+		},
+		functionAfter: function(instance,helper) {
+			focusOnSearch();
 		}
 	});
 	$('.ca_stats').tooltipster({
@@ -238,6 +242,9 @@ $(function(){
 					instance.content(data);
 				}
 			});
+		},
+		functionAfter: function(instance,helper) {
+			focusOnSearch();
 		}
 	});
 	$('.ca_section').tooltipster({
@@ -265,6 +272,9 @@ $(function(){
 		},
 		functionReady: function(instance,helper) {
 			$(".appButtons").click(function() { $(this).prop("disabled",true); });
+		},
+		functionAfter: function(instance,helper) {
+			focusOnSearch();
 		}
 	});
 	$('.ca_categories').tooltipster({
@@ -295,6 +305,9 @@ $(function(){
 				data_selected_category = this.id;
 				changeCategory(this,false);
 			});
+		},
+		functionAfter: function(instance,helper) {
+			focusOnSearch();
 		}
 	});
 	$('.ca_subcategories').tooltipster({
@@ -429,6 +442,9 @@ function setToolTip() {
 					instance.content(data);
 				}
 			});
+		},
+		functionAfter: function(instance,helper) {
+			focusOnSearch();
 		}
 	});
 	$('.ca_appPopup').tooltipster({
@@ -463,6 +479,9 @@ function setToolTip() {
 				triggerOpen:{mouseenter: true},
 				triggerClose:{click:true,scroll:true,mouseleave:true}
 			});
+		},
+		functionAfter: function(instance,helper) {
+			focusOnSearch();
 		}
 	});
 }
@@ -537,7 +556,7 @@ function changePage(pageNumber) {
 	mySpinner();
 	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,maxPerPage:maxPerPage,selected:selected},function(data3) {
 		if (data3) {
-			$('#templates_content').html(data3);
+			updateDisplay(data3);
 			readMore();
 			setToolTip();
 			myCloseAlert();
@@ -644,7 +663,7 @@ function doSearch(button) {
 	$.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,windowWidth:windowWidth,maxPerPage:maxPerPage},function(data) {
 		if (data) {
 			enableButtons();
-			$('#templates_content').html(data);
+			updateDisplay(data);
 			data_section = "AppStore";
 			$("#currentSection").html("Available Apps");
 			readMore();
@@ -747,7 +766,7 @@ function changeDockerView(viewButton) {
 	$("#Total").html("Rendering");
 	$.post(URL,{action:'change_docker_view',sortOrder:sortOrder},function(data) {
 		if (data) {
-			$('#templates_content').html(data);
+			updateDisplay(data);
 			$("#Total").html(totalDisplayed);
 			readMore();
 			setToolTip();
@@ -778,7 +797,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 	} else {
 		$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,maxPerPage:maxPerPage,selected:selected},function(data3) {
 			if (data3) {
-				$('#templates_content').html(data3);
+				updateDisplay(data3);
 				readMore();
 				setToolTip();
 			}
@@ -845,9 +864,7 @@ function getContent(init,category,description,newApp) {
 		enableIcon("#sortIcon",true);
 		mySpinner();
 	}
-	$("#Total1").show();
-	$("#sortButtons,#templateSortButtons").show();
-	$("#templateSortButtons").show();
+	$("#sortButtons,#templateSortButtons,#Total1").show();
 	var windowWidth = getWindowWidth();
 	$("#maxPerPage").prop("disabled",false);
 
@@ -885,6 +902,7 @@ function getContent(init,category,description,newApp) {
 
 	if ( category != "NONE" ) {
 		if ( category == "INITIALIZE" ) {
+		  initializeAppStore();
 			category = "NONE";
 			var initialize = true;
 			enableButtons();
@@ -899,7 +917,7 @@ function getContent(init,category,description,newApp) {
 
 		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,maxPerPage:maxPerPage},function(data) {
 			if (data) {
-				$('#templates_content').html(data);
+				updateDisplay(data);
 				readMore();
 				myCloseAlert();
 				setToolTip();
@@ -947,7 +965,7 @@ function dockerSearch(pageNumber) {
 	mySpinner();
 	$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(data) {
 		if (data) {
-			$('#templates_content').html(data);
+			updateDisplay(data);
 			readMore();
 			myCloseAlert();
 			setToolTip();
@@ -1150,22 +1168,25 @@ function uninstallDocker(application,humanName) {
 }
 
 function appStore() {
-	enableIcon("#categoryIcon",true);
-	$("#currentSection").html("Available Apps");
-	data_section = "AppStore";
-	data_selected_category = "";
-	$("#templates_content").html("");
-	$(".appButtons,.allButtons").prop("disabled",false);
-	$("#AppStore").prop("disabled",true);
-	$("#NetworkCategory,#MediaAppCategory,#MediaServerCategory,#ToolsCategory,#NONE,.multi_installDiv").hide();
-	$("#AppsOnly,#templates_content,#MainCategory").show();
-	resetSortByDate();
+	initializeAppStore();
 	getContent(true,'INITIALIZE','None Selected');
 	$('#searchBox').keyup(function(e) {if(e.which == 13){doSearch(false);}});
 	$("#Category").html("None Selected");
 	data_docker = "";
 }
 
+function initializeAppStore() {
+	enableIcon("#categoryIcon",true);
+	$("#currentSection").html("Available Apps");
+	data_section = "AppStore";
+	data_selected_category = "";
+	updateDisplay("");
+	$(".appButtons,.allButtons").prop("disabled",false);
+	$("#AppStore").prop("disabled",true);
+	$("#NetworkCategory,#MediaAppCategory,#MediaServerCategory,#ToolsCategory,#NONE,.multi_installDiv").hide();
+	$("#AppsOnly,#templates_content,#MainCategory").show();
+	resetSortByDate();
+}
 function installPLGupdate(filename,plgName) {
 	$(".ca_appPopup").tooltipster('close');
 	$("#sortorder").attr("data-plgfilename",filename);
@@ -1211,8 +1232,7 @@ function pinnedApps(button) {
 	$("#"+button).prop("disabled",true);
 	data_section = button;
 	clearSearchBox();
-	$("#templates_content,.dockerSearch,#AppsOnly,.multi_installDiv").hide();
-	$("#templates_content").html("<center><font size='3'>Searching</font></center>");
+	$(".dockerSearch,#AppsOnly,.multi_installDiv").hide();
 	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
 	enableIcon("#sortIcon",true);
 	resetSortByDate();
@@ -1378,6 +1398,15 @@ function installMulti() {
 	});
 }
 
+function updateDisplay(data) {
+	$('#templates_content').html(data);
+	focusOnSearch();
+}
+
+function focusOnSearch() {
+	$('#searchBox').focus();
+}
+
 function resizeDisplay() {
 	window.resizeEvt;
 	$(window).resize(function(){
@@ -1393,10 +1422,10 @@ function resizeDisplay() {
 				return;
 				break;
 		}
-		$("#templates_content").html(" ");
+		updateDisplay(" ");
 		clearTimeout(window.resizeEvt);
 		window.resizeEvt = setTimeout(function(){
-			$("#templates_content").html(" ");
+			updateDisplay(" ");
 			changeSortOrder(null,null,null);
 		}, 100);
 	});
