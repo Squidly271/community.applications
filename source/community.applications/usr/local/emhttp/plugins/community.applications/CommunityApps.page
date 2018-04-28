@@ -69,15 +69,16 @@ input[type=checkbox] {width:20px; height:20px;}
 .supportLink { color:red; }
 .projectLink { color:red; }
 .webLink { color:red; }
-.dockerHubStar { color: magenta; font-size:15px; }
+.dockerHubStar { color: magenta; font-size:15px; cursor:pointer}
 .dockerDisabled { text-align:center; width:auto; color:purple;}
 .separateOfficial { text-align:center; width:auto; font-size:25px;}
+.displayBeta { cursor:pointer; }
 <? if ( $display['theme'] == 'azure' || $display['theme'] == 'white' ): ?>
 .donateLink { color:blue; }
-.newApp { color:blue; font-size:15px; }
+.newApp { color:blue; font-size:15px; cursor:pointer;}
 <?else:?>
 .donateLink { color:lightblue; }
-.newApp { color:lightblue; font-size:15px; }
+.newApp { color:lightblue; font-size:15px; cursor:pointer;}
 <?endif;?>
 </style>
 
@@ -1493,7 +1494,7 @@ function resizeDisplay() {
 <span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
 <br>
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br>
-> <i class='fa fa-bars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
+> <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
 > <i class='fa fa-binoculars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses how to display the results<br>
 > <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This selects a category of apps to display<br>
 > <i class='fa fa-folder-open enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - When available, this selects a subcategory of apps to display<br>
@@ -1503,7 +1504,7 @@ function resizeDisplay() {
 > <center>For support for this plugin, visit here: <a title='click for help' href="http://lime-technology.com/forum/index.php?topic=40262.0" target="_blank">http://lime-technology.com/forum/index.php?topic=40262.0</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 
-<i id='sectionIcon' class='fa fa-bars ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
+<i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;
 <i id='sortIcon' class='fa fa-binoculars ca_toolsView disabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;

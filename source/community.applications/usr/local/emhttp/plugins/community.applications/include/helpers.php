@@ -281,6 +281,14 @@ function fixTemplates($template) {
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Category tags or Category present but empty";
 	}
+	
+	#Fix where authors make category entries themselves, and don't include the trailing colon (due to #rix1337)
+	if ( strlen($template['Category']) && ! strpos($template['Category'],":") ) {
+		$template['Category'] .= ":";
+		$statistics['caFixed']++;
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Improperly formed category entry (a colon is always present)";
+ 	}
+	
 	$template['Category'] = $template['Category'] ?: "Uncategorized";
 	if ( ! is_string($template['Category']) ) {
 		$template['Category'] = "Uncategorized";

@@ -76,7 +76,7 @@ switch ($_POST['action']) {
 case 'get_content':
 	$filter      = getPost("filter",false);
 	$category    = "/".getPost("category",false)."/i";
-	$newApp      = getPost("newApp",false);
+	$newApp      = filter_var(getPost("newApp",false),FILTER_VALIDATE_BOOLEAN);
 	$sortOrder   = getSortOrder(getPostArray("sortOrder"));
 	$windowWidth = getPost("windowWidth",false);
 	getMaxColumns($windowWidth);
@@ -207,11 +207,6 @@ case 'get_content':
 	$display             = array();
 	$official            = array();
 
-	if ( $newApp == "true" ) {
-		file_put_contents($communityPaths['newFlag'],"new category is being displayed");
-	} else {
-		@unlink($communityPaths['newFlag']);
-	}
 	$communitySettingsBackup = $communitySettings;
 	if ( $displayBlacklisted || $displayDeprecated || $displayIncompatible || $displayPrivates || $displayNoSupport) {
 		$communitySettings['separateInstalled'] = false; # show installed containers in the "special" categories
@@ -274,7 +269,9 @@ case 'get_content':
 			$template['MyPath'] = $template['PluginURL'];
 		}
 
-		if ( ($newApp == "true") && ($template['Date'] < $newAppTime) )  { continue; }
+		if ( ($newApp ) && ($template['Date'] < $newAppTime) )  { continue; }
+		$template['NewApp'] = $newApp;
+		
 		if ( $category && ! preg_match($category,$template['Category'])) { continue; }
     if ( $displayPrivates && ! $template['Private'] ) { continue; }
 		

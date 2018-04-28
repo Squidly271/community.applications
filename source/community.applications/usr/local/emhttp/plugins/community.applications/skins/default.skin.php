@@ -187,7 +187,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 			$template['display_newIcon'] = "<i class='fa fa-star newApp ca_tooltip' title='New / Updated - ".date("F d Y",$template['Date'])."'></i>&nbsp;";
 		}
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
-		$template['display_dateUpdated'] = ($template['Date'] && is_file($communityPaths['newFlag']) ) ? "</b></strong><center><strong>Date Updated: </strong>".$template['display_humanDate']."</center>" : "";
+		$template['display_dateUpdated'] = ($template['Date'] && $template['NewApp'] ) ? "</b></strong><center><strong>Date Updated: </strong>".$template['display_humanDate']."</center>" : "";
 		$template['display_multi_install'] = ($template['Removable']) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-type='$appType' $checked>" : "";
 		if (! $communitySettings['dockerRunning'] && ! $template['Plugin']) {
 			unset($template['display_multi_install']);
@@ -243,7 +243,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
 		if ( ( $template['Beta'] == "true" ) ) {
-			$template['display_dockerName'] .= "<span class='ca_tooltip' title='Beta Container &#13;See support forum for potential issues'><font size='3' color='red'><strong><br>BETA</strong></font></span>";
+			$template['display_dockerName'] .= "<br><span class='ca_tooltip displayBeta' title='Beta Container &#13;See support forum for potential issues'>Beta</span>";
 		}
 # Entries created.  Now display it
 		$t .= vsprintf($displayTemplate,toNumericArray($template));
