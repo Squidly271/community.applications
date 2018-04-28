@@ -75,7 +75,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$selectedApps = array();
 	}
 	
-	if ( ! $dockerRunning ) {
+	if ( ! $communitySettings['dockerRunning'] ) {
 		$ct = "<div class='dockerDisabled'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div><br><br>";
 	}
 	
