@@ -367,7 +367,7 @@ function displaySearchResults($pageNumber,$viewMode) {
 	echo "<br><br>";
 
 	$maxColumn = $communitySettings['maxColumn'];
-  $viewMode = $viewMode == "icon" ? "detail" : "table";
+  $viewMode = ($viewMode == "icon") ? "detail" : $viewMode;
 	switch ($viewMode) {
 		case "table":
 			$t =  "<table class='tablesorter'><thead><th></th><th></th><th>Container</th><th>Author</th><th>Stars</th><th>Description</th></thead>";

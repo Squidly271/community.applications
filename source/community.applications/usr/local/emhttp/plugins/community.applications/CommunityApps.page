@@ -760,12 +760,12 @@ function changeDockerView(viewButton) {
 
 	var sortOrder = getSortOrder();
 
+	mySpinner();
 	totalDisplayed = $("#Total").html();
-	$("#Total").html("Rendering");
 	$.post(URL,{action:'change_docker_view',sortOrder:sortOrder},function(data) {
 		if (data) {
+			myCloseAlert();
 			updateDisplay(data);
-			$("#Total").html(totalDisplayed);
 			readMore();
 			setToolTip();
 		}
