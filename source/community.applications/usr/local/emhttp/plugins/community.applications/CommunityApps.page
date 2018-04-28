@@ -64,6 +64,8 @@ input[type=checkbox] {width:20px; height:20px;}
 .topRightLinks { padding-left:15px; }
 .appIcons { font-size:25px; }
 .myReadmore { text-align:center; }
+.displayIcon { height:96px; width: 96px; }
+.displayIconTable { height:48px; width: 48px; }
 </style>
 
 <script>
@@ -760,7 +762,6 @@ function changeDockerView(viewButton) {
 
 	var sortOrder = getSortOrder();
 
-	mySpinner();
 	totalDisplayed = $("#Total").html();
 	$.post(URL,{action:'change_docker_view',sortOrder:sortOrder},function(data) {
 		if (data) {
@@ -789,6 +790,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 		$("#Up").prop("disabled", false);
 	}
 
+	mySpinner();
 	var sortOrder = getSortOrder();
 	if ( data_docker ) {
 		changeDockerView(button);
@@ -798,6 +800,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 				updateDisplay(data3);
 				readMore();
 				setToolTip();
+				myCloseAlert();
 			}
 		});
 	}
@@ -1432,6 +1435,9 @@ function installMulti() {
 
 function updateDisplay(data) {
 	$('#templates_content').html(data);
+	$('img').error(function() {
+		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+	});
 	enableSearch();
 }
 

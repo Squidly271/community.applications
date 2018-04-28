@@ -114,12 +114,14 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
 	$displayTemplate = $skin[$viewMode]['template'];
+	$iconClass = ( $viewMode == "detail" ) ? "displayIcon" : "displayIconTable";
 
 # Create entries for skins.  Note that MANY entries are not used in the current skins
 	foreach ($displayedTemplates as $template) {
 		if ( $columnNumber == 0 ) {
 			$ct .= vsprintf($skin[$viewMode]['sol'],$templateFormatArray);
 		}
+		
 		$name = $template['SortName'];
 		$appName = str_replace(" ","",$template['SortName']);
 		$t = "";
@@ -237,14 +239,14 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['display_author'] = "<a class='ca_tooltip' style='cursor:pointer' onclick='authorSearch(this.innerHTML);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
 		$displayIcon = $template['Icon'];
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
-		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
-		$template['display_iconSelectable'] = "<img class='betaApp' src='$displayIcon' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";' style='width:{$iconSize}px;height={$iconSize}px;'>";
+		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
+		$template['display_iconSelectable'] = "<img class='$iconClass' src='$displayIcon'>";
 		if ( isset($ID) ) {
-			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' style='cursor:pointer' title='".$template['display_popupDesc']."'>".$template['display_iconSelectable']."</a>";
-			$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' title='Click to display full description' src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
+			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' style='cursor:pointer' >".$template['display_iconSelectable']."</a>";
+			$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
 		} else {
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
-			$template['display_iconSmall'] = "<img src='".$displayIcon."' style='width:48px;height:48px;' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'>";
+			$template['display_iconSmall'] = "<img src='".$displayIcon."' class='$iconClass'>";
 		}
 		$template['display_dockerName'] = ( $communitySettings['dockerSearch'] == "yes" && ! $template['Plugin'] ) ? "<a class='ca_tooltip' data-appNumber='$ID' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search dockerHub for similar containers'>".$template['Name']."</a>" : $template['Name'];
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
@@ -414,7 +416,7 @@ function displaySearchResults($pageNumber,$viewMode) {
 			$description = str_replace('"',"&#34;",$description);
 
 			$t .= "<figure><center><a class='ca_tooltip' href='".$result['DockerHub']."' title='$description' target='_blank'>";
-			$t .= "<img style='width:{$iconSize}px;height:{$iconSize}px;' src='".$result['Icon']."' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";'></a>";
+			$t .= "<img style='width:{$iconSize}px;height:{$iconSize}px;' src='".$result['Icon']."'></a>";
 			$t .= "<figcaption><strong><center><font size='3'><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For Similar Containers'>".$result['Name']."</a></font></center></strong></figcaption></figure>";
 			if ( $communitySettings['dockerRunning'] == "true" ) {
 				$t .= "<center><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)' style='margin:0px'></center>";
@@ -442,7 +444,7 @@ function displaySearchResults($pageNumber,$viewMode) {
 		}
 		if ( $viewMode == "table" ) {
 			$t .= "<tr><td><a class='ca_tooltip' href='".$result['DockerHub']."' target='_blank' title='Click to go to the dockerHub website for this container'>";
-		$t .= "<img src='".$result['Icon']."' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";' style='width:{$iconSize}px;height:{$iconSize}px;'>";
+			$t .= "<img src='".$result['Icon']."' style='width:{$iconSize}px;height:{$iconSize}px;'>";
 			$t .= "</a></td>";
 			$t .= "<td><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)';></td>";
 			$t .= "<td><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search Similar Containers'>".$result['Name']."</a></td>";
