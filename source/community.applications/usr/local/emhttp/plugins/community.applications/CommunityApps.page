@@ -158,10 +158,20 @@ var data_selected = "";
 var data_lastUpdated = 0;
 	
 $(function(){
-	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
+	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' ><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
 	$("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
 
+	$('#searchBox').keyup(function(e) {
+		if (e.which == 13) {
+			doSearch(false);
+		}
+	});
+	
+	$("#CommunityApplicationsBody").keydown(function() {
+		focusOnSearch();
+	});
+	
 	$('.ca_staticTips').tooltipster({
 	  animationDuration: [2000,350],
 		timer:15000,
@@ -201,7 +211,6 @@ $(function(){
 		},
 		functionAfter: function(instance,helper) {
 			$("#tooltipviews").html($("#tooltipviews").attr("data-backup"));
-			focusOnSearch();
 			setSortOrder();
 		}
 	});
@@ -219,9 +228,6 @@ $(function(){
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
 			instance.content("<div style='overflow:scroll; max-height:550px; height:550px; overflow-x:hidden; overflow-y:auto;'><center><img src='/plugins/community.applications/images/community.applications.png'><br><font size='6' color='white'>Community Applications</font><br><br><?=$caCredits?></div>");
-		},
-		functionAfter: function(instance,helper) {
-			focusOnSearch();
 		}
 	});
 	$('.ca_stats').tooltipster({
@@ -242,9 +248,6 @@ $(function(){
 					instance.content(data);
 				}
 			});
-		},
-		functionAfter: function(instance,helper) {
-			focusOnSearch();
 		}
 	});
 	$('.ca_section').tooltipster({
@@ -272,9 +275,6 @@ $(function(){
 		},
 		functionReady: function(instance,helper) {
 			$(".appButtons").click(function() { $(this).prop("disabled",true); });
-		},
-		functionAfter: function(instance,helper) {
-			focusOnSearch();
 		}
 	});
 	$('.ca_categories').tooltipster({
@@ -305,9 +305,6 @@ $(function(){
 				data_selected_category = this.id;
 				changeCategory(this,false);
 			});
-		},
-		functionAfter: function(instance,helper) {
-			focusOnSearch();
 		}
 	});
 	$('.ca_subcategories').tooltipster({
@@ -383,7 +380,6 @@ $(function(){
 					openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1=<?=$pluginInstallPending?>','Install Plugin Applications',600,900,true);
 				} else {
 					getContent(true,'INITIALIZE','None Selected');
-					$('#searchBox').keyup(function(e) {if(e.which == 13){doSearch(false);}});
 				}
 			}
 		});
@@ -442,9 +438,6 @@ function setToolTip() {
 					instance.content(data);
 				}
 			});
-		},
-		functionAfter: function(instance,helper) {
-			focusOnSearch();
 		}
 	});
 	$('.ca_appPopup').tooltipster({
@@ -479,9 +472,6 @@ function setToolTip() {
 				triggerOpen:{mouseenter: true},
 				triggerClose:{click:true,scroll:true,mouseleave:true}
 			});
-		},
-		functionAfter: function(instance,helper) {
-			focusOnSearch();
 		}
 	});
 }
@@ -616,6 +606,7 @@ function readMore() {
 function doSearch(button) {
 	var windowWidth = getWindowWidth();
 	var filter = $('#searchBox').val();
+	$("#debugging").html(filter);
 	var maxPerPage = getPerPage();
 	resetSortByDate();
 	data_docker = "";
@@ -724,6 +715,7 @@ function forceUpdateButton() {
 				$.post(URL,{action:'downloadRepositories'},function(data) {
 					if (data) {
 						repositories = JSON.parse(data);
+						disableSearch();
 						downloadRepo(repositories,0);
 					}
 				});
@@ -741,6 +733,7 @@ function downloadRepo(repositories,index) {
 				downloadRepo(repositories,index+1);
 			} else {
 				processLegacyMode();
+				enableSearch();
 			}
 		}
 	});
@@ -1170,7 +1163,6 @@ function uninstallDocker(application,humanName) {
 function appStore() {
 	initializeAppStore();
 	getContent(true,'INITIALIZE','None Selected');
-	$('#searchBox').keyup(function(e) {if(e.which == 13){doSearch(false);}});
 	$("#Category").html("None Selected");
 	data_docker = "";
 }
@@ -1407,6 +1399,13 @@ function focusOnSearch() {
 	$('#searchBox').focus();
 }
 
+function disableSearch() {
+	$("#searchBox").prop("disabled",true);
+}
+function enableSearch() {
+	$("#searchBox").prop("disabled",false);
+}
+
 function resizeDisplay() {
 	window.resizeEvt;
 	$(window).resize(function(){
@@ -1433,7 +1432,7 @@ function resizeDisplay() {
 
 </script>
 <FORM method="get" id="myForm">
-<body onresize='resizeDisplay();'>
+<body onresize='resizeDisplay();' id='CommunityApplicationsBody'>
 <span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
 <br>
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br>
