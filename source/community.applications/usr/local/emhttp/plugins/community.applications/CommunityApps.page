@@ -63,9 +63,22 @@ input[type=checkbox] {width:20px; height:20px;}
 .unpinned { cursor:pointer;font-size:15px;color:red;padding:3px; -webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);-o-transform: rotate(20deg);transform: rotate(20deg);}
 .topRightLinks { padding-left:15px; }
 .appIcons { font-size:25px; }
-.myReadmore { text-align:center; }
-.displayIcon { height:96px; width: 96px; }
-.displayIconTable { height:48px; width: 48px; }
+.myReadmore {text-align:center;}
+.displayIcon {height:96px;width:96px;}
+.displayIconTable {height:48px;width:48px;}
+.supportLink { color:red; }
+.projectLink { color:red; }
+.webLink { color:red; }
+.dockerHubStar { color: magenta; font-size:15px; }
+.dockerDisabled { text-align:center; width:auto; color:purple;}
+.separateOfficial { text-align:center; width:auto; font-size:25px;}
+<? if ( $display['theme'] == 'azure' || $display['theme'] == 'white' ): ?>
+.donateLink { color:blue; }
+.newApp { color:blue; font-size:15px; }
+<?else:?>
+.donateLink { color:lightblue; }
+.newApp { color:lightblue; font-size:15px; }
+<?endif;?>
 </style>
 
 <script>
@@ -610,7 +623,6 @@ function readMore() {
 function doSearch(button) {
 	var windowWidth = getWindowWidth();
 	var filter = $('#searchBox').val();
-	$("#debugging").html(filter);
 	var maxPerPage = getPerPage();
 	resetSortByDate();
 	data_docker = "";
@@ -992,7 +1004,6 @@ function dockerConvert(dockerID) {
 	$("#Total").html("Converting...");
 	$.post(URL,{action:'convert_docker',ID:dockerID},function(data) {
 		if (data) {
-		$("#debugging").html(data);
 			myCloseAlert();
 			templateURL = "Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
 			window.open(templateURL,"<?=$tabMode?>");

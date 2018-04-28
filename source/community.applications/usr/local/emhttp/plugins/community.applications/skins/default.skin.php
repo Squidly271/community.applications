@@ -22,19 +22,18 @@ function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
 	if ( $separateOfficial ) {
 		if ( count($officialApplications) ) {
 			$navigate[] = "doesn't matter what's here -> first element gets deleted anyways";
-			$display = "<center><b>";
+			$display = "<div class='separateOfficial'>";
 
 			$logos = readJsonFile($communityPaths['logos']);
 			$display .= $logos[$officialRepo] ? "<img src='".$logos[$officialRepo]."' style='width:48px'>&nbsp;&nbsp;" : "";
-			$display .= "<font size='4' color='purple' id='OFFICIAL'>$officialRepo</font></b></center><br>";
+			$display .= "$officialRepo</div><br>";
 			$display .= my_display_apps($viewMode,$officialApplications,1,true,$selectedApps);
 		}
 	}
-
 	if ( count($communityApplications) ) {
-		if ( $separateOfficial ) {
+		if ( $separateOfficial && count($officialApplications) ) {
 			$navigate[] = "<a href='#COMMUNITY'>Community Supported Applications</a>";
-			$display .= "<center><b><font size='4' color='purple' id='COMMUNITY'>Community Supported Applications</font></b></center><br>";
+			$display .= "<div class='separateOfficial' id='COMMUNITY'>Community Supported Applications</div><br>";
 		}
 		$display .= my_display_apps($viewMode,$communityApplications,$pageNumber,false,$selectedApps);
 	}
@@ -75,22 +74,25 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	if ( ! $selectedApps ) {
 		$selectedApps = array();
 	}
-
-
+	
+	if ( ! $dockerRunning ) {
+		$ct = "<div class='dockerDisabled'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div><br><br>";
+	}
+	
 	$pinnedApps = getPinnedApps();
 	$iconSize = $communitySettings['iconSize'];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
 	usort($file,"mySort");
 
-
 	if ( ! $officialFlag ) {
-		$ct = "<br>".getPageNavigation($pageNumber,count($file),false)."<br>";
+		$ct .= "<br>".getPageNavigation($pageNumber,count($file),false)."<br>";
 	}
 	$specialCategoryComment = @file_get_contents($communityPaths['dontAllowInstalls']);
 	if ( $specialCategoryComment ) {
 		$ct .= "<center><font size='2' color='green'>This display is informational <em>ONLY</em>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</font></center><br>";
 		$ct .= "<center><font size='2' color='green'>$specialCategoryComment</font></center>";
 	}
+
 	$columnNumber = 0;
 	$appCount = 0;
 	$startingApp = $officialFlag ? 1 : ($pageNumber -1) * $communitySettings['maxPerPage'] + 1;
@@ -108,8 +110,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	}
 	$maxColumnDisplayed = count($displayedTemplates) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($displayedTemplates);
   $leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']) / 2;
-	$leftMargin = $leftMargin < 0 ? 0 : intval($leftMargin); # safety precaution if something messes up
-	$leftMargin = $communitySettings['windowWidth'] <= 1080 ? 0 : $leftMargin; # minimum window with supported by Dynamix
+	$leftMargin = $communitySettings['windowWidth'] <= 1080 ? 0 : intval($leftMargin); # minimum window with supported by Dynamix
 
 	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
@@ -138,10 +139,10 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		if ( ! $template['DonateText'] ) {
 			$template['DonateText'] = "Donate To Author";
 		}
-		$template['display_DonateLink'] = $template['DonateLink'] ? "<font size='0'><a class='ca_tooltip' href='".$template['DonateLink']."' target='_blank' title='".$template['DonateText']."'>Donate To Author</a></font>" : "";
-		$template['display_Project'] = $template['Project'] ? "<a class='ca_tooltip' target='_blank' title='Click to go the the Project Home Page' href='".$template['Project']."'><font color=red>Project Home Page</font></a>" : "";
-		$template['display_Support'] = $template['Support'] ? "<a class='ca_tooltip' href='".$template['Support']."' target='_blank' title='Click to go to the support thread'><font color=red>Support Thread</font></a>" : "";
-		$template['display_webPage'] = $template['WebPageURL'] ? "<a class='ca_tooltip' title='Click to go to {$template['SortAuthor']}&#39;s web page' href='".$template['WebPageURL']."' target='_blank'><font color='red'>Web Page</font></a></font>" : "";
+		$template['display_DonateLink'] = $template['DonateLink'] ? "<font size='0'><a class='ca_tooltip donateLink' href='".$template['DonateLink']."' target='_blank' title='".$template['DonateText']."'>Donate To Author</a></font>" : "";
+		$template['display_Project'] = $template['Project'] ? "<a class='ca_tooltip projectLink' target='_blank' title='Click to go the the Project Home Page' href='".$template['Project']."'>Project Home Page</a>" : "";
+		$template['display_Support'] = $template['Support'] ? "<a class='ca_tooltip supportLink' href='".$template['Support']."' target='_blank' title='Click to go to the support thread'>Support Thread</a>" : "";
+		$template['display_webPage'] = $template['WebPageURL'] ? "<a class='ca_tooltip webLink' title='Click to go to {$template['SortAuthor']}&#39;s web page' href='".$template['WebPageURL']."' target='_blank'>Web Page</a>" : "";
 
 		if ( $template['display_Support'] && $template['display_Project'] ) {
 			$template['display_Project'] = "&nbsp;&nbsp;&nbsp".$template['display_Project'];
@@ -158,7 +159,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='red'><b>Moderator Comments:</b></font> <font color='purple'>".$template['ModeratorComment']."</font>" : "";
 		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=20px>" : "";
 		$template['display_Repository'] = "$RepoName $tempLogo";
-		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star' style='font-size:15px; color:magenta;' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
+		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star dockerHubStar' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
 		$template['display_Downloads'] = $template['downloads'] ? "<center>".number_format($template['downloads'])."</center>" : "<center>Not Available</center>";
 
 		if ( $pinnedApps[$template['Repository']] ) {
@@ -183,7 +184,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 			unset($template['display_Uninstall']); # prevent previously installed private apps from having 2 x's in previous apps section
 		}
 		if ( $template['Date'] > strtotime($communitySettings['timeNew'] ) ) {
-			$template['display_newIcon'] = "<i class='fa fa-star ca_tooltip' style='font-size:15px;color:yellow;' title='New / Updated - ".date("F d Y",$template['Date'])."'></i>&nbsp;";
+			$template['display_newIcon'] = "<i class='fa fa-star newApp ca_tooltip' title='New / Updated - ".date("F d Y",$template['Date'])."'></i>&nbsp;";
 		}
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
 		$template['display_dateUpdated'] = ($template['Date'] && is_file($communityPaths['newFlag']) ) ? "</b></strong><center><strong>Date Updated: </strong>".$template['display_humanDate']."</center>" : "";
@@ -197,19 +198,14 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 				if ( checkInstalledPlugin($template) ) {
 					$pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
 					$tmpVar = $pluginSettings ? "" : " disabled ";
-					$template['display_pluginSettings'] = "<input class='ca_tooltip' title='Click to go to the plugin settings' type='submit' $tmpVar style='margin:0px' value='Settings' formtarget='_self' formaction='$pluginSettings' formmethod='post'>";
 					$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip' title='Click to go to the plugin settings' href='$pluginSettings'>$fontAwesomeGUI</a>&nbsp;" : "";
 				} else {
 					$buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
-					$template['display_pluginInstall'] = "<input class='ca_tooltip' type='button' value='$buttonTitle' style='margin:0px' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>";
 					$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>$fontAwesomeInstall</a>&nbsp;";
 				}
 			} else {
 				if ( $communitySettings['dockerRunning'] ) {
 					if ( $selected ) {
-						$template['display_dockerDefault']     = "<input class='ca_tooltip' type='submit' value='Default' style='margin:1px' title='Click to reinstall the application using default values' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."'>";
-						$template['display_dockerEdit']        = "<input class='ca_tooltip' type='submit' value='Edit' style='margin:1px' title='Click to edit the application values' formtarget='_self' formmethod='post' formaction='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."'>";
-						$template['display_dockerDefault']     = $template['BranchID'] ? "<input class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' value='Add' onclick='displayTags(&quot;$ID&quot;);'>" : $template['display_dockerDefault'];
 						$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'>$fontAwesomeInstall</a>&nbsp;";
 						$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'>$fontAwesomeInstall</a>&nbsp;" : $template['display_dockerDefaultIcon'];
 						$template['display_dockerEditIcon']    = "<a class='ca_tooltip' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='_self'>$fontAwesomeEdit</a>&nbsp;";
@@ -218,17 +214,12 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 						}
 					} else {
 						if ( $template['MyPath'] ) {
-							$template['display_dockerReinstall'] = "<input class='ca_tooltip' type='submit' style='margin:0px' title='Click to reinstall the application' value='Reinstall' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."'>";
 							$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip' title='Click to reinstall' href='Apps/UpdateContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='_self'>$fontAwesomeInstall</a>&nbsp;";
 							} else {
-							$template['display_dockerInstall']   = "<input class='ca_tooltip' type='submit' style='margin:0px' title='Click to install the application' value='Add' formtarget='_self' formmethod='post' formaction='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."'>";
-							$template['display_dockerInstall']   = $template['BranchID'] ? "<input class='ca_tooltip' type='button' style='margin:0px' title='Click to install the application' value='Add' onclick='displayTags(&quot;$ID&quot;);'>" : $template['display_dockerInstall'];
 							$template['display_dockerInstallIcon'] = "<a class='ca_tooltip' title='Click to install' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'>$fontAwesomeInstall</a>&nbsp;";
 							$template['display_dockerInstallIcon'] = $template['BranchID'] ? "<a style='cursor:pointer' class='ca_tooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'>$fontAwesomeInstall</a>&nbsp;" : $template['display_dockerInstallIcon'];
 						}
 					}
-				} else {
-					$template['display_dockerDisable'] = "<font color='red'>Docker Not Enabled</font>";
 				}
 			}
 		}
@@ -397,7 +388,7 @@ function displaySearchResults($pageNumber,$viewMode) {
 				$result['Icon'] = $template['IconWeb'];
 			}
 		}
-		$result['display_stars'] = $result['Stars'] ? "<i class='fa fa-star' style='font-size:15px; color:magenta;' aria-hidden='true'></i> <strong>".$result['Stars']."</strong>" : "";
+		$result['display_stars'] = $result['Stars'] ? "<i class='fa fa-star dockerHubStar' aria-hidden='true'></i> <strong>".$result['Stars']."</strong>" : "";
 		$result['display_official'] =  $result['Official'] ? "<strong><font color=red>Official</font> ".$result['Name']." container.</strong><br><br>": "";
 		$result['display_official_short'] = $result['Official'] ? "<font color='red'><strong>Official</strong></font>" : "";
 
@@ -516,13 +507,13 @@ function toNumericArray($template) {
 		$template['display_changes'],         #47 # Do not use -> no longer implemented
 		$template['display_webPage'],         #48
 		$template['display_humanDate'],       #49
-		$template['display_pluginSettings'],  #50
-		$template['display_pluginInstall'],   #51
-		$template['display_dockerDefault'],   #52
-		$template['display_dockerEdit'],      #53
-		$template['display_dockerReinstall'], #54
-		$template['display_dockerInstall'],   #55
-		$template['display_dockerDisable'],   #56
+		$template['display_pluginSettings'],  #50 # do not use -> no longer implemented
+		$template['display_pluginInstall'],   #51 # do not use -> no longer implemented
+		$template['display_dockerDefault'],   #52 # do not use -> no longer implemented
+		$template['display_dockerEdit'],      #53 # do not use -> no longer implemented
+		$template['display_dockerReinstall'], #54 # do not use -> no longer implemented
+		$template['display_dockerInstall'],   #55 # do not use -> no longer implemented
+		$template['display_dockerDisable'],   #56 # do not use -> no longer implemented
 		$template['display_compatible'],      #57
 		$template['display_compatibleShort'], #58
 		$template['display_author'],          #59
