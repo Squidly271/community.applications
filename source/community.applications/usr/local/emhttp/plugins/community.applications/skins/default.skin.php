@@ -367,7 +367,7 @@ function displaySearchResults($pageNumber,$viewMode) {
 	echo "<br><br>";
 
 	$maxColumn = $communitySettings['maxColumn'];
-
+  $viewMode = $viewMode == "icon" ? "detail" : "table";
 	switch ($viewMode) {
 		case "table":
 			$t =  "<table class='tablesorter'><thead><th></th><th></th><th>Container</th><th>Author</th><th>Stars</th><th>Description</th></thead>";
@@ -377,7 +377,7 @@ function displaySearchResults($pageNumber,$viewMode) {
 			$t = "<table class='tablesorter'>";
 			$viewMode = "icon";
 			$maxColumn = 2;
-			$iconSize - 96;
+			$iconSize = 96;
 			break;
 	}
 
@@ -442,7 +442,7 @@ function displaySearchResults($pageNumber,$viewMode) {
 		}
 		if ( $viewMode == "table" ) {
 			$t .= "<tr><td><a class='ca_tooltip' href='".$result['DockerHub']."' target='_blank' title='Click to go to the dockerHub website for this container'>";
-		$t .= "<img src='".$result['Icon']."' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";' style='width:[$iconSize}px;height:{$iconSize}px;'>";
+		$t .= "<img src='".$result['Icon']."' onError='this.src=\"/plugins/dynamix.docker.manager/images/question.png\";' style='width:{$iconSize}px;height:{$iconSize}px;'>";
 			$t .= "</a></td>";
 			$t .= "<td><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)';></td>";
 			$t .= "<td><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search Similar Containers'>".$result['Name']."</a></td>";

@@ -158,7 +158,7 @@ var data_selected = "";
 var data_lastUpdated = 0;
 	
 $(function(){
-	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' ><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
+	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' disabled><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
 	$("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
 
@@ -566,6 +566,7 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	if ( !showConfirm )  showConfirm = false;
 	if ( imagesize == "" ) { imagesize = "80"; }
 	disableTooltipster();
+	disableSearch();
 	if ( ! textdescription && textimage ) {
 		sweetAlertBackground("transparent");
 	} else {
@@ -589,6 +590,7 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 function myCloseAlert() {
 	swal.close();
 	enableTooltipster();
+	enableSearch();
 }
 
 function mySpinner() {
@@ -695,6 +697,7 @@ function forceUpdateButton() {
 		});
 	} else {
 		sweetAlertBackground("white");
+		disableSearch();
 		swal({
 			title: "Switch To Legacy Mode?",
 			text: "<strong>This will force CA to manually download the application templates.</strong><br><br><font color='red'>This process once begun cannot be aborted and may take a minute or so</font>",
@@ -719,6 +722,8 @@ function forceUpdateButton() {
 						downloadRepo(repositories,0);
 					}
 				});
+			} else {
+				enableSearch();
 			}
 		});
 	}
@@ -851,6 +856,7 @@ function setSortOrder() {
 }
 
 function getContent(init,category,description,newApp) {
+	enableSearch();
 	if ( init == true ) {
 		enableIcon("#sortIcon, #subcategoryIcon",false);
 	} else {
@@ -1001,6 +1007,7 @@ function clearSearchBox() {
 
 function installPlugin(pluginURL) {
 	$(".ca_appPopup").tooltipster('close');
+	disableSearch();
 	my_openBox('/plugins/dynamix.plugin.manager/scripts/plugin&arg1=install&arg2='+pluginURL,'Install Plugin',600,900,true,"changeSortOrder(null,null,null)");
 }
 
@@ -1056,6 +1063,7 @@ function previousApps(button,installed) {
 
 function removeApp(application, humanName) {
 	sweetAlertBackground("white");
+	disableSearch();
 	swal({
 		title: "Delete Template?",
 		text: "Are you sure you want to delete <font color='red'><strong><em>"+humanName+"</em></strong></font> from the list of previously installed applications?",
@@ -1070,9 +1078,12 @@ function removeApp(application, humanName) {
 		if (isConfirm) {
 			$.post(URL,{action:'remove_application',application:application}, function(data) {
 				if (data) {
+					enableSearch();
 					previousApps("OldApps",false);
 				}
 			});
+		} else {
+			enableSearch();
 		}
 	 });
 }
@@ -1082,6 +1093,7 @@ function uninstallApp(application,humanName) {
 		myAlert("AE-35 Error","<b><font color='red'>"+humanName+"</font></b> cannot be uninstalled this way.  You must go to the plugins tab and remove Community Applications from there.  <em><font color='purple'>But, why would you ever want to uninstall CA?</font></em>",null,null,true,false,true,"error");
 	} else {
 		sweetAlertBackground("white");
+		disableSearch();
 		swal({
 			title: "Uninstall Application?",
 			text: "Are you sure you want to uninstall <font color='red'><strong><em>"+humanName+"</em></strong></font>?",
@@ -1094,14 +1106,19 @@ function uninstallApp(application,humanName) {
 			showLoaderOnConfirm: true,
 			html: true
 		},
-		function() {
-			swal("Uninstalling "+humanName,"","info");
-			$.post(URL,{action:'uninstall_application',application:application}, function(data) {
-				if (data) {
-					swal("","Uninstalled","success");
-					previousApps("InstalledApps",true);
-				}
-			});
+		function(isConfirm) {
+			if (isConfirm) {
+				swal("Uninstalling "+humanName,"","info");
+				$.post(URL,{action:'uninstall_application',application:application}, function(data) {
+					if (data) {
+						swal("","Uninstalled","success");
+						previousApps("InstalledApps",true);
+						enableSearch();
+					}
+				});
+			} else {
+				enableSearch();
+			}
 		});
 	}
 }
@@ -1109,6 +1126,7 @@ function uninstallApp(application,humanName) {
 function deletePrivateApp(path,name,author) {
 	var displayPath = path.replace("/boot/config/plugins/","...");
 	sweetAlertBackground("white");
+	disableSearch();
 	swal({
 		title: "Remove Private Application?",
 		text: "Are you sure you want to remove the private application <em><font color='red'><b>"+name+"</b></font> by <font color='red'><b>"+author+"</b></font>?<br><font size='0'>("+displayPath+")",
@@ -1121,14 +1139,19 @@ function deletePrivateApp(path,name,author) {
 			showLoaderOnConfirm: true,
 			html: true
 	},
-	function() {
-		swal("Removing "+name,"","info");
-		$.post(URL,{action:'removePrivateApp',path:path},function(data) {
-			if (data) {
-				myCloseAlert();
-				changeSortOrder(null,null,null);
-			}
-		});
+	function(isConfirm) {
+		if ( isConfirm ) {
+			swal("Removing "+name,"","info");
+			$.post(URL,{action:'removePrivateApp',path:path},function(data) {
+				if (data) {
+					myCloseAlert();
+					changeSortOrder(null,null,null);
+					enableSearch();
+				}
+			});
+		} else {
+			enableSearch();
+		}
 	});
 }
 
@@ -1138,6 +1161,7 @@ function myTrim(x) {
 
 function uninstallDocker(application,humanName) {
 	sweetAlertBackground("white");
+	disableSearch();
 	swal({
 		title: "Uninstall Application?",
 		text: "Are you sure you want to uninstall <font color='red'><strong><em>"+humanName+"</em></strong></font>?",
@@ -1150,13 +1174,18 @@ function uninstallDocker(application,humanName) {
 		showLoaderOnConfirm: true,
 		html: true
 	},
-	function() {
-		swal("Uninstalling","","info");
-		$.post(URL,{action:'uninstall_docker',application:application},function(data) {
-			if (data) {
-				previousApps("InstalledApps",true);
-			}
-		});
+	function( isConfirm ) {
+		if ( isConfirm ) {
+			swal("Uninstalling","","info");
+			$.post(URL,{action:'uninstall_docker',application:application},function(data) {
+				if (data) {
+					enableSearch();
+					previousApps("InstalledApps",true);
+				}
+			});
+		} else {
+			enableSearch();
+		}
 	});
 }
 
@@ -1242,6 +1271,7 @@ function displayTags(leadTemplate) {
 		if (data) {
 			$(".ca_appPopup").tooltipster('close');
 			sweetAlertBackground("white");
+			disableSearch();
 			swal({
 				title: "Choose A Branch To Install",
 				text: data,
@@ -1250,6 +1280,10 @@ function displayTags(leadTemplate) {
 				showCancelButton: true,
 				showConfirmButton: false,
 				allowOutsideClick: true
+			}, function(isConfirm) {
+				if ( ! isConfirm ) {
+					enableSearch();
+				}
 			});
 		}
 	});
@@ -1367,6 +1401,7 @@ function installMulti() {
 		dockerCount += 1;
 	});
 	sweetAlertBackground("white");
+	disableSearch();
 	swal({
 		title: "Install "+makePlural("Application",dockerCount+pluginCount)+"?",
 		text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?.  <em>Docker applications will be installed utilizing the most recently saved template with no user input on your part</em>",
@@ -1379,20 +1414,25 @@ function installMulti() {
 		showLoaderOnConfirm: true,
 		html: true
 	},
-	function() {
-		swal.close();
-		if ( docker.length ) {
-			$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
-			openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,'Install Docker '+makePlural("Application",dockerCount),600,900,true);
+	function( isConfirm ) {
+		if ( isConfirm ) {
+			myCloseAlert();
+			if ( docker.length ) {
+				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
+				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,'Install Docker '+makePlural("Application",dockerCount),600,900,true);
+			} else {
+				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugin,'Install Plugin '+makePlural("Application",pluginCount),600,900,true);
+				enableSearch();
+			}
 		} else {
-			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugin,'Install Plugin '+makePlural("Application",pluginCount),600,900,true);
+			enableSearch();
 		}
 	});
 }
 
 function updateDisplay(data) {
 	$('#templates_content').html(data);
-	focusOnSearch();
+	enableSearch();
 }
 
 function focusOnSearch() {
