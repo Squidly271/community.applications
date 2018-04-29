@@ -42,7 +42,6 @@ $communityPaths['invalidXML_txt']                = $communityPaths['tempFiles'].
 $communityPaths['PluginInstallPending']          = $communityPaths['tempFiles']."/plugininstallpending.txt";
 $communityPaths['warningAccepted']               = "/boot/config/plugins/$plugin/accepted";
 $communityPaths['pluginDupes']                   = $communityPaths['tempFiles']."/pluginDupes";
-$communityPaths['dontAllowInstalls']             = $communityPaths['tempFiles']."/dontAllowInstalls"; # when file exists, the icons for install/edit/etc will not appear
 $communityPaths['appFeedDownloadError']          = $communityPaths['tempFiles']."/appfeedTemporaryFileForAnalysis";
 $communityPaths['legacySkin']                    = "/usr/local/emhttp/plugins/$plugin/skins/legacy.skin";
 $communityPaths['defaultSkin']                   = "/usr/local/emhttp/plugins/$plugin/skins/default.skin";

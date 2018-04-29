@@ -80,7 +80,6 @@ case 'get_content':
 	$sortOrder   = getSortOrder(getPostArray("sortOrder"));
 	$windowWidth = getPost("windowWidth",false);
 	getMaxColumns($windowWidth);
-	@unlink($communityPaths['dontAllowInstalls']);
 
 	switch ($category) {
 		case "/PRIVATE/i":
@@ -90,21 +89,21 @@ case 'get_content':
 		case "/DEPRECATED/i":
 			$category = false;
 			$displayDeprecated = true;
-			file_put_contents($communityPaths['dontAllowInstalls'],"Deprecated Applications are able to still be installed if you have previously had them installed. New installations of these applications are blocked unless you enable Display Deprecated Applications within CA's General Settings<br><br>");
+			$noInstallComment = "Deprecated Applications are able to still be installed if you have previously had them installed. New installations of these applications are blocked unless you enable Display Deprecated Applications within CA's General Settings<br><br>";
 			break;
 		case "/BLACKLIST/i":
 			$category = false;
 			$displayBlacklisted = true;
-			file_put_contents($communityPaths['dontAllowInstalls'],"The following applications are blacklisted.  CA will never allow you to install or reinstall these applications<br><br>");
+			$noInstallComment = "The following applications are blacklisted.  CA will never allow you to install or reinstall these applications<br><br>";
 			break;
 		case "/INCOMPATIBLE/i":
 			$displayIncompatible = true;
-			file_put_contents($communityPaths['dontAllowInstalls'],"<b>While highly not recommended to do</b>, incompatible applications can be installed by enabling Display Incompatible Applications within CA's General Settings<br><br>");
+			$noInstallComment = "<b>While highly not recommended to do</b>, incompatible applications can be installed by enabling Display Incompatible Applications within CA's General Settings<br><br>";
 			break;
 		case "/NOSUPPORT/i":
 			$category = false;
 			$displayNoSupport = true;
-			file_put_contents($communityPaths['dontAllowInstalls'],"The following applications do not have any support thread for them (other applications that are also blacklisted / deprecated in addition to having no support thread will not appear here)<br><br>");
+			$noInstallComment = "The following applications do not have any support thread for them (other applications that are also blacklisted / deprecated in addition to having no support thread will not appear here)<br><br>";
 			break;
 	}
 	$newAppTime = strtotime($communitySettings['timeNew']);
@@ -212,6 +211,7 @@ case 'get_content':
 		$communitySettings['separateInstalled'] = false; # show installed containers in the "special" categories
 	}
 	foreach ($file as $template) {
+		$template['NoInstall'] = $noInstallComment;
 		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) {
 			continue;                          # ie: only show deprecated apps within previous apps section
 		}
@@ -631,7 +631,6 @@ case 'search_dockerhub':
 	$filter     = getPost("filter","");
 	$pageNumber = getPost("page","1");
 	$sortOrder  = getSortOrder(getPostArray('sortOrder'));
-	@unlink($communityPaths['dontAllowInstalls']);
 
 	$communityTemplates = readJsonFile($communityPaths['community-templates-info']);
 	$filter = str_replace(" ","%20",$filter);
@@ -699,8 +698,6 @@ case 'dismiss_warning':
 #                                                             #
 ###############################################################
 case 'previous_apps':
-	@unlink($communityPaths['dontAllowInstalls']);
-
 	$installed = getPost("installed","");
 	$dockerUpdateStatus = readJsonFile($communityPaths['dockerUpdateStatus']);
 	$moderation = readJsonFile($communityPaths['moderation']);
@@ -987,7 +984,6 @@ case "pinApp":
 #                                  #
 ####################################
 case "pinnedApps":
-	@unlink($communityPaths['dontAllowInstalls']);
 	$pinnedApps = getPinnedApps();
 	$file = readJsonFile($communityPaths['community-templates-info']);
 	$startIndex = 0;

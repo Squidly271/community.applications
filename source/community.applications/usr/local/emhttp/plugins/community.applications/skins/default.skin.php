@@ -76,7 +76,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	}
 	
 	if ( ! $communitySettings['dockerRunning'] ) {
-		$ct = "<div class='dockerDisabled'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div><br><br>";
+		$displayHeader = "<div class='dockerDisabled'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div><br><br>";
 	}
 	
 	$pinnedApps = getPinnedApps();
@@ -85,13 +85,9 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	usort($file,"mySort");
 
 	if ( ! $officialFlag ) {
-		$ct .= "<br>".getPageNavigation($pageNumber,count($file),false)."<br>";
+		$displayHeader .= "<br>".getPageNavigation($pageNumber,count($file),false)."<br>";
 	}
-	$specialCategoryComment = @file_get_contents($communityPaths['dontAllowInstalls']);
-	if ( $specialCategoryComment ) {
-		$ct .= "<center><font size='2' color='green'>This display is informational <em>ONLY</em>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</font></center><br>";
-		$ct .= "<center><font size='2' color='green'>$specialCategoryComment</font></center>";
-	}
+
 
 	$columnNumber = 0;
 	$appCount = 0;
@@ -99,7 +95,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	$startingAppCounter = 0;
 	
 	foreach ($file as $template) {
-		if ( $template['Blacklist'] && ! is_file($communityPaths['dontAllowInstalls']) ) {
+		if ( $template['Blacklist'] && ! $template['NoInstall'] ) {
 			continue;
 		}
 		$startingAppCounter++;
@@ -192,7 +188,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		if (! $communitySettings['dockerRunning'] && ! $template['Plugin']) {
 			unset($template['display_multi_install']);
 		}
-		if ( ! is_file($communityPaths['dontAllowInstalls']) ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
+		if ( ! $template['NoInstall'] ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
 			if ( $template['Plugin'] ) {
 				$pluginName = basename($template['PluginURL']);
 				if ( checkInstalledPlugin($template) ) {
@@ -222,6 +218,8 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 					}
 				}
 			}
+		} else {
+			$specialCategoryComment = $template['NoInstall'];
 		}
 		if ( ! $template['Compatible'] && ! $template['UnknownCompatible'] ) {
 			$template['display_compatible'] = "NOTE: This application is listed as being NOT compatible with your version of unRaid<br>";
@@ -274,7 +272,12 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
   if ( $communitySettings['dockerSearch'] != "yes" ) {
 		$ct .= "<script>$('.dockerSearch').hide();</script>";
 	}
-	return $ct;
+
+	if ( $specialCategoryComment ) {
+		$displayHeader .= "<center><font size='2' color='green'>This display is informational <em>ONLY</em>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</font></center><br>";
+		$displayHeader .= "<center><font size='2' color='green'>$specialCategoryComment</font></center>";
+	}
+	return "$displayHeader$ct";
 }
 
 function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
