@@ -105,7 +105,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$displayedTemplates[] = $template;
 	}
 	$maxColumnDisplayed = count($displayedTemplates) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($displayedTemplates);
-  $leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']) / 2;
+	$leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']) / 2;
 	$leftMargin = $communitySettings['windowWidth'] <= 1080 ? 0 : intval($leftMargin); # minimum window with supported by Dynamix
 	
 	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
@@ -269,7 +269,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	if ( ! $officialFlag ) {
 		$ct .= "<br>".getPageNavigation($pageNumber,count($file),false)."<br><br><br>";
 	}
-  if ( $communitySettings['dockerSearch'] != "yes" ) {
+	if ( $communitySettings['dockerSearch'] != "yes" ) {
 		$ct .= "<script>$('.dockerSearch').hide();</script>";
 	}
 
@@ -362,8 +362,6 @@ function displaySearchResults($pageNumber,$viewMode) {
 	echo dockerNavigate($num_pages,$pageNumber);
 	echo "<br><br>";
 
-	$maxColumn = $communitySettings['maxColumn'];
-  $viewMode = ($viewMode == "icon") ? "detail" : $viewMode;
 	switch ($viewMode) {
 		case "table":
 			$t =  "<table class='tablesorter'><thead><th></th><th></th><th>Container</th><th>Author</th><th>Stars</th><th>Description</th></thead>";
@@ -539,4 +537,3 @@ function toNumericArray($template) {
 	);
 }
 ?>
-

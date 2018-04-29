@@ -195,7 +195,7 @@ case 'get_content':
 					break;
 				} else {
 					echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-					echo "<br><center><font size='4' color='purple'><b>An error occurred.  Could not find any Random Apps of the day</b></font><br><br>";				
+					echo "<br><center><font size='4' color='purple'><b>An error occurred.  Could not find any Random Apps of the day</b></font><br><br>";
 					break;
 				}
 			}
@@ -234,7 +234,7 @@ case 'get_content':
 		if ( $template['Support'] && $displayNoSupport ) {
 			continue;
 		}
-		
+
 		$name = $template['Name'];
 
 # Skip over installed containers
@@ -271,10 +271,10 @@ case 'get_content':
 
 		if ( ($newApp ) && ($template['Date'] < $newAppTime) )  { continue; }
 		$template['NewApp'] = $newApp;
-		
+
 		if ( $category && ! preg_match($category,$template['Category'])) { continue; }
     if ( $displayPrivates && ! $template['Private'] ) { continue; }
-		
+
 		if ($filter) {
 			if ( filterMatch($filter,array($template['Name'],$template['Author'],$template['Description'],$template['RepoName'])) ) {
 				$template['Description'] = highlight($filter, $template['Description']);
@@ -487,7 +487,7 @@ case 'convert_docker':
 				$dockerLine = str_replace('"', " ", $dockerLine);
 				$ports[] = $dockerLine;
 			}
-			
+
 			$dockerCmp = strpos($dockerCompare,"ENV");
 			if ( $dockerCmp === 0 ) {
 				if (strpos($dockerLine,"*") ) {
@@ -502,7 +502,7 @@ case 'convert_docker':
 				}
 			}
 		}
-		
+
 		$allVolumes = array();
 		foreach ( $volumes as $volume ) {
 			$volumeList = explode(" ", $volume);
@@ -525,7 +525,7 @@ case 'convert_docker':
 				$allPorts[] = $myPort;
 			}
 		}
-		
+
 		$allEnvironments = array();
 		foreach ( $env as $environment ) {
 			$environment = first_str_replace($environment,"ENV ","");
@@ -582,7 +582,7 @@ case 'convert_docker':
 			$variable['Value'] = str_replace('"',"",$environment[1]);
 			$dockerfile['Environment']['Variable'][] = $variable;
 		}
-			
+
 		$dockerfile['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
 
 		if ( is_array($webUI) ) {
@@ -1177,11 +1177,11 @@ case 'downloadRepositories':
 	@unlink($communityPaths['updateErrors']);
 	exec("rm -rf '{$communityPaths['templates-community']}'");
 	break;
-	
+
 case 'downloadRepo':
 	$repoURL = getPost("repoURL","oops");
 	$repoName =getPost("repoName","oops");
-	
+
 	$DockerTemplates = new DockerTemplates();
 
 	$templates = readJsonFile($communityPaths['legacyTemplatesTmp']);
@@ -1328,7 +1328,7 @@ function DownloadApplicationFeed() {
 
 	$downloadURL = randomFile();
   $ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
-	
+
 	if ( ! is_array($ApplicationFeed['applist']) ) {
 		file_put_contents($communityPaths['appFeedDownloadError'],$downloadURL);
 		return false;
@@ -1491,9 +1491,9 @@ function getConvertedTemplates() {
 	foreach ($privateTemplates as $template) {
 		$o = readXmlFile($template);
 		if ( ! $o['Repository'] ) {
-			continue; 
+			continue;
 		}
-		$o['Private']      = true;				
+		$o['Private']      = true;
 		$o['RepoName']     = basename(pathinfo($template,PATHINFO_DIRNAME))." Repository";
 		$o['ID']           = $i;
 		$o['Displayable']  = true;
@@ -1538,7 +1538,7 @@ function appOfDay($file) {
 			if ( $flag ) {
 				$app = array();
 			}
-		}	
+		}
 	}
 	if ( ! $app ) {
 		for ( $ii=0; $ii<10; $ii++ ) {

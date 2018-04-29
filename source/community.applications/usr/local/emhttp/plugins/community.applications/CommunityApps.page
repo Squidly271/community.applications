@@ -186,7 +186,7 @@ var data_subcategory = "";
 var data_selected_subcategory = "";
 var data_selected = "";
 var data_lastUpdated = 0;
-	
+
 $(function(){
 	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' disabled><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
@@ -197,11 +197,11 @@ $(function(){
 			doSearch(false);
 		}
 	});
-	
+
 	$("#CommunityApplicationsBody").keydown(function() {
 		focusOnSearch();
 	});
-	
+
 	$('.ca_staticTips').tooltipster({
 	  animationDuration: [2000,350],
 		timer:15000,
@@ -378,7 +378,7 @@ $(function(){
 	if ( "<?=$cfg['viewMode']?>" == "detail" ) $("#viewDetail").prop("disabled",true);
 
 /* Everything is now initialized.  This is the start of the actual "real" code */
-  if ( "<?=$firstRun?>" == "true" ) {
+	if ( "<?=$firstRun?>" == "true" ) {
 		sweetAlertBackground("white");
 		swal({
 			title: 'Disclaimer',
@@ -389,7 +389,7 @@ $(function(){
 			showCancelButton: true,
 			showConfirmButton: true,
 			confirmButtonText: 'I Understand'
-		}, 
+		},
 		function (isConfirm) {
 			if ( isConfirm ) {
 				$.post(URL,{action:'dismiss_warning'},function(data) {
@@ -507,7 +507,7 @@ function setToolTip() {
 }
 
 function showSpecialCategory(button) {
-  $(".allButtons").prop("disabled",false);
+	$(".allButtons").prop("disabled",false);
 	$(".multi_installDiv").hide();
 	enableIcon("#categoryIcon,#subcategoryIcon",true);
 	data_selected_category = "DOESNTMATTERWHATSHERE";
@@ -681,7 +681,7 @@ function doSearch(button) {
 		$('.dockerSearch').show();
 	}
 	mySpinner();
-	
+
 	$.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,windowWidth:windowWidth,maxPerPage:maxPerPage},function(data) {
 		if (data) {
 			enableButtons();
@@ -1635,5 +1635,5 @@ Sort Direction:
 <font size='4' color='red'>All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein.
 <br><em>Every attempt is made to ensure that only safe and compatible applications are present</em>
 <br><br>You must accept the disclaimer before you can utilize this plugin</font>
-<br><br><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first  
+<br><br><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first
 </form>
