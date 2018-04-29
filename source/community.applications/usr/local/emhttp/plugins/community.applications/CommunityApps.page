@@ -1502,7 +1502,6 @@ function resizeDisplay() {
 			window.resizeEvt = setTimeout(function(){
 				updateDisplay(" ");
 				changeSortOrder(null,null,null);
-				$("#debugging").html("resize event");
 			}, 100);
 		}
 <?else:?>
@@ -1511,7 +1510,6 @@ function resizeDisplay() {
 		window.resizeEvt = setTimeout(function(){
 			updateDisplay(" ");
 			changeSortOrder(null,null,null);
-			$("#debugging").html("resize event");
 		}, 100);
 <?endif;?>
 	});
