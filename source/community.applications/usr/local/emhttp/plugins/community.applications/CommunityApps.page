@@ -71,8 +71,8 @@ input.sortButton {margin:1px;}
 input.dirButton {margin:1px;}
 input.allButtons {margin:-1px;}
 input[type=checkbox] {width:20px; height:20px;}
-.enabledIcon { cursor:pointer;color:#005500;font-size:35px; }
-.disabledIcon { cursor:pointer;color:#040404;font-size:35px; }
+.enabledIcon { cursor:pointer;color:#005500;font-size:25px; }
+.disabledIcon { cursor:pointer;color:#040404;font-size:25px; }
 .pinned { cursor:pointer;font-size:15px;color:green;padding:3px;}
 .unpinned { cursor:pointer;font-size:15px;color:red;padding:3px; -webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);-o-transform: rotate(20deg);transform: rotate(20deg);}
 .topRightLinks { padding-left:15px; }
@@ -1522,21 +1522,21 @@ function resizeDisplay() {
 <body onresize='resizeDisplay();' id='CommunityApplicationsBody'>
 <span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
 <br>
-> For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br>
+> For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br><br>
 > <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
-> <i class='fa fa-binoculars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses how to display the results<br>
 > <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This selects a category of apps to display<br>
 > <i class='fa fa-folder-open enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - When available, this selects a subcategory of apps to display<br>
+> <i class='fa fa-binoculars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses how to display the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:20px;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:20px;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:20px;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
 > <i class='fa fa-globe' aria-hidden='true' style='font-size:20px;'></i> - Clicking this icon will take you to an application's GUI<br>
 > Hovering over an application's icon (or clicking it) will display more information about the application<br>
-> <center>For support for this plugin, visit here: <a title='click for help' href="http://lime-technology.com/forum/index.php?topic=40262.0" target="_blank">http://lime-technology.com/forum/index.php?topic=40262.0</a></center>
+> <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 
 <i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
-<i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;
-<i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;
-<i id='sortIcon' class='fa fa-binoculars ca_toolsView disabledIcon' style='font-size:27px; position:relative;top:-2px;' aria-hidden='true'></i>&nbsp;
+<i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
+<i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
+<i id='sortIcon' class='fa fa-binoculars ca_toolsView disabledIcon' style='font-size:23px; position:relative;top:-2px;' aria-hidden='true'></i>&nbsp;
 <font size='3'><b>Current Section: <font color='green'><span id='currentSection'>Available Apps</span></font></b></font>
 <strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option><option value='100'>100</option><option value='-1'>All</option></select></span></span>
 </span><br>

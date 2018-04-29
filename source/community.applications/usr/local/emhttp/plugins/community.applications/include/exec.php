@@ -55,8 +55,7 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 	@unlink($infoFile);
 }
 
-$selectCategoryMessage = "Select a Section <i class='fa fa-bars enabledIcon' aria-hidden='true' style='font-size:30px;cursor:auto;'></i> or Category <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:30px;cursor:auto;'></i> above";
-
+$selectCategoryMessage = "Select a Section <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:20px;cursor:auto;'></i> or Category <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:20px;cursor:auto;'></i> above";
 
 ############################################
 ############################################
@@ -190,7 +189,8 @@ case 'get_content':
 				if ( $displayApplications['community'] ) {
 					writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 					echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-					echo "<br><center><font size='4' color='purple'><b>Random Apps Of The Day</b></font><br><br>";
+					$countSuffix = count($displayApplications['community']) > 1 ? "s" : "";
+					echo "<br><center><font size='4' color='purple'><b>Random App$countSuffix Of The Day</b></font><br><br>";
 					echo my_display_apps("detail",$displayApplications['community'],"1",$runningDockers,$imagesDocker);
 					break;
 				} else {
