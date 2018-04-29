@@ -10,7 +10,7 @@ require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.p
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
-require_once 'webGui/include/Markdown.php';
+require_once("webGui/include/Markdown.php");
 
 $fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
 $fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";

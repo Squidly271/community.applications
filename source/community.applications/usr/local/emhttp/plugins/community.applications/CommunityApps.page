@@ -13,6 +13,9 @@ $plugin = "community.applications";
 
 require_once("/usr/local/emhttp/plugins/$plugin/include/paths.php");
 require_once("/usr/local/emhttp/plugins/$plugin/include/caCredits.php");
+require_once("/usr/local/emhttp/plugins/$plugin/include/helpers.php");
+
+$mobileDevice = isMobile();
 
 $installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$plugin.plg");
 $upgradeVersion = (is_file("/tmp/plugins/$plugin.plg")) ? exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /tmp/plugins/$plugin.plg") : "0";
@@ -20,6 +23,17 @@ if ( $installedVersion < $upgradeVersion ) {
 	$upgradeAvailable = "true";
 }
 $cfg = parse_plugin_cfg($plugin);
+switch ( $cfg['searchBarFocus'] ) {
+	case 'auto':
+		$searchBarFocus = ! isMobile();
+		break;
+	case 'yes':
+		$searchBarFocus = true;
+		break;
+	case 'no':
+		$searchBarFocus = false;
+		break;
+}
 
 if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
@@ -1454,7 +1468,9 @@ function updateDisplay(data) {
 }
 
 function focusOnSearch() {
+<?if ( $searchBarFocus ):?>
 	$('#searchBox').focus();
+<?endif;?>
 }
 
 function disableSearch() {
@@ -1479,12 +1495,25 @@ function resizeDisplay() {
 				return;
 				break;
 		}
+<?if ( $mobileDevice ):?>  // Mobile devices only check if columns change.  Computers always check to re-center the display
+		if (Math.floor(newWidth / divisor) != Math.floor(oldWidth / divisor) ) {
+			updateDisplay(" ");
+			clearTimeout(window.resizeEvt);
+			window.resizeEvt = setTimeout(function(){
+				updateDisplay(" ");
+				changeSortOrder(null,null,null);
+				$("#debugging").html("resize event");
+			}, 100);
+		}
+<?else:?>
 		updateDisplay(" ");
 		clearTimeout(window.resizeEvt);
 		window.resizeEvt = setTimeout(function(){
 			updateDisplay(" ");
 			changeSortOrder(null,null,null);
+			$("#debugging").html("resize event");
 		}, 100);
+<?endif;?>
 	});
 }
 
@@ -1507,7 +1536,7 @@ function resizeDisplay() {
 <i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;
-<i id='sortIcon' class='fa fa-binoculars ca_toolsView disabledIcon' style='font-size:30px;' aria-hidden='true'></i>&nbsp;
+<i id='sortIcon' class='fa fa-binoculars ca_toolsView disabledIcon' style='font-size:27px; position:relative;top:-2px;' aria-hidden='true'></i>&nbsp;
 <font size='3'><b>Current Section: <font color='green'><span id='currentSection'>Available Apps</span></font></b></font>
 <strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option><option value='100'>100</option><option value='-1'>All</option></select></span></span>
 </span><br>

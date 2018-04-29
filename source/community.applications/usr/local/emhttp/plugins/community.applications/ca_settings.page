@@ -2,7 +2,6 @@ Menu="hidden"
 Title="Community Applications Settings"
 ---
 <?
-
 function download_url($url, $path = "", $bg = false)
 {
   exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
@@ -18,7 +17,6 @@ $cfg = parse_plugin_cfg($plugin);
 
 @mkdir("/tmp/community.applications/tempFiles",0777,true);
 
-
 $Repositories = "/tmp/community.applications/tempFiles/Repositories.json";
 download_url("https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Repositories.json",$Repositories);
 $Repos = json_decode(@file_get_contents($Repositories),true);
@@ -28,7 +26,6 @@ if ( ! $Repos ) {
 }
 
 $repoName = array();
-
 foreach ($Repos as $Repo) {
   $repoName[] = $Repo['name'];
 }
@@ -40,8 +37,6 @@ foreach ($repoName as $display1) {
   $optionName = str_replace("'","*",$display1);
   $displayOptions .= mk_option($cfg['favourite'], $optionName, $display1);
 }
-
-$unRaid64 = (version_compare($vars['version'],"6.4.0-rc0",">=")) || (is_file("/usr/local/emhttp/plugins/dynamix/styles/dynamix-gray.css")) ? "true" : "false";
 ?>
 
 <form markdown="1" method="POST" action="/update.php" target="progressFrame">
@@ -103,6 +98,17 @@ Display Random App Of The Day:
   </select>
 
 > This setting chooses whether to display or not a random "app of the day"
+
+Search bar is always in focus:
+: <select name='searchBarFocus' size='1'>
+	<?=mk_option($cfg['searchBarFocus'],'auto',"Automatic (default)")?>
+	<?=mk_option($cfg['searchBarFocus'],'yes',"Always in focus")?>
+	<?=mk_option($cfg['searchBarFocus'],'no',"Never in focus")?>
+	</select>
+	
+> Sets whether the search bar is always active (in focus).  When in focus, you can type anytime to search without having to click into the box.<br>
+> Automatic sets this to always in focus when using a computer, and not in focus when using a mobile device.<br>
+> If you have trouble searching, set this to be Never in focus
 
 <strong>Docker Hub Searching</strong>
 
