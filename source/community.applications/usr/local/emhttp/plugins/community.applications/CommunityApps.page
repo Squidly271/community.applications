@@ -1505,12 +1505,14 @@ function resizeDisplay() {
 			}, 100);
 		}
 <?else:?>
-		updateDisplay(" ");
-		clearTimeout(window.resizeEvt);
-		window.resizeEvt = setTimeout(function(){
+		if ( newWidth != oldWidth ) {
 			updateDisplay(" ");
-			changeSortOrder(null,null,null);
-		}, 100);
+			clearTimeout(window.resizeEvt);
+			window.resizeEvt = setTimeout(function(){
+				updateDisplay(" ");
+				changeSortOrder(null,null,null);
+			}, 100);
+		}
 <?endif;?>
 	});
 }
