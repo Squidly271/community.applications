@@ -131,7 +131,7 @@ case 'get_content':
 				$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
 				$downloaded = @file_get_contents($tempFile);
 				if (strlen($downloaded) > 100) {
-					echo "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Switch to a style='cursor:pointer;' onclick='forceUpdateButton();'>Legacy Mode</a>, or try again later)</font>";
+					echo "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Switch to <a style='cursor:pointer;' onclick='forceUpdateButton();'>Legacy Mode</a>, or try again later)</font>";
   			}
 				echo "<center>Last JSON error Recorded: ";
 				$jsonDecode = json_decode($downloaded,true);
