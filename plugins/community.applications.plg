@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.04.22">
-<!ENTITY md5       "aedb5defa1693a126e7a9cf371cf2080">
+<!ENTITY version   "2018.05.05">
+<!ENTITY md5       "1386e4df97c44043289a69aaad9107c7">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,19 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0">
 
 <CHANGES>
+###2018.05.05
+- Fixed: When switching to Legacy Mode from Previous Apps, the install buttons would remain on screen
+- Added: Selectable if search box is always in focus or not
+- Fixed: Search box is disabled when not appropriate to search
+- Remove some excess code for unused skin items
+- Fixed: If favourite repository is enabled, don't display header if no items exist in favourite repository
+- Misc: Skin adjustments
+- Misc: Coding optimizations
+- Fixed: Don't pluralize Random Apps Of Day if viewing width only allows one app to display
+- Fixed: If browser width less than dynamix minimum display width, don't center applications
+- Fixed: Regression error (size of icons) on dockerhub searches
+- Added: Code to detect if running on mobile device and adjust accordingly
+
 ###2018.04.22
 - Drop compatibility with unRaid 6.3.x / 6.2 / 6.1.  Minimum OS required now 6.4.0
 - Remove all compatibility code
