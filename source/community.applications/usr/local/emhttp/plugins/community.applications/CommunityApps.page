@@ -198,9 +198,9 @@ $(function(){
 			doSearch(false);
 		}
 	});
-<?endif;?>
-
+<?else:?>
 	searchInitialize();
+<?endif;?>
 
 	$('.ca_staticTips').tooltipster({
 	  animationDuration: [2000,350],
@@ -369,11 +369,11 @@ $(function(){
 		}
 	});
 
-	$(".initDockerSearch").click(function()                  { initDockerSearch(); });
-	$(".moduleButton").click(function()                      { caModules(); });
-	$(".multi_installButton").click(function()               { installMulti(); });
-	$(".multi_installClear").click(function()                { clearMultiInstall(); });
-	$("#homeIcon").click(function()													{ appStore(); });
+	$(".initDockerSearch").click(function()			{ initDockerSearch(); });
+	$(".moduleButton").click(function()					{ caModules(); });
+	$(".multi_installButton").click(function()	{ installMulti(); });
+	$(".multi_installClear").click(function()		{ clearMultiInstall(); });
+	$("#homeIcon").click(function()							{ appStore(); });
 
 	if ( "<?=$cfg['viewMode']?>" == "table" )  $("#viewTable").prop("disabled",true);
 	if ( "<?=$cfg['viewMode']?>" == "detail" ) $("#viewDetail").prop("disabled",true);
@@ -408,6 +408,7 @@ $(function(){
 });
 
 function updateContent() {
+		disableSearch();
 		myAlert("Updating Content","Retrieving the latest application Lists",true,"40");
 		$.post(URL,{action:'force_update'}, function(data) {
 			if (data) {
@@ -677,8 +678,8 @@ function doSearch(button) {
 	$("#sortButtons,#MainCategory").show();
 	enableIcon("#sortIcon,#categoryIcon",true);
 	$("#NetworkCategory,#MediaAppCategory,#MediaServerCategory,#NONE,#ToolsCategory").hide();
-	$("#convert").val("");
-
+	window.scrollTo(0,0);
+	
 	if ( !filter ) {
 		getContent(true,'INITIALIZE','None Selected');
 		return;
@@ -1475,15 +1476,16 @@ function updateDisplay(data) {
 }
 
 function searchInitialize() {
-	$("#CommunityApplicationsBody").on("keypress",function(e) {
+	$("#CommunityApplicationsBody").one("keypress",function(e) {
 		focusOnSearch(e);
 	});
 }
 function focusOnSearch(event) {
 <?if ( $searchBarFocus ):?>
-	if ( $("#searchBox").attr("disabled") ) { return; }
+	if ( $("#searchBox").is(":disabled") ) { searchInitialize(); return; }
 	if ( event.key.length == 1 && event.key != ' ' ) {
 		$("#CommunityApplicationsBody").off("keypress");
+		disableTooltipster();
 		sweetAlertBackground("white");
 		swal({
 			title: "Search",
@@ -1492,6 +1494,7 @@ function focusOnSearch(event) {
 			inputValue: event.key,
 			showCancelButton: true,
 			closeOnConfirm: false,
+			confirmButtonText: "Search",
 			animation: false,
 			html: true
 		},function(inputValue){
@@ -1500,7 +1503,10 @@ function focusOnSearch(event) {
 				doSearch();
 			}
 			searchInitialize();
+			enableTooltipster();
 		});
+	} else {
+		searchInitialize();
 	}
 <?endif;?>
 }
