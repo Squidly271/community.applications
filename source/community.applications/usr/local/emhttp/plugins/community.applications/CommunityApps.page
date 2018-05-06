@@ -192,15 +192,15 @@ $(function(){
 
 	$("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
 
+<?if ( ! $searchBarFocus ):?>
 	$('#searchBox').keyup(function(e) {
 		if (e.which == 13) {
 			doSearch(false);
 		}
 	});
+<?endif;?>
 
-	$("#CommunityApplicationsBody").keydown(function() {
-		focusOnSearch();
-	});
+	searchInitialize();
 
 	$('.ca_staticTips').tooltipster({
 	  animationDuration: [2000,350],
@@ -373,6 +373,7 @@ $(function(){
 	$(".moduleButton").click(function()                      { caModules(); });
 	$(".multi_installButton").click(function()               { installMulti(); });
 	$(".multi_installClear").click(function()                { clearMultiInstall(); });
+	$("#homeIcon").click(function()													{ appStore(); });
 
 	if ( "<?=$cfg['viewMode']?>" == "table" )  $("#viewTable").prop("disabled",true);
 	if ( "<?=$cfg['viewMode']?>" == "detail" ) $("#viewDetail").prop("disabled",true);
@@ -402,6 +403,11 @@ $(function(){
 			}
 		});
 	} else {
+		updateContent();
+	}
+});
+
+function updateContent() {
 		myAlert("Updating Content","Retrieving the latest application Lists",true,"40");
 		$.post(URL,{action:'force_update'}, function(data) {
 			if (data) {
@@ -413,8 +419,7 @@ $(function(){
 				}
 			}
 		});
-	}
-});
+}
 
 function enableIcon(icon,enable) {
 	$(icon).each(function() {
@@ -661,7 +666,9 @@ function doSearch(button) {
 			return;
 		}
 	}
-
+	<?if ( $searchBarFocus ):?>
+	clearSearchBox();
+	<?endif;?>
 	$("#Total1").show();
 	if (filter) {
 		$("#Category").html(" Search Results for <font color='green'>"+filter+"</font>");
@@ -1467,9 +1474,34 @@ function updateDisplay(data) {
 	enableSearch();
 }
 
-function focusOnSearch() {
+function searchInitialize() {
+	$("#CommunityApplicationsBody").on("keypress",function(e) {
+		focusOnSearch(e);
+	});
+}
+function focusOnSearch(event) {
 <?if ( $searchBarFocus ):?>
-	$('#searchBox').focus();
+	if ( $("#searchBox").attr("disabled") ) { return; }
+	if ( event.key.length == 1 && event.key != ' ' ) {
+		$("#CommunityApplicationsBody").off("keypress");
+		sweetAlertBackground("white");
+		swal({
+			title: "Search",
+			text: "Search descriptions, names, authors, repositories, etc",
+			type: "input",
+			inputValue: event.key,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			animation: false,
+			html: true
+		},function(inputValue){
+			if (inputValue) {
+				$("#searchBox").val(inputValue);
+				doSearch();
+			}
+			searchInitialize();
+		});
+	}
 <?endif;?>
 }
 
@@ -1533,6 +1565,7 @@ function resizeDisplay() {
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 
+<i id='homeIcon' class='fa fa-home enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
