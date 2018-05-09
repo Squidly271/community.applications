@@ -20,6 +20,10 @@
 	background-color:#c8c8c8;
 	padding:10px;
 	color:black;
+	font-weight:bold;
+}
+.ca_category {
+	color:purple;
 }
 input.appButtons {
 	margin:0px;
@@ -69,6 +73,8 @@ input[type=checkbox] {
 }
 .topRightLinks {
 	padding-left:15px; 
+	color:black;
+	font-weight:bold;
 }
 .appIcons {
 	font-size:25px;
@@ -99,7 +105,8 @@ input[type=checkbox] {
 	color:blue;
 }
 .donateLink {
-	color:lightblue;
+	color:black;
+	font-weight:bold;
 }
 .dockerHubStar {
 	color: magenta;
