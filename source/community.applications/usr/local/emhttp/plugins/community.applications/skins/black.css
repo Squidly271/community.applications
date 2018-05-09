@@ -1,0 +1,127 @@
+.ca_template_icon {
+	width:180px;
+	float:left;
+	display:inline-block;
+	background-color:#303030;
+	margin:0px;
+	height:290px;
+	padding-top:10px;
+	border-radius:20px 0px 0px 20px;
+	color:white;
+}
+.ca_template{
+	border-radius:0px 20px 20px 0px;
+	display:inline-block;
+	width:370px;
+	text-align:left; 
+	float:left; 
+	overflow:auto; 
+	height:280px;
+	background-color:#cccccc;
+	padding:10px;
+	color:black;
+}
+
+input.appButtons {
+	margin:0px;
+}
+input.viewButton {
+	margin:1px;
+}
+input.sortButton {
+	margin:1px;
+}
+input.dirButton {
+	margin:1px;
+}
+input.allButtons {
+	margin:-1px;
+}
+input[type=checkbox] {
+	width:20px;
+	height:20px;
+}
+.enabledIcon {
+	cursor:pointer;
+	color:#005500;
+	font-size:25px;
+}
+.disabledIcon {
+	cursor:pointer;
+	color:#040404;
+	font-size:25px; 
+}
+.pinned {
+	cursor:pointer;
+	font-size:15px;
+	color:green;
+	padding:3px;
+}
+.unpinned {
+	cursor:pointer;
+	font-size:15px;
+	color:red;
+	padding:3px;
+	-webkit-transform: rotate(20deg);
+	-moz-transform: rotate(20deg);
+	-ms-transform: rotate(20deg);
+	-o-transform: rotate(20deg);
+	transform: rotate(20deg);
+}
+.topRightLinks {
+	padding-left:15px; 
+}
+.appIcons {
+	font-size:25px;
+	color:blue;
+}
+.myReadmore {
+	text-align:center
+}
+.myReadmoreButton {
+	color:#486DBA;
+}
+
+.displayIcon {
+	height:96px;
+	width:96px;
+}
+.displayIconTable {
+	height:48px;
+	width:48px;
+}
+.supportLink { 
+	color:blue;
+}
+.projectLink { 
+	color:blue; 
+}
+.webLink { 
+	color:blue;
+}
+.donateLink {
+	color:#28a39d;
+}
+.dockerHubStar {
+	color: magenta;
+	font-size:15px;
+	cursor:pointer
+}
+.dockerDisabled {
+	text-align:center;
+	width:auto;
+	color:purple;
+}
+.separateOfficial { 
+	text-align:center;
+	width:auto;
+	font-size:25px;
+}
+.displayBeta { 
+	cursor:pointer;
+}
+.newApp {
+	color:red;
+	font-size:15px;
+	cursor:pointer;
+}

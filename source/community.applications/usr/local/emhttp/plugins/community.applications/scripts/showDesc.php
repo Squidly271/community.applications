@@ -12,10 +12,10 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("webGui/include/Markdown.php");
 
-$fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
-$fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";
-$fontAwesomeGUI = "<i class='appIcons fa fa-globe' aria-hidden='true'></i>";
-$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' aria-hidden='true'></i>";
+$fontAwesomeInstall = "<i class='desc_appIcons fa fa-download' aria-hidden='true' color:lightblue;></i>";
+$fontAwesomeEdit = "<i class='desc_appIcons fa fa-edit' aria-hidden='true'></i>";
+$fontAwesomeGUI = "<i class='desc_appIcons fa fa-globe' aria-hidden='true'></i>";
+$fontAwesomeUpdate = "<i class='desc_appIcons fa fa-refresh' aria-hidden='true'></i>";
 $fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true' style='color:maroon; font-size:20px;cursor:pointer;'></i>";
 
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
@@ -164,7 +164,7 @@ if ( $Displayed && ! $template['NoInstall'] ) {
 				if ( $template['MyPath'] ) {
 					$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to reinstall the application' href='Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>$fontAwesomeInstall</a>&nbsp;&nbsp;";
 				} else {
-					$install              = "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to install the application' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>$fontAwesomeInstall</a>&nbsp;&nbsp;";
+					$install              = "&nbsp;&nbsp;<a style='color:red;' class='ca_apptooltip' title='Click to install the application' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>$fontAwesomeInstall</a>&nbsp;&nbsp;";
 					$templateDescription .= $template['BranchID'] ? "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'>$fontAwesomeInstall</a>&nbsp;&nbsp;" : $install;
 				}
 			}
@@ -230,6 +230,7 @@ if ( $template['Changes'] ) {
 	}
 	$templateDescription .= "</center><hr><center><font size='2'><b>Change Log</b><br><font size='0'>Note: not all maintainers keep up to date on change logs</font></center><br><br>$appInformation";
 }
+echo "<style>.desc_appIcons { color:lightblue; font-size:25px;} </style>";
 echo "<div style='overflow:scroll; max-height:450px; height:450px; overflow-x:hidden; overflow-y:auto;'>";
 echo $templateDescription;
 echo "</div>";

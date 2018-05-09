@@ -54,6 +54,7 @@ $pluginInstallPending = @file_get_contents($communityPaths['PluginInstallPending
 $iconDisabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#555555" : "#555555";
 $iconEnabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#009900" : "#009900";
 ?>
+<link href="<?=autov("/plugins/community.applications/skins/{$display['theme']}.css")?>" type='text/css' rel="stylesheet">
 <style>
 <? if ( $display['theme'] == "black" || $display['theme'] == "white"):?>
 	.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
@@ -65,35 +66,7 @@ $iconEnabledColor = ($display['theme'] == "black") || ($display['theme'] == "gra
 <?endif;?>
 
 table#templates_list tbody td.topRow{border-top:1px solid <?=$line_color?>;}
-input.appButtons {margin:0px;}
-input.viewButton {margin:1px;}
-input.sortButton {margin:1px;}
-input.dirButton {margin:1px;}
-input.allButtons {margin:-1px;}
-input[type=checkbox] {width:20px; height:20px;}
-.enabledIcon { cursor:pointer;color:#005500;font-size:25px; }
-.disabledIcon { cursor:pointer;color:#040404;font-size:25px; }
-.pinned { cursor:pointer;font-size:15px;color:green;padding:3px;}
-.unpinned { cursor:pointer;font-size:15px;color:red;padding:3px; -webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);-o-transform: rotate(20deg);transform: rotate(20deg);}
-.topRightLinks { padding-left:15px; }
-.appIcons { font-size:25px; }
-.myReadmore {text-align:center;}
-.displayIcon {height:96px;width:96px;}
-.displayIconTable {height:48px;width:48px;}
-.supportLink { color:red; }
-.projectLink { color:red; }
-.webLink { color:red; }
-.dockerHubStar { color: magenta; font-size:15px; cursor:pointer}
-.dockerDisabled { text-align:center; width:auto; color:purple;}
-.separateOfficial { text-align:center; width:auto; font-size:25px;}
-.displayBeta { cursor:pointer; }
-<? if ( $display['theme'] == 'azure' || $display['theme'] == 'white' ): ?>
-.donateLink { color:blue; }
-.newApp { color:blue; font-size:15px; cursor:pointer;}
-<?else:?>
-.donateLink { color:lightblue; }
-.newApp { color:lightblue; font-size:15px; cursor:pointer;}
-<?endif;?>
+
 </style>
 
 <script>
@@ -638,7 +611,7 @@ function sweetAlertBackground(color) {
 }
 
 function readMore() {
-	$('.desc_readmore').readmore({maxHeight:100,moreLink:"<a href='#' class='myReadmore' title='Show More'><i class='fa fa-chevron-down'></i></a>",lessLink:"<a class='myReadmore' href='#' title='Show Less'><i class='fa fa-chevron-up'></i></a>"});
+	$('.desc_readmore').readmore({maxHeight:100,moreLink:"<a href='#' class='myReadmore' title='Show More'><i class='fa fa-chevron-down myReadmoreButton'></i></a>",lessLink:"<a class='myReadmore' href='#' title='Show Less'><i class='fa fa-chevron-up myReadmoreButton'></i></a>"});
 }
 
 function doSearch(button) {
