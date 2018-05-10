@@ -110,11 +110,15 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	
 	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
-	$displayTemplate = $skin[$viewMode]['template'];
 	$iconClass = ( $viewMode == "detail" ) ? "displayIcon" : "displayIconTable";
 
 # Create entries for skins.  Note that MANY entries are not used in the current skins
 	foreach ($displayedTemplates as $template) {
+		$displayTemplate = $skin[$viewMode]['template'];
+		$oddEven = !$oddEven;
+		if ( $skin[$viewMode]['templateOdd'] ) {
+			$displayTemplate = !$oddEven ? $displayTemplate : $skin[$viewMode]['templateOdd'];
+		}
 		if ( $columnNumber == 0 ) {
 			$ct .= vsprintf($skin[$viewMode]['sol'],$templateFormatArray);
 		}

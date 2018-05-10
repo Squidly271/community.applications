@@ -20,6 +20,7 @@
 	background: linear-gradient(to bottom right,#cccccc,black);
 	padding:10px;
 	color:black;
+	font-weight:bold;
 }
 .ca_category {
 	color:purple;

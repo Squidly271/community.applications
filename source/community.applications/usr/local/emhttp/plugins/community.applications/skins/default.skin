@@ -4,7 +4,7 @@
         "header": "<div style='display:block;overflow:hidden;margin-left:%2$spx;'>",
         "sol": "<div style='height:300px;overflow:auto;margin:0px;min-width:%1$spx;display:inline-block;'>",
         "template": "<div class='ca_template_icon'><center>%75$s%59$s</center><center><font size='1'>%40$s</font></center><center>%43$s%41$s</center><figure><center>%65$s</center><figcaption><strong><center><font size='3'>%66$s</font><br>%46$s%45$s%44$s</center></strong></figcaption></figure><center><font color='red'>%58$s</font></center></div><div class='ca_template'><span class='ca_category'><b>Categories:</b> %21$s</span><br><span class='desc_readmore' style='display:block'><font color='red'>%57$s<br></font>%22$s%64$s</span><br>%39$s%38$s</b></strong><center>%68$s%69$s%70$s%71$s%72$s%73$s%74$s</center><br><center>%37$s%36$s%48$s<br>%35$s</center><font></div><div style='width:3px;height:300px;margin:0px;float:left;;'></div>",
-        "eol": "</div>",
+				"eol": "</div>",
         "footer": "</div></div>"
     },
     "table": {
