@@ -61,7 +61,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	$fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";
 	$fontAwesomeGUI = "<i class='appIcons fa fa-globe' aria-hidden='true'></i>";
 	$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' aria-hidden='true'></i>";
-	$fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true' style='color:maroon; font-size:20px;cursor:pointer;'></i>";
+	$fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true'></i>";
 	
 	if ( $communitySettings['dockerRunning'] ) {
 		$DockerTemplates = new DockerTemplates();
@@ -167,15 +167,15 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		}
 		$template['display_pinButton'] = "<i class='ca_tooltip fa fa-thumb-tack $pinned' title='$pinnedTitle' onclick='pinApp(this,&quot;".$template['Repository']."&quot;);' aria-hidden='true'></i>";
 		if ( $template['Uninstall'] ) {
-			$template['display_Uninstall'] = "<a class='ca_tooltip' title='Uninstall Application' ";
+			$template['display_Uninstall'] = "<a class='ca_tooltip ca_fa-delete' title='Uninstall Application' ";
 			$template['display_Uninstall'] .= ( $template['Plugin'] ) ? "onclick='uninstallApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" :	"onclick='uninstallDocker(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>";
 			$template['display_Uninstall'] .= "$fontAwesomeDelete</a>";
 		} else {
 			if ( $template['Private'] == "true" ) {
-				$template['display_Uninstall'] = "<a class='ca_tooltip' title='Remove Private Application' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['SortAuthor']}&quot;);'>$fontAwesomeDelete</a>";
+				$template['display_Uninstall'] = "<a class='ca_tooltip  ca_fa-delete' title='Remove Private Application' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['SortAuthor']}&quot;);'>$fontAwesomeDelete</a>";
 			}
 		}
-		$template['display_removable'] = $template['Removable'] ? "<a class='ca_tooltip' title='Remove Application From List' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>$fontAwesomeDelete</a>" : "";
+		$template['display_removable'] = $template['Removable'] ? "<a class='ca_tooltip ca_fa-delete' title='Remove Application From List' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>$fontAwesomeDelete</a>" : "";
 		if ( $template['display_Uninstall'] && $template['display_removable'] ) {
 			unset($template['display_Uninstall']); # prevent previously installed private apps from having 2 x's in previous apps section
 		}
@@ -225,7 +225,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 			$template['display_compatible'] = "NOTE: This application is listed as being NOT compatible with your version of unRaid<br>";
 			$template['display_compatibleShort'] = "Incompatible";
 		}
-		$template['display_author'] = "<a class='ca_tooltip' style='cursor:pointer' onclick='authorSearch(this.innerHTML);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
+		$template['display_author'] = "<a class='ca_tooltip ca_author' onclick='authorSearch(this.innerHTML);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
 		$displayIcon = $template['Icon'];
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
 		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";

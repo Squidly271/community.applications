@@ -2,7 +2,7 @@
 	width:180px;
 	float:left;
 	display:inline-block;
-	background-color:#303030;
+	background: linear-gradient(to bottom right,white,#303030);
 	margin:0px;
 	height:290px;
 	padding-top:10px;
@@ -17,13 +17,22 @@
 	float:left;
 	overflow:auto;
 	height:280px;
-	background-color:#c8c8c8;
+	background: linear-gradient(to bottom right,#b8b8b8,white);
 	padding:10px;
 	color:black;
 	font-weight:bold;
 }
 .ca_category {
 	color:purple;
+}
+.ca_author {
+	color:gray;
+	font-weight:bold;
+	cursor:pointer;
+}
+.ca_highlight {
+	color:#1e6d18;
+	font-weight:bold;
 }
 input.appButtons {
 	margin:0px;
@@ -78,7 +87,7 @@ input[type=checkbox] {
 }
 .appIcons {
 	font-size:25px;
-	color:blue;
+	color:#1c6343;
 }
 .myReadmore {
 	text-align:center
@@ -96,13 +105,16 @@ input[type=checkbox] {
 	width:48px;
 }
 .supportLink { 
-	color:blue;
+	color:purple; 
+	font-weight:bold;
 }
 .projectLink { 
-	color:blue; 
+	color:purple; 
+	font-weight:bold;
 }
 .webLink { 
-	color:blue;
+	color:purple; 
+	font-weight:bold;
 }
 .donateLink {
 	color:black;
@@ -130,4 +142,10 @@ input[type=checkbox] {
 	color:red;
 	font-size:15px;
 	cursor:pointer;
+}
+.ca_fa-delete {
+	color:#c70404;
+	font-size:20px;
+	position:relative;
+	top:2px;	
 }
