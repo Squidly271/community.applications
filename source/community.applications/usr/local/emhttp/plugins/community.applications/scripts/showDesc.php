@@ -152,6 +152,7 @@ $templateDescription .= "<form method='get'>";
 $templateDescription .= "<input type='hidden' name='csrf_token' value='$csrf_token'>";
 
 if ( $Displayed && ! $template['NoInstall'] ) {
+	$templateDescription .= "<br>";
 	if ( ! $template['Plugin'] ) {
 		if ( $communitySettings['dockerRunning'] ) {
 			if ( $selected ) {
@@ -194,8 +195,8 @@ $templateDescription .= $template['Support'] ? "&nbsp;&nbsp;<a href='".$template
 $templateDescription .= $template['Project'] ? "&nbsp;&nbsp;<a href='".$template['Project']."' target='_blank'><strong>Project Page</strong></a>&nbsp;&nbsp;" : "";
 $templateDescription .= $template['WebPageURL'] ? "&nbsp;&nbsp;<a href='".$template['WebPageURL']."' target='_blank'><strong>Web Page</strong></a>&nbsp;&nbsp;" : "";
 
-if ( ($donatelink) && ($donateimg) ) {
-	$templateDescription .= "<br><br><center><font size='0'>$donatetext</font><br><a href='$donatelink' target='_blank'><img src='$donateimg' style='max-height:25px;'></a>";
+if ($donatelink) {
+	$templateDescription .= "<br><br><center><font size='0'>$donatetext</font><br><a href='$donatelink' target='_blank'><img src='/plugins/community.applications/images/donate-button.png' style='max-height:25px;'></a>";
 	if ( $template['RepoName'] != "Squid's plugin Repository" ) {
 		$templateDescription .= "<br><font size='0'>The above link is set by the author of the template, not the author of Community Applications</font></center>";
 	}

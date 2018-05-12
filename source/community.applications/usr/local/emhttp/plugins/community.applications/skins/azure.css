@@ -1,16 +1,16 @@
 .ca_template_icon {
-	color:white;
+	color:#606E7F;
 	width:180px;
 	float:left;
 	display:inline-block;
-	background: linear-gradient(to bottom right,#e2e4e2,#303030);
+	background-color: #C7C5CB;
 	margin:0px;
 	height:290px;
 	padding-top:10px;
 	border-radius:20px 0px 0px 20px;
 }
 .ca_template {
-	color:black;
+	color:#606E7F;
 	border-radius:0px 20px 20px 0px;
 	display:inline-block;
 	width:370px;
@@ -18,16 +18,23 @@
 	float:left; 
 	overflow:auto; 
 	height:280px;
-	background: linear-gradient(to bottom right,#7a7a7a,#e2e4e2);
+	background-color:#EDEAEF;
 	padding:10px;
 }
 .ca_category {
 	color:purple;
 }
 .ca_author {
-	color:gray;
+	color:black;
 	font-weight:bold;
 	cursor:pointer;
+}
+.ca_applicationName {
+	color:black;
+	font-size:large;
+}
+.ca_repository {
+	color:black;
 }
 .ca_highlight {
 	color:#1e6d18;
@@ -71,7 +78,7 @@ input[type=checkbox] {
 .unpinned {
 	cursor:pointer;
 	font-size:15px;
-	color:red;
+	color:#820101;
 	padding:3px;
 	-webkit-transform: rotate(20deg);
 	-moz-transform: rotate(20deg);
@@ -81,13 +88,11 @@ input[type=checkbox] {
 }
 .topRightLinks {
 	padding-left:15px; 
-	color:black;
 	font-weight:bold;
 }
 .appIcons {
 	font-size:25px;
 	color:#1c6343;
-	font-weight:bold;
 }
 .myReadmore {
 	text-align:center
@@ -105,15 +110,12 @@ input[type=checkbox] {
 	width:48px;
 }
 .supportLink { 
-	color:purple;
 	font-weight:bold;
 }
 .projectLink { 
-	color:purple; 
 	font-weight:bold;
 }
 .webLink { 
-	color:purple;
 	font-weight:bold;
 }
 .donateLink {

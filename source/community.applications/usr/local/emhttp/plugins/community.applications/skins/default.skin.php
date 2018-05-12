@@ -140,6 +140,8 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 			$template['DonateText'] = "Donate To Author";
 		}
 		$template['display_DonateLink'] = $template['DonateLink'] ? "<font size='0'><a class='ca_tooltip donateLink' href='".$template['DonateLink']."' target='_blank' title='".$template['DonateText']."'>Donate To Author</a></font>" : "";
+		$template['display_DonateImage'] = $template['DonateLink'] ? "<font size='0'><a class='ca_tooltip donateLink' href='".$template['DonateLink']."' target='_blank' title='".$template['DonateText']."'><img height='20px;'src='/plugins/community.applications/images/donate-button.png'/></a></font>" : "";
+
 		$template['display_Project'] = $template['Project'] ? "<a class='ca_tooltip projectLink' target='_blank' title='Click to go the the Project Home Page' href='".$template['Project']."'>Project Home Page</a>" : "";
 		$template['display_Support'] = $template['Support'] ? "<a class='ca_tooltip supportLink' href='".$template['Support']."' target='_blank' title='Click to go to the support thread'>Support Thread</a>" : "";
 		$template['display_webPage'] = $template['WebPageURL'] ? "<a class='ca_tooltip webLink' title='Click to go to {$template['SortAuthor']}&#39;s web page' href='".$template['WebPageURL']."' target='_blank'>Web Page</a>" : "";
@@ -158,7 +160,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		}
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='red'><b>Moderator Comments:</b></font> <font color='purple'>".$template['ModeratorComment']."</font>" : "";
 		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=20px>" : "";
-		$template['display_Repository'] = "$RepoName $tempLogo";
+		$template['display_Repository'] = "<span class='ca_repository'>$RepoName $tempLogo</span>";
 		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star dockerHubStar' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
 		$template['display_Downloads'] = $template['downloads'] ? "<center>".number_format($template['downloads'])."</center>" : "<center>Not Available</center>";
 
@@ -241,7 +243,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
 			$template['display_iconSmall'] = "<img src='".$displayIcon."' class='$iconClass'>";
 		}
-		$template['display_dockerName'] = ( $communitySettings['dockerSearch'] == "yes" && ! $template['Plugin'] ) ? "<a class='ca_tooltip' data-appNumber='$ID' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search dockerHub for similar containers'>".$template['Name']."</a>" : $template['Name'];
+		$template['display_dockerName'] = ( $communitySettings['dockerSearch'] == "yes" && ! $template['Plugin'] ) ? "<a class='ca_tooltip ca_applicationName' data-appNumber='$ID' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search dockerHub for similar containers'>".$template['Name']."</a>" : "<span class='ca_applicationName'>{$template['Name']}</span>";
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
 		if ( ( $template['Beta'] == "true" ) ) {
@@ -537,7 +539,8 @@ function toNumericArray($template) {
 		$template['display_dockerInstallIcon'], #72
 		$template['display_pluginSettingsIcon'], #73
 		$template['dockerWebIcon'],            #74
-		$template['display_multi_install']     #75
+		$template['display_multi_install'],     #75
+		$template['display_DonateImage']			 #76
 	);
 }
 ?>
