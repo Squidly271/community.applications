@@ -565,7 +565,9 @@ function changePage(pageNumber) {
 
 function getWindowWidth() {
 	var width = $('.tabs').width();
-
+  if ( width <= 1080 ) {
+		width = $(window).outerWidth();
+	}
 	return width;
 }
 

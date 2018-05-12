@@ -106,7 +106,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	}
 	$maxColumnDisplayed = count($displayedTemplates) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($displayedTemplates);
 	$leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']) / 2;
-	$leftMargin = $communitySettings['windowWidth'] <= 1080 ? 0 : intval($leftMargin); # minimum window with supported by Dynamix
+  $leftMargin = ($leftMargin < 0) ? 0 : $leftMargin;
 	
 	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
