@@ -1,25 +1,39 @@
 .ca_template_icon {
 	color:#606E7F;
-	width:180px;
+	width:370px;
 	float:left;
 	display:inline-block;
 	background-color: #C7C5CB;
 	margin:0px;
-	height:290px;
+	height:150px;
 	padding-top:10px;
-	border-radius:20px 0px 0px 20px;
+	border-radius:20px 20px 0px 0px;
 }
 .ca_template {
 	color:#606E7F;
-	border-radius:0px 20px 20px 0px;
+	border-radius:0px 0px 20px 20px;
 	display:inline-block;
-	width:370px;
 	text-align:left; 
-	float:left; 
-	overflow:auto; 
-	height:280px;
+ 	overflow:auto; 
+	height:270px;
+	width:360px;
+	padding-left:5px;
+	padding-right:5px;
 	background-color:#EDEAEF;
-	padding:10px;
+}
+.ca_icon_wide {
+	display: inline-block;
+	float:left;
+	width:95px;
+	margin-left:25px;
+}
+.ca_wide_info {
+	display: inline-block;
+	float:left;
+	text-align:left;
+	margin-left:10px;
+	margin-top:15px;
+	width:200px;
 }
 .ca_category {
 	color:purple;
@@ -148,6 +162,7 @@ input[type=checkbox] {
 .ca_fa-delete {
 	color:#c70404;
 	font-size:20px;
-	position:relative;
+	position:relative; float:right;
 	top:2px;
+	cursor:pointer;
 }

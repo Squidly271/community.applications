@@ -11,7 +11,6 @@ require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerCli
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
-require_once($communityPaths['defaultSkinPHP']);
 
 $unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
 $unRaidVersion = $unRaidSettings['version'];
@@ -23,6 +22,12 @@ $unRaidVersion = $unRaidSettings['version'];
 ################################################################################
 
 $communitySettings = parse_plugin_cfg("community.applications");
+$communityPaths['defaultSkin'] = "/usr/local/emhttp/plugins/community.applications/skins/{$communitySettings['skin']}/skin.json";
+$skinSettings = readJsonFile($communityPaths['defaultSkin']);
+$communityPaths['defaultSkinPHP'] = $skinSettings['detail']['php'];
+
+require_once($communityPaths['defaultSkinPHP']);
+
 $communitySettings['appFeed']       = "true"; # set default for deprecated setting
 $communitySettings['maxPerPage']    = getPost("maxPerPage",$communitySettings['maxPerPage']);  # Global POST.  Used damn near everywhere
 $communitySettings['maxColumn']     = 5; # Pointless on 6.3  Gets overridden on 6.4 anyways
@@ -191,7 +196,7 @@ case 'get_content':
 					echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
 					$countSuffix = count($displayApplications['community']) > 1 ? "s" : "";
 					echo "<br><center><font size='4' color='purple'><b>Random App$countSuffix Of The Day</b></font><br><br>";
-					echo my_display_apps("detail",$displayApplications['community'],"1",$runningDockers,$imagesDocker);
+					echo my_display_apps($displayApplications['community'],"1",$runningDockers,$imagesDocker);
 					break;
 				} else {
 					echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
@@ -298,7 +303,7 @@ case 'get_content':
 	$displayApplications['community'] = $display;
 
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
-	display_apps($sortOrder['viewMode']);
+	display_apps();
 	break;
 
 ########################################################
@@ -374,7 +379,7 @@ case 'display_content':
 	getMaxColumns($windowWidth);
 
 	if ( file_exists($communityPaths['community-templates-displayed']) ) {
-		display_apps($sortOrder['viewMode'],$pageNumber,$selectedApps);
+		display_apps($pageNumber,$selectedApps);
 	} else {
 		echo "<center><font size='4'>$selectCategoryMessage</font></center>";
 	}
@@ -393,7 +398,7 @@ case 'change_docker_view':
 
 	$file = readJsonFile($communityPaths['dockerSearchResults']);
 	$pageNumber = $file['page_number'];
-	displaySearchResults($pageNumber,$sortOrder['viewMode']);
+	displaySearchResults($pageNumber);
 	break;
 
 #######################################################################
@@ -679,7 +684,7 @@ case 'search_dockerhub':
 
 	writeJsonFile($communityPaths['dockerSearchResults'],$dockerFile);
 	echo suggestSearch($filter,false);
-	displaySearchResults($pageNumber, $sortOrder['viewMode']);
+	displaySearchResults($pageNumber);
 	break;
 
 #####################################################################
@@ -1120,17 +1125,6 @@ case 'statistics':
 case 'changeSettings':
 	file_put_contents($communityPaths['pluginSettings'],create_ini_file($communitySettings,false));
 	echo "settings updated";
-	break;
-
-##########################################
-#                                        #
-# Updates the viewMode for next instance #
-#                                        #
-##########################################
-case 'changeViewModeSettings':
-	$communitySettings['viewMode'] = getPost("view",$communitySettings['viewMode']);
-	file_put_contents($communityPaths['pluginSettings'],create_ini_file($communitySettings,false));
-	echo "ok";
 	break;
 
 #######################################

@@ -39,35 +39,27 @@ if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
 
+$skinPath = "/usr/local/emhttp/plugins/community.applications/skins/{$cfg['skin']}";
+$communityPaths['defaultSkin'] = "$skinPath/skin.json";
+
 $tabMode = "_self";
 $line_color = $display['theme']=='black' ? '#202020' : '#E8E8E8';
 
 $timeNew = str_replace("-","",$cfg['timeNew']);
 $categoryTitle = "Current Category";
-if ( $cfg['viewMode'] == "icon" ) { $cfg['viewMode'] = "detail"; } # removed icon display mode
 
 $template = json_decode(file_get_contents($communityPaths['defaultSkin']),true);
 
 $pluginInstallPending = @file_get_contents($communityPaths['PluginInstallPending']);
 @unlink($communityPaths['PluginInstallPending']);
 
-$iconDisabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#555555" : "#555555";
-$iconEnabledColor = ($display['theme'] == "black") || ($display['theme'] == "gray") ? "#009900" : "#009900";
 ?>
-<link href="<?=autov("/plugins/community.applications/skins/{$display['theme']}.css")?>" type='text/css' rel="stylesheet">
-<style>
-<? if ( $display['theme'] == "black" || $display['theme'] == "white"):?>
-	.searchSubmit{font-family:'FontAwesome';width:29px;height:26px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
-	#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;}
+<?if ( is_file("$skinPath/default.css") ):?>
+<link href="<?=autov("/plugins/community.applications/skins/{$cfg['skin']}/default.css")?>" type='text/css' rel='stylesheet'>
 <?endif;?>
-<? if ( $display['theme'] == "gray" || $display['theme'] == "azure"):?>
-	.searchSubmit{font-family:'FontAwesome';width:29px;height:29px;border:1px solid #dadada;border-radius:0px 4px 4px 0px;font-size:11px;position:relative; top:-7px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
-	#searchBox{margin-left:10px;margin-right:0;position:relative;top:-6px;border:1px solid;border-radius:4px 0px 0px 4px;}
+<?if ( is_file("$skinPath/{$display['theme']}.css") ):?>
+<link href="<?=autov("/plugins/community.applications/skins/{$cfg['skin']}/{$display['theme']}.css")?>" type='text/css' rel="stylesheet">
 <?endif;?>
-
-table#templates_list tbody td.topRow{border-top:1px solid <?=$line_color?>;}
-
-</style>
 
 <script>
 var URL = "/plugins/<?=$plugin?>/include/exec.php";
@@ -165,15 +157,18 @@ $(function(){
 
 	$("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
 
-<?if ( ! $searchBarFocus ):?>
+	<?if ( $searchBarFocus ):?>
+	$("#CommunityApplicationsBody").keydown(function() {
+		focusOnSearch();
+	});
+	<?endif;?>
+	
 	$('#searchBox').keyup(function(e) {
 		if (e.which == 13) {
 			doSearch(false);
 		}
 	});
-<?else:?>
-	searchInitialize();
-<?endif;?>
+
 
 	$('.ca_staticTips').tooltipster({
 	  animationDuration: [2000,350],
@@ -209,7 +204,6 @@ $(function(){
 			instance.content(displayContent);
 		},
 		functionReady: function(instance,helper) {
-			$(".viewButton").click(function() { updateViewMode(this.id,$(this).attr("class")); });
 			$(".sortButton,.dirButton").click(function() { changeSortOrder(this.id,$(this).attr("class")); });
 		},
 		functionAfter: function(instance,helper) {
@@ -347,9 +341,6 @@ $(function(){
 	$(".multi_installButton").click(function()	{ installMulti(); });
 	$(".multi_installClear").click(function()		{ clearMultiInstall(); });
 	$("#homeIcon").click(function()							{ appStore(); });
-
-	if ( "<?=$cfg['viewMode']?>" == "table" )  $("#viewTable").prop("disabled",true);
-	if ( "<?=$cfg['viewMode']?>" == "detail" ) $("#viewDetail").prop("disabled",true);
 
 /* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
@@ -564,11 +555,7 @@ function changePage(pageNumber) {
 }
 
 function getWindowWidth() {
-	var width = $('.tabs').width();
-  if ( width <= 1080 ) {
-		width = $(window).outerWidth();
-	}
-	return width;
+	return $('.tabs').width();
 }
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
@@ -767,22 +754,6 @@ function enableButtons() {
 	data_selected_category = "";
 }
 
-function changeDockerView(viewButton) {
-	$("#"+viewButton).prop("disabled",true);
-
-	var sortOrder = getSortOrder();
-
-	totalDisplayed = $("#Total").html();
-	$.post(URL,{action:'change_docker_view',sortOrder:sortOrder},function(data) {
-		if (data) {
-			myCloseAlert();
-			updateDisplay(data);
-			readMore();
-			setToolTip();
-		}
-	});
-}
-
 function changeSortOrder(button,buttonClass,previousApps) {
 	var windowWidth = getWindowWidth();
 	var pageNumber = $("#currentPageNumber").html();
@@ -802,18 +773,14 @@ function changeSortOrder(button,buttonClass,previousApps) {
 
 	mySpinner();
 	var sortOrder = getSortOrder();
-	if ( data_docker ) {
-		changeDockerView(button);
-	} else {
-		$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,maxPerPage:maxPerPage,selected:selected},function(data3) {
-			if (data3) {
-				updateDisplay(data3);
-				readMore();
-				setToolTip();
-				myCloseAlert();
-			}
-		});
-	}
+	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,maxPerPage:maxPerPage,selected:selected},function(data3) {
+		if (data3) {
+			updateDisplay(data3);
+			readMore();
+			setToolTip();
+			myCloseAlert();
+		}
+	});
 }
 
 function getPerPage() {
@@ -823,9 +790,6 @@ function getPerPage() {
 function getSortOrder() {
 	var sortOrder = new Object();
 	var jsonOrder = new Object();
-
-	if ( $("#viewTable").prop("disabled") )      { sortOrder.viewMode = ["viewMode","table"];            jsonOrder.viewMode = "#viewTable"; }
-	if ( $("#viewDetail").prop("disabled") )     { sortOrder.viewMode = ["viewMode","detail"];           jsonOrder.viewMode = "#viewDetail"; }
 
 	if ( $("#Name").prop("disabled") )           { sortOrder.sortBy = ["sortBy","Name"];                 jsonOrder.sortBy = "#Name"; }
 	if ( $("#RepoName").prop("disabled") )       { sortOrder.sortBy = ["sortBy","RepoName"];             jsonOrder.sortBy = "#RepoName"; }
@@ -837,7 +801,7 @@ function getSortOrder() {
 	if ( $("#Down").prop("disabled") )           { sortOrder.sortDir = ["sortDir","Down"];               jsonOrder.sortDir = "#Down"; }
 
 	$("#sortorder").attr("data-sortorder",JSON.stringify(jsonOrder));
-	return [sortOrder.viewMode,sortOrder.sortBy,sortOrder.sortDir];
+	return [sortOrder.sortBy,sortOrder.sortDir];
 }
 
 function forceSortOrder(sort,dir) {
@@ -863,7 +827,6 @@ function resetSortByDate() {
 function setSortOrder() {
 	var sortOrder = JSON.parse($("#sortorder").attr("data-sortorder"));
 	$(".viewButton,.sortButton,.dirButton").prop("disabled",false);
-	$(sortOrder.viewMode).prop("disabled",true);
 	$(sortOrder.sortBy).prop("disabled",true);
 	$(sortOrder.sortDir).prop("disabled",true);
 }
@@ -969,7 +932,7 @@ function dockerSearch(pageNumber) {
 	$(".appButtons").prop("disabled",false);
 	$("#AppStore").prop("disabled",true);
 	$("#AppsOnly,#New,#UNCATEGORIZED,#All,#sortButtons").show();
-	enableIcon("#sortIcon",true);
+	enableIcon("#sortIcon",false);
 	$(".dockerSearch,#templateSortButtons,.multi_installDiv").hide();
 	$("#currentSection").html("Available Apps");
 	$("#Category").html("DockerHub Search Results For <font color='red'>"+filter+"</font> <span id='pageNumber'></span>");
@@ -1310,17 +1273,6 @@ function changeDisplayed() {
 	});
 }
 
-function updateViewMode(id,buttonClass) {
-	var maxPerPage = $("#maxPerPage").val();
-	if ( id == "viewTable" )  { var view = "table"; }
-	if ( id == "viewDetail" ) { var view = "detail"; }
-	$.post(URL,{action:'changeViewModeSettings',maxPerPage:maxPerPage,view:view},function(data) {
-		if (data) {
-			changeSortOrder(id,buttonClass);
-		}
-	});
-}
-
 function makePlural(string,count) {
 	if ( (count > 1) || (count == 0) ) {
 		return string + "s";
@@ -1450,39 +1402,10 @@ function updateDisplay(data) {
 	enableSearch();
 }
 
-function searchInitialize() {
-	$("#CommunityApplicationsBody").one("keypress",function(e) {
-		focusOnSearch(e);
-	});
-}
+
 function focusOnSearch(event) {
 <?if ( $searchBarFocus ):?>
-	if ( $("#searchBox").is(":disabled") ) { searchInitialize(); return; }
-	if ( event.key.length == 1 && event.key != ' ' ) {
-		$("#CommunityApplicationsBody").off("keypress");
-		disableTooltipster();
-		sweetAlertBackground("white");
-		swal({
-			title: "Search",
-			text: "Search descriptions, names, authors, repositories, etc",
-			type: "input",
-			inputValue: event.key,
-			showCancelButton: true,
-			closeOnConfirm: false,
-			confirmButtonText: "Search",
-			animation: false,
-			html: true
-		},function(inputValue){
-			if (inputValue) {
-				$("#searchBox").val(inputValue);
-				doSearch();
-			}
-			searchInitialize();
-			enableTooltipster();
-		});
-	} else {
-		searchInitialize();
-	}
+  $("#searchBox").focus();
 <?endif;?>
 }
 
@@ -1499,17 +1422,10 @@ function resizeDisplay() {
 		var newWidth = getWindowWidth();
 		var oldWidth = data_oldWindowWidth;
 		data_oldWindowWidth = newWidth;
-		var view = JSON.parse($("#sortorder").attr("data-sortorder"));
-		switch ( view.viewMode ) {
-			case '#viewDetail':
-				var divisor = <?=$template['detail']['templateWidth']?>;
-				break;
-			default:
-				return;
-				break;
-		}
+		var divisor = <?=$template['detail']['templateWidth']?>;
+
 <?if ( $mobileDevice ):?>  // Mobile devices only check if columns change.  Computers always check to re-center the display
-		if (Math.floor(newWidth / divisor) != Math.floor(oldWidth / divisor) ) {
+		if ( Math.floor(newWidth / divisor) != Math.floor(oldWidth / divisor) ) {
 			updateDisplay(" ");
 			clearTimeout(window.resizeEvt);
 			window.resizeEvt = setTimeout(function(){
@@ -1570,9 +1486,6 @@ function resizeDisplay() {
 
 <div>
 <div id='tooltipviews' style='display:none;'>
-<span id='sortButtons'>View Mode:
-<input type='button' class='viewButton' value='Tables' id='viewTable'>
-<input type='button' class='viewButton' value='Icon Details' id='viewDetail'>
 <span id='templateSortButtons'>Sort By:
 <input type='button' class='sortButton' id='Name' value='Name' disabled>
 <input type='button' class='sortButton' id='RepoName' value='Repository'>

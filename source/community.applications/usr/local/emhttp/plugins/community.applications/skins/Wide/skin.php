@@ -10,7 +10,7 @@
 # Routines that actually displays the template containers. #
 #                                                          #
 ############################################################
-function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
+function display_apps($pageNumber=1,$selectedApps=false) {
 	global $communityPaths, $separateOfficial, $officialRepo, $communitySettings;
 
 	$file = readJsonFile($communityPaths['community-templates-displayed']);
@@ -27,7 +27,7 @@ function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
 			$logos = readJsonFile($communityPaths['logos']);
 			$display .= $logos[$officialRepo] ? "<img src='".$logos[$officialRepo]."' style='width:48px'>&nbsp;&nbsp;" : "";
 			$display .= "$officialRepo</div><br>";
-			$display .= my_display_apps($viewMode,$officialApplications,1,true,$selectedApps);
+			$display .= my_display_apps($officialApplications,1,true,$selectedApps);
 		}
 	}
 	if ( count($communityApplications) ) {
@@ -35,7 +35,7 @@ function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
 			$navigate[] = "<a href='#COMMUNITY'>Community Supported Applications</a>";
 			$display .= "<div class='separateOfficial' id='COMMUNITY'>Community Supported Applications</div><br>";
 		}
-		$display .= my_display_apps($viewMode,$communityApplications,$pageNumber,false,$selectedApps);
+		$display .= my_display_apps($communityApplications,$pageNumber,false,$selectedApps);
 	}
 	unset($navigate[0]);
 
@@ -54,8 +54,10 @@ function display_apps($viewMode,$pageNumber=1,$selectedApps=false) {
 # skin specific PHP
 #my_display_apps(), getPageNavigation(), displaySearchResults() must accept all parameters
 #note that many template entries in my_display_apps() are not actually used in the skin, but are present for future possible use.
-function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
+function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
 	global $communityPaths, $communitySettings, $plugin, $displayDeprecated;
+	
+	$viewMode = "detail";
 	
 	$fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
 	$fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";
@@ -106,7 +108,6 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 	}
 	$maxColumnDisplayed = count($displayedTemplates) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($displayedTemplates);
 	$leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']) / 2;
-  $leftMargin = ($leftMargin < 0) ? 0 : $leftMargin;
 	
 	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
@@ -158,7 +159,7 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		if ( $template['Deprecated'] ) {
 			$template['ModeratorComment'] .= "<br>This application has been deprecated.";
 		}
-		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='red'><b>Moderator Comments:</b></font> <font color='purple'>".$template['ModeratorComment']."</font>" : "";
+		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
 		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=20px>" : "";
 		$template['display_Repository'] = "<span class='ca_repository'>$RepoName $tempLogo</span>";
 		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star dockerHubStar' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
@@ -247,22 +248,19 @@ function my_display_apps($viewMode,$file,$pageNumber=1,$officialFlag=false,$sele
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
 		if ( ( $template['Beta'] == "true" ) ) {
-			$template['display_dockerName'] .= "<br><span class='ca_tooltip displayBeta' title='Beta Container &#13;See support forum for potential issues'>Beta</span>";
+			$template['display_dockerBeta'] .= "<span class='ca_tooltip displayBeta' title='Beta Container &#13;See support forum for potential issues'>Beta</span>";
 		}
 # Entries created.  Now display it
 		$t .= vsprintf($displayTemplate,toNumericArray($template));
 
 		$columnNumber=++$columnNumber;
 
-		if ( $viewMode == "detail" ) {
-			if ( $columnNumber == $communitySettings['maxDetailColumns'] ) {
-				$columnNumber = 0;
-				$t .= vsprintf($skin[$viewMode]['eol'],$templateFormatArray);
-			}
-		} else {
+
+		if ( $columnNumber == $communitySettings['maxDetailColumns'] ) {
 			$columnNumber = 0;
 			$t .= vsprintf($skin[$viewMode]['eol'],$templateFormatArray);
 		}
+
 
 		$ct .= $t;
 		$count++;
@@ -357,7 +355,7 @@ function dockerNavigate($num_pages, $pageNumber) {
 # function that actually displays the results from dockerHub #
 #                                                            #
 ##############################################################
-function displaySearchResults($pageNumber,$viewMode) {
+function displaySearchResults($pageNumber) {
 	global $communityPaths, $communitySettings, $plugin;
 
 	$tempFile = readJsonFile($communityPaths['dockerSearchResults']);
@@ -368,18 +366,11 @@ function displaySearchResults($pageNumber,$viewMode) {
 	echo dockerNavigate($num_pages,$pageNumber);
 	echo "<br><br>";
 
-	switch ($viewMode) {
-		case "table":
-			$t =  "<table class='tablesorter'><thead><th></th><th></th><th>Container</th><th>Author</th><th>Stars</th><th>Description</th></thead>";
-			$iconSize = 48;
-			break;
-		case "detail":
-			$t = "<table class='tablesorter'>";
-			$viewMode = "icon";
-			$maxColumn = 2;
-			$iconSize = 96;
-			break;
-	}
+	$t = "<table class='tablesorter'>";
+	$viewMode = "icon";
+	$maxColumn = 2;
+	$iconSize = 96;
+
 
 	$column = 0;
 
@@ -399,61 +390,49 @@ function displaySearchResults($pageNumber,$viewMode) {
 		$result['display_official'] =  $result['Official'] ? "<strong><font color=red>Official</font> ".$result['Name']." container.</strong><br><br>": "";
 		$result['display_official_short'] = $result['Official'] ? "<font color='red'><strong>Official</strong></font>" : "";
 
-		if ( $viewMode == "icon" ) {
-			$t .= "<td>";
-			$t .= "<center>".$result['display_official_short']."</center>";
 
-			$t .= "<center>Author: </strong><font size='3'><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For Containers From {$result['Author']}'>{$result['Author']}</a></font></center>";
-			$t .= "<center>".$result['display_stars']."</center>";
+		$t .= "<td>";
+		$t .= "<center>".$result['display_official_short']."</center>";
 
-			$description = "Click to go to the dockerHub website for this container";
-			if ( $result['Description'] ) {
-				$description = $result['Description']."<br><br>$description";
-			}
-			$description =str_replace("'","&#39;",$description);
-			$description = str_replace('"',"&#34;",$description);
+		$t .= "<center>Author: </strong><font size='3'><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For Containers From {$result['Author']}'>{$result['Author']}</a></font></center>";
+		$t .= "<center>".$result['display_stars']."</center>";
 
-			$t .= "<figure><center><a class='ca_tooltip' href='".$result['DockerHub']."' title='$description' target='_blank'>";
-			$t .= "<img style='width:{$iconSize}px;height:{$iconSize}px;' src='".$result['Icon']."'></a>";
-			$t .= "<figcaption><strong><center><font size='3'><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For Similar Containers'>".$result['Name']."</a></font></center></strong></figcaption></figure>";
-			if ( $communitySettings['dockerRunning'] == "true" ) {
-				$t .= "<center><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)' style='margin:0px'></center>";
-			}
-			$t .= "</td>";
-
-			if ( $maxColumn == 2 ) {
-				$t .= "<td style='display:inline-block;width:350px;text-align:left;'>";
-				$t .= "<br><br><br>";
-				$t .= $result['display_official'];
-
-				if ( $result['Description'] ) {
-					$t .= "<strong><span class='desc_readmore' style='display:block'>".$result['Description']."</span></strong><br><br>";
-				} else {
-					$t .= "<em>Container Overview not available.</em><br><br>";
-				}
-				$t .= "Click container's icon for full description<br><br>";
-				$t .= "</td>";
-			}
-			$column = ++$column;
-			if ( $column == $maxColumn ) {
-				$column = 0;
-				$t .= "</tr><tr>";
-			}
+		$description = "Click to go to the dockerHub website for this container";
+		if ( $result['Description'] ) {
+			$description = $result['Description']."<br><br>$description";
 		}
-		if ( $viewMode == "table" ) {
-			$t .= "<tr><td><a class='ca_tooltip' href='".$result['DockerHub']."' target='_blank' title='Click to go to the dockerHub website for this container'>";
-			$t .= "<img src='".$result['Icon']."' style='width:{$iconSize}px;height:{$iconSize}px;'>";
-			$t .= "</a></td>";
-			$t .= "<td><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)';></td>";
-			$t .= "<td><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search Similar Containers'>".$result['Name']."</a></td>";
-			$t .= "<td><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For More Containers From {$result['Author']}'>{$result['Author']}</a></td>";
-			$t .= "<td>".$result['display_stars']."</td>";
-			$t .= "<td>";
+		$description =str_replace("'","&#39;",$description);
+		$description = str_replace('"',"&#34;",$description);
+
+		$t .= "<figure><center><a class='ca_tooltip' href='".$result['DockerHub']."' title='$description' target='_blank'>";
+		$t .= "<img style='width:{$iconSize}px;height:{$iconSize}px;' src='".$result['Icon']."'></a>";
+		$t .= "<figcaption><strong><center><font size='3'><a class='ca_tooltip' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For Similar Containers'>".$result['Name']."</a></font></center></strong></figcaption></figure>";
+		if ( $communitySettings['dockerRunning'] == "true" ) {
+			$t .= "<center><input type='button' value='Add' onclick='dockerConvert(&#39;".$result['ID']."&#39;)' style='margin:0px'></center>";
+		}
+		$t .= "</td>";
+
+		if ( $maxColumn == 2 ) {
+			$t .= "<td style='display:inline-block;width:350px;text-align:left;'>";
+			$t .= "<br><br><br>";
 			$t .= $result['display_official'];
-			$t .= "<strong><span class='desc_readmore' style='display:block'>".$result['Description']."</span></strong></td>";
-			$t .= "</tr>";
+
+			if ( $result['Description'] ) {
+				$t .= "<strong><span class='desc_readmore' style='display:block'>".$result['Description']."</span></strong><br><br>";
+			} else {
+				$t .= "<em>Container Overview not available.</em><br><br>";
+			}
+			$t .= "Click container's icon for full description<br><br>";
+			$t .= "</td>";
+		}
+		$column = ++$column;
+		if ( $column == $maxColumn ) {
+			$column = 0;
+			$t .= "</tr><tr>";
 		}
 	}
+		
+
 	$t .= "</table>";
 	echo $t;
 	echo dockerNavigate($num_pages,$pageNumber);
@@ -540,7 +519,8 @@ function toNumericArray($template) {
 		$template['display_pluginSettingsIcon'], #73
 		$template['dockerWebIcon'],            #74
 		$template['display_multi_install'],     #75
-		$template['display_DonateImage']			 #76
+		$template['display_DonateImage'],			 #76
+		$template['display_dockerBeta']					#77
 	);
 }
 ?>
