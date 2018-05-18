@@ -154,6 +154,7 @@ var data_selected = "";
 var data_lastUpdated = 0;
 var data_nextpage = 0;
 var data_prevpage = 0;
+var dockerSearchFlag = false;
 
 function isTouch() {
   try{ document.createEvent("TouchEvent"); return true; }
@@ -171,17 +172,25 @@ $(function(){
 	});
 	<?endif;?>
 	
-	if ( isTouch() ) {
+	if ( !isTouch() ) {
 		$("#CommunityApplicationsBody").on("swipeleft",swipelefthandler);
 		function swipelefthandler(event) {
 			if ( data_nextpage > 1 ) {
-				changePage(data_nextpage);
+				if ( dockerSearchFlag ) {
+					dockerSearch(data_nextpage);
+				} else {
+					changePage(data_nextpage);
+				}
 			}
 		}
 		$("#CommunityApplicationsBody").on("swiperight",swiperighthandler);
 		function swiperighthandler(event) {
 			if ( data_prevpage > 0 ) {
-				changePage(data_prevpage);
+				if ( dockerSearchFlag ) {
+					dockerSearch(data_prevpage);
+				} else {
+					changePage(data_prevpage);
+				}
 			}
 		}
 	}

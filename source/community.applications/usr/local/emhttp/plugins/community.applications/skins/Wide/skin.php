@@ -338,6 +338,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
 	$nextPage = $pageNumber + 1;
 	$o .= ( $pageNumber < $totalPages ) ? "<font size='3' color='green'><i class='fa fa-arrow-circle-right' aria-hidden='true' style='cursor:pointer' title='Go To Page $nextPage' onclick='{$my_function}(&quot;$nextPage&quot;);'></i></font>" : "<font size='3' color='grey'><i class='fa fa-arrow-circle-right' aria-hidden='true'></i></font>";
 	$swipeScript .= ( $pageNumber < $totalPages ) ? "data_nextpage = $nextPage;" : "data_nextpage = 0;";
+	$swipeScript .= ( $dockerSearch ) ? "dockerSearchFlag = true;" : "dockerSearchFlag = false";
 	$swipeScript .= "</script>";
 	$o .= "</font></b></center><span id='currentPageNumber' hidden>$pageNumber</span>";
 	return $o.$swipeScript;
