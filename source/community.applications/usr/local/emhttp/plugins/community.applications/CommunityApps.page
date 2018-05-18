@@ -61,6 +61,7 @@ $pluginInstallPending = @file_get_contents($communityPaths['PluginInstallPending
 <link href="<?=autov("/plugins/community.applications/skins/{$cfg['skin']}/{$display['theme']}.css")?>" type='text/css' rel="stylesheet">
 <?endif;?>
 
+<script src='/plugins/community.applications/javascript/jquery.mobile.custom.min.js'></script>
 <script>
 var URL = "/plugins/<?=$plugin?>/include/exec.php";
 var last = $('input[name$="tabs"]').length;
@@ -151,6 +152,13 @@ var data_subcategory = "";
 var data_selected_subcategory = "";
 var data_selected = "";
 var data_lastUpdated = 0;
+var data_nextpage = 0;
+var data_prevpage = 0;
+
+function isTouch() {
+  try{ document.createEvent("TouchEvent"); return true; }
+  catch(e){ return false; }
+}
 
 $(function(){
 	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' disabled><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
@@ -162,6 +170,21 @@ $(function(){
 		focusOnSearch();
 	});
 	<?endif;?>
+	
+	if ( isTouch() ) {
+		$("#CommunityApplicationsBody").on("swipeleft",swipelefthandler);
+		function swipelefthandler(event) {
+			if ( data_nextpage > 1 ) {
+				changePage(data_nextpage);
+			}
+		}
+		$("#CommunityApplicationsBody").on("swiperight",swiperighthandler);
+		function swiperighthandler(event) {
+			if ( data_prevpage > 0 ) {
+				changePage(data_prevpage);
+			}
+		}
+	}
 	
 	$('#searchBox').keyup(function(e) {
 		if (e.which == 13) {
@@ -1165,6 +1188,8 @@ function uninstallDocker(application,humanName) {
 }
 
 function appStore() {
+  data_nextpage = 0;
+	data_prevpage = 0;
 	initializeAppStore();
 	getContent(true,'INITIALIZE','None Selected');
 	$("#Category").html("None Selected");
