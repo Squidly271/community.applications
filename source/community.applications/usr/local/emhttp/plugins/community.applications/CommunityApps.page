@@ -172,7 +172,7 @@ $(function(){
 	});
 	<?endif;?>
 	
-	if ( !isTouch() ) {
+	if ( isTouch() ) {
 		$("#CommunityApplicationsBody").on("swipeleft",swipelefthandler);
 		function swipelefthandler(event) {
 			if ( data_nextpage > 1 ) {
