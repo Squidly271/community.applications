@@ -17,11 +17,11 @@ $caCredits = "
         <td><strong><font color='coral'>bonienl</font></strong></td>
         <td><font color='coral'>Additional Contributions</font></td>
       </tr>
-      <tr>
-        <td></td>
-        <td><strong><font color='coral'>eschultz</font></strong></td>
-        <td><font color='coral'>Additional Contributions</font></td>
-      </tr>
+			<tr>
+				<td></td>
+				<td><strong><font color='coral'>eschultz</font></strong></td>
+				<td><font color='coral'>Additional Contributions</font></td>
+			</tr>
       <tr>
         <td></td>
         <td><strong><font color='coral'>Kode</font></strong></td>
@@ -37,11 +37,11 @@ $caCredits = "
         <td><strong><font color='coral'>gridrunner</font></strong></td>
         <td><font color='coral'>Additional Testing</font></td>
       </tr>
-      <tr>
-        <td></td>
-        <td><strong><font color='coral'>Sparklyballs</font></strong></td>
-        <td><font color='coral'>Additional Testing</font></td>
-      </tr>
+			<tr>
+				<td></td>
+				<td><strong><font color='coral'>Sparklyballs</font></strong></td>
+				<td><font color='coral'>Additional Testing</font></td>
+			</tr>
     </table></center>
     <br>
     <center><em><font size='1'>Copyright &copy; 2015-2018 Andrew Zawadzki</font></em></center>
