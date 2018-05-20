@@ -35,6 +35,7 @@
 }
 .ca_repository {
 	color:black;
+  font-size:10px;
 }
 .ca_highlight {
 	color:#1e6d18;
@@ -93,6 +94,7 @@ input[type=checkbox] {
 .appIcons {
 	font-size:25px;
 	color:#1c6343;
+  cursor:pointer;
 }
 .myReadmore {
 	text-align:center

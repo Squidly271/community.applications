@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.05.05">
-<!ENTITY md5       "1386e4df97c44043289a69aaad9107c7">
+<!ENTITY version   "2018.05.20">
+<!ENTITY md5       "cbc26372bca01792048f6a5995d0b6ed">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0">
 
 <CHANGES>
+###2018.05.20
+- Major template display redesign
+- Removed: Table Mode
+- Added: Narrow or Wide skin (selectable from settings)
+- Changed: DockerHub searches now utilize the skin settings
+- Added: Mobile Devices can now swipe left / right to change pages when search results are more than a single page
+- Removed: Ability to display all search results at once.  Limited now to 100 per page
+- Removed: Search Bar focus options.  Didn't quite work in practice.
+- Deprecated DonateImg tag in templates.  Always use a stock Donate image
+- Reverted: If display width is less than 1080 pixels, keep templates centered on 1080px
+
 ###2018.05.05
 - Fixed: When switching to Legacy Mode from Previous Apps, the install buttons would remain on screen
 - Added: Selectable if search box is always in focus or not

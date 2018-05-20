@@ -107,6 +107,7 @@ input[type=checkbox] {
 .appIcons {
 	font-size:25px;
 	color:#1c6343;
+  cursor:pointer;
 }
 .myReadmore {
 	text-align:center

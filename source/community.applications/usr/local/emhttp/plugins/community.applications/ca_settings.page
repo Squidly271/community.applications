@@ -109,17 +109,6 @@ Display Random App Of The Day:
 
 > This setting chooses whether to display or not a random "app of the day"
 
-Search bar is always in focus:
-: <select name='searchBarFocus' size='1'>
-	<?=mk_option($cfg['searchBarFocus'],'auto',"Automatic (default)")?>
-	<?=mk_option($cfg['searchBarFocus'],'yes',"Always in focus")?>
-	<?=mk_option($cfg['searchBarFocus'],'no',"Never in focus")?>
-	</select>
-	
-> Sets whether the search bar is always active (in focus).  When in focus, you can type anytime to search without having to click into the box.<br>
-> Automatic sets this to always in focus when using a computer, and not in focus when using a mobile device.<br>
-> If you have trouble searching, set this to be Never in focus
-
 <strong>Docker Hub Searching</strong>
 
 Enable additional search results from dockerHub?
@@ -135,8 +124,8 @@ Enable additional search results from dockerHub?
 Enable Template Developer Mode?
 : <select name='maintainer' size='1'>
   <?=mk_option($cfg['maintainer'],"no","No (Default)")?>
-	<?=mk_option($cfg['maintainer'],"yes","Yes")?>
-	</select>
+  <?=mk_option($cfg['maintainer'],"yes","Yes")?>
+  </select>
 
 &nbsp;
 : <input type="submit" name="#apply" value="Apply" id='Apply'><input type="button" id="DONE" value="Done" onclick="done()">
