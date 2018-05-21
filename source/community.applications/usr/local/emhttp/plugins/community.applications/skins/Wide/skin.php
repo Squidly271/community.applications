@@ -203,13 +203,14 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
           $tmpVar = $pluginSettings ? "" : " disabled ";
           $template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip' title='Click to go to the plugin settings' href='$pluginSettings'>$fontAwesomeGUI</a>&nbsp;" : "";
           unset($template['display_multi_install']);
+          unset($template['display_removable']);
         } else {
           $buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
           $template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>$fontAwesomeInstall</a>&nbsp;";
         }
       } else {
         if ( $communitySettings['dockerRunning'] ) {
-          if ( $selected ) {
+          if ( $selected && ! $template['display_multi_install'] ) {
             $template['display_dockerDefaultIcon'] = "<a class='ca_tooltip' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'>$fontAwesomeInstall</a>&nbsp;";
             $template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'>$fontAwesomeInstall</a>&nbsp;" : $template['display_dockerDefaultIcon'];
             $template['display_dockerEditIcon']    = "<a class='ca_tooltip' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='_self'>$fontAwesomeEdit</a>&nbsp;";
