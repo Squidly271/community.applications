@@ -162,6 +162,8 @@ function isTouch() {
 }
 
 $(function(){
+  var referrer = document.referrer;
+
   $('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
   $("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
@@ -393,7 +395,11 @@ $(function(){
       }
     });
   } else {
-    updateContent();
+    if ( referrer.includes("/Apps/") ) {
+      changeSortOrder(null,null,null);
+    } else {
+      updateContent();
+    }
   }
 });
 

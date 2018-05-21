@@ -202,6 +202,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
           $pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
           $tmpVar = $pluginSettings ? "" : " disabled ";
           $template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip' title='Click to go to the plugin settings' href='$pluginSettings'>$fontAwesomeGUI</a>&nbsp;" : "";
+          unset($template['display_multi_install']);
         } else {
           $buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
           $template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>$fontAwesomeInstall</a>&nbsp;";
