@@ -1,11 +1,11 @@
 <?PHP
 function download_url($url, $path = "", $bg = false){
-  exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
-  return ($exit_code === 0 ) ? implode("\n", $out) : false;
+	exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
+	return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
 
 function randomFile() {
-  return tempnam("/tmp","CA-Temp-");
+	return tempnam("/tmp","CA-Temp-");
 }
 
 $filename = randomFile();

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.05.20b">
-<!ENTITY md5       "fb61ef67be7b894605da494ff17bac90">
+<!ENTITY version   "2018.05.23">
+<!ENTITY md5       "23de6bc622d550e60729ffcb0beab3a2">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0">
 
 <CHANGES>
+###2018.05.23
+- Fix compatibility with 6.5.2 (uninstalled applications would still appear to be installed) 
+
 ###2018.05.20
 - Major template display redesign
 - Removed: Table Mode

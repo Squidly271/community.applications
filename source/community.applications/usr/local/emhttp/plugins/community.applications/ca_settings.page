@@ -4,8 +4,8 @@ Title="Community Applications Settings"
 <?
 function download_url($url, $path = "", $bg = false)
 {
-  exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
-  return ($exit_code === 0 ) ? implode("\n", $out) : false;
+	exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
+	return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
 
 $vars = parse_ini_file("/var/local/emhttp/var.ini");
@@ -22,20 +22,20 @@ download_url("https://raw.githubusercontent.com/Squidly271/Community-Application
 $Repos = json_decode(@file_get_contents($Repositories),true);
 
 if ( ! $Repos ) {
-  $Repos = array();
+	$Repos = array();
 }
 
 $repoName = array();
 foreach ($Repos as $Repo) {
-  $repoName[] = $Repo['name'];
+	$repoName[] = $Repo['name'];
 }
 natcasesort($repoName);
 
 $displayOptions = mk_option($cfg['favourite'], "None", "None (default)");
 
 foreach ($repoName as $display1) {
-  $optionName = str_replace("'","*",$display1);
-  $displayOptions .= mk_option($cfg['favourite'], $optionName, $display1);
+	$optionName = str_replace("'","*",$display1);
+	$displayOptions .= mk_option($cfg['favourite'], $optionName, $display1);
 }
 
 $skins = array_diff(scandir("/usr/local/emhttp/plugins/community.applications/skins"),array(".",".."));
@@ -49,19 +49,19 @@ $skins = array_diff(scandir("/usr/local/emhttp/plugins/community.applications/sk
 Display Skin:
 : <select name='skin' size='1'>
 <?foreach ($skins as $skin):
-  if ( ! is_dir("/usr/local/emhttp/plugins/community.applications/skins/$skin") ) continue;?>
+	if ( ! is_dir("/usr/local/emhttp/plugins/community.applications/skins/$skin") ) continue;?>
 <?=mk_option($cfg['skin'],$skin,$skin)?>
 <?endforeach;?>
 </select>
 
 Time to display applications as new / updated:
 : <select name="timeNew" size="1">
-  <?=mk_option($cfg['timeNew'], "-7 Days", "1 Week")?>
-  <?=mk_option($cfg['timeNew'], "-14 Days", "2 Weeks")?>
-  <?=mk_option($cfg['timeNew'], "-1 Month", "1 Month")?>
-  <?=mk_option($cfg['timeNew'], "-2 Months", "2 Months")?>
-  <?=mk_option($cfg['timeNew'], "-3 Months", "3 Months (Default)")?>
-  </select>
+	<?=mk_option($cfg['timeNew'], "-7 Days", "1 Week")?>
+	<?=mk_option($cfg['timeNew'], "-14 Days", "2 Weeks")?>
+	<?=mk_option($cfg['timeNew'], "-1 Month", "1 Month")?>
+	<?=mk_option($cfg['timeNew'], "-2 Months", "2 Months")?>
+	<?=mk_option($cfg['timeNew'], "-3 Months", "3 Months (Default)")?>
+	</select>
 
 > This setting determines how long an application will be displayed as "new"
 
@@ -72,40 +72,40 @@ Hover Time delay (miliseconds):
 
 Favourite Repository:
 : <select name="favourite" size="1">
-  <?=$displayOptions?>
-  </select>
+	<?=$displayOptions?>
+	</select>
 
 > Set this option to your favourite repository, so that it's applications will display first
 
 Show already installed apps within available apps:
 : <select name='separateInstalled' size='1'>
-  <?=mk_option($cfg['separateInstalled'], "true", "No (default)")?>
-  <?=mk_option($cfg['separateInstalled'], "false", "Yes")?>
-  </select>
+	<?=mk_option($cfg['separateInstalled'], "true", "No (default)")?>
+	<?=mk_option($cfg['separateInstalled'], "false", "Yes")?>
+	</select>
 
 > This setting determines if already installed applications will also appear when displaying available apps
  
 Hide Deprecated Applications:
 : <select name='hideDeprecated' size='1'>
-  <?=mk_option($cfg['hideDeprecated'], "true", "Yes (default)")?>
-  <?=mk_option($cfg['hideDeprecated'], "false", "No")?>
-  </select>
+	<?=mk_option($cfg['hideDeprecated'], "true", "Yes (default)")?>
+	<?=mk_option($cfg['hideDeprecated'], "false", "No")?>
+	</select>
 
 > This setting hides deprecated applications from the list of available apps.  Deprecated apps will still however display within the <em>installed</em> and <em>previous</em> apps sections.
-  
+	
 Hide Incompatible Applications:
 : <select name='hideIncompatible' size='1'>
-  <?=mk_option($cfg['hideIncompatible'], "true", "Yes (default)")?>
-  <?=mk_option($cfg['hideIncompatible'], "false", "No")?>
-  </select>
+	<?=mk_option($cfg['hideIncompatible'], "true", "Yes (default)")?>
+	<?=mk_option($cfg['hideIncompatible'], "false", "No")?>
+	</select>
 
 > This setting will hide applications that are listed as being incompatible with your version of unRaid
 
 Display Random App Of The Day:
 : <select name="appOfTheDay" size="1">
-  <?=mk_option($cfg['appOfTheDay'],"no", "No")?>
-  <?=mk_option($cfg['appOfTheDay'],"yes", "Yes (Default)")?>
-  </select>
+	<?=mk_option($cfg['appOfTheDay'],"no", "No")?>
+	<?=mk_option($cfg['appOfTheDay'],"yes", "Yes (Default)")?>
+	</select>
 
 > This setting chooses whether to display or not a random "app of the day"
 
@@ -113,9 +113,9 @@ Display Random App Of The Day:
 
 Enable additional search results from dockerHub?
 : <select name="dockerSearch" size="1">
-  <?=mk_option($cfg['dockerSearch'], "no", "No (Default)")?>
-  <?=mk_option($cfg['dockerSearch'], "yes", "Yes")?>
-  </select>
+	<?=mk_option($cfg['dockerSearch'], "no", "No (Default)")?>
+	<?=mk_option($cfg['dockerSearch'], "yes", "Yes")?>
+	</select>
 
 > This setting enables CA to retrieve additional search results from dockerHub.  Note that docker must be enabled for this to be operational
 
@@ -123,9 +123,9 @@ Enable additional search results from dockerHub?
 
 Enable Template Developer Mode?
 : <select name='maintainer' size='1'>
-  <?=mk_option($cfg['maintainer'],"no","No (Default)")?>
-  <?=mk_option($cfg['maintainer'],"yes","Yes")?>
-  </select>
+	<?=mk_option($cfg['maintainer'],"no","No (Default)")?>
+	<?=mk_option($cfg['maintainer'],"yes","Yes")?>
+	</select>
 
 &nbsp;
 : <input type="submit" name="#apply" value="Apply" id='Apply'><input type="button" id="DONE" value="Done" onclick="done()">

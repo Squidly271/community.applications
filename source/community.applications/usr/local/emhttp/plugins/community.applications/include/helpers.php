@@ -240,7 +240,7 @@ function fixTemplates($template) {
 		$template['Repository'] = $template['Repository'][0];
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple Repositories Found - Removing application from lists";
-    return false;
+		return false;
 	}
 	if ( (is_array($template['Support'])) && (count($template['Support'])) ) {
 		unset($template['Support']);
@@ -262,7 +262,7 @@ function fixTemplates($template) {
 			$template['Description']="";
 			$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple Description tags present";
 			$statistics['caFixed']++;
-      return false;
+			return false;
 		}
 	}
 	if ( is_array($template['Beta']) ) {
@@ -291,7 +291,7 @@ function fixTemplates($template) {
 		$template['Category'] .= ":";
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Improperly formed category entry (a colon is always present)";
- 	}
+	}
 	
 	$template['Category'] = $template['Category'] ?: "Uncategorized";
 	if ( ! is_string($template['Category']) ) {
@@ -312,7 +312,7 @@ function fixTemplates($template) {
 		$template['PluginURL'] = $template['PluginURL'][1];
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple PluginURL's found";
-    return false;
+		return false;
 	}
 	if ( $template['PluginURL'] ) {                            # due to bonienl
 		$template['PluginURL'] = str_replace("raw.github.com","raw.githubusercontent.com",$template['PluginURL']);
@@ -324,14 +324,14 @@ function fixTemplates($template) {
 		$template['Description'] = fixDescription($template['Description']);
 		$template['Overview'] = $template['Description'];
 	} else {
-  	$template['Description'] = fixDescription($template['Description']);
+		$template['Description'] = fixDescription($template['Description']);
 	}
 	$template['Overview'] = is_string($template['Overview']) ? $template['Overview'] : "";
 	$template['Description'] = is_string($template['Description']) ? $template['Description'] : "";
 	if ( ( ! strlen(trim($template['Overview'])) ) && ( ! strlen(trim($template['Description'])) ) && ! $template['Private'] ){
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No valid Overview Or Description present - Application dropped from CA automatically - Possibly far too many formatting tags present";
-    return false;
+		return false;
 	}
 	if ( ! $template['Icon'] ) {
 		$statistics['caFixed']++;
@@ -496,7 +496,7 @@ function moderateTemplates() {
 	foreach ($templates as $template) {
 		$templateTMP = $template;
 		if ( is_array($moderation[$template['Repository']]) ) {
-      $templateTMP = array_merge($template,$moderation[$template['Repository']]);
+			$templateTMP = array_merge($template,$moderation[$template['Repository']]);
 			if ( $templateTMP['CAComment'] ) {
 				$templateTMP['ModeratorComment'] = $templateTMP['CAComment'];
 			}
@@ -545,7 +545,7 @@ function caGetMode() {
 	global $communityPaths, $communitySettings;
 
 	$script = ( is_file($communityPaths['LegacyMode']) ) ? "$('#updateButton').html('appFeed Mode');" : "$('#updateButton').html('Legacy Mode');";
-  $script .= ( is_file($communityPaths['LegacyMode'] ) || ($communitySettings['maintainer'] == "yes") ) ? "$('#updateButton').show();" : "$('#updateButton').hide();";
+	$script .= ( is_file($communityPaths['LegacyMode'] ) || ($communitySettings['maintainer'] == "yes") ) ? "$('#updateButton').show();" : "$('#updateButton').hide();";
 	return "<script>$script</script>";
 }
 
@@ -606,7 +606,7 @@ function filterMatch($filter,$searchArray) {
 	foreach ( $filterwords as $testfilter) {
 		foreach ($searchArray as $search) {
 	  	if ( preg_match("#$testfilter#i",str_replace(" ","",$search)) ) {
-        $foundword++;
+				$foundword++;
 				break;
 			}
 		}	
