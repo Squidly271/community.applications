@@ -153,9 +153,13 @@ function isTouch() {
 
 $(function(){
 	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
+  
+  var maxPerPage = $.cookie("maxPerPage");
+  if ( ! maxPerPage ) {
+    maxPerPage = "25";
+  }
 
-	$("#maxPerPage").val("<?=$cfg['maxPerPage']?>");
-
+  $("#maxPerPage").val(maxPerPage);
 	if ( isTouch() ) {
 		$("#CommunityApplicationsBody").on("swipeleft",swipelefthandler);
 		function swipelefthandler(event) {
@@ -1285,6 +1289,7 @@ function displayTags(leadTemplate) {
 
 function changeDisplayed() {
 	var maxPerPage = $("#maxPerPage").val();
+  $.cookie("maxPerPage",maxPerPage);
 	$.post(URL,{action:'changeSettings',maxPerPage:maxPerPage},function(data) {
 		if (data) {
 			changePage('1');
