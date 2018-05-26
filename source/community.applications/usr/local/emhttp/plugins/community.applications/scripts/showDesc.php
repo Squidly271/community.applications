@@ -12,6 +12,17 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("webGui/include/Markdown.php");
 
+
+function getDownloads($downloads,$lowFlag=false) {
+  $downloadCount = array("500000000","100000000","50000000","10000000","5000000","2500000","1000000","500000","250000","100000","50000","25000","10000","5000","1000","500","100");
+  foreach ($downloadCount as $downloadtmp) {
+    if ($downloads > $downloadtmp) {
+      return "More than ".number_format($downloadtmp);
+    }
+  }
+  return ($lowFlag) ? $downloads : "";
+}
+
 $fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
 $fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";
 $fontAwesomeGUI = "<i class='appIcons fa fa-globe' aria-hidden='true'></i>";
@@ -140,8 +151,9 @@ if ( $template['Date'] && $template['Plugin'] ) {
 }
 $templateDescription .= $template['MinVer'] ? "<tr><td nowrap>$color<b>Minimum OS:</strong></td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
 $templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>$color<strong>Max OS:</strong></td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
-if ($template['downloads']) {
-	$templateDescription .= "<tr><td>$color<strong>Downloads:</strong></td><td>$color".number_format($template['downloads'])."</td></tr>";
+$downloads = getDownloads($template['downloads']);
+if ($downloads) {
+	$templateDescription .= "<tr><td>$color<strong>Downloads:</strong></td><td>$color$downloads</td></tr>";
 }
 $templateDescription .= $template['Licence'] ? "<tr><td>$color<strong>Licence:</strong></td><td>$color".$template['Licence']."</td></tr>" : "";
 

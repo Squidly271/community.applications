@@ -4,7 +4,7 @@
         "templateWidth": 580,
         "header": "<div style='display:block;overflow:hidden;margin-left:%2$spx;'>",
         "sol": "<div style='height:300px;overflow:auto;min-width:%1$spx;display:inline-block;margin-left:auto;position:relative;'>",
-        "template": "<div class='ca_template_icon'><div style='position:relative;top:40%%;transform:translateY(-50%%);'><center>%75$s%59$s<br>%40$s</center><center>%43$s</center><br><center>%65$s</center><strong><center>%66$s<br>%45$s%44$s</center></strong><center><font color='red'>%58$s</font></center></div></div><div class='ca_template'><span class='ca_category'><b>Categories:</b> %21$s</span><br><span class='desc_readmore' style='display:block'><font color='red'>%57$s<br></font>%22$s</span>%64$s<br>%39$s%38$s</b></strong><center>%68$s%69$s%70$s%71$s%72$s%73$s%74$s</center><br><center>%37$s%36$s%48$s<br><br>%41$s %76$s</center><font></div><div style='width:3px;height:300px;margin:0px;float:left;;'></div>",
+        "template": "<div class='ca_template_icon'><div style='position:relative;top:40%%;transform:translateY(-50%%);'><center>%75$s%59$s<br>%40$s</center><center>%43$s</center><br><center>%65$s</center><strong><center>%66$s<br>%45$s%44$s</center></strong><center><font color='red'>%58$s</font></center></div></div><div class='ca_template'><span class='ca_category'><b>Categories:</b> %21$s</span><br><span class='desc_readmore' style='display:block'><font color='red'>%57$s<br></font>%22$s</span>%64$s<br>%39$s%38$s</b></strong><center>%68$s%69$s%70$s%71$s%72$s%73$s%74$s</center><br><center>%37$s%36$s%48$s<br><br>%41$s<br>%76$s</center><font></div><div style='width:3px;height:300px;margin:0px;float:left;;'></div>",
 				"eol": "</div>",
         "footer": "</div></div>"
     }

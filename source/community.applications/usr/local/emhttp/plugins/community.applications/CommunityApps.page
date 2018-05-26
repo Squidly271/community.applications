@@ -387,7 +387,11 @@ $(function(){
 			}
 		});
 	} else {
-		updateContent();
+    if ( document.referrer.indexOf("/Apps/") > 1 ) {
+      changeSortOrder(null,null,null);
+    } else {
+      updateContent();
+    }
 	}
 });
 
