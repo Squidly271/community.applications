@@ -30,7 +30,7 @@ require_once($communityPaths['defaultSkinPHP']);
 
 $communitySettings['appFeed']       = "true"; # set default for deprecated setting
 $communitySettings['maxPerPage']    = getPost("maxPerPage",$communitySettings['maxPerPage']);  # Global POST.  Used damn near everywhere
-$communitySettings['maxColumn']     = 5; # Pointless on 6.3  Gets overridden on 6.4 anyways
+$communitySettings['maxPerPage'] = ( $communitySettings['maxPerPage'] < 1 ) ? 25 : $communitySettings['maxPerPage'];
 $communitySettings['unRaidVersion'] = $unRaidVersion;
 
 if ( $communitySettings['favourite'] != "None" ) {

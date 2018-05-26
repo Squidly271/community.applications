@@ -23,17 +23,7 @@ if ( $installedVersion < $upgradeVersion ) {
 	$upgradeAvailable = "true";
 }
 $cfg = parse_plugin_cfg($plugin);
-switch ( $cfg['searchBarFocus'] ) {
-	case 'auto':
-		$searchBarFocus = ! isMobile();
-		break;
-	case 'yes':
-		$searchBarFocus = true;
-		break;
-	case 'no':
-		$searchBarFocus = false;
-		break;
-}
+$cfg['maxPerPage'] = ($cfg['maxPerPage'] < 1) ? 25 : $cfg['maxPerPage'];
 
 if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
@@ -1431,13 +1421,6 @@ function updateDisplay(data) {
 	enableSearch();
 }
 
-
-function focusOnSearch(event) {
-<?if ( $searchBarFocus ):?>
-	$("#searchBox").focus();
-<?endif;?>
-}
-
 function disableSearch() {
 	$("#searchBox").prop("disabled",true);
 }
@@ -1497,7 +1480,7 @@ function resizeDisplay() {
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='sortIcon' class='fa fa-binoculars ca_toolsView disabledIcon' style='font-size:23px; position:relative;top:-2px;' aria-hidden='true'></i>&nbsp;
 <font size='3'><b>Current Section: <font color='green'><span id='currentSection'>Available Apps</span></font></b></font>
-<strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option><option value='100'>100</option><option value='-1'>All</option></select></span></span>
+<strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option><option value='100'>100</option></select></span></span>
 </span><br>
 
 <?if ( $upgradeAvailable ) :?>
