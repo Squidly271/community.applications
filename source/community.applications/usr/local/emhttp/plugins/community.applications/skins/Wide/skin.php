@@ -134,7 +134,12 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$previousAppName = $template['Plugin'] ? $template['PluginURL'] : $template['Name'];
 		$checked = $checkedOffApps[$previousAppName] ? "checked" : "";
 
-		$template['Category'] = rtrim(str_replace(":,",",",implode(", ",explode(" ",$template['Category']))),": ,");
+		unset($categories);
+		foreach (explode(" ",$template['Category']) as $category) {
+			$category = rtrim($category,":");
+			$categories .= "<a onclick='authorSearch(&quot;$category&quot;);' class='ca_tooltip ca_category' title='Search for $category'>$category</a> ";
+		}
+		$template['Category'] = $categories;
 		$RepoName = ( $template['Private'] == "true" ) ? $template['RepoName']."<font color=red> (Private)</font>" : $template['RepoName'];
 		if ( ! $template['DonateText'] ) {
 			$template['DonateText'] = "Donate To Author";

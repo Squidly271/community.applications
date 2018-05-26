@@ -280,7 +280,7 @@ case 'get_content':
 		if ( $displayPrivates && ! $template['Private'] ) { continue; }
 
 		if ($filter) {
-			if ( filterMatch($filter,array($template['Name'],$template['Author'],$template['Description'],$template['RepoName'])) ) {
+			if ( filterMatch($filter,array($template['Name'],$template['Author'],$template['Description'],$template['RepoName'],$template['Category'])) ) {
 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
 				$template['Name'] = highlight($filter, $template['Name']);

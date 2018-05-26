@@ -41,6 +41,9 @@
 	color:#1e6d18;
 	font-weight:bold;
 }
+.ca_category {
+  cursor:pointer;
+}
 input.appButtons {
 	margin:0px;
 }
@@ -102,7 +105,6 @@ input[type=checkbox] {
 .myReadmoreButton {
 	color:blue;
 }
-
 .displayIcon {
 	height:96px;
 	width:96px;
@@ -127,7 +129,6 @@ input[type=checkbox] {
 .dockerHubStar {
 	color: magenta;
 	font-size:15px;
-	cursor:pointer
 }
 .dockerDisabled {
 	text-align:center;

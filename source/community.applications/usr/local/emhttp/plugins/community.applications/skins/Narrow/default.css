@@ -140,7 +140,6 @@ input[type=checkbox] {
 .dockerHubStar {
 	color: magenta;
 	font-size:15px;
-	cursor:pointer
 }
 .dockerDisabled {
 	text-align:center;
