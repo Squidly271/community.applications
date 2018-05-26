@@ -42,7 +42,7 @@
 	font-weight:bold;
 }
 .ca_category {
-  cursor:pointer;
+  color:purple;
 }
 input.appButtons {
 	margin:0px;
