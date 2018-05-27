@@ -144,6 +144,7 @@ var data_selected = "";
 var data_lastUpdated = 0;
 var data_nextpage = 0;
 var data_prevpage = 0;
+var data_currentpage = 1;
 var dockerSearchFlag = false;
 
 function isTouch() {
@@ -153,7 +154,10 @@ function isTouch() {
 
 $(function(){
 	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
-	
+
+	if ( ! cookiesEnabled() ) {
+		$("#cookieWarning").show();
+	}	
 	var maxPerPage = $.cookie("maxPerPage");
 	if ( ! maxPerPage ) {
 		maxPerPage = "25";
@@ -387,8 +391,9 @@ $(function(){
 			}
 		});
 	} else {
-		if ( document.referrer.indexOf("/Apps/") > 1 ) {
-			changeSortOrder(null,null,null);
+		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() ) {
+			restoreState();
+			changePage(data_currentpage);
 		} else {
 			updateContent();
 		}
@@ -411,6 +416,9 @@ function updateContent() {
 }
 
 function enableIcon(icon,enable) {
+	if ( enable == "false" ) {
+		enable = false;
+	}
 	$(icon).each(function() {
 		$(this).removeClass("enabledIcon disabledIcon");
 		if ( enable ) {
@@ -568,6 +576,7 @@ function changePage(pageNumber) {
 	var windowWidth = getWindowWidth();
 	var maxPerPage = getPerPage();
 	var selected = data_selected;
+	data_currentpage = pageNumber;
 
 	mySpinner();
 	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,maxPerPage:maxPerPage,selected:selected},function(data3) {
@@ -856,6 +865,7 @@ function setSortOrder() {
 }
 
 function getContent(init,category,description,newApp) {
+	data_currentpage = 1;
 	enableSearch();
 	if ( init == true ) {
 		enableIcon("#sortIcon, #subcategoryIcon",false);
@@ -916,14 +926,14 @@ function getContent(init,category,description,newApp) {
 
 		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,maxPerPage:maxPerPage},function(data) {
 			if (data) {
+				description = "<?=$categoryTitle?>: <font color='green'>"+description+"</font>";
+				$("#Category").html(description);
+				$("#updateButton").prop("disabled",false);
 				updateDisplay(data);
 				readMore();
 				myCloseAlert();
 				setToolTip();
 			}
-			description = "<?=$categoryTitle?>: <font color='green'>"+description+"</font>";
-			$("#Category").html(description);
-			$("#updateButton").prop("disabled",false);
 		});
 	}
 	$('.dockerSearch').hide();
@@ -1428,6 +1438,62 @@ function updateDisplay(data) {
 		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
 	});
 	enableSearch();
+	saveState();
+}
+function saveState() {
+	$.cookie("sectionText",$("#currentSection").html());
+	$.cookie("categoryText",$("#Category").html());	
+	$.cookie("data_docker",data_docker);
+	$.cookie("data_section",data_section);
+	$.cookie("data_selected_category",data_selected_category);
+	$.cookie("data_subcategory",data_subcategory);
+	$.cookie("data_selected_subcategory",data_selected_subcategory);
+	$.cookie("data_selected",data_selected);
+	$.cookie("data_nextpage",data_nextpage);
+	$.cookie("data_lastUpdated",data_lastUpdated);
+	$.cookie("data_prevpage",data_prevpage);
+	$.cookie("dockerSearchFlag",dockerSearchFlag);
+	$.cookie("data_currentpage",data_currentpage);
+	$.cookie("homeIcon",isIconEnabled("#homeIcon"));
+	$.cookie("sectionIcon",isIconEnabled("#sectionIcon"));
+	$.cookie("categoryIcon",isIconEnabled("#categoryIcon"));
+	$.cookie("subcategoryIcon",isIconEnabled("#subcategoryIcon"));
+	$.cookie("sortIcon",isIconEnabled("#sortIcon"));
+	$(".sortButton").each(function() {
+		if ( $(this).prop("disabled") ) {
+			$.cookie("sortButton",this.id);
+		}
+	});
+	$(".dirButton").each(function() {
+		if ( $(this).prop("disabled") ) {
+			$.cookie("dirButton",this.id);
+		}
+	});
+}
+
+function restoreState() {
+	$("#currentSection").html($.cookie("sectionText"));
+	$("#Category").html($.cookie("categoryText"));
+	data_docker = $.cookie("data_docker");
+	data_section = $.cookie("data_section");
+	data_selected_category = $.cookie("data_selected_category");
+	data_subcategory = $.cookie("data_subcategory");
+	data_selected_subcategory = $.cookie("data_selected_subcategory");
+	data_selected = $.cookie("data_selected");
+	data_nextpage = $.cookie("data_nextpage");
+	data_lastUpdated = $.cookie("data_lastUpdated");
+	data_prevpage = $.cookie("data_prevpage");
+	dockerSearchFlag = $.cookie("dockerSearchFlag");
+	data_currentpage = $.cookie("data_currentpage");
+	enableIcon("#homeIcon",$.cookie("homeIcon"));
+	enableIcon("#sectionIcon",$.cookie("sectionIcon"));
+	enableIcon("#categoryIcon",$.cookie("categoryIcon"));
+	enableIcon("#subcategoryIcon",$.cookie("subcategoryIcon"));
+	enableIcon("#sortIcon",$.cookie("sortIcon"));
+	$(".sortButton").prop("disabled",false);
+	$(".dirButton").prop("disabled",false);
+	$("#"+$.cookie("sortButton")).prop("disabled",true);
+	$("#"+$.cookie("dirButton")).prop("disabled",true);
 }
 
 function disableSearch() {
@@ -1435,6 +1501,23 @@ function disableSearch() {
 }
 function enableSearch() {
 	$("#searchBox").prop("disabled",false);
+}
+
+function evaluateBoolean(str) {
+		regex=/^\s*(true|1|on)\s*$/i
+		return regex.test(str);
+}
+
+function cookiesEnabled() {
+	return evaluateBoolean(navigator.cookieEnabled);
+}
+
+function stringToBoolean(string) {
+	switch(string.toLowerCase().trim()){
+		case "true": case "yes": case "1": return true;
+		case "false": case "no": case "0": case null: return false;
+		default: return Boolean(string);
+	}
 }
 
 function resizeDisplay() {
@@ -1492,6 +1575,7 @@ function resizeDisplay() {
 <strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option><option value='100'>100</option></select></span></span>
 </span><br>
 
+<div id='cookieWarning' style='display:none;'><center><font color='purple'>Community Applications works best when cookies are enabled in your browser.  You should enable them for the best experience</font></center></div>
 <?if ( $upgradeAvailable ) :?>
 <span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style=cursor:pointer>HERE</a> to install the update  <i class='ca_infoPopup fa fa-info-circle' data-app='community.applications.plg' data-name='Community Applications' style='cursor:pointer;font-size:15px;color:blue;'></i></center></font></span>
 <?endif;?>
