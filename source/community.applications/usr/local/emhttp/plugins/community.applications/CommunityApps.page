@@ -134,17 +134,18 @@ var categoryDesc = {
 	INCOMPATIBLE: "All Incompatible Applications"
 	};
 
-var data_oldWindowWidth = getWindowWidth();
-var data_docker = "";
-var data_section = "AppStore";
-var data_selected_category = "";
-var data_subcategory = "";
-var data_selected_subcategory = "";
-var data_selected = "";
-var data_lastUpdated = 0;
-var data_nextpage = 0;
-var data_prevpage = 0;
-var data_currentpage = 1;
+var data = new Object();
+data.oldWindowWidth = getWindowWidth();
+data.docker = "";
+data.section = "AppStore";
+data.selected_category = "";
+data.subcategory = "";
+data.selected_subcategory = "";
+data.selected = "";
+data.lastUpdated = 0;
+data.nextpage = 0;
+data.prevpage = 0;
+data.currentpage = 1;
 var dockerSearchFlag = false;
 
 function isTouch() {
@@ -167,21 +168,21 @@ $(function(){
 	if ( isTouch() ) {
 		$("#CommunityApplicationsBody").on("swipeleft",swipelefthandler);
 		function swipelefthandler(event) {
-			if ( data_nextpage > 1 ) {
+			if ( data.nextpage > 1 ) {
 				if ( dockerSearchFlag ) {
-					dockerSearch(data_nextpage);
+					dockerSearch(data.nextpage);
 				} else {
-					changePage(data_nextpage);
+					changePage(data.nextpage);
 				}
 			}
 		}
 		$("#CommunityApplicationsBody").on("swiperight",swiperighthandler);
 		function swiperighthandler(event) {
-			if ( data_prevpage > 0 ) {
+			if ( data.prevpage > 0 ) {
 				if ( dockerSearchFlag ) {
-					dockerSearch(data_prevpage);
+					dockerSearch(data.prevpage);
 				} else {
-					changePage(data_prevpage);
+					changePage(data.prevpage);
 				}
 			}
 		}
@@ -287,7 +288,7 @@ $(function(){
 			if ( !isIconEnabled(origin) ) {
 				var displayContent = "Changing Of Sections Disabled";
 			} else {
-				var currentSection = data_section;
+				var currentSection = data.section;
 				$(".appButtons").prop("disabled",false);
 				$("#"+currentSection).prop("disabled",true);
 				var displayContent = $("#sections").html();
@@ -315,7 +316,7 @@ $(function(){
 				var displayContent = "Changing Of Categories Disabled In This Section";
 			} else {
 				$(".allButtons").prop("disabled",false);
-				$("#"+data_selected_category).prop("disabled",true);
+				$("#"+data.selected_category).prop("disabled",true);
 				var displayContent = $("#MainCategory").html();
 			}
 			instance.content(displayContent);
@@ -323,7 +324,7 @@ $(function(){
 		functionReady: function(instance,helper) {
 			$(".allButtons").click(function() {
 				$(this).prop("disabled",true);
-				data_selected_category = this.id;
+				data.selected_category = this.id;
 				changeCategory(this,false);
 			});
 		}
@@ -344,9 +345,9 @@ $(function(){
 			if ( ! isIconEnabled(origin) ) {
 				var displayContent = "No Subcategories Available To Display";
 			} else {
-				var currentSub = data_subcategory;
+				var currentSub = data.subcategory;
 				$(".allButtons").prop("disabled",false);
-				$("#"+data_selected_subcategory).prop("disabled",true);
+				$("#"+data.selected_subcategory).prop("disabled",true);
 				var displayContent = $(currentSub).html();
 			}
 			instance.content(displayContent);
@@ -354,7 +355,7 @@ $(function(){
 		functionReady: function(instance,helper) {
 			$(".allButtons").click(function() {
 				$(this).prop("disabled",true);
-				data_selected_subcategory = this.id;
+				data.selected_subcategory = this.id;
 				changeCategory(this,true);
 			});
 		}
@@ -393,7 +394,7 @@ $(function(){
 	} else {
 		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() ) {
 			restoreState();
-			changePage(data_currentpage);
+			changeSortOrder(null,null,null);
 		} else {
 			updateContent();
 		}
@@ -514,8 +515,8 @@ function showSpecialCategory(button) {
 	$(".allButtons").prop("disabled",false);
 	$(".multi_installDiv").hide();
 	enableIcon("#categoryIcon,#subcategoryIcon",true);
-	data_selected_category = "DOESNTMATTERWHATSHERE";
-	data_section = "AppStore";
+	data.selected_category = "DOESNTMATTERWHATSHERE";
+	data.section = "AppStore";
 	changeCategory(button,false);
 }
 
@@ -539,23 +540,23 @@ function changeCategory(button,subSwitch) {
 		switch (category) {
 			case "network:":
 				enableIcon("#subcategoryIcon",true);
-				data_subcategory = "#NetworkCategory";
-				data_selected_subcategory = "network";
+				data.subcategory = "#NetworkCategory";
+				data.selected_subcategory = "network";
 				break;
 			case "MediaApp:":
 				enableIcon("#subcategoryIcon",true);
-				data_subcategory = "#MediaAppCategory";
-				data_selected_subcategory = "MediaApp";
+				data.subcategory = "#MediaAppCategory";
+				data.selected_subcategory = "MediaApp";
 				break;
 			case "MediaServer:":
 				enableIcon("#subcategoryIcon",true);
-				data_subcategory = "#MediaServerCategory";
-				data_selected_subcategory = "MediaServer";
+				data.subcategory = "#MediaServerCategory";
+				data.selected_subcategory = "MediaServer";
 				break;
 			case "tools:":
 				enableIcon("#subcategoryIcon",true);
-				data_subcategory = "#ToolsCategory";
-				data_selected_subcategory = "tools";
+				data.subcategory = "#ToolsCategory";
+				data.selected_subcategory = "tools";
 				break;
 			case "New":
 				enableIcon("#subcategoryIcon",false);
@@ -575,8 +576,8 @@ function changePage(pageNumber) {
 	var sortOrder = getSortOrder();
 	var windowWidth = getWindowWidth();
 	var maxPerPage = getPerPage();
-	var selected = data_selected;
-	data_currentpage = pageNumber;
+	var selected = data.selected;
+	data.currentpage = pageNumber;
 
 	mySpinner();
 	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,maxPerPage:maxPerPage,selected:selected},function(data3) {
@@ -643,7 +644,7 @@ function doSearch(button) {
 	var filter = $('#searchBox').val();
 	var maxPerPage = getPerPage();
 	resetSortByDate();
-	data_docker = "";
+	data.docker = "";
 	filter = filter.replace(/[^a-z0-9]/gi,' ')
 	filter = myTrim(filter);
 	$('#searchBox').val(filter);
@@ -689,7 +690,7 @@ function doSearch(button) {
 		if (data) {
 			enableButtons();
 			updateDisplay(data);
-			data_section = "AppStore";
+			data.section = "AppStore";
 			$("#currentSection").html("Available Apps");
 			readMore();
 			myCloseAlert();
@@ -784,14 +785,14 @@ function processLegacyMode() {
 
 function enableButtons() {
 	$('.allButtons').prop('disabled', false);
-	data_selected_category = "";
+	data.selected_category = "";
 }
 
 function changeSortOrder(button,buttonClass,previousApps) {
 	var windowWidth = getWindowWidth();
-	var pageNumber = $("#currentPageNumber").html();
+	var pageNumber = data.currentpage;
 	var maxPerPage = getPerPage();
-	var selected = data_selected;
+	var selected = data.selected;
 
 	if ( previousApps != "true" )
 	{
@@ -865,7 +866,7 @@ function setSortOrder() {
 }
 
 function getContent(init,category,description,newApp) {
-	data_currentpage = 1;
+	data.currentpage = 1;
 	enableSearch();
 	if ( init == true ) {
 		enableIcon("#sortIcon, #subcategoryIcon",false);
@@ -953,9 +954,9 @@ function mySearch(filter) {
 function initDockerSearch() {
 	$("#maxPerPage").prop("disabled",true);
 	dockerSearch(1);
-	data_docker = "searching docker";
-	data_section = "";
-	data_selected_category = "";
+	data.docker = "searching docker";
+	data.section = "";
+	data.selected_category = "";
 	enableIcon("#categoryIcon,#subcategoryIcon",false);
 }
 
@@ -963,7 +964,7 @@ function dockerSearch(pageNumber) {
 	var filter = $('#searchBox').val();
 	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
 	var windowWidth = getWindowWidth();
-	data_docker = "searching docker";
+	data.docker = "searching docker";
 	$(".appButtons").prop("disabled",false);
 	$("#AppStore").prop("disabled",true);
 	$("#AppsOnly,#New,#UNCATEGORIZED,#All,#sortButtons").show();
@@ -1038,7 +1039,7 @@ function previousApps(button,installed) {
 	resetSortByDate();
 	mySpinner();
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
-	data_docker = "";
+	data.docker = "";
 	if ( installed ) {
 		$("#currentSection").html("Installed Apps");
 		$(".multi_installDiv").hide();
@@ -1051,7 +1052,7 @@ function previousApps(button,installed) {
 	clearSearchBox();
 	$(".appButtons,#maxPerPage").prop("disabled",false);
 	$("#"+button).prop("disabled",true);
-	data_section = button;
+	data.section = button;
 
 	$(".dockerSearch,#AppsOnly").hide();
 	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
@@ -1200,19 +1201,19 @@ function uninstallDocker(application,humanName) {
 }
 
 function appStore() {
-	data_nextpage = 0;
-	data_prevpage = 0;
+	data.nextpage = 0;
+	data.prevpage = 0;
 	initializeAppStore();
 	getContent(true,'INITIALIZE','None Selected');
 	$("#Category").html("None Selected");
-	data_docker = "";
+	data.docker = "";
 }
 
 function initializeAppStore() {
 	enableIcon("#categoryIcon",true);
 	$("#currentSection").html("Available Apps");
-	data_section = "AppStore";
-	data_selected_category = "";
+	data.section = "AppStore";
+	data.selected_category = "";
 	updateDisplay("");
 	$(".appButtons,.allButtons").prop("disabled",false);
 	$("#AppStore").prop("disabled",true);
@@ -1233,7 +1234,7 @@ function checkPLGupdate() {
 	var filename = $("#sortorder").attr("data-plgfilename");
 	$.post(URL,{action:'updatePLGstatus',filename:filename},function(data) {
 		if (data) {
-			var pageNumber = $("#currentPageNumber").html();
+			var pageNumber = data.currentpage;
 			changePage(pageNumber);
 		}
 	});
@@ -1252,7 +1253,7 @@ function pinApp(button,repository) {
 }
 
 function setPageOne() {
-	$("#currentPageNumber").html("1");
+	data.currentpage = 1;
 }
 
 function pinnedApps(button) {
@@ -1260,10 +1261,10 @@ function pinnedApps(button) {
 	mySpinner();
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
 	$("#currentSection").html("Pinned Apps");
-	data_docker = "";
+	data.docker = "";
 	$("#maxPerPage,.appButtons").prop("disabled",false);
 	$("#"+button).prop("disabled",true);
-	data_section = button;
+	data.section = button;
 	clearSearchBox();
 	$(".dockerSearch,#AppsOnly,.multi_installDiv").hide();
 	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
@@ -1320,8 +1321,8 @@ function makePlural(string,count) {
 }
 
 function getSelectedApps() {
-	if ( data_selected ) {
-		var selected = JSON.parse(data_selected);
+	if ( data.selected ) {
+		var selected = JSON.parse(data.selected);
 		var docker = selected.docker;
 		var plugin = selected.plugin;
 	} else {
@@ -1351,7 +1352,7 @@ function getSelectedApps() {
 	});
 	selected.docker = uniqueArrayElements(docker);
 	selected.plugin = uniqueArrayElements(plugin);
-	data_selected = JSON.stringify(selected);
+	data.selected = JSON.stringify(selected);
 	return selected;
 }
 
@@ -1379,7 +1380,7 @@ function enableMultiInstall() {
 }
 
 function clearMultiInstall() {
-	data_selected = "";
+	data.selected = "";
 	$(".ca_multiselect").each(function() {
 		$(this).prop("checked",false);
 	});
@@ -1443,17 +1444,9 @@ function updateDisplay(data) {
 function saveState() {
 	$.cookie("sectionText",$("#currentSection").html());
 	$.cookie("categoryText",$("#Category").html());	
-	$.cookie("data_docker",data_docker);
-	$.cookie("data_section",data_section);
-	$.cookie("data_selected_category",data_selected_category);
-	$.cookie("data_subcategory",data_subcategory);
-	$.cookie("data_selected_subcategory",data_selected_subcategory);
-	$.cookie("data_selected",data_selected);
-	$.cookie("data_nextpage",data_nextpage);
-	$.cookie("data_lastUpdated",data_lastUpdated);
-	$.cookie("data_prevpage",data_prevpage);
+	$.cookie("data",JSON.stringify(data));
+
 	$.cookie("dockerSearchFlag",dockerSearchFlag);
-	$.cookie("data_currentpage",data_currentpage);
 	$.cookie("homeIcon",isIconEnabled("#homeIcon"));
 	$.cookie("sectionIcon",isIconEnabled("#sectionIcon"));
 	$.cookie("categoryIcon",isIconEnabled("#categoryIcon"));
@@ -1474,17 +1467,9 @@ function saveState() {
 function restoreState() {
 	$("#currentSection").html($.cookie("sectionText"));
 	$("#Category").html($.cookie("categoryText"));
-	data_docker = $.cookie("data_docker");
-	data_section = $.cookie("data_section");
-	data_selected_category = $.cookie("data_selected_category");
-	data_subcategory = $.cookie("data_subcategory");
-	data_selected_subcategory = $.cookie("data_selected_subcategory");
-	data_selected = $.cookie("data_selected");
-	data_nextpage = $.cookie("data_nextpage");
-	data_lastUpdated = $.cookie("data_lastUpdated");
-	data_prevpage = $.cookie("data_prevpage");
+	data = JSON.parse($.cookie("data"));
+	
 	dockerSearchFlag = $.cookie("dockerSearchFlag");
-	data_currentpage = $.cookie("data_currentpage");
 	enableIcon("#homeIcon",$.cookie("homeIcon"));
 	enableIcon("#sectionIcon",$.cookie("sectionIcon"));
 	enableIcon("#categoryIcon",$.cookie("categoryIcon"));
@@ -1524,8 +1509,8 @@ function resizeDisplay() {
 	window.resizeEvt;
 	$(window).resize(function(){
 		var newWidth = getWindowWidth();
-		var oldWidth = data_oldWindowWidth;
-		data_oldWindowWidth = newWidth;
+		var oldWidth = data.oldWindowWidth;
+		data.oldWindowWidth = newWidth;
 		var divisor = <?=$template['detail']['templateWidth']?>;
 
 <?if ( $mobileDevice ):?>  // Mobile devices only check if columns change.  Computers always check to re-center the display

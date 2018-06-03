@@ -95,6 +95,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 	$startingApp = $officialFlag ? 1 : ($pageNumber -1) * $communitySettings['maxPerPage'] + 1;
 	$startingAppCounter = 0;
 	
+  $displayedTemplates = array();
 	foreach ($file as $template) {
 		if ( $template['Blacklist'] && ! $template['NoInstall'] ) {
 			continue;
@@ -316,7 +317,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
 	$previousPage = $pageNumber - 1;
 	$o .= ( $pageNumber == 1 ) ? "<font size='3' color='grey'><i class='fa fa-arrow-circle-left' aria-hidden='true'></i></font>" : "<font size='3' color='green'><i class='fa fa-arrow-circle-left' aria-hidden='true' style='cursor:pointer' onclick='{$my_function}(&quot;$previousPage&quot;)' title='Go To Page $previousPage'></i></font>";
 	$o .= "&nbsp;&nbsp;&nbsp;";
-	$swipeScript .= "data_prevpage = $previousPage;";
+	$swipeScript .= "data.prevpage = $previousPage;";
 	$startingPage = $pageNumber - 5;
 	if ($startingPage < 3 ) {
 		$startingPage = 1;
@@ -341,10 +342,10 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
 	}
 	$nextPage = $pageNumber + 1;
 	$o .= ( $pageNumber < $totalPages ) ? "<font size='3' color='green'><i class='fa fa-arrow-circle-right' aria-hidden='true' style='cursor:pointer' title='Go To Page $nextPage' onclick='{$my_function}(&quot;$nextPage&quot;);'></i></font>" : "<font size='3' color='grey'><i class='fa fa-arrow-circle-right' aria-hidden='true'></i></font>";
-	$swipeScript .= ( $pageNumber < $totalPages ) ? "data_nextpage = $nextPage;" : "data_nextpage = 0;";
+	$swipeScript .= ( $pageNumber < $totalPages ) ? "data.nextpage = $nextPage;" : "data.nextpage = 0;";
 	$swipeScript .= ( $dockerSearch ) ? "dockerSearchFlag = true;" : "dockerSearchFlag = false";
 	$swipeScript .= "</script>";
-	$o .= "</font></b></center><span id='currentPageNumber' hidden>$pageNumber</span>";
+	$o .= "</font></b></center><script>data.currentpage = $pageNumber;</script>";
 	return $o.$swipeScript;
 }
 
