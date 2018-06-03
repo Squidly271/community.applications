@@ -297,6 +297,7 @@ function fixTemplates($template) {
 		}
 		$template['Category'] .= "$category ";
 	}
+  $template['Category'] = trim($template['Category']);
 	$template['Category'] = $template['Category'] ?: "Uncategorized";
 	if ( ! is_string($template['Category']) ) {
 		$template['Category'] = "Uncategorized";

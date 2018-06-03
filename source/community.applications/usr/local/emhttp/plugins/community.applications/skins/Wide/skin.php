@@ -138,7 +138,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		unset($categories);
 		foreach (explode(" ",$template['Category']) as $category) {
 			$category = rtrim($category,":");
-			$categories .= "<a onclick='authorSearch(&quot;$category&quot;);' class='ca_tooltip ca_category' style='cursor:pointer;' title='Search for $category'>$category</a> ";
+			$categories .= "<a onclick='doSearch(false,&quot;$category&quot;);' class='ca_tooltip ca_category' style='cursor:pointer;' title='Search for $category'>$category</a> ";
 		}
 		$template['Category'] = $categories;
 		$RepoName = ( $template['Private'] == "true" ) ? $template['RepoName']."<font color=red> (Private)</font>" : $template['RepoName'];
@@ -237,7 +237,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$template['display_compatible'] = "NOTE: This application is listed as being NOT compatible with your version of unRaid<br>";
 			$template['display_compatibleShort'] = "Incompatible";
 		}
-		$template['display_author'] = "<a class='ca_tooltip ca_author' onclick='authorSearch(this.innerHTML);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
+		$template['display_author'] = "<a class='ca_tooltip ca_author' onclick='doSearch(false,this.innerHTML);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
 		$displayIcon = $template['Icon'];
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
 		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
@@ -265,7 +265,6 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$columnNumber = 0;
 			$t .= vsprintf($skin[$viewMode]['eol'],$templateFormatArray);
 		}
-
 
 		$ct .= $t;
 		$count++;
@@ -315,21 +314,21 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
 	$o .= "Select Page:&nbsp;&nbsp&nbsp;";
 
 	$previousPage = $pageNumber - 1;
-	$o .= ( $pageNumber == 1 ) ? "<font size='3' color='grey'><i class='fa fa-arrow-circle-left' aria-hidden='true'></i></font>" : "<font size='3' color='green'><i class='fa fa-arrow-circle-left' aria-hidden='true' style='cursor:pointer' onclick='{$my_function}(&quot;$previousPage&quot;)' title='Go To Page $previousPage'></i></font>";
+	$o .= ( $pageNumber == 1 ) ? "<font size='3' color='grey'><i class='fa fa-arrow-circle-left' aria-hidden='true'></i></font>" : "<font size='3' color='green'><i class='fa fa-arrow-circle-left ca_tooltip' aria-hidden='true' style='cursor:pointer' onclick='{$my_function}(&quot;$previousPage&quot;)' title='Go To Page $previousPage'></i></font>";
 	$o .= "&nbsp;&nbsp;&nbsp;";
 	$swipeScript .= "data.prevpage = $previousPage;";
 	$startingPage = $pageNumber - 5;
 	if ($startingPage < 3 ) {
 		$startingPage = 1;
 	} else {
-		$o .= "<b><a style='cursor:pointer' onclick='{$my_function}(&quot;1&quot;);' title='Go To Page 1'>1</a></b>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;";
+		$o .= "<b><a class='ca_tooltip' style='cursor:pointer' onclick='{$my_function}(&quot;1&quot;);' title='Go To Page 1'>1</a></b>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;";
 	}
 	$endingPage = $pageNumber + 5;
 	if ( $endingPage > $totalPages ) {
 		$endingPage = $totalPages;
 	}
 	for ($i = $startingPage; $i <= $endingPage; $i++) {
-		$o .= ( $i == $pageNumber ) ? $i : "<b><a style='cursor:pointer' onclick='{$my_function}(&quot;$i&quot;);' title='Go To Page $i'>$i</a></b>";
+		$o .= ( $i == $pageNumber ) ? $i : "<b><a class='ca_tooltip' style='cursor:pointer' onclick='{$my_function}(&quot;$i&quot;);' title='Go To Page $i'>$i</a></b>";
 		$o .= "&nbsp;&nbsp;&nbsp";
 	}
 	if ( $endingPage != $totalPages) {
@@ -337,11 +336,11 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
 			$o .= "...&nbsp;&nbsp;&nbsp;";
 		}
 		if ( ($totalPages - $pageNumber ) >5 ) {
-			$o .= "<b><a style='cursor:pointer' title='Go To Page $totalPages' onclick='{$my_function}(&quot;$totalPages&quot;);'>$totalPages</a></b>&nbsp;&nbsp;&nbsp;";
+			$o .= "<b><a class='ca_tooltip' style='cursor:pointer' title='Go To Page $totalPages' onclick='{$my_function}(&quot;$totalPages&quot;);'>$totalPages</a></b>&nbsp;&nbsp;&nbsp;";
 		}
 	}
 	$nextPage = $pageNumber + 1;
-	$o .= ( $pageNumber < $totalPages ) ? "<font size='3' color='green'><i class='fa fa-arrow-circle-right' aria-hidden='true' style='cursor:pointer' title='Go To Page $nextPage' onclick='{$my_function}(&quot;$nextPage&quot;);'></i></font>" : "<font size='3' color='grey'><i class='fa fa-arrow-circle-right' aria-hidden='true'></i></font>";
+	$o .= ( $pageNumber < $totalPages ) ? "<font size='3' color='green'><i class='fa fa-arrow-circle-right ca_tooltip' aria-hidden='true' style='cursor:pointer' title='Go To Page $nextPage' onclick='{$my_function}(&quot;$nextPage&quot;);'></i></font>" : "<font size='3' color='grey'><i class='fa fa-arrow-circle-right' aria-hidden='true'></i></font>";
 	$swipeScript .= ( $pageNumber < $totalPages ) ? "data.nextpage = $nextPage;" : "data.nextpage = 0;";
 	$swipeScript .= ( $dockerSearch ) ? "dockerSearchFlag = true;" : "dockerSearchFlag = false";
 	$swipeScript .= "</script>";
