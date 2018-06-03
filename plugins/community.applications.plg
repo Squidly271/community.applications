@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.05.23">
-<!ENTITY md5       "23de6bc622d550e60729ffcb0beab3a2">
+<!ENTITY version   "2018.06.03">
+<!ENTITY md5       "740e97d3d79bf4fba2b06c55eb6184ca">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,14 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0">
 
 <CHANGES>
+###2018.06.03
+- After installing a container, Apps tab when reloading will go back to where it left off
+- Round off download counts in pop ups
+- Misc optimizations
+- CSS fixes
+- Search categories directly from the app's display
+- Remove All option from maximum displayed per page
+
 ###2018.05.23
 - Fix compatibility with 6.5.2 (uninstalled applications would still appear to be installed) 
 
