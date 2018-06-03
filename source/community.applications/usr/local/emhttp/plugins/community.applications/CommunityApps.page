@@ -1195,6 +1195,7 @@ function uninstallDocker(application,humanName) {
 }
 
 function appStore() {
+  mySpinner();
 	data.nextpage = 0;
 	data.prevpage = 0;
 	initializeAppStore();
