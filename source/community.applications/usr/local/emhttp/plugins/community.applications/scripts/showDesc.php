@@ -89,7 +89,6 @@ $repoIndex = searchArray($repos,"name",$template['RepoName']);
 $webPageURL = $repos[$repoIndex]['web'];
 
 $donatelink = $template['DonateLink'];
-$donateimg = $template['DonateImg'];
 $donatetext = $template['DonateText'];
 
 if ( ! $template['Plugin'] ) {
@@ -206,8 +205,8 @@ $templateDescription .= $template['Support'] ? "&nbsp;&nbsp;<a href='".$template
 $templateDescription .= $template['Project'] ? "&nbsp;&nbsp;<a href='".$template['Project']."' target='_blank'><strong>Project Page</strong></a>&nbsp;&nbsp;" : "";
 $templateDescription .= $template['WebPageURL'] ? "&nbsp;&nbsp;<a href='".$template['WebPageURL']."' target='_blank'><strong>Web Page</strong></a>&nbsp;&nbsp;" : "";
 
-if ( ($donatelink) && ($donateimg) ) {
-	$templateDescription .= "<br><br><center><font size='0'>$donatetext</font><br><a href='$donatelink' target='_blank'><img src='$donateimg' style='max-height:25px;'></a>";
+if ( $donatelink ) {
+	$templateDescription .= "<br><br><center><font size='0'>$donatetext</font><br><a href='$donatelink' target='_blank'><img height='20px;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a>";
 	if ( $template['RepoName'] != "Squid's plugin Repository" ) {
 		$templateDescription .= "<br><font size='0'>The above link is set by the author of the template, not the author of Community Applications</font></center>";
 	}
