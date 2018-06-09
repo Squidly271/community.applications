@@ -115,7 +115,6 @@ input[type=checkbox] {
 .myReadmoreButton {
 	color:blue;
 }
-
 .displayIcon {
 	height:96px;
 	width:96px;
@@ -165,4 +164,7 @@ input[type=checkbox] {
 	position:relative; float:right;
 	top:2px;
 	cursor:pointer;
+}
+.ca_multiselect {
+  cursor:pointer;
 }
