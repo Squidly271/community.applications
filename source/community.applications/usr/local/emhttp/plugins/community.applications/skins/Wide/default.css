@@ -123,8 +123,7 @@ input[type=checkbox] {
 	font-weight:bold;
 }
 .donateLink {
-	color:black;
-	font-weight:bold;
+  font-size:12px;
 }
 .dockerHubStar {
 	color: magenta;

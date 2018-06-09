@@ -9,6 +9,16 @@
 	padding-top:10px;
 	border-radius:20px 20px 0px 0px;
 }
+.ca_holder {
+  display:inline-block;
+  float:left;
+  height:430px;
+  width:370px;
+  overflow:hidden;
+  padding:0px;
+  margin-bottom:1px;
+  margin-right:3px;
+}
 .ca_template {
 	color:#606E7F;
 	border-radius:0px 0px 20px 20px;
@@ -133,8 +143,7 @@ input[type=checkbox] {
 	font-weight:bold;
 }
 .donateLink {
-	color:black;
-	font-weight:bold;
+  font-size:12px;
 }
 .dockerHubStar {
 	color: magenta;

@@ -23,7 +23,7 @@ if ( $installedVersion < $upgradeVersion ) {
 	$upgradeAvailable = "true";
 }
 $cfg = parse_plugin_cfg($plugin);
-$cfg['maxPerPage'] = ($cfg['maxPerPage'] < 1) ? 25 : $cfg['maxPerPage'];
+$cfg['maxPerPage'] = ($cfg['maxPerPage'] < 1) || ($cfg['maxPerPage'] > 50) ? 50 : $cfg['maxPerPage'];
 
 if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
@@ -160,6 +160,9 @@ $(function(){
 		$("#cookieWarning").show();
 	}	
 	var maxPerPage = $.cookie("maxPerPage");
+  if ( parseInt(maxPerPage,10) > 50 ) {
+    maxPerPage = 50;
+  }
 	if ( ! maxPerPage ) {
 		maxPerPage = "25";
 	}
@@ -417,9 +420,7 @@ function updateContent() {
 }
 
 function enableIcon(icon,enable) {
-	if ( enable == "false" ) {
-		enable = false;
-	}
+  enable = (enable == "false") ? false : enable;
 	$(icon).each(function() {
 		$(this).removeClass("enabledIcon disabledIcon");
 		if ( enable ) {
@@ -1510,19 +1511,19 @@ function resizeDisplay() {
 
 <?if ( $mobileDevice ):?>  // Mobile devices only check if columns change.  Computers always check to re-center the display
 		if ( Math.floor(newWidth / divisor) != Math.floor(oldWidth / divisor) ) {
-			updateDisplay(" ");
+			$("#templates_content").empty();
 			clearTimeout(window.resizeEvt);
 			window.resizeEvt = setTimeout(function(){
-				updateDisplay(" ");
+				$("#templates_content").empty();
 				changeSortOrder(null,null,null);
 			}, 100);
 		}
 <?else:?>
 		if ( newWidth != oldWidth ) {
-			updateDisplay(" ");
+			$("#templates_content").empty();
 			clearTimeout(window.resizeEvt);
 			window.resizeEvt = setTimeout(function(){
-				updateDisplay(" ");
+				$("#templates_content").empty();
 				changeSortOrder(null,null,null);
 			}, 100);
 		}
@@ -1552,7 +1553,7 @@ function resizeDisplay() {
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='sortIcon' class='fa fa-binoculars ca_toolsView disabledIcon' style='font-size:23px; position:relative;top:-2px;' aria-hidden='true'></i>&nbsp;
 <font size='3'><b>Current Section: <font color='green'><span id='currentSection'>Available Apps</span></font></b></font>
-<strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option><option value='100'>100</option></select></span></span>
+<strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option></select></span></span>
 </span><br>
 
 <div id='cookieWarning' style='display:none;'><center><font color='purple'>Community Applications works best when cookies are enabled in your browser.  You should enable them for the best experience</font></center></div>
@@ -1561,7 +1562,7 @@ function resizeDisplay() {
 <?endif;?>
 <div class='dockerSearch' style='display:none'><center><figure><i class='fa fa-docker initDockerSearch' style='font-size:50px;color:DarkCyan;cursor:pointer;'></i><figcaption class='initDockerSearch' style='cursor:pointer;'><a>Click Here To Get More Results From DockerHub</a></figcaption></figure></center></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
-<div style='width:100%;' id='templates_content'></div>
+<div style='width:100%; display:block;' id='templates_content'></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 </center>
 <center><a href='https://lime-technology.com/forums/topic/38582-plug-in-community-applications/' target='_blank'>Support Thread</a></center><br>

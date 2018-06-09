@@ -4,7 +4,7 @@
         "templateWidth": 375,
         "header": "<div style='display:block;overflow:hidden;margin-left:%2$spx;padding:0px;'>",
         "sol": "<div style='height:432px;overflow:auto;min-width:%1$spx;display:inline-block;margin-left:auto;position:relative;'>",
-        "template": "<div style='inline-block; float:left; height:430px;width:370px;overflow:hidden;padding:0px;margin-bottom:1px;margin-right:3px;'><div class='ca_template_icon'><div><center><strong>%75$s %66$s %77$s %43$s</strong></center></div><div class='ca_icon_wide'>%65$s</div><div class='ca_wide_info'>%59$s<br>%40$s<br>%41$s<br>%76$s<br>%45$s%44$s</div></div><div class='ca_template'><span class='ca_category'><b>Categories:</b> %21$s</span><br><span class='desc_readmore' style='display:block'><font color='red'>%57$s<br></font>%22$s</span>%64$s<br>%39$s%38$s</b></strong><center>%68$s%69$s%70$s%71$s%72$s%73$s%74$s</center><br><center>%37$s%36$s%48$s</center><font></div></div>",
+        "template": "<div class='ca_holder'><div class='ca_template_icon'><div><center><strong>%75$s %66$s %77$s %43$s</strong></center></div><div class='ca_icon_wide'>%65$s</div><div class='ca_wide_info'>%59$s<br>%40$s<br>%41$s<br>%76$s<br>%45$s%44$s</div></div><div class='ca_template'><span class='ca_category'><b>Categories:</b> %21$s</span><br><span class='desc_readmore' style='display:block'><font color='red'>%57$s<br></font>%22$s</span>%64$s<br>%39$s%38$s</b></strong><center>%68$s%69$s%70$s%71$s%72$s%73$s%74$s</center><br><center>%37$s%36$s%48$s</center><font></div></div>",
 				"eol": "</div>",
         "footer": "</div></div>"
     }
