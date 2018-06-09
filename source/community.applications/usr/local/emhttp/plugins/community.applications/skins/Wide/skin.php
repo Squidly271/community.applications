@@ -275,20 +275,20 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 	$ct .= vsprintf($skin[$viewMode]['footer'],$templateFormatArray);
 	$ct .= caGetMode();
 	if ( ! $officialFlag ) {
-		$ct .= "<br>".getPageNavigation($pageNumber,count($file),false)."<br><br><br>";
+		$ct .= "<br>".getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
 	}
 	if ( $communitySettings['dockerSearch'] != "yes" ) {
 		$ct .= "<script>$('.dockerSearch').hide();</script>";
 	}
 
 	if ( $specialCategoryComment ) {
-		$displayHeader .= "<center><font size='2' color='green'>This display is informational <em>ONLY</em>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</font></center><br>";
-		$displayHeader .= "<center><font size='2' color='green'>$specialCategoryComment</font></center>";
+		$displayHeader .= "<span class='specialCategory'><center>This display is informational <em>ONLY</em>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</center><br>";
+		$displayHeader .= "<center>$specialCategoryComment</center></span>";
 	}
 	return "$displayHeader$ct";
 }
 
-function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
+function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = true) {
 	global $communitySettings;
 
 	if ( $communitySettings['maxPerPage'] < 0 ) { return; }
@@ -307,14 +307,14 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
 	if ( $endApp > $totalApps ) {
 		$endApp = $totalApps;
 	}
-	$o = "<center><font color='purple'><b>";
-	if ( ! $dockerSearch ) {
+	$o = "<center><font color='purple'><b><span class='pageNavigation'>";
+	if ( ! $dockerSearch && $displayCount) {
 		$o .= "Displaying $startApp - $endApp (of $totalApps)<br>";
 	}
-	$o .= "Select Page:&nbsp;&nbsp&nbsp;";
+	#$o .= "Select Page:&nbsp;&nbsp&nbsp;";
 
 	$previousPage = $pageNumber - 1;
-	$o .= ( $pageNumber == 1 ) ? "<font size='3' color='grey'><i class='fa fa-arrow-circle-left' aria-hidden='true'></i></font>" : "<font size='3' color='green'><i class='fa fa-arrow-circle-left ca_tooltip' aria-hidden='true' style='cursor:pointer' onclick='{$my_function}(&quot;$previousPage&quot;)' title='Go To Page $previousPage'></i></font>";
+	$o .= ( $pageNumber == 1 ) ? "<font color='grey'><i class='fa fa-arrow-circle-left' aria-hidden='true'></i></font>" : "<font color='green'><i class='fa fa-arrow-circle-left ca_tooltip' aria-hidden='true' style='cursor:pointer' onclick='{$my_function}(&quot;$previousPage&quot;)' title='Go To Page $previousPage'></i></font>";
 	$o .= "&nbsp;&nbsp;&nbsp;";
 	$swipeScript .= "data.prevpage = $previousPage;";
 	$startingPage = $pageNumber - 5;
@@ -340,11 +340,11 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch) {
 		}
 	}
 	$nextPage = $pageNumber + 1;
-	$o .= ( $pageNumber < $totalPages ) ? "<font size='3' color='green'><i class='fa fa-arrow-circle-right ca_tooltip' aria-hidden='true' style='cursor:pointer' title='Go To Page $nextPage' onclick='{$my_function}(&quot;$nextPage&quot;);'></i></font>" : "<font size='3' color='grey'><i class='fa fa-arrow-circle-right' aria-hidden='true'></i></font>";
+	$o .= ( $pageNumber < $totalPages ) ? "<font color='green'><i class='fa fa-arrow-circle-right ca_tooltip' aria-hidden='true' style='cursor:pointer' title='Go To Page $nextPage' onclick='{$my_function}(&quot;$nextPage&quot;);'></i></font>" : "<font color='grey'><i class='fa fa-arrow-circle-right' aria-hidden='true'></i></font>";
 	$swipeScript .= ( $pageNumber < $totalPages ) ? "data.nextpage = $nextPage;" : "data.nextpage = 0;";
 	$swipeScript .= ( $dockerSearch ) ? "dockerSearchFlag = true;" : "dockerSearchFlag = false";
 	$swipeScript .= "</script>";
-	$o .= "</font></b></center><script>data.currentpage = $pageNumber;</script>";
+	$o .= "</font></span></b></center><script>data.currentpage = $pageNumber;</script>";
 	return $o.$swipeScript;
 }
 

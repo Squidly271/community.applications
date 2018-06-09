@@ -1,179 +1,39 @@
-.ca_template_icon {
-	color:#606E7F;
-	width:370px;
-	float:left;
-	display:inline-block;
-	background-color: #C7C5CB;
-	margin:0px;
-	height:150px;
-	padding-top:10px;
-	border-radius:20px 20px 0px 0px;
-}
-.ca_holder {
-  display:inline-block;
-  float:left;
-  height:430px;
-  width:370px;
-  overflow:hidden;
-  padding:0px;
-  margin-bottom:1px;
-  margin-right:3px;
-}
-.ca_template {
-	color:#606E7F;
-	border-radius:0px 0px 20px 20px;
-	display:inline-block;
-	text-align:left; 
- 	overflow:auto; 
-	height:270px;
-	width:360px;
-	padding-left:5px;
-	padding-right:5px;
-	background-color:#EDEAEF;
-}
-.ca_icon_wide {
-	display: inline-block;
-	float:left;
-	width:95px;
-	margin-left:25px;
-}
-.ca_wide_info {
-	display: inline-block;
-	float:left;
-	text-align:left;
-	margin-left:10px;
-	margin-top:15px;
-	width:200px;
-}
-.ca_category {
-	color:purple;
-}
-.ca_author {
-	color:black;
-	font-weight:bold;
-	cursor:pointer;
-}
-.ca_applicationName {
-	color:black;
-	font-size:large;
-}
-.ca_repository {
-	color:black;
-}
-.ca_highlight {
-	color:#0e5d08;
-	font-weight:bold;
-}
-input.appButtons {
-	margin:0px;
-}
-input.viewButton {
-	margin:1px;
-}
-input.sortButton {
-	margin:1px;
-}
-input.dirButton {
-	margin:1px;
-}
-input.allButtons {
-	margin:-1px;
-}
-input[type=checkbox] {
-	width:20px;
-	height:20px;
-}
-.enabledIcon {
-	cursor:pointer;
-	color:#005500;
-	font-size:25px;
-}
-.disabledIcon {
-	cursor:pointer;
-	color:#040404;
-	font-size:25px; 
-}
-.pinned {
-	cursor:pointer;
-	font-size:15px;
-	color:green;
-	padding:3px;
-}
-.unpinned {
-	cursor:pointer;
-	font-size:15px;
-	color:#820101;
-	padding:3px;
-	-webkit-transform: rotate(20deg);
-	-moz-transform: rotate(20deg);
-	-ms-transform: rotate(20deg);
-	-o-transform: rotate(20deg);
-	transform: rotate(20deg);
-}
-.topRightLinks {
-	padding-left:15px; 
-	font-weight:bold;
-}
-.appIcons {
-	font-size:25px;
-	color:#1c6343;
-  cursor:pointer;
-}
-.myReadmore {
-	text-align:center
-}
-.myReadmoreButton {
-	color:blue;
-}
-.displayIcon {
-	height:96px;
-	width:96px;
-}
-.displayIconTable {
-	height:48px;
-	width:48px;
-}
-.supportLink { 
-	font-weight:bold;
-}
-.projectLink { 
-	font-weight:bold;
-}
-.webLink { 
-	font-weight:bold;
-}
-.donateLink {
-  font-size:12px;
-}
-.dockerHubStar {
-	color: magenta;
-	font-size:15px;
-}
-.dockerDisabled {
-	text-align:center;
-	width:auto;
-	color:purple;
-}
-.separateOfficial { 
-	text-align:center;
-	width:auto;
-	font-size:25px;
-}
-.displayBeta { 
-	cursor:pointer;
-}
-.newApp {
-	color:red;
-	font-size:15px;
-	cursor:pointer;
-}
-.ca_fa-delete {
-	color:#c70404;
-	font-size:20px;
-	position:relative; float:right;
-	top:2px;
-	cursor:pointer;
-}
-.ca_multiselect {
-  cursor:pointer;
-}
+.ca_template_icon {color:#606E7F;width:370px;float:left;display:inline-block;background-color: #C7C5CB;margin:0px;height:150px;padding-top:10px;border-radius:20px 20px 0px 0px;}
+.ca_holder {display:inline-block;float:left;height:430px;width:370px;overflow:hidden;padding:0px;margin-bottom:1px;margin-right:3px;}
+.ca_template {color:#606E7F;border-radius:0px 0px 20px 20px;display:inline-block;text-align:left;overflow:auto;height:270px;width:360px;padding-left:5px;padding-right:5px;	background-color:#EDEAEF;}
+.ca_icon_wide {display:inline-block;float:left;width:95px;margin-left:25px;}
+.ca_wide_info {display: inline-block;float:left;text-align:left;margin-left:10px;margin-top:15px;width:200px;}
+.ca_category {color:purple;}
+.ca_author {color:black;font-weight:bold;cursor:pointer;}
+.ca_applicationName {color:black;font-size:large;}
+.ca_repository {color:black;}
+.ca_highlight {color:#0e5d08;font-weight:bold;}
+input.appButtons {margin:0px;}
+input.viewButton {margin:1px;}
+input.sortButton {margin:1px;}
+input.dirButton {margin:1px;}
+input.allButtons {margin:-1px;}
+input[type=checkbox] {width:20px;height:20px;}
+.enabledIcon {cursor:pointer;color:#005500;font-size:25px;}
+.disabledIcon {cursor:pointer;color:#040404;font-size:25px;}
+.pinned {cursor:pointer;font-size:15px;color:green;padding:3px;}
+.unpinned {cursor:pointer;font-size:15px;color:#820101;padding:3px;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);	-o-transform: rotate(20deg);	transform: rotate(20deg);}
+.topRightLinks {padding-left:15px;font-weight:bold;}
+.appIcons {font-size:25px;color:#1c6343;cursor:pointer;}
+.myReadmore {text-align:center;}
+.myReadmoreButton {color:blue;}
+.displayIcon {height:96px;width:96px;}
+.displayIconTable {height:48px;width:48px;}
+.supportLink {font-weight:bold;}
+.projectLink {font-weight:bold;}
+.webLink {font-weight:bold;}
+.donateLink {font-size:12px;}
+.dockerHubStar {color: magenta;font-size:15px;}
+.dockerDisabled {text-align:center;width:auto;color:purple;}
+.separateOfficial {text-align:center;width:auto;font-size:25px;}
+.displayBeta {cursor:pointer;}
+.newApp {color:red;font-size:15px;cursor:pointer;}
+.ca_fa-delete {color:#c70404;font-size:20px;position:relative;float:right;top:2px;cursor:pointer;}
+.ca_multiselect {cursor:pointer;}
+.pageNavigation {font-size:20px;}
+.specialCategory {color:green;font-size:15px;}

@@ -29,7 +29,7 @@ $communityPaths['defaultSkinPHP'] = $skinSettings['detail']['php'];
 require_once($communityPaths['defaultSkinPHP']);
 
 $communitySettings['appFeed']       = "true"; # set default for deprecated setting
-$communitySettings['maxPerPage']    = getPost("maxPerPage",$communitySettings['maxPerPage']);  # Global POST.  Used damn near everywhere
+$communitySettings['maxPerPage']    = getPost("maxPerPage",25);  # Global POST.  Used damn near everywhere
 $communitySettings['maxPerPage'] = ( $communitySettings['maxPerPage'] < 1 ) || ( $communitySettings['maxPerPage'] > 50 ) ? 50 : $communitySettings['maxPerPage'];
 $communitySettings['unRaidVersion'] = $unRaidVersion;
 
@@ -1119,16 +1119,6 @@ case 'statistics':
 	echo "</table>";
 	echo "<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img height='25px' src='https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif'></a></center>";
 	echo "<center>Ensuring only safe applications are present is a full time job</center><br>";
-	break;
-
-#####################################################################################
-#                                                                                   #
-# Updates The maxPerPage setting (maxPerPage is already grabbed globally from POST) #
-#                                                                                   #
-#####################################################################################
-case 'changeSettings':
-	file_put_contents($communityPaths['pluginSettings'],create_ini_file($communitySettings,false));
-	echo "settings updated";
 	break;
 
 #######################################

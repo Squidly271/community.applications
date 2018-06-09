@@ -23,7 +23,6 @@ if ( $installedVersion < $upgradeVersion ) {
 	$upgradeAvailable = "true";
 }
 $cfg = parse_plugin_cfg($plugin);
-$cfg['maxPerPage'] = ($cfg['maxPerPage'] < 1) || ($cfg['maxPerPage'] > 50) ? 50 : $cfg['maxPerPage'];
 
 if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
@@ -602,11 +601,8 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	if ( imagesize == "" ) { imagesize = "80"; }
 	disableTooltipster();
 	disableSearch();
-	if ( ! textdescription && textimage ) {
-		sweetAlertBackground("transparent");
-	} else {
-		sweetAlertBackground("white");
-	}
+  var backgroundColor = ( ! textdescription && textimage ) ? "transparent" : "white";
+  sweetAlertBackground(backgroundColor);
 	if ( textimage ) {
 		textdescription = textdescription + "<br><br><center><i class='fa fa-spinner fa-spin' style='font-size:"+imagesize+"px;color:#DEB887;' aria-hidden='true'></i></center>";
 	}
@@ -1301,11 +1297,7 @@ function displayTags(leadTemplate) {
 function changeDisplayed() {
 	var maxPerPage = $("#maxPerPage").val();
 	$.cookie("maxPerPage",maxPerPage);
-	$.post(URL,{action:'changeSettings',maxPerPage:maxPerPage},function(data) {
-		if (data) {
-			changePage('1');
-		}
-	});
+	changePage('1');
 }
 
 function makePlural(string,count) {
@@ -1556,7 +1548,7 @@ function resizeDisplay() {
 <strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option></select></span></span>
 </span><br>
 
-<div id='cookieWarning' style='display:none;'><center><font color='purple'>Community Applications works best when cookies are enabled in your browser.  You should enable them for the best experience</font></center></div>
+<div id='cookieWarning' style='display:none;'><center><font color='purple'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </font></center></div>
 <?if ( $upgradeAvailable ) :?>
 <span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style=cursor:pointer>HERE</a> to install the update  <i class='ca_infoPopup fa fa-info-circle' data-app='community.applications.plg' data-name='Community Applications' style='cursor:pointer;font-size:15px;color:blue;'></i></center></font></span>
 <?endif;?>
