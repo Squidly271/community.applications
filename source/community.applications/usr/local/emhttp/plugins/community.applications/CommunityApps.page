@@ -1380,7 +1380,8 @@ function installMulti() {
 	var pluginCount = 0;
 	var dockerCount = 0;
 	var selected = getSelectedApps();
-
+	var cookieWarning = "";
+	
 	$.each(selected.plugin,function(i,el) {
 		plugin += el + "*";
 		pluginCount += 1;
@@ -1391,9 +1392,13 @@ function installMulti() {
 	});
 	sweetAlertBackground("white");
 	disableSearch();
+	if ( ! cookiesEnabled() && dockerCount && pluginCount ) {
+		pluginCount = 0;
+		cookieWarning = "<br>Cookies not enabled.  Plugins must be separately installed from docker applications";
+	}
 	swal({
 		title: "Install "+makePlural("Application",dockerCount+pluginCount)+"?",
-		text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?.  <em>Docker applications will be installed utilizing the most recently saved template with no user input on your part</em>",
+		text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?.  <em>Docker applications will be installed utilizing the most recently saved template with no user input on your part</em><font color='red'>"+cookieWarning+"</font>",
 		type: "info",
 		showCancelButton: true,
 		showConfirmButton: true,
