@@ -12,7 +12,6 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("webGui/include/Markdown.php");
 
-
 function getDownloads($downloads,$lowFlag=false) {
   $downloadCount = array("500000000","100000000","50000000","10000000","5000000","2500000","1000000","500000","250000","100000","50000","25000","10000","5000","1000","500","100");
   foreach ($downloadCount as $downloadtmp) {
@@ -110,7 +109,7 @@ $templateDescription .= "<style>p { margin-left:20px;margin-right:20px }</style>
 if ( $color ) {
 	$templateDescription .= "<center><font size='4'><strong>{$template['Name']}</strong></font></center><br><br><br>";
 }
-$templateDescription .= "<center><table><tr><td><figure style='margin:0px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;';>";
+$templateDescription .= "<center><table><tr><td><figure style='margin:0px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px;background-color:#C7C5CB;padding:3px;border-radius:10px 10px 10px 10px' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;';>";
 $templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
 $templateDescription .= "</figure>";
 $templateDescription .= "</td><td></td><td><table>";

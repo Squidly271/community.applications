@@ -39,7 +39,6 @@ $communityPaths['statistics']                    = $communityPaths['tempFiles'].
 $communityPaths['pluginSettings']                = "/boot/config/plugins/$plugin/$plugin.cfg";
 $communityPaths['fixedTemplates_txt']            = $communityPaths['tempFiles']."/caFixed.txt";
 $communityPaths['invalidXML_txt']                = $communityPaths['tempFiles']."/invalidxml.txt";
-$communityPaths['PluginInstallPending']          = $communityPaths['tempFiles']."/plugininstallpending.txt";
 $communityPaths['warningAccepted']               = "/boot/config/plugins/$plugin/accepted";
 $communityPaths['pluginDupes']                   = $communityPaths['tempFiles']."/pluginDupes";
 $communityPaths['appFeedDownloadError']          = $communityPaths['tempFiles']."/appfeedTemporaryFileForAnalysis";

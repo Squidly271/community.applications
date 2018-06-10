@@ -32,15 +32,11 @@ $skinPath = "/usr/local/emhttp/plugins/community.applications/skins/{$cfg['skin'
 $communityPaths['defaultSkin'] = "$skinPath/skin.json";
 
 $tabMode = "_self";
-$line_color = $display['theme']=='black' ? '#202020' : '#E8E8E8';
 
 $timeNew = str_replace("-","",$cfg['timeNew']);
 $categoryTitle = "Current Category";
 
 $template = json_decode(file_get_contents($communityPaths['defaultSkin']),true);
-
-$pluginInstallPending = @file_get_contents($communityPaths['PluginInstallPending']);
-@unlink($communityPaths['PluginInstallPending']);
 
 ?>
 <?if ( is_file("$skinPath/default.css") ):?>
@@ -159,9 +155,9 @@ $(function(){
 		$("#cookieWarning").show();
 	}	
 	var maxPerPage = $.cookie("maxPerPage");
-  if ( parseInt(maxPerPage,10) > 50 ) {
-    maxPerPage = 50;
-  }
+	if ( parseInt(maxPerPage,10) > 50 ) {
+		maxPerPage = 50;
+	}
 	if ( ! maxPerPage ) {
 		maxPerPage = "25";
 	}
@@ -408,9 +404,11 @@ function updateContent() {
 		myAlert("Updating Content","Retrieving the latest application Lists",true,"40");
 		$.post(URL,{action:'force_update'}, function(data) {
 			if (data) {
-				if ( "<?=$pluginInstallPending?>" ) {
+				if ( $.cookie("plugininstallpending") ) {
+					var plugins = $.cookie("plugininstallpending");
+					$.removeCookie("plugininstallpending");
 					myCloseAlert();
-					openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1=<?=$pluginInstallPending?>','Install Plugin Applications',600,900,true);
+					openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
 				} else {
 					getContent(true,'INITIALIZE','None Selected');
 				}
@@ -419,7 +417,7 @@ function updateContent() {
 }
 
 function enableIcon(icon,enable) {
-  enable = (enable == "false") ? false : enable;
+	enable = (enable == "false") ? false : enable;
 	$(icon).each(function() {
 		$(this).removeClass("enabledIcon disabledIcon");
 		if ( enable ) {
@@ -601,8 +599,8 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	if ( imagesize == "" ) { imagesize = "80"; }
 	disableTooltipster();
 	disableSearch();
-  var backgroundColor = ( ! textdescription && textimage ) ? "transparent" : "white";
-  sweetAlertBackground(backgroundColor);
+	var backgroundColor = ( ! textdescription && textimage ) ? "transparent" : "white";
+	sweetAlertBackground(backgroundColor);
 	if ( textimage ) {
 		textdescription = textdescription + "<br><br><center><i class='fa fa-spinner fa-spin' style='font-size:"+imagesize+"px;color:#DEB887;' aria-hidden='true'></i></center>";
 	}
@@ -638,9 +636,9 @@ function readMore() {
 
 function doSearch(button,newSearch) {
 	var windowWidth = getWindowWidth();
-  if ( ! newSearch === false ) {
-    $('#searchBox').val(newSearch);
-  }
+	if ( ! newSearch === false ) {
+		$('#searchBox').val(newSearch);
+	}
 	var filter = $('#searchBox').val();
 	var maxPerPage = getPerPage();
 	resetSortByDate();
@@ -746,7 +744,7 @@ function forceUpdateButton() {
 		},
 		function(isConfirm) {
 			if (isConfirm) {
-        clearSearchBox();
+				clearSearchBox();
 				$.post(URL,{action:'force_update_button'});
 				myAlert("Switching to Legacy Mode","Downloading <span id='downloadStatus'>Repository List</span>");
 				$.post(URL,{action:'downloadRepositories'},function(data) {
@@ -1192,7 +1190,7 @@ function uninstallDocker(application,humanName) {
 }
 
 function appStore() {
-  mySpinner();
+	mySpinner();
 	data.nextpage = 0;
 	data.prevpage = 0;
 	initializeAppStore();
@@ -1408,6 +1406,9 @@ function installMulti() {
 	function( isConfirm ) {
 		if ( isConfirm ) {
 			myCloseAlert();
+			if ( docker.length && plugin.length ) {
+				$.cookie("plugininstallpending",plugin);
+			}
 			if ( docker.length ) {
 				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
 				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,'Install Docker '+makePlural("Application",dockerCount),600,900,true);

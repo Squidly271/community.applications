@@ -97,9 +97,7 @@ function addCloseButton() {
   }
   $autostartFile = implode("\n",array_keys($autostart));
   file_put_contents("/var/lib/docker/unraid-autostart",$autostartFile);
-  if ( $_GET['plugin'] ) {
-    file_put_contents($communityPaths['PluginInstallPending'],$_GET['plugin']);
-  }
+
   if ( $failFlag || !$_GET['plugin']) {
     echo "<br>Docker Application Installation finished.<br><script>addCloseButton();</script>";
   } else {
