@@ -1153,6 +1153,9 @@ case 'removePrivateApp':
 	echo "done";
 	break;
 
+#################################
+# Downloads The Repository List #
+#################################
 case 'downloadRepositories':
 	file_put_contents($communityPaths['appFeedOverride'],"dunno");
 	$Repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
@@ -1166,6 +1169,9 @@ case 'downloadRepositories':
 	exec("rm -rf '{$communityPaths['templates-community']}'");
 	break;
 
+###########################################
+# Downloads the templates in a repository #
+###########################################
 case 'downloadRepo':
 	$repoURL = getPost("repoURL","oops");
 	$repoName =getPost("repoName","oops");
@@ -1191,6 +1197,27 @@ case 'downloadRepo':
 	writeJsonFile($communityPaths['legacyTemplatesTmp'],$templates);
 	echo "downloaded";
 	break;
+	
+####################################################
+# Creates the entries for autocomplete on searches #
+####################################################
+case 'populateAutoComplete':
+	$templates = readJsonFile($communityPaths['community-templates-info']);
+	$autoComplete = array();
+	foreach ($templates as $template) {
+		if ( ! $template['Blacklist'] && ! $template['Deprecated']) {
+			$autoComplete[strtolower($template['Name'])] = $template['Name'];
+			$autoComplete[strtolower($template['Author'])] = $template['Author'];
+		}
+	}
+	$autoScript = "<script>searchBoxAwesomplete.list = [";
+	foreach ($autoComplete as $auto) {
+		$autoScript .= '"'.$auto.'",';
+	}
+	$autoScript = rtrim($autoScript,",")."];</script>";
+	echo $autoScript;
+	break;
+
 }
 
 #################################################################

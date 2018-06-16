@@ -45,11 +45,15 @@ $template = json_decode(file_get_contents($communityPaths['defaultSkin']),true);
 <?if ( is_file("$skinPath/{$display['theme']}.css") ):?>
 <link href="<?=autov("/plugins/community.applications/skins/{$cfg['skin']}/{$display['theme']}.css")?>" type='text/css' rel="stylesheet">
 <?endif;?>
+<link rel='stylesheet' href='/plugins/community.applications/styles/awesomplete.css'>
 
+<script src='/plugins/community.applications/javascript/awesomplete.min.js'></script>
 <script src='/plugins/community.applications/javascript/jquery.mobile.custom.min.js'></script>
 <script>
 var URL = "/plugins/<?=$plugin?>/include/exec.php";
 var last = $('input[name$="tabs"]').length;
+var searchBoxInput;
+var searchBoxAwesomplete;
 
 var categorySub = {
 	backup:"backup:",
@@ -149,7 +153,10 @@ function isTouch() {
 }
 
 $(function(){
-	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox' class='narrow' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
+	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox'  placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
+
+	searchBoxInput = document.getElementById("searchBox");
+	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
 	if ( ! cookiesEnabled() ) {
 		$("#cookieWarning").show();
@@ -866,6 +873,8 @@ function setSortOrder() {
 
 function getContent(init,category,description,newApp) {
 	data.currentpage = 1;
+	var initialize;
+	
 	enableSearch();
 	if ( init == true ) {
 		enableIcon("#sortIcon, #subcategoryIcon",false);
@@ -913,7 +922,7 @@ function getContent(init,category,description,newApp) {
 		if ( category == "INITIALIZE" ) {
 			initializeAppStore();
 			category = "NONE";
-			var initialize = true;
+			initialize = true;
 			enableButtons();
 			$("#All").prop("disabled",true);
 			$("#NetworkCategory,#MediaServerCategory,#MediaAppCategory,#NONE,#ToolsCategory,#Total1").hide();
@@ -930,6 +939,9 @@ function getContent(init,category,description,newApp) {
 				$("#Category").html(description);
 				$("#updateButton").prop("disabled",false);
 				updateDisplay(data);
+				if ( initialize ) {
+					populateAutoComplete();
+				}
 				readMore();
 				myCloseAlert();
 				setToolTip();
@@ -938,6 +950,15 @@ function getContent(init,category,description,newApp) {
 	}
 	$('.dockerSearch').hide();
 	setSortOrder();
+}
+
+function populateAutoComplete() {
+	$.post(URL,{action:'populateAutoComplete'},function(data) {
+		if (data) {
+			$("#awesomepleteScript").html(data);
+			searchBoxAwesomplete.maxItems = 20;
+		}
+	});
 }
 
 function mySearch(filter) {
@@ -1473,6 +1494,7 @@ function restoreState() {
 	$(".dirButton").prop("disabled",false);
 	$("#"+$.cookie("sortButton")).prop("disabled",true);
 	$("#"+$.cookie("dirButton")).prop("disabled",true);
+	populateAutoComplete();
 }
 
 function disableSearch() {
@@ -1566,7 +1588,7 @@ function resizeDisplay() {
 <center><a href='https://lime-technology.com/forums/topic/38582-plug-in-community-applications/' target='_blank'>Support Thread</a></center><br>
 <center>Community Applications Version: <?=$installedVersion?></center></div>
 
-<span id='miscScript'></span>
+<span id='miscScript'></span><span id='awesomepleteScript'></span>
 
 <div>
 <div id='tooltipviews' style='display:none;'>
