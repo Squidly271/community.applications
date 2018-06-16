@@ -1205,7 +1205,7 @@ case 'populateAutoComplete':
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	$autoComplete = array();
 	foreach ($templates as $template) {
-		if ( ! $template['Blacklist'] && ! $template['Deprecated']) {
+		if ( ! $template['Blacklist'] && ! $template['Deprecated'] && $template['Compatible']) {
 			$autoComplete[strtolower($template['Name'])] = $template['Name'];
 			$autoComplete[strtolower($template['Author'])] = $template['Author'];
 		}
