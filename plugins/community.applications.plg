@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.06.03">
-<!ENTITY md5       "740e97d3d79bf4fba2b06c55eb6184ca">
+<!ENTITY version   "2018.06.16">
+<!ENTITY md5       "4091fd6ecbddba113a030085d07e6cd4">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0">
 
 <CHANGES>
+###2018.06.16
+- CSS adjustments
+- Better warnings if cookies not enabled if feature will not work
+- Autocompletion on searches
+
 ###2018.06.03
 - After installing a container, Apps tab when reloading will go back to where it left off
 - Round off download counts in pop ups
