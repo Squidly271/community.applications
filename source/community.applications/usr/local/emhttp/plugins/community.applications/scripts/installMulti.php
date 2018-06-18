@@ -77,7 +77,7 @@ function addCloseButton() {
     exec("docker start $docker 2>&1",$output,$retval);
     if ($retval) {
       $failFlag = true;
-      echo "<b>$docker</b> failed to start.  You should install it alone (by clicking <img src='/plugins/community.applications/images/install.png' height='20px'> on the application) to fix the errors<br>";
+      echo "<b>$docker</b> failed to start.  You should install it by itself to fix the errors<br>";
       foreach ($output as $line) {
         echo "<tt>$line</tt><br>";
       }
@@ -103,10 +103,6 @@ function addCloseButton() {
   } else {
     echo "<script>top.Shadowbox.close();</script>";
   }
+	@unlink("/tmp/community.applications/tempFiles/newCreateDocker.php");
 }
-?>  
-
-
-
-
-
+?>
