@@ -1457,26 +1457,28 @@ function updateDisplay(data) {
 	saveState();
 }
 function saveState() {
-	$.cookie("sectionText",$("#currentSection").html());
-	$.cookie("categoryText",$("#Category").html());	
-	$.cookie("data",JSON.stringify(data));
+	if ( ! dockerSearchFlag ) {
+		$.cookie("sectionText",$("#currentSection").html());
+		$.cookie("categoryText",$("#Category").html());	
+		$.cookie("data",JSON.stringify(data));
 
-	$.cookie("dockerSearchFlag",dockerSearchFlag);
-	$.cookie("homeIcon",isIconEnabled("#homeIcon"));
-	$.cookie("sectionIcon",isIconEnabled("#sectionIcon"));
-	$.cookie("categoryIcon",isIconEnabled("#categoryIcon"));
-	$.cookie("subcategoryIcon",isIconEnabled("#subcategoryIcon"));
-	$.cookie("sortIcon",isIconEnabled("#sortIcon"));
-	$(".sortButton").each(function() {
-		if ( $(this).prop("disabled") ) {
-			$.cookie("sortButton",this.id);
-		}
-	});
-	$(".dirButton").each(function() {
-		if ( $(this).prop("disabled") ) {
-			$.cookie("dirButton",this.id);
-		}
-	});
+		$.cookie("dockerSearchFlag",dockerSearchFlag);
+		$.cookie("homeIcon",isIconEnabled("#homeIcon"));
+		$.cookie("sectionIcon",isIconEnabled("#sectionIcon"));
+		$.cookie("categoryIcon",isIconEnabled("#categoryIcon"));
+		$.cookie("subcategoryIcon",isIconEnabled("#subcategoryIcon"));
+		$.cookie("sortIcon",isIconEnabled("#sortIcon"));
+		$(".sortButton").each(function() {
+			if ( $(this).prop("disabled") ) {
+				$.cookie("sortButton",this.id);
+			}
+		});
+		$(".dirButton").each(function() {
+			if ( $(this).prop("disabled") ) {
+				$.cookie("dirButton",this.id);
+			}
+		});
+	}
 }
 
 function restoreState() {
