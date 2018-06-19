@@ -1068,7 +1068,9 @@ case 'statistics':
 				$statistics['blacklist']++;
 			}
 			if ( $template['Private'] && ! $template['Blacklist']) {
-				$statistics['private']++;
+				if ( ! ($communitySettings['hideDeprecated'] == 'true' && $template['Deprecated']) ) {
+					$statistics['private']++;
+				}
 			}
 		}
 	}
