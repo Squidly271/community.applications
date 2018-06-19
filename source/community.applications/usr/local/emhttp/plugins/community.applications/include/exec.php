@@ -1095,29 +1095,29 @@ case 'statistics':
 	}
 
 	$color = "<font color='coral'>";
-	echo "<div style='overflow:scroll; max-height:550px; height:600px; overflow-x:hidden; overflow-y:hidden;'><center><img height='24px' src='/plugins/community.applications/images/community.applications.png'><br><font size='3' color='white'>Community Applications</font><br>";
-	echo "<center><font size='2'>Application Feed Statistics</font></center><br><br>";
+	echo "<div style='overflow:scroll; max-height:550px; height:550px; overflow-x:hidden; overflow-y:hidden;'><center><img height='48px' src='/plugins/community.applications/images/community.applications.png'><br><font size='3' color='white'>Community Applications</font><br>";
+	echo "<br>";
 	echo "<table>";
-	echo "<tr><td><b>{$color}<a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td>$color$updateTime</td></tr>";
-	echo "<tr><td><b>{$color}Total Number Of Templates</b></td><td>$color{$statistics['totalApplications']}</td></tr>";
-	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color".count($repositories)."</td></tr>";
-	echo "<tr><td><b>{$color}Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";
-	echo "<tr><td><b>{$color}Total Number Of Plugins</b></td><td>$color{$statistics['plugin']}</td></tr>";
-	echo "<tr><td><b>{$color}<a id='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
-	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Total Number Of Invalid Templates Found</a></b></td><td>$color{$statistics['invalidXML']}</td></tr>";
-	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Total Number Of Template Errors</a></b></td><td>$color{$statistics['caFixed']}+</td></tr>";
-	echo "<tr><td><b>{$color}<a id='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Blacklisted Apps Found In Appfeed</a></b></td><td>$color{$statistics['blacklist']}</td></tr>";
-	echo "<tr><td><b>{$color}<a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Incompatible Applications</a></b></td><td>$color{$statistics['totalIncompatible']}</td></tr>";
-	echo "<tr><td><b>{$color}<a id='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Deprecated Applications</a></b></td><td>$color{$statistics['totalDeprecated']}</td></tr>";
-	echo "<tr><td><b>{$color}<a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Total Number Of Moderation Entries</a></b></td><td>$color{$statistics['totalModeration']}+</td></tr>";
-	echo "<tr><td><b>{$color}<a id='NOSUPPORT' onclick='showSpecialCategory(this);' style='cursor:pointer'>Applications without any support thread:</a></b></td><td>$color{$statistics['NoSupport']}</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}<a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td>$color$updateTime</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}Total Number Of Templates</b></td><td>$color{$statistics['totalApplications']}</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}<a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color".count($repositories)."</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}Total Number Of Plugins</b></td><td>$color{$statistics['plugin']}</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}<a id='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}<a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Total Number Of Invalid Templates Found</a></b></td><td>$color{$statistics['invalidXML']}</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}<a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Total Number Of Template Errors</a></b></td><td>$color{$statistics['caFixed']}+</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}<a id='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Blacklisted Apps Found In Appfeed</a></b></td><td>$color{$statistics['blacklist']}</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}<a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Incompatible Applications</a></b></td><td>$color{$statistics['totalIncompatible']}</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}<a id='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Deprecated Applications</a></b></td><td>$color{$statistics['totalDeprecated']}</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}<a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Total Number Of Moderation Entries</a></b></td><td>$color{$statistics['totalModeration']}+</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}<a id='NOSUPPORT' onclick='showSpecialCategory(this);' style='cursor:pointer'>Applications without any support thread:</a></b></td><td>$color{$statistics['NoSupport']}</td></tr>";
 	$totalCA = exec("du -h -s /usr/local/emhttp/plugins/community.applications/");
 	$totalTmp = exec("du -h -s /tmp/community.applications/");
 	$memCA = explode("\t",$totalCA);
 	$memTmp = explode("\t",$totalTmp);
-	echo "<tr><td><b>{$color}<b>Memory Usage (CA / DataFiles)</b></td><td>{$memCA[0]} / {$memTmp[0]}</td></tr>";
+	echo "<tr><td class='ca_table'><b>{$color}<b>Memory Usage (CA / DataFiles)</b></td><td>{$memCA[0]} / {$memTmp[0]}</td></tr>";
 	echo "</table>";
-	echo "<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img height='25px' src='https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif'></a></center>";
+	echo "<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img height='25px' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></center>";
 	echo "<center>Ensuring only safe applications are present is a full time job</center><br>";
 	break;
 

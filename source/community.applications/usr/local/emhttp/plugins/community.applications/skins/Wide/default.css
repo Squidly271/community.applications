@@ -35,3 +35,4 @@ input[type=checkbox] {width:20px;height:20px;}
 .ca_multiselect {cursor:pointer;}
 .pageNavigation {font-size:20px;}
 .specialCategory {color: green;font-size:15px;}
+.ca_table { padding:5px 0px 5px 0 }

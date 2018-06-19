@@ -31,10 +31,7 @@ if ( ! is_file($communityPaths['warningAccepted']) ) {
 $skinPath = "/usr/local/emhttp/plugins/community.applications/skins/{$cfg['skin']}";
 $communityPaths['defaultSkin'] = "$skinPath/skin.json";
 
-$tabMode = "_self";
-
 $timeNew = str_replace("-","",$cfg['timeNew']);
-$categoryTitle = "Current Category";
 
 $template = readJsonFile($communityPaths['defaultSkin']);
 
@@ -146,11 +143,6 @@ data.nextpage = 0;
 data.prevpage = 0;
 data.currentpage = 1;
 var dockerSearchFlag = false;
-
-function isTouch() {
-	try{ document.createEvent("TouchEvent"); return true; }
-	catch(e){ return false; }
-}
 
 $(function(){
 	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox'  placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
@@ -1013,7 +1005,7 @@ function dockerConvert(dockerID) {
 		if (data) {
 			myCloseAlert();
 			templateURL = "Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
-			window.open(templateURL,"<?=$tabMode?>");
+			window.open(templateURL,"_self");
 			$("#Total").html(totalDisplayed);
 		}
 	});
@@ -1551,6 +1543,11 @@ function resizeDisplay() {
 		}
 <?endif;?>
 	});
+}
+
+function isTouch() {
+	try{ document.createEvent("TouchEvent"); return true; }
+	catch(e){ return false; }
 }
 
 </script>
