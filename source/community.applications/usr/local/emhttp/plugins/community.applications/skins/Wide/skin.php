@@ -237,7 +237,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$template['display_compatible'] = "NOTE: This application is listed as being NOT compatible with your version of unRaid<br>";
 			$template['display_compatibleShort'] = "Incompatible";
 		}
-		$template['display_author'] = "<a class='ca_tooltip ca_author' onclick='doSearch(false,this.innerHTML);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
+		$template['display_author'] = "<a class='ca_tooltip ca_author' onclick='doSearch(false,this.innerText);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
 		$displayIcon = $template['Icon'];
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
 		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
@@ -249,7 +249,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
 			$template['display_iconSmall'] = "<img src='".$displayIcon."' class='$iconClass'>";
 		}
-		$template['display_dockerName'] = ( $communitySettings['dockerSearch'] == "yes" && ! $template['Plugin'] ) ? "<a class='ca_tooltip ca_applicationName' data-appNumber='$ID' style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search dockerHub for similar containers'>".$template['Name']."</a>" : "<span class='ca_applicationName'>{$template['Name']}</span>";
+		$template['display_dockerName'] = ( $communitySettings['dockerSearch'] == "yes" && ! $template['Plugin'] ) ? "<a class='ca_tooltip ca_applicationName' data-appNumber='$ID' style='cursor:pointer' onclick='mySearch(this.innerText);' title='Search dockerHub for similar containers'>".$template['Name']."</a>" : "<span class='ca_applicationName'>{$template['Name']}</span>";
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
 		if ( ( $template['Beta'] == "true" ) ) {
@@ -404,8 +404,8 @@ function displaySearchResults($pageNumber) {
 		}
 		$result['display_Repository'] = $result['Repository'];
 		$result['display_iconClickable'] = $result['Icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
-		$result['display_dockerName'] = "<a class='ca_tooltip ca_applicationName' style='cursor:pointer;' onclick='mySearch(this.innerHTML);' title='Search for similar containers'>{$result['Name']}</a>";
-		$result['display_author'] = "<a class='ca_tooltip ca_author' onclick='mySearch(this.innerHTML);' title='Search For Containers From {$result['Author']}'>{$result['Author']}</a>";
+		$result['display_dockerName'] = "<a class='ca_tooltip ca_applicationName' style='cursor:pointer;' onclick='mySearch(this.innerText);' title='Search for similar containers'>{$result['Name']}</a>";
+		$result['display_author'] = "<a class='ca_tooltip ca_author' onclick='mySearch(this.innerText);' title='Search For Containers From {$result['Author']}'>{$result['Author']}</a>";
 		$result['Category'] = "Docker Hub Search";
 		$result['display_iconClickable'] = "<img class='displayIcon' src='{$result['Icon']}'>";
 		$result['Description'] = $result['Description'] ?: "No description present";

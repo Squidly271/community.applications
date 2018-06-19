@@ -36,7 +36,7 @@ $tabMode = "_self";
 $timeNew = str_replace("-","",$cfg['timeNew']);
 $categoryTitle = "Current Category";
 
-$template = json_decode(file_get_contents($communityPaths['defaultSkin']),true);
+$template = readJsonFile($communityPaths['defaultSkin']);
 
 ?>
 <?if ( is_file("$skinPath/default.css") ):?>
@@ -935,7 +935,7 @@ function getContent(init,category,description,newApp) {
 
 		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,maxPerPage:maxPerPage},function(data) {
 			if (data) {
-				description = "<?=$categoryTitle?>: <font color='green'>"+description+"</font>";
+				description = "Category: <font color='green'>"+description+"</font>";
 				$("#Category").html(description);
 				$("#updateButton").prop("disabled",false);
 				updateDisplay(data);
@@ -1572,7 +1572,7 @@ function resizeDisplay() {
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='sortIcon' class='fa fa-binoculars ca_toolsView disabledIcon' style='font-size:23px; position:relative;top:-2px;' aria-hidden='true'></i>&nbsp;
-<font size='3'><b>Current Section: <font color='green'><span id='currentSection'>Available Apps</span></font></b></font>
+<font size='3'><b>Section: <font color='green'><span id='currentSection'>Available Apps</span></font></b></font>
 <strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option></select></span></span>
 </span><br>
 
