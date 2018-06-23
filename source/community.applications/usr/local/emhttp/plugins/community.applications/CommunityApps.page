@@ -216,7 +216,7 @@ $(function(){
 			var origin = $(helper.origin);
 
 			if ( ! isIconEnabled(origin) ) {
-				var displayContent = "Changing Of Views Disabled";
+				var displayContent = null;
 			} else {
 				setSortOrder();
 				var displayContent = $("#tooltipviews").html();
@@ -231,6 +231,19 @@ $(function(){
 		functionAfter: function(instance,helper) {
 			$("#tooltipviews").html($("#tooltipviews").attr("data-backup"));
 			setSortOrder();
+		}
+	});
+	$('.ca_toolsView').tooltipster({
+		multiple: true,
+		triggerOpen: { mouseenter: true },
+		functionBefore: function(instance,helper) {
+			var origin = $(helper.origin);
+			if ( ! isIconEnabled(origin) ) {
+				var displayContent = "Changing Of Views Disabled";
+			} else {
+				var displayContent = "Click to change the view settings";
+			}
+			instance.content(displayContent);
 		}
 	});
 	$('.ca_credits').tooltipster({
@@ -283,7 +296,7 @@ $(function(){
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
 			if ( !isIconEnabled(origin) ) {
-				var displayContent = "Changing Of Sections Disabled";
+				var displayContent = null;
 			} else {
 				var currentSection = data.section;
 				$(".appButtons").prop("disabled",false);
@@ -296,6 +309,14 @@ $(function(){
 			$(".appButtons").click(function() { $(this).prop("disabled",true); });
 		}
 	});
+	$('.ca_section').tooltipster({
+		multiple: true,
+		triggerOpen: { mouseenter: true },
+		functionBefore: function(instance,helper) {
+			instance.content('Click to switch from available apps, installed apps, previous apps, pinned apps');
+		}
+	});
+		
 	$('.ca_categories').tooltipster({
 		trigger: 'custom',
 		triggerOpen: {click:true,touchstart:true},
@@ -310,7 +331,7 @@ $(function(){
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
 			if ( ! isIconEnabled(origin) ) {
-				var displayContent = "Changing Of Categories Disabled In This Section";
+				var displayContent = null;
 			} else {
 				$(".allButtons").prop("disabled",false);
 				$("#"+data.selected_category).prop("disabled",true);
@@ -324,6 +345,20 @@ $(function(){
 				data.selected_category = this.id;
 				changeCategory(this,false);
 			});
+		}
+	});
+	
+	$('.ca_categories').tooltipster({
+		multiple: true,
+		triggerOpen: { mouseenter: true },
+		functionBefore: function(instance,helper) {
+			var origin = $(helper.origin);
+			if ( ! isIconEnabled(origin) ) {
+				var displayContent = "Changing Of Categories Disabled In This Section";
+			} else {
+				var displayContent = "Click to display a category of apps";
+			}
+			instance.content(displayContent);
 		}
 	});
 	$('.ca_subcategories').tooltipster({
@@ -340,7 +375,7 @@ $(function(){
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
 			if ( ! isIconEnabled(origin) ) {
-				var displayContent = "No Subcategories Available To Display";
+				var displayContent = null;
 			} else {
 				var currentSub = data.subcategory;
 				$(".allButtons").prop("disabled",false);
@@ -355,6 +390,19 @@ $(function(){
 				data.selected_subcategory = this.id;
 				changeCategory(this,true);
 			});
+		}
+	});
+	$('.ca_subcategories').tooltipster({
+		multiple: true,
+		triggerOpen: { mouseenter: true },
+		functionBefore: function(instance,helper) {
+			var origin = $(helper.origin);
+			if ( ! isIconEnabled(origin) ) {
+				var displayContent = "No sub-categories available to display";
+			} else {
+				var displayContent = "Click to display a sub-category of apps";
+			}
+			instance.content(displayContent);
 		}
 	});
 
