@@ -1490,7 +1490,7 @@ function installMulti() {
 
 function updateDisplay(data) {
 	$('#templates_content').html(data);
-	$('img').error(function() {
+	$('img').on("error",function() {
 		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
 	});
 	enableSearch();
