@@ -356,7 +356,7 @@ $(function(){
 			if ( ! isIconEnabled(origin) ) {
 				var displayContent = "Changing Of Categories Disabled In This Section";
 			} else {
-				var displayContent = "Click to display a category of apps";
+				var displayContent = "Click to display categories of apps";
 			}
 			instance.content(displayContent);
 		}
@@ -400,7 +400,7 @@ $(function(){
 			if ( ! isIconEnabled(origin) ) {
 				var displayContent = "No sub-categories available to display";
 			} else {
-				var displayContent = "Click to display a sub-category of apps";
+				var displayContent = "Click to display a subcategories of apps";
 			}
 			instance.content(displayContent);
 		}
