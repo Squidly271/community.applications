@@ -68,6 +68,14 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 	if ( $communitySettings['dockerRunning'] ) {
 		$DockerTemplates = new DockerTemplates();
 		$info = $DockerTemplates->getAllInfo();
+# workaround for incorrect caching in dockerMan
+		$DockerClient = new DockerClient();
+		$containers = $DockerClient->getDockerContainers();
+		foreach ($containers as $container) {
+			$infoTmp[$container['Name']] = $info[$container['Name']];
+			$info[$container['Name']]['running'] = $container['Running'];
+		}
+		$info = $infoTmp;
 	} else {
 		$info = array();
 	}
