@@ -879,7 +879,9 @@ if ( $communitySettings['dockerRunning'] ) {
 							continue;
 						}
 						if ( strtolower(trim($template['PluginURL'])) != strtolower(trim(plugin("pluginURL","$oldplug"))) ) {
-							continue;
+							if ( strtolower(trim($template['PluginURL'])) != strtolower(trim(str_replace("raw.github.com","raw.githubusercontent.com",plugin("pluginURL",$oldplug)))) ) {
+								continue;
+							}
 						}
 						$template['Removable'] = true;
 						$template['MyPath'] = $oldplug;

@@ -12,22 +12,26 @@ if ( ! $templates ) {
 }
 
 echo "\n<b>Updating Support Links</b>\n\n";
-echo "<table>";
 foreach ($plugins as $plugin) {
 	if ( ! plugin("support",$plugin) ) {
 		$pluginURL = plugin("pluginURL",$plugin);
 		$pluginEntry = searchArray($templates,"PluginURL",$pluginURL);
+		if ( $pluginEntry === false ) {
+			$pluginEntry = searchArray($templates,"PluginURL",str_replace("https://raw.github.com/","https://raw.githubusercontent.com/",$pluginURL));
+		}
 		if ( $pluginEntry !== false ) {
 			$xml = simplexml_load_file($plugin);
+			if ( ! $templates[$pluginEntry]['Support'] ) {
+				continue;
+			}
 			$xml->addAttribute("support",$templates[$pluginEntry]['Support']);
 			$dom = new DOMDocument('1.0');
 			$dom->preserveWhiteSpace = false;
 			$dom->formatOutput = true;
 			$dom->loadXML($xml->asXML());
 			file_put_contents($plugin, $dom->saveXML()); 
-			echo "<tr><td><b>".plugin("name",$plugin)."</b></td><td> --> </td><td>".$templates[$pluginEntry]['Support']."</tr>";
+			echo "<b>".plugin("name",$plugin)."</b> --> ".$templates[$pluginEntry]['Support']."\n";
 		}
 	}
 }
-echo "</table>";
 ?>
