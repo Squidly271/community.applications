@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.06.16a">
-<!ENTITY md5       "1918611561ef84c21a6e3865349ff954">
+<!ENTITY version   "2018.06.24">
+<!ENTITY md5       "85e47e0cef833354555ea6d53114e097">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.06.24
+- Workaround: Bug in unRaid that under certain circumstances would show previously installed apps as being installed
+- Remove hovering over navigation icons opening up the menu
+- Fixed: Stats were wrong if a deprecated app was added via dockerHub searches
+- Fixed: Searching from within a subcategory would leave the subcategory active
+- Fixed: When installing a container from dockerHub, display aberrations might occur under certain circumstances when re-entering apps tab
+- Fixed: When clicking a searchable link improper search would happen if the link was highlighted from a previous search
+- Misc code and memory optimizations
+- Fixed: Under certain circumstances, previous apps wouldn't display a plugin if the plugin's URL was subject to redirection
+- Added: Adjust .plg files after installation and add support attribute
+
 ###2018.06.16
 - CSS adjustments
 - Better warnings if cookies not enabled if feature will not work
