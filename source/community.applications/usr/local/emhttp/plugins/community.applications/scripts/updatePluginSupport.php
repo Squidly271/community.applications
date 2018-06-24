@@ -11,7 +11,8 @@ if ( ! $templates ) {
 	return;
 }
 
-echo "Updating Support Links\n";
+echo "\n<b>Updating Support Links</b>\n\n";
+echo "<table>";
 foreach ($plugins as $plugin) {
 	if ( ! plugin("support",$plugin) ) {
 		$pluginURL = plugin("pluginURL",$plugin);
@@ -24,8 +25,9 @@ foreach ($plugins as $plugin) {
 			$dom->formatOutput = true;
 			$dom->loadXML($xml->asXML());
 			file_put_contents($plugin, $dom->saveXML()); 
-			echo plugin("name",$plugin)." --> ".$templates[$pluginEntry]['Support']."\n";
+			echo "<tr><td><b>".plugin("name",$plugin)."</b></td><td> --> </td><td>".$templates[$pluginEntry]['Support']."</tr>";
 		}
 	}
 }
+echo "</table>";
 ?>

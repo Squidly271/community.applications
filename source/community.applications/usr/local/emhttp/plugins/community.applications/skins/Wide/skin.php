@@ -72,8 +72,8 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$DockerClient = new DockerClient();
 		$containers = $DockerClient->getDockerContainers();
 		foreach ($containers as $container) {
-			$infoTmp[$container['Name']] = $info[$container['Name']];
 			$info[$container['Name']]['running'] = $container['Running'];
+			$infoTmp[$container['Name']] = $info[$container['Name']];
 		}
 		$info = $infoTmp;
 	} else {
