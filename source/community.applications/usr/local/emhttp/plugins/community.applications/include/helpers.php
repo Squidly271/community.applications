@@ -344,7 +344,6 @@ function fixTemplates($template) {
 	$template['Support'] = validURL($template['Support']);
 	$template['Project'] = validURL($template['Project']);
 	$template['DonateLink'] = validURL($template['DonateLink']);
-	$template['DonateImg'] = validURL($template['DonateImg']);
 	$template['DonateText'] = str_replace("'","&#39;",$template['DonateText']);
 	$template['DonateText'] = str_replace('"','&quot;',$template['DonateText']);
 	if ( ! $template['Date'] ) {
