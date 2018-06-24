@@ -12,10 +12,7 @@ function arrayEntriesToObject($sourceArray,$defaultFlag=true) {
 	if ( ! is_array($sourceArray) ) {
 		return array();
 	}
-	foreach ($sourceArray as $entry) {
-		$newArray[$entry] = $defaultFlag;
-	}
-	return $newArray;
+	return array_fill_keys($sourceArray,$defaultFlag);
 }
 
 ####################################################################################################
