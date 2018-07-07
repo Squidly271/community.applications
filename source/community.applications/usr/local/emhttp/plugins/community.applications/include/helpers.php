@@ -451,7 +451,7 @@ function readXmlFile($xmlfile) {
 		$o['Repository'] = $o['Repository'][0];  $statistics['caFixed']++;
 	}
 	$o['Path']          = $xmlfile;
-	$o['Author']        = preg_replace("#/.*#", "", $o['Repository']);
+	$o['Author']        = getAuthor($o);
 	$o['DockerHubName'] = strtolower($o['Name']);
 	$o['Base']          = $o['BaseImage'];
 	$o['SortAuthor']    = $o['Author'];
@@ -710,4 +710,19 @@ function jsonError($error) {
 			break;
 	}
 }
+
+function getAuthor($template) {
+	if ( !is_string($template['Repository'])) {
+		return false;
+	}
+	if ( $template['Author'] ) {
+		return strip_tags($template['Author']);
+	}
+ 	$repoEntry = explode("/",$template['Repository']);
+	if (count($repoEntry) < 2) {
+		$repoEntry[] = "";
+	}
+	return strip_tags($repoEntry[count($repoEntry)-2]);
+}
+	
 ?>

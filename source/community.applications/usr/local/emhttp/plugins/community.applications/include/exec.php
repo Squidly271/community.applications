@@ -1370,7 +1370,8 @@ function DownloadApplicationFeed() {
 		$o = $file;
 		$o['ID']            = $i;
 		$o['Displayable']   = true;
-		$o['Author']        = preg_replace("#/.*#", "", $o['Repository']);
+#		$o['Author']        = preg_replace("#/.*#", "", $o['Repository']);
+		$o['Author']        = getAuthor($o);
 		$o['DockerHubName'] = strtolower($file['Name']);
 		$o['RepoName']      = $file['Repo'];
 		$o['SortAuthor']    = $o['Author'];
