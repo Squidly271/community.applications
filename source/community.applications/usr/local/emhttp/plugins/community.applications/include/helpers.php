@@ -714,6 +714,9 @@ function jsonError($error) {
 	}
 }
 
+################################################
+# Returns the author from the Repository entry #
+################################################
 function getAuthor($template) {
 	if ( !is_string($template['Repository'])) {
 		return false;
@@ -727,5 +730,28 @@ function getAuthor($template) {
 	}
 	return strip_tags($repoEntry[count($repoEntry)-2]);
 }
+
+#########################################
+# Gets the running/installed containers #
+#########################################
+function getRunningContainers() {
+	global $communitySettings;
 	
+	if ( $communitySettings['dockerRunning'] ) {
+		$DockerTemplates = new DockerTemplates();
+		$info = $DockerTemplates->getAllInfo();
+# workaround for incorrect caching in dockerMan
+		$DockerClient = new DockerClient();
+		$containers = $DockerClient->getDockerContainers();
+		foreach ($containers as $container) {
+			$info[$container['Name']]['running'] = $container['Running'];
+			$info[$container['Name']]['repository'] = $container['Image'];
+			$infoTmp[$container['Name']] = $info[$container['Name']];
+		}
+		$info = $infoTmp;
+	} else {
+		$info = array();
+	}
+	return $info;
+}
 ?>

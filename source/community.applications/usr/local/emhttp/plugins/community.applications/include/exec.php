@@ -196,7 +196,7 @@ case 'get_content':
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
 				$countSuffix = count($displayApplications['community']) > 1 ? "s" : "";
-				$startupMsg = ($communitySettings['startup'] == "random") ? "Random App$countSuffix Of The Day" : "Newest / Recently Updated App$countSuffix";
+				$startupMsg = ($communitySettings['startup'] == "random") ? "Random App$countSuffix Of The Day" : "Newest Added / Recently Updated App$countSuffix<br><font size='0'>Select the New/Updated Category for the complete list</font>";
 				echo "<br><center><font size='4' color='purple'><b>$startupMsg</b></font><br><br>";
 				echo my_display_apps($displayApplications['community'],"1",$runningDockers,$imagesDocker);
 				break;
@@ -1590,7 +1590,7 @@ function appOfDay($file) {
 #####################################################
 # Checks selected app for eligibility as app of day #
 #####################################################
-function checkRandomApp($randomApp,$file,$newApp = false, $info = array() ) {
+function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
 	$test = $file[$randomApp];
 	if ( ! $test['Displayable'] )    return false;
 	if ( ! $test['Compatible'] )     return false;
@@ -1600,11 +1600,16 @@ function checkRandomApp($randomApp,$file,$newApp = false, $info = array() ) {
 	if ( ($test['Beta'] == "true" ) && (! $newApp ) )  return false;
 	if ( $test['PluginURL'] == "https://raw.githubusercontent.com/Squidly271/community.applications/master/plugins/community.applications.plg" ) return false;
 	if ( $newApp ) {
-		if ( $test['Plugin'] == true ) {
+		if ( $test['Plugin'] ) {
 			if ( file_exists("/var/log/plugins/".basename($test['PluginURL'])) ) { return false; }
+		} else {
+			if ( ! strpos($test['Repository'],":") ) {
+				$test['Repository'] .= ":latest";
+			}
+			foreach ($info as $tst) {
+				if ($test['Repository'] == $tst['repository'] ) return false;
+			}
 		}
-		if ( $info[$test['Name']] ) {			return false;		}
-
 	}
 	return true;
 }
@@ -1612,20 +1617,7 @@ function checkRandomApp($randomApp,$file,$newApp = false, $info = array() ) {
 function newApps($file) {
 	global $communityPaths, $sortOrder, $communitySettings;
 	
-	if ( $communitySettings['dockerRunning'] ) {
-		$DockerTemplates = new DockerTemplates();
-		$info = $DockerTemplates->getAllInfo();
-# workaround for incorrect caching in dockerMan
-		$DockerClient = new DockerClient();
-		$containers = $DockerClient->getDockerContainers();
-		foreach ($containers as $container) {
-			$info[$container['Name']]['running'] = $container['Running'];
-			$infoTmp[$container['Name']] = $info[$container['Name']];
-		}
-		$info = $infoTmp;
-	} else {
-		$info = array();
-	}
+	$info = getRunningContainers();
 	$sortOrder['sortBy'] = "Date";
 	$sortOrder['sortDir'] = "Down";
 	usort($file,"mySort");
