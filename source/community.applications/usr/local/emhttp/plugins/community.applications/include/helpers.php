@@ -232,10 +232,9 @@ function fixTemplates($template) {
 
 	$origStats = $statistics;
 # this fix must always be the first test
-	if ( is_array($template['Repository']) ) {                 # due to cmer
-		$template['Repository'] = $template['Repository'][0];
+	if ( is_array($template['Repository']) ) {        	# due to cmer
 		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple Repositories Found - Removing application from lists";
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository'][0]][] = "Fatal: Multiple Repositories Found - Removing application from lists";
 		return false;
 	}
 	if ( (is_array($template['Support'])) && (count($template['Support'])) ) {
@@ -244,14 +243,19 @@ function fixTemplates($template) {
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Support Tags Found";
 	}
 	if ( ! is_string($template['Name'])  ) {
-		$template['Name']=" ";
 		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Name is not a string";
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Name is not a string (or multiple names present)";
+		return false;
 	}
 	if ( ! is_string($template['Author']) ) {
-		$template['Author']=" ";
 		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Author is not a string";
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No author or multiple authors foudn - Removing application from lists";
+		return false;
+	}
+	if ( ! $template['Author'] ) {
+		$statistics['caFixed']++;
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No author could be determined - Removing application from lists";
+		return false;
 	}
 	if ( is_array($template['Description']) ) {
 		if ( count($template['Description']) > 1 ) {
@@ -282,7 +286,7 @@ function fixTemplates($template) {
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Category tags or Category present but empty";
 	}
 	
-	#Fix where authors make category entries themselves, and don't include the trailing colon (due to #rix1337)
+	#Fix where authors make category entries themselves, and don't include the trailing colon (due to #rix1337 and others)
 	$categories = explode(" ",$template['Category']);
 	unset($template['Category']);
 	foreach ($categories as $category) {
@@ -304,10 +308,9 @@ function fixTemplates($template) {
 		unset($template['Overview']);
 	}
 	if ( is_array($template['SortAuthor']) ) {                 # due to cmer
-		$template['SortAuthor'] = $template['SortAuthor'][0];
-		$template['Author'] = $template['SortAuthor'];
 		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Authors / Repositories Found";
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple Authors / Repositories Found - Removing application from lists";
+		return false;
 	}
 	if ( is_array($template['PluginURL']) ) {                  # due to coppit
 		$template['PluginURL'] = $template['PluginURL'][1];

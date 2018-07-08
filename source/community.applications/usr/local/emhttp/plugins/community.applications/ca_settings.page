@@ -54,17 +54,6 @@ Display Skin:
 <?endforeach;?>
 </select>
 
-Time to display applications as new / updated:
-: <select name="timeNew" size="1">
-	<?=mk_option($cfg['timeNew'], "-7 Days", "1 Week")?>
-	<?=mk_option($cfg['timeNew'], "-14 Days", "2 Weeks")?>
-	<?=mk_option($cfg['timeNew'], "-1 Month", "1 Month")?>
-	<?=mk_option($cfg['timeNew'], "-2 Months", "2 Months")?>
-	<?=mk_option($cfg['timeNew'], "-3 Months", "3 Months (Default)")?>
-	</select>
-
-> This setting determines how long an application will be displayed as "new"
-
 Hover Time delay (miliseconds):
 : <input type="number" name="hoverTime" class="narrow" maxlength="5" value="<?=$cfg['hoverTime']?>" placeholder="1000">
 
@@ -101,10 +90,10 @@ Hide Incompatible Applications:
 
 > This setting will hide applications that are listed as being incompatible with your version of unRaid
 
-Display Random App Of The Day:
-: <select name="appOfTheDay" size="1">
-	<?=mk_option($cfg['appOfTheDay'],"no", "No")?>
-	<?=mk_option($cfg['appOfTheDay'],"yes", "Yes (Default)")?>
+Starup Display:
+: <select name="startup" size="1">
+	<?=mk_option($cfg['startup'],"new", "Newest Applications (default)")?>
+	<?=mk_option($cfg['startup'],"random", "Random Applications")?>
 	</select>
 
 > This setting chooses whether to display or not a random "app of the day"

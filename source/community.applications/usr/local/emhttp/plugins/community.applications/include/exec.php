@@ -32,6 +32,7 @@ $communitySettings['appFeed']       = "true"; # set default for deprecated setti
 $communitySettings['maxPerPage']    = getPost("maxPerPage",25);  # Global POST.  Used damn near everywhere
 $communitySettings['maxPerPage']    = ( $communitySettings['maxPerPage'] < 1 ) || ( $communitySettings['maxPerPage'] > 50 ) ? 50 : $communitySettings['maxPerPage'];
 $communitySettings['unRaidVersion'] = $unRaidVersion;
+$communitySettings['timeNew'] = "-10 years";
 
 if ( $communitySettings['favourite'] != "None" ) {
 	$officialRepo = str_replace("*","'",$communitySettings['favourite']);
@@ -179,32 +180,31 @@ case 'get_content':
 
 	if ( $category === "/NONE/i" ) {
 		echo "<center><font size=4>$selectCategoryMessage</font></center>";
-		if ( $communitySettings['appOfTheDay'] == "yes" ) {
-			$displayApplications = array();
-			if ( count($file) > 200) {
-				$appsOfDay = appOfDay($file);
-				$displayApplications['community'] = array();
-				for ($i=0;$i<$communitySettings['maxDetailColumns'];$i++) {
-					if ( ! $appsOfDay[$i]) {
-						continue;
-					}
-					$displayApplications['community'][] = $file[$appsOfDay[$i]];
+		$displayApplications = array();
+		if ( count($file) > 200) {
+			$appsOfDay = ( $communitySettings['startup'] == "random" ) ? appOfDay($file) : newApps($file);
+
+			$displayApplications['community'] = array();
+			for ($i=0;$i<$communitySettings['maxDetailColumns'];$i++) {
+				if ( ! $appsOfDay[$i]) {
+					continue;
 				}
-				if ( $displayApplications['community'] ) {
-					writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
-					echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-					$countSuffix = count($displayApplications['community']) > 1 ? "s" : "";
-					echo "<br><center><font size='4' color='purple'><b>Random App$countSuffix Of The Day</b></font><br><br>";
-					echo my_display_apps($displayApplications['community'],"1",$runningDockers,$imagesDocker);
-					break;
-				} else {
-					echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-					echo "<br><center><font size='4' color='purple'><b>An error occurred.  Could not find any Random Apps of the day</b></font><br><br>";
-					break;
-				}
+				$file[$appsOfDay[$i]]['NewApp'] = true;
+				$displayApplications['community'][] = $file[$appsOfDay[$i]];
 			}
-		} else {
-			break;
+			if ( $displayApplications['community'] ) {
+				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
+				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
+				$countSuffix = count($displayApplications['community']) > 1 ? "s" : "";
+				$startupMsg = ($communitySettings['startup'] == "random") ? "Random App$countSuffix Of The Day" : "Newest / Recently Updated App$countSuffix";
+				echo "<br><center><font size='4' color='purple'><b>$startupMsg</b></font><br><br>";
+				echo my_display_apps($displayApplications['community'],"1",$runningDockers,$imagesDocker);
+				break;
+			} else {
+				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
+				echo "<br><center><font size='4' color='purple'><b>An error occurred.  Could not find any Random Apps of the day</b></font><br><br>";
+				break;
+			}
 		}
 	}
 	$display             = array();
@@ -273,7 +273,7 @@ case 'get_content':
 			$template['MyPath'] = $template['PluginURL'];
 		}
 
-		if ( ($newApp ) && ($template['Date'] < $newAppTime) )  { continue; }
+		if ( ($newApp) && ($template['Date'] < $newAppTime) )  { continue; }
 		$template['NewApp'] = $newApp;
 
 		if ( $category && ! preg_match($category,$template['Category'])) { continue; }
@@ -1590,15 +1590,51 @@ function appOfDay($file) {
 #####################################################
 # Checks selected app for eligibility as app of day #
 #####################################################
-function checkRandomApp($randomApp,$file) {
-	if ( ! $file[$randomApp]['Displayable'] )    return false;
-	if ( ! $file[$randomApp]['Compatible'] )     return false;
-	if ( $file[$randomApp]['Blacklist'] )        return false;
-	if ( $file[$randomApp]['ModeratorComment'] ) return false;
-	if ( $file[$randomApp]['Deprecated'] )       return false;
-	if ( $file[$randomApp]['Beta'] == "true" )   return false;
-	if ( $file[$randomApp]['PluginURL'] == "https://raw.githubusercontent.com/Squidly271/community.applications/master/plugins/community.applications.plg" ) return false;
+function checkRandomApp($randomApp,$file,$newApp = false, $info = array() ) {
+	$test = $file[$randomApp];
+	if ( ! $test['Displayable'] )    return false;
+	if ( ! $test['Compatible'] )     return false;
+	if ( $test['Blacklist'] )        return false;
+	if ( ($test['ModeratorComment']) && (! $newApp) ) return false;
+	if ( $test['Deprecated'] )       return false;
+	if ( ($test['Beta'] == "true" ) && (! $newApp ) )  return false;
+	if ( $test['PluginURL'] == "https://raw.githubusercontent.com/Squidly271/community.applications/master/plugins/community.applications.plg" ) return false;
+	if ( $newApp ) {
+		if ( $test['Plugin'] == true ) {
+			if ( file_exists("/var/log/plugins/".basename($test['PluginURL'])) ) { return false; }
+		}
+		if ( $info[$test['Name']] ) {			return false;		}
+
+	}
 	return true;
+}
+
+function newApps($file) {
+	global $communityPaths, $sortOrder, $communitySettings;
+	
+	if ( $communitySettings['dockerRunning'] ) {
+		$DockerTemplates = new DockerTemplates();
+		$info = $DockerTemplates->getAllInfo();
+# workaround for incorrect caching in dockerMan
+		$DockerClient = new DockerClient();
+		$containers = $DockerClient->getDockerContainers();
+		foreach ($containers as $container) {
+			$info[$container['Name']]['running'] = $container['Running'];
+			$infoTmp[$container['Name']] = $info[$container['Name']];
+		}
+		$info = $infoTmp;
+	} else {
+		$info = array();
+	}
+	$sortOrder['sortBy'] = "Date";
+	$sortOrder['sortDir'] = "Down";
+	usort($file,"mySort");
+	for ( $i = 0; $i <100; $i++) {
+		if ( ! checkRandomApp($i,$file,true,$info) ) { continue; }
+		$appOfDay[] = $file[$i]['ID'];
+	}
+	writeJsonFile($communityPaths['appOfTheDay'],$appOfDay);
+	return $appOfDay;
 }
 
 ##########################################################################

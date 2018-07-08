@@ -31,8 +31,6 @@ if ( ! is_file($communityPaths['warningAccepted']) ) {
 $skinPath = "/usr/local/emhttp/plugins/community.applications/skins/{$cfg['skin']}";
 $communityPaths['defaultSkin'] = "$skinPath/skin.json";
 
-$timeNew = str_replace("-","",$cfg['timeNew']);
-
 $template = readJsonFile($communityPaths['defaultSkin']);
 
 ?>
@@ -120,7 +118,7 @@ var categoryDesc = {
 	MediaAppOther:"Media Applications: Other",
 	toolssystem:"Tools: System",
 	NONE:"None Selected",
-	New:"New / Updated Applications (within the last <?=$timeNew?>)",
+	New:"New / Updated Applications (<font size='0'>Note: not all maintainers properly tag their apps with the date</font>)",
 	UNCATEGORIZED: "All Uncategorized Applications",
 	All: "All Available Applications",
 	PRIVATE:"All private applications",
@@ -461,6 +459,7 @@ function updateContent() {
 					myCloseAlert();
 					openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
 				} else {
+				forceSortOrder("#Date","#Down");
 					getContent(true,'INITIALIZE','None Selected');
 				}
 			}
