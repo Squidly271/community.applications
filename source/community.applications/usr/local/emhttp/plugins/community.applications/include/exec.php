@@ -16,9 +16,7 @@ $unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
 $unRaidVersion = $unRaidSettings['version'];
 
 ################################################################################
-#                                                                              #
 # Set up any default settings (when not explicitely set by the settings module #
-#                                                                              #
 ################################################################################
 
 $communitySettings = parse_plugin_cfg("community.applications");
@@ -63,19 +61,15 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 $selectCategoryMessage = "Select a Section <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:20px;cursor:auto;'></i> or Category <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:20px;cursor:auto;'></i> above";
 
 ############################################
-############################################
 ##                                        ##
 ## BEGIN MAIN ROUTINES CALLED BY THE HTML ##
 ##                                        ##
-############################################
 ############################################
 
 switch ($_POST['action']) {
 
 ######################################################################################
-#                                                                                    #
 # get_content - get the results from templates according to categories, filters, etc #
-#                                                                                    #
 ######################################################################################
 case 'get_content':
 	$filter      = getPost("filter",false);
@@ -182,10 +176,10 @@ case 'get_content':
 		echo "<center><font size=4>$selectCategoryMessage</font></center>";
 		$displayApplications = array();
 		if ( count($file) > 200) {
-			$appsOfDay = ( $communitySettings['startup'] == "random" ) ? appOfDay($file) : newApps($file);
+			$appsOfDay = appOfDay($file);
 
 			$displayApplications['community'] = array();
-			for ($i=0;$i<$communitySettings['maxDetailColumns'];$i++) {
+			for ($i=0;$i<$communitySettings['maxPerPage'];$i++) {
 				if ( ! $appsOfDay[$i]) {
 					continue;
 				}
@@ -306,9 +300,7 @@ case 'get_content':
 	break;
 
 ########################################################
-#                                                      #
 # force_update -> forces an update of the applications #
-#                                                      #
 ########################################################
 case 'force_update':
 	download_url($communityPaths['moderationURL'],$communityPaths['moderation']);
@@ -351,9 +343,7 @@ case 'force_update':
 	break;
 
 ####################################################################################################
-#                                                                                                  #
 # force_update_button - forces the system temporarily to override the appFeed and forces an update #
-#                                                                                                  #
 ####################################################################################################
 case 'force_update_button':
 	if ( ! is_file($communityPaths['LegacyMode']) ) {
@@ -366,9 +356,7 @@ case 'force_update_button':
 	break;
 
 ####################################################################################
-#                                                                                  #
 # display_content - displays the templates according to view mode, sort order, etc #
-#                                                                                  #
 ####################################################################################
 case 'display_content':
 	$sortOrder = getSortOrder(getPostArray('sortOrder'));
@@ -385,9 +373,7 @@ case 'display_content':
 	break;
 
 ########################################################################
-#                                                                      #
 # change_docker_view - called when the view mode for dockerHub changes #
-#                                                                      #
 ########################################################################
 case 'change_docker_view':
 	$sortOrder = getSortOrder(getPostArray('sortOrder'));
@@ -401,9 +387,7 @@ case 'change_docker_view':
 	break;
 
 #######################################################################
-#                                                                     #
 # convert_docker - called when system adds a container from dockerHub #
-#                                                                     #
 #######################################################################
 case 'convert_docker':
 	$dockerID = getPost("ID","");
@@ -627,9 +611,7 @@ case 'convert_docker':
 	break;
 
 #########################################################
-#                                                       #
 # search_dockerhub - returns the results from dockerHub #
-#                                                       #
 #########################################################
 case 'search_dockerhub':
 	$filter     = getPost("filter","");
@@ -687,9 +669,7 @@ case 'search_dockerhub':
 	break;
 
 #####################################################################
-#                                                                   #
 # dismiss_warning - dismisses the warning from appearing at startup #
-#                                                                   #
 #####################################################################
 case 'dismiss_warning':
 	file_put_contents($communityPaths['warningAccepted'],"warning dismissed");
@@ -697,9 +677,7 @@ case 'dismiss_warning':
 	break;
 
 ###############################################################
-#                                                             #
 # Displays the list of installed or previously installed apps #
-#                                                             #
 ###############################################################
 case 'previous_apps':
 	$installed = getPost("installed","");
@@ -849,7 +827,6 @@ if ( $communitySettings['dockerRunning'] ) {
 	}
 }
 # Now work on plugins
-
 	if ( $installed == "true" ) {
 		foreach ($file as $template) {
 			if ( ! $template['Plugin'] ) {
@@ -893,16 +870,13 @@ if ( $communitySettings['dockerRunning'] ) {
 			}
 		}
 	}
-
 	$displayedApplications['community'] = $displayed;
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayedApplications);
 	echo "ok";
 	break;
 
 ####################################################################################
-#                                                                                  #
 # Removes an app from the previously installed list (ie: deletes the user template #
-#                                                                                  #
 ####################################################################################
 case 'remove_application':
 	$application = getPost("application","");
@@ -913,9 +887,7 @@ case 'remove_application':
 	break;
 
 #######################
-#                     #
 # Uninstalls a plugin #
-#                     #
 #######################
 case 'uninstall_application':
 	$application = getPost("application","");
@@ -926,9 +898,7 @@ case 'uninstall_application':
 	break;
 
 ###################################################################################
-#                                                                                 #
 # Checks for an update still available (to update display) after update installed #
-#                                                                                 #
 ###################################################################################
 case 'updatePLGstatus':
 	$filename = getPost("filename","");
@@ -947,9 +917,7 @@ case 'updatePLGstatus':
 	break;
 
 #######################
-#                     #
 # Uninstalls a docker #
-#                     #
 #######################
 case 'uninstall_docker':
 	$application = getPost("application","");
@@ -978,9 +946,7 @@ case 'uninstall_docker':
 	break;
 
 ##################################################
-#                                                #
 # Pins / Unpins an application for later viewing #
-#                                                #
 ##################################################
 case "pinApp":
 	$repository = getPost("repository","oops");
@@ -990,9 +956,7 @@ case "pinApp":
 	break;
 
 ####################################
-#                                  #
 # Displays the pinned applications #
-#                                  #
 ####################################
 case "pinnedApps":
 	$pinnedApps = getPinnedApps();
@@ -1018,9 +982,7 @@ case "pinnedApps":
 	break;
 
 ################################################
-#                                              #
 # Displays the possible branch tags for an app #
-#                                              #
 ################################################
 case 'displayTags':
 	$leadTemplate = getPost("leadTemplate","oops");
@@ -1041,9 +1003,7 @@ case 'displayTags':
 	break;
 
 ###########################################
-#                                         #
 # Displays The Statistics For The Appfeed #
-#                                         #
 ###########################################
 case 'statistics':
 	$statistics = readJsonFile($communityPaths['statistics']);
@@ -1126,9 +1086,7 @@ case 'statistics':
 	break;
 
 #######################################
-#                                     #
 # Removes a private app from the list #
-#                                     #
 #######################################
 case 'removePrivateApp':
 	$path = getPost("path",false);
@@ -1225,9 +1183,7 @@ case 'populateAutoComplete':
 }
 
 #################################################################
-#                                                               #
 # Functions used to download the templates from various sources #
-#                                                               #
 #################################################################
 function ProcessCommunityTemplates() {
 	global $communityPaths, $infoFile, $communitySettings, $statistics;
@@ -1526,7 +1482,6 @@ function getConvertedTemplates() {
 		$myTemplates[$i]  = $o;
 		$i = ++$i;
 	}
-
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
 	writeJsonFile($communityPaths['statistics'],$statistics);
 	return true;
@@ -1534,57 +1489,67 @@ function getConvertedTemplates() {
 
 
 #############################
-#                           #
 # Selects an app of the day #
-#                           #
 #############################
 function appOfDay($file) {
-	global $communityPaths;
-
-	$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
-	$oldAppDay = $oldAppDay ?: 1;
-	$oldAppDay = intval($oldAppDay / 86400);
-	$currentDay = intval(time() / 86400);
-	if ( $oldAppDay == $currentDay ) {
-		$app = readJsonFile($communityPaths['appOfTheDay']);
-		if ( is_array($app) ) {  # test to see if existing apps of day have been moderated / blacklisted, etc.
-			$flag = false;
-			foreach ($app as $testApp) {
-				if ( ! checkRandomApp($testApp,$file) ) {
-					$flag = true;
-					break;
-				}
-			}
-			if ( $flag ) {
-				$app = array();
-			}
-		}
-	}
-	if ( ! $app ) {
-		for ( $ii=0; $ii<10; $ii++ ) {
-			$flag = false;
-			if ( $app[$ii] ) {
-				$flag = checkRandomApp($app[$ii],$file);
-			}
-			if ( ! $flag ) {
-				for ( $jj = 0; $jj<20; $jj++) { # only give it 20 shots to find an app of the day
-					$randomApp = mt_rand(0,count($file) -1);
-					$flag = checkRandomApp($randomApp,$file);
-					if ( $flag ) {
+	global $communityPaths,$communitySettings,$sortOrder;
+	
+	if ($communitySettings['startup'] == "random") {
+		$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
+		$oldAppDay = $oldAppDay ?: 1;
+		$oldAppDay = intval($oldAppDay / 86400);
+		$currentDay = intval(time() / 86400);
+		if ( $oldAppDay == $currentDay ) {
+			$app = readJsonFile($communityPaths['appOfTheDay']);
+			if ( is_array($app) ) {  # test to see if existing apps of day have been moderated / blacklisted, etc.
+				$flag = false;
+				foreach ($app as $testApp) {
+					if ( ! checkRandomApp($testApp,$file) ) {
+						$flag = true;
 						break;
 					}
 				}
+				if ( $flag ) {
+					$app = array();
+				}
 			}
-			if ( ! $flag ) {
-				continue;
-			}
-			$app[$ii] = $randomApp;
 		}
+		if ( ! $app ) {
+			for ( $ii=0; $ii<$communitySettings['maxPerPage']; $ii++ ) {
+				$flag = false;
+				if ( $app[$ii] ) {
+					$flag = checkRandomApp($app[$ii],$file);
+				}
+				if ( ! $flag ) {
+					for ( $jj = 0; $jj<20; $jj++) { # only give it 20 shots to find an app of the day
+						$randomApp = mt_rand(0,count($file) -1);
+						$flag = checkRandomApp($randomApp,$file);
+						if ( $flag ) {
+							break;
+						}
+					}
+				}
+				if ( ! $flag ) {
+					continue;
+				}
+				$app[$ii] = $randomApp;
+			}
+		}
+		if (! $app) { $app = array(); }
+		$app = array_values(array_unique($app));
+		writeJsonFile($communityPaths['appOfTheDay'],$app);
+		return $app;
+	} else {
+		$info = getRunningContainers();
+		$sortOrder['sortBy'] = "Date";
+		$sortOrder['sortDir'] = "Down";
+		usort($file,"mySort");
+		for ( $i = 0; $i <100; $i++) {
+			if ( ! checkRandomApp($i,$file,true,$info) ) { continue; }
+			$appOfDay[] = $file[$i]['ID'];
+		}
+		return $appOfDay;
 	}
-	if (! $app) { $app = array(); }
-	$app = array_values(array_unique($app));
-	writeJsonFile($communityPaths['appOfTheDay'],$app);
-	return $app;
 }
 
 #####################################################
@@ -1614,25 +1579,8 @@ function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
 	return true;
 }
 
-function newApps($file) {
-	global $communityPaths, $sortOrder, $communitySettings;
-	
-	$info = getRunningContainers();
-	$sortOrder['sortBy'] = "Date";
-	$sortOrder['sortDir'] = "Down";
-	usort($file,"mySort");
-	for ( $i = 0; $i <100; $i++) {
-		if ( ! checkRandomApp($i,$file,true,$info) ) { continue; }
-		$appOfDay[] = $file[$i]['ID'];
-	}
-	writeJsonFile($communityPaths['appOfTheDay'],$appOfDay);
-	return $appOfDay;
-}
-
 ##########################################################################
-#                                                                        #
 # function that comes up with alternate search suggestions for dockerHub #
-#                                                                        #
 ##########################################################################
 function suggestSearch($filter,$displayFlag) {
 	$dockerFilter = str_replace("_","-",$filter);

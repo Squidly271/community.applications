@@ -990,6 +990,7 @@ The 'post-install' script
 <FILE Run="/bin/bash">
 <INLINE>
 echo "Creating Directories"
+rm -rf /tmp/community.applications/tempFiles
 mkdir -p /tmp/community.applications/tempFiles
 mkdir -p /boot/config/plugins/community.applications
 rm -rf /usr/local/emhttp/plugins/community.applications/CA.page
