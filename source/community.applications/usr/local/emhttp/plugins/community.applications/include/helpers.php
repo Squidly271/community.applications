@@ -297,7 +297,7 @@ function fixTemplates($template) {
 		}
 		$template['Category'] .= "$category ";
 	}
-  $template['Category'] = trim($template['Category']);
+	$template['Category'] = trim($template['Category']);
 	$template['Category'] = $template['Category'] ?: "Uncategorized";
 	if ( ! is_string($template['Category']) ) {
 		$template['Category'] = "Uncategorized";
@@ -724,7 +724,7 @@ function getAuthor($template) {
 	if ( $template['Author'] ) {
 		return strip_tags($template['Author']);
 	}
- 	$repoEntry = explode("/",$template['Repository']);
+	$repoEntry = explode("/",$template['Repository']);
 	if (count($repoEntry) < 2) {
 		$repoEntry[] = "";
 	}
