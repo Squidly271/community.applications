@@ -1494,6 +1494,7 @@ function getConvertedTemplates() {
 function appOfDay($file) {
 	global $communityPaths,$communitySettings,$sortOrder;
 	
+	$info = getRunningContainers();
 	if ($communitySettings['startup'] == "random") {
 		$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
 		$oldAppDay = $oldAppDay ?: 1;
@@ -1504,7 +1505,7 @@ function appOfDay($file) {
 			if ( is_array($app) ) {  # test to see if existing apps of day have been moderated / blacklisted, etc.
 				$flag = false;
 				foreach ($app as $testApp) {
-					if ( ! checkRandomApp($testApp,$file) ) {
+					if ( ! checkRandomApp($testApp,$file,false,$info) ) {
 						$flag = true;
 						break;
 					}
@@ -1523,7 +1524,7 @@ function appOfDay($file) {
 				if ( ! $flag ) {
 					for ( $jj = 0; $jj<20; $jj++) { # only give it 20 shots to find an app of the day
 						$randomApp = mt_rand(0,count($file) -1);
-						$flag = checkRandomApp($randomApp,$file);
+						$flag = checkRandomApp($randomApp,$file,false,$info);
 						if ( $flag ) {
 							break;
 						}
@@ -1574,7 +1575,6 @@ function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
 			if ($test['Repository'] == $tst['repository'] ) return false;
 		}
 	}
-	
 	return true;
 }
 
