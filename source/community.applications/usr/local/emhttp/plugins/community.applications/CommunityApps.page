@@ -997,6 +997,9 @@ function populateAutoComplete() {
 		if (data) {
 			$("#awesomepleteScript").html(data);
 			searchBoxAwesomplete.maxItems = 20;
+			Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',function() {
+				doSearch();
+			});
 		}
 	});
 }
