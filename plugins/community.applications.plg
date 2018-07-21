@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.07.08">
-<!ENTITY md5       "6caf65170e20260c3e891e3218ee5d07">
+<!ENTITY version   "2018.07.20">
+<!ENTITY md5       "4e006b77f57487e053cc289baf64cdd2">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.07.20
+- Changed: Clicking an autocomplete suggestion will now immediately search
+- Changed: Startup Screen (random / new apps) will now display up to the Max Per Page drop down
+- Changed: Random startup apps will no longer display an installed application
+
 ###2018.07.08
 - Fixed: If an app didn't specify an icon, it wouldn't show up as being installed on all screens
 - Fixed: Author would come up incorrect if application wasn't hosted on dockerHub
