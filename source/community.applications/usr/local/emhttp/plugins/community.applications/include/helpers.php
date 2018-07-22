@@ -736,6 +736,8 @@ function getAuthor($template) {
 #########################################
 function getRunningContainers() {
 	global $communitySettings;
+
+	$info = array();
 	
 	if ( $communitySettings['dockerRunning'] ) {
 		$DockerTemplates = new DockerTemplates();
@@ -748,9 +750,7 @@ function getRunningContainers() {
 			$info[$container['Name']]['repository'] = $container['Image'];
 			$infoTmp[$container['Name']] = $info[$container['Name']];
 		}
-		$info = $infoTmp;
-	} else {
-		$info = array();
+		$info = $infoTmp ? $infoTmp : array();
 	}
 	return $info;
 }
