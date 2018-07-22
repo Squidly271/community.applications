@@ -11,6 +11,9 @@ require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerCli
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
+if (is_file("/usr/local/emhttp/plugins/dynamix.docker.manager/include/Helpers.php")) {
+	require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/Helpers.php");  # 6.6.0+ only
+}
 
 $unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
 $unRaidVersion = $unRaidSettings['version'];
@@ -1225,6 +1228,7 @@ function ProcessCommunityTemplates() {
 				$o['WebPageURL'] = $Repo['web'];
 				$o['Logo'] = $Repo['logo'];
 				$o['Profile'] = $Repo['profile'];
+				checkValidDockerRunCommand($o);
 				fixSecurity($o,$o);
 				$o = fixTemplates($o);
 				if ( ! $o ) {
@@ -1360,6 +1364,7 @@ function DownloadApplicationFeed() {
 			$o['DonateImg'] = $file['DonateImage'] ?: $file['DonateImg'];
 		}
 
+		checkValidDockerRunCommand($o);
 		fixSecurity($o,$o); # Apply various fixes to the templates for CA use
 		$o = fixTemplates($o);
 		if ( ! $o ) {

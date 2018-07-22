@@ -160,21 +160,27 @@ function fixSecurity(&$template,&$originalTemplate) {
 			if ( preg_match('#<script(.*?)>(.*?)</script>#is',$tempElement) || preg_match('#<iframe(.*?)>(.*?)</iframe>#is',$tempElement) ) {
 				logger("VERY IMPORTANT IF YOU SEE THIS: Alert the maintainers of Community Applications with the following Information:".$originalTemplate['RepoName']." ".$originalTemplate['Name']." ".$originalTemplate['Repository']);
 				$originalTemplate['Blacklist'] = true;
+				$originalTemplate['ModeratorComment'] = "Blacklisted due to security violations";
 				return;
 			}
 		}
 	}
-	if ( is_array($template['PostArgs']) ) {
-		if ( ! count($template['PostArgs']) ) {
-			$template['PostArgs'] = "";
-		} else {
-			$template['PostArgs'] = $template['PostArgs'][0];
-		}
-	}
-	$postArgs = explode(";",$template['PostArgs']);
-	if ( $postArgs[1] ) {
-		logger("VERY IMPORTANT IF YOU SEE THIS: Alert the maintainers of Community Applications with the following Information:".$originalTemplate['RepoName']." ".$originalTemplate['Name']." ".$originalTemplate['Repository']);
-		$originalTemplate['Blacklist'] = true;
+}
+
+#######################################################################################################################
+# Security function that gets a sees if the docker run command from the raw template contains any security violations #
+#######################################################################################################################
+function checkValidDockerRunCommand(&$template) {
+	global $subnet;
+	
+	if ( ! function_exists("xmlToCommand") ) { return; } # ie: 6.6.0+ only
+	if ( $template['Plugin'] ) { return; }
+	
+	$subnet = array();
+	if ( dockerRunSecurity(xmlToCommand(makeXML($template))[0]) ) {
+		logger("VERY IMPORTANT IF YOU SEE THIS: Alert the maintainers of Community Applications with the following Information:".$template['RepoName']." ".$originalTemplate['Name']." ".$template['Repository']);
+		$template['Blacklist'] = true;
+		$template['ModeratorComment'] = "Blacklisted due to security violations";
 	}
 }
 
@@ -737,8 +743,6 @@ function getAuthor($template) {
 function getRunningContainers() {
 	global $communitySettings;
 
-	$info = array();
-	
 	if ( $communitySettings['dockerRunning'] ) {
 		$DockerTemplates = new DockerTemplates();
 		$info = $DockerTemplates->getAllInfo();
@@ -750,8 +754,7 @@ function getRunningContainers() {
 			$info[$container['Name']]['repository'] = $container['Image'];
 			$infoTmp[$container['Name']] = $info[$container['Name']];
 		}
-		$info = $infoTmp ? $infoTmp : array();
 	}
-	return $info;
+	return $infoTmp ?: array();
 }
 ?>
