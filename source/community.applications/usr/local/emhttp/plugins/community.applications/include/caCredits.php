@@ -27,6 +27,11 @@ $caCredits = "
         <td class='ca_table'><strong><font color='coral'>Kode</font></strong></td>
         <td><font color='coral'>Application Feed</font></td>
       </tr>
+			<tr>
+				<td></td>
+				<td class='ca_table'><strong><font color='coral'><a href='https://www.linuxserver.io/' target='_blank'>LinuxServer</a></font></strong></td>
+				<td><font color='coral'>Application Feed Hosting</font></td>
+			</tr>
       <tr>
         <td></td>
         <td class='ca_table'><strong><font color='coral'>CHBMB</font></strong></td>
