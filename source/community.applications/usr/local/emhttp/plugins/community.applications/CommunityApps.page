@@ -812,7 +812,7 @@ function forceUpdateButton() {
 
 function downloadRepo(repositories,index) {
 	var percentage = parseInt(index / repositories.length * 100);
-	$("#downloadStatus").html(percentage+"%<br>"+repositories[index].name+"<br><font size='0'>"+repositories[index].url);
+	$("#downloadStatus").html(percentage+"%<br><b>"+repositories[index].name);
 	$.post(URL,{action:'downloadRepo',repoURL:repositories[index].url,repoName:repositories[index].name}, function(data) {
 		if ( data ) {
 			if ( repositories[index+1] ) {

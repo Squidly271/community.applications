@@ -102,6 +102,11 @@ if ( ! $template['Plugin'] ) {
 	}
 }
 $template['Category'] = rtrim(str_replace(":,",",",implode(", ",explode(" ",$template['Category']))),": ,");
+$categories = explode(" ",$template['Category']);
+unset($template['Category']);
+foreach ($categories as $category) {
+	$template['Category'] .= "<a style='cursor:pointer;' onclick='doSearch(false,&quot;$category&quot;);'>$category</a> ";
+}
 $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 $template['Description'] = trim($template['Description']);
 
