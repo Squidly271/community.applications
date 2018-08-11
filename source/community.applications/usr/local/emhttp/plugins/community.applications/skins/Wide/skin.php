@@ -135,9 +135,9 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		unset($categories);
 		foreach (explode(" ",$template['Category']) as $category) {
 			$category = rtrim($category,":");
-			$categories .= "<a onclick='doSearch(false,&quot;$category&quot;);' class='ca_tooltip ca_category' style='cursor:pointer;' title='Search for $category'>$category</a> ";
+			$categories .= "<a onclick='doSearch(false,&quot;$category&quot;);' class='ca_tooltip ca_category' style='cursor:pointer;' title='Search for $category'>$category</a>, ";
 		}
-		$template['Category'] = $categories;
+		$template['Category'] = rtrim($categories,", ");
 		$RepoName = ( $template['Private'] == "true" ) ? $template['RepoName']."<font color=red> (Private)</font>" : $template['RepoName'];
 		if ( ! $template['DonateText'] ) {
 			$template['DonateText'] = "Donate To Author";
