@@ -112,17 +112,6 @@ function first_str_replace($haystack, $needle, $replace) {
 	return $haystack;
 }
 
-#######################################################################################
-# Helper function to further remove formatting from descriptions (suitable for popUps #
-#######################################################################################
-function fixPopUpDescription($PopUpDescription) {
-	$PopUpDescription = str_replace("'","&#39;",$PopUpDescription);
-	$PopUpDescription = str_replace('"','&quot;',$PopUpDescription);
-	$PopUpDescription = strip_tags($PopUpDescription);
-	$PopUpDescription = trim($PopUpDescription);
-	return ($PopUpDescription);
-}
-
 ###################################################################
 # Helper function to remove any formatting, etc from descriptions #
 ###################################################################
@@ -368,7 +357,6 @@ function fixTemplates($template) {
 		}
 	}
 
-	$template['PopUpDescription'] = fixPopUpDescription($template['Description']);
 	if ( $template['Private'] ) {
 		$statistics = $origStats;
 	}

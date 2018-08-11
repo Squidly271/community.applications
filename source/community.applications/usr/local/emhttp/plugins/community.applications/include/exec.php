@@ -58,7 +58,7 @@ if ( $communitySettings['dockerRunning'] ) {
 
 if ( !is_dir($communityPaths['templates-community']) ) {
 	@mkdir($communityPaths['templates-community'],0777,true);
-	@unlink($infoFile);
+	@unlink($communityPaths['community-templates-info']);
 }
 
 $selectCategoryMessage = "Select a Section <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:20px;cursor:auto;'></i> or Category <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:20px;cursor:auto;'></i> above";
@@ -110,7 +110,7 @@ case 'get_content':
 	$newAppTime = strtotime($communitySettings['timeNew']);
 
 	if ( file_exists($communityPaths['addConverted']) ) {
-		@unlink($infoFile);
+		@unlink($communityPaths['community-templates-info']);
 		@unlink($communityPaths['addConverted']);
 	}
 
@@ -119,11 +119,11 @@ case 'get_content':
 	 @unlink($communityPaths['appFeedOverride']);
 	}
 
-	if (!file_exists($infoFile)) {
+	if (!file_exists($communityPaths['community-templates-info'])) {
 		$updatedSyncFlag = true;
 		if ( $communitySettings['appFeed'] == "true" ) {
 			DownloadApplicationFeed();
-			if (!file_exists($infoFile)) {
+			if (!file_exists($communityPaths['community-templates-info'])) {
 				@unlink($communityPaths['LegacyMode']);
 				$tmpfile = randomFile();
 				download_url($communityPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
@@ -145,7 +145,7 @@ case 'get_content':
 				@unlink($communityPaths['appFeedDownloadError']);
 				echo caGetMode();
 				echo "<script>$('#updateButton').show();</script>";
-				@unlink($infoFile);
+				@unlink($communityPaths['community-templates-info']);
 				@unlink($communityPaths['statistics']);
 			}
 		}
@@ -337,7 +337,7 @@ case 'force_update':
 			copy($communityPaths['lastUpdated'],$communityPaths['lastUpdated-old']);
 		}
 		if ( ! $badDownload ) {
-			@unlink($infoFile);
+			@unlink($communityPaths['community-templates-info']);
 		}
 	} else {
 		moderateTemplates();
@@ -1189,7 +1189,7 @@ case 'populateAutoComplete':
 # Functions used to download the templates from various sources #
 #################################################################
 function ProcessCommunityTemplates() {
-	global $communityPaths, $infoFile, $communitySettings, $statistics;
+	global $communityPaths, $communitySettings, $statistics;
 
 	$moderation = readJsonFile($communityPaths['moderation']);
 
@@ -1297,7 +1297,7 @@ function ProcessCommunityTemplates() {
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
 function DownloadApplicationFeed() {
-	global $communityPaths, $infoFile, $communitySettings, $statistics;
+	global $communityPaths, $communitySettings, $statistics;
 
 	exec("rm -rf '{$communityPaths['templates-community']}'");
 	@mkdir($communityPaths['templates-community'],0777,true);
@@ -1445,7 +1445,7 @@ function DownloadApplicationFeed() {
 }
 
 function getConvertedTemplates() {
-	global $communityPaths, $infoFile, $communitySettings, $statistics;
+	global $communityPaths, $communitySettings, $statistics;
 
 # Start by removing any pre-existing private (converted templates)
 	$templates = readJsonFile($communityPaths['community-templates-info']);

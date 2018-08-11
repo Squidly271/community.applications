@@ -47,6 +47,4 @@ $communityPaths['defaultSkin']                   = "/usr/local/emhttp/plugins/$p
 $communityPaths['defaultSkinPHP']                = $communityPaths['defaultSkin'].".php";
 $communityPaths['legacyTemplatesTmp']            = $communityPaths['tempFiles']."/pathsToTemplates.json";
 
-$infoFile                                        = $communityPaths['community-templates-info'];
-
 ?>

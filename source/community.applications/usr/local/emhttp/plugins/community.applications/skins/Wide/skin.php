@@ -465,7 +465,7 @@ function toNumericArray($template) {
 		$template['DonateText'],              #29
 		$template['DonateImg'],               #30 - Deprecated Tag Do Not Use
 		$template['DonateLink'],              #31
-		$template['PopUpDescription'],        #32
+		$template['PopUpDescription'],        #32 - No longer implemented
 		$template['ModeratorComment'],        #33
 		$template['Compatible'],              #34
 		$template['display_DonateLink'],      #35
