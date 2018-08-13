@@ -368,8 +368,25 @@ function fixTemplates($template) {
 	if ( $template['DeprecatedMaxVer'] && version_compare($communitySettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") ) {
 		$template['Deprecated'] = true;
 	}
+	if ( is_string($template['CPUset']) ) {
+		unset($template['CPUset']);
+		$statistics['caFixed']++;
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "CPU pinning removed from template";
+	}
+	if ( is_string($template['ExtraParams']) ) {
+		if ( strpos($template['ExtraParams'],"--cpuset-cpus") !== false ) {
+			$extraParams = explode(" ",$template['ExtraParams']);
+			foreach ($extraParams as $param) {
+				if ( strpos($param,"--cpuset-cpus") === false ) {
+					$params .= "$param ";
+				}
+			}
+			$template['ExtraParams'] = rtrim($params);
+			$statistics['caFixed']++;
+			$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "CPU pinning removed from template";
+		}
+	}
 	
-
 	return $template;
 }
 

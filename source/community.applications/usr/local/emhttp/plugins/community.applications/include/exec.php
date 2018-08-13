@@ -1349,7 +1349,6 @@ function DownloadApplicationFeed() {
 		$RepoIndex = searchArray($Repositories,"name",$o['RepoName']);
 		if ( $RepoIndex != false ) {
 			$o['DonateText']       = $Repositories[$RepoIndex]['donatetext'];
-			$o['DonateImg']        = $Repositories[$RepoIndex]['donateimg'];
 			$o['DonateLink']       = $Repositories[$RepoIndex]['donatelink'];
 			$o['WebPageURL']       = $Repositories[$RepoIndex]['web'];
 			$o['Logo']             = $Repositories[$RepoIndex]['logo'];
@@ -1359,10 +1358,6 @@ function DownloadApplicationFeed() {
 		}
 		$o['DonateText'] = $file['DonateText'] ?: $o['DonateText'];
 		$o['DonateLink'] = $file['DonateLink'] ?: $o['DonateLink'];
-
-		if ( ($file['DonateImg']) || ($file['DonateImage']) ) {  #because Sparklyballs can't read the tag documentation
-			$o['DonateImg'] = $file['DonateImage'] ?: $file['DonateImg'];
-		}
 
 		checkValidDockerRunCommand($o);
 		fixSecurity($o,$o); # Apply various fixes to the templates for CA use
@@ -1394,6 +1389,8 @@ function DownloadApplicationFeed() {
 		$file['MinVer'] = $o['MinVer'];
 		$file['MaxVer'] = $o['MaxVer'];
 		$file['Category'] = $o['Category'];
+		$file['CPUset'] = $o['CPUSet'];
+		$file['ExtraParams'] = $o['ExtraParams'];
 		$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
 		$o['Category'] = str_replace("Status:Stable","",$o['Category']);
 		$myTemplates[$i] = $o;
