@@ -9,43 +9,43 @@ $caCredits = "
     <center><table style='margin:-10px 50px;'>
       <tr>
         <td class='ca_table'><img src='https://github.com/Squidly271/plugin-repository/raw/master/Chode_300.gif' width='50px';height='48px'></td>
-        <td><strong><font color='coral'>Andrew Zawadzki</font></strong></td>
-        <td><font color='coral'>Main Development</font></td>
+        <td><strong><font size='4'>Andrew Zawadzki</font></strong></td>
+        <td><font size='4'>Main Development</font></td>
       </tr>
       <tr>
         <td></td>
-        <td class='ca_table'><strong><font color='coral'>bonienl</font></strong></td>
-        <td><font color='coral'>Additional Contributions</font></td>
+        <td class='ca_table'><strong>bonienl</font></strong></td>
+        <td>Additional Contributions</font></td>
       </tr>
 			<tr>
 				<td></td>
-				<td class='ca_table'><strong><font color='coral'>eschultz</font></strong></td>
-				<td><font color='coral'>Additional Contributions</font></td>
+				<td class='ca_table'><strong>eschultz</font></strong></td>
+				<td>Additional Contributions</font></td>
 			</tr>
       <tr>
         <td></td>
-        <td class='ca_table'><strong><font color='coral'>Kode</font></strong></td>
-        <td><font color='coral'>Application Feed</font></td>
+        <td class='ca_table'><strong>Kode</font></strong></td>
+        <td>Application Feed</font></td>
       </tr>
 			<tr>
 				<td></td>
-				<td class='ca_table'><strong><font color='coral'><a href='https://www.linuxserver.io/' target='_blank'>LinuxServer</a></font></strong></td>
-				<td><font color='coral'>Application Feed Hosting</font></td>
+				<td class='ca_table'><strong><a href='https://www.linuxserver.io/' target='_blank'>LinuxServer</a></font></strong></td>
+				<td>Application Feed Hosting</font></td>
 			</tr>
       <tr>
         <td></td>
-        <td class='ca_table'><strong><font color='coral'>CHBMB</font></strong></td>
-        <td><font color='coral'>Additional Testing</font></td>
+        <td class='ca_table'><strong>CHBMB</font></strong></td>
+        <td>Additional Testing</font></td>
       </tr>
       <tr>
         <td></td>
-        <td class='ca_table'><strong><font color='coral'>gridrunner</font></strong></td>
-        <td><font color='coral'>Additional Testing</font></td>
+        <td class='ca_table'><strong>gridrunner</font></strong></td>
+        <td>Additional Testing</font></td>
       </tr>
 			<tr>
 				<td></td>
-				<td class='ca_table'><strong><font color='coral'>Sparklyballs</font></strong></td>
-				<td><font color='coral'>Additional Testing</font></td>
+				<td class='ca_table'><strong>Sparklyballs</font></strong></td>
+				<td>Additional Testing</font></td>
 			</tr>
     </table></center>
     <br>

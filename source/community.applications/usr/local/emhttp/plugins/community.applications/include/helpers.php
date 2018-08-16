@@ -9,10 +9,7 @@
 # Convert Array("one","two","three") to be Array("one"=>$defaultFlag, "two"=>$defaultFlag, "three"=>$defaultFlag #
 ##################################################################################################################
 function arrayEntriesToObject($sourceArray,$defaultFlag=true) {
-	if ( ! is_array($sourceArray) ) {
-		return array();
-	}
-	return array_fill_keys($sourceArray,$defaultFlag);
+	return is_array($sourceArray) ? array_fill_keys($sourceArray,$defaultFlag) : array();
 }
 
 ####################################################################################################
@@ -147,9 +144,7 @@ function fixSecurity(&$template,&$originalTemplate) {
 		} else {
 			$tempElement = htmlspecialchars_decode($element);
 			if ( preg_match('#<script(.*?)>(.*?)</script>#is',$tempElement) || preg_match('#<iframe(.*?)>(.*?)</iframe>#is',$tempElement) ) {
-				logger("VERY IMPORTANT IF YOU SEE THIS: Alert the maintainers of Community Applications with the following Information:".$originalTemplate['RepoName']." ".$originalTemplate['Name']." ".$originalTemplate['Repository']);
-				$originalTemplate['Blacklist'] = true;
-				$originalTemplate['ModeratorComment'] = "Blacklisted due to security violations";
+				securityViolation($originalTemplate);
 				return;
 			}
 		}
@@ -167,10 +162,14 @@ function checkValidDockerRunCommand(&$template) {
 	
 	$subnet = array();
 	if ( dockerRunSecurity(xmlToCommand(makeXML($template))[0]) ) {
-		logger("VERY IMPORTANT IF YOU SEE THIS: Alert the maintainers of Community Applications with the following Information:".$template['RepoName']." ".$originalTemplate['Name']." ".$template['Repository']);
-		$template['Blacklist'] = true;
-		$template['ModeratorComment'] = "Blacklisted due to security violations";
+		securityViolation($template);
 	}
+}
+
+function securityViolation(&$template) {
+	logger("VERY IMPORTANT IF YOU SEE THIS: Alert the maintainers of Community Applications with the following Information:".$template['RepoName']." ".$emplate['Name']." ".$template['Repository']);
+	$template['Blacklist'] = true;
+	$template['ModeratorComment'] = "Blacklisted due to security violations";
 }
 
 #######################
@@ -508,12 +507,9 @@ function moderateTemplates() {
 	}
 	if ( ! $templates ) { return; }
 	foreach ($templates as $template) {
-		$templateTMP = $template;
-		if ( is_array($moderation[$template['Repository']]) ) {
-			$templateTMP = array_merge($template,$moderation[$template['Repository']]);
-			if ( $templateTMP['CAComment'] ) {
-				$templateTMP['ModeratorComment'] = $templateTMP['CAComment'];
-			}
+		$templateTMP = is_array($moderation[$template['Repository']]) ? array_merge($template,$moderation[$template['Repository']]) : $template;
+		if ( $templateTMP['CAComment'] ) {
+			$templateTMP['ModeratorComment'] = $templateTMP['CAComment'];
 		}
 		if ( $duplicatedTemplate[$templateTMP['RepoURL']]['duplicated'][$template['Repository']] ) {
 			$templateTMP['Blacklist'] = true;

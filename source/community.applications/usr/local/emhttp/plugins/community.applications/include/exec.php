@@ -33,7 +33,7 @@ $communitySettings['appFeed']       = "true"; # set default for deprecated setti
 $communitySettings['maxPerPage']    = getPost("maxPerPage",25);  # Global POST.  Used damn near everywhere
 $communitySettings['maxPerPage']    = ( $communitySettings['maxPerPage'] < 1 ) || ( $communitySettings['maxPerPage'] > 50 ) ? 50 : $communitySettings['maxPerPage'];
 $communitySettings['unRaidVersion'] = $unRaidVersion;
-$communitySettings['timeNew'] = "-10 years";
+$communitySettings['timeNew'] 			= "-10 years";
 
 if ( $communitySettings['favourite'] != "None" ) {
 	$officialRepo = str_replace("*","'",$communitySettings['favourite']);
@@ -383,7 +383,6 @@ case 'change_docker_view':
 	if ( ! file_exists($communityPaths['dockerSearchResults']) ) {
 		break;
 	}
-
 	$file = readJsonFile($communityPaths['dockerSearchResults']);
 	$pageNumber = $file['page_number'];
 	displaySearchResults($pageNumber);
@@ -1015,31 +1014,30 @@ case 'statistics':
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	pluginDupe($templates);
 	unset($statistics['Private']);
-	if ( is_array($templates) ) {
-		$sortOrder['sortBy'] = "RepoName";
-		$sortOrder['sortDir'] = "Up";
-		usort($templates,"mySort");
-		foreach ($templates as $template) {
-			if ( $template['Deprecated'] ) {
-				$statistics['totalDeprecated']++;
-			}
-			if ( ! $template['Compatible'] ) {
-				$statistics['totalIncompatible']++;
-			}
-			if ( ! $template['Support'] && ! $template['Blacklist'] && ! $template['Deprecated'] && $template['Compatible'] ) {
-				$statistics['NoSupport']++;
-			}
-			if ( $template['Blacklist'] ) {
-				$statistics['blacklist']++;
-			}
-			if ( $template['Private'] && ! $template['Blacklist']) {
-				if ( ! ($communitySettings['hideDeprecated'] == 'true' && $template['Deprecated']) ) {
-					$statistics['private']++;
-				}
+
+	$sortOrder['sortBy'] = "RepoName";
+	$sortOrder['sortDir'] = "Up";
+	usort($templates,"mySort");
+	foreach ($templates as $template) {
+		if ( $template['Deprecated'] ) {
+			$statistics['totalDeprecated']++;
+		}
+		if ( ! $template['Compatible'] ) {
+			$statistics['totalIncompatible']++;
+		}
+		if ( ! $template['Support'] && ! $template['Blacklist'] && ! $template['Deprecated'] && $template['Compatible'] ) {
+			$statistics['NoSupport']++;
+		}
+		if ( $template['Blacklist'] ) {
+			$statistics['blacklist']++;
+		}
+		if ( $template['Private'] && ! $template['Blacklist']) {
+			if ( ! ($communitySettings['hideDeprecated'] == 'true' && $template['Deprecated']) ) {
+				$statistics['private']++;
 			}
 		}
 	}
-
+	
 	if ( $statistics['fixedTemplates'] ) {
 		writeJsonFile($communityPaths['fixedTemplates_txt'],$statistics['fixedTemplates']);
 	} else {
@@ -1065,24 +1063,24 @@ case 'statistics':
 	echo "<div style='overflow:scroll; max-height:550px; height:550px; overflow-x:hidden; overflow-y:hidden;'><center><img height='48px' src='/plugins/community.applications/images/community.applications.png'><br><font size='3' color='white'>Community Applications</font><br>";
 	echo "<br>";
 	echo "<table>";
-	echo "<tr><td class='ca_table'><b>{$color}<a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td>$color$updateTime</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}Total Number Of Templates</b></td><td>$color{$statistics['totalApplications']}</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}<a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color".count($repositories)."</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}Total Number Of Plugins</b></td><td>$color{$statistics['plugin']}</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}<a id='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}<a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Total Number Of Invalid Templates Found</a></b></td><td>$color{$statistics['invalidXML']}</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}<a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Total Number Of Template Errors</a></b></td><td>$color{$statistics['caFixed']}+</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}<a id='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Blacklisted Apps Found In Appfeed</a></b></td><td>$color{$statistics['blacklist']}</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}<a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Incompatible Applications</a></b></td><td>$color{$statistics['totalIncompatible']}</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}<a id='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Deprecated Applications</a></b></td><td>$color{$statistics['totalDeprecated']}</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}<a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Total Number Of Moderation Entries</a></b></td><td>$color{$statistics['totalModeration']}+</td></tr>";
-	echo "<tr><td class='ca_table'><b>{$color}<a id='NOSUPPORT' onclick='showSpecialCategory(this);' style='cursor:pointer'>Applications without any support thread:</a></b></td><td>$color{$statistics['NoSupport']}</td></tr>";
+	echo "<tr><td class='ca_table'><b><a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td>$color$updateTime</td></tr>";
+	echo "<tr><td class='ca_table'><b>Total Number Of Templates</b></td><td>$color{$statistics['totalApplications']}</td></tr>";
+	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color".count($repositories)."</td></tr>";
+	echo "<tr><td class='ca_table'><b>Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";
+	echo "<tr><td class='ca_table'><b>Total Number Of Plugins</b></td><td>$color{$statistics['plugin']}</td></tr>";
+	echo "<tr><td class='ca_table'><b><a id='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
+	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Total Number Of Invalid Templates Found</a></b></td><td>$color{$statistics['invalidXML']}</td></tr>";
+	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Total Number Of Template Errors</a></b></td><td>$color{$statistics['caFixed']}+</td></tr>";
+	echo "<tr><td class='ca_table'><b><a id='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Blacklisted Apps Found In Appfeed</a></b></td><td>$color{$statistics['blacklist']}</td></tr>";
+	echo "<tr><td class='ca_table'><b><a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Incompatible Applications</a></b></td><td>$color{$statistics['totalIncompatible']}</td></tr>";
+	echo "<tr><td class='ca_table'><b><a id='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Deprecated Applications</a></b></td><td>$color{$statistics['totalDeprecated']}</td></tr>";
+	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Total Number Of Moderation Entries</a></b></td><td>$color{$statistics['totalModeration']}+</td></tr>";
+	echo "<tr><td class='ca_table'><b><a id='NOSUPPORT' onclick='showSpecialCategory(this);' style='cursor:pointer'>Applications without any support thread:</a></b></td><td>$color{$statistics['NoSupport']}</td></tr>";
 	$totalCA = exec("du -h -s /usr/local/emhttp/plugins/community.applications/");
 	$totalTmp = exec("du -h -s /tmp/community.applications/");
 	$memCA = explode("\t",$totalCA);
 	$memTmp = explode("\t",$totalTmp);
-	echo "<tr><td class='ca_table'><b>{$color}<b>Memory Usage (CA / DataFiles)</b></td><td>{$memCA[0]} / {$memTmp[0]}</td></tr>";
+	echo "<tr><td class='ca_table'><b><b>Memory Usage (CA / DataFiles)</b></td><td>{$memCA[0]} / {$memTmp[0]}</td></tr>";
 	echo "</table>";
 	echo "<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img height='25px' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></center>";
 	echo "<center>Ensuring only safe applications are present is a full time job</center><br>";
@@ -1168,8 +1166,9 @@ case 'downloadRepo':
 ####################################################
 case 'populateAutoComplete':
 	$templates = readJsonFile($communityPaths['community-templates-info']);
+	
 	$autoComplete = array();
-	foreach ($templates as $template) {
+ 	foreach ($templates as $template) {
 		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $communitySettings['hideDeprecated'] == "true") && ($template['Compatible'] || $communitySettings['hideIncompatible'] != "true") ) {
 			$autoComplete[strtolower($template['Name'])] = $template['Name'];
 			$autoComplete[strtolower($template['Author'])] = $template['Author'];
@@ -1320,17 +1319,15 @@ function DownloadApplicationFeed() {
 	writeJsonFile($communityPaths['lastUpdated-old'],$lastUpdated);
 	$myTemplates = array();
 
-	foreach ($ApplicationFeed['applist'] as $file) {
-		if ( (! $file['Repository']) && (! $file['Plugin']) ){
+	foreach ($ApplicationFeed['applist'] as $o) {
+		if ( (! $o['Repository']) && (! $o['Plugin']) ){
 			$statistics['invalidXML']++;
-			$invalidXML[] = $file;
+			$invalidXML[] = $o;
 			continue;
 		}
 		# Move the appropriate stuff over into a CA data file
-		$o = $file;
 		$o['ID']            = $i;
 		$o['Displayable']   = true;
-#		$o['Author']        = preg_replace("#/.*#", "", $o['Repository']);
 		$o['Author']        = getAuthor($o);
 		$o['DockerHubName'] = strtolower($file['Name']);
 		$o['RepoName']      = $file['Repo'];
@@ -1345,7 +1342,11 @@ function DownloadApplicationFeed() {
 			$o['Category']      .= " Plugins: ";
 			$o['SortAuthor']    = $o['Author'];
 			$o['SortName']      = $o['Name'];
+			$statistics['plugin']++;
+		} else {
+			$statistics['docker']++;
 		}
+
 		$RepoIndex = searchArray($Repositories,"name",$o['RepoName']);
 		if ( $RepoIndex != false ) {
 			$o['DonateText']       = $Repositories[$RepoIndex]['donatetext'];
@@ -1371,39 +1372,22 @@ function DownloadApplicationFeed() {
 		if ( is_array($moderation[$o['Repository']]) ) {
 			$repositoryTmp = $o['Repository']; # in case moderation changes the repository entry
 			$o = array_merge($o, $moderation[$repositoryTmp]);
-			$file = array_merge($file, $moderation[$repositoryTmp]);
-		}
-
-		if ( $o['Plugin'] ) {
-			$statistics['plugin']++;
-		} else {
-			$statistics['docker']++;
 		}
 
 		$o['Compatible'] = versionCheck($o);
-
-		# Update the settings for the template
-
-		$file['Compatible'] = $o['Compatible'];
-		$file['Beta'] = $o['Beta'];
-		$file['MinVer'] = $o['MinVer'];
-		$file['MaxVer'] = $o['MaxVer'];
-		$file['Category'] = $o['Category'];
-		$file['CPUset'] = $o['CPUSet'];
-		$file['ExtraParams'] = $o['ExtraParams'];
 		$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
 		$o['Category'] = str_replace("Status:Stable","",$o['Category']);
 		$myTemplates[$i] = $o;
 
-		if ( is_array($file['Branch']) ) {
-			if ( ! $file['Branch'][0] ) {
-				$tmp = $file['Branch'];
-				unset($file['Branch']);
-				$file['Branch'][] = $tmp;
+		if ( is_array($o['Branch']) ) {
+			if ( ! $o['Branch'][0] ) {
+				$tmp = $o['Branch'];
+				unset($o['Branch']);
+				$o['Branch'][] = $tmp;
 			}
-			foreach($file['Branch'] as $branch) {
+			foreach($o['Branch'] as $branch) {
 				$i = ++$i;
-				$subBranch = $file;
+				$subBranch = $o;
 				$masterRepository = explode(":",$subBranch['Repository']);
 				$o['BranchDefault'] = $masterRepository[1];
 				$subBranch['Repository'] = $masterRepository[0].":".$branch['Tag']; #This takes place before any xml elements are overwritten by additional entries in the branch, so you can actually change the repo the app draws from
@@ -1422,10 +1406,10 @@ function DownloadApplicationFeed() {
 				file_put_contents($subBranch['Path'],makeXML($subBranch));
 			}
 		}
-		unset($file['Branch']);
+		unset($o['Branch']);
 		$myTemplates[$o['ID']] = $o;
 		$i = ++$i;
-		$templateXML = makeXML($file);
+		$templateXML = makeXML($o);
 		@mkdir(dirname($o['Path']),0777,true);
 		file_put_contents($o['Path'],$templateXML);
 	}
@@ -1560,12 +1544,12 @@ function appOfDay($file) {
 #####################################################
 function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
 	$test = $file[$randomApp];
-	if ( ! $test['Displayable'] )    return false;
-	if ( ! $test['Compatible'] )     return false;
-	if ( $test['Blacklist'] )        return false;
+	if ( ! $test['Displayable'] )											return false;
+	if ( ! $test['Compatible'] )											return false;
+	if ( $test['Blacklist'] )													return false;
 	if ( ($test['ModeratorComment']) && (! $newApp) ) return false;
-	if ( $test['Deprecated'] )       return false;
-	if ( ($test['Beta'] == "true" ) && (! $newApp ) )  return false;
+	if ( $test['Deprecated'] )												return false;
+	if ( ($test['Beta'] == "true" ) && (! $newApp ) )	return false;
 	if ( $test['PluginURL'] == "https://raw.githubusercontent.com/Squidly271/community.applications/master/plugins/community.applications.plg" ) return false;
 	if ( $test['Plugin'] ) {
 		if ( file_exists("/var/log/plugins/".basename($test['PluginURL'])) ) { return false; }
