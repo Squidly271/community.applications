@@ -135,18 +135,18 @@ $templateDescription .= "</td></tr>";
 $templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
 $templateDescription .= "<tr><td>$color<strong>Categories: </strong></td><td>$color".$template['Category']."</td></tr>";
 
-$template['Base'] = $template['Plugin'] ? "$color<font color='red'>unRaid Plugin</font>" : $template['Base'];
 
-if ( strtolower($template['Base']) == "unknown" ) {
-	$template['Base'] = $template['BaseImage'];
+
+if ( ! $template['Plugin'] ) {
+	if ( strtolower($template['Base']) == "unknown" ) {
+		$template['Base'] = $template['BaseImage'];
+	}
+	if ( ! $template['Base'] ) {
+		$template['Base'] = "Could Not Determine";
+	}
+	$templateDescription .= "<tr><td nowrap>$color<strong>Base OS: </strong></td><td>$color".$template['Base']."</td></tr>";
+	$templateDescription .= $template['stars'] ? "<tr><td nowrap>$color<strong>DockerHub Stars: </strong></td><td>$color<i class='fa fa-star' style='font-size:15px;color:magenta;'></i> ".$template['stars']."</td></tr>" : "";
 }
-if ( ! $template['Base'] ) {
-	$template['Base'] = "Could Not Determine";
-}
-
-$templateDescription .= "<tr><td nowrap>$color<strong>Base OS: </strong></td><td>$color".$template['Base']."</td></tr>";
-$templateDescription .= $template['stars'] ? "<tr><td nowrap>$color<strong>DockerHub Stars: </strong></td><td>$color<i class='fa fa-star' style='font-size:15px;color:magenta;'></i> ".$template['stars']."</td></tr>" : "";
-
 # In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 if ( $template['Date'] && $template['Plugin'] ) {
 	$niceDate = date("F j, Y",$template['Date']);

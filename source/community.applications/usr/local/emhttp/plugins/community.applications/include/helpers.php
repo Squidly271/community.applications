@@ -735,7 +735,7 @@ function getAuthor($template) {
 	if (count($repoEntry) < 2) {
 		$repoEntry[] = "";
 	}
-	return strip_tags($repoEntry[count($repoEntry)-2]);
+	return strip_tags(explode(":",$repoEntry[count($repoEntry)-2])[0]);
 }
 
 #########################################

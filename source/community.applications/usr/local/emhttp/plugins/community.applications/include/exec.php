@@ -195,6 +195,7 @@ case 'get_content':
 				$countSuffix = count($displayApplications['community']) > 1 ? "s" : "";
 				$startupMsg = ($communitySettings['startup'] == "random") ? "Random App$countSuffix Of The Day" : "Newest Added / Recently Updated App$countSuffix<br><font size='0'>Select the New/Updated Category for the complete list</font>";
 				echo "<br><center><font size='4' color='purple'><b>$startupMsg</b></font><br><br>";
+				$sortOrder['sortBy'] = "noSort";
 				echo my_display_apps($displayApplications['community'],"1",$runningDockers,$imagesDocker);
 				break;
 			} else {
@@ -1176,7 +1177,7 @@ case 'populateAutoComplete':
 	}
 	$autoScript = "<script>searchBoxAwesomplete.list = [";
 	foreach ($autoComplete as $auto) {
-		$autoScript .= '"'.$auto.'",';
+		$autoScript .= "'$auto',";
 	}
 	$autoScript = rtrim($autoScript,",")."];</script>";
 	echo $autoScript;
@@ -1329,12 +1330,12 @@ function DownloadApplicationFeed() {
 		$o['ID']            = $i;
 		$o['Displayable']   = true;
 		$o['Author']        = getAuthor($o);
-		$o['DockerHubName'] = strtolower($file['Name']);
-		$o['RepoName']      = $file['Repo'];
+		$o['DockerHubName'] = strtolower($o['Name']);
+		$o['RepoName']      = $o['Repo'];
 		$o['SortAuthor']    = $o['Author'];
 		$o['SortName']      = $o['Name'];
-		$o['Licence']       = $file['License']; # Support Both Spellings
-		$o['Licence']       = $file['Licence'];
+		$o['Licence']       = $o['License']; # Support Both Spellings
+		$o['Licence']       = $o['Licence'];
 		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
 		if ( $o['Plugin'] ) {
 			$o['Author']        = $o['PluginAuthor'];
@@ -1349,16 +1350,14 @@ function DownloadApplicationFeed() {
 
 		$RepoIndex = searchArray($Repositories,"name",$o['RepoName']);
 		if ( $RepoIndex != false ) {
-			$o['DonateText']       = $Repositories[$RepoIndex]['donatetext'];
-			$o['DonateLink']       = $Repositories[$RepoIndex]['donatelink'];
 			$o['WebPageURL']       = $Repositories[$RepoIndex]['web'];
 			$o['Logo']             = $Repositories[$RepoIndex]['logo'];
 			$o['Profile']          = $Repositories[$RepoIndex]['profile'];
 			$o['RepoURL']          = $Repositories[$RepoIndex]['url'];
 			$o['ModeratorComment'] = $Repositories[$RepoIndex]['RepoComment'];
+			$o['DonateText']       = $o['DonateText'] ?: $Repositories[$RepoIndex]['donatetext'];
+			$o['DonateLink']       = $o['DonateLink'] ?: $Repositories[$RepoIndex]['donatelink'];
 		}
-		$o['DonateText'] = $file['DonateText'] ?: $o['DonateText'];
-		$o['DonateLink'] = $file['DonateLink'] ?: $o['DonateLink'];
 
 		checkValidDockerRunCommand($o);
 		fixSecurity($o,$o); # Apply various fixes to the templates for CA use
@@ -1488,19 +1487,18 @@ function appOfDay($file) {
 		$currentDay = intval(time() / 86400);
 		if ( $oldAppDay == $currentDay ) {
 			$app = readJsonFile($communityPaths['appOfTheDay']);
-			if ( is_array($app) ) {  # test to see if existing apps of day have been moderated / blacklisted, etc.
-				$flag = false;
-				foreach ($app as $testApp) {
-					if ( ! checkRandomApp($testApp,$file,false,$info) ) {
-						$flag = true;
-						break;
-					}
-				}
-				if ( $flag ) {
-					$app = array();
+			$flag = false;
+			foreach ($app as $testApp) {
+				if ( ! checkRandomApp($testApp,$file,false,$info) ) {
+					$flag = true;
+					break;
 				}
 			}
+			if ( $flag ) {
+				$app = array();
+			}
 		}
+
 		if ( ! $app ) {
 			for ( $ii=0; $ii<$communitySettings['maxPerPage']; $ii++ ) {
 				$flag = false;

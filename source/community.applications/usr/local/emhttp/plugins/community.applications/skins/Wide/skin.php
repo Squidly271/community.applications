@@ -55,7 +55,7 @@ function display_apps($pageNumber=1,$selectedApps=false) {
 #my_display_apps(), getPageNavigation(), displaySearchResults() must accept all parameters
 #note that many template entries in my_display_apps() are not actually used in the skin, but are present for future possible use.
 function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
-	global $communityPaths, $communitySettings, $plugin, $displayDeprecated;
+	global $communityPaths, $communitySettings, $plugin, $displayDeprecated, $sortOrder;
 	
 	$viewMode = "detail";
 	
@@ -79,7 +79,9 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 	$pinnedApps = getPinnedApps();
 	$iconSize = $communitySettings['iconSize'];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
-	usort($file,"mySort");
+	if ( $sortOrder['sortBy'] != "noSort" ) {
+		usort($file,"mySort");
+	}
 
 	if ( ! $officialFlag ) {
 		$displayHeader .= "<br>".getPageNavigation($pageNumber,count($file),false)."<br>";
