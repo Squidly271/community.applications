@@ -129,7 +129,7 @@ if ( ! $template['Plugin'] ) {
 }
 $templateDescription .= "<tr><td>$color<strong>Repository: </strong></td><td>$color";
 $repoSearch = explode("'",$template['RepoName']);
-$templateDescription .= $template['Forum'] ? "<a style='cursor:pointer;' onclick='authorSearch(&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a><" : "{$template['RepoName']}";
+$templateDescription .= $template['Forum'] ? "<a style='cursor:pointer;' onclick='authorSearch(&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a>" : "{$template['RepoName']}";
 if ( $template['Profile'] ) {
 	$profileDescription = $template['Plugin'] ? "Author" : "Maintainer";
 	$templateDescription .= "&nbsp;&nbsp;&nbsp;&nbsp;<b><a href='{$template['Profile']}' target='_blank'>($profileDescription Profile)</a></b>";
