@@ -116,7 +116,7 @@ $templateDescription .= "<style>p { margin-left:20px;margin-right:20px }</style>
 if ( $color ) {
 	$templateDescription .= "<center><font size='4'><strong>{$template['Name']}</strong></font></center><br><br><br>";
 }
-$templateDescription .= "<center><table><tr><td><figure style='margin:0px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px;background-color:#C7C5CB;padding:3px;border-radius:10px 10px 10px 10px' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;';>";
+$templateDescription .= "<center><table><tr><td><figure style='margin-right:10px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px;background-color:#C7C5CB;padding:3px;border-radius:10px 10px 10px 10px' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;';>";
 $templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
 $templateDescription .= "</figure>";
 $templateDescription .= "</td><td></td><td><table>";
