@@ -164,7 +164,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><center><font color='red'><b>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</b> <i class='ca_infoPopup fa fa-info-circle' data-app='".basename($template['MyPath'])."' data-name='{$template['Name']}' style='cursor:pointer;font-size:15px;color:#486DBA;'></i></center></font>" : "<br><center><font color='red'><b>Update Available.  Click <a href='Docker'>Here</a> to install</b></font></center>";
 		}
 		if ( $template['Deprecated'] ) {
-			$template['ModeratorComment'] .= "<br>This application has been deprecated.";
+			$template['ModeratorComment'] .= "{$template['DeprecatedComment']}<br>This application has been deprecated.";
 		}
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
 		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=20px>" : "";

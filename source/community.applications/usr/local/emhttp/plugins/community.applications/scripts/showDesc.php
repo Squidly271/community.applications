@@ -102,11 +102,12 @@ if ( ! $template['Plugin'] ) {
 	}
 }
 $template['Category'] = rtrim(str_replace(":,",",",implode(", ",explode(" ",$template['Category']))),": ,");
-$template['Category'] = preg_replace('/(?<! )(?<!^)(?<![A-Z])[A-Z]/',' $0', $template['Category']);
-$template['Category'] = str_replace(": ",":",$template['Category']);
+
 $categories = explode(" ",$template['Category']);
 unset($template['Category']);
 foreach ($categories as $category) {
+	$category = preg_replace('/(?<! )(?<!^)(?<![A-Z])[A-Z]/',' $0', $category);
+	$category = str_replace(": ",":",$category);
 	$template['Category'] .= "<a style='cursor:pointer;' onclick='doSearch(false,&quot;$category&quot;);'>$category</a> ";
 }
 $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
@@ -137,8 +138,6 @@ $templateDescription .= "</td></tr>";
 $templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
 $templateDescription .= "<tr><td>$color<strong>Categories: </strong></td><td>$color".$template['Category']."</td></tr>";
 
-
-
 if ( ! $template['Plugin'] ) {
 	if ( strtolower($template['Base']) == "unknown" ) {
 		$template['Base'] = $template['BaseImage'];
@@ -155,6 +154,7 @@ if ( $template['Date'] && $template['Plugin'] ) {
 	$templateDescription .= "<tr><td nowrap>$color<strong>Date Updated: </strong><br>See below</td><td>$color$niceDate<br></td></tr>";
 }
 $templateDescription .= $template['MinVer'] ? "<tr><td nowrap>$color<b>Minimum OS:</strong></td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
+$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 $templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>$color<strong>Max OS:</strong></td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
 $downloads = getDownloads($template['downloads']);
 if ($downloads) {
