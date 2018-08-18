@@ -102,6 +102,8 @@ if ( ! $template['Plugin'] ) {
 	}
 }
 $template['Category'] = rtrim(str_replace(":,",",",implode(", ",explode(" ",$template['Category']))),": ,");
+$template['Category'] = preg_replace('/(?<! )(?<!^)(?<![A-Z])[A-Z]/',' $0', $template['Category']);
+$template['Category'] = str_replace(": ",":",$template['Category']);
 $categories = explode(" ",$template['Category']);
 unset($template['Category']);
 foreach ($categories as $category) {

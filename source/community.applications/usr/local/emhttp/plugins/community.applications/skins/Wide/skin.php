@@ -136,10 +136,13 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 
 		unset($categories);
 		foreach (explode(" ",$template['Category']) as $category) {
+			if ( ! $category ) { continue; }
 			$category = rtrim($category,":");
 			$categories .= "<a onclick='doSearch(false,&quot;$category&quot;);' class='ca_tooltip ca_category' style='cursor:pointer;' title='Search for $category'>$category</a>, ";
 		}
 		$template['Category'] = rtrim($categories,", ");
+		$template['Category'] = preg_replace('/(?<! )(?<!^)(?<![A-Z])[A-Z]/',' $0', $template['Category']);
+		$template['Category'] = str_replace(": ",":",$template['Category']);
 		$RepoName = ( $template['Private'] == "true" ) ? $template['RepoName']."<font color=red> (Private)</font>" : $template['RepoName'];
 		if ( ! $template['DonateText'] ) {
 			$template['DonateText'] = "Donate To Author";

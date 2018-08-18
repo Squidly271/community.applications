@@ -234,13 +234,12 @@ $(function(){
 	$('.ca_toolsView').tooltipster({
 		multiple: true,
 		triggerOpen: { mouseenter: true },
-		delay: [3000,0],
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
 			if ( ! isIconEnabled(origin) ) {
-				var displayContent = "Changing Of Views Disabled";
+				var displayContent = "Changing of sort order disabled";
 			} else {
-				var displayContent = "Click to change the view settings";
+				var displayContent = "Click to change the sort order";
 			}
 			instance.content(displayContent);
 		}
@@ -310,7 +309,6 @@ $(function(){
 	});
 	$('.ca_section').tooltipster({
 		multiple: true,
-		delay: [3000,0],
 		triggerOpen: { mouseenter: true },
 		functionBefore: function(instance,helper) {
 			instance.content('Click to switch from available apps, installed apps, previous apps, pinned apps');
@@ -351,7 +349,6 @@ $(function(){
 	$('.ca_categories').tooltipster({
 		multiple: true,
 		triggerOpen: { mouseenter: true },
-		delay: [3000,0],
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
 			if ( ! isIconEnabled(origin) ) {
@@ -395,7 +392,6 @@ $(function(){
 	});
 	$('.ca_subcategories').tooltipster({
 		multiple: true,
-		delay: [3000,0],
 		triggerOpen: { mouseenter: true },
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
@@ -1615,7 +1611,7 @@ function isTouch() {
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 
-<i id='homeIcon' class='fa fa-home enabledIcon' aria-hidden='true'></i>&nbsp;
+<i id='homeIcon' class='fa fa-home enabledIcon ca_staticTips' aria-hidden='true' title='Home'></i>&nbsp;
 <i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
