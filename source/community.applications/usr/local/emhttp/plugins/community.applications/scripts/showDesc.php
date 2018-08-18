@@ -129,7 +129,7 @@ if ( ! $template['Plugin'] ) {
 }
 $templateDescription .= "<tr><td>$color<strong>Repository: </strong></td><td>$color";
 $repoSearch = explode("'",$template['RepoName']);
-$templateDescription .= $template['Forum'] ? "<b><a style='cursor:pointer;' onclick='authorSearch(&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a></b>" : "<b>{$template['RepoName']}</b>";
+$templateDescription .= $template['Forum'] ? "<a style='cursor:pointer;' onclick='authorSearch(&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a><" : "{$template['RepoName']}";
 if ( $template['Profile'] ) {
 	$profileDescription = $template['Plugin'] ? "Author" : "Maintainer";
 	$templateDescription .= "&nbsp;&nbsp;&nbsp;&nbsp;<b><a href='{$template['Profile']}' target='_blank'>($profileDescription Profile)</a></b>";
@@ -151,9 +151,9 @@ if ( ! $template['Plugin'] ) {
 # In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 if ( $template['Date'] && $template['Plugin'] ) {
 	$niceDate = date("F j, Y",$template['Date']);
-	$templateDescription .= "<tr><td nowrap>$color<strong>Date Updated: </strong><br>See below</td><td>$color$niceDate<br></td></tr>";
+	$templateDescription .= "<tr><td nowrap>$color<strong>Date Updated: </strong></td><td>$color$niceDate<br></td></tr>";
 }
-$templateDescription .= $template['MinVer'] ? "<tr><td nowrap>$color<b>Minimum OS:</strong></td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
+$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>$color<b>Minimum OS:</strong></td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
 $template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 $templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>$color<strong>Max OS:</strong></td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
 $downloads = getDownloads($template['downloads']);
@@ -247,7 +247,7 @@ if ( $template['Changes'] ) {
 	}
 	$templateDescription .= "</center><hr><center><font size='2'><b>Change Log</b><br><font size='0'>Note: not all maintainers keep up to date on change logs</font></center><br><br>$appInformation";
 }
-echo "<div style='overflow:scroll; max-height:450px; height:450px; overflow-x:hidden; overflow-y:auto;'>";
+echo "<div style='overflow:scroll; max-height:450px; height:450px; overflow-x:hidden; overflow-y:auto;font-size:12px;'>";
 echo $templateDescription;
 echo "</div>";
 ?>
