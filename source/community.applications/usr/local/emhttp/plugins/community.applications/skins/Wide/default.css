@@ -1,5 +1,5 @@
 .ca_template_icon {color:#606E7F;width:180px;float:left;display:inline-block;background-color: #C7C5CB;margin:0px;height:290px;padding-top:10px;border-radius:20px 0px 0px 20px;}
-.ca_template {color:#606E7F;border-radius:0px 20px 20px 0px;display:inline-block;width:370px;text-align:left;float:left;overflow:auto;height:280px;background-color:#EDEAEF;	padding:10px;}
+.ca_template {color:#606E7F;border-radius:0px 20px 20px 0px;display:inline-block;width:370px;text-align:left;float:left;overflow:auto;height:280px;background-color:#EDEAEF;padding:10px;font-size:12px;}
 .ca_category {color:purple;}
 .ca_author {color:black;font-weight:bold;cursor:pointer;}
 .ca_applicationName {color:black;font-size:large;}
