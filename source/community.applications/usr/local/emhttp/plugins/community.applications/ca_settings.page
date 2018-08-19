@@ -90,13 +90,13 @@ Hide Incompatible Applications:
 
 > This setting will hide applications that are listed as being incompatible with your version of unRaid
 
-Starup Display:
+Start-up Display:
 : <select name="startup" size="1">
 	<?=mk_option($cfg['startup'],"new", "Newest Applications (default)")?>
 	<?=mk_option($cfg['startup'],"random", "Random Applications")?>
 	</select>
 
-> This setting chooses whether to display or not a random "app of the day"
+> This setting chooses whether to display a random "app of the day" or the most recently added / updated applications
 
 <strong>Docker Hub Searching</strong>
 
