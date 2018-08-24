@@ -42,7 +42,7 @@ $template = readJsonFile($communityPaths['defaultSkin']);
 <?if ( is_file("$skinPath/{$display['theme']}.css") ):?>
 <link href="<?=autov("/plugins/community.applications/skins/{$cfg['skin']}/{$display['theme']}.css")?>" type='text/css' rel="stylesheet">
 <?endif;?>
-<link rel='stylesheet' href='/plugins/community.applications/styles/awesomplete.css'>
+<link rel='stylesheet' href='<?=autov("/plugins/community.applications/styles/awesomplete.css")?>'>
 <? if ($unRaid66 && ( $display['theme'] == "black" || $display['theme'] == "white") ): ?>
 <style>
 #searchBox{top:-7px;padding:6px;}
@@ -238,21 +238,7 @@ $(function(){
 			setSortOrder();
 		}
 	});
-	$('.ca_toolsView').tooltipster({
-		multiple: true,
-		triggerOpen: { mouseenter: true },
-		delay: [1000, 0],
-		animation: 'none',
-		functionBefore: function(instance,helper) {
-			var origin = $(helper.origin);
-			if ( ! isIconEnabled(origin) ) {
-				var displayContent = "Changing of sort order disabled";
-			} else {
-				var displayContent = "Click to change the sort order";
-			}
-			instance.content(displayContent);
-		}
-	});
+
 	$('.ca_credits').tooltipster({
 		trigger: 'custom',
 		triggerOpen: {mouseenter:false,click:true,touchstart:true},
@@ -316,15 +302,6 @@ $(function(){
 			$(".appButtons").click(function() { $(this).prop("disabled",true); });
 		}
 	});
-	$('.ca_section').tooltipster({
-		multiple: true,
-		triggerOpen: { mouseenter: true },
-		delay: [1000, 0],
-		animation: 'none',
-		functionBefore: function(instance,helper) {
-			instance.content('Click to switch from available apps, installed apps, previous apps, pinned apps');
-		}
-	});
 		
 	$('.ca_categories').tooltipster({
 		trigger: 'custom',
@@ -356,22 +333,7 @@ $(function(){
 			});
 		}
 	});
-	
-	$('.ca_categories').tooltipster({
-		multiple: true,
-		triggerOpen: { mouseenter: true },
-		delay: [1000, 0],
-		animation: 'none',
-		functionBefore: function(instance,helper) {
-			var origin = $(helper.origin);
-			if ( ! isIconEnabled(origin) ) {
-				var displayContent = "Changing Of Categories Disabled In This Section";
-			} else {
-				var displayContent = "Click to display categories of apps";
-			}
-			instance.content(displayContent);
-		}
-	});
+
 	$('.ca_subcategories').tooltipster({
 		trigger: 'custom',
 		triggerOpen: {click:true,touchstart:true},
@@ -401,21 +363,6 @@ $(function(){
 				data.selected_subcategory = this.id;
 				changeCategory(this,true);
 			});
-		}
-	});
-	$('.ca_subcategories').tooltipster({
-		multiple: true,
-		triggerOpen: { mouseenter: true },
-		delay: [1000, 0],
-		animation: 'none',
-		functionBefore: function(instance,helper) {
-			var origin = $(helper.origin);
-			if ( ! isIconEnabled(origin) ) {
-				var displayContent = "No sub-categories available to display";
-			} else {
-				var displayContent = "Click to display a subcategories of apps";
-			}
-			instance.content(displayContent);
 		}
 	});
 
@@ -1619,14 +1566,14 @@ function isTouch() {
 > <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
 > <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This selects a category of apps to display<br>
 > <i class='fa fa-folder-open enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - When available, this selects a subcategory of apps to display<br>
-> <i class='fa fa-binoculars enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses how to display the results<br><br>
+> <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses how to display the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:20px;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:20px;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:20px;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
 > <i class='fa fa-globe' aria-hidden='true' style='font-size:20px;'></i> - Clicking this icon will take you to an application's GUI<br>
 > Hovering over an application's icon (or clicking it) will display more information about the application<br>
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 
-<i id='homeIcon' class='fa fa-home enabledIcon ca_staticTips' aria-hidden='true' title='Home'></i>&nbsp;
+<i id='homeIcon' class='fa fa-home enabledIcon ca_staticTips' aria-hidden='true'></i>&nbsp;
 <i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;

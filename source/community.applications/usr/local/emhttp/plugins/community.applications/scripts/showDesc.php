@@ -1,3 +1,7 @@
+<div style='overflow:scroll; max-height:450px; height:450px; overflow-x:hidden; overflow-y:auto;font-size:12px;'>
+<style>p { margin-left:20px;margin-right:20px; }
+.popUpLink { color:cyan; }
+</style>
 <?PHP
 ###############################################################
 #                                                             #
@@ -108,14 +112,13 @@ unset($template['Category']);
 foreach ($categories as $category) {
 	$category = preg_replace('/(?<! )(?<!^)(?<![A-Z])[A-Z]/',' $0', $category);
 	$category = str_replace(": ",":",$category);
-	$template['Category'] .= "<a style='cursor:pointer;' onclick='doSearch(false,&quot;$category&quot;);'>$category</a> ";
+	$template['Category'] .= "<a class='popUpLink' style='cursor:pointer;' onclick='doSearch(false,&quot;$category&quot;);'>$category</a> ";
 }
 $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 $template['Description'] = trim($template['Description']);
 
-$templateDescription .= "<style>p { margin-left:20px;margin-right:20px;}a { color:white; }</style>";
 if ( $color ) {
-	$templateDescription .= "<center><font size='4'><strong>{$template['Name']}</strong></font></center><br><br><br>";
+	$templateDescription .= "<center><font size='4'><strong>{$template['Name']}<br><br></strong></font></center><br><br><br>";
 }
 $templateDescription .= "<center><table><tr><td><figure style='margin-right:10px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px;background-color:#C7C5CB;padding:3px;border-radius:10px 10px 10px 10px' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;';>";
 $templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
@@ -125,14 +128,14 @@ $templateDescription .= "<tr><td>$color<strong>Author: </strong></td><td>$color"
 if ( ! $template['Plugin'] ) {
 	$repository = explode(":",$template['Repository']);
 	$official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
-	$templateDescription .= "<tr><td>$color<strong>DockerHub: </strong></td><td><a href='https://hub.docker.com/$official/{$repository[0]}' target='_blank'>{$repository[0]}</a></td></tr>";
+	$templateDescription .= "<tr><td>$color<strong>DockerHub: </strong></td><td><a class='popUpLink' href='https://hub.docker.com/$official/{$repository[0]}' target='_blank'>{$repository[0]}</a></td></tr>";
 }
 $templateDescription .= "<tr><td>$color<strong>Repository: </strong></td><td>$color";
 $repoSearch = explode("'",$template['RepoName']);
-$templateDescription .= $template['Forum'] ? "<a style='cursor:pointer;' onclick='authorSearch(&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a>" : "{$template['RepoName']}";
+$templateDescription .= $template['Forum'] ? "<a class='popUpLink' style='cursor:pointer;' onclick='authorSearch(&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a>" : "{$template['RepoName']}";
 if ( $template['Profile'] ) {
 	$profileDescription = $template['Plugin'] ? "Author" : "Maintainer";
-	$templateDescription .= "&nbsp;&nbsp;&nbsp;&nbsp;<b><a href='{$template['Profile']}' target='_blank'>($profileDescription Profile)</a></b>";
+	$templateDescription .= "&nbsp;&nbsp;&nbsp;&nbsp;<a class='popUpLink' href='{$template['Profile']}' target='_blank'>($profileDescription Profile)</a>";
 }
 $templateDescription .= "</td></tr>";
 $templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
@@ -207,9 +210,9 @@ $templateDescription .= "<br></center></center>";
 $templateDescription .= $template['Description'];
 $templateDescription .= $template['ModeratorComment'] ? "<br><br><b><font color='red'>Moderator Comments:</font></b> ".$template['ModeratorComment'] : "";
 $templateDescription .= "</p><br><center>";
-$templateDescription .= $template['Support'] ? "&nbsp;&nbsp;<a href='".$template['Support']."' target='_blank'><strong>Support Thread</strong></a>&nbsp;&nbsp;" : "";
-$templateDescription .= $template['Project'] ? "&nbsp;&nbsp;<a href='".$template['Project']."' target='_blank'><strong>Project Page</strong></a>&nbsp;&nbsp;" : "";
-$templateDescription .= $template['WebPageURL'] ? "&nbsp;&nbsp;<a href='".$template['WebPageURL']."' target='_blank'><strong>Web Page</strong></a>&nbsp;&nbsp;" : "";
+$templateDescription .= $template['Support'] ? "&nbsp;&nbsp;<a class='popUpLink' href='".$template['Support']."' target='_blank'>Support Thread</strong></a>&nbsp;&nbsp;" : "";
+$templateDescription .= $template['Project'] ? "&nbsp;&nbsp;<a class='popUpLink' href='".$template['Project']."' target='_blank'>Project Page</strong></a>&nbsp;&nbsp;" : "";
+$templateDescription .= $template['WebPageURL'] ? "&nbsp;&nbsp;<a class='popUpLink' href='".$template['WebPageURL']."' target='_blank'>Web Page</strong></a>&nbsp;&nbsp;" : "";
 
 if ( $donatelink ) {
 	$templateDescription .= "<br><br><center><span class='donateLink'>$donatetext</span><br><a href='$donatelink' target='_blank'><img height='20px;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a>";
@@ -247,7 +250,6 @@ if ( $template['Changes'] ) {
 	}
 	$templateDescription .= "</center><hr><center><font size='2'><b>Change Log</b><br><font size='0'>Note: not all maintainers keep up to date on change logs</font></center><br><br>$appInformation";
 }
-echo "<div style='overflow:scroll; max-height:450px; height:450px; overflow-x:hidden; overflow-y:auto;font-size:12px;'>";
 echo $templateDescription;
-echo "</div>";
 ?>
+</div>

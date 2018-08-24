@@ -10,6 +10,7 @@
 .awesomplete {
     display: inline-block;
     position: relative;
+		color: red;
 }
 
 .awesomplete > input {

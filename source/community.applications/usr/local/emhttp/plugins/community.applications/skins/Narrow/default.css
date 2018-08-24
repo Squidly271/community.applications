@@ -15,7 +15,7 @@ input.dirButton {margin:1px;}
 input.allButtons {margin:0px;padding:10px;}
 input[type=checkbox] {width:20px;height:20px;}
 .enabledIcon {cursor:pointer;color:#005500;font-size:25px;}
-.disabledIcon {cursor:pointer;color:#040404;font-size:25px;}
+.disabledIcon {color:#040404;font-size:25px;}
 .pinned {cursor:pointer;font-size:15px;color:green;padding:3px;}
 .unpinned {cursor:pointer;font-size:15px;color:#820101;padding:3px;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);	-o-transform: rotate(20deg);	transform: rotate(20deg);}
 .topRightLinks {padding-left:15px;font-weight:bold;}
