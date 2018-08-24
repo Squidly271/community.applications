@@ -27,6 +27,8 @@ $cfg = parse_plugin_cfg($plugin);
 if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
+$unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
+$unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 
 $skinPath = "/usr/local/emhttp/plugins/community.applications/skins/{$cfg['skin']}";
 $communityPaths['defaultSkin'] = "$skinPath/skin.json";
@@ -41,7 +43,12 @@ $template = readJsonFile($communityPaths['defaultSkin']);
 <link href="<?=autov("/plugins/community.applications/skins/{$cfg['skin']}/{$display['theme']}.css")?>" type='text/css' rel="stylesheet">
 <?endif;?>
 <link rel='stylesheet' href='/plugins/community.applications/styles/awesomplete.css'>
-
+<? if ($unRaid66 && ( $display['theme'] == "black" || $display['theme'] == "white") ): ?>
+<style>
+#searchBox{top:-7px;padding:6px;}
+.searchSubmit{height:34px;}
+</style>
+<?endif;?>
 <script src='/plugins/community.applications/javascript/awesomplete.min.js'></script>
 <script src='/plugins/community.applications/javascript/jquery.mobile.custom.min.js'></script>
 <script>
@@ -1668,7 +1675,6 @@ Sort Direction:
 <input class='allButtons' type=button id='Plugins' value='Plugins'></input>
 &nbsp;&nbsp;&nbsp;&nbsp;
 <input class='allButtons' type=button id="New" value='New/Updated'></input>
-<input class='allButtons' type=button id="UNCATEGORIZED" value='Uncategorized'></input>
 <input class='allButtons' type=button id="All" value='All Apps'></input>
 </span>
 <span id='NetworkCategory'>
@@ -1712,5 +1718,5 @@ Sort Direction:
 <font size='4' color='red'>All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein.
 <br><em>Every attempt is made to ensure that only safe and compatible applications are present</em>
 <br><br>You must accept the disclaimer before you can utilize this plugin</font>
-<br><br><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first
+<br><br><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>
 </form>
