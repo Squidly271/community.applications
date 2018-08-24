@@ -22,10 +22,10 @@ function getDownloads($downloads,$lowFlag=false) {
   return ($lowFlag) ? $downloads : "";
 }
 
-$fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
-$fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";
-$fontAwesomeGUI = "<i class='appIcons fa fa-globe' aria-hidden='true'></i>";
-$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' aria-hidden='true'></i>";
+$fontAwesomeInstall = "<i class='appIcons fa fa-download' style='color:green;' aria-hidden='true'></i>";
+$fontAwesomeEdit = "<i class='appIcons fa fa-edit' style='color:green;' aria-hidden='true'></i>";
+$fontAwesomeGUI = "<i class='appIcons fa fa-globe' style='color:green;' aria-hidden='true'></i>";
+$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' style='color:green;' aria-hidden='true'></i>";
 $fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true' style='color:maroon; font-size:20px;cursor:pointer;'></i>";
 
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
@@ -113,7 +113,7 @@ foreach ($categories as $category) {
 $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 $template['Description'] = trim($template['Description']);
 
-$templateDescription .= "<style>p { margin-left:20px;margin-right:20px }</style>";
+$templateDescription .= "<style>p { margin-left:20px;margin-right:20px;}a { color:white; }</style>";
 if ( $color ) {
 	$templateDescription .= "<center><font size='4'><strong>{$template['Name']}</strong></font></center><br><br><br>";
 }

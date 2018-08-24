@@ -241,6 +241,8 @@ $(function(){
 	$('.ca_toolsView').tooltipster({
 		multiple: true,
 		triggerOpen: { mouseenter: true },
+		delay: [1000, 0],
+		animation: 'none',
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
 			if ( ! isIconEnabled(origin) ) {
@@ -317,6 +319,8 @@ $(function(){
 	$('.ca_section').tooltipster({
 		multiple: true,
 		triggerOpen: { mouseenter: true },
+		delay: [1000, 0],
+		animation: 'none',
 		functionBefore: function(instance,helper) {
 			instance.content('Click to switch from available apps, installed apps, previous apps, pinned apps');
 		}
@@ -356,6 +360,8 @@ $(function(){
 	$('.ca_categories').tooltipster({
 		multiple: true,
 		triggerOpen: { mouseenter: true },
+		delay: [1000, 0],
+		animation: 'none',
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
 			if ( ! isIconEnabled(origin) ) {
@@ -400,6 +406,8 @@ $(function(){
 	$('.ca_subcategories').tooltipster({
 		multiple: true,
 		triggerOpen: { mouseenter: true },
+		delay: [1000, 0],
+		animation: 'none',
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
 			if ( ! isIconEnabled(origin) ) {
