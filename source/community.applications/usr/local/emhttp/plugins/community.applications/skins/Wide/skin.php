@@ -134,9 +134,14 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$previousAppName = $template['Plugin'] ? $template['PluginURL'] : $template['Name'];
 		$checked = $checkedOffApps[$previousAppName] ? "checked" : "";
 
+		$template['Category'] = str_replace(":,",",",$template['Category']);
+		$template['Category'] = str_replace(" ",",",$template['Category']);
+
+		$all_categories = explode(",",$template['Category']);
+		sort($all_categories);
 		unset($categories);
 
-		foreach (explode(" ",$template['Category']) as $category) {
+		foreach ($all_categories as $category) {
 			if ( ! $category ) { continue; }
 			$category = preg_replace('/(?<! )(?<!^)(?<![A-Z])[A-Z]/',' $0', $category);
 			$category = str_replace(": ",":",$category);

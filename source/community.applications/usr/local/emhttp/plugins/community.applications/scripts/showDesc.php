@@ -105,15 +105,18 @@ if ( ! $template['Plugin'] ) {
 		}
 	}
 }
-$template['Category'] = rtrim(str_replace(":,",",",implode(", ",explode(" ",$template['Category']))),": ,");
+$template['Category'] = str_replace(":,",",",$template['Category']);
+$template['Category'] = str_replace(" ",",",$template['Category']);
 
-$categories = explode(" ",$template['Category']);
+$categories = explode(",",$template['Category']);
+sort($categories);
 unset($template['Category']);
 foreach ($categories as $category) {
 	$category = preg_replace('/(?<! )(?<!^)(?<![A-Z])[A-Z]/',' $0', $category);
-	$category = str_replace(": ",":",$category);
-	$template['Category'] .= "<a class='popUpLink' style='cursor:pointer;' onclick='doSearch(false,&quot;$category&quot;);'>$category</a> ";
+	$category = rtrim(str_replace(": ",":",$category),":");
+	$template['Category'] .= "<a class='popUpLink' style='cursor:pointer;' onclick='doSearch(false,&quot;$category&quot;);'>$category</a>, ";
 }
+$template['Category'] = rtrim($template['Category'],", ");
 $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 $template['Description'] = trim($template['Description']);
 
