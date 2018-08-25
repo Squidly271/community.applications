@@ -274,6 +274,10 @@ function fixTemplates($template) {
 	if ( ! $template['MinVer'] ) {
 		$template['MinVer'] = $template['Plugin'] ? "6.1" : "6.0";
 	}
+	if ( ! $template['Category'] ) {
+		$statistics['caFixed']++;
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "No Category present on template";
+	}
 	if ( is_array($template['Category']) ) {
 		$template['Category'] = $template['Category'][0];        # due to lsio / CHBMB
 		$statistics['caFixed']++;
@@ -298,6 +302,7 @@ function fixTemplates($template) {
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Category tags or Category present but empty";
 	}
+
 	if ( !is_string($template['Overview']) ) {
 		unset($template['Overview']);
 	}
