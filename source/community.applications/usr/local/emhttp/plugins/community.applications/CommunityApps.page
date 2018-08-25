@@ -1558,7 +1558,7 @@ function isTouch() {
 
 <div id='cookieWarning' style='display:none;'><center><font color='purple'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </font></center></div>
 <?if ( $upgradeAvailable ) :?>
-<span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style=cursor:pointer>HERE</a> to install the update  <i class='ca_infoPopup fa fa-info-circle' data-app='community.applications.plg' data-name='Community Applications' style='cursor:pointer;font-size:15px;color:blue;'></i></center></font></span>
+<span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style=cursor:pointer>HERE</a> to install the update  <i class='ca_appPopup fa fa-info-circle' data-appPath='ca_update' style='cursor:pointer;font-size:15px;color:cyan;'></i></center></font></span>
 <?endif;?>
 <div class='dockerSearch' style='display:none'><center><figure><i class='fa fa-docker initDockerSearch' style='font-size:50px;color:DarkCyan;cursor:pointer;'></i><figcaption class='initDockerSearch' style='cursor:pointer;'><a>Click Here To Get More Results From DockerHub</a></figcaption></figure></center></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
@@ -1566,7 +1566,7 @@ function isTouch() {
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 </center>
 <center><a href='https://lime-technology.com/forums/topic/38582-plug-in-community-applications/' target='_blank'>Support Thread</a></center><br>
-<center>Community Applications Version: <?=$installedVersion?>  <i class='ca_infoPopup fa fa-info-circle' style='cursor:pointer;font-size:15px;color:lightblue;'></i></center></div>
+<center>Community Applications Version: <?=$installedVersion?>  <i class='ca_appPopup fa fa-info-circle' data-appPath='ca' style='cursor:pointer;font-size:15px;color:lightblue;'></i></center></div>
 
 <span id='miscScript'></span><span id='awesomepleteScript'></span>
 
