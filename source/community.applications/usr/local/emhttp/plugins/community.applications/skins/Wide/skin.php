@@ -42,7 +42,7 @@ function display_apps($pageNumber=1,$selectedApps=false) {
 	if ( count($navigate) ) {
 		$bookmark = "Jump To: ".implode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$navigate);
 	}
-	$display .= ( $totalApplications == 0 ) ? "<center><font size='3'>No Matching Content Found</font></center>" : "";
+	$display .= ( $totalApplications == 0 ) ? "<center><font size='3'>No Matching Applications Found</font></center>" : "";
 
 	$totalApps = "$totalApplications";
 

@@ -449,30 +449,6 @@ function setToolTip() {
 		triggerClose:{click:true,scroll:true,mouseleave:true}
 	});
 	
-	$('.ca_infoPopup').tooltipster({
-		contentAsHTML: true,
-		maxWidth:550,
-		minWidth:550,
-		distance:-10,
-		animation: 'none',
-		trigger: 'custom',
-		triggerOpen: {mouseenter:false,click:true,touchstart:true},
-		triggerClose:{click:true,mouseleave:true},
-		delay:[<?=$cfg['hoverTime']?>,1],
-		interactive: true,
-		viewportAware: true,
-		functionBefore: function(instance,helper) {
-			var origin = $(helper.origin);
-			var app = origin.attr('data-app');
-			var name = origin.attr('data-name');
-			$.post("/plugins/<?=$plugin?>/scripts/showInfo.php",{action:'none',app:app,name:name},function(data) {
-				if (data) {
-					instance.content(data);
-				}
-			});
-		}
-	});
-	
 	$('.ca_appPopup').tooltipster({
 		contentAsHTML: true,
 		maxWidth:550,
