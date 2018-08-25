@@ -1172,6 +1172,8 @@ case 'populateAutoComplete':
 		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $communitySettings['hideDeprecated'] == "true") && ($template['Compatible'] || $communitySettings['hideIncompatible'] != "true") ) {
 			$autoComplete[strtolower($template['Name'])] = $template['Name'];
 			$autoComplete[strtolower($template['Author'])] = $template['Author'];
+			$repo = explode("'",$template['Repo']);
+			$autoComplete[strtolower($repo[0])] = $repo[0];
 		}
 	}
 	$autoScript = "<script>searchBoxAwesomplete.list = [";
