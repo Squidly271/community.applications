@@ -369,7 +369,7 @@ $(function(){
 		sweetAlertBackground("white");
 		swal({
 			title: 'Disclaimer',
-			text: 'All applications listed here are 3rd party additions to unRaid.  Neither the authors of CA nor Limetech make any warranty as to the suitability of any application listed here. <br><em>Every attempt is made to ensure that only safe and compatible applications are present</em><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>',
+			text: 'All applications listed here are <b>3rd party</b> additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here. <br><em><font color="green">Every attempt is made to ensure that only safe and compatible applications are present</font></em><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>',
 			html: true,
 			type: 'error',
 			footer: "test",
@@ -385,6 +385,8 @@ $(function(){
 					}
 				});
 			} else {
+				var leftMargin = getWindowWidth();
+				$("#appWarningForm").css("width",leftMargin);
 				$("#myForm,#appWarningForm").toggle();
 			}
 		});
