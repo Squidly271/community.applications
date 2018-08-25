@@ -409,7 +409,7 @@ function updateContent() {
 					myCloseAlert();
 					openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
 				} else {
-				forceSortOrder("#Date","#Down");
+					forceSortOrder("#Date","#Down");
 					getContent(true,'INITIALIZE','None Selected');
 				}
 			}
@@ -589,7 +589,6 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 		animation: false,
 		html: true
 	});
-	
 }
 
 function myCloseAlert() {
@@ -599,7 +598,7 @@ function myCloseAlert() {
 }
 
 function mySpinner() {
-	myAlert("",""," ",150);
+	myAlert("",""," ",150);	
 }
 
 function sweetAlertBackground(color) {
@@ -707,7 +706,6 @@ function forceUpdateButton() {
 			title: "Switch To Legacy Mode?",
 			text: "<strong>This will force CA to manually download the application templates.</strong><br><br><font color='red'>This process once begun cannot be aborted and may take a minute or so</font>",
 			type: "warning",
-			confirmButtonColor: "#DD6B55",
 			confirmButtonText: "Update Lists",
 			showCancelButton: true,
 			showConfirmButton: true,
@@ -1047,7 +1045,6 @@ function removeApp(application, humanName) {
 		title: "Delete Template?",
 		text: "Are you sure you want to delete <font color='red'><strong><em>"+humanName+"</em></strong></font> from the list of previously installed applications?<br><font size='0'>"+application+"</font>",
 		type: "warning",
-		confirmButtonColor: "#DD6B55",
 		confirmButtonText: "Yes, delete it!",
 		showCancelButton: true,
 		showConfirmButton: true,
@@ -1079,7 +1076,6 @@ function uninstallApp(application,humanName) {
 			type: "warning",
 			showCancelButton: true,
 			showConfirmButton: true,
-			confirmButtonColor: "#DD6B55",
 			confirmButtonText: "Yes, uninstall it!",
 			closeOnConfirm: false,
 			showLoaderOnConfirm: true,
@@ -1111,7 +1107,6 @@ function deletePrivateApp(path,name,author) {
 		type: "warning",
 			showCancelButton: true,
 			showConfirmButton: true,
-			confirmButtonColor: "#DD6B55",
 			confirmButtonText: "Yes, remove it!",
 			closeOnConfirm: false,
 			showLoaderOnConfirm: true,
@@ -1146,7 +1141,6 @@ function uninstallDocker(application,humanName) {
 		type: "warning",
 		showCancelButton: true,
 		showConfirmButton: true,
-		confirmButtonColor: "#DD6B55",
 		confirmButtonText: "Yes, uninstall it!",
 		closeOnConfirm: false,
 		showLoaderOnConfirm: true,
@@ -1372,7 +1366,6 @@ function installMulti() {
 		type: "info",
 		showCancelButton: true,
 		showConfirmButton: true,
-		confirmButtonColor: "#DD6B55",
 		confirmButtonText: "Yes, install them",
 		closeOnConfirm: false,
 		showLoaderOnConfirm: true,
