@@ -29,7 +29,7 @@ echo "<script>$javascript</script>";
 if ( $_GET['docker'] ) {
   echo "<div id='output'>";
   $dockers = explode(",",$_GET['docker']);
-  echo "Installing docker applications {$_GET['docker']}<br>";
+  echo "Installing docker applications ".str_replace(",",", ",$_GET['docker'])."<br>";
   $_GET['updateContainer'] = true;
   $_GET['ct'] = $dockers;
   include("/tmp/community.applications/tempFiles/newCreateDocker.php");

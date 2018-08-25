@@ -30,8 +30,7 @@ $communityPaths['defaultSkinPHP'] = $skinSettings['detail']['php'];
 require_once($communityPaths['defaultSkinPHP']);
 
 $communitySettings['appFeed']       = "true"; # set default for deprecated setting
-$communitySettings['maxPerPage']    = getPost("maxPerPage",25);  # Global POST.  Used damn near everywhere
-$communitySettings['maxPerPage']    = ( $communitySettings['maxPerPage'] < 1 ) || ( $communitySettings['maxPerPage'] > 50 ) ? 50 : $communitySettings['maxPerPage'];
+$communitySettings['maxPerPage']    = 25;
 $communitySettings['unRaidVersion'] = $unRaidVersion;
 $communitySettings['timeNew'] 			= "-10 years";
 

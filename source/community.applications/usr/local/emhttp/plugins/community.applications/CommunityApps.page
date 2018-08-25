@@ -158,15 +158,7 @@ $(function(){
 	if ( ! cookiesEnabled() ) {
 		$("#cookieWarning").show();
 	}	
-	var maxPerPage = $.cookie("maxPerPage");
-	if ( parseInt(maxPerPage,10) > 50 ) {
-		maxPerPage = 50;
-	}
-	if ( ! maxPerPage ) {
-		maxPerPage = "25";
-	}
 
-	$("#maxPerPage").val(maxPerPage);
 	if ( isTouch() ) {
 		$("#CommunityApplicationsBody").on("swipeleft",swipelefthandler);
 		function swipelefthandler(event) {
@@ -580,12 +572,11 @@ function changeCategory(button,subSwitch) {
 function changePage(pageNumber) {
 	var sortOrder = getSortOrder();
 	var windowWidth = getWindowWidth();
-	var maxPerPage = getPerPage();
 	var selected = data.selected;
 	data.currentpage = pageNumber;
 
 	mySpinner();
-	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,maxPerPage:maxPerPage,selected:selected},function(data3) {
+	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected},function(data3) {
 		if (data3) {
 			updateDisplay(data3);
 		  $('html,body').animate({scrollTop:0},500);
@@ -622,6 +613,7 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 		animation: false,
 		html: true
 	});
+	
 }
 
 function myCloseAlert() {
@@ -648,14 +640,12 @@ function doSearch(button,newSearch) {
 		$('#searchBox').val(newSearch);
 	}
 	var filter = $('#searchBox').val();
-	var maxPerPage = getPerPage();
 	resetSortByDate();
 	data.docker = "";
 	data.section = "AppStore";
 	filter = filter.replace(/[^a-z0-9]/gi,' ')
 	filter = myTrim(filter);
 	$('#searchBox').val(filter);
-	$("#maxPerPage").prop("disabled",false);
 	$(".multi_installDiv").hide();
 	$("#templates_content,#AppsOnly,#templateSortButtons").show();
 
@@ -693,7 +683,7 @@ function doSearch(button,newSearch) {
 	}
 	mySpinner();
 
-	$.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,windowWidth:windowWidth,maxPerPage:maxPerPage},function(data) {
+	$.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,windowWidth:windowWidth},function(data) {
 		if (data) {
 			enableButtons();
 			updateDisplay(data);
@@ -796,7 +786,6 @@ function enableButtons() {
 function changeSortOrder(button,buttonClass,previousApps) {
 	var windowWidth = getWindowWidth();
 	var pageNumber = data.currentpage;
-	var maxPerPage = getPerPage();
 	var selected = data.selected;
 
 	if ( previousApps != "true" )
@@ -812,7 +801,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 
 	mySpinner();
 	var sortOrder = getSortOrder();
-	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,maxPerPage:maxPerPage,selected:selected},function(data3) {
+	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected},function(data3) {
 		if (data3) {
 			updateDisplay(data3);
 			readMore();
@@ -820,10 +809,6 @@ function changeSortOrder(button,buttonClass,previousApps) {
 			myCloseAlert();
 		}
 	});
-}
-
-function getPerPage() {
-	return $("#maxPerPage").val();
 }
 
 function getSortOrder() {
@@ -883,7 +868,6 @@ function getContent(init,category,description,newApp) {
 	}
 	$("#sortButtons,#templateSortButtons,#Total1").show();
 	var windowWidth = getWindowWidth();
-	$("#maxPerPage").prop("disabled",false);
 
 	switch (category) {
 		case 'network:':
@@ -930,9 +914,8 @@ function getContent(init,category,description,newApp) {
 		if ( (category == "New") || (category == "All") ) { category = ""; }
 
 		var sortOrder = getSortOrder();
-		var maxPerPage = getPerPage();
 
-		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,maxPerPage:maxPerPage},function(data) {
+		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth},function(data) {
 			if (data) {
 				description = "Category: <font color='green'>"+description+"</font>";
 				$("#Category").html(description);
@@ -974,7 +957,6 @@ function mySearch(filter) {
 }
 
 function initDockerSearch() {
-	$("#maxPerPage").prop("disabled",true);
 	dockerSearch(1);
 	data.docker = "searching docker";
 	data.section = "";
@@ -1029,7 +1011,6 @@ function clearSearchBox() {
 function installPlugin(pluginURL) {
 	$(".ca_appPopup").tooltipster('close');
 	disableSearch();
-//	my_openBox('/plugins/dynamix.plugin.manager/scripts/plugin&arg1=install&arg2='+pluginURL,'Install Plugin',600,900,true,"changeSortOrder(null,null,null)");
 	my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,'Install Plugin',600,900,true,"changeSortOrder(null,null,null)");
 
 }
@@ -1062,7 +1043,6 @@ function previousApps(button,installed) {
 	}
 
 	clearSearchBox();
-	$("#maxPerPage").prop("disabled",false);
 	$("#"+button).prop("disabled",true);
 	data.section = button;
 
@@ -1089,7 +1069,7 @@ function removeApp(application, humanName) {
 	disableSearch();
 	swal({
 		title: "Delete Template?",
-		text: "Are you sure you want to delete <font color='red'><strong><em>"+humanName+"</em></strong></font> from the list of previously installed applications?",
+		text: "Are you sure you want to delete <font color='red'><strong><em>"+humanName+"</em></strong></font> from the list of previously installed applications?<br><font size='0'>"+application+"</font>",
 		type: "warning",
 		confirmButtonColor: "#DD6B55",
 		confirmButtonText: "Yes, delete it!",
@@ -1131,10 +1111,9 @@ function uninstallApp(application,humanName) {
 		},
 		function(isConfirm) {
 			if (isConfirm) {
-				swal("Uninstalling "+humanName,"","info");
+				myAlert("","Uninstalling "+humanName);
 				$.post(URL,{action:'uninstall_application',application:application}, function(data) {
 					if (data) {
-						swal("","Uninstalled","success");
 						previousApps("InstalledApps",true);
 						enableSearch();
 					}
@@ -1199,7 +1178,7 @@ function uninstallDocker(application,humanName) {
 	},
 	function( isConfirm ) {
 		if ( isConfirm ) {
-			swal("Uninstalling","","info");
+			myAlert("","Uninstalling "+humanName);
 			$.post(URL,{action:'uninstall_docker',application:application},function(data) {
 				if (data) {
 					enableSearch();
@@ -1208,6 +1187,7 @@ function uninstallDocker(application,humanName) {
 			});
 		} else {
 			enableSearch();
+
 		}
 	});
 }
@@ -1273,7 +1253,6 @@ function pinnedApps(button) {
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
 	$("#currentSection").html("Pinned Apps");
 	data.docker = "";
-	$("#maxPerPage").prop("disabled",false);
 	$("#"+button).prop("disabled",true);
 	data.section = button;
 	clearSearchBox();
@@ -1311,12 +1290,6 @@ function displayTags(leadTemplate) {
 			});
 		}
 	});
-}
-
-function changeDisplayed() {
-	var maxPerPage = $("#maxPerPage").val();
-	$.cookie("maxPerPage",maxPerPage);
-	changePage('1');
 }
 
 function makePlural(string,count) {
@@ -1419,7 +1392,7 @@ function installMulti() {
 	}
 	swal({
 		title: "Install "+makePlural("Application",dockerCount+pluginCount)+"?",
-		text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?.  <em>Docker applications will be installed utilizing the most recently saved template with no user input on your part</em><font color='red'>"+cookieWarning+"</font>",
+		text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?  <em>Docker applications will be installed utilizing the most recently saved template with no user input on your part</em><font color='red'>"+cookieWarning+"</font>",
 		type: "info",
 		showCancelButton: true,
 		showConfirmButton: true,
@@ -1437,7 +1410,7 @@ function installMulti() {
 			}
 			if ( docker.length ) {
 				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
-				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,'Install Docker '+makePlural("Application",dockerCount),600,900,true);
+				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,'Install Docker '+makePlural("Application",dockerCount),600,1100,true);
 			} else {
 				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugin,'Install Plugin '+makePlural("Application",pluginCount),600,900,true);
 				enableSearch();
@@ -1580,7 +1553,7 @@ function isTouch() {
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:23px; position:relative;top:-2px;' aria-hidden='true'></i>&nbsp;
 <font size='3'><b>Section: <font color='green'><span id='currentSection'>Available Apps</span></font></b></font>
-<strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float: right';>Total Found: <strong><font size="3"><span id="Total"></span></font></strong><span>&nbsp;&nbsp;Results/page: <select id='maxPerPage' class='narrow' onchange='changeDisplayed();'><option value='10'>10</option><option value='25'>25</option><option value='50'>50</option></select></span></span>
+<strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float:right;display:none;';>Total Found: <strong><font size="3"><span id="Total">0</span></font></strong>
 </span><br>
 
 <div id='cookieWarning' style='display:none;'><center><font color='purple'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </font></center></div>
