@@ -157,7 +157,7 @@ $(function(){
 
 	if ( ! cookiesEnabled() ) {
 		$("#cookieWarning").show();
-	}	
+	}
 
 	if ( isTouch() ) {
 		$("#CommunityApplicationsBody").on("swipeleft",swipelefthandler);
@@ -181,7 +181,7 @@ $(function(){
 			}
 		}
 	}
-	
+
 	$('#searchBox').keyup(function(e) {
 		if (e.which == 13) {
 			doSearch(false);
@@ -197,7 +197,7 @@ $(function(){
 		triggerOpen:{mouseenter: true},
 		triggerClose:{click:true,scroll:true,mouseleave:true}
 	});
-	
+
 	$('.ca_toolsView').tooltipster({
 		trigger: 'custom',
 		triggerOpen: {click:true,touchstart:true},
@@ -294,7 +294,7 @@ $(function(){
 			$(".appButtons").click(function() { $(this).prop("disabled",true); });
 		}
 	});
-		
+
 	$('.ca_categories').tooltipster({
 		trigger: 'custom',
 		triggerOpen: {click:true,touchstart:true},
@@ -448,7 +448,7 @@ function setToolTip() {
 		triggerOpen:{mouseenter: true},
 		triggerClose:{click:true,scroll:true,mouseleave:true}
 	});
-	
+
 	$('.ca_appPopup').tooltipster({
 		contentAsHTML: true,
 		maxWidth:550,
@@ -555,7 +555,7 @@ function changePage(pageNumber) {
 	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected},function(data3) {
 		if (data3) {
 			updateDisplay(data3);
-		  $('html,body').animate({scrollTop:0},500);
+			$('html,body').animate({scrollTop:0},500);
 			readMore();
 			setToolTip();
 			myCloseAlert();
@@ -598,7 +598,7 @@ function myCloseAlert() {
 }
 
 function mySpinner() {
-	myAlert("",""," ",150);	
+	myAlert("",""," ",150);
 }
 
 function sweetAlertBackground(color) {
@@ -647,7 +647,7 @@ function doSearch(button,newSearch) {
 	enableIcon("#subcategoryIcon",false);
 	$("#NetworkCategory,#MediaAppCategory,#MediaServerCategory,#NONE,#ToolsCategory").hide();
 	window.scrollTo(0,0);
-	
+
 	if ( !filter ) {
 		getContent(true,'INITIALIZE','None Selected');
 		return;
@@ -832,7 +832,7 @@ function setSortOrder() {
 function getContent(init,category,description,newApp) {
 	data.currentpage = 1;
 	var initialize;
-	
+
 	enableSearch();
 	if ( init == true ) {
 		enableIcon("#sortIcon, #subcategoryIcon",false);
@@ -1345,7 +1345,7 @@ function installMulti() {
 	var dockerCount = 0;
 	var selected = getSelectedApps();
 	var cookieWarning = "";
-	
+
 	$.each(selected.plugin,function(i,el) {
 		plugin += el + "*";
 		pluginCount += 1;
@@ -1401,7 +1401,7 @@ function updateDisplay(data) {
 function saveState() {
 	if ( ! dockerSearchFlag ) {
 		$.cookie("sectionText",$("#currentSection").html());
-		$.cookie("categoryText",$("#Category").html());	
+		$.cookie("categoryText",$("#Category").html());
 		$.cookie("data",JSON.stringify(data));
 
 		$.cookie("dockerSearchFlag",dockerSearchFlag);
@@ -1427,7 +1427,7 @@ function restoreState() {
 	$("#currentSection").html($.cookie("sectionText"));
 	$("#Category").html($.cookie("categoryText"));
 	data = JSON.parse($.cookie("data"));
-	
+
 	dockerSearchFlag = $.cookie("dockerSearchFlag");
 	enableIcon("#homeIcon",$.cookie("homeIcon"));
 	enableIcon("#sectionIcon",$.cookie("sectionIcon"));

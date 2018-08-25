@@ -56,26 +56,26 @@ function display_apps($pageNumber=1,$selectedApps=false) {
 #note that many template entries in my_display_apps() are not actually used in the skin, but are present for future possible use.
 function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
 	global $communityPaths, $communitySettings, $plugin, $displayDeprecated, $sortOrder;
-	
+
 	$viewMode = "detail";
-	
+
 	$fontAwesomeInstall = "<i class='appIcons fa fa-download' aria-hidden='true'></i>";
 	$fontAwesomeEdit = "<i class='appIcons fa fa-edit' aria-hidden='true'></i>";
 	$fontAwesomeGUI = "<i class='appIcons fa fa-globe' aria-hidden='true'></i>";
 	$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' aria-hidden='true'></i>";
 	$fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true'></i>";
-	
+
 	$info = getRunningContainers();
 	$skin = readJsonFile($communityPaths['defaultSkin']);
 
 	if ( ! $selectedApps ) {
 		$selectedApps = array();
 	}
-	
+
 	if ( ! $communitySettings['dockerRunning'] ) {
 		$displayHeader = "<div class='dockerDisabled'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div><br><br>";
 	}
-	
+
 	$pinnedApps = getPinnedApps();
 	$iconSize = $communitySettings['iconSize'];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
@@ -91,8 +91,8 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 	$appCount = 0;
 	$startingApp = $officialFlag ? 1 : ($pageNumber -1) * $communitySettings['maxPerPage'] + 1;
 	$startingAppCounter = 0;
-	
-  $displayedTemplates = array();
+
+	$displayedTemplates = array();
 	foreach ($file as $template) {
 		if ( $template['Blacklist'] && ! $template['NoInstall'] ) {
 			continue;
@@ -105,7 +105,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 	}
 	$maxColumnDisplayed = count($displayedTemplates) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($displayedTemplates);
 	$leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']) / 2;
-	
+
 	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
 	$iconClass = "displayIcon";
@@ -120,14 +120,14 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		if ( $columnNumber == 0 ) {
 			$ct .= vsprintf($skin[$viewMode]['sol'],$templateFormatArray);
 		}
-		
+
 		$name = $template['SortName'];
 		$appName = str_replace(" ","",$template['SortName']);
 		$t = "";
 		$ID = $template['ID'];
 #		$selected = $info[$name]['template'] && stripos($info[$name]['icon'], $template['SortAuthor']) !== false;
 		$selected = $info[$name]['template'];  # Change due to if an icon isn't present, then the app wouldn't always show up as installed
-		
+
 		$selected = $template['Uninstall'] ? true : $selected;
 
 		$appType = $template['Plugin'] ? "plugin" : "docker";
@@ -386,15 +386,15 @@ function displaySearchResults($pageNumber) {
 	$skin = readJsonFile($communityPaths['defaultSkin']);
 	$viewMode = "detail";
 	$displayTemplate = $skin[$viewMode]['template'];
-	
+
 	$maxColumnDisplayed = count($file) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($file);
 	$leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']) / 2;
-	
+
 	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
 	$ct = dockerNavigate($num_pages,$pageNumber)."<br>";
-	
+
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
-	
+
 	$columnNumber = 0;
 	foreach ($file as $result) {
 		foreach ($templates as $template) {

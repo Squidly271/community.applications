@@ -17,13 +17,13 @@ require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHel
 require_once("webGui/include/Markdown.php");
 
 function getDownloads($downloads,$lowFlag=false) {
-  $downloadCount = array("500000000","100000000","50000000","10000000","5000000","2500000","1000000","500000","250000","100000","50000","25000","10000","5000","1000","500","100");
-  foreach ($downloadCount as $downloadtmp) {
-    if ($downloads > $downloadtmp) {
-      return "More than ".number_format($downloadtmp);
-    }
-  }
-  return ($lowFlag) ? $downloads : "";
+	$downloadCount = array("500000000","100000000","50000000","10000000","5000000","2500000","1000000","500000","250000","100000","50000","25000","10000","5000","1000","500","100");
+	foreach ($downloadCount as $downloadtmp) {
+		if ($downloads > $downloadtmp) {
+			return "More than ".number_format($downloadtmp);
+		}
+	}
+	return ($lowFlag) ? $downloads : "";
 }
 
 $fontAwesomeInstall = "<i class='appIcons fa fa-download' style='color:green;' aria-hidden='true'></i>";

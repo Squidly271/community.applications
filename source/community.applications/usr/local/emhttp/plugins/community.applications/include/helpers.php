@@ -156,10 +156,10 @@ function fixSecurity(&$template,&$originalTemplate) {
 #######################################################################################################################
 function checkValidDockerRunCommand(&$template) {
 	global $subnet;
-	
+
 	if ( ! function_exists("xmlToCommand") ) { return; } # ie: 6.6.0+ only
 	if ( $template['Plugin'] ) { return; }
-	
+
 	$subnet = array();
 	if ( dockerRunSecurity(xmlToCommand(makeXML($template))[0]) ) {
 		securityViolation($template);
@@ -279,7 +279,7 @@ function fixTemplates($template) {
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Category tags or Category present but empty";
 	}
-	
+
 	#Fix where authors make category entries themselves, and don't include the trailing colon (due to #rix1337 and others)
 	$categories = explode(" ",$template['Category']);
 	unset($template['Category']);
@@ -346,7 +346,7 @@ function fixTemplates($template) {
 	if ( ! $template['Date'] ) {
 		$template['Date'] = (is_numeric($template['DateInstalled'])) ? $template['DateInstalled'] : 0;
 	}
-	
+
 	# support v6.2 redefining deprecating the <Beta> tag and moving it to a category
 	if ( stripos($template['Category'],":Beta") ) {
 		$template['Beta'] = "true";
@@ -385,7 +385,7 @@ function fixTemplates($template) {
 			$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "CPU pinning removed from template";
 		}
 	}
-	
+
 	return $template;
 }
 
@@ -399,7 +399,7 @@ function makeXML($template) {
 	}
 	fixAttributes($template,"Network");
 	fixAttributes($template,"Config");
-	
+
 	$Array2XML = new Array2XML();
 	$xml = $Array2XML->createXML("Container",$template);
 	return $xml->saveXML();
@@ -619,7 +619,7 @@ function filterMatch($filter,$searchArray) {
 				$foundword++;
 				break;
 			}
-		}	
+		}
 	}
 	return ($foundword == count($filterwords));
 }
@@ -629,7 +629,7 @@ function filterMatch($filter,$searchArray) {
 ##########################################################
 function pluginDupe($templates) {
 	global $communityPaths;
-	
+
 	$pluginList = array();
 	foreach ($templates as $template) {
 		if ( ! $template['Plugin'] ) {
@@ -650,7 +650,7 @@ function pluginDupe($templates) {
 ###################################
 function checkInstalledPlugin($template) {
 	global $communityPaths;
-	
+
 	$pluginName = basename($template['PluginURL']);
 	if ( ! file_exists("/var/log/plugins/$pluginName") ) {
 		return false;
@@ -715,7 +715,7 @@ function jsonError($error) {
 		case JSON_ERROR_UNSUPPORTED_TYPE:
 			return "A value of a type that cannot be encoded was given";
 			break;
-		default: 
+		default:
 			return "Unknown error";
 			break;
 	}

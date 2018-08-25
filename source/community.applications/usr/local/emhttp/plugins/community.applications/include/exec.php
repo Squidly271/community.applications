@@ -1037,7 +1037,7 @@ case 'statistics':
 			}
 		}
 	}
-	
+
 	if ( $statistics['fixedTemplates'] ) {
 		writeJsonFile($communityPaths['fixedTemplates_txt'],$statistics['fixedTemplates']);
 	} else {
@@ -1160,15 +1160,15 @@ case 'downloadRepo':
 	writeJsonFile($communityPaths['legacyTemplatesTmp'],$templates);
 	echo "downloaded";
 	break;
-	
+
 ####################################################
 # Creates the entries for autocomplete on searches #
 ####################################################
 case 'populateAutoComplete':
 	$templates = readJsonFile($communityPaths['community-templates-info']);
-	
+
 	$autoComplete = array();
- 	foreach ($templates as $template) {
+	foreach ($templates as $template) {
 		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $communitySettings['hideDeprecated'] == "true") && ($template['Compatible'] || $communitySettings['hideIncompatible'] != "true") ) {
 			$autoComplete[strtolower($template['Name'])] = $template['Name'];
 			$autoComplete[strtolower($template['Author'])] = $template['Author'];
@@ -1477,7 +1477,7 @@ function getConvertedTemplates() {
 #############################
 function appOfDay($file) {
 	global $communityPaths,$communitySettings,$sortOrder;
-	
+
 	$info = getRunningContainers();
 	if ($communitySettings['startup'] == "random") {
 		$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
