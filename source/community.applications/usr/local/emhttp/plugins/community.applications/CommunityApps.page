@@ -53,6 +53,7 @@ $template = readJsonFile($communityPaths['defaultSkin']);
 <script src='/plugins/community.applications/javascript/jquery.mobile.custom.min.js'></script>
 <script>
 var URL = "/plugins/<?=$plugin?>/include/exec.php";
+var appFeedModeMsg = "Retrieving the latest application Lists";
 var last = $('input[name$="tabs"]').length;
 var searchBoxInput;
 var searchBoxAwesomplete;
@@ -247,6 +248,7 @@ $(function(){
 			instance.content("<div style='overflow:scroll; max-height:550px; height:550px; overflow-x:hidden; overflow-y:auto;'><center><img src='/plugins/community.applications/images/community.applications.png'><br><font size='6' color='white'>Community Applications</font><br><br><?=$caCredits?></div>");
 		}
 	});
+	
 	$('.ca_stats').tooltipster({
 		trigger: 'custom',
 		triggerOpen: {mouseenter:false,click:true,touchstart:true},
@@ -267,6 +269,7 @@ $(function(){
 			});
 		}
 	});
+	
 	$('.ca_section').tooltipster({
 		trigger: 'custom',
 		triggerOpen: {click:true,touchstart:true},
@@ -376,8 +379,7 @@ $(function(){
 			showCancelButton: true,
 			showConfirmButton: true,
 			confirmButtonText: 'I Understand'
-		},
-		function (isConfirm) {
+		}, function (isConfirm) {
 			if ( isConfirm ) {
 				$.post(URL,{action:'dismiss_warning'},function(data) {
 					if (data) {
@@ -386,6 +388,7 @@ $(function(){
 				});
 			} else {
 				var leftMargin = getWindowWidth();
+				$("#searchFilter").hide();
 				$("#appWarningForm").css("width",leftMargin);
 				$("#myForm,#appWarningForm").toggle();
 			}
@@ -402,7 +405,8 @@ $(function(){
 
 function updateContent() {
 		disableSearch();
-		myAlert("Updating Content","Retrieving the latest application Lists",true,"40");
+		mySpinner();
+		myAlert("Updating Content",appFeedModeMsg,true,"40");
 		$.post(URL,{action:'force_update'}, function(data) {
 			if (data) {
 				if ( $.cookie("plugininstallpending") ) {
@@ -577,7 +581,6 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	disableTooltipster();
 	disableSearch();
 	var backgroundColor = ( ! textdescription && textimage ) ? "transparent" : "white";
-	sweetAlertBackground(backgroundColor);
 	if ( textimage ) {
 		textdescription = textdescription + "<br><br><center><i class='fa fa-spinner fa-spin' style='font-size:"+imagesize+"px;color:#DEB887;' aria-hidden='true'></i></center>";
 	}
@@ -591,6 +594,7 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 		animation: false,
 		html: true
 	});
+	sweetAlertBackground(backgroundColor);
 }
 
 function myCloseAlert() {
@@ -697,7 +701,7 @@ function forceUpdateButton() {
 	if ( mode == 'appFeed Mode' ) {
 		$.post(URL,{action:'force_update_button'},function(data) {
 			if (data) {
-				myAlert("Updating Content","Retrieving the latest application Lists",true,"40");
+				myAlert("Updating Content",appFeedModeMsg,true,"40");
 				forceUpdate();
 			}
 		});
@@ -715,8 +719,7 @@ function forceUpdateButton() {
 			allowOutsideClick: true,
 			showLoaderOnConfirm: true,
 			html: true
-		},
-		function(isConfirm) {
+		}, function(isConfirm) {
 			if (isConfirm) {
 				clearSearchBox();
 				$.post(URL,{action:'force_update_button'});
@@ -964,7 +967,6 @@ function dockerSearch(pageNumber) {
 
 function dockerConvert(dockerID) {
 	mySpinner();
-
 	totalDisplayed = $("#Total").html();
 	$("#Total").html("Converting...");
 	$.post(URL,{action:'convert_docker',ID:dockerID},function(data) {
@@ -988,7 +990,6 @@ function installPlugin(pluginURL) {
 	$(".ca_appPopup").tooltipster('close');
 	disableSearch();
 	my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,'Install Plugin',600,900,true,"changeSortOrder(null,null,null)");
-
 }
 
 function my_openBox(cmd,title,height,width,load,func) {
@@ -1051,8 +1052,7 @@ function removeApp(application, humanName) {
 		showCancelButton: true,
 		showConfirmButton: true,
 		html: true
-	},
-	function(isConfirm) {
+	}, function(isConfirm) {
 		if (isConfirm) {
 			$.post(URL,{action:'remove_application',application:application}, function(data) {
 				if (data) {
@@ -1082,8 +1082,7 @@ function uninstallApp(application,humanName) {
 			closeOnConfirm: false,
 			showLoaderOnConfirm: true,
 			html: true
-		},
-		function(isConfirm) {
+		}, function(isConfirm) {
 			if (isConfirm) {
 				myAlert("","Uninstalling "+humanName);
 				$.post(URL,{action:'uninstall_application',application:application}, function(data) {
@@ -1113,8 +1112,7 @@ function deletePrivateApp(path,name,author) {
 			closeOnConfirm: false,
 			showLoaderOnConfirm: true,
 			html: true
-	},
-	function(isConfirm) {
+	}, function(isConfirm) {
 		if ( isConfirm ) {
 			swal("Removing "+name,"","info");
 			$.post(URL,{action:'removePrivateApp',path:path},function(data) {
@@ -1147,8 +1145,7 @@ function uninstallDocker(application,humanName) {
 		closeOnConfirm: false,
 		showLoaderOnConfirm: true,
 		html: true
-	},
-	function( isConfirm ) {
+	}, function( isConfirm ) {
 		if ( isConfirm ) {
 			myAlert("","Uninstalling "+humanName);
 			$.post(URL,{action:'uninstall_docker',application:application},function(data) {
@@ -1372,8 +1369,7 @@ function installMulti() {
 		closeOnConfirm: false,
 		showLoaderOnConfirm: true,
 		html: true
-	},
-	function( isConfirm ) {
+	}, function( isConfirm ) {
 		if ( isConfirm ) {
 			myCloseAlert();
 			if ( docker.length && plugin.length ) {
@@ -1405,7 +1401,6 @@ function saveState() {
 		$.cookie("sectionText",$("#currentSection").html());
 		$.cookie("categoryText",$("#Category").html());
 		$.cookie("data",JSON.stringify(data));
-
 		$.cookie("dockerSearchFlag",dockerSearchFlag);
 		$.cookie("homeIcon",isIconEnabled("#homeIcon"));
 		$.cookie("sectionIcon",isIconEnabled("#sectionIcon"));
@@ -1429,7 +1424,6 @@ function restoreState() {
 	$("#currentSection").html($.cookie("sectionText"));
 	$("#Category").html($.cookie("categoryText"));
 	data = JSON.parse($.cookie("data"));
-
 	dockerSearchFlag = $.cookie("dockerSearchFlag");
 	enableIcon("#homeIcon",$.cookie("homeIcon"));
 	enableIcon("#sectionIcon",$.cookie("sectionIcon"));
@@ -1446,6 +1440,7 @@ function restoreState() {
 function disableSearch() {
 	$("#searchBox").prop("disabled",true);
 }
+
 function enableSearch() {
 	$("#searchBox").prop("disabled",false);
 }
@@ -1457,14 +1452,6 @@ function evaluateBoolean(str) {
 
 function cookiesEnabled() {
 	return evaluateBoolean(navigator.cookieEnabled);
-}
-
-function stringToBoolean(string) {
-	switch(string.toLowerCase().trim()){
-		case "true": case "yes": case "1": return true;
-		case "false": case "no": case "0": case null: return false;
-		default: return Boolean(string);
-	}
 }
 
 function resizeDisplay() {
