@@ -26,10 +26,10 @@ function getDownloads($downloads,$lowFlag=false) {
 	return ($lowFlag) ? $downloads : "";
 }
 
-$fontAwesomeInstall = "<i class='appIcons fa fa-download' style='color:green;' aria-hidden='true'></i>";
-$fontAwesomeEdit = "<i class='appIcons fa fa-edit' style='color:green;' aria-hidden='true'></i>";
-$fontAwesomeGUI = "<i class='appIcons fa fa-globe' style='color:green;' aria-hidden='true'></i>";
-$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' style='color:green;' aria-hidden='true'></i>";
+$fontAwesomeInstall = "<i class='appIcons fa fa-download' style='color:cyan;' aria-hidden='true'></i>";
+$fontAwesomeEdit = "<i class='appIcons fa fa-edit' style='color:cyan;' aria-hidden='true'></i>";
+$fontAwesomeGUI = "<i class='appIcons fa fa-globe' style='color:cyan;' aria-hidden='true'></i>";
+$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' style='color:cyan;' aria-hidden='true'></i>";
 $fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true' style='color:maroon; font-size:20px;cursor:pointer;'></i>";
 
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
@@ -116,13 +116,13 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
 	$templateDescription .= "</figure>";
 	$templateDescription .= "</td><td></td><td><table>";
-	$templateDescription .= "<tr><td>$color<strong>Author: </strong></td><td>$color".$template['Author']."</td></tr>";
+$templateDescription .= "<tr><td>{$color}Author:</td><td>$color".$template['Author']."</td></tr>";
 	if ( ! $template['Plugin'] ) {
 		$repository = explode(":",$template['Repository']);
 		$official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
-		$templateDescription .= "<tr><td>$color<strong>DockerHub: </strong></td><td><a class='popUpLink' href='https://hub.docker.com/$official/{$repository[0]}' target='_blank'>{$repository[0]}</a></td></tr>";
+	$templateDescription .= "<tr><td>{$color}DockerHub:</td><td><a class='popUpLink' href='https://hub.docker.com/$official/{$repository[0]}' target='_blank'>{$repository[0]}</a></td></tr>";
 	}
-	$templateDescription .= "<tr><td>$color<strong>Repository: </strong></td><td>$color";
+$templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
 	$repoSearch = explode("'",$template['RepoName']);
 	$templateDescription .= $template['Forum'] ? "<a class='popUpLink' style='cursor:pointer;' onclick='authorSearch(&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a>" : "{$template['RepoName']}";
 	if ( $template['Profile'] ) {
@@ -131,7 +131,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$templateDescription .= "</td></tr>";
 	$templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
-	$templateDescription .= "<tr><td>$color<strong>Categories: </strong></td><td>$color".$template['Category']."</td></tr>";
+	$templateDescription .= "<tr><td>{$color}Categories:</td><td>$color".$template['Category']."</td></tr>";
 
 	if ( ! $template['Plugin'] ) {
 		if ( strtolower($template['Base']) == "unknown" ) {
@@ -140,22 +140,22 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		if ( ! $template['Base'] ) {
 			$template['Base'] = "Could Not Determine";
 		}
-		$templateDescription .= "<tr><td nowrap>$color<strong>Base OS: </strong></td><td>$color".$template['Base']."</td></tr>";
-		$templateDescription .= $template['stars'] ? "<tr><td nowrap>$color<strong>DockerHub Stars: </strong></td><td>$color<i class='fa fa-star' style='font-size:15px;color:magenta;'></i> ".$template['stars']."</td></tr>" : "";
+		$templateDescription .= "<tr><td nowrap>{$color}Base OS:</td><td>$color".$template['Base']."</td></tr>";
+		$templateDescription .= $template['stars'] ? "<tr><td nowrap>{$color}DockerHub Stars:</td><td>$color<i class='fa fa-star dockerHubStar' style='color:cyan;'></i> ".$template['stars']."</td></tr>" : "";
 	}
 	# In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 	if ( $template['Date'] && $template['Plugin'] ) {
 		$niceDate = date("F j, Y",$template['Date']);
-		$templateDescription .= "<tr><td nowrap>$color<strong>Date Updated: </strong></td><td>$color$niceDate<br></td></tr>";
+	$templateDescription .= "<tr><td nowrap>{$color}Date Updated:</td><td>$color$niceDate<br></td></tr>";
 	}
-	$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>$color<b>Minimum OS:</strong></td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
+	$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>{$color}Minimum OS:</td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
-	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>$color<strong>Max OS:</strong></td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
+	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>{$color}Max OS:</td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
 	$downloads = getDownloads($template['downloads']);
 	if ($downloads) {
-		$templateDescription .= "<tr><td>$color<strong>Downloads:</strong></td><td>$color$downloads</td></tr>";
+		$templateDescription .= "<tr><td>{$color}Downloads:</td><td>$color$downloads</td></tr>";
 	}
-	$templateDescription .= $template['Licence'] ? "<tr><td>$color<strong>Licence:</strong></td><td>$color".$template['Licence']."</td></tr>" : "";
+	$templateDescription .= $template['Licence'] ? "<tr><td>{$color}Licence:</td><td>$color".$template['Licence']."</td></tr>" : "";
 
 	$templateDescription .= "</table></td></tr></table>";
 

@@ -3,8 +3,8 @@
 .ca_template {color:#606E7F;border-radius:0px 0px 20px 20px;display:inline-block;text-align:left;overflow:auto;height:270px;width:360px;padding-left:5px;padding-right:5px;	background-color:#DDDADF;}
 .ca_icon_wide {display:inline-block;float:left;width:95px;margin-left:25px;}
 .ca_wide_info {display: inline-block;float:left;text-align:left;margin-left:10px;margin-top:15px;width:200px;}
-.ca_category {color:purple;}
-.ca_author {color:black;font-weight:bold;cursor:pointer;}
+.ca_category {color:#486dba;}
+.ca_author {color:#486dba;font-weight:bold;cursor:pointer;}
 .ca_applicationName {color:black;font-size:large;}
 .ca_repository {color:black;}
 .ca_highlight {color:#0e5d08;font-weight:bold;}
@@ -23,11 +23,11 @@ input[type=checkbox] {width:20px;height:20px;}
 .myReadmore {text-align:center;}
 .myReadmoreButton {color:blue;}
 .displayIcon {height:96px;width:96px;}
-.supportLink {font-weight:bold;}
-.projectLink {font-weight:bold;}
-.webLink {font-weight:bold;}
+.supportLink {font-weight:bold;color:#486dba;}
+.projectLink {font-weight:bold;color:#486dba;}
+.webLink {font-weight:bold;color:#486dba;}
 .donateLink {font-size:12px;}
-.dockerHubStar {color: magenta;font-size:15px;}
+.dockerHubStar {color:#486dba;font-size:15px;}
 .dockerDisabled {text-align:center;width:auto;color:purple;}
 .separateOfficial {text-align:center;width:auto;font-size:25px;}
 .displayBeta {cursor:pointer;}
