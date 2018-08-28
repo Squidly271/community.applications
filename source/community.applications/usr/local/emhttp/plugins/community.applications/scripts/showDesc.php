@@ -112,6 +112,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	sort($categories);
 	unset($template['Category']);
 	foreach ($categories as $category) {
+		if ( ! $category ) { continue; }
 		$category = preg_replace('/(?<! )(?<!^)(?<![A-Z])[A-Z]/',' $0', $category);
 		$category = rtrim(str_replace(": ",":",$category),":");
 		$template['Category'] .= "<a class='popUpLink' style='cursor:pointer;' onclick='doSearch(false,&quot;$category&quot;);'>$category</a>, ";
