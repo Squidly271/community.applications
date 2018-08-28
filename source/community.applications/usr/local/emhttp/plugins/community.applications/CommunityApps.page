@@ -580,11 +580,11 @@ function changePage(pageNumber) {
 	var selected = data.selected;
 	data.currentpage = pageNumber;
 
+	$('html,body').animate({scrollTop:0},500);
 	mySpinner();
 	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected},function(data3) {
 		if (data3) {
 			updateDisplay(data3);
-			$('html,body').animate({scrollTop:0},500);
 			readMore();
 			setToolTip();
 			myCloseAlert();
