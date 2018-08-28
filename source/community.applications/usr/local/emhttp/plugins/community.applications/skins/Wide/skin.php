@@ -134,22 +134,8 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$previousAppName = $template['Plugin'] ? $template['PluginURL'] : $template['Name'];
 		$checked = $checkedOffApps[$previousAppName] ? "checked" : "";
 
-		$template['Category'] = str_replace(":,",",",$template['Category']);
-		$template['Category'] = str_replace(" ",",",$template['Category']);
-
-		$all_categories = explode(",",$template['Category']);
-		sort($all_categories);
-		unset($categories);
-
-		foreach ($all_categories as $category) {
-			if ( ! $category ) { continue; }
-			$category = preg_replace('/(?<! )(?<!^)(?<![A-Z])[A-Z]/',' $0', $category);
-			$category = str_replace(": ",":",$category);
-			$category = rtrim($category,":");
-			$categories .= "<a onclick='doSearch(false,&quot;$category&quot;);' class='ca_tooltip ca_category' style='cursor:pointer;' title='Search for $category'>$category</a>, ";
-		}
-		$template['Category'] = rtrim($categories,", ");
-
+		$template['Category'] = categoryToLink($template['Category']);
+		
 		$RepoName = ( $template['Private'] == "true" ) ? $template['RepoName']."<font color=red> (Private)</font>" : $template['RepoName'];
 		if ( ! $template['DonateText'] ) {
 			$template['DonateText'] = "Donate To Author";

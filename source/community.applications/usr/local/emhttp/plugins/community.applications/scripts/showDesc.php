@@ -105,19 +105,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 			}
 		}
 	}
-	$template['Category'] = str_replace(":,",",",$template['Category']);
-	$template['Category'] = str_replace(" ",",",$template['Category']);
-
-	$categories = explode(",",$template['Category']);
-	sort($categories);
-	unset($template['Category']);
-	foreach ($categories as $category) {
-		if ( ! $category ) { continue; }
-		$category = preg_replace('/(?<! )(?<!^)(?<![A-Z])[A-Z]/',' $0', $category);
-		$category = rtrim(str_replace(": ",":",$category),":");
-		$template['Category'] .= "<a class='popUpLink' style='cursor:pointer;' onclick='doSearch(false,&quot;$category&quot;);'>$category</a>, ";
-	}
-	$template['Category'] = rtrim($template['Category'],", ");
+	$template['Category'] = categoryToLink($template['Category'],true);
 	$template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 	$template['Description'] = trim($template['Description']);
 
