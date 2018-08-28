@@ -497,12 +497,11 @@ function setToolTip() {
 		animation: 'none',
 		trigger: 'custom',
 		triggerOpen: {mouseenter:false,click:true,touchstart:true},
-		triggerClose:{click:true,mouseleave:true},
+		triggerClose:{click:true,mouseleave:false},
 		delay:[<?=$cfg['hoverTime']?>,1],
 		interactive: true,
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
-		$("#debugging").html("hello");
 			var origin = $(helper.origin);
 			var app = origin.attr('data-app');
 			var name = origin.attr('data-name');
@@ -1548,7 +1547,7 @@ function isTouch() {
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 </center>
 <center><a href='https://lime-technology.com/forums/topic/38582-plug-in-community-applications/' target='_blank'>Support Thread</a></center><br>
-<center>Community Applications Version: <?=$installedVersion?>  <i class='ca_appPopup fa fa-info-circle' data-appPath='ca' style='cursor:pointer;font-size:15px;color:lightblue;'></i></center></div>
+<center>Community Applications Version: <?=$installedVersion?>  <i class='ca_infoPopup fa fa-info-circle' style='cursor:pointer;font-size:15px;color:lightblue;'></i></center></div>
 
 <span id='miscScript'></span><span id='awesomepleteScript'></span>
 
