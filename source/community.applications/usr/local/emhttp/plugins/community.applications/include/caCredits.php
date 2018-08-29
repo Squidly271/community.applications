@@ -52,7 +52,7 @@ $caCredits = "
     <center><em><font size='1'>Copyright &copy; 2015-2018 Andrew Zawadzki</font></em></center>
     <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png' height=35px;></a></center>
 		Ensuring only safe applications are present is a full time job
-    <br><br><center><a href='http://lime-technology.com/forum/index.php?topic=40262.0' target='_blank'>Community Applications Support Thread</a></center>
+    <br><br><center><a href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank'>Community Applications Support Thread</a></center>
   ";
   $caCredits = str_replace("\n","",$caCredits);
 ?>
