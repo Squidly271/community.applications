@@ -38,21 +38,12 @@ foreach ($repoName as $display1) {
 	$displayOptions .= mk_option($cfg['favourite'], $optionName, $display1);
 }
 
-$skins = array_diff(scandir("/usr/local/emhttp/plugins/community.applications/skins"),array(".",".."));
 ?>
 
 <form markdown="1" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="<?=$plugin?>/<?=$plugin?>.cfg">
 
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong>
-
-Display Skin:
-: <select name='skin' size='1'>
-<?foreach ($skins as $skin):
-	if ( ! is_dir("/usr/local/emhttp/plugins/community.applications/skins/$skin") ) continue;?>
-<?=mk_option($cfg['skin'],$skin,$skin)?>
-<?endforeach;?>
-</select>
 
 Hover Time delay (miliseconds):
 : <input type="number" name="hoverTime" class="narrow" maxlength="5" value="<?=$cfg['hoverTime']?>" placeholder="1000">

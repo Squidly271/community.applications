@@ -23,7 +23,7 @@ if ( $installedVersion < $upgradeVersion ) {
 	$upgradeAvailable = "true";
 }
 $cfg = parse_plugin_cfg($plugin);
-
+$cfg['skin'] = "Narrow";
 if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
@@ -604,9 +604,15 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	disableTooltipster();
 	disableSearch();
 	var backgroundColor = ( ! textdescription && textimage ) ? "transparent" : "white";
-	if ( textimage ) {
-		textdescription = textdescription + "<br><br><center><i class='fa fa-spinner fa-spin' style='font-size:"+imagesize+"px;color:#DEB887;' aria-hidden='true'></i></center>";
-	}
+	<?if ($unRaid66):?>
+		if ( textimage && backgroundColor == "white") {
+			textdescription = textdescription + "<br><br><center><div class='spinner fixed' style='top:55%;'></div></center>";
+		}
+	<?else:?>
+		if ( textimage ) {
+			textdescription = textdescription + "<br><br><center><i class='fa fa-spinner fa-spin' style='font-size:"+imagesize+"px;color:#DEB887;' aria-hidden='true'></i></center>";
+		}
+	<?endif;?>
 	swal({
 		title: description,
 		text: textdescription,
@@ -618,15 +624,25 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 		html: true
 	});
 	sweetAlertBackground(backgroundColor);
+	<?if ($unRaid66):?>
+		if ( backgroundColor == "white" ) {
+			$("div.spinner").show();
+		}
+	<?endif;?>
 }
 
 function myCloseAlert() {
 	swal.close();
 	enableTooltipster();
 	enableSearch();
+	$("div.spinner").hide();
 }
 
 function mySpinner() {
+	<?if ($unRaid66):?>
+		$("div.spinner").show("slow");
+//		updateDisplay("");
+	<?endif;?>
 	myAlert("",""," ",150);
 }
 
@@ -1030,7 +1046,7 @@ function showModeration(script,title) {
 function previousApps(button,installed) {
 	setPageOne();
 	resetSortByDate();
-	mySpinner();
+//	mySpinner();
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
 	data.docker = "";
 	if ( installed ) {
@@ -1059,7 +1075,7 @@ function previousApps(button,installed) {
 	$.post(URL,{action:'previous_apps',installed:installed},function(data) {
 		if (data) {
 			changeSortOrder(null,null,"true");
-			myCloseAlert();
+	//		myCloseAlert();
 		}
 	});
 }
@@ -1550,7 +1566,6 @@ function isTouch() {
 <center>Community Applications Version: <?=$installedVersion?>  <i class='ca_infoPopup fa fa-info-circle' style='cursor:pointer;font-size:15px;color:lightblue;'></i></center></div>
 
 <span id='miscScript'></span><span id='awesomepleteScript'></span>
-
 <div>
 <div id='tooltipviews' style='display:none;'>
 <span id='templateSortButtons'>Sort By:
@@ -1623,6 +1638,7 @@ Sort Direction:
 <span id='sortorder' data-sortorder='' data-selected=''></span>
 </body>
 </FORM><span id='debugging'></span>
+<div class='spinner fixed'></div>
 <form id='appWarningForm' style='display:none;'>
 <br><br><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
 <font size='4' color='red'>All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein.

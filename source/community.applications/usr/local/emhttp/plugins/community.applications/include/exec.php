@@ -23,6 +23,7 @@ $unRaidVersion = $unRaidSettings['version'];
 ################################################################################
 
 $communitySettings = parse_plugin_cfg("community.applications");
+$communitySettings['skin'] = "Narrow";
 $communityPaths['defaultSkin'] = "/usr/local/emhttp/plugins/community.applications/skins/{$communitySettings['skin']}/skin.json";
 $skinSettings = readJsonFile($communityPaths['defaultSkin']);
 $communityPaths['defaultSkinPHP'] = $skinSettings['detail']['php'];

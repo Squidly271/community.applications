@@ -5,7 +5,7 @@
 .ca_wide_info {display: inline-block;float:left;text-align:left;margin-left:10px;margin-top:15px;width:200px;}
 .ca_category {color:#486dba;}
 .ca_author {color:#486dba;font-weight:bold;cursor:pointer;}
-.ca_applicationName {color:black;font-size:large;}
+.ca_applicationName {color:black;font-size:20px;}
 .ca_repository {color:black;}
 .ca_highlight {color:#0e5d08;font-weight:bold;}
 input.appButtons {margin:0px;}
@@ -19,7 +19,7 @@ input[type=checkbox] {width:20px;height:20px;}
 .pinned {cursor:pointer;font-size:15px;color:green;padding:3px;}
 .unpinned {cursor:pointer;font-size:15px;color:#820101;padding:3px;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);	-o-transform: rotate(20deg);	transform: rotate(20deg);}
 .topRightLinks {padding-left:15px;font-weight:bold;}
-.appIcons {font-size:25px;color:#1c6343;cursor:pointer;}
+.appIcons {font-size:25px;color:#486dba;cursor:pointer;}
 .myReadmore {text-align:center;}
 .myReadmoreButton {color:blue;}
 .displayIcon {height:96px;width:96px;}

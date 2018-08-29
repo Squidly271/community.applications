@@ -1,6 +1,6 @@
 {
     "detail": {
-				"php": "/usr/local/emhttp/plugins/community.applications/skins/Wide/skin.php",
+				"php": "/usr/local/emhttp/plugins/community.applications/skins/Narrow/skin.php",
         "templateWidth": 375,
         "header": "<div style='display:block;overflow:hidden;margin-left:%2$spx;padding:0px;'>",
         "sol": "<div style='height:432px;overflow:auto;min-width:%1$spx;display:inline-block;margin-left:auto;position:relative;'>",
