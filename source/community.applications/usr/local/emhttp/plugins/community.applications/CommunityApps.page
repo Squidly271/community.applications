@@ -1257,7 +1257,6 @@ function setPageOne() {
 
 function pinnedApps(button) {
 	setPageOne();
-	mySpinner();
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
 	$("#currentSection").html("Pinned Apps");
 	data.docker = "";

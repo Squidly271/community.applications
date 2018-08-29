@@ -152,17 +152,17 @@ $templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
 		if ( ! $template['Plugin'] ) {
 			if ( $communitySettings['dockerRunning'] ) {
 				if ( $selected ) {
-					$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'></a>&nbsp;&nbsp;";
-					$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-edit' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'></a>&nbsp;&nbsp;";
+					$templateDescription .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'></a>";
+					$templateDescription .= "<a class='ca_apptooltip appIconsPopUp ca_fa-edit' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'></a>";
 					if ( $info[$name]['url'] && $info[$name]['running'] ) {
-						$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'></a>&nbsp;&nbsp;";
+						$templateDescription .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'></a>";
 					}
 				} else {
 					if ( $template['MyPath'] ) {
-						$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application' href='Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'></a>&nbsp;&nbsp;";
+						$templateDescription .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application' href='Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'></a>";
 					} else {
-						$install              = "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'></a>&nbsp;&nbsp;";
-						$templateDescription .= $template['BranchID'] ? "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'></a>&nbsp;&nbsp;" : $install;
+						$install              = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'></a>";
+						$templateDescription .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'></a>" : $install;
 					}
 				}
 			}
@@ -175,10 +175,10 @@ $templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
 				}
 			} else {
 				$buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
-				$templateDescription .= "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');></a>&nbsp;&nbsp;";
+				$templateDescription .= "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');></a>";
 			}
 			if ( checkPluginUpdate($template['PluginURL']) ) {
-				$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-update' title='Update Available.  Click To Install' onclick='installPLGupdate(&quot;".basename($template['PluginURL'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'></a>&nbsp;&nbsp;";
+				$templateDescription .= "<a class='ca_apptooltip appIconsPopUp ca_fa-update' title='Update Available.  Click To Install' onclick='installPLGupdate(&quot;".basename($template['PluginURL'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'></a>";
 			}
 		}
 	}
