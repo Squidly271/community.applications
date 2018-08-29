@@ -95,9 +95,9 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$template['Description'] = trim($template['Description']);
 
 	if ( $color ) {
-		$templateDescription .= "<center><font size=6;><strong>{$template['SortName']}<br><br></strong></font></center><br><br><br>";
+		$templateDescription .= "<center><font size=6;><strong>{$template['SortName']}</strong></font></center><br>";
 	}
-	$templateDescription .= "<center><table><tr><td><figure style='margin-right:10px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px;background-color:#C7C5CB;padding:3px;border-radius:10px 10px 10px 10px' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;';>";
+	$templateDescription .= "<table style='margin:0 0 0 0;'><tr><td><figure style='margin-right:10px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px;background-color:#C7C5CB;padding:3px;border-radius:10px 10px 10px 10px' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;';>";
 	$templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
 	$templateDescription .= "</figure>";
 	$templateDescription .= "</td><td></td><td><table>";
