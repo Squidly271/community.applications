@@ -387,7 +387,7 @@ function displaySearchResults($pageNumber) {
 		$result['Category'] = "Docker Hub Search";
 		$result['display_iconClickable'] = "<img class='displayIcon' src='{$result['Icon']}'>";
 		$result['Description'] = $result['Description'] ?: "No description present";
-		$result['display_Project'] = "<a class='ca_tooltip projectLink' target='_blank' href='{$result['DockerHub']}'>dockerHub Page</a>";
+		$result['display_Project'] = "<a class='ca_tooltip dockerHubLink' target='_blank' href='{$result['DockerHub']}'>dockerHub Page</a>";
 		$result['display_dockerInstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click To Install' onclick='dockerConvert(&#39;".$result['ID']."&#39;);'></a>";
 		$t = vsprintf($displayTemplate,toNumericArray($result));
 

@@ -9,43 +9,43 @@ $caCredits = "
     <center><table style='margin:-10px 50px;'>
       <tr>
         <td class='ca_table'><img src='https://github.com/Squidly271/plugin-repository/raw/master/Chode_300.gif' width='50px';height='48px'></td>
-        <td><strong><font size='4'>Andrew Zawadzki</font></strong></td>
+        <td class='ca_table'><font size='4'>Andrew Zawadzki</font></strong></td>
         <td><font size='4'>Main Development</font></td>
       </tr>
       <tr>
         <td></td>
-        <td class='ca_table'><strong>bonienl</font></strong></td>
-        <td>Additional Contributions</font></td>
+        <td class='ca_table'>bonienl</td>
+        <td>Additional Contributions</td>
       </tr>
 			<tr>
 				<td></td>
-				<td class='ca_table'><strong>eschultz</font></strong></td>
-				<td>Additional Contributions</font></td>
+				<td class='ca_table'>eschultz</td>
+				<td>Additional Contributions</td>
 			</tr>
       <tr>
         <td></td>
-        <td class='ca_table'><strong>Kode</font></strong></td>
-        <td>Application Feed</font></td>
+        <td class='ca_table'>Kode</td>
+        <td>Application Feed</td>
       </tr>
 			<tr>
 				<td></td>
-				<td class='ca_table'><strong><a href='https://www.linuxserver.io/' target='_blank'>LinuxServer</a></font></strong></td>
-				<td>Application Feed Hosting</font></td>
+				<td class='ca_table'>LinuxServer</td>
+				<td>Application Feed Hosting</td>
 			</tr>
       <tr>
         <td></td>
-        <td class='ca_table'><strong>CHBMB</font></strong></td>
-        <td>Additional Testing</font></td>
+        <td class='ca_table'>CHBMB</td>
+        <td>Additional Testing</td>
       </tr>
       <tr>
         <td></td>
-        <td class='ca_table'><strong>gridrunner</font></strong></td>
+        <td class='ca_table'>gridrunner</td>
         <td>Additional Testing</font></td>
       </tr>
 			<tr>
 				<td></td>
-				<td class='ca_table'><strong>Sparklyballs</font></strong></td>
-				<td>Additional Testing</font></td>
+				<td class='ca_table'>Sparklyballs</td>
+				<td>Additional Testing</td>
 			</tr>
     </table></center>
     <br>
