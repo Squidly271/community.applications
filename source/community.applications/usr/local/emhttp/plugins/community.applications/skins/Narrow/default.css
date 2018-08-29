@@ -37,7 +37,7 @@ input[type=checkbox] {width:20px;height:20px;}
 .webLink {font-weight:bold;color:#486dba;padding-left:5px;padding-right:5px;}
 .webLink::after {content:"Web Page"}
 .donateLink {font-size:12px;}
-.donateLink::after {content:url('https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png');zoom:15%;}
+.donateLink::after {content:url('https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button-small.png');}
 .dockerHubStar {color:#486dba;font-size:15px;}
 .dockerDisabled {text-align:center;width:auto;color:purple;}
 .separateOfficial {text-align:center;width:auto;font-size:25px;}

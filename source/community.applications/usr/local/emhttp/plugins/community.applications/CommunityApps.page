@@ -756,7 +756,7 @@ function forceUpdateButton() {
 			showConfirmButton: true,
 			closeOnConfirm: false,
 			allowOutsideClick: true,
-			showLoaderOnConfirm: true,
+			showLoaderOnConfirm: false,
 			html: true
 		}, function(isConfirm) {
 			if (isConfirm) {
