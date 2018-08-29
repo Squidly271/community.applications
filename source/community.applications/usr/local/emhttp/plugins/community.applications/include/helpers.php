@@ -768,7 +768,7 @@ function getRunningContainers() {
 # Sets the links for categories #
 #################################
 function categoryToLink($cat,$popUp = false) {
-	$class = $popUp ? "ca_tooltip ca_category popUpLink" : "ca_tooltip ca_category";
+	$class = $popUp ? "ca_tooltip ca_categoryLink popUpLink" : "ca_tooltip ca_categoryLink";
 	$cat = str_replace(":,",",",$cat);
 	$cat = str_replace(" ",",",$cat);
 
@@ -783,5 +783,18 @@ function categoryToLink($cat,$popUp = false) {
 		$categories .= "<a onclick='doSearch(false,&quot;$category&quot;);' class='$class' style='cursor:pointer;' title='Search for $category'>$category</a>, ";
 	}
 	return rtrim($categories,", ");
+}
+
+#####################################
+# Gets a rounded off download count #
+#####################################
+function getDownloads($downloads,$lowFlag=false) {
+	$downloadCount = array("500000000","100000000","50000000","10000000","5000000","2500000","1000000","500000","250000","100000","50000","25000","10000","5000","1000","500","100");
+	foreach ($downloadCount as $downloadtmp) {
+		if ($downloads > $downloadtmp) {
+			return "More than ".number_format($downloadtmp);
+		}
+	}
+	return ($lowFlag) ? $downloads : "";
 }
 ?>

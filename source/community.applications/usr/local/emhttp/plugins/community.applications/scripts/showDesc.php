@@ -16,21 +16,6 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("webGui/include/Markdown.php");
 
-function getDownloads($downloads,$lowFlag=false) {
-	$downloadCount = array("500000000","100000000","50000000","10000000","5000000","2500000","1000000","500000","250000","100000","50000","25000","10000","5000","1000","500","100");
-	foreach ($downloadCount as $downloadtmp) {
-		if ($downloads > $downloadtmp) {
-			return "More than ".number_format($downloadtmp);
-		}
-	}
-	return ($lowFlag) ? $downloads : "";
-}
-
-$fontAwesomeInstall = "<i class='appIcons fa fa-download' style='color:cyan;' aria-hidden='true'></i>";
-$fontAwesomeEdit = "<i class='appIcons fa fa-edit' style='color:cyan;' aria-hidden='true'></i>";
-$fontAwesomeGUI = "<i class='appIcons fa fa-globe' style='color:cyan;' aria-hidden='true'></i>";
-$fontAwesomeUpdate = "<i class='appIcons fa fa-refresh' style='color:cyan;' aria-hidden='true'></i>";
-$fontAwesomeDelete = "<i class='fa fa-window-close' aria-hidden='true' style='color:maroon; font-size:20px;cursor:pointer;'></i>";
 
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $csrf_token = $unRaidVars['csrf_token'];
@@ -167,17 +152,17 @@ $templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
 		if ( ! $template['Plugin'] ) {
 			if ( $communitySettings['dockerRunning'] ) {
 				if ( $selected ) {
-					$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>$fontAwesomeInstall</a>&nbsp;&nbsp;";
-					$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'>$fontAwesomeEdit</a>&nbsp;&nbsp;";
+					$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application using default values' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'></a>&nbsp;&nbsp;";
+					$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-edit' title='Click to edit the application values' href='Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'></a>&nbsp;&nbsp;";
 					if ( $info[$name]['url'] && $info[$name]['running'] ) {
-						$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'>$fontAwesomeGUI</a>&nbsp;&nbsp;";
+						$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'></a>&nbsp;&nbsp;";
 					}
 				} else {
 					if ( $template['MyPath'] ) {
-						$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to reinstall the application' href='Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>$fontAwesomeInstall</a>&nbsp;&nbsp;";
+						$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application' href='Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'></a>&nbsp;&nbsp;";
 					} else {
-						$install              = "&nbsp;&nbsp;<a class='ca_apptooltip' title='Click to install the application' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>$fontAwesomeInstall</a>&nbsp;&nbsp;";
-						$templateDescription .= $template['BranchID'] ? "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'>$fontAwesomeInstall</a>&nbsp;&nbsp;" : $install;
+						$install              = "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'></a>&nbsp;&nbsp;";
+						$templateDescription .= $template['BranchID'] ? "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'></a>&nbsp;&nbsp;" : $install;
 					}
 				}
 			}
@@ -186,14 +171,14 @@ $templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
 			if ( file_exists("/var/log/plugins/$pluginName") ) {
 				$pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
 				if ( $pluginSettings ) {
-					$templateDescription .= "<a class='ca_apptooltip' title='Click to go to the plugin settings' href='$pluginSettings'>$fontAwesomeGUI</a>";
+					$templateDescription .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' title='Click to go to the plugin settings' href='/Apps/$pluginSettings'></a>";
 				}
 			} else {
 				$buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
-				$templateDescription .= "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>$fontAwesomeInstall</a>&nbsp;&nbsp;";
+				$templateDescription .= "&nbsp;&nbsp;<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');></a>&nbsp;&nbsp;";
 			}
 			if ( checkPluginUpdate($template['PluginURL']) ) {
-				$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip' title='Update Available.  Click To Install' onclick='installPLGupdate(&quot;".basename($template['PluginURL'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>$fontAwesomeUpdate</a>&nbsp;&nbsp;";
+				$templateDescription .= "&nbsp;&nbsp;<a class='ca_apptooltip appIconsPopUp ca_fa-update' title='Update Available.  Click To Install' onclick='installPLGupdate(&quot;".basename($template['PluginURL'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'></a>&nbsp;&nbsp;";
 			}
 		}
 	}
@@ -207,7 +192,7 @@ $templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
 	$templateDescription .= $template['WebPageURL'] ? "&nbsp;&nbsp;<a class='popUpLink' href='".$template['WebPageURL']."' target='_blank'>Web Page</strong></a>&nbsp;&nbsp;" : "";
 
 	if ( $donatelink ) {
-		$templateDescription .= "<br><br><center><span class='donateLink'>$donatetext</span><br><a href='$donatelink' target='_blank'><img height='20px;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a>";
+		$templateDescription .= "<br><br><center>$donatetext<br><a class='donateLink' href='$donatelink' target='_blank'></a>";
 		if ( $template['RepoName'] != "Squid's plugin Repository" ) {
 			$templateDescription .= "<br><font size='0'>The above link is set by the author of the template, not the author of Community Applications</font></center>";
 		}

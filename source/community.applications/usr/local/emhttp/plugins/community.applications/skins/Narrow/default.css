@@ -3,7 +3,9 @@
 .ca_template {color:#606E7F;border-radius:0px 0px 20px 20px;display:inline-block;text-align:left;overflow:auto;height:270px;width:360px;padding-left:5px;padding-right:5px;	background-color:#DDDADF;}
 .ca_icon_wide {display:inline-block;float:left;width:95px;margin-left:25px;}
 .ca_wide_info {display: inline-block;float:left;text-align:left;margin-left:10px;margin-top:15px;width:200px;}
-.ca_category {color:#486dba;}
+.ca_category {color:#486dba;font-weight:bold;}
+.ca_category::before {content:"Category: ";}
+.ca_categoryLink {color:#486dba;font-weight:normal;}
 .ca_author {color:#486dba;font-weight:bold;cursor:pointer;}
 .ca_applicationName {color:black;font-size:20px;}
 .ca_repository {color:black;}
@@ -20,20 +22,35 @@ input[type=checkbox] {width:20px;height:20px;}
 .unpinned {cursor:pointer;font-size:15px;color:#820101;padding:3px;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);	-o-transform: rotate(20deg);	transform: rotate(20deg);}
 .topRightLinks {padding-left:15px;font-weight:bold;}
 .appIcons {font-size:25px;color:#486dba;cursor:pointer;}
+.appIcons:hover {text-decoration:none;}
+.appIconsPopUp {font-size:25px;color:cyan;cursor:pointer;}
+.appIconsPopUp:hover {text-decoration:none;}
 .myReadmore {text-align:center;}
 .myReadmoreButton {color:blue;}
 .displayIcon {height:96px;width:96px;}
 .supportLink {font-weight:bold;color:#486dba;}
+.supportLink::after {content:"Support Thread"}
 .projectLink {font-weight:bold;color:#486dba;}
+.projectLink::after {content:"Project Home Page"}
 .webLink {font-weight:bold;color:#486dba;}
+.webLink::after {content:"Web Page"}
 .donateLink {font-size:12px;}
+.donateLink::after {content:url('https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png');zoom:15%;}
 .dockerHubStar {color:#486dba;font-size:15px;}
 .dockerDisabled {text-align:center;width:auto;color:purple;}
 .separateOfficial {text-align:center;width:auto;font-size:25px;}
 .displayBeta {cursor:pointer;}
 .newApp {color:red;font-size:15px;cursor:pointer;}
 .ca_fa-delete {color:#c70404;font-size:20px;position:relative;float:right;top:2px;cursor:pointer;}
+.ca_fa-delete::after {content:"\f2d3";font-family:fontAwesome;}
+.ca_fa-install::after {content:"\f019";font-family:fontAwesome;}
+.ca_fa-edit::after {content:"\f044";font-family:fontAwesome;}
+.ca_fa-globe::after {content:"\f0ac";font-family:fontAwesome;}
+.ca_fa-update::after {content:"\f021";font-family:fontAwesome;}
 .ca_multiselect {cursor:pointer;}
 .pageNavigation {font-size:20px;}
 .specialCategory {color:green;font-size:15px;}
 .ca_table { padding:5px 0px 5px 0; }
+.ca_dateUpdated {font-weight:bold;text-align:center;}
+.ca_dateUpdated::before {content:"Date Updated: ";}
+.ca_dateUpdatedDate {font-weight:normal;}
