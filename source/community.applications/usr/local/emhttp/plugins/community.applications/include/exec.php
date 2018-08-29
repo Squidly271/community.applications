@@ -31,7 +31,7 @@ $communityPaths['defaultSkinPHP'] = $skinSettings['detail']['php'];
 require_once($communityPaths['defaultSkinPHP']);
 
 $communitySettings['appFeed']       = "true"; # set default for deprecated setting
-$communitySettings['maxPerPage']    = 25;
+$communitySettings['maxPerPage']    = isMobile() ? 10 : 25;
 $communitySettings['unRaidVersion'] = $unRaidVersion;
 $communitySettings['timeNew'] 			= "-10 years";
 
