@@ -26,7 +26,7 @@ input[type=checkbox] {width:20px;height:20px;}
 .topRightLinks {padding-left:15px;font-weight:bold;}
 .appIcons {font-size:25px;color:#486dba;cursor:pointer;padding-left:5px;padding-right:5px;}
 .appIcons:hover {text-decoration:none;}
-.appIconsPopUp {font-size:25px;color:cyan;cursor:pointer;padding-left:5px;padding-right:5px;}
+.appIconsPopUp {font-size:25px;color:#FF8C2F;cursor:pointer;padding-left:5px;padding-right:5px;}
 .appIconsPopUp:hover {text-decoration:none;}
 .myReadmore {text-align:center;}
 .myReadmoreButton {color:blue;}

@@ -1,6 +1,6 @@
 <div style='overflow:scroll; max-height:450px; height:450px; overflow-x:hidden; overflow-y:auto;font-size:12px;'>
 <style>p { margin-left:20px;margin-right:20px; }
-.popUpLink { color:cyan; }
+.popUpLink { color:#FF8C2F; }
 </style>
 <?PHP
 ###############################################################
@@ -126,7 +126,7 @@ $templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
 			$template['Base'] = "Could Not Determine";
 		}
 		$templateDescription .= "<tr><td nowrap>{$color}Base OS:</td><td>$color".$template['Base']."</td></tr>";
-		$templateDescription .= $template['stars'] ? "<tr><td nowrap>{$color}DockerHub Stars:</td><td>$color<i class='fa fa-star dockerHubStar' style='color:cyan;'></i> ".$template['stars']."</td></tr>" : "";
+		$templateDescription .= $template['stars'] ? "<tr><td nowrap>{$color}DockerHub Stars:</td><td>$color<i class='fa fa-star dockerHubStar' style='color:#FF8C2F;'></i> ".$template['stars']."</td></tr>" : "";
 	}
 	# In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 	if ( $template['Date'] && $template['Plugin'] ) {
