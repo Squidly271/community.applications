@@ -29,6 +29,7 @@ if ( ! is_file($communityPaths['warningAccepted']) ) {
 }
 $unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
+$unRaid66color = $unRaid66 ? "#FF8C2F" : "green";
 
 $skinPath = "/usr/local/emhttp/plugins/community.applications/skins/{$cfg['skin']}";
 $communityPaths['defaultSkin'] = "$skinPath/skin.json";
@@ -49,6 +50,9 @@ $template = readJsonFile($communityPaths['defaultSkin']);
 .searchSubmit{height:34px;}
 </style>
 <?endif;?>
+<style>
+.enabledIcon {color:<?=$unRaid66color?>;}
+</style>
 <script src='/plugins/community.applications/javascript/awesomplete.min.js'></script>
 <script src='/plugins/community.applications/javascript/jquery.mobile.custom.min.js'></script>
 <script>
@@ -684,7 +688,7 @@ function doSearch(button,newSearch) {
 
 	$("#Total1").show();
 	if (filter) {
-		$("#Category").html(" Search Results for <font color='green'>"+filter+"</font>");
+		$("#Category").html(" Search Results for <font color='<?=$unRaid66color?>'>"+filter+"</font>");
 	}
 
 	$("#sortButtons,#MainCategory").show();
@@ -935,7 +939,7 @@ function getContent(init,category,description,newApp) {
 
 		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth},function(data) {
 			if (data) {
-				description = "Category: <font color='green'>"+description+"</font>";
+				description = "Category: <font color='<?=$unRaid66color?>'>"+description+"</font>";
 				$("#Category").html(description);
 				$("#updateButton").prop("disabled",false);
 				updateDisplay(data);
@@ -991,7 +995,7 @@ function dockerSearch(pageNumber) {
 	enableIcon("#sortIcon",false);
 	$(".dockerSearch,#templateSortButtons,.multi_installDiv").hide();
 	$("#currentSection").html("Available Apps");
-	$("#Category").html("DockerHub Search Results For <font color='red'>"+filter+"</font> <span id='pageNumber'></span>");
+	$("#Category").html("DockerHub Search Results For <font color='<?=$unRaid66color?>'>"+filter+"</font> <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
 	mySpinner();
 	$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder,windowWidth:windowWidth},function(data) {
@@ -1548,7 +1552,7 @@ function isTouch() {
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:23px; position:relative;top:-2px;' aria-hidden='true'></i>&nbsp;
-<font size='3'><b>Section: <font color='green'><span id='currentSection'>Available Apps</span></font></b></font>
+<font size='3'><b>Section: <font color='<?=$unRaid66color?>'><span id='currentSection'>Available Apps</span></font></b></font>
 <strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float:right;display:none;';>Total Found: <strong><font size="3"><span id="Total">0</span></font></strong>
 </span><br>
 

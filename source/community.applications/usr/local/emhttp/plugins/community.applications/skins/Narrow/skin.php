@@ -272,6 +272,8 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = true) {
 	global $communitySettings;
 
+  $navColor = ( version_compare($communitySettings['unRaidVersion'],"6.5.3",">") ) ? "#FF8C2F" : "green";
+
 	if ( $communitySettings['maxPerPage'] < 0 ) { return; }
 	$swipeScript = "<script>";
 	$my_function = $dockerSearch ? "dockerSearch" : "changePage";
@@ -294,7 +296,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 	}
 
 	$previousPage = $pageNumber - 1;
-	$o .= ( $pageNumber == 1 ) ? "<font color='grey'><i class='fa fa-arrow-circle-left' aria-hidden='true'></i></font>" : "<font color='green'><i class='fa fa-arrow-circle-left ca_tooltip' aria-hidden='true' style='cursor:pointer' onclick='{$my_function}(&quot;$previousPage&quot;)' title='Go To Page $previousPage'></i></font>";
+	$o .= ( $pageNumber == 1 ) ? "<font color='grey'><i class='fa fa-arrow-circle-left' aria-hidden='true'></i></font>" : "<font color='$navColor'><i class='fa fa-arrow-circle-left ca_tooltip' aria-hidden='true' style='cursor:pointer' onclick='{$my_function}(&quot;$previousPage&quot;)' title='Go To Page $previousPage'></i></font>";
 	$o .= "&nbsp;&nbsp;&nbsp;";
 	$swipeScript .= "data.prevpage = $previousPage;";
 	$startingPage = $pageNumber - 5;
@@ -320,7 +322,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 		}
 	}
 	$nextPage = $pageNumber + 1;
-	$o .= ( $pageNumber < $totalPages ) ? "<font color='green'><i class='fa fa-arrow-circle-right ca_tooltip' aria-hidden='true' style='cursor:pointer' title='Go To Page $nextPage' onclick='{$my_function}(&quot;$nextPage&quot;);'></i></font>" : "<font color='grey'><i class='fa fa-arrow-circle-right' aria-hidden='true'></i></font>";
+	$o .= ( $pageNumber < $totalPages ) ? "<font color='$navColor'><i class='fa fa-arrow-circle-right ca_tooltip' aria-hidden='true' style='cursor:pointer' title='Go To Page $nextPage' onclick='{$my_function}(&quot;$nextPage&quot;);'></i></font>" : "<font color='grey'><i class='fa fa-arrow-circle-right' aria-hidden='true'></i></font>";
 	$swipeScript .= ( $pageNumber < $totalPages ) ? "data.nextpage = $nextPage;" : "data.nextpage = 0;";
 	$swipeScript .= ( $dockerSearch ) ? "dockerSearchFlag = true;" : "dockerSearchFlag = false";
 	$swipeScript .= "</script>";
