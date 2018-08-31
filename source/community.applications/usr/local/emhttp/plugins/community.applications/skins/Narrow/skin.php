@@ -290,7 +290,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 	if ( $endApp > $totalApps ) {
 		$endApp = $totalApps;
 	}
-	$o = "<center><font color='purple'><b><span class='pageNavigation'>";
+	$o = "<center><font color='$navColor'><b><span class='pageNavigation'>";
 	if ( ! $dockerSearch && $displayCount) {
 		$o .= "Displaying $startApp - $endApp (of $totalApps)<br>";
 	}

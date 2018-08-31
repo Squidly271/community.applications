@@ -194,7 +194,8 @@ case 'get_content':
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
 				$countSuffix = count($displayApplications['community']) > 1 ? "s" : "";
 				$startupMsg = ($communitySettings['startup'] == "random") ? "Random App$countSuffix Of The Day" : "Newest Added / Recently Updated App$countSuffix<br><font size='0'>Select the New/Updated Category for the complete list</font>";
-				echo "<br><center><font size='4' color='purple'><b>$startupMsg</b></font><br><br>";
+				$startupColor = (version_compare($communitySettings['unRaidVersion'],"6.5.3",">")) ? "#FF8C2F" : "purple";
+				echo "<br><center><font size='4' color='$startupColor'><b>$startupMsg</b></font><br><br>";
 				$sortOrder['sortBy'] = "noSort";
 				echo my_display_apps($displayApplications['community'],"1",$runningDockers,$imagesDocker);
 				break;
