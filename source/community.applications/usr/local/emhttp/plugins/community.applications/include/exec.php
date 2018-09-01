@@ -700,9 +700,8 @@ case 'previous_apps':
 # this section handles containers that have not been renamed from the appfeed
 if ( $communitySettings['dockerRunning'] ) {
 	$all_files = glob("/boot/config/plugins/dockerMan/templates-user/*.xml");
-	if ( ! $all_files ) {
-		$all_files = array();
-	}
+	$all_files = $all_files ?: array();
+	
 	if ( $installed == "true" ) {
 		foreach ($info as $installedDocker) {
 			$installedImage = $installedDocker['Image'];
@@ -1551,7 +1550,6 @@ function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
 	if ( ($test['ModeratorComment']) && (! $newApp) ) return false;
 	if ( $test['Deprecated'] )												return false;
 	if ( ($test['Beta'] == "true" ) && (! $newApp ) )	return false;
-	if ( $test['PluginURL'] == "https://raw.githubusercontent.com/Squidly271/community.applications/master/plugins/community.applications.plg" ) return false;
 	if ( $test['Plugin'] ) {
 		if ( file_exists("/var/log/plugins/".basename($test['PluginURL'])) ) { return false; }
 	} else {
