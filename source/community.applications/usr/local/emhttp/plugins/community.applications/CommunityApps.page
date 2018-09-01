@@ -52,6 +52,8 @@ $template = readJsonFile($communityPaths['defaultSkin']);
 <?endif;?>
 <style>
 .enabledIcon {color:<?=$unRaid66color?>;}
+.pageNavigation {color:<?=$unRaid66color?>;}
+.specialCategory {color:<?=$unRaid66color?>;}
 </style>
 <script src='/plugins/community.applications/javascript/awesomplete.min.js'></script>
 <script src='/plugins/community.applications/javascript/jquery.mobile.custom.min.js'></script>

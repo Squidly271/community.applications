@@ -52,7 +52,7 @@ input[type=checkbox] {width:20px;height:20px;}
 .ca_fa-update::after {content:"\f021";font-family:fontAwesome;}
 .ca_multiselect {cursor:pointer;}
 .pageNavigation {font-size:20px;}
-.specialCategory {color:green;font-size:15px;}
+.specialCategory {font-size:15px;}
 .ca_table { padding:5px 0px 5px 0;font-weight:bold;}
 .ca_dateUpdated {font-weight:bold;text-align:center;}
 .ca_dateUpdated::before {content:"Date Updated: ";}
