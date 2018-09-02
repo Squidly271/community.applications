@@ -1543,6 +1543,8 @@ function appOfDay($file) {
 # Checks selected app for eligibility as app of day #
 #####################################################
 function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
+	global $communitySettings;
+	
 	$test = $file[$randomApp];
 	if ( ! $test['Displayable'] )											return false;
 	if ( ! $test['Compatible'] )											return false;
@@ -1550,14 +1552,16 @@ function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
 	if ( ($test['ModeratorComment']) && (! $newApp) ) return false;
 	if ( $test['Deprecated'] )												return false;
 	if ( ($test['Beta'] == "true" ) && (! $newApp ) )	return false;
-	if ( $test['Plugin'] ) {
-		if ( file_exists("/var/log/plugins/".basename($test['PluginURL'])) ) { return false; }
-	} else {
-		if ( ! strpos($test['Repository'],":") ) {
-			$test['Repository'] .= ":latest";
-		}
-		foreach ($info as $tst) {
-			if ($test['Repository'] == $tst['repository'] ) return false;
+	if ( $communitySettings['separateInstalled'] != "false" ) {
+		if ( $test['Plugin'] ) {
+			if ( file_exists("/var/log/plugins/".basename($test['PluginURL'])) ) { return false; }
+		} else {
+			if ( ! strpos($test['Repository'],":") ) {
+				$test['Repository'] .= ":latest";
+			}
+			foreach ($info as $tst) {
+				if ($test['Repository'] == $tst['repository'] ) return false;
+			}
 		}
 	}
 	return true;
