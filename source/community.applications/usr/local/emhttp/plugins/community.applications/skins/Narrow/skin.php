@@ -201,7 +201,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 						if ( $info[$name]['url'] && $info[$name]['running'] ) {
 							$template['dockerWebIcon'] = "<a class='ca_tooltip appIcons ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'></a>";
 						}
-						$template['displayStartStop'] = $info[$name]['running'] ? "<a class='appIcons ca_fa-stop' data-id='{$info[$name]['Id']}' data-name='{$info[$name]['Name']}'></a>" : "<a class='appIcons ca_fa-start' data-id='{$info[$name]['Id']}' data-name='{$info[$name]['Name']}'></a>";
+						$template['displayStartStop'] = $info[$name]['running'] ? "<a class='appIcons ca_fa-stop ca_tooltip' title='Click to Stop Application' data-id='{$info[$name]['Id']}' data-name='{$info[$name]['Name']}'></a>" : "<a class='appIcons ca_fa-start ca_tooltip' title='Click To Start Application' data-id='{$info[$name]['Id']}' data-name='{$info[$name]['Name']}'></a>";
 					} else {
 						if ( $template['MyPath'] ) {
 							$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click to reinstall' href='Apps/UpdateContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='_self'></a>";
