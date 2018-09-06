@@ -402,7 +402,7 @@ $(function(){
 	} else {
 		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() ) {
 			restoreState();
-			changeSortOrder(null,null,null);
+			refreshDisplay();
 		} else {
 			updateContent();
 		}
@@ -530,7 +530,7 @@ function stopStartContainer(container,stopStart) {
 	$.post(URL,{action:'stopStartContainer',stopStart:stopStart,id:id,name:name},function(data) {
 		if (data) {
 			myCloseAlert();
-			changeSortOrder(null,null,null);
+			refreshDisplay();
 		}
 	});
 }
@@ -822,6 +822,10 @@ function enableButtons() {
 	data.selected_category = "";
 }
 
+function refreshDisplay() {
+	changeSortOrder(null,null,null);
+}
+
 function changeSortOrder(button,buttonClass,previousApps) {
 	var windowWidth = getWindowWidth();
 	var pageNumber = data.currentpage;
@@ -1049,7 +1053,7 @@ function clearSearchBox() {
 function installPlugin(pluginURL) {
 	$(".ca_appPopup").tooltipster('close');
 	disableSearch();
-	my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,'Install Plugin',600,900,true,"changeSortOrder(null,null,null)");
+	my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,'Install Plugin',600,900,true,"refreshDisplay()");
 }
 
 function my_openBox(cmd,title,height,width,load,func) {
@@ -1178,7 +1182,7 @@ function deletePrivateApp(path,name,author) {
 			$.post(URL,{action:'removePrivateApp',path:path},function(data) {
 				if (data) {
 					myCloseAlert();
-					changeSortOrder(null,null,null);
+					refreshDisplay();
 					enableSearch();
 				}
 			});
@@ -1291,7 +1295,7 @@ function pinnedApps(button) {
 	$("#Category").html("All Pinned Applications");
 	$.post(URL,{action:'pinnedApps'},function(data) {
 		if (data) {
-			changeSortOrder(null,null,null);
+			refreshDisplay();
 			myCloseAlert();
 		}
 	});
@@ -1527,7 +1531,7 @@ function resizeDisplay() {
 			clearTimeout(window.resizeEvt);
 			window.resizeEvt = setTimeout(function(){
 				$("#templates_content").empty();
-				changeSortOrder(null,null,null);
+				refreshDisplay();
 			}, 100);
 		}
 <?else:?>
@@ -1536,7 +1540,7 @@ function resizeDisplay() {
 			clearTimeout(window.resizeEvt);
 			window.resizeEvt = setTimeout(function(){
 				$("#templates_content").empty();
-				changeSortOrder(null,null,null);
+				refreshDisplay();
 			}, 100);
 		}
 <?endif;?>

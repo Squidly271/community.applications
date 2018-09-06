@@ -170,7 +170,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 				$template['display_Uninstall'] = "<a class='ca_tooltip  ca_fa-delete' title='Remove Private Application' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['SortAuthor']}&quot;);'></a>";
 			}
 		}
-		$template['display_removable'] = $template['Removable'] ? "<a class='ca_tooltip ca_fa-delete' title='Remove Application From List' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'></a>" : "";
+		$template['display_removable'] = $template['Removable'] && ! $selected ? "<a class='ca_tooltip ca_fa-delete' title='Remove Application From List' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'></a>" : "";
 		if ( $template['display_Uninstall'] && $template['display_removable'] ) {
 			unset($template['display_Uninstall']); # prevent previously installed private apps from having 2 x's in previous apps section
 		}
