@@ -129,7 +129,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$checked = $checkedOffApps[$previousAppName] ? "checked" : "";
 
 		$template['Category'] = categoryToLink($template['Category']);
-		
+
 		$RepoName = ( $template['Private'] == "true" ) ? $template['RepoName']."<font color=red> (Private)</font>" : $template['RepoName'];
 		if ( ! $template['DonateText'] ) {
 			$template['DonateText'] = "Donate To Author";
@@ -201,6 +201,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 						if ( $info[$name]['url'] && $info[$name]['running'] ) {
 							$template['dockerWebIcon'] = "<a class='ca_tooltip appIcons ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'></a>";
 						}
+						$template['displayStartStop'] = $info[$name]['running'] ? "<a class='appIcons ca_fa-stop' data-id='{$info[$name]['Id']}' data-name='{$info[$name]['Name']}'></a>" : "<a class='appIcons ca_fa-start' data-id='{$info[$name]['Id']}' data-name='{$info[$name]['Name']}'></a>";
 					} else {
 						if ( $template['MyPath'] ) {
 							$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click to reinstall' href='Apps/UpdateContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='_self'></a>";
@@ -492,7 +493,8 @@ function toNumericArray($template) {
 		$template['dockerWebIcon'],            #74
 		$template['display_multi_install'],     #75
 		$template['display_DonateImage'],      #76
-		$template['display_dockerBeta']         #77
+		$template['display_dockerBeta'],        #77
+		$template['displayStartStop']						#78
 	);
 }
 ?>

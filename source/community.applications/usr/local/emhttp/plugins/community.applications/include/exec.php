@@ -701,7 +701,7 @@ case 'previous_apps':
 if ( $communitySettings['dockerRunning'] ) {
 	$all_files = glob("/boot/config/plugins/dockerMan/templates-user/*.xml");
 	$all_files = $all_files ?: array();
-	
+
 	if ( $installed == "true" ) {
 		foreach ($info as $installedDocker) {
 			$installedImage = $installedDocker['Image'];
@@ -936,12 +936,12 @@ case 'uninstall_docker':
 
 	if ( version_compare($unRaidVersion,"6.5.2",">=") ) {
 		if ( $dockerRunning[$container]['Running'] ) {
-			$DockerClient -> stopContainer($dockerRunning[$container]['Id']);
+			myStopContainer($containerName,$dockerRunning[$container]['Id']);
 		}
 		$DockerClient -> removeContainer($containerName,$dockerRunning[$container]['Id']);
 		$DockerClient -> removeImage($dockerRunning[$container]['ImageId']);
 	} else {
-		shell_exec("docker stop $containerName");
+		myStopContainer($containerName,"");
 		shell_exec("docker rm  $containerName");
 		shell_exec("docker rmi ".$dockerInfo[$container]['ImageId']);
 	}
@@ -1185,6 +1185,20 @@ case 'populateAutoComplete':
 	echo $autoScript;
 	break;
 
+#############################
+# Stops a running container #
+#############################
+case 'stopStartContainer':
+	$containerName = getPost("name","");
+	$containerID = getPost("id","");
+	$stopStart = filter_var(getPost("stopStart",""),FILTER_VALIDATE_BOOLEAN);
+	if ( $stopStart ) {
+		myStartContainer($containerName,$containerID);
+	} else {
+		myStopContainer($containerName,$containerID);
+	}
+	echo "ok";
+	break;
 }
 
 #################################################################
@@ -1544,7 +1558,7 @@ function appOfDay($file) {
 #####################################################
 function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
 	global $communitySettings;
-	
+
 	$test = $file[$randomApp];
 	if ( ! $test['Displayable'] )											return false;
 	if ( ! $test['Compatible'] )											return false;

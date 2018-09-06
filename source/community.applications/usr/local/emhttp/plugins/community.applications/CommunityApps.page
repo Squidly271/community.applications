@@ -254,7 +254,7 @@ $(function(){
 			instance.content("<div style='overflow:scroll; max-height:550px; height:550px; overflow-x:hidden; overflow-y:auto;'><center><img src='/plugins/community.applications/images/community.applications.png'><br><font size='6' color='white'>Community Applications</font><br><br><?=$caCredits?></div>");
 		}
 	});
-	
+
 	$('.ca_stats').tooltipster({
 		trigger: 'custom',
 		triggerOpen: {mouseenter:false,click:true,touchstart:true},
@@ -275,7 +275,7 @@ $(function(){
 			});
 		}
 	});
-	
+
 	$('.ca_section').tooltipster({
 		trigger: 'custom',
 		triggerOpen: {click:true,touchstart:true},
@@ -516,6 +516,21 @@ function setToolTip() {
 					instance.content(data);
 				}
 			});
+		}
+	});
+	$('.ca_fa-stop').click(function() { stopStartContainer(this,false); });
+	$('.ca_fa-start').click(function() { stopStartContainer(this,true); });
+}
+
+function stopStartContainer(container,stopStart) {
+	var id = $(container).data("id");
+	var name = $(container).data("name");
+	var message = stopStart ? "Starting" : "Stopping";
+	myAlert(message+" "+name);
+	$.post(URL,{action:'stopStartContainer',stopStart:stopStart,id:id,name:name},function(data) {
+		if (data) {
+			myCloseAlert();
+			changeSortOrder(null,null,null);
 		}
 	});
 }

@@ -758,6 +758,9 @@ function getRunningContainers() {
 		foreach ($containers as $container) {
 			$info[$container['Name']]['running'] = $container['Running'];
 			$info[$container['Name']]['repository'] = $container['Image'];
+			$info[$container['Name']]['ImageId'] = $container['ImageId'];
+			$info[$container['Name']]['Id'] = $container['Id'];
+			$info[$container['Name']]['Name'] = $container['Name'];
 			$infoTmp[$container['Name']] = $info[$container['Name']];
 		}
 	}
@@ -797,4 +800,30 @@ function getDownloads($downloads,$lowFlag=false) {
 	}
 	return ($lowFlag) ? $downloads : "";
 }
+#####################
+# Stops a container #
+#####################
+function myStopContainer($containerName,$id) {
+	global $unRaidVersion;
+
+	$DockerClient = new DockerClient();
+	if ( version_compare($unRaidVersion,"6.5.2",">=") ) {
+		$DockerClient -> stopContainer($id);
+	} else {
+		shell_exec("docker stop $containerName");
+	}
+}
+######################
+# Starts a container #
+######################
+function myStartContainer($containerName,$id) {
+	global $unRaidVersion;
+
+	$DockerClient = new DockerClient();
+	if ( version_compare($unRaidVersion,"6.5.2",">=") ) {
+		$DockerClient -> startContainer($id);
+	} else {
+		shell_exec("docker start $containerName");
+	}
+}	
 ?>
