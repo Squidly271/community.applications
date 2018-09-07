@@ -390,7 +390,10 @@ function fixTemplates($template) {
 			$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "CPU pinning removed from template";
 		}
 	}
-
+	if ( ! $template['Support'] ) {
+		$statistics['caFixed']++;
+		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "No Support Link Present";
+	}
 	return $template;
 }
 
@@ -772,8 +775,7 @@ function getRunningContainers() {
 #################################
 function categoryToLink($cat,$popUp = false) {
 	$class = $popUp ? "ca_tooltip ca_categoryLink popUpLink" : "ca_tooltip ca_categoryLink";
-	$cat = str_replace(":,",",",$cat);
-	$cat = str_replace(" ",",",$cat);
+	$cat = str_replace(array(":,"," "),",",$cat);
 
 	$all_categories = explode(",",$cat);
 	sort($all_categories);

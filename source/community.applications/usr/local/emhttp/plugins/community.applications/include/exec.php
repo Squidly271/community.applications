@@ -101,11 +101,6 @@ case 'get_content':
 			$displayIncompatible = true;
 			$noInstallComment = "<b>While highly not recommended to do</b>, incompatible applications can be installed by enabling Display Incompatible Applications within CA's General Settings<br><br>";
 			break;
-		case "/NOSUPPORT/i":
-			$category = false;
-			$displayNoSupport = true;
-			$noInstallComment = "The following applications do not have any support thread for them (other applications that are also blacklisted / deprecated in addition to having no support thread will not appear here)<br><br>";
-			break;
 	}
 	$newAppTime = strtotime($communitySettings['timeNew']);
 
@@ -232,9 +227,6 @@ case 'get_content':
 		}
 		if ( ! $template['Compatible'] && $displayIncompatible ) {
 			$display[] = $template;
-			continue;
-		}
-		if ( $template['Support'] && $displayNoSupport ) {
 			continue;
 		}
 
@@ -460,23 +452,13 @@ case 'convert_docker':
 			$dockerCompare = trim(strtoupper($dockerLine));
 			$dockerCmp = strpos($dockerCompare, "VOLUME");
 			if ( $dockerCmp === 0 ) {
-				$dockerLine = str_replace("*"," ",$dockerLine);
-				$dockerLine = str_replace("'", " ", $dockerLine);
-				$dockerLine = str_replace("[", " ", $dockerLine);
-				$dockerLine = str_replace("]", " ", $dockerLine);
-				$dockerLine = str_replace(",", " ", $dockerLine);
-				$dockerLine = str_replace('"', " ", $dockerLine);
+				$dockerLine = str_replace(array("*","'","[","]",",",'"')," ",$dockerLine);
 				$volumes[] = $dockerLine;
 			}
 
 			$dockerCmp = strpos($dockerCompare, "EXPOSE");
 			if ( $dockerCmp === 0 ) {
-				$dockerLine = str_replace("*"," ", $dockerLine);
-				$dockerLine = str_replace("'", " ", $dockerLine);
-				$dockerLine = str_replace("[", " ", $dockerLine);
-				$dockerLine = str_replace("]", " ", $dockerLine);
-				$dockerLine = str_replace(",", " ", $dockerLine);
-				$dockerLine = str_replace('"', " ", $dockerLine);
+				$dockerLine = str_replace(array("*","'","[","]",",",'"')," ",$dockerLine);
 				$ports[] = $dockerLine;
 			}
 
@@ -1029,9 +1011,6 @@ case 'statistics':
 		if ( ! $template['Compatible'] ) {
 			$statistics['totalIncompatible']++;
 		}
-		if ( ! $template['Support'] && ! $template['Blacklist'] && ! $template['Deprecated'] && $template['Compatible'] ) {
-			$statistics['NoSupport']++;
-		}
 		if ( $template['Blacklist'] ) {
 			$statistics['blacklist']++;
 		}
@@ -1064,7 +1043,7 @@ case 'statistics':
 	}
 
 	$color = "<font color='coral'>";
-	echo "<div style='overflow:scroll; max-height:550px; height:550px; overflow-x:hidden; overflow-y:hidden;'><center><img height='48px' src='/plugins/community.applications/images/community.applications.png'><br><font size='3' color='white'>Community Applications</font><br>";
+	echo "<div style='overflow:scroll; max-height:550px; height:550px; overflow-x:hidden; overflow-y:hidden;'><center><img height='48px' src='/plugins/community.applications/images/community.applications.png'><br><font size='5' color='white'>Community Applications</font><br>";
 	echo "<br>";
 	echo "<table>";
 	echo "<tr><td class='ca_table'><b><a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td>$color$updateTime</td></tr>";
@@ -1079,7 +1058,6 @@ case 'statistics':
 	echo "<tr><td class='ca_table'><b><a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Incompatible Applications</a></b></td><td>$color{$statistics['totalIncompatible']}</td></tr>";
 	echo "<tr><td class='ca_table'><b><a id='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Deprecated Applications</a></b></td><td>$color{$statistics['totalDeprecated']}</td></tr>";
 	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Total Number Of Moderation Entries</a></b></td><td>$color{$statistics['totalModeration']}+</td></tr>";
-	echo "<tr><td class='ca_table'><b><a id='NOSUPPORT' onclick='showSpecialCategory(this);' style='cursor:pointer'>Applications without any support thread:</a></b></td><td>$color{$statistics['NoSupport']}</td></tr>";
 	$totalCA = exec("du -h -s /usr/local/emhttp/plugins/community.applications/");
 	$totalTmp = exec("du -h -s /tmp/community.applications/");
 	$memCA = explode("\t",$totalCA);
@@ -1149,11 +1127,8 @@ case 'downloadRepo':
 
 	$downloadURL = randomFile();
 	file_put_contents($downloadURL, $repoURL);
-	$friendlyName = str_replace(" ","",$repoName);
-	$friendlyName = str_replace("'","",$friendlyName);
-	$friendlyName = str_replace('"',"",$friendlyName);
-	$friendlyName = str_replace('\\',"",$friendlyName);
-	$friendlyName = str_replace("/","",$friendlyName);
+	$friendlyName = str_replace(array(" ","'",'"','\\',"/"),"",$repoName);
+
 	if ( ! $downloaded = $DockerTemplates->downloadTemplates($communityPaths['templates-community']."/templates/$friendlyName", $downloadURL) ){
 		file_put_contents($communityPaths['updateErrors'],"Failed to download <font color='purple'>$repoName</font> $repoURL<br>",FILE_APPEND);
 		@unlink($downloadURL);
@@ -1262,8 +1237,7 @@ function ProcessCommunityTemplates() {
 
 				$statistics['totalApplications']++;
 
-				$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
-				$o['Category'] = str_replace("Status:Stable","",$o['Category']);
+				$o['Category'] = str_replace(array("Status:Beta","Status:Stable"),"",$o['Category']);    # undo changes LT made to my xml schema for no good reason
 				$myTemplates[$o['ID']] = $o;
 				if ( is_array($o['Branch']) ) {
 					if ( ! $o['Branch'][0] ) {
