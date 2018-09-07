@@ -55,8 +55,8 @@ $template = readJsonFile($communityPaths['defaultSkin']);
 .pageNavigation {color:<?=$unRaid66color?>;}
 .specialCategory {color:<?=$unRaid66color?>;}
 </style>
-<script src='/plugins/community.applications/javascript/awesomplete.min.js'></script>
-<script src='/plugins/community.applications/javascript/jquery.mobile.custom.min.js'></script>
+<script src='<?autov("/plugins/community.applications/javascript/awesomplete.min.js")?>'></script>
+<script src='<?autov("/plugins/community.applications/javascript/jquery.mobile.custom.min.js")?>'></script>
 <script>
 var URL = "/plugins/<?=$plugin?>/include/exec.php";
 var appFeedModeMsg = "Retrieving the latest application Lists";
