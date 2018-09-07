@@ -709,7 +709,7 @@ if ( $communitySettings['dockerRunning'] ) {
 			if ( startsWith($installedImage,"library/") ) { # official images are in DockerClient as library/mysql eg but template just shows mysql
 				$installedImage = str_replace("library/","",$installedImage);
 			}
-
+			
 			foreach ($file as $template) {
 				if ( $installedName == $template['Name'] ) {
 					$template['testrepo'] = $installedImage;
@@ -729,7 +729,6 @@ if ( $communitySettings['dockerRunning'] ) {
 				}
 			}
 		}
-
 # handle renamed containers
 		foreach ($all_files as $xmlfile) {
 			$o = readXmlFile($xmlfile,$moderation);
@@ -782,6 +781,10 @@ if ( $communitySettings['dockerRunning'] ) {
 					if ( $o['Blacklist'] ) {
 						continue;
 					}
+					# handle a PR from LT where it is possible for an identical template (xml) to be present twice, with different filenames.
+					# Without this, an app could appear to be shown in installed apps twice
+					$fat32Fix[$searchResult]++;
+					if ($fat32Fix[$searchResult] > 1) {continue;}
 					$displayed[] = $o;
 				}
 			}
