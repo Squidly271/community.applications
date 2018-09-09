@@ -1403,6 +1403,9 @@ function DownloadApplicationFeed() {
 		$i = ++$i;
 		$templateXML = makeXML($o);
 		@mkdir(dirname($o['Path']),0777,true);
+		if ( file_exists($o['Path']) ) {
+			$o['Path'] .= "(1).xml";
+		}
 		file_put_contents($o['Path'],$templateXML);
 	}
 	writeJsonFile($communityPaths['statistics'],$statistics);
