@@ -231,8 +231,8 @@ function fixTemplates($template) {
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository'][0]][] = "Fatal: Multiple Repositories Found - Removing application from lists";
 		return false;
 	}
-	$repoTestLwrCase = explode(":",$template['Repository']);
- 	if ( ($repoTestLwrCase != strtolower($repoTestLwrCase)) && ! $template['Plugin'] ) { # due to sdesbure
+ 	$repoTestLwrCase = explode(":",$template['Repository']);
+ 	if ( ($repoTestLwrCase[0] != strtolower($repoTestLwrCase[0])) && ! $template['Plugin'] ) { # due to sdesbure
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Invalid repository found.  Only lowercase is allowed";
 		return false;
