@@ -756,13 +756,11 @@ function getAuthor($template) {
 # Gets the running/installed containers #
 #########################################
 function getRunningContainers() {
-	global $communitySettings;
+	global $communitySettings, $DockerClient, $DockerTemplates;
 
 	if ( $communitySettings['dockerRunning'] ) {
-		$DockerTemplates = new DockerTemplates();
 		$info = $DockerTemplates->getAllInfo();
 # workaround for incorrect caching in dockerMan
-		$DockerClient = new DockerClient();
 		$containers = $DockerClient->getDockerContainers();
 		foreach ($containers as $container) {
 			$info[$container['Name']]['running'] = $container['Running'];
@@ -812,26 +810,16 @@ function getDownloads($downloads,$lowFlag=false) {
 # Stops a container #
 #####################
 function myStopContainer($containerName,$id) {
-	global $unRaidVersion;
+	global $DockerClient;
 
-	$DockerClient = new DockerClient();
-	if ( version_compare($unRaidVersion,"6.5.2",">=") ) {
-		$DockerClient -> stopContainer($id);
-	} else {
-		shell_exec("docker stop $containerName");
-	}
+	$DockerClient->stopContainer($id);
 }
 ######################
 # Starts a container #
 ######################
 function myStartContainer($containerName,$id) {
-	global $unRaidVersion;
+	global $DockerClient;
 
-	$DockerClient = new DockerClient();
-	if ( version_compare($unRaidVersion,"6.5.2",">=") ) {
-		$DockerClient -> startContainer($id);
-	} else {
-		shell_exec("docker start $containerName");
-	}
+	$DockerClient->startContainer($id);
 }	
 ?>

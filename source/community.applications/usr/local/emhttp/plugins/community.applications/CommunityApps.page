@@ -529,8 +529,27 @@ function stopStartContainer(container,stopStart) {
 	myAlert(message+" "+name);
 	$.post(URL,{action:'stopStartContainer',stopStart:stopStart,id:id,name:name},function(data) {
 		if (data) {
-			myCloseAlert();
-			refreshDisplay();
+			if ( myTrim(data) == "ok" ) {
+				myCloseAlert();
+				refreshDisplay();
+			} else {
+				var msg = "stopStart" ? "start" : "stop";
+				swal({
+					title: "Failed to "+msg+" "+name,
+					type: "error",
+					showCancelButton: false,
+					showConfirmButton: true,
+					closeOnConfirm: true,
+					allowOutsideClick: false,
+					showLoaderOnConfirm: false,
+					html: true
+				}, function(isConfirm) {
+					if (isConfirm) {
+						myCloseAlert();
+						refreshDisplay();
+					}
+				});
+			}
 		}
 	});
 }
@@ -1071,7 +1090,6 @@ function showModeration(script,title) {
 function previousApps(button,installed) {
 	setPageOne();
 	resetSortByDate();
-//	mySpinner();
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
 	data.docker = "";
 	if ( installed ) {
@@ -1100,7 +1118,6 @@ function previousApps(button,installed) {
 	$.post(URL,{action:'previous_apps',installed:installed},function(data) {
 		if (data) {
 			changeSortOrder(null,null,"true");
-	//		myCloseAlert();
 		}
 	});
 }
@@ -1179,6 +1196,7 @@ function deletePrivateApp(path,name,author) {
 	}, function(isConfirm) {
 		if ( isConfirm ) {
 			swal("Removing "+name,"","info");
+			getSelectedApps();
 			$.post(URL,{action:'removePrivateApp',path:path},function(data) {
 				if (data) {
 					myCloseAlert();

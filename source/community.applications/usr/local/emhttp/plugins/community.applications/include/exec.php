@@ -49,6 +49,7 @@ if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)
 }
 if ( $communitySettings['dockerRunning'] ) {
 	$DockerClient = new DockerClient();
+	$DockerTemplates = new DockerTemplates();
 	$dockerRunning = $DockerClient->getDockerContainers();
 } else {
 	$dockerRunning = array();
@@ -670,7 +671,6 @@ case 'previous_apps':
 	$dockerUpdateStatus = readJsonFile($communityPaths['dockerUpdateStatus']);
 	$moderation = readJsonFile($communityPaths['moderation']);
 	if ( $communitySettings['dockerRunning'] ) {
-		$DockerClient = new DockerClient();
 		$info = $DockerClient->getDockerContainers();
 	} else {
 		$info = array();
@@ -915,21 +915,15 @@ case 'uninstall_docker':
 	$doc->load($application);
 	$containerName  = stripslashes($doc->getElementsByTagName( "Name" )->item(0)->nodeValue);
 
-	$DockerClient = new DockerClient();
 	$dockerInfo = $DockerClient->getDockerContainers();
 	$container = searchArray($dockerInfo,"Name",$containerName);
 
-	if ( version_compare($unRaidVersion,"6.5.2",">=") ) {
-		if ( $dockerRunning[$container]['Running'] ) {
-			myStopContainer($containerName,$dockerRunning[$container]['Id']);
-		}
-		$DockerClient -> removeContainer($containerName,$dockerRunning[$container]['Id']);
-		$DockerClient -> removeImage($dockerRunning[$container]['ImageId']);
-	} else {
-		myStopContainer($containerName,"");
-		shell_exec("docker rm  $containerName");
-		shell_exec("docker rmi ".$dockerInfo[$container]['ImageId']);
+	if ( $dockerRunning[$container]['Running'] ) {
+		myStopContainer($containerName,$dockerRunning[$container]['Id']);
 	}
+	$DockerClient->removeContainer($containerName,$dockerRunning[$container]['Id']);
+	$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
+
 	echo "Uninstalled";
 	break;
 
@@ -1121,8 +1115,6 @@ case 'downloadRepo':
 	$repoURL = getPost("repoURL","oops");
 	$repoName =getPost("repoName","oops");
 
-	$DockerTemplates = new DockerTemplates();
-
 	$templates = readJsonFile($communityPaths['legacyTemplatesTmp']);
 
 	$downloadURL = randomFile();
@@ -1175,7 +1167,13 @@ case 'stopStartContainer':
 	} else {
 		myStopContainer($containerName,$containerID);
 	}
-	echo "ok";
+	$info = getRunningContainers();
+	$runState = $stopStart ? $info[$containerName]['running'] : !$info[$containerName]['running'];
+	if ($runState) {
+		echo "ok";
+	} else {
+		echo "problem";
+	}
 	break;
 }
 
@@ -1183,11 +1181,9 @@ case 'stopStartContainer':
 # Functions used to download the templates from various sources #
 #################################################################
 function ProcessCommunityTemplates() {
-	global $communityPaths, $communitySettings, $statistics;
+	global $communityPaths, $communitySettings, $statistics, $DockerTemplates;
 
 	$moderation = readJsonFile($communityPaths['moderation']);
-
-	$DockerTemplates = new DockerTemplates();
 
 	$Repos = readJsonFile($communityPaths['Repositories']);
 	$myTemplates = array();
