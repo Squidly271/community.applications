@@ -27,7 +27,7 @@ $cfg['skin'] = "Narrow";
 if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
-$unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
+$unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 $unRaid66color = $unRaid66 ? "#FF8C2F" : "green";
 

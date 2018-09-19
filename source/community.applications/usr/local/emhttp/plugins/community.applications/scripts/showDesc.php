@@ -1,7 +1,7 @@
-<div style='overflow:scroll; max-height:450px; height:450px; overflow-x:hidden; overflow-y:auto;font-size:12px;'>
 <style>p { margin-left:20px;margin-right:20px; }
 .popUpLink { color:#FF8C2F; }
 </style>
+<div style='overflow:scroll; max-height:450px; height:450px; overflow-x:hidden; overflow-y:auto;font-size:12px;'>
 <?PHP
 ###############################################################
 #                                                             #
@@ -16,30 +16,22 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("webGui/include/Markdown.php");
 
-
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $csrf_token = $unRaidVars['csrf_token'];
 $tabMode = '_self';
 
-$unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
-$unRaidVersion = $unRaidSettings['version'];
-
-$dockerDaemon = "/var/run/dockerd.pid";
-if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)) ) {
+if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 	$communitySettings['dockerRunning'] = "true";
-} else {
-	$communitySettings['dockerSearch'] = "no";
-	unset($communitySettings['dockerRunning']);
-}
-if ( $communitySettings['dockerRunning'] ) {
 	$DockerTemplates = new DockerTemplates();
-	$info = $DockerTemplates->getAllInfo();
 	$DockerClient = new DockerClient();
+	$info = $DockerTemplates->getAllInfo();
 	$dockerRunning = $DockerClient->getDockerContainers();
 } else {
+	unset($communitySettings['dockerRunning']);
 	$info = array();
 	$dockerRunning = array();
 }
+
 $appNumber =  urldecode($_GET['appPath']);
 $appName = urldecode($_GET['appName']);
 if ( ! $appNumber ) {

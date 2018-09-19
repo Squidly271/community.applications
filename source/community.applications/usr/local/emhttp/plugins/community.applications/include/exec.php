@@ -15,8 +15,7 @@ if (is_file("/usr/local/emhttp/plugins/dynamix.docker.manager/include/Helpers.ph
 	require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/Helpers.php");  # 6.6.0+ only
 }
 
-$unRaidSettings = my_parse_ini_file($communityPaths['unRaidVersion']);
-$unRaidVersion = $unRaidSettings['version'];
+$unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
 
 ################################################################################
 # Set up any default settings (when not explicitely set by the settings module #
@@ -32,28 +31,25 @@ require_once($communityPaths['defaultSkinPHP']);
 
 $communitySettings['appFeed']       = "true"; # set default for deprecated setting
 $communitySettings['maxPerPage']    = isMobile() ? 10 : 25;
-$communitySettings['unRaidVersion'] = $unRaidVersion;
+$communitySettings['unRaidVersion'] = $unRaidSettings['version'];
 $communitySettings['timeNew'] 			= "-10 years";
 
 if ( $communitySettings['favourite'] != "None" ) {
 	$officialRepo = str_replace("*","'",$communitySettings['favourite']);
 	$separateOfficial = true;
 }
-$dockerDaemon = "/var/run/dockerd.pid";
+$DockerClient = new DockerClient();
+$DockerTemplates = new DockerTemplates();
 
-if ( is_file($dockerDaemon) && is_dir("/proc/".@file_get_contents($dockerDaemon)) ) {
-	$communitySettings['dockerRunning'] = "true";
+if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
+	$communitySettings['dockerRunning'] = true;
+	$dockerRunning = $DockerClient->getDockerContainers();
 } else {
 	$communitySettings['dockerSearch'] = "no";
 	unset($communitySettings['dockerRunning']);
-}
-if ( $communitySettings['dockerRunning'] ) {
-	$DockerClient = new DockerClient();
-	$DockerTemplates = new DockerTemplates();
-	$dockerRunning = $DockerClient->getDockerContainers();
-} else {
 	$dockerRunning = array();
 }
+
 @mkdir($communityPaths['tempFiles'],0777,true);
 @mkdir($communityPaths['persistentDataStore'],0777,true);
 
@@ -919,7 +915,7 @@ case 'uninstall_docker':
 	$container = searchArray($dockerInfo,"Name",$containerName);
 
 	if ( $dockerRunning[$container]['Running'] ) {
-		myStopContainer($containerName,$dockerRunning[$container]['Id']);
+		myStopContainer($dockerRunning[$container]['Id']);
 	}
 	$DockerClient->removeContainer($containerName,$dockerRunning[$container]['Id']);
 	$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
@@ -941,7 +937,7 @@ case "pinApp":
 # Displays the pinned applications #
 ####################################
 case "pinnedApps":
-	$pinnedApps = getPinnedApps();
+	$pinnedApps = readJsonFile($communityPaths['pinned']);
 	$file = readJsonFile($communityPaths['community-templates-info']);
 	$startIndex = 0;
 	foreach ($pinnedApps as $pinned) {
@@ -1163,9 +1159,9 @@ case 'stopStartContainer':
 	$containerID = getPost("id","");
 	$stopStart = filter_var(getPost("stopStart",""),FILTER_VALIDATE_BOOLEAN);
 	if ( $stopStart ) {
-		myStartContainer($containerName,$containerID);
+		myStartContainer($containerID);
 	} else {
-		myStopContainer($containerName,$containerID);
+		myStopContainer($containerID);
 	}
 	$info = getRunningContainers();
 	$runState = $stopStart ? $info[$containerName]['running'] : !$info[$containerName]['running'];

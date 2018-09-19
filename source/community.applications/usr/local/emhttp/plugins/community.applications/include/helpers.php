@@ -12,25 +12,11 @@ function arrayEntriesToObject($sourceArray,$defaultFlag=true) {
 	return is_array($sourceArray) ? array_fill_keys($sourceArray,$defaultFlag) : array();
 }
 
-####################################################################################################
-# 2 Functions because unRaid includes comments in .cfg files starting with # in violation of PHP 7 #
-####################################################################################################
-if ( ! function_exists("my_parse_ini_file") ) {
-	function my_parse_ini_file($file,$mode=false,$scanner_mode=INI_SCANNER_NORMAL) {
-		return parse_ini_string(preg_replace('/^#.*\\n/m', "", @file_get_contents($file)),$mode,$scanner_mode);
-	}
-}
-if ( ! function_exists("my_parse_ini_string") ) {
-	function my_parse_ini_string($string, $mode=false,$scanner_mode=INI_SCANNER_NORMAL) {
-		return parse_ini_string(preg_replace('/^#.*\\n/m', "", $string),$mode,$scanner_mode);
-	}
-}
-
 ###########################################################################
 # Helper function to determine if a plugin has an update available or not #
 ###########################################################################
 function checkPluginUpdate($filename) {
-	global $unRaidVersion;
+	global $communitySettings;
 
 	$filename = basename($filename);
 	$upgradeVersion = (is_file("/tmp/plugins/$filename")) ? plugin("version","/tmp/plugins/$filename") : "0";
@@ -38,7 +24,7 @@ function checkPluginUpdate($filename) {
 
 	if ( $installedVersion < $upgradeVersion ) {
 		$unRaid = plugin("unRAID","/tmp/plugins/$filename");
-		if ( $unRaid === false || version_compare($unRaidVersion,$unRaid,">=") ) {
+		if ( $unRaid === false || version_compare($communitySettings['unRaidVersion'],$unRaid,">=") ) {
 			return true;
 		} else {
 			return false;
@@ -452,10 +438,10 @@ function fixAttributes(&$template,$attribute) {
 # Returns: TRUE if it's valid to run, FALSE if not              #
 #################################################################
 function versionCheck($template) {
-	global $unRaidVersion;
+	global $communitySettings;
 
-	if ( $template['MinVer'] && ( version_compare($template['MinVer'],$unRaidVersion) > 0 ) ) { return false; }
-	if ( $template['MaxVer'] && ( version_compare($template['MaxVer'],$unRaidVersion) < 0 ) ) { return false; }
+	if ( $template['MinVer'] && ( version_compare($template['MinVer'],$communitySettings['unRaidVersion']) > 0 ) ) { return false; }
+	if ( $template['MaxVer'] && ( version_compare($template['MaxVer'],$communitySettings['unRaidVersion']) < 0 ) ) { return false; }
 	return true;
 }
 
@@ -553,15 +539,6 @@ function validURL($URL) {
 	return filter_var($URL, FILTER_VALIDATE_URL);
 }
 
-####################################################################################
-# Read the pinned apps from temp files.  If it fails, gets it from the flash drive #
-####################################################################################
-function getPinnedApps() {
-	global $communityPaths;
-
-	return readJsonFile($communityPaths['pinned']);
-}
-
 #################################################
 # Sets the updateButton to the appropriate Mode #
 #################################################
@@ -646,10 +623,9 @@ function pluginDupe($templates) {
 
 	$pluginList = array();
 	foreach ($templates as $template) {
-		if ( ! $template['Plugin'] ) {
-			continue;
+		if ( $template['Plugin'] ) {
+			$pluginList[basename($template['Repository'])]++;
 		}
-		$pluginList[basename($template['Repository'])]++;
 	}
 	foreach (array_keys($pluginList) as $plugin) {
 		if ( $pluginList[$plugin] > 1 ) {
@@ -809,7 +785,7 @@ function getDownloads($downloads,$lowFlag=false) {
 #####################
 # Stops a container #
 #####################
-function myStopContainer($containerName,$id) {
+function myStopContainer($id) {
 	global $DockerClient;
 
 	$DockerClient->stopContainer($id);
@@ -817,7 +793,7 @@ function myStopContainer($containerName,$id) {
 ######################
 # Starts a container #
 ######################
-function myStartContainer($containerName,$id) {
+function myStartContainer($id) {
 	global $DockerClient;
 
 	$DockerClient->startContainer($id);

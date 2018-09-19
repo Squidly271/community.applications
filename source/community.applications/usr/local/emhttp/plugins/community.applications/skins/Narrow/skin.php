@@ -70,7 +70,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$displayHeader = "<div class='dockerDisabled'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div><br><br>";
 	}
 
-	$pinnedApps = getPinnedApps();
+	$pinnedApps = readJsonFile($communityPaths['pinned']);
 	$iconSize = $communitySettings['iconSize'];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
 	if ( $sortOrder['sortBy'] != "noSort" ) {
