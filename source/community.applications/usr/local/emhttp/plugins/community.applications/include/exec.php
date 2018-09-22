@@ -178,7 +178,7 @@ case 'get_content':
 				if ( ! $appsOfDay[$i]) {
 					continue;
 				}
-				$file[$appsOfDay[$i]]['NewApp'] = true;
+				$file[$appsOfDay[$i]]['NewApp'] = ($communitySettings['startup'] != "random");
 				$displayApplications['community'][] = $file[$appsOfDay[$i]];
 			}
 			if ( $displayApplications['community'] ) {
