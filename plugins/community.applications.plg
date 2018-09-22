@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.09.01a">
-<!ENTITY md5       "e3b0183c864462605de3ece490afcf27">
+<!ENTITY version   "2018.09.22">
+<!ENTITY md5       "0c5005b274770273198d3d238920806d">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,16 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.09.22
+- Changed: Startup displays now follow settings for including already installed apps
+- Added: Able to start / stop installed docker apps from within Installed Apps section
+- Fixed: If installing a previous app by itself, then don't display checkbox to delete the template after installation finished
+- Changed: Some minor 6.6 code compatibility updates
+- Misc coding optimizations
+- Added: Automatically remove a docker template if it's not a valid repository (ie: it must all be in lowercase)
+- Fixed: Random app of day should not display date updated
+- Added: Always display https images.  (Selectable in options: Abilty to downgrade to http (default) or don't display at all)
+
 ###2018.09.01
 - Adjust CSS if unRaid is 6.6+
 - Many code optimizations
