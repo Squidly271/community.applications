@@ -373,7 +373,7 @@ $(function(){
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
 	$("#homeIcon").click(function()             { appStore(); });
 
-/* Everything is now initialized.  This is the start of the actual "real" code */
+	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
 		sweetAlertBackground("white");
 		swal({
@@ -680,8 +680,8 @@ function myCloseAlert() {
 
 function mySpinner() {
 	<?if ($unRaid66):?>
-		$("div.spinner").show("slow");
-//		updateDisplay("");
+//		$("div.spinner").show("slow");
+		updateDisplay("");
 	<?endif;?>
 	myAlert("",""," ",150);
 }
@@ -1472,7 +1472,16 @@ function installMulti() {
 function updateDisplay(data) {
 	$('#templates_content').html(data);
 	$('img').on("error",function() {
-		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+		var origSource = $(this).attr('src');
+		if ( document.referrer.startsWith("https") && "<?=$cfg['secureImage']?>" == "secure" ) {
+			$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+		} else {
+			var newSource = origSource.replace("https://","http://");
+			$(this).attr('src',newSource);
+			$(this).on("error",function() {
+				$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+			});
+		}
 	});
 	enableSearch();
 	saveState();

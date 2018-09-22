@@ -89,6 +89,14 @@ Start-up Display:
 
 > This setting chooses whether to display a random "app of the day" or the most recently added / updated applications
 
+Only display https (secure) images (when accessing server via https):
+: <select name='secureImage' size='1'>
+	<?=mk_option($cfg['secureImage'],'all','Display all images (default)')?>
+	<?=mk_option($cfg['secureImage'],'secure',"Don't display insecure images")?>
+	</select>
+	
+> When accessing your server via https, this option will not display any icon for the applications if it is not able to be displayed via https)
+
 <strong>Docker Hub Searching</strong>
 
 Enable additional search results from dockerHub?

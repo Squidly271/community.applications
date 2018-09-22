@@ -17,6 +17,7 @@ require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHel
 require_once("webGui/include/Markdown.php");
 
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
+$communitySettings = parse_plugin_cfg("community.applications");
 $csrf_token = $unRaidVars['csrf_token'];
 $tabMode = '_self';
 
@@ -89,7 +90,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	if ( $color ) {
 		$templateDescription .= "<center><font size=6;><strong>{$template['SortName']}</strong></font></center><br>";
 	}
-	$templateDescription .= "<table style='margin:0 0 0 0;'><tr><td><figure style='margin-right:10px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px;background-color:#C7C5CB;padding:3px;border-radius:10px 10px 10px 10px' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;';>";
+	$templateDescription .= "<table style='margin:0 0 0 0;'><tr><td><figure style='margin-right:10px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px;background-color:#C7C5CB;padding:3px;border-radius:10px 10px 10px 10px';>";
 	$templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
 	$templateDescription .= "</figure>";
 	$templateDescription .= "</td><td></td><td><table>";
@@ -231,3 +232,27 @@ if ( $template['Changes'] ) {
 echo $templateDescription;
 ?>
 </div>
+<script>
+	$('img').each(function() { // This handles any http images embedded in changelogs
+		if ( $(this).hasClass('displayIcon') ) { // ie: don't change any images on the main display
+			return;
+		}
+		var origSource = $(this).attr("src");
+		if ( origSource.startsWith("http://") ) {
+			var newSource = origSource.replace("http://","https://");
+			$(this).attr("src",newSource);
+		}
+	});
+	$('img').on("error",function() {
+		var origSource = $(this).attr('src');
+		var newSource = origSource.replace("https://","http://");
+		if ( document.referrer.startsWith("https") && "<?=$communitySettings['secureImage']?>" == "secure" ) {
+			$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+		} else {
+			$(this).attr('src',newSource);
+			$(this).on("error",function() {
+				$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+			});
+		}
+	});
+</script>

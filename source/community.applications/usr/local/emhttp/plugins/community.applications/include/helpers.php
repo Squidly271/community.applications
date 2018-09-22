@@ -81,6 +81,7 @@ function getSortOrder($sortArray) {
 # Helper function to determine if $haystack begins with $needle #
 #################################################################
 function startsWith($haystack, $needle) {
+	if ( !is_string($haystack) || ! is_string($needle) ) { return false; }
 	return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;
 }
 
@@ -382,6 +383,7 @@ function fixTemplates($template) {
 			$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "CPU pinning removed from template";
 		}
 	}
+	$template['Icon'] = str_replace("http://","https://",$template['Icon']);
 	if ( ! $template['Support'] ) {
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "No Support Link Present";
