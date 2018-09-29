@@ -157,7 +157,7 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
-	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
+	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox'  placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
@@ -188,6 +188,12 @@ $(function(){
 			}
 		}
 	}
+
+	$('#searchBox').keyup(function(e) {
+		if (e.which == 13) {
+			doSearch(false);
+		}
+	});
 
 	$('.ca_staticTips').tooltipster({
 		animationDuration: [2000,350],

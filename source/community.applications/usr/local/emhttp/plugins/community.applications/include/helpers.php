@@ -146,7 +146,7 @@ function checkValidDockerRunCommand(&$template) {
 
 	if ( ! function_exists("xmlToCommand") ) { return; } # ie: 6.6.0+ only
 	if ( $template['Plugin'] ) { return; }
-
+  if ( ! function_exists("dockerRunSecurity") ) { return; }
 	$subnet = array();
 	if ( dockerRunSecurity(xmlToCommand(makeXML($template))[0]) ) {
 		securityViolation($template);
