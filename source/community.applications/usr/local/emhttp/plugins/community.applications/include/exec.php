@@ -1143,12 +1143,10 @@ case 'populateAutoComplete':
 			$autoComplete[strtolower($repo[0])] = $repo[0];
 		}
 	}
-	$autoScript = "<script>searchBoxAwesomplete.list = [";
 	foreach ($autoComplete as $auto) {
 		$autoScript .= "'$auto',";
 	}
-	$autoScript = rtrim($autoScript,",")."];</script>";
-	echo $autoScript;
+	echo "<script>searchBoxAwesomplete.list = [".rtrim($autoScript,",")."];</script>";
 	break;
 
 #############################
@@ -1220,7 +1218,10 @@ function ProcessCommunityTemplates() {
 				if ( ! $o ) {
 					continue;
 				}
-
+				if ( ! $o['Plugin'] ) {
+//					$dockerRegistry = get_content_from_registry('https://registry.hub.docker.com/v2/repositories/'.$o['Repository']);
+//					$o['downloads'] = $dockerRegistry->pull_count;
+				}
 				# Overwrite any template values with the moderated values
 				if ( is_array($moderation[$o['Repository']]) ) {
 					$o = array_merge($o, $moderation[$o['Repository']]);

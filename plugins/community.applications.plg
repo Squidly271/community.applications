@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.09.28">
-<!ENTITY md5       "9aef07d4563d5ebc6b93691113eb95df">
+<!ENTITY version   "2018.10.02">
+<!ENTITY md5       "bb010bbd255be7531eff87c3809372ab">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.10.02
+REQUIRED UPDATE
+- Change appfeed URL
+
 ###2018.09.28
 - Compatibility Fix for unRaid 6.6.2
 

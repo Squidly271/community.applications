@@ -22,16 +22,16 @@ $caCredits = "
 				<td class='ca_table'>eschultz</td>
 				<td>Additional Contributions</td>
 			</tr>
+			<tr>
+				<td></td>
+				<td class='ca_table'>Andrew Zawadzki</td>
+				<td>Application Feed</td>
+			</tr>
       <tr>
         <td></td>
         <td class='ca_table'>Kode</td>
-        <td>Application Feed</td>
+        <td>Original Application Feed Design</td>
       </tr>
-			<tr>
-				<td></td>
-				<td class='ca_table'>LinuxServer</td>
-				<td>Application Feed Hosting</td>
-			</tr>
       <tr>
         <td></td>
         <td class='ca_table'>CHBMB</td>

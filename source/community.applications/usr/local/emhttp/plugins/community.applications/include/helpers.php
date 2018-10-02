@@ -144,10 +144,10 @@ function fixSecurity(&$template,&$originalTemplate) {
 function checkValidDockerRunCommand(&$template) {
 	global $subnet;
 
-	if ( ! function_exists("xmlToCommand") ) { return; } # ie: 6.6.0+ only
+	if ( ! function_exists("dockerRunSecurity") ) { return; }
 	if ( $template['Plugin'] ) { return; }
-  if ( ! function_exists("dockerRunSecurity") ) { return; }
 	$subnet = array();
+
 	if ( dockerRunSecurity(xmlToCommand(makeXML($template))[0]) ) {
 		securityViolation($template);
 	}
@@ -344,7 +344,10 @@ function fixTemplates($template) {
 	if ( ! $template['Date'] ) {
 		$template['Date'] = (is_numeric($template['DateInstalled'])) ? $template['DateInstalled'] : 0;
 	}
-
+	$template['Date'] = max($template['Date'],$template['FirstSeen']);
+	if ($template['Date'] == 1) {
+		unset($template['Date']);
+	}
 	# support v6.2 redefining deprecating the <Beta> tag and moving it to a category
 	if ( stripos($template['Category'],":Beta") ) {
 		$template['Beta'] = "true";
@@ -800,4 +803,5 @@ function myStartContainer($id) {
 
 	$DockerClient->startContainer($id);
 }	
+
 ?>
