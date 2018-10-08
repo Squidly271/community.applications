@@ -336,9 +336,9 @@ function fixTemplates($template) {
 	if ( ( stripos($template['RepoName'],' beta') > 0 )  ) {
 		$template['Beta'] = "true";
 	}
-	$template['Support'] = validURL($template['Support']);
-	$template['Project'] = validURL($template['Project']);
-	$template['DonateLink'] = validURL($template['DonateLink']);
+	$template['Support'] = validURL($template['Support']) ?: "";
+	$template['Project'] = validURL($template['Project']) ?: "";
+	$template['DonateLink'] = validURL($template['DonateLink']) ?: "";
 	$template['DonateText'] = str_replace("'","&#39;",$template['DonateText']);
 	$template['DonateText'] = str_replace('"','&quot;',$template['DonateText']);
 	
