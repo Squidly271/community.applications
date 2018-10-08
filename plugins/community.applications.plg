@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.10.02">
-<!ENTITY md5       "bb010bbd255be7531eff87c3809372ab">
+<!ENTITY version   "2018.10.08">
+<!ENTITY md5       "cb23d43d7a39398fc08fec28c79d4fd8">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.10.08
+- Maintenance update
+- Handle slight difference in how 6.6.1 handles templates
+- Fixed: Regression error on searching for authors from popups
+- Distinguish between new apps and updated apps on startup screen
+- Fixed: Stats out to lunch on fixed errors if CPUSet was present in template
+
 ###2018.10.02
 REQUIRED UPDATE
 - Change appfeed URL
