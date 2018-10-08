@@ -94,15 +94,15 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
 	$templateDescription .= "</figure>";
 	$templateDescription .= "</td><td></td><td><table>";
-$templateDescription .= "<tr><td>{$color}Author:</td><td>$color".$template['Author']."</td></tr>";
+	$templateDescription .= "<tr><td>{$color}Author:</td><td><a class='popUpLink' style='cursor:pointer;' onclick='doSearch(false,&quot;{$template['SortAuthor']}&quot;);'>".$template['Author']."</a></td></tr>";
 	if ( ! $template['Plugin'] ) {
 		$repository = explode(":",$template['Repository']);
 		$official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
-	$templateDescription .= "<tr><td>{$color}DockerHub:</td><td><a class='popUpLink' href='https://hub.docker.com/$official/{$repository[0]}' target='_blank'>{$repository[0]}</a></td></tr>";
+		$templateDescription .= "<tr><td>{$color}DockerHub:</td><td><a class='popUpLink' href='https://hub.docker.com/$official/{$repository[0]}' target='_blank'>{$repository[0]}</a></td></tr>";
 	}
-$templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
+	$templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
 	$repoSearch = explode("'",$template['RepoName']);
-	$templateDescription .= $template['Forum'] ? "<a class='popUpLink' style='cursor:pointer;' onclick='authorSearch(&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a>" : "{$template['RepoName']}";
+	$templateDescription .= "<a class='popUpLink' style='cursor:pointer;' onclick='doSearch(false,&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a>";
 	if ( $template['Profile'] ) {
 		$profileDescription = $template['Plugin'] ? "Author" : "Maintainer";
 		$templateDescription .= "&nbsp;&nbsp;&nbsp;&nbsp;<a class='popUpLink' href='{$template['Profile']}' target='_blank'>($profileDescription Profile)</a>";
@@ -129,7 +129,7 @@ $templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
 	$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>{$color}Minimum OS:</td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>{$color}Max OS:</td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
-	$downloads = getDownloads($template['downloads']);
+	$downloads = getDownloads($template['downloads'],true);
 	if ($downloads) {
 		$templateDescription .= "<tr><td>{$color}Downloads:</td><td>$color$downloads</td></tr>";
 	}

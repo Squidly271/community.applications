@@ -185,7 +185,7 @@ case 'get_content':
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
 				$countSuffix = count($displayApplications['community']) > 1 ? "s" : "";
-				$startupMsg = ($communitySettings['startup'] == "random") ? "Random App$countSuffix Of The Day" : "Newest Added / Recently Updated App$countSuffix<br><font size='0'>Select the New/Updated Category for the complete list</font>";
+				$startupMsg = ($communitySettings['startup'] == "random") ? "Random App$countSuffix Of The Day" : "Newest Added / Recently Updated App$countSuffix<br><font size='0'>Select the New/Updated Category for the complete list<br>Note that many authors and maintainers do not flag the application as being updated</font>";
 				$startupColor = (version_compare($communitySettings['unRaidVersion'],"6.5.3",">")) ? "#FF8C2F" : "purple";
 				echo "<br><center><font size='4' color='$startupColor'><b>$startupMsg</b></font><br><br>";
 				$sortOrder['sortBy'] = "noSort";
@@ -1293,7 +1293,6 @@ function DownloadApplicationFeed() {
 
 	$downloadURL = randomFile();
 	$ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
-
 	if ( ! is_array($ApplicationFeed['applist']) ) {
 		file_put_contents($communityPaths['appFeedDownloadError'],$downloadURL);
 		return false;

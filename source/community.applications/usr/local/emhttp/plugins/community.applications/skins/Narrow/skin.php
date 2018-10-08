@@ -176,7 +176,8 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		}
 
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
-		$template['display_dateUpdated'] = ($template['Date'] && $template['NewApp'] ) ? "<span class='ca_dateUpdated'><span class='ca_dateUpdatedDate'>{$template['display_humanDate']}</span></span>" : "";
+		$UpdatedClassType = $template['BrandNewApp'] ? "ca_dateAdded" : "ca_dateUpdated";
+		$template['display_dateUpdated'] = ($template['Date'] && $template['NewApp'] ) ? "<span class='$UpdatedClassType'><span class='ca_dateUpdatedDate'>{$template['display_humanDate']}</span></span>" : "";
 		$template['display_multi_install'] = ($template['Removable']) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-type='$appType' $checked>" : "";
 		if (! $communitySettings['dockerRunning'] && ! $template['Plugin']) {
 			unset($template['display_multi_install']);

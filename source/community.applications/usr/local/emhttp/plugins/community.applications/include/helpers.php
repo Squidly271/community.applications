@@ -341,12 +341,16 @@ function fixTemplates($template) {
 	$template['DonateLink'] = validURL($template['DonateLink']);
 	$template['DonateText'] = str_replace("'","&#39;",$template['DonateText']);
 	$template['DonateText'] = str_replace('"','&quot;',$template['DonateText']);
+	
 	if ( ! $template['Date'] ) {
 		$template['Date'] = (is_numeric($template['DateInstalled'])) ? $template['DateInstalled'] : 0;
 	}
 	$template['Date'] = max($template['Date'],$template['FirstSeen']);
-	if ($template['Date'] == 1) {
+	if ($template['Date'] == 1) { # 1 is the default value given by the initial run of appfeed when no date was present
 		unset($template['Date']);
+	}
+	if ( ($template['Date'] == $template['FirstSeen']) && ( $template['FirstSeen'] >= 1538357652 )) {# 1538357652 is when the new appfeed first started
+		$template['BrandNewApp'] = true;
 	}
 	# support v6.2 redefining deprecating the <Beta> tag and moving it to a category
 	if ( stripos($template['Category'],":Beta") ) {
@@ -368,7 +372,7 @@ function fixTemplates($template) {
 	if ( $template['DeprecatedMaxVer'] && version_compare($communitySettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") ) {
 		$template['Deprecated'] = true;
 	}
-	if ( is_string($template['CPUset']) ) {
+	if ( $template['CPUset'] ) {
 		unset($template['CPUset']);
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "CPU pinning removed from template";

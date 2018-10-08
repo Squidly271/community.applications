@@ -59,5 +59,8 @@ input[type=checkbox] {width:20px;height:20px;}
 .specialCategory {font-size:15px;}
 .ca_table { padding:5px 0px 5px 0;font-weight:bold;}
 .ca_dateUpdated {font-weight:bold;text-align:center;}
+.ca_dateUpdated {font-weight:bold;text-align:center;}
 .ca_dateUpdated::before {content:"Date Updated: ";}
+.ca_dateAdded {font-weight:bold;text-align:center;}
+.ca_dateAdded::before {content:"Dated Added: ";}
 .ca_dateUpdatedDate {font-weight:normal;}
