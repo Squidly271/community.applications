@@ -548,16 +548,6 @@ function validURL($URL) {
 	return filter_var($URL, FILTER_VALIDATE_URL);
 }
 
-#################################################
-# Sets the updateButton to the appropriate Mode #
-#################################################
-function caGetMode() {
-	global $communityPaths, $communitySettings;
-
-	$script = ( is_file($communityPaths['LegacyMode']) ) ? "$('#updateButton').html('appFeed Mode');" : "$('#updateButton').html('Legacy Mode');";
-	$script .= ( is_file($communityPaths['LegacyMode'] ) || ($communitySettings['maintainer'] == "yes") ) ? "$('#updateButton').show();" : "$('#updateButton').hide();";
-	return "<script>$script</script>";
-}
 
 ################################################
 # Returns the actual URL after any redirection #

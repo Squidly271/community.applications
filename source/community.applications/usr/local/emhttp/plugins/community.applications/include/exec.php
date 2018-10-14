@@ -29,7 +29,6 @@ $communityPaths['defaultSkinPHP'] = $skinSettings['detail']['php'];
 
 require_once($communityPaths['defaultSkinPHP']);
 
-$communitySettings['appFeed']       = "true"; # set default for deprecated setting
 $communitySettings['maxPerPage']    = isMobile() ? 10 : 25;
 $communitySettings['unRaidVersion'] = $unRaidSettings['version'];
 $communitySettings['timeNew'] 			= "-10 years";
@@ -106,59 +105,32 @@ case 'get_content':
 		@unlink($communityPaths['addConverted']);
 	}
 
-	if ( file_exists($communityPaths['appFeedOverride']) ) {
-	 $communitySettings['appFeed'] = "false";
-	 @unlink($communityPaths['appFeedOverride']);
-	}
 
 	if (!file_exists($communityPaths['community-templates-info'])) {
 		$updatedSyncFlag = true;
-		if ( $communitySettings['appFeed'] == "true" ) {
-			DownloadApplicationFeed();
-			if (!file_exists($communityPaths['community-templates-info'])) {
-				@unlink($communityPaths['LegacyMode']);
-				$tmpfile = randomFile();
-				download_url($communityPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
-				$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
-				@unlink($tmpfile);
-				echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  <font color='green'>Switching CA to operate in <b><em><a style='cursor:pointer;' onclick='forceUpdateButton();'>Legacy Mode</a></em></b> might temporarily allow you to still utilize CA.</font><br>";
-				$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
-				$downloaded = @file_get_contents($tempFile);
-				if (strlen($downloaded) > 100) {
-					echo "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Switch to <a style='cursor:pointer;' onclick='forceUpdateButton();'>Legacy Mode</a>, or try again later)</font>";
-				}
-				echo "<center>Last JSON error Recorded: ";
-				$jsonDecode = json_decode($downloaded,true);
-				echo "JSON Error: ".jsonError(json_last_error());
-				if ( $publicServiceAnnouncement ) {
-					echo "<br><font size='5' color='purple'>$publicServiceAnnouncement</font>";
-				}
-				echo "</center>";
-				@unlink($communityPaths['appFeedDownloadError']);
-				echo caGetMode();
-				echo "<script>$('#updateButton').show();</script>";
-				@unlink($communityPaths['community-templates-info']);
-				@unlink($communityPaths['statistics']);
+		DownloadApplicationFeed();
+		if (!file_exists($communityPaths['community-templates-info'])) {
+			@unlink($communityPaths['LegacyMode']);
+			$tmpfile = randomFile();
+			download_url($communityPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
+			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
+			@unlink($tmpfile);
+			echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.";
+			$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
+			$downloaded = @file_get_contents($tempFile);
+			if (strlen($downloaded) > 100) {
+				echo "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Switch to <a style='cursor:pointer;' onclick='forceUpdateButton();'>Legacy Mode</a>, or try again later)</font>";
 			}
-		}
-
-		if ($communitySettings['appFeed'] == "false" ) {
-			if (!ProcessCommunityTemplates()) {
-				echo "<center><font size='3'><strong>Download of appfeed failed.</strong></font><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling templates (GitHub.com) is temporarily down.";
-
-				break;
-			} else {
-				$lastUpdated['last_updated_timestamp'] = time();
-				writeJsonFile($communityPaths['lastUpdated-old'],$lastUpdated);
-
-				if (is_file($communityPaths['updateErrors'])) {
-					echo "<table><td><td colspan='5'><br><center>The following errors occurred:<br><br>";
-					echo "<strong>".file_get_contents($communityPaths['updateErrors'])."</strong><br><br>The apps contained in the Repository(s) above will be unavailable</br></center></td></tr></table>";
-					echo "<script>$('#templateSortButtons,#total1').hide();$('#sortButtons').hide();</script>";
-					echo caGetMode();
-					break;
-				}
+			echo "<center>Last JSON error Recorded: ";
+			$jsonDecode = json_decode($downloaded,true);
+			echo "JSON Error: ".jsonError(json_last_error());
+			if ( $publicServiceAnnouncement ) {
+				echo "<br><font size='5' color='purple'>$publicServiceAnnouncement</font>";
 			}
+			echo "</center>";
+			@unlink($communityPaths['appFeedDownloadError']);
+			@unlink($communityPaths['community-templates-info']);
+			@unlink($communityPaths['statistics']);
 		}
 	}
 	getConvertedTemplates();
@@ -333,19 +305,6 @@ case 'force_update':
 	} else {
 		moderateTemplates();
 	}
-	echo "ok";
-	break;
-
-####################################################################################################
-# force_update_button - forces the system temporarily to override the appFeed and forces an update #
-####################################################################################################
-case 'force_update_button':
-	if ( ! is_file($communityPaths['LegacyMode']) ) {
-		file_put_contents($communityPaths['appFeedOverride'],"dunno");
-	} else {
-		exec("rm -rf ".escapeshellarg($communityPaths['tempFiles']));
-	}
-	@unlink($communityPaths['community-templates-info']);
 	echo "ok";
 	break;
 
@@ -1088,46 +1047,6 @@ case 'removePrivateApp':
 	echo "done";
 	break;
 
-#################################
-# Downloads The Repository List #
-#################################
-case 'downloadRepositories':
-	file_put_contents($communityPaths['appFeedOverride'],"dunno");
-	$Repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
-	if ( empty($Repositories) ) {
-		echo "failed";
-	} else {
-		echo json_encode($Repositories, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-	}
-	@unlink($communityPaths['legacyTemplatesTmp']);
-	@unlink($communityPaths['updateErrors']);
-	exec("rm -rf '{$communityPaths['templates-community']}'");
-	break;
-
-###########################################
-# Downloads the templates in a repository #
-###########################################
-case 'downloadRepo':
-	$repoURL = getPost("repoURL","oops");
-	$repoName =getPost("repoName","oops");
-
-	$templates = readJsonFile($communityPaths['legacyTemplatesTmp']);
-
-	$downloadURL = randomFile();
-	file_put_contents($downloadURL, $repoURL);
-	$friendlyName = str_replace(array(" ","'",'"','\\',"/"),"",$repoName);
-
-	if ( ! $downloaded = $DockerTemplates->downloadTemplates($communityPaths['templates-community']."/templates/$friendlyName", $downloadURL) ){
-		file_put_contents($communityPaths['updateErrors'],"Failed to download <font color='purple'>$repoName</font> $repoURL<br>",FILE_APPEND);
-		@unlink($downloadURL);
-	} else {
-		$templates = array_merge($templates,$downloaded);
-		@unlink($downloadURL);
-	}
-	writeJsonFile($communityPaths['legacyTemplatesTmp'],$templates);
-	echo "downloaded";
-	break;
-
 ####################################################
 # Creates the entries for autocomplete on searches #
 ####################################################
@@ -1169,115 +1088,6 @@ case 'stopStartContainer':
 		echo "problem";
 	}
 	break;
-}
-
-#################################################################
-# Functions used to download the templates from various sources #
-#################################################################
-function ProcessCommunityTemplates() {
-	global $communityPaths, $communitySettings, $statistics, $DockerTemplates;
-
-	$moderation = readJsonFile($communityPaths['moderation']);
-
-	$Repos = readJsonFile($communityPaths['Repositories']);
-	$myTemplates = array();
-	$templates = readJsonFile($communityPaths['legacyTemplatesTmp']);
-	$i = 0
-	;
-	foreach ($Repos as $Repo) {
-		if ( ! is_array($templates[$Repo['url']]) ) {
-			continue;
-		}
-		foreach ($templates[$Repo['url']] as $file) {
-			if (is_file($file)){
-				$o = readXmlFile($file);
-				if ( ! $o ) {
-					file_put_contents($communityPaths['updateErrors'],"Failed to parse <font color='purple'>$file</font> (errors in XML file?)<br>",FILE_APPEND);
-				}
-				if ( (! $o['Repository']) && (! $o['Plugin']) ) {
-					$statistics['invalidXML']++;
-					$invalidXML[] = $o;
-					continue;
-				}
-				$o['Forum'] = $Repo['forum'];
-				$o['RepoName'] = $Repo['name'];
-				$o['ID'] = $i;
-				$o['Displayable'] = true;
-				$o['Support'] = $o['Support'] ?: $o['Forum'];
-				$o['DonateText'] = $o['DonateText'] ?: $Repo['donatetext'];  # Some people can't read the specs correctly
-				$o['DonateLink'] = $o['DonateLink'] ?: $Repo['donatelink'];
-				$o['DonateImg'] = $o['DonateImg'] ?: $Repo['donateimg'];
-				$o['RepoURL'] = $Repo['url'];
-				$o['ModeratorComment'] = $Repo['RepoComment'];
-				$o['WebPageURL'] = $Repo['web'];
-				$o['Logo'] = $Repo['logo'];
-				$o['Profile'] = $Repo['profile'];
-				checkValidDockerRunCommand($o);
-				fixSecurity($o,$o);
-				$o = fixTemplates($o);
-				if ( ! $o ) {
-					continue;
-				}
-				if ( ! $o['Plugin'] ) {
-//					$dockerRegistry = get_content_from_registry('https://registry.hub.docker.com/v2/repositories/'.$o['Repository']);
-//					$o['downloads'] = $dockerRegistry->pull_count;
-				}
-				# Overwrite any template values with the moderated values
-				if ( is_array($moderation[$o['Repository']]) ) {
-					$o = array_merge($o, $moderation[$o['Repository']]);
-				}
-				$o['Compatible'] = versionCheck($o);
-
-				$statistics['totalApplications']++;
-
-				$o['Category'] = str_replace(array("Status:Beta","Status:Stable"),"",$o['Category']);    # undo changes LT made to my xml schema for no good reason
-				$myTemplates[$o['ID']] = $o;
-				if ( is_array($o['Branch']) ) {
-					if ( ! $o['Branch'][0] ) {
-						$tmp = $o['Branch'];
-						unset($o['Branch']);
-						$o['Branch'][] = $tmp;
-					}
-					foreach($o['Branch'] as $branch) {
-						$i = ++$i;
-						$subBranch = $o;
-						$masterRepository = explode(":",$subBranch['Repository']);
-						$o['BranchDefault'] = $masterRepository[1];
-						$subBranch['Repository'] = $masterRepository[0].":".$branch['Tag']; #This takes place before any xml elements are overwritten by additional entries in the branch, so you can actually change the repo the app draws from
-						$subBranch['BranchName'] = $branch['Tag'];
-						$subBranch['BranchDescription'] = $branch['TagDescription'] ? $branch['TagDescription'] : $branch['Tag'];
-						$subBranch['Path'] = $communityPaths['templates-community']."/".$i.".xml";
-						$subBranch['Displayable'] = false;
-						$subBranch['ID'] = $i;
-						$replaceKeys = array_diff(array_keys($branch),array("Tag","TagDescription"));
-						foreach ($replaceKeys as $key) {
-							$subBranch[$key] = $branch[$key];
-						}
-						unset($subBranch['Branch']);
-						$myTemplates[$i] = $subBranch;
-						$o['BranchID'][] = $i;
-						file_put_contents($subBranch['Path'],makeXML($subBranch));
-					}
-					unset($o['Branch']);
-
-					$o['Path'] = $communityPaths['templates-community']."/".$o['ID'].".xml";
-					file_put_contents($o['Path'],makeXML($o));
-					$myTemplates[$o['ID']] = $o;
-				}
-				$i = ++$i;
-			}
-		}
-	}
-	if ( $invalidXML ) {
-		writeJsonFile($communityPaths['invalidXML_txt'],$invalidXML);
-	} else {
-		@unlink($communityPaths['invalidXML_txt']);
-	}
-	writeJsonFile($communityPaths['statistics'],$statistics);
-	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
-
-	file_put_contents($communityPaths['LegacyMode'],"active");
-	return true;
 }
 
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.

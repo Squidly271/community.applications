@@ -769,68 +769,6 @@ function forceUpdate() {
 	});
 }
 
-function forceUpdateButton() {
-	var mode = $('#updateButton').html();
-	if ( mode == 'appFeed Mode' ) {
-		$.post(URL,{action:'force_update_button'},function(data) {
-			if (data) {
-				myAlert("Updating Content",appFeedModeMsg,true,"40");
-				forceUpdate();
-			}
-		});
-	} else {
-		sweetAlertBackground("white");
-		disableSearch();
-		swal({
-			title: "Switch To Legacy Mode?",
-			text: "<strong>This will force CA to manually download the application templates.</strong><br><br><font color='red'>This process once begun cannot be aborted and may take a minute or so</font>",
-			type: "warning",
-			confirmButtonText: "Update Lists",
-			showCancelButton: true,
-			showConfirmButton: true,
-			closeOnConfirm: false,
-			allowOutsideClick: true,
-			showLoaderOnConfirm: false,
-			html: true
-		}, function(isConfirm) {
-			if (isConfirm) {
-				clearSearchBox();
-				$.post(URL,{action:'force_update_button'});
-				myAlert("Switching to Legacy Mode","Downloading <span id='downloadStatus'>Repository List</span>");
-				$.post(URL,{action:'downloadRepositories'},function(data) {
-					if (data) {
-						repositories = JSON.parse(data);
-						disableSearch();
-						downloadRepo(repositories,0);
-					}
-				});
-			} else {
-				enableSearch();
-			}
-		});
-	}
-}
-
-function downloadRepo(repositories,index) {
-	var percentage = parseInt(index / repositories.length * 100);
-	$("#downloadStatus").html(percentage+"%<br><b>"+repositories[index].name);
-	$.post(URL,{action:'downloadRepo',repoURL:repositories[index].url,repoName:repositories[index].name}, function(data) {
-		if ( data ) {
-			if ( repositories[index+1] ) {
-				downloadRepo(repositories,index+1);
-			} else {
-				processLegacyMode();
-				enableSearch();
-			}
-		}
-	});
-}
-
-function processLegacyMode() {
-	myCloseAlert();
-	getContent(true,'INITIALIZE','None Selected');
-}
-
 function enableButtons() {
 	data.selected_category = "";
 }
@@ -1576,7 +1514,7 @@ function isTouch() {
 </script>
 <FORM method="get" id="myForm">
 <body onresize='resizeDisplay();' id='CommunityApplicationsBody'>
-<span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a class='topRightLinks' id='updateButton' onclick='forceUpdateButton();' style='cursor:pointer;display:none;'>Legacy Mode</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
+<span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
 <br>
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br><br>
 > <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>

@@ -256,7 +256,6 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		}
 	}
 	$ct .= vsprintf($skin[$viewMode]['footer'],$templateFormatArray);
-	$ct .= caGetMode();
 	if ( ! $officialFlag ) {
 		$ct .= "<br>".getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
 	}
@@ -405,7 +404,6 @@ function displaySearchResults($pageNumber) {
 		$count++;
 	}
 	$ct .= vsprintf($skin[$viewMode]['footer'],$templateFormatArray);
-	$ct .= caGetMode();
 	if ( $foundTemplateFlag ) {
 		echo "<br><b>Containers with an Icon displayed are already available within the Apps tab.  It is recommended to install that version instead of a dockerHub conversion</b><br><br>";
 	}
