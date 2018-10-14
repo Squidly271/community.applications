@@ -11,9 +11,6 @@ require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerCli
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
-if (is_file("/usr/local/emhttp/plugins/dynamix.docker.manager/include/Helpers.php")) {
-	require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/Helpers.php");  # 6.6.0+ only
-}
 
 $unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
 
@@ -110,7 +107,6 @@ case 'get_content':
 		$updatedSyncFlag = true;
 		DownloadApplicationFeed();
 		if (!file_exists($communityPaths['community-templates-info'])) {
-			@unlink($communityPaths['LegacyMode']);
 			$tmpfile = randomFile();
 			download_url($communityPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
 			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
@@ -977,11 +973,8 @@ case 'statistics':
 	}
 	if ( is_file($communityPaths['lastUpdated-old']) ) {
 		$appFeedTime = readJsonFile($communityPaths['lastUpdated-old']);
-	} else {
-		$appFeedTime['last_updated_timestamp'] = @filemtime($communityPaths['community-templates-info']);
 	}
-	$updateTime = date("F d Y H:i",$appFeedTime['last_updated_timestamp']);
-	$updateTime = ( is_file($communityPaths['LegacyMode']) ) ? "N/A - Legacy Mode Active" : $updateTime;
+	$updateTime = date("F d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
 	$defaultArray = Array('caFixed' => 0,'totalApplications' => 0, 'repository' => 0, 'docker' => 0, 'plugin' => 0, 'invalidXML' => 0, 'blacklist' => 0, 'totalIncompatible' =>0, 'totalDeprecated' => 0, 'totalModeration' => 0, 'private' => 0, 'NoSupport' => 0);
 	$statistics = array_merge($defaultArray,$statistics);
 
@@ -1218,7 +1211,6 @@ function DownloadApplicationFeed() {
 	}
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
 
-	@unlink($communityPaths['LegacyMode']);
 	return true;
 }
 

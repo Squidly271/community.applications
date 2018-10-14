@@ -129,7 +129,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>{$color}Minimum OS:</td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>{$color}Max OS:</td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
-	$downloads = getDownloads($template['downloads'],true);
+	$downloads = getDownloads($template['downloads']);
 	if ($downloads) {
 		$templateDescription .= "<tr><td>{$color}Downloads:</td><td>$color$downloads</td></tr>";
 	}

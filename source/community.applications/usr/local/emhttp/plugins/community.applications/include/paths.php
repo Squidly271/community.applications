@@ -15,8 +15,6 @@ $communityPaths['PublicServiceAnnouncement']     = "https://raw.githubuserconten
 $communityPaths['Repositories']                  = $communityPaths['tempFiles']."/Repositories.json";
 $communityPaths['community-templates-info']      = $communityPaths['tempFiles']."/templates.json";                     /* json file containing all of the templates */
 $communityPaths['community-templates-displayed'] = $communityPaths['tempFiles']."/displayed.json";                     /* json file containing all of the templates currently displayed */
-#$communityPaths['application-feed']              = "https://tools.linuxserver.io/unraid-docker-templates.json";        /* path to the application feed */
-#$communityPaths['application-feed-last-updated'] = "https://tools.linuxserver.io/unraid-docker-templates.json?last_updated=1";
 $communityPaths['application-feed']              = "https://github.com/Squidly271/AppFeed/raw/master/applicationFeed.json";        /* path to the application feed */
 $communityPaths['application-feed-last-updated'] = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/applicationFeed-lastUpdated.json";
 $communityPaths['lastUpdated']                   = $communityPaths['tempFiles']."/lastUpdated.json";
