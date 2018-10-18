@@ -266,9 +266,8 @@ case 'get_content':
 ########################################################
 case 'force_update':
 	download_url($communityPaths['moderationURL'],$communityPaths['moderation']);
-	$Repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
 
-	$repositoriesLogo = $Repositories;
+/* 	$repositoriesLogo = $Repositories;
 	if ( ! is_array($repositoriesLogo) ) {
 		$repositoriesLogo = array();
 	}
@@ -278,7 +277,7 @@ case 'force_update':
 			$repoLogo[$repositories['name']] = $repositories['logo'];
 		}
 	}
-	writeJsonFile($communityPaths['logos'],$repoLogo);
+	writeJsonFile($communityPaths['logos'],$repoLogo); */
 
 	$lastUpdatedOld = readJsonFile($communityPaths['lastUpdated-old']);
 
@@ -941,7 +940,7 @@ case 'displayTags':
 case 'statistics':
 	$statistics = readJsonFile($communityPaths['statistics']);
 	$statistics['totalModeration'] = count(readJsonFile($communityPaths['moderation']));
-	$repositories = readJsonFile($communityPaths['Repositories']);
+	$repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	pluginDupe($templates);
 	unset($statistics['Private']);
@@ -1092,7 +1091,6 @@ function DownloadApplicationFeed() {
 	@mkdir($communityPaths['templates-community'],0777,true);
 
 	$moderation = readJsonFile($communityPaths['moderation']);
-	$Repositories = readJsonFile($communityPaths['Repositories']);
 
 	$downloadURL = randomFile();
 	$ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
@@ -1122,8 +1120,7 @@ function DownloadApplicationFeed() {
 		$o['RepoName']      = $o['Repo'];
 		$o['SortAuthor']    = $o['Author'];
 		$o['SortName']      = $o['Name'];
-		$o['Licence']       = $o['License']; # Support Both Spellings
-		$o['Licence']       = $o['Licence'];
+
 		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
 		if ( $o['Plugin'] ) {
 			$o['Author']        = $o['PluginAuthor'];
@@ -1136,16 +1133,6 @@ function DownloadApplicationFeed() {
 			$statistics['docker']++;
 		}
 
-		$RepoIndex = searchArray($Repositories,"name",$o['RepoName']);
-		if ( $RepoIndex != false ) {
-			$o['WebPageURL']       = $Repositories[$RepoIndex]['web'];
-			$o['Logo']             = $Repositories[$RepoIndex]['logo'];
-			$o['Profile']          = $Repositories[$RepoIndex]['profile'];
-			$o['RepoURL']          = $Repositories[$RepoIndex]['url'];
-			$o['ModeratorComment'] = $Repositories[$RepoIndex]['RepoComment'];
-			$o['DonateText']       = $o['DonateText'] ?: $Repositories[$RepoIndex]['donatetext'];
-			$o['DonateLink']       = $o['DonateLink'] ?: $Repositories[$RepoIndex]['donatelink'];
-		}
 
 		checkValidDockerRunCommand($o);
 		fixSecurity($o,$o); # Apply various fixes to the templates for CA use
