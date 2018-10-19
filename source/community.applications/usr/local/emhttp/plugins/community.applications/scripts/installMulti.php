@@ -12,17 +12,23 @@ function startsWith($haystack, $needle) {
 }
 
 # Modify the system file to avoid a harmless error from being displayed under normal circumstances
+# Not needed under unRaid 6.6.3+
+$unRaidVersion = parse_ini_file($communityPaths['unRaidVersion']);
 
-$dockerInstall = file("/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php",FILE_IGNORE_NEW_LINES);
-foreach ($dockerInstall as $line) {
-  if ( startsWith(trim($line),"removeContainer(") ) {
-    $line = "#$line";
-  }
-  $newInstall[] = $line;
+if ( version_compare($unRaidVersion['version'],"6.6.2",">=") ) {
+	$exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";
+} else {
+	$exeFile = "/tmp/community.applications/tempFiles/newCreateDocker.php";
+	$dockerInstall = file("/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php",FILE_IGNORE_NEW_LINES);
+	foreach ($dockerInstall as $line) {
+		if ( startsWith(trim($line),"removeContainer(") ) {
+			$line = "#$line";
+		}
+		$newInstall[] = $line;
+	}
+	file_put_contents($exeFile,implode("\n",$newInstall));
+	chmod($exeFile,0777);
 }
-file_put_contents("/tmp/community.applications/tempFiles/newCreateDocker.php",implode("\n",$newInstall));
-chmod("/tmp/community.applications/tempFiles/newCreateDocker.php",0777);
-
 $javascript = file_get_contents("/usr/local/emhttp/plugins/dynamix/javascript/dynamix.js");
 echo "<script>$javascript</script>";
 
@@ -32,7 +38,8 @@ if ( $_GET['docker'] ) {
   echo "Installing docker applications ".str_replace(",",", ",$_GET['docker'])."<br>";
   $_GET['updateContainer'] = true;
   $_GET['ct'] = $dockers;
-  include("/tmp/community.applications/tempFiles/newCreateDocker.php");
+	$_GET['communityApplications'] = true;
+  include($exeFile);
   echo "</div>";
 ?>
 <script>

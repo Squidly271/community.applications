@@ -112,7 +112,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$templateDescription .= "<tr><td>{$color}Categories:</td><td>$color".$template['Category']."</td></tr>";
 
 	if ( ! $template['Plugin'] ) {
-		if ( strtolower($template['Base']) == "unknown" ) {
+		if ( strtolower($template['Base']) == "unknown" || ! $template['Base']) {
 			$template['Base'] = $template['BaseImage'];
 		}
 		if ( ! $template['Base'] ) {
