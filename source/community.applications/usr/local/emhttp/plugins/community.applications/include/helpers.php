@@ -216,13 +216,13 @@ function fixTemplates($template) {
 	if ( is_array($template['Repository']) ) {        	# due to cmer
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository'][0]][] = "Fatal: Multiple Repositories Found - Removing application from lists";
-		return false;
+		$template['Blacklist'] = true;
 	}
  	$repoTestLwrCase = explode(":",$template['Repository']);
  	if ( ($repoTestLwrCase[0] != strtolower($repoTestLwrCase[0])) && ! $template['Plugin'] ) { # due to sdesbure
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Invalid repository found.  Only lowercase is allowed";
-		return false;
+		$template['Blacklist'] = true;
 	}
 	if ( (is_array($template['Support'])) && (count($template['Support'])) ) {
 		unset($template['Support']);
@@ -232,24 +232,24 @@ function fixTemplates($template) {
 	if ( ! is_string($template['Name'])  ) {
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Name is not a string (or multiple names present)";
-		return false;
+		$template['Blacklist'] = true;
 	}
 	if ( ! is_string($template['Author']) ) {
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No author or multiple authors foudn - Removing application from lists";
-		return false;
+		$template['Blacklist'] = true;
 	}
 	if ( ! $template['Author'] ) {
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No author could be determined - Removing application from lists";
-		return false;
+		$template['Blacklist'] = true;
 	}
 	if ( is_array($template['Description']) ) {
 		if ( count($template['Description']) > 1 ) {
 			$template['Description']="";
 			$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple Description tags present";
 			$statistics['caFixed']++;
-			return false;
+			$template['Blacklist'] = true;
 		}
 	}
 	if ( is_array($template['Beta']) ) {
@@ -302,13 +302,13 @@ function fixTemplates($template) {
 	if ( is_array($template['SortAuthor']) ) {                 # due to cmer
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple Authors / Repositories Found - Removing application from lists";
-		return false;
+		$template['Blacklist'] = true;
 	}
 	if ( is_array($template['PluginURL']) ) {                  # due to coppit
 		$template['PluginURL'] = $template['PluginURL'][1];
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple PluginURL's found";
-		return false;
+		$template['Blacklist'] = true;
 	}
 	if ( $template['PluginURL'] ) {                            # due to bonienl
 		$template['PluginURL'] = str_replace("raw.github.com","raw.githubusercontent.com",$template['PluginURL']);
@@ -327,7 +327,7 @@ function fixTemplates($template) {
 	if ( ( ! strlen(trim($template['Overview'])) ) && ( ! strlen(trim($template['Description'])) ) && ! $template['Private'] ){
 		$statistics['caFixed']++;
 		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No valid Overview Or Description present - Application dropped from CA automatically - Possibly far too many formatting tags present";
-		return false;
+		$template['Blacklist'] = true;
 	}
 	if ( ! $template['Icon'] ) {
 		$statistics['caFixed']++;

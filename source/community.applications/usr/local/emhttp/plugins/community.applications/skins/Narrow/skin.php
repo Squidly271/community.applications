@@ -119,7 +119,6 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$appName = str_replace(" ","",$template['SortName']);
 		$t = "";
 		$ID = $template['ID'];
-#		$selected = $info[$name]['template'] && stripos($info[$name]['icon'], $template['SortAuthor']) !== false;
 		$selected = $info[$name]['template'];  # Change due to if an icon isn't present, then the app wouldn't always show up as installed
 
 		$selected = $template['Uninstall'] ? true : $selected;
@@ -146,6 +145,9 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		}
 		if ( $template['Deprecated'] ) {
 			$template['ModeratorComment'] .= "{$template['DeprecatedComment']}<br>This application has been deprecated.";
+		}
+		if ( $template['Blacklist'] ) {
+			$template['ModeratorComment'] .= "<br>This application has been blacklisted";
 		}
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
 		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=20px>" : "";
@@ -238,11 +240,11 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		if ( ( $template['Beta'] == "true" ) ) {
 			$template['display_dockerBeta'] .= "<span class='ca_tooltip displayBeta' title='Beta Container &#13;See support forum for potential issues'>Beta</span>";
 		}
+		
 # Entries created.  Now display it
 		$t .= vsprintf($displayTemplate,toNumericArray($template));
 
 		$columnNumber=++$columnNumber;
-
 
 		if ( $columnNumber == $communitySettings['maxDetailColumns'] ) {
 			$columnNumber = 0;

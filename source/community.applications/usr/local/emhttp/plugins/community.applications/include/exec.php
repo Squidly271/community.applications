@@ -175,6 +175,12 @@ case 'get_content':
 	}
 	foreach ($file as $template) {
 		$template['NoInstall'] = $noInstallComment;
+		if ( $displayBlacklisted ) {
+			if ( $template['Blacklist'] ) {
+				$display[] = $template;
+			}
+			continue;
+		}
 		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) {
 			continue;                          # ie: only show deprecated apps within previous apps section
 		}
@@ -187,14 +193,14 @@ case 'get_content':
 		if ( $communitySettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) {
 			continue;
 		}
-		if ( ($template['Blacklist'] && ! $displayBlacklisted) || (! $template['Blacklist'] && $displayBlacklisted) ) {
-			continue;
-		}
 		if ( ! $template['Compatible'] && $displayIncompatible ) {
 			$display[] = $template;
 			continue;
 		}
 
+		if ( $template['Blacklist'] ) {
+			continue;
+		}
 		$name = $template['Name'];
 
 # Skip over installed containers
