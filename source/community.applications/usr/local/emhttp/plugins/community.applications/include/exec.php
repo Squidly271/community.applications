@@ -938,7 +938,7 @@ case 'statistics':
 	$repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	pluginDupe($templates);
-
+	$invalidXML = readJsonFile($communityPaths['invalidXML_txt']);
 	$sortOrder['sortBy'] = "RepoName";
 	$sortOrder['sortDir'] = "Up";
 	usort($templates,"mySort");
@@ -957,13 +957,17 @@ case 'statistics':
 				$statistics['private']++;
 			}
 		}
-		if ( $template['PluginURL'] ) {
-			$statistics['plugin']++;
+		if ( ! $template['PluginURL'] && ! $template['Repository'] ) {
+			$statistics['invalidXML']++;
 		} else {
-			$statistics['docker']++;
+			if ( $template['PluginURL'] ) {
+				$statistics['plugin']++;
+			} else {
+				$statistics['docker']++;
+			}
 		}
 	}
-
+	$statistics['totalApplications'] = $statistics['plugin']+$statistics['docker'];
 	if ( $statistics['fixedTemplates'] ) {
 		writeJsonFile($communityPaths['fixedTemplates_txt'],$statistics['fixedTemplates']);
 	} else {
@@ -992,7 +996,7 @@ case 'statistics':
 	echo "<tr><td class='ca_table'><b>Total Number Of Docker Applications</b></td><td>$color{$statistics['docker']}</td></tr>";
 	echo "<tr><td class='ca_table'><b>Total Number Of Plugins</b></td><td>$color{$statistics['plugin']}</td></tr>";
 	echo "<tr><td class='ca_table'><b><a id='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'><b>Total Number Of Private Docker Applications</b></a></td><td>$color{$statistics['private']}</td></tr>";
-	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Total Number Of Invalid Templates Found</a></b></td><td>$color{$statistics['invalidXML']}</td></tr>";
+	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Total Number Of Invalid Templates Found</a></b></td><td>$color".count($invalidXML)."</td></tr>";
 	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Total Number Of Template Errors</a></b></td><td>$color{$statistics['caFixed']}+</td></tr>";
 	echo "<tr><td class='ca_table'><b><a id='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Blacklisted Apps Found In Appfeed</a></b></td><td>$color{$statistics['blacklist']}</td></tr>";
 	echo "<tr><td class='ca_table'><b><a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Total Number Of Incompatible Applications</a></b></td><td>$color{$statistics['totalIncompatible']}</td></tr>";
@@ -1151,6 +1155,15 @@ function DownloadApplicationFeed() {
 		unset($o['Branch']);
 		$myTemplates[$o['ID']] = $o;
 		$i = ++$i;
+		if ( $o['OriginalOverview'] ) {
+			$o['Overview'] = $o['OriginalOverview'];
+			unset($o['OriginalOverview']);
+			unset($o['Description']);
+		}
+		if ( $o['OriginalDescription'] ) {
+			$o['Description'] = $o['OriginalDescription'];
+			unset($o['OriginalDescription']);
+		}
 		$templateXML = makeXML($o);
 		@mkdir(dirname($o['Path']),0777,true);
 		if ( file_exists($o['Path']) ) {
