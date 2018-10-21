@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.10.08">
-<!ENTITY md5       "cb23d43d7a39398fc08fec28c79d4fd8">
+<!ENTITY version   "2018.10.21">
+<!ENTITY md5       "214d1cb2295a3acc76d975175d05963c">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,19 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.10.21
+- Remove Legacy mode (pointless as a backup with new appfeed)
+- Remove most post-processing of templates (appfeed now does this automatically)
+- Lower bandwidth requirements
+- Changed: Now passthrough full description to dockerMan
+- Minor template changes when displaying deprecated / blacklisted apps
+- Changed: Blacklisted apps when displayed include ones blacklisted due to template errors
+- Changed: When running on unRaid 6.6.3+, do not modify a system file when doing multiple previous docker installations
+- Changed: Pick up CA update available from appfeed
+- Changed: Don't display download counts if less than 100
+- Remove Developer Mode (related to Legacy Mode removal)
+- Fixed: Prevent edge case of CA installing the same version of a plugin already installed
+
 ###2018.10.08
 - Maintenance update
 - Handle slight difference in how 6.6.1 handles templates
@@ -1023,7 +1036,7 @@ if [[ -e /tmp/community.applications/tempFiles/templates.json ]]; then rm /tmp/c
 The 'source' file.
 -->
 <FILE Name="/boot/config/plugins/&name;/&name;-&version;.txz" Run="upgradepkg --install-new">
-<URL>https://raw.github.com/&github;/master/archive/&name;-&version;.txz</URL>
+<URL>https://raw.github.com/&github;/master/archive/&name;-&version;-x86_64-1.txz</URL>
 <MD5>&md5;</MD5>
 </FILE>
 
@@ -1052,7 +1065,7 @@ The 'remove' script.
 -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-removepkg &name;-&version;
+removepkg &name;-&version-x86_64-1;
 rm -rf &plugdir;
 rm -rf /boot/config/plugins/&name;
 rm -rf /var/lib/docker/unraid/templates-community

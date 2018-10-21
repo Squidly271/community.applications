@@ -65,7 +65,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 
 	$ID = $template['ID'];
-7
+
 	$donatelink = $template['DonateLink'];
 	$donatetext = $template['DonateText'];
 
@@ -83,6 +83,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$template['Category'] = categoryToLink($template['Category'],true);
 	$template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 	$template['Description'] = trim($template['Description']);
+	$template['ModeratorComment'] .= $template['CAComment'];
 
 	if ( $color ) {
 		$templateDescription .= "<center><font size=6;><strong>{$template['SortName']}</strong></font></center><br>";

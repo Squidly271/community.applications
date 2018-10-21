@@ -47,7 +47,6 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 }
 
 @mkdir($communityPaths['tempFiles'],0777,true);
-@mkdir($communityPaths['persistentDataStore'],0777,true);
 
 if ( !is_dir($communityPaths['templates-community']) ) {
 	@mkdir($communityPaths['templates-community'],0777,true);
@@ -1116,7 +1115,18 @@ function DownloadApplicationFeed() {
 		$o['ID']            = $i;
 		$o['Displayable']   = true;
 		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
-
+			$o['Author']        = getAuthor($o);
+			$o['DockerHubName'] = strtolower($o['Name']);
+			$o['RepoName']      = $o['Repo'];
+			$o['SortAuthor']    = $o['Author'];
+			$o['SortName']      = $o['Name'];
+			if ( $o['PluginURL'] ) {
+				$o['Author']        = $o['PluginAuthor'];
+				$o['Repository']    = $o['PluginURL'];
+				$o['Category']      .= " Plugins: ";
+				$o['SortAuthor']    = $o['Author'];
+				$o['SortName']      = $o['Name'];
+			}
 		$o = fixTemplates($o);
 		if ( ! $o ) {
 			continue;
@@ -1219,6 +1229,7 @@ function getConvertedTemplates() {
 		$o['SortAuthor']   = $o['Author'];
 		$o['Forum']        = "";
 		$o['Compatible']   = versionCheck($o);
+
 		$o = fixTemplates($o);
 		$myTemplates[$i]  = $o;
 		$i = ++$i;

@@ -172,6 +172,18 @@ function fixTemplates($template) {
 	if ( $template['DeprecatedMaxVer'] && version_compare($communitySettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") ) {
 		$template['Deprecated'] = true;
 	}
+	$o['Author']        = getAuthor($o);
+	$o['DockerHubName'] = strtolower($o['Name']);
+	$o['RepoName']      = $o['Repo'];
+	$o['SortAuthor']    = $o['Author'];
+	$o['SortName']      = $o['Name'];
+	if ( $o['PluginURL'] ) {
+		$o['Author']        = $o['PluginAuthor'];
+		$o['Repository']    = $o['PluginURL'];
+		$o['Category']      .= " Plugins: ";
+		$o['SortAuthor']    = $o['Author'];
+		$o['SortName']      = $o['Name'];
+	}
 
 	return $template;
 }

@@ -119,7 +119,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$appName = str_replace(" ","",$template['SortName']);
 		$t = "";
 		$ID = $template['ID'];
-#		$selected = $info[$name]['template'] && stripos($info[$name]['icon'], $template['SortAuthor']) !== false;
+		$template['ModeratorComment'] .= $template['CAComment'];
 		$selected = $info[$name]['template'];  # Change due to if an icon isn't present, then the app wouldn't always show up as installed
 
 		$selected = $template['Uninstall'] ? true : $selected;
