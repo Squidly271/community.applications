@@ -2,7 +2,7 @@
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
 echo "<body bgcolor='white'>";
-$repositories = readJsonFile($communityPaths['Repositories']);
+$repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
 
 switch ($_GET['arg1']) {
 	case 'Repository':
@@ -72,7 +72,7 @@ switch ($_GET['arg1']) {
 
 		break;
 	case 'Moderation':
-		$moderation = @file_get_contents($communityPaths['moderation']);
+		$moderation = file_get_contents($communityPaths['moderationURL']);
 		foreach ($repositories as $repo) {
 			if ($repo['RepoComment']) {
 				$repoComment .= "<tr><td>{$repo['name']}</td><td>{$repo['RepoComment']}</td></tr>";

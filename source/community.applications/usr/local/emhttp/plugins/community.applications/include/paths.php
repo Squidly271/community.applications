@@ -8,7 +8,6 @@
 $plugin = "community.applications";
 
 $communityPaths['tempFiles']                     = "/tmp/$plugin/tempFiles";                            /* path to temporary files */
-$communityPaths['persistentDataStore']           = $communityPaths['tempFiles']."/community.applications.datastore";   /* anything in this folder is NOT deleted upon an update of templates */
 $communityPaths['templates-community']           = $communityPaths['tempFiles']."/templates-community-apps";           /* templates and temporary files stored here.  Deleted every update of applications */
 $communityPaths['community-templates-url']       = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Repositories.json";
 $communityPaths['PublicServiceAnnouncement']     = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/PublicServiceAnnouncement.txt";

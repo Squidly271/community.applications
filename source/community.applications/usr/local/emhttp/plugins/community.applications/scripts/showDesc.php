@@ -41,7 +41,6 @@ if ( ! $appNumber ) {
 }
 if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	# $appNumber is actually the path to the template.  It's pretty much always going to be the same even if the database is out of sync.
-	$repos = readJsonFile($communityPaths['Repositories']);
 	$displayed = readJsonFile($communityPaths['community-templates-displayed']);
 	foreach ($displayed as $file) {
 		$index = searchArray($file,"Path",$appNumber);
@@ -66,9 +65,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 
 	$ID = $template['ID'];
-	$repoIndex = searchArray($repos,"name",$template['RepoName']);
-	$webPageURL = $repos[$repoIndex]['web'];
-
+7
 	$donatelink = $template['DonateLink'];
 	$donatetext = $template['DonateText'];
 

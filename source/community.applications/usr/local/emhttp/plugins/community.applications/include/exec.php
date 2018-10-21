@@ -934,6 +934,7 @@ case 'displayTags':
 ###########################################
 case 'statistics':
 	$statistics = download_json($communityPaths['statisticsURL'],$communityPaths['statistics']);
+	download_json($communityPaths['moderationURL'],$communityPaths['moderation']);
 	$statistics['totalModeration'] = count(readJsonFile($communityPaths['moderation']));
 	$repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
 	$templates = readJsonFile($communityPaths['community-templates-info']);
