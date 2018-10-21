@@ -34,6 +34,7 @@ $communityPaths['dockerUpdateStatus']            = "/var/lib/docker/unraid-updat
 $communityPaths['pinned']                        = "/boot/config/plugins/$plugin/pinned_apps.json"; # stored on flash instead of docker.img so it will work without docker running
 $communityPaths['appOfTheDay']                   = $communityPaths['tempFiles']."/appOfTheDay.json";
 $communityPaths['statistics']                    = $communityPaths['tempFiles']."/statistics.json";
+$communityPaths['statisticsURL']					       = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/statistics.json";
 $communityPaths['pluginSettings']                = "/boot/config/plugins/$plugin/$plugin.cfg";
 $communityPaths['fixedTemplates_txt']            = $communityPaths['tempFiles']."/caFixed.txt";
 $communityPaths['invalidXML_txt']                = $communityPaths['tempFiles']."/invalidxml.txt";

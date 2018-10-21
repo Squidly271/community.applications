@@ -126,7 +126,6 @@ case 'get_content':
 			echo "</center>";
 			@unlink($communityPaths['appFeedDownloadError']);
 			@unlink($communityPaths['community-templates-info']);
-			@unlink($communityPaths['statistics']);
 		}
 	}
 	getConvertedTemplates();
@@ -934,12 +933,11 @@ case 'displayTags':
 # Displays The Statistics For The Appfeed #
 ###########################################
 case 'statistics':
-	$statistics = readJsonFile($communityPaths['statistics']);
+	$statistics = download_json($communityPaths['statisticsURL'],$communityPaths['statistics']);
 	$statistics['totalModeration'] = count(readJsonFile($communityPaths['moderation']));
 	$repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	pluginDupe($templates);
-	unset($statistics['Private']);
 
 	$sortOrder['sortBy'] = "RepoName";
 	$sortOrder['sortDir'] = "Up";
@@ -958,6 +956,11 @@ case 'statistics':
 			if ( ! ($communitySettings['hideDeprecated'] == 'true' && $template['Deprecated']) ) {
 				$statistics['private']++;
 			}
+		}
+		if ( $template['PluginURL'] ) {
+			$statistics['plugin']++;
+		} else {
+			$statistics['docker']++;
 		}
 	}
 
@@ -1095,14 +1098,12 @@ function DownloadApplicationFeed() {
 
 	@unlink($downloadURL);
 	$i = 0;
-	$statistics['totalApplications'] = count($ApplicationFeed['applist']);
 	$lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];
 	writeJsonFile($communityPaths['lastUpdated-old'],$lastUpdated);
 	$myTemplates = array();
 
 	foreach ($ApplicationFeed['applist'] as $o) {
 		if ( (! $o['Repository']) && (! $o['Plugin']) ){
-			$statistics['invalidXML']++;
 			$invalidXML[] = $o;
 			continue;
 		}
@@ -1110,11 +1111,6 @@ function DownloadApplicationFeed() {
 		$o['ID']            = $i;
 		$o['Displayable']   = true;
 		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
-		if ( $o['Plugin'] ) {
-			$statistics['plugin']++;
-		} else {
-			$statistics['docker']++;
-		}
 
 		$o = fixTemplates($o);
 		if ( ! $o ) {
@@ -1162,7 +1158,6 @@ function DownloadApplicationFeed() {
 		}
 		file_put_contents($o['Path'],$templateXML);
 	}
-	writeJsonFile($communityPaths['statistics'],$statistics);
 	if ( $invalidXML ) {
 		writeJsonFile($communityPaths['invalidXML_txt'],$invalidXML);
 	} else {
@@ -1178,7 +1173,6 @@ function getConvertedTemplates() {
 
 # Start by removing any pre-existing private (converted templates)
 	$templates = readJsonFile($communityPaths['community-templates-info']);
-	$statistics = readJsonFile($communityPaths['statistics']);
 
 	if ( empty($templates) ) {
 		return false;
@@ -1216,7 +1210,6 @@ function getConvertedTemplates() {
 		$i = ++$i;
 	}
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
-	writeJsonFile($communityPaths['statistics'],$statistics);
 	return true;
 }
 
