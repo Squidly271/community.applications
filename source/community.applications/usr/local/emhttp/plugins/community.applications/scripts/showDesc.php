@@ -143,6 +143,9 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	if ($template['Deprecated']) {
 		$templateDescription .= "This application / template has been deprecated<br>";
 	}
+	if ( !$template['Compatible'] ) {
+		$templateDescription .= "This application is not compatible with your version of unRaid<br>";
+	}
 	$templateDescription .= "</span></center>";
 	$templateDescription .= "<center>";
 	
