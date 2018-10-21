@@ -175,11 +175,14 @@ case 'get_content':
 	}
 	foreach ($file as $template) {
 		$template['NoInstall'] = $noInstallComment;
+		
 		if ( $displayBlacklisted ) {
 			if ( $template['Blacklist'] ) {
 				$display[] = $template;
+				continue;
+			} else {
+				continue;
 			}
-			continue;
 		}
 		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) {
 			continue;                          # ie: only show deprecated apps within previous apps section
@@ -193,14 +196,14 @@ case 'get_content':
 		if ( $communitySettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) {
 			continue;
 		}
+		if ( $template['Blacklist'] ) {
+			continue;
+		}
 		if ( ! $template['Compatible'] && $displayIncompatible ) {
 			$display[] = $template;
 			continue;
 		}
 
-		if ( $template['Blacklist'] ) {
-			continue;
-		}
 		$name = $template['Name'];
 
 # Skip over installed containers
@@ -271,19 +274,6 @@ case 'get_content':
 # force_update -> forces an update of the applications #
 ########################################################
 case 'force_update':
-	download_url($communityPaths['moderationURL'],$communityPaths['moderation']);
-
-/* 	$repositoriesLogo = $Repositories;
-	if ( ! is_array($repositoriesLogo) ) {
-		$repositoriesLogo = array();
-	}
-
-	foreach ($repositoriesLogo as $repositories) {
-		if ( $repositories['logo'] ) {
-			$repoLogo[$repositories['name']] = $repositories['logo'];
-		}
-	}
-	writeJsonFile($communityPaths['logos'],$repoLogo); */
 
 	$lastUpdatedOld = readJsonFile($communityPaths['lastUpdated-old']);
 
@@ -1096,8 +1086,6 @@ function DownloadApplicationFeed() {
 	exec("rm -rf '{$communityPaths['templates-community']}'");
 	@mkdir($communityPaths['templates-community'],0777,true);
 
-	$moderation = readJsonFile($communityPaths['moderation']);
-
 	$downloadURL = randomFile();
 	$ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
@@ -1121,40 +1109,18 @@ function DownloadApplicationFeed() {
 		# Move the appropriate stuff over into a CA data file
 		$o['ID']            = $i;
 		$o['Displayable']   = true;
-		$o['Author']        = getAuthor($o);
-		$o['DockerHubName'] = strtolower($o['Name']);
-		$o['RepoName']      = $o['Repo'];
-		$o['SortAuthor']    = $o['Author'];
-		$o['SortName']      = $o['Name'];
-
 		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
 		if ( $o['Plugin'] ) {
-			$o['Author']        = $o['PluginAuthor'];
-			$o['Repository']    = $o['PluginURL'];
-			$o['Category']      .= " Plugins: ";
-			$o['SortAuthor']    = $o['Author'];
-			$o['SortName']      = $o['Name'];
 			$statistics['plugin']++;
 		} else {
 			$statistics['docker']++;
 		}
 
-
-		checkValidDockerRunCommand($o);
-		fixSecurity($o,$o); # Apply various fixes to the templates for CA use
 		$o = fixTemplates($o);
 		if ( ! $o ) {
 			continue;
 		}
 
-# Overwrite any template values with the moderated values
-
-		if ( is_array($moderation[$o['Repository']]) ) {
-			$repositoryTmp = $o['Repository']; # in case moderation changes the repository entry
-			$o = array_merge($o, $moderation[$repositoryTmp]);
-		}
-
-		$o['Compatible'] = versionCheck($o);
 		$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
 		$o['Category'] = str_replace("Status:Stable","",$o['Category']);
 		$myTemplates[$i] = $o;
@@ -1246,7 +1212,6 @@ function getConvertedTemplates() {
 		$o['Forum']        = "";
 		$o['Compatible']   = versionCheck($o);
 		$o = fixTemplates($o);
-		fixSecurity($o,$o);
 		$myTemplates[$i]  = $o;
 		$i = ++$i;
 	}

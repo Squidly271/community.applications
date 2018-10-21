@@ -119,6 +119,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$appName = str_replace(" ","",$template['SortName']);
 		$t = "";
 		$ID = $template['ID'];
+#		$selected = $info[$name]['template'] && stripos($info[$name]['icon'], $template['SortAuthor']) !== false;
 		$selected = $info[$name]['template'];  # Change due to if an icon isn't present, then the app wouldn't always show up as installed
 
 		$selected = $template['Uninstall'] ? true : $selected;
@@ -142,12 +143,6 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 
 		if ( $template['UpdateAvailable'] ) {
 			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><center><font color='red'><b>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</b> <i class='ca_infoPopup fa fa-info-circle' data-app='".basename($template['MyPath'])."' data-name='{$template['Name']}' style='cursor:pointer;font-size:15px;color:#486DBA;'></i></center></font>" : "<br><center><font color='red'><b>Update Available.  Click <a href='Docker'>Here</a> to install</b></font></center>";
-		}
-		if ( $template['Deprecated'] ) {
-			$template['ModeratorComment'] .= "{$template['DeprecatedComment']}<br>This application has been deprecated.";
-		}
-		if ( $template['Blacklist'] ) {
-			$template['ModeratorComment'] .= "<br>This application has been blacklisted";
 		}
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
 		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=20px>" : "";
@@ -222,6 +217,12 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$template['display_compatible'] = "NOTE: This application is listed as being NOT compatible with your version of unRaid<br>";
 			$template['display_compatibleShort'] = "Incompatible";
 		}
+		if ( $template['Blacklist'] ) {
+			$template['display_compatible'] .= "This application / template has been blacklisted.<br>";
+		}
+		if ( $template['Deprecated'] ) {
+			$template['display_compatible'] .= "This application / template has been deprecated.<br>";
+		}
 		$template['display_author'] = "<a class='ca_tooltip ca_author' onclick='doSearch(false,this.innerText);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
 		$displayIcon = $template['Icon'];
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
@@ -240,11 +241,11 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		if ( ( $template['Beta'] == "true" ) ) {
 			$template['display_dockerBeta'] .= "<span class='ca_tooltip displayBeta' title='Beta Container &#13;See support forum for potential issues'>Beta</span>";
 		}
-		
 # Entries created.  Now display it
 		$t .= vsprintf($displayTemplate,toNumericArray($template));
 
 		$columnNumber=++$columnNumber;
+
 
 		if ( $columnNumber == $communitySettings['maxDetailColumns'] ) {
 			$columnNumber = 0;

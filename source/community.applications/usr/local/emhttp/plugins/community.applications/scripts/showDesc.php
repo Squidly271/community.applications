@@ -136,8 +136,16 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$templateDescription .= $template['Licence'] ? "<tr><td>{$color}Licence:</td><td>$color".$template['Licence']."</td></tr>" : "";
 
 	$templateDescription .= "</table></td></tr></table>";
-
+	$templateDescription .= "<center><span class='popUpLink'>";
+	if ($template['Blacklist']) {
+		$templateDescription .= "This application / template has been blacklisted<br>";
+	}
+	if ($template['Deprecated']) {
+		$templateDescription .= "This application / template has been deprecated<br>";
+	}
+	$templateDescription .= "</span></center>";
 	$templateDescription .= "<center>";
+	
 	$templateDescription .= "<form method='get'>";
 	$templateDescription .= "<input type='hidden' name='csrf_token' value='$csrf_token'>";
 

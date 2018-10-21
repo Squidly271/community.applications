@@ -96,68 +96,7 @@ function first_str_replace($haystack, $needle, $replace) {
 	return $haystack;
 }
 
-###################################################################
-# Helper function to remove any formatting, etc from descriptions #
-###################################################################
-function fixDescription($Description) {
-	if ( is_string($Description) ) {
-		$Description = preg_replace("#\[br\s*\]#i", "{}", $Description);
-		$Description = preg_replace("#\[b[\\\]*\s*\]#i", "||", $Description);
-		$Description = preg_replace('#\[([^\]]*)\]#', '<$1>', $Description);
-		$Description = preg_replace("#<span.*#si", "", $Description);
-		$Description = preg_replace("#<[^>]*>#i", '', $Description);
-		$Description = preg_replace("#"."{}"."#i", '<br>', $Description);
-		$Description = preg_replace("#"."\|\|"."#i", '<b>', $Description);
-		$Description = str_replace("&lt;","<",$Description);
-		$Description = str_replace("&gt;",">",$Description);
-		$Description = strip_tags($Description);
-		$Description = trim($Description);
-	} else {
-		return "";
-	}
-	return $Description;
-}
 
-########################################################################
-# Security function to remove any <script> tags from elements that are #
-# displayed as is                                                      #
-########################################################################
-
-# pass a copy of the original template to relate security violations back to the template
-function fixSecurity(&$template,&$originalTemplate) {
-	foreach ($template as &$element) {
-		if ( is_array($element) ) {
-			fixSecurity($element,$originalTemplate);
-		} else {
-			$tempElement = htmlspecialchars_decode($element);
-			if ( preg_match('#<script(.*?)>(.*?)</script>#is',$tempElement) || preg_match('#<iframe(.*?)>(.*?)</iframe>#is',$tempElement) ) {
-				securityViolation($originalTemplate);
-				return;
-			}
-		}
-	}
-}
-
-#######################################################################################################################
-# Security function that gets a sees if the docker run command from the raw template contains any security violations #
-#######################################################################################################################
-function checkValidDockerRunCommand(&$template) {
-	global $subnet;
-
-	if ( ! function_exists("dockerRunSecurity") ) { return; }
-	if ( $template['Plugin'] ) { return; }
-	$subnet = array();
-
-	if ( dockerRunSecurity(xmlToCommand(makeXML($template))[0]) ) {
-		securityViolation($template);
-	}
-}
-
-function securityViolation(&$template) {
-	logger("VERY IMPORTANT IF YOU SEE THIS: Alert the maintainers of Community Applications with the following Information:".$template['RepoName']." ".$emplate['Name']." ".$template['Repository']);
-	$template['Blacklist'] = true;
-	$template['ModeratorComment'] = "Blacklisted due to security violations";
-}
 
 #######################
 # Custom sort routine #
@@ -211,137 +150,10 @@ function highlight($text, $search) {
 function fixTemplates($template) {
 	global $statistics, $communitySettings;
 
-	$origStats = $statistics;
-# this fix must always be the first test
-	if ( is_array($template['Repository']) ) {        	# due to cmer
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository'][0]][] = "Fatal: Multiple Repositories Found - Removing application from lists";
-		$template['Blacklist'] = true;
-	}
- 	$repoTestLwrCase = explode(":",$template['Repository']);
- 	if ( ($repoTestLwrCase[0] != strtolower($repoTestLwrCase[0])) && ! $template['Plugin'] ) { # due to sdesbure
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Invalid repository found.  Only lowercase is allowed";
-		$template['Blacklist'] = true;
-	}
-	if ( (is_array($template['Support'])) && (count($template['Support'])) ) {
-		unset($template['Support']);
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Support Tags Found";
-	}
-	if ( ! is_string($template['Name'])  ) {
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Name is not a string (or multiple names present)";
-		$template['Blacklist'] = true;
-	}
-	if ( ! is_string($template['Author']) ) {
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No author or multiple authors foudn - Removing application from lists";
-		$template['Blacklist'] = true;
-	}
-	if ( ! $template['Author'] ) {
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No author could be determined - Removing application from lists";
-		$template['Blacklist'] = true;
-	}
-	if ( is_array($template['Description']) ) {
-		if ( count($template['Description']) > 1 ) {
-			$template['Description']="";
-			$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple Description tags present";
-			$statistics['caFixed']++;
-			$template['Blacklist'] = true;
-		}
-	}
-	if ( is_array($template['Beta']) ) {
-		$template['Beta'] = "false";
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Beta tags found";
-	} else {
-		$template['Beta'] = strtolower(stripslashes($template['Beta']));
-	}
-	$template['Date'] = ( $template['Date'] ) ? strtotime( $template['Date'] ) : 0;
-	if ( $template['Date'] > strtotime("+2 day") ) {
-		$template['Date'] = 0;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Invalid Date Updated (More than 2 days in the future) Format used probably not in http://php.net/manual/en/datetime.formats.date.php";
-	}
 	if ( ! $template['MinVer'] ) {
 		$template['MinVer'] = $template['Plugin'] ? "6.1" : "6.0";
 	}
-	if ( ! $template['Category'] ) {
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "No Category present on template";
-	}
-	if ( is_array($template['Category']) ) {
-		$template['Category'] = $template['Category'][0];        # due to lsio / CHBMB
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Category tags or Category present but empty";
-	}
 
-	#Fix where authors make category entries themselves, and don't include the trailing colon (due to #rix1337 and others)
-	$categories = explode(" ",$template['Category']);
-	unset($template['Category']);
-	foreach ($categories as $category) {
-		if ( strlen($category) && ! strpos($category,":") ) {
-			$category .= ":";
-			$statistics['caFixed']++;
-			$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Improperly formed category entry (a colon is always present)";
-		}
-		$template['Category'] .= "$category ";
-	}
-	$template['Category'] = trim($template['Category']);
-	$template['Category'] = $template['Category'] ?: "Uncategorized";
-	if ( ! is_string($template['Category']) ) {
-		$template['Category'] = "Uncategorized";
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Multiple Category tags or Category present but empty";
-	}
-
-	if ( !is_string($template['Overview']) ) {
-		unset($template['Overview']);
-	}
-	if ( is_array($template['SortAuthor']) ) {                 # due to cmer
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple Authors / Repositories Found - Removing application from lists";
-		$template['Blacklist'] = true;
-	}
-	if ( is_array($template['PluginURL']) ) {                  # due to coppit
-		$template['PluginURL'] = $template['PluginURL'][1];
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: Multiple PluginURL's found";
-		$template['Blacklist'] = true;
-	}
-	if ( $template['PluginURL'] ) {                            # due to bonienl
-		$template['PluginURL'] = str_replace("raw.github.com","raw.githubusercontent.com",$template['PluginURL']);
-		$template['Repository'] = $template['PluginURL'];
-	}
-	if ( strlen($template['Overview']) > 0 ) {
-		$template['Description'] = $template['Overview'];
-		$template['Description'] = preg_replace('#\[([^\]]*)\]#', '<$1>', $template['Description']);
-		$template['Description'] = fixDescription($template['Description']);
-		$template['Overview'] = $template['Description'];
-	} else {
-		$template['Description'] = fixDescription($template['Description']);
-	}
-	$template['Overview'] = is_string($template['Overview']) ? $template['Overview'] : "";
-	$template['Description'] = is_string($template['Description']) ? $template['Description'] : "";
-	if ( ( ! strlen(trim($template['Overview'])) ) && ( ! strlen(trim($template['Description'])) ) && ! $template['Private'] ){
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "Fatal: No valid Overview Or Description present - Application dropped from CA automatically - Possibly far too many formatting tags present";
-		$template['Blacklist'] = true;
-	}
-	if ( ! $template['Icon'] ) {
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "No Icon specified within the application template";
-	}
-	if ( ( stripos($template['RepoName'],' beta') > 0 )  ) {
-		$template['Beta'] = "true";
-	}
-	$template['Support'] = validURL($template['Support']) ?: "";
-	$template['Project'] = validURL($template['Project']) ?: "";
-	$template['DonateLink'] = validURL($template['DonateLink']) ?: "";
-	$template['DonateText'] = str_replace("'","&#39;",$template['DonateText']);
-	$template['DonateText'] = str_replace('"','&quot;',$template['DonateText']);
-	
 	if ( ! $template['Date'] ) {
 		$template['Date'] = (is_numeric($template['DateInstalled'])) ? $template['DateInstalled'] : 0;
 	}
@@ -352,18 +164,6 @@ function fixTemplates($template) {
 	if ( ($template['Date'] == $template['FirstSeen']) && ( $template['FirstSeen'] >= 1538357652 )) {# 1538357652 is when the new appfeed first started
 		$template['BrandNewApp'] = true;
 	}
-	# support v6.2 redefining deprecating the <Beta> tag and moving it to a category
-	if ( stripos($template['Category'],":Beta") ) {
-		$template['Beta'] = "true";
-	} else {
-		if ( $template['Beta'] === "true" ) {
-			$template['Category'] .= " Status:Beta";
-		}
-	}
-
-	if ( $template['Private'] ) {
-		$statistics = $origStats;
-	}
 
 	# fix where template author includes <Blacklist> or <Deprecated> entries in template (CA used booleans, but appfeed winds up saying "FALSE" which equates to be true
 	$template['Deprecated'] = filter_var($template['Deprecated'],FILTER_VALIDATE_BOOLEAN);
@@ -372,29 +172,7 @@ function fixTemplates($template) {
 	if ( $template['DeprecatedMaxVer'] && version_compare($communitySettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") ) {
 		$template['Deprecated'] = true;
 	}
-	if ( $template['CPUset'] ) {
-		unset($template['CPUset']);
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "CPU pinning removed from template";
-	}
-	if ( is_string($template['ExtraParams']) ) {
-		if ( strpos($template['ExtraParams'],"--cpuset-cpus") !== false ) {
-			$extraParams = explode(" ",$template['ExtraParams']);
-			foreach ($extraParams as $param) {
-				if ( strpos($param,"--cpuset-cpus") === false ) {
-					$params .= "$param ";
-				}
-			}
-			$template['ExtraParams'] = rtrim($params);
-			$statistics['caFixed']++;
-			$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "CPU pinning removed from template";
-		}
-	}
-	$template['Icon'] = str_replace("http://","https://",$template['Icon']);
-	if ( ! $template['Support'] ) {
-		$statistics['caFixed']++;
-		$statistics['fixedTemplates'][$template['Repo']][$template['Repository']][] = "No Support Link Present";
-	}
+
 	return $template;
 }
 
@@ -507,28 +285,15 @@ function moderateTemplates() {
 	global $communityPaths,$communitySettings;
 
 	$templates = readJsonFile($communityPaths['community-templates-info']);
-	$moderation = readJsonFile($communityPaths['moderation']);
-	$repositories = readJsonFile($communityPaths['Repositories']);
-	foreach ($repositories as $repo) {
-		if ( is_array($repo['duplicated']) ) {
-			$duplicatedTemplate[$repo['url']] = $repo;
-		}
-	}
+
 	if ( ! $templates ) { return; }
 	foreach ($templates as $template) {
-		$templateTMP = is_array($moderation[$template['Repository']]) ? array_merge($template,$moderation[$template['Repository']]) : $template;
-		if ( $templateTMP['CAComment'] ) {
-			$templateTMP['ModeratorComment'] = $templateTMP['CAComment'];
+		$template['Compatible'] = versionCheck($template);
+		if ( $template["DeprecatedMaxVer"] && version_compare($communitySettings['unRaidVersion'],$template["DeprecatedMaxVer"],">") ) {
+			$template['Deprecated'] = true;
 		}
-		if ( $duplicatedTemplate[$templateTMP['RepoURL']]['duplicated'][$template['Repository']] ) {
-			$templateTMP['Blacklist'] = true;
-			$templateTMP['ModeratorComment'] = "Duplicated Template";
-		}
-		$templateTMP['Compatible'] = versionCheck($templateTMP);
-		if ( $templateTMP["DeprecatedMaxVer"] && version_compare($communitySettings['unRaidVersion'],$templateTMP["DeprecatedMaxVer"],">") ) {
-			$templateTMP['Deprecated'] = true;
-		}
-		$o[] = $templateTMP;
+		$template['ModeratorComment'] = $template['CaComment'] ?: $template['ModeratorComment'];
+		$o[] = $template;
 	}
 	writeJsonFile($communityPaths['community-templates-info'],$o);
 	pluginDupe($o);
@@ -548,21 +313,6 @@ function validURL($URL) {
 	return filter_var($URL, FILTER_VALIDATE_URL);
 }
 
-
-################################################
-# Returns the actual URL after any redirection #
-################################################
-# works, but very slow.  Switched to a simple string replace as all redirects are plugin and simply github.com/raw/ vs raw.github.usercontent/
-function getRedirectedURL($url) {
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_HEADER, true);
-	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	$a = curl_exec($ch);
-	return curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-}
-
 ###########################################################
 # Returns the maximum number of columns per display width #
 ###########################################################
@@ -573,29 +323,6 @@ function getMaxColumns($windowWidth) {
 	$communitySettings['windowWidth'] = $windowWidth;
 	$communitySettings['maxDetailColumns'] = floor($windowWidth / $templateSkin['detail']['templateWidth']);
 	if ( ! $communitySettings['maxDetailColumns'] ) $communitySettings['maxDetailColumns'] = 1;
-}
-
-#######################
-# Creates an ini file #
-#######################
-function create_ini_file($settings,$mode=false) {
-	if ( $mode ) {
-		$keys = array_keys($settings);
-
-		foreach ($keys as $key) {
-			$iniFile .= "[$key]\r\n";
-			$entryKeys = array_keys($settings[$key]);
-			foreach ($entryKeys as $entry) {
-				$iniFile .= $entry.'="'.$settings[$key][$entry].'"'."\r\n";
-			}
-		}
-	} else {
-		$entryKeys = array_keys($settings);
-		foreach ($entryKeys as $entry) {
-			$iniFile .= $entry.'="'.$settings[$entry].'"'."\r\n";
-		}
-	}
-	return $iniFile;
 }
 
 #######################################################
