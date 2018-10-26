@@ -38,7 +38,6 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .webLink {font-weight:bold;color:#486dba;padding-left:.5rem;padding-right:.5rem;}
 .webLink::after {content:"Web Page"}
 .donateLink {font-size:1.2rem;}
-.donateLink::after {content:url('https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button-small.png');}
 .dockerHubStar {color:#486dba;font-size:1.5rem;}
 .dockerDisabled {text-align:center;width:auto;color:purple;}
 .separateOfficial {text-align:center;width:auto;font-size:2.5rem;}

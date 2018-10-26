@@ -992,9 +992,10 @@ case 'statistics':
 	}
 
 	$color = "<font color='coral'>";
-	echo "<div style='overflow:scroll; max-height:55rem; height:55rem; width:55rem; overflow-x:hidden; overflow-y:hidden;'><center><img height='4.8rem' src='/plugins/community.applications/images/community.applications.png'><br><font size='5rem;' color='white'>Community Applications</font><br>";
-	echo "<br>";
-	echo "<table>";
+	echo "<div style='overflow:scroll;height:55rem; width:55rem; overflow-x:hidden; overflow-y:hidden;'>";
+	echo "<table style='margin-top:1rem;'>";
+	echo "<tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='/plugins/community.applications/images/community.applications.png'></td></tr>";
+	echo "<tr><td colspan='2'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>";
 	echo "<tr><td class='ca_table'><b><a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td>$color$updateTime</td></tr>";
 	echo "<tr><td class='ca_table'><b>Total Number Of Templates</b></td><td>$color{$statistics['totalApplications']}</td></tr>";
 	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Total Number Of Repositories</a></b></td><td>$color".count($repositories)."</td></tr>";

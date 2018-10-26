@@ -6,7 +6,14 @@
 ###############################################################
 
 $caCredits = "
-    <center><table>
+<div style='overflow:scroll;height:55rem; width:55rem; overflow-x:hidden; overflow-y:auto;margin-top:auto;'>
+    <center><table style='margin-left:auto;'>
+			<tr>
+				<td colspan='3'><center><img src='/plugins/community.applications/images/community.applications.png' style='height:5rem;margin-top:2rem;'></td>
+			</tr>
+			<tr>
+			  <td colspan='3'><center><font size='6' color='white'>Community Applications</font></td>
+			</tr>
       <tr>
         <td class='ca_table'><br><img src='https://github.com/Squidly271/plugin-repository/raw/master/Chode_300.gif' style='width:5rem;height:4.8rem;'></td>
         <td class='ca_table'><font size='4rem;'>Andrew Zawadzki</font></strong></td>
@@ -51,8 +58,8 @@ $caCredits = "
     <br>
     <center><em><font size='1rem;'>Copyright &copy; 2015-2018 Andrew Zawadzki</font></em></center>
     <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png' style='height:3.5rem;'></a></center>
-		Ensuring only safe applications are present is a full time job
+		<center>Ensuring only safe applications are present is a full time job
     <br><br><center><a href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank'>Community Applications Support Thread</a></center>
-  ";
+  </div>";
   $caCredits = str_replace("\n","",$caCredits);
 ?>

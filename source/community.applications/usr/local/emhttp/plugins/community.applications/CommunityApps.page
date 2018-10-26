@@ -244,7 +244,7 @@ $(function(){
 		interactive: true,
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
-			instance.content("<div style='overflow:scroll; max-height:55rem; height:55rem; width:55rem; overflow-x:hidden; overflow-y:auto;'><center><img src='/plugins/community.applications/images/community.applications.png'><br><font size='6' color='white'>Community Applications</font><br><br><?=$caCredits?></div>");
+			instance.content("<?=$caCredits?>");
 		}
 	});
 

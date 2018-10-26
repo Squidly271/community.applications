@@ -194,7 +194,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$templateDescription .= $template['WebPageURL'] ? "&nbsp;&nbsp;<a class='popUpLink' href='".$template['WebPageURL']."' target='_blank'>Web Page</strong></a>&nbsp;&nbsp;" : "";
 
 	if ( $donatelink ) {
-		$templateDescription .= "<br><br><center>$donatetext<br><a class='donateLink' href='$donatelink' target='_blank'></a>";
+		$templateDescription .= "<br><br><center>$donatetext<br><a class='donateLink' href='$donatelink' target='_blank'><img src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button-small.png' style='height:1.8rem;'></a>";
 		if ( $template['RepoName'] != "Squid's plugin Repository" ) {
 			$templateDescription .= "<br><font size='0'>The above link is set by the author of the template, not the author of Community Applications</font></center>";
 		}
