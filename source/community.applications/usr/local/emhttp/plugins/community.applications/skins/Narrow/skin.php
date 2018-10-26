@@ -25,7 +25,7 @@ function display_apps($pageNumber=1,$selectedApps=false) {
 			$display = "<div class='separateOfficial'>";
 
 			$logos = readJsonFile($communityPaths['logos']);
-			$display .= $logos[$officialRepo] ? "<img src='".$logos[$officialRepo]."' style='width:48px'>&nbsp;&nbsp;" : "";
+			$display .= $logos[$officialRepo] ? "<img src='".$logos[$officialRepo]."' style='width:4.8rem'>&nbsp;&nbsp;" : "";
 			$display .= "$officialRepo</div><br>";
 			$display .= my_display_apps($officialApplications,1,true,$selectedApps);
 		}
@@ -98,8 +98,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$displayedTemplates[] = $template;
 	}
 	$maxColumnDisplayed = count($displayedTemplates) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($displayedTemplates);
-	$leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']) / 2;
-
+	$leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']*$communitySettings['fontSize']) / 2;
 	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
 	$iconClass = "displayIcon";
@@ -142,10 +141,10 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$template['display_webPage'] = $template['WebPageURL'] ? "<a class='ca_tooltip webLink' title='Click to go to {$template['SortAuthor']}&#39;s web page' href='".$template['WebPageURL']."' target='_blank'></a>" : "";
 
 		if ( $template['UpdateAvailable'] ) {
-			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><center><font color='red'><b>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</b> <i class='ca_infoPopup fa fa-info-circle' data-app='".basename($template['MyPath'])."' data-name='{$template['Name']}' style='cursor:pointer;font-size:15px;color:#486DBA;'></i></center></font>" : "<br><center><font color='red'><b>Update Available.  Click <a href='Docker'>Here</a> to install</b></font></center>";
+			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><center><font color='red'><b>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</b> <i class='ca_infoPopup fa fa-info-circle' data-app='".basename($template['MyPath'])."' data-name='{$template['Name']}' style='cursor:pointer;font-size:1.5rem;color:#486DBA;'></i></center></font>" : "<br><center><font color='red'><b>Update Available.  Click <a href='Docker'>Here</a> to install</b></font></center>";
 		}
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
-		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=20px>" : "";
+		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=2.0rem;>" : "";
 		$template['display_Repository'] = "<span class='ca_repository'>$RepoName $tempLogo</span>";
 		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star dockerHubStar' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
 		$template['display_Downloads'] = $template['downloads'] ? "<center>".number_format($template['downloads'])."</center>" : "<center>Not Available</center>";

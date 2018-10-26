@@ -47,8 +47,8 @@ $template = readJsonFile($communityPaths['defaultSkin']);
 <link rel='stylesheet' href='<?=autov("/plugins/community.applications/styles/awesomplete.css")?>'>
 <? if ($unRaid66 && ( $display['theme'] == "black" || $display['theme'] == "white") ): ?>
 <style>
-#searchBox{top:-7px;padding:6px;}
-.searchSubmit{height:34px;}
+#searchBox{top:-0.7rem;padding:0.6rem;}
+.searchSubmit{height:3.4rem;}
 </style>
 <?endif;?>
 <style>
@@ -158,7 +158,7 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
-	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-10px;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
+	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
 
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
@@ -238,15 +238,13 @@ $(function(){
 		triggerOpen: {mouseenter:false,click:true,touchstart:true},
 		contentAsHTML: true,
 		distance: -15,
-		maxWidth:550,
-		minWidth:550,
 		animation: 'none',
 		animationDuration: [1500,250],
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
 		interactive: true,
 		viewportAware: true,
 		functionBefore: function(instance,helper) {
-			instance.content("<div style='overflow:scroll; max-height:550px; height:550px; overflow-x:hidden; overflow-y:auto;'><center><img src='/plugins/community.applications/images/community.applications.png'><br><font size='6' color='white'>Community Applications</font><br><br><?=$caCredits?></div>");
+			instance.content("<div style='overflow:scroll; max-height:55rem; height:55rem; width:55rem; overflow-x:hidden; overflow-y:auto;'><center><img src='/plugins/community.applications/images/community.applications.png'><br><font size='6' color='white'>Community Applications</font><br><br><?=$caCredits?></div>");
 		}
 	});
 
@@ -255,8 +253,6 @@ $(function(){
 		triggerOpen: {mouseenter:false,click:true,touchstart:true},
 		contentAsHTML: true,
 		distance: -15,
-		maxWidth:550,
-		minWidth:550,
 		animation: 'none',
 		animationDuration: [1500,250],
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
@@ -458,8 +454,6 @@ function setToolTip() {
 
 	$('.ca_appPopup').tooltipster({
 		contentAsHTML: true,
-		maxWidth:550,
-		minWidth:550,
 		animation: 'none',
 		arrow:true,
 		trigger: 'custom',
@@ -492,8 +486,6 @@ function setToolTip() {
 	});
 	$('.ca_infoPopup').tooltipster({
 		contentAsHTML: true,
-		maxWidth:550,
-		minWidth:550,
 		distance:-10,
 		animation: 'none',
 		trigger: 'custom',
@@ -617,7 +609,7 @@ function changePage(pageNumber) {
 
 	$('html,body').animate({scrollTop:0},500);
 	mySpinner();
-	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected},function(data3) {
+	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
 		if (data3) {
 			updateDisplay(data3);
 			readMore();
@@ -796,7 +788,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 
 	mySpinner();
 	var sortOrder = getSortOrder();
-	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected},function(data3) {
+	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
 		if (data3) {
 			updateDisplay(data3);
 			readMore();
@@ -910,7 +902,7 @@ function getContent(init,category,description,newApp) {
 
 		var sortOrder = getSortOrder();
 
-		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth},function(data) {
+		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize()},function(data) {
 			if (data) {
 				description = "Category: <font color='<?=$unRaid66color?>'>"+description+"</font>";
 				$("#Category").html(description);
@@ -971,7 +963,7 @@ function dockerSearch(pageNumber) {
 	$("#Category").html("DockerHub Search Results For <font color='<?=$unRaid66color?>'>"+filter+"</font> <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
 	mySpinner();
-	$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder,windowWidth:windowWidth},function(data) {
+	$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize()},function(data) {
 		if (data) {
 			updateDisplay(data);
 			readMore();
@@ -1048,7 +1040,7 @@ function previousApps(button,installed) {
 		$("#Category").html("All Installed Applications");
 	}
 
-	$.post(URL,{action:'previous_apps',installed:installed},function(data) {
+	$.post(URL,{action:'previous_apps',installed:installed,fontSize:getFontSize()},function(data) {
 		if (data) {
 			changeSortOrder(null,null,"true");
 		}
@@ -1483,7 +1475,7 @@ function resizeDisplay() {
 		var newWidth = getWindowWidth();
 		var oldWidth = data.oldWindowWidth;
 		data.oldWindowWidth = newWidth;
-		var divisor = <?=$template['detail']['templateWidth']?>;
+		var divisor = <?=$template['detail']['templateWidth']?> * getFontSize();
 
 <?if ( $mobileDevice ):?>  // Mobile devices only check if columns change.  Computers always check to re-center the display
 		if ( Math.floor(newWidth / divisor) != Math.floor(oldWidth / divisor) ) {
@@ -1512,18 +1504,25 @@ function isTouch() {
 	catch(e){ return false; }
 }
 
+function getFontSize() {
+	var elem = document.getElementById("fontSize");
+	var fontSize = window.getComputedStyle(elem,null).getPropertyValue("font-size");
+	return fontSize.replace("px","");
+}
+
 </script>
 <FORM method="get" id="myForm">
 <body onresize='resizeDisplay();' id='CommunityApplicationsBody'>
+<span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
 <span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
 <br>
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br><br>
-> <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
-> <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This selects a category of apps to display<br>
-> <i class='fa fa-folder-open enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - When available, this selects a subcategory of apps to display<br>
-> <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:20px;'></i> - This chooses how to display the results<br><br>
-> <i class='fa fa-download' aria-hidden='true' style='font-size:20px;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:20px;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:20px;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
-> <i class='fa fa-globe' aria-hidden='true' style='font-size:20px;'></i> - Clicking this icon will take you to an application's GUI<br>
+> <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
+> <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This selects a category of apps to display<br>
+> <i class='fa fa-folder-open enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - When available, this selects a subcategory of apps to display<br>
+> <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
+> <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
+> <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> - Clicking this icon will take you to an application's GUI<br>
 > Hovering over an application's icon (or clicking it) will display more information about the application<br>
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
@@ -1532,7 +1531,7 @@ function isTouch() {
 <i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
-<i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:23px; position:relative;top:-2px;' aria-hidden='true'></i>&nbsp;
+<i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
 <font size='3'><b>Section: <font color='<?=$unRaid66color?>'><span id='currentSection'>Available Apps</span></font></b></font>
 <strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float:right;display:none;';>Total Found: <strong><font size="3"><span id="Total">0</span></font></strong>
 </span><br>
@@ -1541,13 +1540,13 @@ function isTouch() {
 <?if ( $upgradeAvailable ) :?>
 <span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style=cursor:pointer>HERE</a> to install the update</center></font></span>
 <?endif;?>
-<div class='dockerSearch' style='display:none'><center><figure><i class='fa fa-docker initDockerSearch' style='font-size:50px;color:DarkCyan;cursor:pointer;'></i><figcaption class='initDockerSearch' style='cursor:pointer;'><a>Click Here To Get More Results From DockerHub</a></figcaption></figure></center></div>
+<div class='dockerSearch' style='display:none'><center><figure><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><figcaption class='initDockerSearch' style='cursor:pointer;'><a>Click Here To Get More Results From DockerHub</a></figcaption></figure></center></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 <div style='width:100%; display:block;' id='templates_content'></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 </center>
 <center><a href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank'>Support Thread</a></center><br>
-<center>Community Applications Version: <?=$installedVersion?>  <i class='ca_infoPopup fa fa-info-circle' style='cursor:pointer;font-size:15px;color:lightblue;'></i></center></div>
+<center>Community Applications Version: <?=$installedVersion?>  <i class='ca_infoPopup fa fa-info-circle' style='cursor:pointer;font-size:1.5rem;color:lightblue;'></i></center></div>
 
 <span id='miscScript'></span><span id='awesomepleteScript'></span>
 <div>

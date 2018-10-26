@@ -1,7 +1,7 @@
-<style>p { margin-left:20px;margin-right:20px; }
+<style>p { margin-left:2rem;margin-right:2rem; }
 .popUpLink { color:#FF8C2F; }
 </style>
-<div style='overflow:scroll; max-height:450px; height:450px; overflow-x:hidden; overflow-y:auto;font-size:12px;'>
+<div style='overflow:scroll; max-height:45rem; height:45rem; width:55rem; overflow-x:hidden; overflow-y:auto;font-size:1.2rem;'>
 <?PHP
 ###############################################################
 #                                                             #
@@ -86,9 +86,9 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$template['ModeratorComment'] .= $template['CAComment'];
 
 	if ( $color ) {
-		$templateDescription .= "<center><font size=6;><strong>{$template['SortName']}</strong></font></center><br>";
+		$templateDescription .= "<center><font size=6rem;><strong>{$template['SortName']}</strong></font></center><br>";
 	}
-	$templateDescription .= "<table style='margin:0 0 0 0;'><tr><td><figure style='margin-right:10px'><img id='icon' src='".$template['Icon']."' style='width:96px;height:96px;background-color:#C7C5CB;padding:3px;border-radius:10px 10px 10px 10px';>";
+	$templateDescription .= "<table style='margin:1.5rem 0 0 0;'><tr><td><figure style='margin-right:1rem;'><img id='icon' src='".$template['Icon']."' style='width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem';>";
 	$templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
 	$templateDescription .= "</figure>";
 	$templateDescription .= "</td><td></td><td><table>";

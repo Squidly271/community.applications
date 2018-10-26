@@ -1,9 +1,9 @@
 {
     "detail": {
 				"php": "/usr/local/emhttp/plugins/community.applications/skins/Narrow/skin.php",
-        "templateWidth": 375,
+        "templateWidth": 37.5,
         "header": "<div style='display:block;overflow:hidden;margin-left:%2$spx;padding:0px;'>",
-        "sol": "<div style='height:432px;overflow:auto;min-width:%1$spx;display:inline-block;margin-left:auto;position:relative;'>",
+        "sol": "<div style='height:43.2rem;overflow:auto;min-width:%1$spx;display:inline-block;margin-left:auto;position:relative;'>",
         "template": "<div class='ca_holder'><div class='ca_template_icon'><div><center><strong>%75$s %66$s %77$s %43$s</strong></center></div><div class='ca_icon_wide'>%65$s</div><div class='ca_wide_info'>%59$s<br>%40$s<br>%41$s<br>%76$s<br>%45$s%44$s</div></div><div class='ca_template'><span class='ca_category'>%21$s</span><br><span class='desc_readmore' style='display:block'><font color='red'>%57$s<br></font><span class='ca_description'>%22$s</span></span><center>%64$s</center><br>%39$s%38$s</b></strong><center>%68$s%69$s%70$s%71$s%72$s%73$s%74$s%78$s</center><br><center>%37$s%36$s%48$s</center><font></div></div>",
 				"eol": "</div>",
         "footer": "</div></div>"

@@ -333,7 +333,7 @@ function getMaxColumns($windowWidth) {
 
 	$templateSkin = readJsonFile($communityPaths['defaultSkin']);   # Global Var used in helpers ( getMaxColumns() )
 	$communitySettings['windowWidth'] = $windowWidth;
-	$communitySettings['maxDetailColumns'] = floor($windowWidth / $templateSkin['detail']['templateWidth']);
+	$communitySettings['maxDetailColumns'] = floor($windowWidth / ($templateSkin['detail']['templateWidth'] * $communitySettings['fontSize']));
 	if ( ! $communitySettings['maxDetailColumns'] ) $communitySettings['maxDetailColumns'] = 1;
 }
 

@@ -53,13 +53,15 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 	@unlink($communityPaths['community-templates-info']);
 }
 
-$selectCategoryMessage = "Select a Section <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:20px;cursor:auto;'></i> or Category <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:20px;cursor:auto;'></i> above";
+$selectCategoryMessage = "Select a Section <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:2rem;cursor:auto;'></i> or Category <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:2rem;cursor:auto;'></i> above";
 
 ############################################
 ##                                        ##
 ## BEGIN MAIN ROUTINES CALLED BY THE HTML ##
 ##                                        ##
 ############################################
+
+$communitySettings['fontSize'] = getPost("fontSize",12.5);
 
 switch ($_POST['action']) {
 
@@ -306,6 +308,7 @@ case 'display_content':
 	$pageNumber = getPost("pageNumber","1");
 	$selectedApps = json_decode(getPost("selected",false),true);
 	getMaxColumns($windowWidth);
+	$communitySettings['fontSize'] = getPost("fontSize",false);
 
 	if ( file_exists($communityPaths['community-templates-displayed']) ) {
 		display_apps($pageNumber,$selectedApps);
@@ -548,6 +551,7 @@ case 'search_dockerhub':
 	$filter     = getPost("filter","");
 	$pageNumber = getPost("page","1");
 	$sortOrder  = getSortOrder(getPostArray('sortOrder'));
+	$communitySettings['fontSize'] = getPost("fontSize",false);
 
 	$communityTemplates = readJsonFile($communityPaths['community-templates-info']);
 	$filter = str_replace(" ","%20",$filter);
@@ -612,6 +616,7 @@ case 'dismiss_warning':
 ###############################################################
 case 'previous_apps':
 	$installed = getPost("installed","");
+	$communitySettings['fontSize'] = getPost("fontSize",false);
 	$dockerUpdateStatus = readJsonFile($communityPaths['dockerUpdateStatus']);
 	$moderation = readJsonFile($communityPaths['moderation']);
 	if ( $communitySettings['dockerRunning'] ) {
@@ -987,7 +992,7 @@ case 'statistics':
 	}
 
 	$color = "<font color='coral'>";
-	echo "<div style='overflow:scroll; max-height:550px; height:550px; overflow-x:hidden; overflow-y:hidden;'><center><img height='48px' src='/plugins/community.applications/images/community.applications.png'><br><font size='5' color='white'>Community Applications</font><br>";
+	echo "<div style='overflow:scroll; max-height:55rem; height:55rem; width:55rem; overflow-x:hidden; overflow-y:hidden;'><center><img height='4.8rem' src='/plugins/community.applications/images/community.applications.png'><br><font size='5rem;' color='white'>Community Applications</font><br>";
 	echo "<br>";
 	echo "<table>";
 	echo "<tr><td class='ca_table'><b><a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td>$color$updateTime</td></tr>";
@@ -1008,7 +1013,7 @@ case 'statistics':
 	$memTmp = explode("\t",$totalTmp);
 	echo "<tr><td class='ca_table'><b><b>Memory Usage (CA / DataFiles)</b></td><td>{$memCA[0]} / {$memTmp[0]}</td></tr>";
 	echo "</table>";
-	echo "<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img height='25px' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></center>";
+	echo "<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></center>";
 	echo "<center>Ensuring only safe applications are present is a full time job</center><br>";
 	break;
 
