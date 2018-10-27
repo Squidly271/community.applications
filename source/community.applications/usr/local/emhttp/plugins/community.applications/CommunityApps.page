@@ -18,8 +18,7 @@ require_once("/usr/local/emhttp/plugins/$plugin/include/helpers.php");
 $mobileDevice = isMobile();
 
 $installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$plugin.plg");
-$upgradeVersion = file_get_contents($communityPaths['onlineCAVersion']);
-#$upgradeVersion = (is_file("/tmp/plugins/$plugin.plg")) ? exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /tmp/plugins/$plugin.plg") : "0";
+$upgradeVersion = download_url($communityPaths['onlineCAVersion'],"",false,10);
 if ( $installedVersion < $upgradeVersion && $upgradeVersion) {
 	$upgradeAvailable = "true";
 }
@@ -47,7 +46,7 @@ $template = readJsonFile($communityPaths['defaultSkin']);
 <link rel='stylesheet' href='<?=autov("/plugins/community.applications/styles/awesomplete.css")?>'>
 <? if ($unRaid66 && ( $display['theme'] == "black" || $display['theme'] == "white") ): ?>
 <style>
-#searchBox{top:-0.7rem;padding:0.6rem;}
+#searchBox{top:-0.6rem;padding:0.6rem;}
 .searchSubmit{height:3.4rem;}
 </style>
 <?endif;?>
@@ -158,8 +157,6 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
-	$('div[id=title]').last().append("<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>");
-
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
@@ -719,7 +716,6 @@ function doSearch(button,newSearch) {
 	enableIcon("#subcategoryIcon",false);
 	$("#NetworkCategory,#MediaAppCategory,#MediaServerCategory,#NONE,#ToolsCategory").hide();
 	window.scrollTo(0,0);
-
 	if ( !filter ) {
 		getContent(true,'INITIALIZE','None Selected');
 		return;
@@ -1510,12 +1506,21 @@ function getFontSize() {
 	return fontSize.replace("px","");
 }
 
-</script>
-<FORM method="get" id="myForm">
+</script><div style='width:100%;'><div style='float:right;'><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div></div>
 <body onresize='resizeDisplay();' id='CommunityApplicationsBody'>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
-<span style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></span>
+<div style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></div>
 <br>
+
+<i id='homeIcon' class='fa fa-home enabledIcon ca_staticTips' aria-hidden='true'></i>&nbsp;
+<i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
+<i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
+<i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
+<i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
+<font size='3'><b>Section: <font color='<?=$unRaid66color?>'><span id='currentSection'>Available Apps</span></font></b></font>
+<strong><font size='3'><span id="Category"></span></strong><span id="Total1" style='display:none;';> (Total: <font color='<?=$unRaid66color?>'><span id="Total">0</span></font>)</font>
+</span><br>
+
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br><br>
 > <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps, additional CA Modules<br>
 > <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This selects a category of apps to display<br>
@@ -1526,15 +1531,6 @@ function getFontSize() {
 > Hovering over an application's icon (or clicking it) will display more information about the application<br>
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
-
-<i id='homeIcon' class='fa fa-home enabledIcon ca_staticTips' aria-hidden='true'></i>&nbsp;
-<i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
-<i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
-<i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
-<i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
-<font size='3'><b>Section: <font color='<?=$unRaid66color?>'><span id='currentSection'>Available Apps</span></font></b></font>
-<strong><font size='3'><span id="Category"></span></strong></font><span id="Total1" style='float:right;display:none;';>Total Found: <strong><font size="3"><span id="Total">0</span></font></strong>
-</span><br>
 
 <div id='cookieWarning' style='display:none;'><center><font color='purple'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </font></center></div>
 <?if ( $upgradeAvailable ) :?>
@@ -1620,7 +1616,7 @@ Sort Direction:
 </span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
 </body>
-</FORM><span id='debugging'></span>
+<span id='debugging'></span>
 <div class='spinner fixed'></div>
 <form id='appWarningForm' style='display:none;'>
 <br><br><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
