@@ -350,6 +350,7 @@ function displaySearchResults($pageNumber) {
 	global $communityPaths, $communitySettings, $plugin;
 
 	$windowWidth = getPost("windowWidth",false);
+	$fontSize = getPost("fontSize",false);
 	getMaxColumns($windowWidth);
 
 	$tempFile = readJsonFile($communityPaths['dockerSearchResults']);
@@ -361,7 +362,7 @@ function displaySearchResults($pageNumber) {
 	$displayTemplate = $skin[$viewMode]['template'];
 
 	$maxColumnDisplayed = count($file) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($file);
-	$leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']) / 2;
+	$leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*($skin[$viewMode]['templateWidth']*$fontSize)) / 2;
 
 	$templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
 	$ct = dockerNavigate($num_pages,$pageNumber)."<br>";

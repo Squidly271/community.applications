@@ -730,7 +730,7 @@ function doSearch(button,newSearch) {
 	}
 	mySpinner();
 
-	$.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,windowWidth:windowWidth},function(data) {
+	$.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize()},function(data) {
 		if (data) {
 			enableButtons();
 			updateDisplay(data);
