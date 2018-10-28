@@ -1,2 +1,2 @@
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.6rem;border:1px; solid #dadada;border-radius:0px 4px .4rem 0px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;}
+.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.6rem;border:1px; solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
+#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;background-color:#262626;}

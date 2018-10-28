@@ -688,6 +688,12 @@ function doSearch(button,newSearch) {
 		$('#searchBox').val(newSearch);
 	}
 	var filter = $('#searchBox').val();
+	if ( button && ! filter) {
+		$("#searchBox").attr("placeholder","Please enter search term");
+		return;
+	} else {
+		$("#searchBox").attr("placeholder","Search");
+	}
 	resetSortByDate();
 	data.docker = "";
 	data.section = "AppStore";
@@ -1510,10 +1516,10 @@ function getFontSize() {
 	return fontSize.replace("px","");
 }
 
-</script><div style='width:100%;'><div style='float:right;'><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div></div>
+</script
 <body onresize='resizeDisplay();' id='CommunityApplicationsBody'>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
-<div style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a></div>
+<div style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>
 <br>
 
 <i id='homeIcon' class='fa fa-home enabledIcon ca_staticTips' aria-hidden='true'></i>&nbsp;
