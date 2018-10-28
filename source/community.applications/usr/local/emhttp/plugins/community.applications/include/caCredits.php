@@ -41,19 +41,9 @@ $caCredits = "
       </tr>
       <tr>
         <td></td>
-        <td class='ca_table'>CHBMB</td>
+        <td class='ca_table'>CHBMB<br>SpaceInvaderOne<br>Sparklyballs<br>wgastarks<br>DJoss<br>Zer0Nin3r</td>
         <td>Additional Testing</td>
       </tr>
-      <tr>
-        <td></td>
-        <td class='ca_table'>gridrunner</td>
-        <td>Additional Testing</font></td>
-      </tr>
-			<tr>
-				<td></td>
-				<td class='ca_table'>Sparklyballs</td>
-				<td>Additional Testing</td>
-			</tr>
     </table></center>
     <br>
     <center><em><font size='1rem;'>Copyright &copy; 2015-2018 Andrew Zawadzki</font></em></center>

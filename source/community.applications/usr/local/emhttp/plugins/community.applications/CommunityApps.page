@@ -165,7 +165,7 @@ $(function(){
 	}
 
 	if ( isTouch() ) {
-		$("#CommunityApplicationsBody").on("swipeleft",swipelefthandler);
+		$("#templates_content").on("swipeleft",swipelefthandler);
 		function swipelefthandler(event) {
 			if ( $(".pageNavigation").length ) {
 				if ( data.nextpage > 1 ) {
@@ -177,7 +177,7 @@ $(function(){
 				}
 			}
 		}
-		$("#CommunityApplicationsBody").on("swiperight",swiperighthandler);
+		$("#templates_content").on("swiperight",swiperighthandler);
 		function swiperighthandler(event) {
 			if ( $(".pageNavigation").length ) {
 				if ( data.prevpage > 0 ) {
@@ -364,7 +364,8 @@ $(function(){
 	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
 	$("#homeIcon").click(function()             { appStore(); });
-
+	resizeDisplay(); // Initialize the resize event
+	
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
 		sweetAlertBackground("white");
@@ -1474,7 +1475,6 @@ function resizeDisplay() {
 		var oldWidth = data.oldWindowWidth;
 		data.oldWindowWidth = newWidth;
 		var divisor = <?=$template['detail']['templateWidth']?> * getFontSize();
-
 <?if ( $mobileDevice ):?>  // Mobile devices only check if columns change.  Computers always check to re-center the display
 		if ( Math.floor(newWidth / divisor) != Math.floor(oldWidth / divisor) ) {
 			$("#templates_content").empty();
@@ -1508,8 +1508,7 @@ function getFontSize() {
 	return fontSize.replace("px","");
 }
 
-</script
-<body onresize='resizeDisplay();' id='CommunityApplicationsBody'>
+</script>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
 <div style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>
 <br>
@@ -1616,7 +1615,6 @@ Sort Direction:
 </div>
 </span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
-</body>
 <span id='debugging'></span>
 <div class='spinner fixed'></div>
 <form id='appWarningForm' style='display:none;'>
