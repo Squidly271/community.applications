@@ -1519,7 +1519,7 @@ function getFontSize() {
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
-<strong><font size='3'><span id="Category"></span></strong><span id="Total1" style='display:none;';> (Total: <font color='<?=$unRaid66color?>'><span id="Total">0</span></font>)</font>
+<strong><font size='3'><span id="Category"></span></strong><span id="Total1" style='display:none;';> (<span id="Total">0</span>)</span></font>
 </span><br>
 
 > For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong><br><br>
