@@ -1129,7 +1129,6 @@ function DownloadApplicationFeed() {
 			if ( $o['PluginURL'] ) {
 				$o['Author']        = $o['PluginAuthor'];
 				$o['Repository']    = $o['PluginURL'];
-				$o['Category']      .= " Plugins: ";
 				$o['SortAuthor']    = $o['Author'];
 				$o['SortName']      = $o['Name'];
 			}

@@ -167,21 +167,25 @@ $(function(){
 	if ( isTouch() ) {
 		$("#CommunityApplicationsBody").on("swipeleft",swipelefthandler);
 		function swipelefthandler(event) {
-			if ( data.nextpage > 1 ) {
-				if ( dockerSearchFlag ) {
-					dockerSearch(data.nextpage);
-				} else {
-					changePage(data.nextpage);
+			if ( $(".pageNavigation").length ) {
+				if ( data.nextpage > 1 ) {
+					if ( dockerSearchFlag ) {
+						dockerSearch(data.nextpage);
+					} else {
+						changePage(data.nextpage);
+					}
 				}
 			}
 		}
 		$("#CommunityApplicationsBody").on("swiperight",swiperighthandler);
 		function swiperighthandler(event) {
-			if ( data.prevpage > 0 ) {
-				if ( dockerSearchFlag ) {
-					dockerSearch(data.prevpage);
-				} else {
-					changePage(data.prevpage);
+			if ( $(".pageNavigation").length ) {
+				if ( data.prevpage > 0 ) {
+					if ( dockerSearchFlag ) {
+						dockerSearch(data.prevpage);
+					} else {
+						changePage(data.prevpage);
+					}
 				}
 			}
 		}
@@ -675,7 +679,7 @@ function sweetAlertBackground(color) {
 }
 
 function readMore() {
-	$('.desc_readmore').readmore({maxHeight:100,moreLink:"<a href='#' class='myReadmore' title='Show More'><i class='fa fa-chevron-down myReadmoreButton'></i></a>",lessLink:"<a class='myReadmore' href='#' title='Show Less'><i class='fa fa-chevron-up myReadmoreButton'></i></a>"});
+	$('.desc_readmore').readmore({maxHeight:10*getFontSize(),moreLink:"<a href='#' class='myReadmore' title='Show More'><i class='fa fa-chevron-down myReadmoreButton'></i></a>",lessLink:"<a class='myReadmore' href='#' title='Show Less'><i class='fa fa-chevron-up myReadmoreButton'></i></a>"});
 }
 
 function doSearch(button,newSearch) {
@@ -1517,7 +1521,7 @@ function getFontSize() {
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
-<font size='3'><b>Section: <font color='<?=$unRaid66color?>'><span id='currentSection'>Available Apps</span></font></b></font>
+<font size='3'><font color='<?=$unRaid66color?>'><span id='currentSection'>Available Apps</span></font></b></font>
 <strong><font size='3'><span id="Category"></span></strong><span id="Total1" style='display:none;';> (Total: <font color='<?=$unRaid66color?>'><span id="Total">0</span></font>)</font>
 </span><br>
 

@@ -277,7 +277,6 @@ function readXmlFile($xmlfile) {
 	if ( $o['Plugin'] ) {
 		$o['Author']     = $o['PluginAuthor'];
 		$o['Repository'] = $o['PluginURL'];
-		$o['Category']   .= " Plugins: ";
 		$o['SortAuthor'] = $o['Author'];
 		$o['SortName']   = $o['Name'];
 		$statistics['plugin']++;

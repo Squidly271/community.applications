@@ -238,8 +238,8 @@ if ( $template['Changes'] ) {
 	}
 	$templateDescription .= "<center><font size='4'><b>Change Log</b></center></font><br>$changeLogMessage$appInformation";
 }
-echo $templateDescription;
 ?>
+<?=$templateDescription?>
 </div>
 <script>
 	$('img').each(function() { // This handles any http images embedded in changelogs
