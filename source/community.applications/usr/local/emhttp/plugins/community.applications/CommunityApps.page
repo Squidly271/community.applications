@@ -741,7 +741,6 @@ function doSearch(button,newSearch) {
 			enableButtons();
 			updateDisplay(data);
 			data.section = "AppStore";
-			$("#currentSection").html("Available Apps");
 			readMore();
 			myCloseAlert();
 			setToolTip();
@@ -965,7 +964,6 @@ function dockerSearch(pageNumber) {
 	$("#AppsOnly,#New,#UNCATEGORIZED,#All,#sortButtons").show();
 	enableIcon("#sortIcon",false);
 	$(".dockerSearch,#templateSortButtons,.multi_installDiv").hide();
-	$("#currentSection").html("Available Apps");
 	$("#Category").html("DockerHub Search Results For <font color='<?=$unRaid66color?>'>"+filter+"</font> <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
 	mySpinner();
@@ -1024,10 +1022,8 @@ function previousApps(button,installed) {
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
 	data.docker = "";
 	if ( installed ) {
-		$("#currentSection").html("Installed Apps");
 		$(".multi_installDiv").hide();
 	} else {
-		$("#currentSection").html("Previously Installed Apps");
 		$(".multi_installDiv").show();
 		clearMultiInstall();
 	}
@@ -1186,7 +1182,6 @@ function appStore() {
 
 function initializeAppStore() {
 	enableIcon("#categoryIcon",true);
-	$("#currentSection").html("Available Apps");
 	data.section = "AppStore";
 	data.selected_category = "";
 	updateDisplay("");
@@ -1232,7 +1227,6 @@ function setPageOne() {
 function pinnedApps(button) {
 	setPageOne();
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
-	$("#currentSection").html("Pinned Apps");
 	data.docker = "";
 	$("#"+button).prop("disabled",true);
 	data.section = button;
@@ -1419,7 +1413,6 @@ function updateDisplay(data) {
 }
 function saveState() {
 	if ( ! dockerSearchFlag ) {
-		$.cookie("sectionText",$("#currentSection").html());
 		$.cookie("categoryText",$("#Category").html());
 		$.cookie("data",JSON.stringify(data));
 		$.cookie("dockerSearchFlag",dockerSearchFlag);
@@ -1442,7 +1435,6 @@ function saveState() {
 }
 
 function restoreState() {
-	$("#currentSection").html($.cookie("sectionText"));
 	$("#Category").html($.cookie("categoryText"));
 	data = JSON.parse($.cookie("data"));
 	dockerSearchFlag = $.cookie("dockerSearchFlag");
@@ -1527,7 +1519,6 @@ function getFontSize() {
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
-<font size='3'><font color='<?=$unRaid66color?>'><span id='currentSection'>Available Apps</span></font></b></font>
 <strong><font size='3'><span id="Category"></span></strong><span id="Total1" style='display:none;';> (Total: <font color='<?=$unRaid66color?>'><span id="Total">0</span></font>)</font>
 </span><br>
 
