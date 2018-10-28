@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.10.28">
-<!ENTITY md5       "b79e29db7e29f9a81350b60981e5b47e">
+<!ENTITY version   "2018.10.28a">
+<!ENTITY md5       "4d64b66e807eecf0e1c4c23fe0783b78">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.10.28a
+- Fix compatibility with unRaid pre 6.6
+
 ###2018.10.28
 - Support for Dynamix' Font-Size setting
 - Fix regression error on what happens if browser window is resized

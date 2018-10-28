@@ -365,7 +365,9 @@ $(function(){
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
 	$("#homeIcon").click(function()             { appStore(); });
 	resizeDisplay(); // Initialize the resize event
-	
+<?if ( ! $unRaid66 ):?>
+		$("html").css("font-size","10px");
+<?endif;?>
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
 		sweetAlertBackground("white");
