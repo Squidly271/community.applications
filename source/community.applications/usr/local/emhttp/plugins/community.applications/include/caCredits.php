@@ -41,7 +41,7 @@ $caCredits = "
       </tr>
       <tr>
         <td></td>
-        <td class='ca_table'>CHBMB<br>SpaceInvaderOne<br>Sparklyballs<br>wgastarks<br>DJoss<br>Zer0Nin3r</td>
+        <td class='ca_table'>CHBMB<br>SpaceInvaderOne<br>Sparklyballs<br>wgstarks<br>DJoss<br>Zer0Nin3r</td>
         <td>Additional Testing</td>
       </tr>
     </table></center>
