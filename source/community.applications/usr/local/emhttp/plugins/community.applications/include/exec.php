@@ -992,7 +992,7 @@ case 'statistics':
 	}
 
 	$color = "<font color='coral'>";
-	echo "<div style='overflow:scroll;height:55rem; width:55rem; overflow-x:hidden; overflow-y:hidden;'>";
+	echo "<div style='overflow:scroll; overflow-x:hidden; overflow-y:hidden;'>";
 	echo "<table style='margin-top:1rem;'>";
 	echo "<tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='/plugins/community.applications/images/community.applications.png'></td></tr>";
 	echo "<tr><td colspan='2'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>";

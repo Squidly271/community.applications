@@ -6,7 +6,7 @@
 ###############################################################
 
 $caCredits = "
-<div style='overflow:scroll;height:55rem; width:55rem; overflow-x:hidden; overflow-y:auto;margin-top:auto;'>
+<div style='overflow:scroll;overflow-x:hidden; overflow-y:auto;margin-top:auto;'>
     <center><table style='margin-left:auto;'>
 			<tr>
 				<td colspan='3'><center><img src='/plugins/community.applications/images/community.applications.png' style='height:5rem;margin-top:2rem;'></td>
@@ -16,8 +16,8 @@ $caCredits = "
 			</tr>
       <tr>
         <td class='ca_table'><br><img src='https://github.com/Squidly271/plugin-repository/raw/master/Chode_300.gif' style='width:5rem;height:4.8rem;'></td>
-        <td class='ca_table'><font size='4rem;'>Andrew Zawadzki</font></strong></td>
-        <td><font size='4rem;'>Main Development</font></td>
+        <td class='ca_table'><font size='4rem;'><em>Andrew Zawadzki&nbsp;&nbsp;</em></font></strong></td>
+        <td><font size='4rem;'><em>Main Development</em></font></td>
       </tr>
       <tr>
         <td></td>
