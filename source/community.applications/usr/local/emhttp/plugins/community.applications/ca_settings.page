@@ -1,5 +1,6 @@
 Menu="hidden"
-Title="Community Applications Settings"
+Title="Community Applications"
+Icon="community.applications.png"
 ---
 <?
 function download_url($url, $path = "", $bg = false)
