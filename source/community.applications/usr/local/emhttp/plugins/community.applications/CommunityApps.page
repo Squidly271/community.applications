@@ -635,15 +635,10 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	disableTooltipster();
 	disableSearch();
 	var backgroundColor = ( ! textdescription && textimage ) ? "transparent" : "white";
-	<?if ($unRaid66):?>
-		if ( textimage && backgroundColor == "white") {
-			textdescription = textdescription + "<br><br><center><div class='spinner fixed' style='top:55%;'></div></center>";
-		}
-	<?else:?>
-		if ( textimage ) {
+	if ( textimage ) {
 			textdescription = textdescription + "<br><br><center><i class='fa fa-spinner fa-spin' style='font-size:"+imagesize+"px;color:#DEB887;' aria-hidden='true'></i></center>";
-		}
-	<?endif;?>
+	}
+
 	swal({
 		title: description,
 		text: textdescription,
@@ -655,11 +650,6 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 		html: true
 	});
 	sweetAlertBackground(backgroundColor);
-	<?if ($unRaid66):?>
-		if ( backgroundColor == "white" ) {
-			$("div.spinner").show();
-		}
-	<?endif;?>
 }
 
 function myCloseAlert() {
@@ -670,10 +660,6 @@ function myCloseAlert() {
 }
 
 function mySpinner() {
-	<?if ($unRaid66):?>
-//		$("div.spinner").show("slow");
-		updateDisplay("");
-	<?endif;?>
 	myAlert("",""," ",150);
 }
 
