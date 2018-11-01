@@ -103,6 +103,9 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
 	$iconClass = "displayIcon";
 
+# Revised skin json doesn't operate anymore via columns.  
+	$communitySettings['maxDetailColumns'] = -1;
+
 # Create entries for skins.  Note that MANY entries are not used in the current skins
 	foreach ($displayedTemplates as $template) {
 		$displayTemplate = $skin[$viewMode]['template'];
@@ -244,7 +247,6 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$t .= vsprintf($displayTemplate,toNumericArray($template));
 
 		$columnNumber=++$columnNumber;
-
 
 		if ( $columnNumber == $communitySettings['maxDetailColumns'] ) {
 			$columnNumber = 0;

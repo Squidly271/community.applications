@@ -184,21 +184,11 @@ case 'get_content':
 				continue;
 			}
 		}
-		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) {
-			continue;                          # ie: only show deprecated apps within previous apps section
-		}
-		if ( $displayDeprecated && ! $template['Deprecated'] ) {
-			continue;
-		}
-		if ( ! $template['Displayable'] ) {
-			continue;
-		}
-		if ( $communitySettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) {
-			continue;
-		}
-		if ( $template['Blacklist'] ) {
-			continue;
-		}
+		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) { continue; }
+		if ( $displayDeprecated && ! $template['Deprecated'] ) { continue; }
+		if ( ! $template['Displayable'] ) { continue; }
+		if ( $communitySettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) { continue; }
+		if ( $template['Blacklist'] ) { continue; }
 		if ( ! $template['Compatible'] && $displayIncompatible ) {
 			$display[] = $template;
 			continue;
