@@ -975,7 +975,7 @@ case 'statistics':
 ?>
 <div style='overflow:scroll; overflow-x:hidden; overflow-y:hidden;'>
 <table style='margin-top:1rem;'>
-<tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/CA.png'></td></tr>
+<tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png'></td></tr>
 <tr><td colspan='2'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>
 <tr><td class='ca_table'><b><a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td class='ca_stat'><?=$updateTime?></td></tr>
 <tr><td class='ca_table'><b>Number Of Templates</b></td><td class='ca_stat'><?=$statistics['totalApplications']?></td></tr>
