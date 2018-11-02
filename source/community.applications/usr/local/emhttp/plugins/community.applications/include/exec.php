@@ -143,9 +143,7 @@ case 'get_content':
 
 			$displayApplications['community'] = array();
 			for ($i=0;$i<$communitySettings['maxPerPage'];$i++) {
-				if ( ! $appsOfDay[$i]) {
-					continue;
-				}
+				if ( ! $appsOfDay[$i]) continue;
 				$file[$appsOfDay[$i]]['NewApp'] = ($communitySettings['startup'] != "random");
 				$displayApplications['community'][] = $file[$appsOfDay[$i]];
 			}
@@ -175,7 +173,7 @@ case 'get_content':
 	}
 	foreach ($file as $template) {
 		$template['NoInstall'] = $noInstallComment;
-		
+
 		if ( $displayBlacklisted ) {
 			if ( $template['Blacklist'] ) {
 				$display[] = $template;
@@ -184,11 +182,11 @@ case 'get_content':
 				continue;
 			}
 		}
-		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) { continue; }
-		if ( $displayDeprecated && ! $template['Deprecated'] ) { continue; }
-		if ( ! $template['Displayable'] ) { continue; }
-		if ( $communitySettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) { continue; }
-		if ( $template['Blacklist'] ) { continue; }
+		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) continue;
+		if ( $displayDeprecated && ! $template['Deprecated'] ) continue;
+		if ( ! $template['Displayable'] ) continue;
+		if ( $communitySettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) continue;
+		if ( $template['Blacklist'] ) continue;
 		if ( ! $template['Compatible'] && $displayIncompatible ) {
 			$display[] = $template;
 			continue;
@@ -202,9 +200,7 @@ case 'get_content':
 			if ( $template['Plugin'] ) {
 				$pluginName = basename($template['PluginURL']);
 
-				if ( file_exists("/var/log/plugins/$pluginName") ) {
-					continue;
-				}
+				if ( file_exists("/var/log/plugins/$pluginName") ) continue;
 			} else {
 				$selected = false;
 				foreach ($dockerRunning as $installedDocker) {
@@ -218,9 +214,7 @@ case 'get_content':
 						}
 					}
 				}
-				if ( $selected ) {
-					continue;
-				}
+				if ( $selected ) continue;
 			}
 		}
 		if ( $template['Plugin'] && file_exists("/var/log/plugins/".basename($template['PluginURL'])) ) {
@@ -228,11 +222,11 @@ case 'get_content':
 			$template['MyPath'] = $template['PluginURL'];
 		}
 
-		if ( ($newApp) && ($template['Date'] < $newAppTime) )  { continue; }
+		if ( ($newApp) && ($template['Date'] < $newAppTime) ) continue;
 		$template['NewApp'] = $newApp;
 
-		if ( $category && ! preg_match($category,$template['Category'])) { continue; }
-		if ( $displayPrivates && ! $template['Private'] ) { continue; }
+		if ( $category && ! preg_match($category,$template['Category'])) continue;
+		if ( $displayPrivates && ! $template['Private'] ) continue;
 
 		if ($filter) {
 			if ( filterMatch($filter,array($template['Name'],$template['Author'],$template['Description'],$template['RepoName'],$template['Category'])) ) {
@@ -264,7 +258,6 @@ case 'get_content':
 # force_update -> forces an update of the applications #
 ########################################################
 case 'force_update':
-
 	$lastUpdatedOld = readJsonFile($communityPaths['lastUpdated-old']);
 
 	@unlink($communityPaths['lastUpdated']);
@@ -272,16 +265,12 @@ case 'force_update':
 
 	if ( ! $latestUpdate['last_updated_timestamp'] ) {
 		$latestUpdate['last_updated_timestamp'] = INF;
-		$badDownload = true;
 		@unlink($communityPaths['lastUpdated']);
 	}
 
 	if ( $latestUpdate['last_updated_timestamp'] > $lastUpdatedOld['last_updated_timestamp'] ) {
 		if ( $latestUpdate['last_updated_timestamp'] != INF ) {
 			copy($communityPaths['lastUpdated'],$communityPaths['lastUpdated-old']);
-		}
-		if ( ! $badDownload ) {
-			@unlink($communityPaths['community-templates-info']);
 		}
 	} else {
 		moderateTemplates();
@@ -630,7 +619,7 @@ if ( $communitySettings['dockerRunning'] ) {
 			if ( startsWith($installedImage,"library/") ) { # official images are in DockerClient as library/mysql eg but template just shows mysql
 				$installedImage = str_replace("library/","",$installedImage);
 			}
-			
+
 			foreach ($file as $template) {
 				if ( $installedName == $template['Name'] ) {
 					$template['testrepo'] = $installedImage;
@@ -976,36 +965,35 @@ case 'statistics':
 	$statistics = array_merge($defaultArray,$statistics);
 
 	foreach ($statistics as &$stat) {
-		if ( ! $stat ) {
-			$stat = "0";
-		}
+		if ( ! $stat ) $stat = "0";
 	}
 
-	$color = "<font color='coral'>";
-	echo "<div style='overflow:scroll; overflow-x:hidden; overflow-y:hidden;'>";
-	echo "<table style='margin-top:1rem;'>";
-	echo "<tr style='height:6rem;'><td colspan='3'><center><img style='height:4.8rem;' src='/plugins/community.applications/images/community.applications.png'></td></tr>";
-	echo "<tr><td colspan='3'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>";
-	echo "<tr><td class='ca_table'><b><a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td></td><td>$color$updateTime</td></tr>";
-	echo "<tr><td class='ca_table'><b>Number Of Templates</b></td><td></td><td>$color{$statistics['totalApplications']}</td></tr>";
-	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></b></td><td></td><td>$color".count($repositories)."</td></tr>";
-	echo "<tr><td class='ca_table'><b>Number Of Docker Applications</b></td><td></td><td>$color{$statistics['docker']}</td></tr>";
-	echo "<tr><td class='ca_table'><b>Number Of Plugins</b></td><td></td><td>$color{$statistics['plugin']}</td></tr>";
-	echo "<tr><td class='ca_table'><b><a id='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'><b>Number Of Private Docker Applications</b></a></td><td></td><td>$color{$statistics['private']}</td></tr>";
-	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Number Of Invalid Templates</a></b></td><td></td><td>$color".count($invalidXML)."</td></tr>";
-	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Number Of Template Errors</a></b></td><td></td><td>$color{$statistics['caFixed']}+</td></tr>";
-	echo "<tr><td class='ca_table'><b><a id='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Blacklisted Apps</a></b></td><td></td><td>$color{$statistics['blacklist']}</td></tr>";
-	echo "<tr><td class='ca_table'><b><a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Incompatible Applications</a></b></td><td></td><td>$color{$statistics['totalIncompatible']}</td></tr>";
-	echo "<tr><td class='ca_table'><b><a id='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></b></td><td></td><td>$color{$statistics['totalDeprecated']}</td></tr>";
-	echo "<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Number Of Moderation Entries</a></b></td><td></td><td>$color{$statistics['totalModeration']}+</td></tr>";
 	$totalCA = exec("du -h -s /usr/local/emhttp/plugins/community.applications/");
 	$totalTmp = exec("du -h -s /tmp/community.applications/");
 	$memCA = explode("\t",$totalCA);
 	$memTmp = explode("\t",$totalTmp);
-	echo "<tr><td class='ca_table'><b><b>Memory Usage (CA / DataFiles)</b></td><td>&nbsp;</td><td>{$memCA[0]} / {$memTmp[0]}</td></tr>";
-	echo "</table>";
-	echo "<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></center>";
-	echo "<center>Ensuring only safe applications are present is a full time job</center><br>";
+?>
+<div style='overflow:scroll; overflow-x:hidden; overflow-y:hidden;'>
+<table style='margin-top:1rem;'>
+<tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/CA.png'></td></tr>
+<tr><td colspan='2'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>
+<tr><td class='ca_table'><b><a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td class='ca_stat'><?=$updateTime?></td></tr>
+<tr><td class='ca_table'><b>Number Of Templates</b></td><td class='ca_stat'><?=$statistics['totalApplications']?></td></tr>
+<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></b></td><td class='ca_stat'><?=count($repositories)?></td></tr>
+<tr><td class='ca_table'><b>Number Of Docker Applications</b></td><td class='ca_stat'><?=$statistics['docker']?></td></tr>
+<tr><td class='ca_table'><b>Number Of Plugins</b></td><td class='ca_stat'><?=$statistics['plugin']?></td></tr>
+<tr><td class='ca_table'><b><a id='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'><b>Number Of Private Docker Applications</b></a></td><td class='ca_stat'><?=$statistics['private']?></td></tr>
+<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Number Of Invalid Templates</a></b></td><td class='ca_stat'><?=count($invalidXML)?></td></tr>
+<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Number Of Template Errors</a></b></td><td class='ca_stat'><?=$statistics['caFixed']?>+</td></tr>
+<tr><td class='ca_table'><b><a id='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Blacklisted Apps</a></b></td><td class='ca_stat'><?=$statistics['blacklist']?></td></tr>
+<tr><td class='ca_table'><b><a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Incompatible Applications</a></b></td><td class='ca_stat'><?=$statistics['totalIncompatible']?></td></tr>
+<tr><td class='ca_table'><b><a id='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></b></td><td class='ca_stat'><?=$statistics['totalDeprecated']?></td></tr>
+<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Number Of Moderation Entries</a></b></td><td class='ca_stat'><?=$statistics['totalModeration']?>+</td></tr>
+<tr><td class='ca_table'><b><b>Memory Usage (CA / DataFiles)</b></td><td class='ca_stat'><?=$memCA[0]?> / <?=$memTmp[0]?></td></tr>
+</table>
+<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></center>
+<center>Ensuring only safe applications are present is a full time job</center><br>
+<?
 	break;
 
 #######################################

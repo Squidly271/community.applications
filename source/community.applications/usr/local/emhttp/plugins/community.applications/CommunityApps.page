@@ -364,10 +364,11 @@ $(function(){
 	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
 	$("#homeIcon").click(function()             { appStore(); });
-	resizeDisplay(); // Initialize the resize event
+
 <?if ( ! $unRaid66 ):?>
-		$("html").css("font-size","10px");
+	$("html").css("font-size","10px");
 <?endif;?>
+
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
 		sweetAlertBackground("white");
@@ -1454,36 +1455,6 @@ function evaluateBoolean(str) {
 
 function cookiesEnabled() {
 	return evaluateBoolean(navigator.cookieEnabled);
-}
-
-function resizeDisplay() {
-	// Revised skin.json lets browser handle the number of columns to display.  Hence no event is required. The event slows everything down significantly
-/* 	window.resizeEvt;
-	$(window).resize(function(){
-		var newWidth = getWindowWidth();
-		var oldWidth = data.oldWindowWidth;
-		data.oldWindowWidth = newWidth;
-		var divisor = <?=$template['detail']['templateWidth']?> * getFontSize();
-<?if ( $mobileDevice ):?>  // Mobile devices only check if columns change.  Computers always check to re-center the display
-		if ( Math.floor(newWidth / divisor) != Math.floor(oldWidth / divisor) ) {
-			$("#templates_content").empty();
-			clearTimeout(window.resizeEvt);
-			window.resizeEvt = setTimeout(function(){
-				$("#templates_content").empty();
-				refreshDisplay();
-			}, 100);
-		}
-<?else:?>
-		if ( newWidth != oldWidth ) {
-			$("#templates_content").empty();
-			clearTimeout(window.resizeEvt);
-			window.resizeEvt = setTimeout(function(){
-				$("#templates_content").empty();
-				refreshDisplay();
-			}, 100);
-		}
-<?endif;?>
-	}); */
 }
 
 function isTouch() {

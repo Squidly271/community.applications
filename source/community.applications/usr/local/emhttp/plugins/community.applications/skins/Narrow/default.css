@@ -56,7 +56,9 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .ca_multiselect {cursor:pointer;}
 .pageNavigation {font-size:2rem;}
 .specialCategory {font-size:1.5rem;}
-.ca_table { padding:.5rem 0px .5rem 0;font-weight:bold;}
+.ca_table { padding:.5rem 2rem .5rem 0;font-weight:bold;}
+.ca_stat {color:coral;}
+.ca_credit { padding:.5rem 0 .5rem 0;}
 .ca_dateUpdated {font-weight:bold;text-align:center;}
 .ca_dateUpdated {font-weight:bold;text-align:center;}
 .ca_dateUpdated::before {content:"Date Updated: ";}

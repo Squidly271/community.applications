@@ -146,7 +146,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$templateDescription .= "</span></center>";
 	$templateDescription .= "<center>";
-	
+
 	$templateDescription .= "<form method='get'>";
 	$templateDescription .= "<input type='hidden' name='csrf_token' value='$csrf_token'>";
 

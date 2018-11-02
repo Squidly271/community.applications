@@ -47,16 +47,14 @@ function randomFile() {
 ##################################################################
 function readJsonFile($filename) {
 	$json = json_decode(@file_get_contents($filename),true);
-	if ( ! is_array($json) ) { $json = array(); }
+	if ( ! is_array($json) ) $json = array();
 	return $json;
 }
 function writeJsonFile($filename,$jsonArray) {
 	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 }
 function download_url($url, $path = "", $bg = false, $timeout=45){
-	if ( ! strpos($url,"?") ) {
-		$url .= "?".time(); # append time to always wind up requesting a non cached version
-	}
+	if ( ! strpos($url,"?") ) $url .= "?".time();
 	exec("curl --compressed --max-time $timeout --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
 	return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
@@ -81,7 +79,7 @@ function getSortOrder($sortArray) {
 # Helper function to determine if $haystack begins with $needle #
 #################################################################
 function startsWith($haystack, $needle) {
-	if ( !is_string($haystack) || ! is_string($needle) ) { return false; }
+	if ( !is_string($haystack) || ! is_string($needle) ) return false;
 	return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;
 }
 
@@ -90,9 +88,7 @@ function startsWith($haystack, $needle) {
 ###################################################################
 function first_str_replace($haystack, $needle, $replace) {
 	$pos = strpos($haystack, $needle);
-	if ($pos !== false) {
-		return substr_replace($haystack, $replace, $pos, strlen($needle));
-	}
+	if ($pos !== false) return substr_replace($haystack, $replace, $pos, strlen($needle));
 	return $haystack;
 }
 
@@ -114,9 +110,9 @@ function mySort($a, $b) {
 	$return1 = ($sortOrder['sortDir'] == "Down") ? -1 : 1;
 	$return2 = ($sortOrder['sortDir'] == "Down") ? 1 : -1;
 
-	if ($c > $d) { return $return1; }
-	else if ($c < $d) { return $return2; }
-	else { return 0; }
+	if ($c > $d) return $return1;
+	else if ($c < $d) return $return2;
+	else return 0;
 }
 
 ###############################################
@@ -150,17 +146,10 @@ function highlight($text, $search) {
 function fixTemplates($template) {
 	global $statistics, $communitySettings;
 
-	if ( ! $template['MinVer'] ) {
-		$template['MinVer'] = $template['Plugin'] ? "6.1" : "6.0";
-	}
-
-	if ( ! $template['Date'] ) {
-		$template['Date'] = (is_numeric($template['DateInstalled'])) ? $template['DateInstalled'] : 0;
-	}
+	if ( ! $template['MinVer'] ) $template['MinVer'] = $template['Plugin'] ? "6.1" : "6.0";
+	if ( ! $template['Date'] ) $template['Date'] = (is_numeric($template['DateInstalled'])) ? $template['DateInstalled'] : 0;
 	$template['Date'] = max($template['Date'],$template['FirstSeen']);
-	if ($template['Date'] == 1) { # 1 is the default value given by the initial run of appfeed when no date was present
-		unset($template['Date']);
-	}
+	if ($template['Date'] == 1) unset($template['Date']);
 	if ( ($template['Date'] == $template['FirstSeen']) && ( $template['FirstSeen'] >= 1538357652 )) {# 1538357652 is when the new appfeed first started
 		$template['BrandNewApp'] = true;
 	}
@@ -183,7 +172,6 @@ function fixTemplates($template) {
 		$o['SortAuthor']    = $o['Author'];
 		$o['SortName']      = $o['Name'];
 	}
-
 	return $template;
 }
 
@@ -207,9 +195,7 @@ function makeXML($template) {
 # Function to fix differing schema in the appfeed vs what Array2XML class wants #
 #################################################################################
 function fixAttributes(&$template,$attribute) {
-	if ( ! is_array($template[$attribute]) ) {
-		return;
-	}
+	if ( ! is_array($template[$attribute]) ) return;
 	if ( $template[$attribute]['@attributes'] ) {
 		$template[$attribute][0]['@attributes'] = $template[$attribute]['@attributes'];
 		if ( $template[$attribute]['value']) {
@@ -221,11 +207,7 @@ function fixAttributes(&$template,$attribute) {
 
 	if ( $template[$attribute] ) {
 		foreach ($template[$attribute] as $tempArray) {
-			if ( $tempArray['value'] ) {
-				$tempArray2[] = array('@attributes'=>$tempArray['@attributes'],'@value'=>$tempArray['value']);
-			} else {
-				$tempArray2[] = array('@attributes'=>$tempArray['@attributes']);
-			}
+				$tempArray2[] = $tempArray['value'] ? array('@attributes'=>$tempArray['@attributes'],'@value'=>$tempArray['value'])	: array('@attributes'=>$tempArray['@attributes']);
 		}
 		$template[$attribute] = $tempArray2;
 	}
@@ -238,8 +220,8 @@ function fixAttributes(&$template,$attribute) {
 function versionCheck($template) {
 	global $communitySettings;
 
-	if ( $template['MinVer'] && ( version_compare($template['MinVer'],$communitySettings['unRaidVersion']) > 0 ) ) { return false; }
-	if ( $template['MaxVer'] && ( version_compare($template['MaxVer'],$communitySettings['unRaidVersion']) < 0 ) ) { return false; }
+	if ( $template['MinVer'] && ( version_compare($template['MinVer'],$communitySettings['unRaidVersion']) > 0 ) ) return false;
+	if ( $template['MaxVer'] && ( version_compare($template['MaxVer'],$communitySettings['unRaidVersion']) < 0 ) ) return false;
 	return true;
 }
 
@@ -251,16 +233,10 @@ function readXmlFile($xmlfile) {
 
 	$xml = file_get_contents($xmlfile);
 	$o = TypeConverter::xmlToArray($xml,TypeConverter::XML_GROUP);
-	if ( ! $o ) { return false; }
+	if ( ! $o ) return false;
 
 	# Fix some errors in templates prior to continuing
 
-	if ( is_array($o['SortAuthor']) ) {
-		$o['SortAuthor'] = $o['SortAuthor'][0];  $statistics['caFixed']++;
-	}
-	if ( is_array($o['Repository']) ) {
-		$o['Repository'] = $o['Repository'][0];  $statistics['caFixed']++;
-	}
 	$o['Path']          = $xmlfile;
 	$o['Author']        = getAuthor($o);
 	$o['DockerHubName'] = strtolower($o['Name']);
@@ -329,7 +305,8 @@ function validURL($URL) {
 function getMaxColumns($windowWidth) {
 	global $communitySettings, $communityPaths;
 
-	$templateSkin = readJsonFile($communityPaths['defaultSkin']);   # Global Var used in helpers ( getMaxColumns() )
+	# routine needed for proper centering
+	$templateSkin = readJsonFile($communityPaths['defaultSkin']);
 	$communitySettings['windowWidth'] = $windowWidth;
 	$communitySettings['maxDetailColumns'] = floor($windowWidth / ($templateSkin['detail']['templateWidth'] * $communitySettings['fontSize']));
 	if ( ! $communitySettings['maxDetailColumns'] ) $communitySettings['maxDetailColumns'] = 1;
@@ -359,14 +336,10 @@ function pluginDupe($templates) {
 
 	$pluginList = array();
 	foreach ($templates as $template) {
-		if ( $template['Plugin'] ) {
-			$pluginList[basename($template['Repository'])]++;
-		}
+		if ( $template['Plugin'] ) $pluginList[basename($template['Repository'])]++;
 	}
 	foreach (array_keys($pluginList) as $plugin) {
-		if ( $pluginList[$plugin] > 1 ) {
-			$dupeList[$plugin]++;
-		}
+		if ( $pluginList[$plugin] > 1 ) $dupeList[$plugin]++;
 	}
 	writeJsonFile($communityPaths['pluginDupes'],$dupeList);
 }
@@ -378,13 +351,9 @@ function checkInstalledPlugin($template) {
 	global $communityPaths;
 
 	$pluginName = basename($template['PluginURL']);
-	if ( ! file_exists("/var/log/plugins/$pluginName") ) {
-		return false;
-	}
+	if ( ! file_exists("/var/log/plugins/$pluginName") ) return false;
 	$dupeList = readJsonFile($communityPaths['pluginDupes']);
-	if ( ! $dupeList[$pluginName] ) {
-		return true;
-	}
+	if ( ! $dupeList[$pluginName] ) return true;
 	if ( strtolower(trim(plugin("pluginURL","/var/log/plugins/$pluginName"))) != strtolower(trim($template['PluginURL']))) {
 		return false;
 	} else {
@@ -451,12 +420,8 @@ function jsonError($error) {
 # Returns the author from the Repository entry #
 ################################################
 function getAuthor($template) {
-	if ( !is_string($template['Repository'])) {
-		return false;
-	}
-	if ( $template['Author'] ) {
-		return strip_tags($template['Author']);
-	}
+	if ( !is_string($template['Repository'])) return false;
+	if ( $template['Author'] ) return strip_tags($template['Author']);
 	$repoEntry = explode("/",$template['Repository']);
 	if (count($repoEntry) < 2) {
 		$repoEntry[] = "";
@@ -533,6 +498,6 @@ function myStartContainer($id) {
 	global $DockerClient;
 
 	$DockerClient->startContainer($id);
-}	
+}
 
 ?>

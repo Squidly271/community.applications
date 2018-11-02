@@ -9,39 +9,39 @@ $caCredits = "
 <div style='overflow:scroll;overflow-x:hidden; overflow-y:auto;margin-top:auto;'>
     <center><table style='margin-left:auto;'>
 			<tr>
-				<td colspan='3'><center><img src='/plugins/community.applications/images/community.applications.png' style='height:5rem;margin-top:2rem;'></td>
+				<td colspan='3'><center><img src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png' style='height:5rem;margin-top:2rem;'></td>
 			</tr>
 			<tr>
-			  <td colspan='3'><center><font size='6' color='white'>Community Applications</font></td>
+			  <td colspan='3'><center><font size='5' color='white'>Community Applications</font></td>
 			</tr>
       <tr>
-        <td class='ca_table'><br><img src='https://github.com/Squidly271/plugin-repository/raw/master/Chode_300.gif' style='width:5rem;height:4.8rem;'></td>
-        <td class='ca_table'><font size='4rem;'><em>Andrew Zawadzki&nbsp;&nbsp;</em></font></strong></td>
+        <td class='ca_credit'><br><img src='https://github.com/Squidly271/plugin-repository/raw/master/Chode_300.gif' style='width:5rem;height:4.8rem;'></td>
+        <td class='ca_credit'><font size='4rem;'><em>Andrew Zawadzki&nbsp;&nbsp;</em></font></strong></td>
         <td><font size='4rem;'><em>Main Development</em></font></td>
       </tr>
       <tr>
         <td></td>
-        <td class='ca_table'>bonienl</td>
+        <td class='ca_credit'>bonienl</td>
         <td>Additional Contributions</td>
       </tr>
 			<tr>
 				<td></td>
-				<td class='ca_table'>eschultz</td>
+				<td class='ca_credit'>eschultz</td>
 				<td>Additional Contributions</td>
 			</tr>
 			<tr>
 				<td></td>
-				<td class='ca_table'>Andrew Zawadzki</td>
+				<td class='ca_credit'>Andrew Zawadzki</td>
 				<td>Application Feed</td>
 			</tr>
       <tr>
         <td></td>
-        <td class='ca_table'>Kode</td>
+        <td class='ca_credit'>Kode</td>
         <td>Original Application Feed Design</td>
       </tr>
       <tr>
         <td></td>
-        <td class='ca_table'>CHBMB<br>SpaceInvaderOne<br>Sparklyballs<br>wgstarks<br>DJoss<br>Zer0Nin3r</td>
+        <td class='ca_credit'>CHBMB<br>SpaceInvaderOne<br>Sparklyballs<br>wgstarks<br>DJoss<br>Zer0Nin3r</td>
         <td>Additional Testing</td>
       </tr>
     </table></center>

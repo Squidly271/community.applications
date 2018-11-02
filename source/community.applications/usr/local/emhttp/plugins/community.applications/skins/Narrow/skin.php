@@ -103,23 +103,12 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 	$ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
 	$iconClass = "displayIcon";
 
-# Revised skin json doesn't operate anymore via columns.  
-	$communitySettings['maxDetailColumns'] = -1;
-
 # Create entries for skins.  Note that MANY entries are not used in the current skins
 	foreach ($displayedTemplates as $template) {
 		$displayTemplate = $skin[$viewMode]['template'];
-		$oddEven = !$oddEven;
-		if ( $skin[$viewMode]['templateOdd'] ) {
-			$displayTemplate = !$oddEven ? $displayTemplate : $skin[$viewMode]['templateOdd'];
-		}
-		if ( $columnNumber == 0 ) {
-			$ct .= vsprintf($skin[$viewMode]['sol'],$templateFormatArray);
-		}
 
 		$name = $template['SortName'];
 		$appName = str_replace(" ","",$template['SortName']);
-		$t = "";
 		$ID = $template['ID'];
 		$template['ModeratorComment'] .= $template['CAComment'];
 		$selected = $info[$name]['template'];  # Change due to if an icon isn't present, then the app wouldn't always show up as installed
@@ -244,16 +233,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$template['display_dockerBeta'] .= "<span class='ca_tooltip displayBeta' title='Beta Container &#13;See support forum for potential issues'>Beta</span>";
 		}
 # Entries created.  Now display it
-		$t .= vsprintf($displayTemplate,toNumericArray($template));
-
-		$columnNumber=++$columnNumber;
-
-		if ( $columnNumber == $communitySettings['maxDetailColumns'] ) {
-			$columnNumber = 0;
-			$t .= vsprintf($skin[$viewMode]['eol'],$templateFormatArray);
-		}
-
-		$ct .= $t;
+		$ct .= vsprintf($displayTemplate,toNumericArray($template));
 		$count++;
 		if ( ! $officialFlag && ($count == $communitySettings['maxPerPage']) ) {
 			break;
@@ -384,9 +364,6 @@ function displaySearchResults($pageNumber) {
 			}
 		}
 
-		if ( $columnNumber == 0 ) {
-			$ct .= vsprintf($skin[$viewMode]['sol'],$templateFormatArray);
-		}
 		$result['display_Repository'] = $result['Repository'];
 		$result['display_iconClickable'] = $result['Icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 		$result['display_dockerName'] = "<a class='ca_tooltip ca_applicationName' style='cursor:pointer;' onclick='mySearch(this.innerText);' title='Search for similar containers'>{$result['Name']}</a>";
@@ -396,16 +373,7 @@ function displaySearchResults($pageNumber) {
 		$result['Description'] = $result['Description'] ?: "No description present";
 		$result['display_Project'] = "<a class='ca_tooltip dockerHubLink' target='_blank' href='{$result['DockerHub']}'>dockerHub Page</a>";
 		$result['display_dockerInstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click To Install' onclick='dockerConvert(&#39;".$result['ID']."&#39;);'></a>";
-		$t = vsprintf($displayTemplate,toNumericArray($result));
-
-		$columnNumber=++$columnNumber;
-
-		if ( $columnNumber == $communitySettings['maxDetailColumns'] ) {
-			$columnNumber = 0;
-			$t .= vsprintf($skin[$viewMode]['eol'],$templateFormatArray);
-		}
-
-		$ct .= $t;
+		$ct .= vsprintf($displayTemplate,toNumericArray($result));
 		$count++;
 	}
 	$ct .= vsprintf($skin[$viewMode]['footer'],$templateFormatArray);
