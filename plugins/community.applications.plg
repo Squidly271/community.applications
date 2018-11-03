@@ -16,6 +16,7 @@
 ###2018.11.03
 - Fix regression error.  Under certain cirumstances, the wrong repository would be listed in a template
 - Significantly speed up what happens when browser re-sizes
+- Revert back to CA's spinner.  Just cannot stand 6.6's spinner
 
 ###2018.10.28a
 - Fix compatibility with unRaid pre 6.6
