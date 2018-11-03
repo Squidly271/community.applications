@@ -15,8 +15,6 @@ require_once("/usr/local/emhttp/plugins/$plugin/include/paths.php");
 require_once("/usr/local/emhttp/plugins/$plugin/include/caCredits.php");
 require_once("/usr/local/emhttp/plugins/$plugin/include/helpers.php");
 
-$mobileDevice = isMobile();
-
 $installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$plugin.plg");
 $upgradeVersion = download_url($communityPaths['onlineCAVersion'],"",false,10);
 if ( $installedVersion < $upgradeVersion && $upgradeVersion) {

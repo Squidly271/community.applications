@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.10.28a">
-<!ENTITY md5       "4d64b66e807eecf0e1c4c23fe0783b78">
+<!ENTITY version   "2018.11.03">
+<!ENTITY md5       "c37ed7b976508101cf5cf43f7233adac">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.11.03
+- Fix regression error.  Under certain cirumstances, the wrong repository would be listed in a template
+- Significantly speed up what happens when browser re-sizes
+
 ###2018.10.28a
 - Fix compatibility with unRaid pre 6.6
 

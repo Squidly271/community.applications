@@ -1098,18 +1098,18 @@ function DownloadApplicationFeed() {
 		# Move the appropriate stuff over into a CA data file
 		$o['ID']            = $i;
 		$o['Displayable']   = true;
-		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
-			$o['Author']        = getAuthor($o);
-			$o['DockerHubName'] = strtolower($o['Name']);
-			$o['RepoName']      = $o['Repo'];
+		$o['Author']        = getAuthor($o);
+		$o['DockerHubName'] = strtolower($o['Name']);
+		$o['RepoName']      = $o['Repo'];
+		$o['SortAuthor']    = $o['Author'];
+		$o['SortName']      = $o['Name'];
+		if ( $o['PluginURL'] ) {
+			$o['Author']        = $o['PluginAuthor'];
+			$o['Repository']    = $o['PluginURL'];
 			$o['SortAuthor']    = $o['Author'];
 			$o['SortName']      = $o['Name'];
-			if ( $o['PluginURL'] ) {
-				$o['Author']        = $o['PluginAuthor'];
-				$o['Repository']    = $o['PluginURL'];
-				$o['SortAuthor']    = $o['Author'];
-				$o['SortName']      = $o['Name'];
-			}
+		}
+		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
 		$o = fixTemplates($o);
 		if ( ! $o ) {
 			continue;

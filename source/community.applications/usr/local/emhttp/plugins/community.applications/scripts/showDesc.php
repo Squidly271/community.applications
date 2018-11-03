@@ -39,6 +39,7 @@ if ( ! $appNumber ) {
 	$appNumber = $_POST['appPath'];
 	$color="<font color='white'>";
 }
+
 if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	# $appNumber is actually the path to the template.  It's pretty much always going to be the same even if the database is out of sync.
 	$displayed = readJsonFile($communityPaths['community-templates-displayed']);
