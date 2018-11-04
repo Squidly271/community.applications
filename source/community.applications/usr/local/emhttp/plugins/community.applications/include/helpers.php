@@ -499,5 +499,26 @@ function myStartContainer($id) {
 
 	$DockerClient->startContainer($id);
 }
+#####################################
+# Fix Descriptions on previous apps #
+#####################################
+function fixDescription($Description) {
+	if ( is_string($Description) ) {
+		$Description = preg_replace("#\[br\s*\]#i", "{}", $Description);
+		$Description = preg_replace("#\[b[\\\]*\s*\]#i", "||", $Description);
+		$Description = preg_replace('#\[([^\]]*)\]#', '<$1>', $Description);
+		$Description = preg_replace("#<span.*#si", "", $Description);
+		$Description = preg_replace("#<[^>]*>#i", '', $Description);
+		$Description = preg_replace("#"."{}"."#i", '<br>', $Description);
+		$Description = preg_replace("#"."\|\|"."#i", '<b>', $Description);
+		$Description = str_replace("&lt;","<",$Description);
+		$Description = str_replace("&gt;",">",$Description);
+		$Description = strip_tags($Description);
+		$Description = trim($Description);
+	} else {
+		return "";
+	}
+	return $Description;
+}
 
 ?>

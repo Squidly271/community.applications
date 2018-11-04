@@ -642,6 +642,8 @@ if ( $communitySettings['dockerRunning'] ) {
 # handle renamed containers
 		foreach ($all_files as $xmlfile) {
 			$o = readXmlFile($xmlfile,$moderation);
+			$o['Description'] = fixDescription($o['Description']);
+			$o['Overview'] = fixDescription($o['Overview']);
 			$o['MyPath'] = $xmlfile;
 			$o['UnknownCompatible'] = true;
 
@@ -703,6 +705,8 @@ if ( $communitySettings['dockerRunning'] ) {
 # now get the old not installed docker apps
 		foreach ($all_files as $xmlfile) {
 			$o = readXmlFile($xmlfile);
+			$o['Description'] = fixDescription($o['Description']);
+			$o['Overview'] = fixDescription($o['Overview']);
 			$o['MyPath'] = $xmlfile;
 			$o['UnknownCompatible'] = true;
 			$o['Removable'] = true;
