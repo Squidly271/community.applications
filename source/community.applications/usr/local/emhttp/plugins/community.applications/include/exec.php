@@ -448,7 +448,7 @@ case 'convert_docker':
 
 		$dockerfile['Name'] = $docker['Name'];
 		$dockerfile['Support'] = $docker['DockerHub'];
-		$dockerfile['Description'] = $docker['Description']."[br][br][b]Converted By Community Applications[/b][br][br]Always verify this template (and values) against the dockerhub support page for the container";
+		$dockerfile['Description'] = $docker['Description']."   Converted By Community Applications   Always verify this template (and values) against the dockerhub support page for the container";
 		$dockerfile['Overview'] = $dockerfile['Description'];
 		$dockerfile['Registry'] = $dockerURL;
 		$dockerfile['Repository'] = $docker['Repository'];
@@ -504,7 +504,7 @@ case 'convert_docker':
 		$dockerURL = $docker['DockerHub'];
 		$dockerfile['Name'] = $docker['Name'];
 		$dockerfile['Support'] = $docker['DockerHub'];
-		$dockerfile['Overview'] = $docker['Description']."\n[b]Converted By Community Applications[/b][br][br]Always verify this template (and values) against the dockerhub support page for the container";
+		$dockerfile['Overview'] = $docker['Description']."   Converted By Community Applications.  Always verify this template (and values) against the dockerhub support page for the container";
 		$dockerfile['Description'] = $dockerfile['Overview'];
 		$dockerfile['Registry'] = $dockerURL;
 		$dockerfile['Repository'] = $docker['Repository'];
