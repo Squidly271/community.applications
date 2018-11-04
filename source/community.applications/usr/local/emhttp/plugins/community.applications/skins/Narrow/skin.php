@@ -111,8 +111,9 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$appName = str_replace(" ","",$template['SortName']);
 		$ID = $template['ID'];
 		$template['ModeratorComment'] .= $template['CAComment'];
-		$selected = $info[$name]['template'];  # Change due to if an icon isn't present, then the app wouldn't always show up as installed
-
+		$selected = $info[$name]['template']; 
+		$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : "{$template['Repository']}:latest";
+		$selected = $selected ? ($tmpRepo == $info[$name]['repository']) : false;
 		$selected = $template['Uninstall'] ? true : $selected;
 
 		$appType = $template['Plugin'] ? "plugin" : "docker";
@@ -133,7 +134,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$template['display_webPage'] = $template['WebPageURL'] ? "<a class='ca_tooltip webLink' title='Click to go to {$template['SortAuthor']}&#39;s web page' href='".$template['WebPageURL']."' target='_blank'></a>" : "";
 
 		if ( $template['UpdateAvailable'] ) {
-			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><center><font color='red'><b>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</b></center></font>" : "<br><center><font color='red'><b>Update Available.  Click <a href='Docker'>Here</a> to install</b></font></center>";
+			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><center><font color='red'><b>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</b> <i class='ca_infoPopup fa fa-info-circle' data-app='".basename($template['MyPath'])."' data-name='{$template['Name']}' style='cursor:pointer;font-size:1.5rem;color:#486DBA;'></i></center></font>" : "<br><center><font color='red'><b>Update Available.  Click <a href='Docker'>Here</a> to install</b></font></center>";
 		}
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
 		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=2.0rem;>" : "";
