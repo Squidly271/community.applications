@@ -1150,7 +1150,6 @@ function initializeAppStore() {
 	enableIcon("#categoryIcon",true);
 	data.section = "AppStore";
 	data.selected_category = "";
-	updateDisplay("");
 	$("#NetworkCategory,#MediaAppCategory,#MediaServerCategory,#ToolsCategory,#NONE,.multi_installDiv").hide();
 	$("#AppsOnly,#templates_content,#MainCategory").show();
 	resetSortByDate();
@@ -1414,6 +1413,9 @@ function restoreState() {
 	$("#"+$.cookie("sortButton")).prop("disabled",true);
 	$("#"+$.cookie("dirButton")).prop("disabled",true);
 	populateAutoComplete();
+	if ( $("#Category").text() == "Category: None Selected" ) {
+		updateContent();
+	}
 }
 
 function disableSearch() {
@@ -1445,6 +1447,7 @@ function getFontSize() {
 }
 
 </script>
+<div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </p></div>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
 <div style='float:right;'><a class='ca_staticTips topRightLinks' title='Display The CA Manual' href="Settings/caHelp" target='_blank'>CA Manual</a><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>
 <br>
@@ -1468,7 +1471,6 @@ function getFontSize() {
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 
-<div id='cookieWarning' style='display:none;'><center><font color='purple'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </font></center></div>
 <?if ( $upgradeAvailable ) :?>
 <span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style=cursor:pointer>HERE</a> to install the update</center></font></span>
 <?endif;?>
@@ -1552,7 +1554,6 @@ Sort Direction:
 </span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
 <span id='debugging'></span>
-<div class='spinner fixed'></div>
 <form id='appWarningForm' style='display:none;'>
 <br><br><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
 <font size='4' color='red'>All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein.
