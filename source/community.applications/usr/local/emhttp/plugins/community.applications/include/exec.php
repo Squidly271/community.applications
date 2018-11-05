@@ -139,7 +139,7 @@ case 'get_content':
 		echo "<center><font size=4>$selectCategoryMessage</font></center>";
 		$displayApplications = array();
 		if ( count($file) > 200) {
-			$appsOfDay = appOfDay($file);
+			$appsOfDay = appOfDay($file,$startupMsg);
 
 			$displayApplications['community'] = array();
 			for ($i=0;$i<$communitySettings['maxPerPage'];$i++) {
@@ -150,8 +150,6 @@ case 'get_content':
 			if ( $displayApplications['community'] ) {
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-				$countSuffix = count($displayApplications['community']) > 1 ? "s" : "";
-				$startupMsg = ($communitySettings['startup'] == "random") ? "Random App$countSuffix Of The Day" : "Newest Added / Recently Updated App$countSuffix<br><font size='0'>Select the New/Updated Category for the complete list<br>Note that many authors and maintainers do not flag the application as being updated</font>";
 				$startupColor = (version_compare($communitySettings['unRaidVersion'],"6.5.3",">")) ? "#FF8C2F" : "purple";
 				echo "<br><center><font size='4' color='$startupColor'><b>$startupMsg</b></font><br><br>";
 				$sortOrder['sortBy'] = "noSort";
@@ -981,7 +979,7 @@ case 'statistics':
 <table style='margin-top:1rem;'>
 <tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png'></td></tr>
 <tr><td colspan='2'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>
-<tr><td class='ca_table'><b><a href='{$communityPaths['application-feed']}' target='_blank'>Last Change To Application Feed</a></b></td><td class='ca_stat'><?=$updateTime?></td></tr>
+<tr><td class='ca_table'><b><a href='<?=$communityPaths['application-feed']?>' target='_blank'>Last Change To Application Feed</a></b></td><td class='ca_stat'><?=$updateTime?></td></tr>
 <tr><td class='ca_table'><b>Number Of Templates</b></td><td class='ca_stat'><?=$statistics['totalApplications']?></td></tr>
 <tr><td class='ca_table'><b><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></b></td><td class='ca_stat'><?=count($repositories)?></td></tr>
 <tr><td class='ca_table'><b>Number Of Docker Applications</b></td><td class='ca_stat'><?=$statistics['docker']?></td></tr>
@@ -1229,65 +1227,81 @@ function getConvertedTemplates() {
 #############################
 # Selects an app of the day #
 #############################
-function appOfDay($file) {
+function appOfDay($file,&$startupMsg) {
 	global $communityPaths,$communitySettings,$sortOrder;
 
 	$info = getRunningContainers();
-	if ($communitySettings['startup'] == "random") {
-		$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
-		$oldAppDay = $oldAppDay ?: 1;
-		$oldAppDay = intval($oldAppDay / 86400);
-		$currentDay = intval(time() / 86400);
-		if ( $oldAppDay == $currentDay ) {
-			$app = readJsonFile($communityPaths['appOfTheDay']);
-			$flag = false;
-			foreach ($app as $testApp) {
-				if ( ! checkRandomApp($testApp,$file,false,$info) ) {
-					$flag = true;
-					break;
-				}
-			}
-			if ( $flag ) {
-				$app = array();
-			}
-		}
-
-		if ( ! $app ) {
-			for ( $ii=0; $ii<$communitySettings['maxPerPage']; $ii++ ) {
+	switch ($communitySettings['startup']) {
+		case "random":
+			$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
+			$oldAppDay = $oldAppDay ?: 1;
+			$oldAppDay = intval($oldAppDay / 86400);
+			$currentDay = intval(time() / 86400);
+			if ( $oldAppDay == $currentDay ) {
+				$app = readJsonFile($communityPaths['appOfTheDay']);
 				$flag = false;
-				if ( $app[$ii] ) {
-					$flag = checkRandomApp($app[$ii],$file);
-				}
-				if ( ! $flag ) {
-					for ( $jj = 0; $jj<20; $jj++) { # only give it 20 shots to find an app of the day
-						$randomApp = mt_rand(0,count($file) -1);
-						$flag = checkRandomApp($randomApp,$file,false,$info);
-						if ( $flag ) {
-							break;
-						}
+				foreach ($app as $testApp) {
+					if ( ! checkRandomApp($testApp,$file,false,$info) ) {
+						$flag = true;
+						break;
 					}
 				}
-				if ( ! $flag ) {
-					continue;
+				if ( $flag ) {
+					$app = array();
 				}
-				$app[$ii] = $randomApp;
 			}
-		}
-		if (! $app) { $app = array(); }
-		$app = array_values(array_unique($app));
-		writeJsonFile($communityPaths['appOfTheDay'],$app);
-		return $app;
-	} else {
-		$info = getRunningContainers();
-		$sortOrder['sortBy'] = "Date";
-		$sortOrder['sortDir'] = "Down";
-		usort($file,"mySort");
-		for ( $i = 0; $i <100; $i++) {
-			if ( ! checkRandomApp($i,$file,true,$info) ) { continue; }
-			$appOfDay[] = $file[$i]['ID'];
-		}
-		return $appOfDay;
+
+			if ( ! $app ) {
+				for ( $ii=0; $ii<$communitySettings['maxPerPage']; $ii++ ) {
+					$flag = false;
+					if ( $app[$ii] ) {
+						$flag = checkRandomApp($app[$ii],$file);
+					}
+					if ( ! $flag ) {
+						for ( $jj = 0; $jj<20; $jj++) { # only give it 20 shots to find an app of the day
+							$randomApp = mt_rand(0,count($file) -1);
+							$flag = checkRandomApp($randomApp,$file,false,$info);
+							if ( $flag ) {
+								break;
+							}
+						}
+					}
+					if ( ! $flag ) {
+						continue;
+					}
+					$app[$ii] = $randomApp;
+				}
+			}
+			if (! $app) { $app = array(); }
+			$appOfDay = array_values(array_unique($app));
+			writeJsonFile($communityPaths['appOfTheDay'],$appOfDay);
+			$countSuffix = (count($appOfDay) > 1) ? "s" : "";
+			$startupMsg = "Random App$countSuffix Of The Day";
+			break;
+		case "new":
+			$sortOrder['sortBy'] = "Date";
+			$sortOrder['sortDir'] = "Down";
+			usort($file,"mySort");
+			for ( $i = 0; $i <100; $i++) {
+				if ( ! checkRandomApp($i,$file,true,$info) ) continue;
+				$appOfDay[] = $file[$i]['ID'];
+			}
+			$startupMsg = "Newest Added / Recently Updated App$countSuffix<br><font size='0'>Select the New/Updated Category for the complete list<br>Note that many authors and maintainers do not flag the application as being updated</font>";
+			break;
+		case "onlynew":
+			$sortOrder['sortBy'] = "FirstSeen";
+			$sortOrder['sortDir'] = "Down";
+			usort($file,"mySort");
+			foreach ($file as $template) {
+				if ( $template['FirstSeen'] > 1538357652 ) {
+					$appOfDay[] = $template['ID'];
+					if ( count($appOfDay) == 25 ) break;
+				}
+			}
+			$startupMsg = "Newest Added Applications";
+			break;
 	}
+	return $appOfDay ?: array();
 }
 
 #####################################################
