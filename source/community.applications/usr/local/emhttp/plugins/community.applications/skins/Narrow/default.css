@@ -65,4 +65,5 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .ca_dateAdded {font-weight:bold;text-align:center;}
 .ca_dateAdded::before {content:"Dated Added: ";}
 .ca_dateUpdatedDate {font-weight:normal;}
-#cookieWarning {display:none;margin-top:-160px;'}
+#cookieWarning {display:none;}
+.notice.shift {margin-top:0px;}
