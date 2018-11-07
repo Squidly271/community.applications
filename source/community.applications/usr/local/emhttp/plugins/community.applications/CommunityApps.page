@@ -390,7 +390,8 @@ $(function(){
 				var leftMargin = getWindowWidth();
 				$("#searchFilter").hide();
 				$("#appWarningForm").css("width",leftMargin);
-				$("#myForm,#appWarningForm").toggle();
+				$("#homeIcon,#sectionIcon,#categoryIcon,#subcategoryIcon,#sortIcon,.topRightLinks").hide();
+				$("#templates_content").html($("#appWarningForm").html());
 			}
 		});
 	} else {
@@ -1554,10 +1555,10 @@ Sort Direction:
 </span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
 <span id='debugging'></span>
-<form id='appWarningForm' style='display:none;'>
+<div id='appWarningForm' style='display:none;'>
 <br><br><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
 <font size='4' color='red'>All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein.
 <br><em>Every attempt is made to ensure that only safe and compatible applications are present</em>
 <br><br>You must accept the disclaimer before you can utilize this plugin</font>
 <br><br><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>
-</form>
+</div>
