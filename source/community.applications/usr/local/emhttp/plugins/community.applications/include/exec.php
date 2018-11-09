@@ -263,12 +263,16 @@ case 'force_update':
 
 	if ( ! $latestUpdate['last_updated_timestamp'] ) {
 		$latestUpdate['last_updated_timestamp'] = INF;
+		$badDownload = true;
 		@unlink($communityPaths['lastUpdated']);
 	}
 
 	if ( $latestUpdate['last_updated_timestamp'] > $lastUpdatedOld['last_updated_timestamp'] ) {
 		if ( $latestUpdate['last_updated_timestamp'] != INF ) {
 			copy($communityPaths['lastUpdated'],$communityPaths['lastUpdated-old']);
+		}
+		if ( ! $badDownload ) {
+			@unlink($communityPaths['templates-community-info']);
 		}
 	} else {
 		moderateTemplates();
