@@ -272,7 +272,7 @@ case 'force_update':
 			copy($communityPaths['lastUpdated'],$communityPaths['lastUpdated-old']);
 		}
 		if ( ! $badDownload ) {
-			@unlink($communityPaths['templates-community-info']);
+			@unlink($communityPaths['community-templates-info']);
 		}
 	} else {
 		moderateTemplates();
