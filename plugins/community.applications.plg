@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.11.03">
-<!ENTITY md5       "c37ed7b976508101cf5cf43f7233adac">
+<!ENTITY version   "2018.11.10">
+<!ENTITY md5       "5d5b9491b169ada7c5d4328098ccb7b1">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,14 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.11.10
+- Minor display changes
+- Fixed: When installing an app identically named to another, both would appear as installed
+- Fixed: Edge case of Previous / Private App not being in appfeed and having formatting present in its description messing up CA's displays
+- Added: Only display Newest added as startup screen in addition to Newest/Updated and Random
+- Fixed: When installing an app from startup page, after installation the order of the apps would change
+- Fixed: Regression Error - CA thought it downloaded an update to the appfeed, but it never actually did
+
 ###2018.11.03
 - Fix regression error.  Under certain cirumstances, the wrong repository would be listed in a template
 - Significantly speed up what happens when browser re-sizes
