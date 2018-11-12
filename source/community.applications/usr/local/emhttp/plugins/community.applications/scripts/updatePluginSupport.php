@@ -19,7 +19,7 @@ foreach ($plugins as $plugin) {
 		if ( $pluginEntry === false ) {
 			$pluginEntry = searchArray($templates,"PluginURL",str_replace("https://raw.github.com/","https://raw.githubusercontent.com/",$pluginURL));
 		}
-		if ( $pluginEntry !== false ) {
+		if ( $pluginEntry !== false && $templates[$pluginEntry]['PluginURL']) {
 			$xml = simplexml_load_file($plugin);
 			if ( ! $templates[$pluginEntry]['Support'] ) {
 				continue;
