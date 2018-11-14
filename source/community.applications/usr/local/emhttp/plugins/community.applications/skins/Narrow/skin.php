@@ -289,7 +289,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 	if ($startingPage < 3 ) {
 		$startingPage = 1;
 	} else {
-		$o .= "<b><a class='ca_tooltip' style='cursor:pointer' onclick='{$my_function}(&quot;1&quot;);' title='Go To Page 1'>1</a></b>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;";
+		$o .= "<b><a class='ca_tooltip' style='cursor:pointer' onclick='{$my_function}(&quot;1&quot;);' title='Go To Page 1'>1</a></b>&nbsp;&nbsp;&nbsp;<font color='black'>...</font>&nbsp;&nbsp;&nbsp;";
 	}
 	$endingPage = $pageNumber + 5;
 	if ( $endingPage > $totalPages ) {
