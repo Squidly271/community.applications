@@ -74,7 +74,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 	$iconSize = $communitySettings['iconSize'];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
 	if ( $sortOrder['sortBy'] != "noSort" ) {
-		if ( $sortOrder['sortBy'] == "Name" ) $sortOrder['SortBy'] = "SortName";
+		if ( $sortOrder['sortBy'] == "Name" ) $sortOrder['sortBy'] = "SortName";
 		usort($file,"mySort");
 	}
 
