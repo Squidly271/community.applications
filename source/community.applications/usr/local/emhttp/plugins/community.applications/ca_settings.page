@@ -85,6 +85,7 @@ Start-up Display:
 	<?=mk_option($cfg['startup'],"new", "New / Updated Applications (default)")?>
 	<?=mk_option($cfg['startup'],"random", "Random Applications")?>
 	<?=mk_option($cfg['startup'],"onlynew", "Only newest added applications")?>
+	<?=mk_option($cfg['startup'],"trending", "Trending Applications")?>
 	</select>
 
 > This setting chooses whether to display a random "app of the day" or the most recently added / updated applications

@@ -139,7 +139,7 @@ case 'get_content':
 		echo "<center><font size=4>$selectCategoryMessage</font></center>";
 		$displayApplications = array();
 		if ( count($file) > 200) {
-			$appsOfDay = appOfDay($file,$startupMsg);
+			$appsOfDay = appOfDay($file,$startupMsg,$startupMsg2);
 
 			$displayApplications['community'] = array();
 			for ($i=0;$i<$communitySettings['maxPerPage'];$i++) {
@@ -150,8 +150,11 @@ case 'get_content':
 			if ( $displayApplications['community'] ) {
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-				$startupColor = (version_compare($communitySettings['unRaidVersion'],"6.5.3",">")) ? "#FF8C2F" : "purple";
-				echo "<br><center><font size='4' color='$startupColor'><b>$startupMsg</b></font><br><br>";
+				
+				echo "<br><center><span class='startupMessage'>$startupMsg</span></center><br>";
+				if ( $startupMsg2 ) {
+					echo "<center><span class='startupMessage2'>$startupMsg2</span></center><br>";
+				}
 				$sortOrder['sortBy'] = "noSort";
 				echo my_display_apps($displayApplications['community'],"1",$runningDockers,$imagesDocker);
 				break;
@@ -1229,7 +1232,7 @@ function getConvertedTemplates() {
 #############################
 # Selects an app of the day #
 #############################
-function appOfDay($file,&$startupMsg) {
+function appOfDay($file,&$startupMsg,&$startupMsg2) {
 	global $communityPaths,$communitySettings,$sortOrder;
 
 	$info = getRunningContainers();
@@ -1288,7 +1291,8 @@ function appOfDay($file,&$startupMsg) {
 				if ( ! checkRandomApp($i,$file,true,$info) ) continue;
 				$appOfDay[] = $file[$i]['ID'];
 			}
-			$startupMsg = "Newest Added / Recently Updated App$countSuffix<br><font size='0'>Select the New/Updated Category for the complete list<br>Note that many authors and maintainers do not flag the application as being updated</font>";
+			$startupMsg = "Newest Added / Recently Updated App$countSuffix";
+			$startupMsg2 = "Select the New/Updated Category for the complete list<br>Note that many authors and maintainers do not flag the application as being updated</font>";
 			break;
 		case "onlynew":
 			$sortOrder['sortBy'] = "FirstSeen";
@@ -1301,6 +1305,20 @@ function appOfDay($file,&$startupMsg) {
 				}
 			}
 			$startupMsg = "Newest Added Applications";
+			break;
+		case "trending":
+			$sortOrder['sortBy'] = "trending";
+			$sortOrder['sortDir'] = "Down";
+			usort($file,"mySort");
+			foreach ($file as $template) {
+				if ( $template['trending'] ) {
+					$appOfDay[] = $template['ID'];
+					if ( count($appOfDay) == 25 ) break;
+				} else {
+					break;
+				}
+			}
+			$startupMsg = "Trending Applications";
 			break;
 	}
 	return $appOfDay ?: array();

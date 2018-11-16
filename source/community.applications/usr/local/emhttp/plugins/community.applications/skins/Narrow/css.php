@@ -11,6 +11,7 @@
 	$unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 	$unRaid66color = $unRaid66 ? "#FF8C2F" : "green";
 	$linkColor = "#486dba";
+	$startupColor = $unRaid66 ? "#FF8C2F" : "purple";
 ?>
 .ca_template_icon {color:#606E7F;width:37rem;float:left;display:inline-block;background-color: #C7C5CB;margin:0px;height:15rem;padding-top:1rem;border-radius:2rem 20px 0px 0px;}
 .ca_holder {display:inline-block;float:left;height:43.2rem;width:37rem;overflow:hidden;padding:0px;margin-bottom:.1rem;margin-right:.3rem;font-size:1.2rem;}
@@ -90,6 +91,8 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .notice.shift {margin-top:0px;}
 #searchBox{top:-0.6rem;padding:0.6rem;}
 .searchSubmit{height:3.4rem;}
+.startupMessage{font-size:2.5rem;font-weight:bold;color:<?=$startupColor?>;}
+.startupMessage2{font-size:1rem;font-weight:bold;color:<?=$startupColor?>;}
 
 <?if ( $theme == "azure" ):?>
 .searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:#DADADA;border:none;cursor:pointer;}
