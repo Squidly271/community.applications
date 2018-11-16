@@ -275,40 +275,38 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 	if ( $endApp > $totalApps ) {
 		$endApp = $totalApps;
 	}
-	$o = "<center><b>";
+	$o = "<center>";
 	if ( ! $dockerSearch && $displayCount) {
 		$o .= "<span class='pageNavigation'>Displaying $startApp - $endApp (of $totalApps)</span><br>";
 	}
 
 	$o .= "<div class='pageNavigation'>";
 	$previousPage = $pageNumber - 1;
-	$o .= ( $pageNumber == 1 ) ? "<font color='grey'><i class='fa fa-arrow-circle-left' aria-hidden='true'></i></font>" : "<i class='fa fa-arrow-circle-left ca_tooltip' aria-hidden='true' style='cursor:pointer' onclick='{$my_function}(&quot;$previousPage&quot;)' title='Go To Page $previousPage'></i></font>";
-	$o .= "&nbsp;&nbsp;&nbsp;";
+	$o .= ( $pageNumber == 1 ) ? "<span class='pageLeft pageNumber pageNavNoClick'></span>" : "<span class='pageLeft ca_tooltip pageNumber' onclick='{$my_function}(&quot;$previousPage&quot;)' title='Go To Page $previousPage'></span>";
 	$swipeScript .= "data.prevpage = $previousPage;";
 	$startingPage = $pageNumber - 5;
 	if ($startingPage < 3 ) {
 		$startingPage = 1;
 	} else {
-		$o .= "<b><a class='ca_tooltip' style='cursor:pointer' onclick='{$my_function}(&quot;1&quot;);' title='Go To Page 1'>1</a></b>&nbsp;&nbsp;&nbsp;<font color='black'>...</font>&nbsp;&nbsp;&nbsp;";
+		$o .= "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;1&quot;);' title='Go To Page 1'>1</a><span class='pageNumber pageDots'></span>";
 	}
 	$endingPage = $pageNumber + 5;
 	if ( $endingPage > $totalPages ) {
 		$endingPage = $totalPages;
 	}
 	for ($i = $startingPage; $i <= $endingPage; $i++) {
-		$o .= ( $i == $pageNumber ) ? $i : "<b><a class='ca_tooltip' style='cursor:pointer' onclick='{$my_function}(&quot;$i&quot;);' title='Go To Page $i'>$i</a></b>";
-		$o .= "&nbsp;&nbsp;&nbsp";
+		$o .= ( $i == $pageNumber ) ? "<span class='pageNumber pageSelected'>$i</span>" : "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;$i&quot;);' title='Go To Page $i'>$i</a>";
 	}
 	if ( $endingPage != $totalPages) {
 		if ( ($totalPages - $pageNumber ) > 6){
-			$o .= "<font color='black'>...</font>&nbsp;&nbsp;&nbsp;";
+			$o .= "<span class='pageNumber pageDots'></span>";
 		}
 		if ( ($totalPages - $pageNumber ) >5 ) {
-			$o .= "<b><a class='ca_tooltip' style='cursor:pointer' title='Go To Page $totalPages' onclick='{$my_function}(&quot;$totalPages&quot;);'>$totalPages</a></b>&nbsp;&nbsp;&nbsp;";
+			$o .= "<a class='ca_tooltip pageNumber' title='Go To Page $totalPages' onclick='{$my_function}(&quot;$totalPages&quot;);'>$totalPages</a>";
 		}
 	}
 	$nextPage = $pageNumber + 1;
-	$o .= ( $pageNumber < $totalPages ) ? "<i class='fa fa-arrow-circle-right ca_tooltip' aria-hidden='true' style='cursor:pointer' title='Go To Page $nextPage' onclick='{$my_function}(&quot;$nextPage&quot;);'></i></font>" : "<font color='grey'><i class='fa fa-arrow-circle-right' aria-hidden='true'></i></font>";
+	$o .= ( $pageNumber < $totalPages ) ? "<span class='ca_tooltip pageNumber pageRight' title='Go To Page $nextPage' onclick='{$my_function}(&quot;$nextPage&quot;);'></span>" : "<span class='pageRight pageNumber pageNavNoClick'></span>";
 	$swipeScript .= ( $pageNumber < $totalPages ) ? "data.nextpage = $nextPage;" : "data.nextpage = 0;";
 	$swipeScript .= ( $dockerSearch ) ? "dockerSearchFlag = true;" : "dockerSearchFlag = false";
 	$swipeScript .= "</script>";
