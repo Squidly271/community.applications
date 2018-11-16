@@ -1112,8 +1112,6 @@ function DownloadApplicationFeed() {
 		if ( $o['PluginURL'] ) {
 			$o['Author']        = $o['PluginAuthor'];
 			$o['Repository']    = $o['PluginURL'];
-			$o['SortAuthor']    = $o['Author'];
-			$o['SortName']      = $o['Name'];
 		}
 		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
 		$o = fixTemplates($o);
