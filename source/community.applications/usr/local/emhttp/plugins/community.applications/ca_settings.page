@@ -44,8 +44,6 @@ foreach ($repoName as $display1) {
 <form markdown="1" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="<?=$plugin?>/<?=$plugin?>.cfg">
 
-> For help with this plugin, click here (a new tab will open with the help file)  <strong><font size="2"><a href="Settings/caHelp" target="_blank">HELP</a></font></strong>
-
 Hover Time delay (miliseconds):
 : <input type="number" name="hoverTime" class="narrow" maxlength="5" value="<?=$cfg['hoverTime']?>" placeholder="1000">
 
