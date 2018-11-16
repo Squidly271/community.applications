@@ -112,7 +112,7 @@ case 'get_content':
 			download_url($communityPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
 			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
 			@unlink($tmpfile);
-			echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.";
+			echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://status.github.com/messages' target='_blank'>HERE</a>";
 			$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
 			$downloaded = @file_get_contents($tempFile);
 			if (strlen($downloaded) > 100) {
@@ -122,7 +122,7 @@ case 'get_content':
 			$jsonDecode = json_decode($downloaded,true);
 			echo "JSON Error: ".jsonError(json_last_error());
 			if ( $publicServiceAnnouncement ) {
-				echo "<br><font size='5' color='purple'>$publicServiceAnnouncement</font>";
+				echo "<br><font size='3' color='purple'>$publicServiceAnnouncement</font>";
 			}
 			echo "</center>";
 			@unlink($communityPaths['appFeedDownloadError']);
@@ -151,7 +151,7 @@ case 'get_content':
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
 				
-				echo "<br><center><span class='startupMessage'>$startupMsg</span></center><br>";
+				echo "<br><center><span class='startupMessage'>$startupMsg</span></center>";
 				if ( $startupMsg2 ) {
 					echo "<center><span class='startupMessage2'>$startupMsg2</span></center><br>";
 				}
@@ -1311,14 +1311,13 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
 			foreach ($file as $template) {
-				if ( $template['trending'] ) {
+				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
 					$appOfDay[] = $template['ID'];
 					if ( count($appOfDay) == 25 ) break;
-				} else {
-					break;
 				}
 			}
 			$startupMsg = "Trending Applications";
+			$startupMsg2 = "(Largest % increase in downloads over 30 days)";
 			break;
 	}
 	return $appOfDay ?: array();

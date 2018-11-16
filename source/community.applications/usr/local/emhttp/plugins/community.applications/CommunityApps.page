@@ -21,7 +21,6 @@ if ( $installedVersion < $upgradeVersion && $upgradeVersion) {
 	$upgradeAvailable = "true";
 }
 $cfg = parse_plugin_cfg($plugin);
-$cfg['skin'] = "Narrow";
 if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
@@ -730,7 +729,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 		$("#"+button).prop("disabled", true);
 	}
 
-	if ( button == "Date" || button == "Downloads" ) {
+	if ( button == "Date" || button == "Downloads" || button == "Trending" ) {
 		$("#Down").prop("disabled", true);
 		$("#Up").prop("disabled", false);
 	}
@@ -751,11 +750,12 @@ function getSortOrder() {
 	var sortOrder = new Object();
 	var jsonOrder = new Object();
 
-	if ( $("#Name").prop("disabled") )           { sortOrder.sortBy = ["sortBy","Name"];                 jsonOrder.sortBy = "#Name"; }
-	if ( $("#RepoName").prop("disabled") )       { sortOrder.sortBy = ["sortBy","RepoName"];             jsonOrder.sortBy = "#RepoName"; }
-	if ( $("#Author").prop("disabled") )         { sortOrder.sortBy = ["sortBy","SortAuthor"];           jsonOrder.sortBy = "#Author"; }
-	if ( $("#Date").prop("disabled") )           { sortOrder.sortBy = ["sortBy","Date"];                 jsonOrder.sortBy = "#Date"; }
-	if ( $("#Downloads").prop("disabled") )      { sortOrder.sortBy = ["sortBy","downloads"];            jsonOrder.sortBy = "#Downloads"; }
+	if ( $("#Name").prop("disabled") )					{ sortOrder.sortBy = ["sortBy","Name"];                 jsonOrder.sortBy = "#Name"; }
+	if ( $("#RepoName").prop("disabled") )			{ sortOrder.sortBy = ["sortBy","RepoName"];             jsonOrder.sortBy = "#RepoName"; }
+	if ( $("#Author").prop("disabled") )				{ sortOrder.sortBy = ["sortBy","SortAuthor"];           jsonOrder.sortBy = "#Author"; }
+	if ( $("#Date").prop("disabled") )					{ sortOrder.sortBy = ["sortBy","Date"];                 jsonOrder.sortBy = "#Date"; }
+	if ( $("#Downloads").prop("disabled") )			{ sortOrder.sortBy = ["sortBy","downloads"];            jsonOrder.sortBy = "#Downloads"; }
+	if ( $("#Trending").prop("disabled") )			{ sortOrder.sortBy = ["sortBy","trending"];							jsonOrder.sortBy = "#Trending";	}
 
 	if ( $("#Up").prop("disabled") )             { sortOrder.sortDir = ["sortDir","Up"];                 jsonOrder.sortDir = "#Up"; }
 	if ( $("#Down").prop("disabled") )           { sortOrder.sortDir = ["sortDir","Down"];               jsonOrder.sortDir = "#Down"; }
@@ -1468,6 +1468,7 @@ function getFontSize() {
 <input type='button' class='sortButton' id='RepoName' value='Repository'>
 <input type='button' class='sortButton' id='Downloads' value='Downloads'>
 <input type='button' class='sortButton' id='Author' value='Author'>
+<input type='button' class='sortButton' id='Trending' value='Trending'>
 <span id='dateButton' hidden><input type='button' class='sortButton' id='Date' value='Date'></span>
 Sort Direction:
 <input type='button' class='dirButton' id='Up' value='Ascending' disabled>
