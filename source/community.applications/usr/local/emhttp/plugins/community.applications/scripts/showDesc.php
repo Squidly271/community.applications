@@ -133,7 +133,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		$templateDescription .= "<tr><td>{$color}Downloads:</td><td>$color$downloads</td></tr>";
 	}
 	$templateDescription .= $template['Licence'] ? "<tr><td>{$color}Licence:</td><td>$color".$template['Licence']."</td></tr>" : "";
-
+	$templateDescription .= $template['trending'] ? "<tr><td>{$color}Monthly Trend:</td><td>$color+".$template['trending']."%</td></tr>" : "";
 	$templateDescription .= "</table></td></tr></table>";
 	$templateDescription .= "<center><span class='popUpLink'>";
 	if ($template['Blacklist']) {
