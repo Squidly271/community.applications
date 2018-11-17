@@ -1116,6 +1116,7 @@ function DownloadApplicationFeed() {
 			$o['Author']        = $o['PluginAuthor'];
 			$o['Repository']    = $o['PluginURL'];
 		}
+
 		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
 		$o = fixTemplates($o);
 		if ( ! $o ) {
@@ -1312,6 +1313,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			usort($file,"mySort");
 			foreach ($file as $template) {
 				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
+					if ( $template['Deprecated'] || $template['Blacklist'] ) continue;
 					$appOfDay[] = $template['ID'];
 					if ( count($appOfDay) == 25 ) break;
 				}
