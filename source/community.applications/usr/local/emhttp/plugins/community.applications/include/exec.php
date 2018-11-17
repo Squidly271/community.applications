@@ -75,6 +75,7 @@ case 'get_content':
 	$sortOrder   = getSortOrder(getPostArray("sortOrder"));
 	$windowWidth = getPost("windowWidth",false);
 	getMaxColumns($windowWidth);
+	$communitySettings['startup'] = getPost("startupDisplay",false);
 
 	switch ($category) {
 		case "/PRIVATE/i":
@@ -112,6 +113,7 @@ case 'get_content':
 			download_url($communityPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
 			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
 			@unlink($tmpfile);
+			echo "<script>$('.startupButton').hide();</script>";
 			echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://status.github.com/messages' target='_blank'>HERE</a>";
 			$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
 			$downloaded = @file_get_contents($tempFile);
@@ -136,7 +138,7 @@ case 'get_content':
 	if ( empty($file)) break;
 
 	if ( $category === "/NONE/i" ) {
-		echo "<center><font size=4>$selectCategoryMessage</font></center>";
+		echo "<script>$('.selectCategory').show();</script>";
 		$displayApplications = array();
 		if ( count($file) > 200) {
 			$appsOfDay = appOfDay($file,$startupMsg,$startupMsg2);
@@ -1283,8 +1285,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			if (! $app) { $app = array(); }
 			$appOfDay = array_values(array_unique($app));
 			writeJsonFile($communityPaths['appOfTheDay'],$appOfDay);
-			$countSuffix = (count($appOfDay) > 1) ? "s" : "";
-			$startupMsg = "Random App$countSuffix Of The Day";
+			$startupMsg = "Random Apps Of The Day";
 			break;
 		case "new":
 			$sortOrder['sortBy'] = "Date";
@@ -1294,7 +1295,8 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				if ( ! checkRandomApp($i,$file,true,$info) ) continue;
 				$appOfDay[] = $file[$i]['ID'];
 			}
-			$startupMsg = "Newest Added / Recently Updated App$countSuffix";
+			$countSuffix = (count($appOfDay) > 1) ? "s" : "";
+			$startupMsg = "Newest Added / Recently Updated Apps";
 			$startupMsg2 = "Select the New/Updated Category for the complete list<br>Note that many authors and maintainers do not flag the application as being updated</font>";
 			break;
 		case "onlynew":
