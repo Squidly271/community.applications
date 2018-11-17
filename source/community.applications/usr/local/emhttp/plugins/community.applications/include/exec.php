@@ -979,8 +979,10 @@ case 'statistics':
 
 	$totalCA = exec("du -h -s /usr/local/emhttp/plugins/community.applications/");
 	$totalTmp = exec("du -h -s /tmp/community.applications/");
+	$totalFlash = exec("du -h -s /boot/config/plugins/community.applications/");
 	$memCA = explode("\t",$totalCA);
 	$memTmp = explode("\t",$totalTmp);
+	$memFlash = explode("\t",$totalFlash);
 ?>
 <div style='overflow:scroll; overflow-x:hidden; overflow-y:hidden;'>
 <table style='margin-top:1rem;'>
@@ -998,7 +1000,7 @@ case 'statistics':
 <tr><td class='ca_table'><b><a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Incompatible Applications</a></b></td><td class='ca_stat'><?=$statistics['totalIncompatible']?></td></tr>
 <tr><td class='ca_table'><b><a id='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></b></td><td class='ca_stat'><?=$statistics['totalDeprecated']?></td></tr>
 <tr><td class='ca_table'><b><a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Number Of Moderation Entries</a></b></td><td class='ca_stat'><?=$statistics['totalModeration']?>+</td></tr>
-<tr><td class='ca_table'><b><b>Memory Usage (CA / DataFiles)</b></td><td class='ca_stat'><?=$memCA[0]?> / <?=$memTmp[0]?></td></tr>
+<tr><td class='ca_table'><b><b>Memory Usage (CA / DataFiles / Flash)</b></td><td class='ca_stat'><?=$memCA[0]?> / <?=$memTmp[0]?> / <?=$memFlash[0]?></td></tr>
 </table>
 <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></center>
 <center>Ensuring only safe applications are present is a full time job</center><br>
