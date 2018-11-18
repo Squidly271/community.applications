@@ -692,7 +692,7 @@ function doSearch(button,newSearch) {
 	$("#NetworkCategory,#MediaAppCategory,#MediaServerCategory,#NONE,#ToolsCategory").hide();
 	window.scrollTo(0,0);
 	if ( !filter ) {
-		getContent(true,'INITIALIZE','None Selected');
+		updateContent();
 		return;
 	}
 	var sortOrder = getSortOrder();

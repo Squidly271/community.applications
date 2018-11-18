@@ -1260,9 +1260,8 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 					$app = array();
 				}
 			}
-
 			if ( ! $app ) {
-				for ( $ii=0; $ii<$communitySettings['maxPerPage']; $ii++ ) {
+				for ( $ii=0; $ii<25; $ii++ ) {
 					$flag = false;
 					if ( $app[$ii] ) {
 						$flag = checkRandomApp($app[$ii],$file);
@@ -1317,7 +1316,8 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			usort($file,"mySort");
 			foreach ($file as $template) {
 				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
-					if ( $template['Deprecated'] || $template['Blacklist'] ) continue;
+					if ( $template['Deprecated'] && ($communitySettings['hideDeprecated'] == "true" ) ) continue;
+					if ( $template['Blacklist'] ) continue;
 					$appOfDay[] = $template['ID'];
 					if ( count($appOfDay) == 25 ) break;
 				}
