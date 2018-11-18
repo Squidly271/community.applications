@@ -131,7 +131,11 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
-	$("#startup<?=$cfg['startup']?>").prop("disabled",true);
+	var startupButton = $.cookie("startup");
+	if ( ! startupButton ) {
+		startupButton = "startuponlynew";
+	}
+	$("#"+startupButton).prop("disabled",true);
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
@@ -393,6 +397,7 @@ function updateContent(button) {
 		}
 		$(".startupButton").prop("disabled",false);
 		$(button).prop("disabled",true);
+		$.cookie("startup",button.id);
 		startupScreen = $(button).data("search");
 		disableSearch();
 		mySpinner();
@@ -1393,6 +1398,7 @@ function saveState() {
 				$.cookie("dirButton",this.id);
 			}
 		});
+
 	}
 }
 
@@ -1473,7 +1479,7 @@ function getFontSize() {
 <div class='dockerSearch' style='display:none'><center><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></center></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 <div style='width:100%; display:none;' class='selectCategory'><center>Select a Section <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:2rem;cursor:auto;'></i> or Category <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:2rem;cursor:auto;'></i> above</center></div>
-<div style='width:100%; display:none;' class='initialButtons'><center><input type='button' class='startupButton' value='New Apps' id='startuponlynew' data-search='onlynew'><input type='button' id='startupnew' class='startupButton' value='Updated Apps' data-search='new'><input type='button' class='startupButton' id='startuprandom' data-search='random' value='Random Apps'><input type='button' class='startupButton' id='startuptrending' value='Trending Apps' data-search='trending'></center></div>
+<div style='width:100%; display:none;' class='initialButtons'><center><input type='button' class='startupButton' value='New Apps' id='startuponlynew' data-search='onlynew'><input type='button' id='startupnew' class='startupButton' value='Updated Apps' data-search='new'><input type='button' class='startupButton' id='startuprandom' data-search='random' value='Random Apps'><input type='button' class='startupButton' id='startuptrending' value='Hottest Apps' data-search='trending'></center></div>
 <div style='width:100%; display:block;' id='templates_content'></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 </center>

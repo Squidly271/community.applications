@@ -80,16 +80,6 @@ Hide Incompatible Applications:
 
 > This setting will hide applications that are listed as being incompatible with your version of unRaid
 
-Start-up Display:
-: <select name="startup" size="1">
-	<?=mk_option($cfg['startup'],"new", "New / Updated Applications (default)")?>
-	<?=mk_option($cfg['startup'],"random", "Random Applications")?>
-	<?=mk_option($cfg['startup'],"onlynew", "Only newest added applications")?>
-	<?=mk_option($cfg['startup'],"trending", "Trending Applications")?>
-	</select>
-
-> This setting chooses whether to display a random "app of the day" or the most recently added / updated applications
-
 Only request https (secure) images (when accessing server via https):
 : <select name='secureImage' size='1'>
 	<?=mk_option($cfg['secureImage'],'all','Display all images (default)')?>
