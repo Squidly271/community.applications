@@ -1304,6 +1304,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			usort($file,"mySort");
 			foreach ($file as $template) {
 				if ( $template['FirstSeen'] > 1538357652 ) {
+					if ( $template['BranchName'] ) continue;
 					$appOfDay[] = $template['ID'];
 					if ( count($appOfDay) == 25 ) break;
 				}
@@ -1318,6 +1319,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
 					if ( $template['Deprecated'] && ($communitySettings['hideDeprecated'] == "true" ) ) continue;
 					if ( $template['Blacklist'] ) continue;
+					if ( $template['BranchName'] ) continue; # stops all the sub branches from appearing in the list when only the first is necessary
 					$appOfDay[] = $template['ID'];
 					if ( count($appOfDay) == 25 ) break;
 				}
@@ -1336,6 +1338,7 @@ function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
 	global $communitySettings;
 
 	$test = $file[$randomApp];
+	if ( $test['BranchName'] )                        return false;
 	if ( ! $test['Displayable'] )											return false;
 	if ( ! $test['Compatible'] )											return false;
 	if ( $test['Blacklist'] )													return false;
