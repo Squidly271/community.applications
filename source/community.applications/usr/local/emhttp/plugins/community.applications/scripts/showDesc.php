@@ -68,7 +68,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$ID = $template['ID'];
 
 	$donatelink = $template['DonateLink'];
-	$donatetext = $template['DonateText'];
+	$donatetext = $template['DonateText'] ?: "Donate To Author";
 
 	if ( ! $template['Plugin'] ) {
 		foreach ($dockerRunning as $testDocker) {
