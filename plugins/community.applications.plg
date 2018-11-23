@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.11.17">
-<!ENTITY md5       "a0f802b90c90fb0981fd631ffb94727d">
+<!ENTITY version   "2018.11.23">
+<!ENTITY md5       "2ce08a097b4f10953ce9cdb11777ec15">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.11.23
+- Remove startup options from settings.  Now handled on main screen
+- Add in Trending Apps
+- Add in sort by Trending
+- Minor little fixes that no one noticed
+
 ###2018.11.17
 - Maintenance release
 - Fixed: Prevent a plugin not present in appfeed from getting a support thread added
