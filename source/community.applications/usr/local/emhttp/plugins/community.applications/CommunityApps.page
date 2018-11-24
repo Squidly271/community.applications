@@ -377,8 +377,8 @@ $(function(){
 		});
 	} else {
 		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() ) {
-      populateAutoComplete();
-      restoreState();
+			populateAutoComplete();
+			restoreState();
 			refreshDisplay();
 		} else {
 			updateContent();
