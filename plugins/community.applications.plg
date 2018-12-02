@@ -14,7 +14,7 @@
 
 <CHANGES>
 ###2018.12.01
-- Fixed: After installing an app from startup screen, display wouldn't be in same order as before
+- Fixed: After installing an app, autocomplete on searches wouldn't work without reloading.
 
 ###2018.11.23
 - Remove startup options from settings.  Now handled on main screen
