@@ -400,7 +400,7 @@ function updateContent(button) {
 	}
 	$(".startupButton").prop("disabled",false);
 	$(button).prop("disabled",true);
-	$.cookie("startup",button.id);
+	$.cookie("startup",button.id,{expires:365});
 	startupScreen = $(button).data("search");
 	disableSearch();
 	mySpinner();
