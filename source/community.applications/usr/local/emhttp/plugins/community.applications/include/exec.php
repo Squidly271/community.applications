@@ -767,7 +767,7 @@ if ( $communitySettings['dockerRunning'] ) {
 				}
 				$template['MyPath'] = "/var/log/plugins/$filename";
 				$template['Uninstall'] = true;
-				$template['UpdateAvailable'] = checkPluginUpdate($filename);
+//				$template['UpdateAvailable'] = checkPluginUpdate($filename);
 
 				$displayed[] = $template;
 			}
