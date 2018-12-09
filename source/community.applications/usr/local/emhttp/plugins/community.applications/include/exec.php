@@ -1239,6 +1239,7 @@ function getConvertedTemplates() {
 function appOfDay($file,&$startupMsg,&$startupMsg2) {
 	global $communityPaths,$communitySettings,$sortOrder;
 
+	$communitySettings['separateInstalled'] = "false";
 	$info = getRunningContainers();
 	switch ($communitySettings['startup']) {
 		case "random":
