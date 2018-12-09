@@ -1283,7 +1283,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			if (! $app) { $app = array(); }
 			$appOfDay = array_values(array_unique($app));
 			writeJsonFile($communityPaths['appOfTheDay'],$appOfDay);
-			$startupMsg = "Random Apps";
+			$startupMsg = "Random Apps Of The Day";
 			break;
 		case "new":
 			$sortOrder['sortBy'] = "Date";
@@ -1293,7 +1293,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				if ( ! checkRandomApp($i,$file,true,$info) ) continue;
 				$appOfDay[] = $file[$i]['ID'];
 			}
-			$startupMsg = "Recently Updated Apps";
+			$startupMsg = "Newest Added / Recently Updated Apps";
 			$startupMsg2 = "Select the New/Updated Category for the complete list<br>Note that many authors and maintainers do not flag the application as being updated</font>";
 			break;
 		case "onlynew":
