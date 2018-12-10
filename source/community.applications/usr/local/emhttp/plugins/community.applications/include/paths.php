@@ -11,6 +11,7 @@ $communityPaths['tempFiles']                     = "/tmp/$plugin/tempFiles";    
 $communityPaths['templates-community']           = $communityPaths['tempFiles']."/templates-community-apps";           /* templates and temporary files stored here.  Deleted every update of applications */
 $communityPaths['community-templates-url']       = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Repositories.json";
 $communityPaths['PublicServiceAnnouncement']     = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/PublicServiceAnnouncement.txt";
+$communityPaths['appFeedBackup']                 = "/boot/config/plugins/$plugin/applicationFeed.json";
 $communityPaths['Repositories']                  = $communityPaths['tempFiles']."/Repositories.json";
 $communityPaths['community-templates-info']      = $communityPaths['tempFiles']."/templates.json";                     /* json file containing all of the templates */
 $communityPaths['community-templates-displayed'] = $communityPaths['tempFiles']."/displayed.json";                     /* json file containing all of the templates currently displayed */

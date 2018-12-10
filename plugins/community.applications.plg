@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.12.01">
-<!ENTITY md5       "42ffb167d546d1f68bcaa27c56c47ad1">
+<!ENTITY version   "2018.12.09">
+<!ENTITY md5       "f60f862ca4c356d695337f4e6a2cd6e1">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.12.09
+- Add in ability to utilize a pre-downloaded application feed for emergencies
+- Startup screens now always show an app if its installed
+- Fixed: Plugins on a startup screen wouldn't show if an update was available
+- Fixed: Somehow the icon in the plugins tab keeps getting reverted to a low res version
+- Fixed: Startup screen remembers random / new / trending even if you close browser tab
+
 ###2018.12.01
 - Fixed: After installing an app, autocomplete on searches wouldn't work without reloading.
 

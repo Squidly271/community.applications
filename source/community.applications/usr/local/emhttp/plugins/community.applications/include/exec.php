@@ -1093,6 +1093,11 @@ function DownloadApplicationFeed() {
 	$downloadURL = randomFile();
 	$ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
+		if ( is_file($communityPaths['appFeedBackup']) ) {
+			$ApplicationFeed = readJsonFile($communityPaths['appFeedBackup']);
+		}
+	}
+	if ( ! is_array($ApplicationFeed['applist']) ) {
 		file_put_contents($communityPaths['appFeedDownloadError'],$downloadURL);
 		return false;
 	}
