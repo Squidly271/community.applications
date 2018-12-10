@@ -221,7 +221,6 @@ case 'get_content':
 			}
 		}
 		if ( $template['Plugin'] && file_exists("/var/log/plugins/".basename($template['PluginURL'])) ) {
-			$template['UpdateAvailable'] = checkPluginUpdate($template['PluginURL']);
 			$template['MyPath'] = $template['PluginURL'];
 		}
 
@@ -767,8 +766,6 @@ if ( $communitySettings['dockerRunning'] ) {
 				}
 				$template['MyPath'] = "/var/log/plugins/$filename";
 				$template['Uninstall'] = true;
-//				$template['UpdateAvailable'] = checkPluginUpdate($filename);
-
 				$displayed[] = $template;
 			}
 		}
