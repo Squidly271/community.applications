@@ -11,12 +11,14 @@ $communityPaths['tempFiles']                     = "/tmp/$plugin/tempFiles";    
 $communityPaths['templates-community']           = $communityPaths['tempFiles']."/templates-community-apps";           /* templates and temporary files stored here.  Deleted every update of applications */
 $communityPaths['community-templates-url']       = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Repositories.json";
 $communityPaths['PublicServiceAnnouncement']     = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/PublicServiceAnnouncement.txt";
-$communityPaths['appFeedBackup']                 = "/boot/config/plugins/$plugin/applicationFeed.json";
 $communityPaths['Repositories']                  = $communityPaths['tempFiles']."/Repositories.json";
 $communityPaths['community-templates-info']      = $communityPaths['tempFiles']."/templates.json";                     /* json file containing all of the templates */
 $communityPaths['community-templates-displayed'] = $communityPaths['tempFiles']."/displayed.json";                     /* json file containing all of the templates currently displayed */
 $communityPaths['application-feed']              = "https://github.com/Squidly271/AppFeed/raw/master/applicationFeed.json";        /* path to the application feed */
 $communityPaths['application-feed-last-updated'] = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/applicationFeed-lastUpdated.json";
+$communityPaths['application-feedBackup']        = "https://s3.amazonaws.com/dnld.lime-technology.com/appfeed/master/applicationFeed.json";
+$communityPaths['appFeedBackupUSB']              = "/boot/config/plugins/$plugin/applicationFeed.json";
+
 $communityPaths['onlineCAVersion']               = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/caVersion";
 $communityPaths['lastUpdated']                   = $communityPaths['tempFiles']."/lastUpdated.json";
 $communityPaths['lastUpdated-old']               = $communityPaths['tempFiles']."/lastUpdated-old.json";

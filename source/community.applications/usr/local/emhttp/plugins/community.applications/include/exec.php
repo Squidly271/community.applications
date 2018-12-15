@@ -114,7 +114,7 @@ case 'get_content':
 			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
 			@unlink($tmpfile);
 			echo "<script>$('.startupButton').hide();</script>";
-			echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>8.8.8.8 and 8.8.4.4</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://status.github.com/messages' target='_blank'>HERE</a>";
+			echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>208.67.222.222 and 208.67.220.220</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://status.github.com/messages' target='_blank'>HERE</a>";
 			$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
 			$downloaded = @file_get_contents($tempFile);
 			if (strlen($downloaded) > 100) {
@@ -1090,8 +1090,11 @@ function DownloadApplicationFeed() {
 	$downloadURL = randomFile();
 	$ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
-		if ( is_file($communityPaths['appFeedBackup']) ) {
-			$ApplicationFeed = readJsonFile($communityPaths['appFeedBackup']);
+		$ApplicationFeed = download_json($communityPaths['application-feedBackup'],$downloadURL);
+		if ( ! is_array($ApplicationFeed['applist']) ) {
+			if ( is_file($communityPaths['appFeedBackupUSB']) ) {
+				$ApplicationFeed = readJsonFile($communityPaths['appFeedBackupUSB']);
+			}
 		}
 	}
 	if ( ! is_array($ApplicationFeed['applist']) ) {
