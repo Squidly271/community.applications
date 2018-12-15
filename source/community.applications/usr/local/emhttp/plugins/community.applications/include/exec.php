@@ -105,34 +105,7 @@ case 'get_content':
 	}
 
 
-	if (!file_exists($communityPaths['community-templates-info'])) {
-		$updatedSyncFlag = true;
-		DownloadApplicationFeed();
-		if (!file_exists($communityPaths['community-templates-info'])) {
-			$tmpfile = randomFile();
-			download_url($communityPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
-			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
-			@unlink($tmpfile);
-			echo "<script>$('.startupButton').hide();</script>";
-			echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>208.67.222.222 and 208.67.220.220</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://status.github.com/messages' target='_blank'>HERE</a>";
-			$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
-			$downloaded = @file_get_contents($tempFile);
-			if (strlen($downloaded) > 100) {
-				echo "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Please try again later)</font>";
-			}
-			echo "<center>Last JSON error Recorded: ";
-			$jsonDecode = json_decode($downloaded,true);
-			echo "JSON Error: ".jsonError(json_last_error());
-			if ( $publicServiceAnnouncement ) {
-				echo "<br><font size='3' color='purple'>$publicServiceAnnouncement</font>";
-			}
-			echo "</center>";
-			@unlink($communityPaths['appFeedDownloadError']);
-			@unlink($communityPaths['community-templates-info']);
-		}
-	}
-	getConvertedTemplates();
-	moderateTemplates();
+
 
 	$file = readJsonFile($communityPaths['community-templates-info']);
 	if ( empty($file)) break;
@@ -278,10 +251,38 @@ case 'force_update':
 		if ( ! $badDownload ) {
 			@unlink($communityPaths['community-templates-info']);
 		}
-	} else {
-		moderateTemplates();
 	}
-	echo "ok";
+	
+	if (!file_exists($communityPaths['community-templates-info'])) {
+		$updatedSyncFlag = true;
+		DownloadApplicationFeed();
+		if (!file_exists($communityPaths['community-templates-info'])) {
+			$tmpfile = randomFile();
+			download_url($communityPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
+			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
+			@unlink($tmpfile);
+			echo "<script>$('.startupButton').hide();</script>";
+			echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>208.67.222.222 and 208.67.220.220</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://status.github.com/messages' target='_blank'>HERE</a>";
+			$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
+			$downloaded = @file_get_contents($tempFile);
+			if (strlen($downloaded) > 100) {
+				echo "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Please try again later)</font>";
+			}
+			echo "<center>Last JSON error Recorded: ";
+			$jsonDecode = json_decode($downloaded,true);
+			echo "JSON Error: ".jsonError(json_last_error());
+			if ( $publicServiceAnnouncement ) {
+				echo "<br><font size='3' color='purple'>$publicServiceAnnouncement</font>";
+			}
+			echo "</center>";
+			@unlink($communityPaths['appFeedDownloadError']);
+			@unlink($communityPaths['community-templates-info']);
+		}
+	} else {
+		getConvertedTemplates();
+		echo "ok";
+	}
+	moderateTemplates();
 	break;
 
 ####################################################################################
