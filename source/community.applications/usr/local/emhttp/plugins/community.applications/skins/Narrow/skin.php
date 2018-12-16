@@ -112,7 +112,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$appName = str_replace(" ","",$template['SortName']);
 		$ID = $template['ID'];
 		$template['ModeratorComment'] .= $template['CAComment'];
-		$selected = $info[$name]['template']; 
+		$selected = $info[$name]['template'];
 		$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : "{$template['Repository']}:latest";
 		$selected = $selected ? ($tmpRepo == $info[$name]['repository']) : false;
 		$selected = $template['Uninstall'] ? true : $selected;

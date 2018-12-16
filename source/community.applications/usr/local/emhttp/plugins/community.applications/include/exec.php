@@ -104,9 +104,6 @@ case 'get_content':
 		@unlink($communityPaths['addConverted']);
 	}
 
-
-
-
 	$file = readJsonFile($communityPaths['community-templates-info']);
 	if ( empty($file)) break;
 
@@ -125,7 +122,7 @@ case 'get_content':
 			if ( $displayApplications['community'] ) {
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-				
+
 				echo "<br><center><span class='startupMessage'>$startupMsg</span></center>";
 				if ( $startupMsg2 ) {
 					echo "<center><span class='startupMessage2'>$startupMsg2</span></center><br>";
@@ -237,6 +234,9 @@ case 'force_update':
 
 	@unlink($communityPaths['lastUpdated']);
 	$latestUpdate = download_json($communityPaths['application-feed-last-updated'],$communityPaths['lastUpdated']);
+	if ( ! $latestUpdate['last_updated_timestamp'] ) {
+		$latestUpdate = download_json($communityPaths['application-feed-last-updatedBackup'],$communityPaths['lastUpdated']);
+	}
 
 	if ( ! $latestUpdate['last_updated_timestamp'] ) {
 		$latestUpdate['last_updated_timestamp'] = INF;
@@ -252,7 +252,7 @@ case 'force_update':
 			@unlink($communityPaths['community-templates-info']);
 		}
 	}
-	
+
 	if (!file_exists($communityPaths['community-templates-info'])) {
 		$updatedSyncFlag = true;
 		DownloadApplicationFeed();
@@ -983,12 +983,28 @@ case 'statistics':
 	$memCA = explode("\t",$totalCA);
 	$memTmp = explode("\t",$totalTmp);
 	$memFlash = explode("\t",$totalFlash);
+
+	$currentServer = @file_get_contents($communityPaths['currentServer']);
+	switch ($currentServer) {
+		case "Primary Server":
+			$serverURL = $communityPaths['application-feed'];
+			break;
+		case "Backup Server":
+			$serverURL = $communityPaths['application-feedBackup'];
+			break;
+		case "USB Backup File":
+			$serverURL = $communityPaths['appFeedBackupUSB'];
+			break;
+		default:
+			$serverURL = $communityPaths['application-feed'];
+			break;
+	}
 ?>
 <div style='overflow:scroll; overflow-x:hidden; overflow-y:hidden;'>
 <table style='margin-top:1rem;'>
 <tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png'></td></tr>
 <tr><td colspan='2'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>
-<tr><td class='ca_table'><b><a href='<?=$communityPaths['application-feed']?>' target='_blank'>Last Change To Application Feed</a></b></td><td class='ca_stat'><?=$updateTime?></td></tr>
+<tr><td class='ca_table'><b><a href='<?=$serverURL?>' target='_blank'>Last Change To Application Feed</a></b></td><td class='ca_stat'><?=$updateTime?></td></tr>
 <tr><td class='ca_table'><b>Number Of Templates</b></td><td class='ca_stat'><?=$statistics['totalApplications']?></td></tr>
 <tr><td class='ca_table'><b><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></b></td><td class='ca_stat'><?=count($repositories)?></td></tr>
 <tr><td class='ca_table'><b>Number Of Docker Applications</b></td><td class='ca_stat'><?=$statistics['docker']?></td></tr>
@@ -1078,8 +1094,13 @@ case 'stopStartContainer':
 		echo "problem";
 	}
 	break;
-}
 
+case 'getCurrentServer':
+	$server = @file_get_contents($communityPaths['currentServer']);
+	echo $server ? "<br>$server Active" : "<br>Appfeed Download Failed";
+	break;
+
+}
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
 function DownloadApplicationFeed() {
@@ -1088,21 +1109,25 @@ function DownloadApplicationFeed() {
 	exec("rm -rf '{$communityPaths['templates-community']}'");
 	@mkdir($communityPaths['templates-community'],0777,true);
 
+	$currentFeed = "Primary Server";
 	$downloadURL = randomFile();
 	$ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
+		$currentFeed = "Backup Server";
 		$ApplicationFeed = download_json($communityPaths['application-feedBackup'],$downloadURL);
 		if ( ! is_array($ApplicationFeed['applist']) ) {
 			if ( is_file($communityPaths['appFeedBackupUSB']) ) {
+				$currentFeed = "USB Backup File";
 				$ApplicationFeed = readJsonFile($communityPaths['appFeedBackupUSB']);
 			}
 		}
 	}
 	if ( ! is_array($ApplicationFeed['applist']) ) {
+		@unlink($communityPaths['currentServer']);
 		file_put_contents($communityPaths['appFeedDownloadError'],$downloadURL);
 		return false;
 	}
-
+	file_put_contents($communityPaths['currentServer'],$currentFeed);
 	@unlink($downloadURL);
 	$i = 0;
 	$lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];

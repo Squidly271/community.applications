@@ -417,6 +417,11 @@ function updateContent(button) {
 			} else {
 				forceSortOrder("#Date","#Down");
 				getContent(true,'INITIALIZE','None Selected',"",startupScreen);
+				$.post(URL,{action:'getCurrentServer'},function(currentServer) {
+					if (currentServer) {
+						$("#currentServer").html(myTrim(currentServer));
+					}
+				});
 			}
 		}
 	});
@@ -1489,7 +1494,7 @@ function getFontSize() {
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 </center>
 <center><a href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank'>Support Thread</a></center><br>
-<center>Community Applications Version: <?=$installedVersion?>  <i class='ca_appPopup fa fa-info-circle' data-appPath='ca' style='cursor:pointer;font-size:1.5rem;color:lightblue;'></i></center></div>
+<center>Community Applications Version: <?=$installedVersion?>  <i class='ca_appPopup fa fa-info-circle' data-appPath='ca' style='cursor:pointer;font-size:1.5rem;color:lightblue;'></i><span id='currentServer'></span></center></div>
 
 <span id='miscScript'></span><span id='awesomepleteScript'></span>
 <div>
