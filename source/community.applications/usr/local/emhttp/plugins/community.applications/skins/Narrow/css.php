@@ -13,6 +13,7 @@
 	$linkColor = "#486dba";
 	$startupColor = $unRaid66 ? "#FF8C2F" : "purple";
 ?>
+.ca_serverWarning {color:#cecc31}
 .ca_template_icon {color:#606E7F;width:37rem;float:left;display:inline-block;background-color: #C7C5CB;margin:0px;height:15rem;padding-top:1rem;border-radius:2rem 20px 0px 0px;}
 .ca_holder {display:inline-block;float:left;height:43.2rem;width:37rem;overflow:hidden;padding:0px;margin-bottom:.1rem;margin-right:.3rem;font-size:1.2rem;}
 .ca_template {color:#606E7F;border-radius:0px 0px 2rem 2rem;display:inline-block;text-align:left;overflow:auto;height:27rem;width:36rem;padding-left:.5rem;padding-right:.5rem;	background-color:#DDDADF;}
@@ -78,7 +79,7 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .pageRight::after {content:"\f138";font-family:fontAwesome;font-weight:bold;}
 .pageLeft::after {content:"\f137";font-family:fontAwesome;font-weight:bold;}
 .specialCategory {font-size:1.5rem;color:<?=$unRaid66color?>;}
-.ca_table { padding:.5rem 2rem .5rem 0;font-weight:bold;}
+.ca_table { padding:.5rem 2rem .5rem 0;}
 .ca_stat {color:coral;}
 .ca_credit { padding:.5rem 0 .5rem 0;}
 .ca_dateUpdated {font-weight:bold;text-align:center;}

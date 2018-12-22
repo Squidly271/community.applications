@@ -262,7 +262,7 @@ case 'force_update':
 			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
 			@unlink($tmpfile);
 			echo "<script>$('.startupButton').hide();</script>";
-			echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>208.67.222.222 and 208.67.220.220</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://status.github.com/messages' target='_blank'>HERE</a>";
+			echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <em><b>requires</b></em> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <b>208.67.222.222 and 208.67.220.220</b> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://www.githubstatus.com/' target='_blank'>HERE</a>";
 			$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
 			$downloaded = @file_get_contents($tempFile);
 			if (strlen($downloaded) > 100) {
@@ -275,14 +275,16 @@ case 'force_update':
 				echo "<br><font size='3' color='purple'>$publicServiceAnnouncement</font>";
 			}
 			echo "</center>";
+			echo "<script>$('.ca_stats').hide();</script>";
 			@unlink($communityPaths['appFeedDownloadError']);
 			@unlink($communityPaths['community-templates-info']);
+			break;
 		}
 	} else {
 		getConvertedTemplates();
-		echo "ok";
 	}
 	moderateTemplates();
+	echo "ok";
 	break;
 
 ####################################################################################
@@ -985,38 +987,28 @@ case 'statistics':
 	$memFlash = explode("\t",$totalFlash);
 
 	$currentServer = @file_get_contents($communityPaths['currentServer']);
-	switch ($currentServer) {
-		case "Primary Server":
-			$serverURL = $communityPaths['application-feed'];
-			break;
-		case "Backup Server":
-			$serverURL = $communityPaths['application-feedBackup'];
-			break;
-		case "USB Backup File":
-			$serverURL = $communityPaths['appFeedBackupUSB'];
-			break;
-		default:
-			$serverURL = $communityPaths['application-feed'];
-			break;
+	if ( $currentServer != "Primary Server" ) {
+		$currentServer = "<i class='fa fa-exclamation-triangle ca_serverWarning' aria-hidden='true'></i> $currentServer";
 	}
+
 ?>
 <div style='overflow:scroll; overflow-x:hidden; overflow-y:hidden;'>
 <table style='margin-top:1rem;'>
 <tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png'></td></tr>
 <tr><td colspan='2'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>
-<tr><td class='ca_table'><b><a href='<?=$serverURL?>' target='_blank'>Last Change To Application Feed</a></b></td><td class='ca_stat'><?=$updateTime?></td></tr>
-<tr><td class='ca_table'><b>Number Of Templates</b></td><td class='ca_stat'><?=$statistics['totalApplications']?></td></tr>
-<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></b></td><td class='ca_stat'><?=count($repositories)?></td></tr>
-<tr><td class='ca_table'><b>Number Of Docker Applications</b></td><td class='ca_stat'><?=$statistics['docker']?></td></tr>
-<tr><td class='ca_table'><b>Number Of Plugins</b></td><td class='ca_stat'><?=$statistics['plugin']?></td></tr>
-<tr><td class='ca_table'><b><a id='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'><b>Number Of Private Docker Applications</b></a></td><td class='ca_stat'><?=$statistics['private']?></td></tr>
-<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Number Of Invalid Templates</a></b></td><td class='ca_stat'><?=count($invalidXML)?></td></tr>
-<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Number Of Template Errors</a></b></td><td class='ca_stat'><?=$statistics['caFixed']?>+</td></tr>
-<tr><td class='ca_table'><b><a id='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Blacklisted Apps</a></b></td><td class='ca_stat'><?=$statistics['blacklist']?></td></tr>
-<tr><td class='ca_table'><b><a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Incompatible Applications</a></b></td><td class='ca_stat'><?=$statistics['totalIncompatible']?></td></tr>
-<tr><td class='ca_table'><b><a id='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></b></td><td class='ca_stat'><?=$statistics['totalDeprecated']?></td></tr>
-<tr><td class='ca_table'><b><a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Number Of Moderation Entries</a></b></td><td class='ca_stat'><?=$statistics['totalModeration']?>+</td></tr>
-<tr><td class='ca_table'><b><b>Memory Usage (CA / DataFiles / Flash)</b></td><td class='ca_stat'><?=$memCA[0]?> / <?=$memTmp[0]?> / <?=$memFlash[0]?></td></tr>
+<tr><td class='ca_table'>Last Change To Application Feed</td><td class='ca_stat'><?=$updateTime?><br><?=$currentServer?> active</td></tr>
+<tr><td class='ca_table'>Number Of Templates</td><td class='ca_stat'><?=$statistics['totalApplications']?></td></tr>
+<tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></td><td class='ca_stat'><?=count($repositories)?></td></tr>
+<tr><td class='ca_table'>Number Of Docker Applications</td><td class='ca_stat'><?=$statistics['docker']?></td></tr>
+<tr><td class='ca_table'>Number Of Plugins</td><td class='ca_stat'><?=$statistics['plugin']?></td></tr>
+<tr><td class='ca_table'><a id='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'><b>Number Of Private Docker Applications</a></td><td class='ca_stat'><?=$statistics['private']?></td></tr>
+<tr><td class='ca_table'><a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Number Of Invalid Templates</a></td><td class='ca_stat'><?=count($invalidXML)?></td></tr>
+<tr><td class='ca_table'><a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Number Of Template Errors</a></td><td class='ca_stat'><?=$statistics['caFixed']?>+</td></tr>
+<tr><td class='ca_table'><a id='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Blacklisted Apps</a></td><td class='ca_stat'><?=$statistics['blacklist']?></td></tr>
+<tr><td class='ca_table'><a id='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Incompatible Applications</a></td><td class='ca_stat'><?=$statistics['totalIncompatible']?></td></tr>
+<tr><td class='ca_table'><a id='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></td><td class='ca_stat'><?=$statistics['totalDeprecated']?></td></tr>
+<tr><td class='ca_table'><a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Number Of Moderation Entries</a></td><td class='ca_stat'><?=$statistics['totalModeration']?>+</td></tr>
+<tr><td class='ca_table'>Memory Usage (CA / DataFiles / Flash)</b></td><td class='ca_stat'><?=$memCA[0]?> / <?=$memTmp[0]?> / <?=$memFlash[0]?></td></tr>
 </table>
 <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></center>
 <center>Ensuring only safe applications are present is a full time job</center><br>
@@ -1097,6 +1089,9 @@ case 'stopStartContainer':
 
 case 'getCurrentServer':
 	$server = @file_get_contents($communityPaths['currentServer']);
+	if ($server != "Primary Server") {
+		$server = "<i class='fa fa-exclamation-triangle ca_serverWarning' aria-hidden='true'></i> $server";
+	}
 	echo $server ? "<br>$server Active" : "<br>Appfeed Download Failed";
 	break;
 
@@ -1109,8 +1104,8 @@ function DownloadApplicationFeed() {
 	exec("rm -rf '{$communityPaths['templates-community']}'");
 	@mkdir($communityPaths['templates-community'],0777,true);
 
-	$currentFeed = "Primary Server";
 	$downloadURL = randomFile();
+	$currentFeed = "Primary Server";
 	$ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
 		$currentFeed = "Backup Server";

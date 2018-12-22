@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.12.09">
-<!ENTITY md5       "edafd914721de9a639dd93a488dd639a">
+<!ENTITY version   "2018.12.22">
+<!ENTITY md5       "81bd9d182f69e8f900a955a2999eaab4">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.12.22
+- Add in automatic switching to backup server if primary offline
+
 ###2018.12.09
 - Add in ability to utilize a pre-downloaded application feed for emergencies
 - Startup screens now always show an app if its installed

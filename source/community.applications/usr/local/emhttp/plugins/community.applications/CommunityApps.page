@@ -415,13 +415,18 @@ function updateContent(button) {
 				myCloseAlert();
 				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
 			} else {
-				forceSortOrder("#Date","#Down");
-				getContent(true,'INITIALIZE','None Selected',"",startupScreen);
-				$.post(URL,{action:'getCurrentServer'},function(currentServer) {
-					if (currentServer) {
-						$("#currentServer").html(myTrim(currentServer));
-					}
-				});
+				if ( myTrim(data) != "ok" ) {
+					myCloseAlert();
+					updateDisplay(data);
+				} else {
+					forceSortOrder("#Date","#Down");
+					getContent(true,'INITIALIZE','None Selected',"",startupScreen);
+					$.post(URL,{action:'getCurrentServer'},function(currentServer) {
+						if (currentServer) {
+							$("#currentServer").html(myTrim(currentServer));
+						}
+					});
+				}
 			}
 		}
 	});
