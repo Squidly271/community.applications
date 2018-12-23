@@ -102,6 +102,7 @@ case 'get_content':
 	if ( file_exists($communityPaths['addConverted']) ) {
 		@unlink($communityPaths['community-templates-info']);
 		@unlink($communityPaths['addConverted']);
+		getConvertedTemplates();
 	}
 
 	$file = readJsonFile($communityPaths['community-templates-info']);
@@ -280,9 +281,8 @@ case 'force_update':
 			@unlink($communityPaths['community-templates-info']);
 			break;
 		}
-	} else {
-		getConvertedTemplates();
 	}
+	getConvertedTemplates();
 	moderateTemplates();
 	echo "ok";
 	break;
