@@ -114,11 +114,10 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		if ( strtolower($template['Base']) == "unknown" || ! $template['Base']) {
 			$template['Base'] = $template['BaseImage'];
 		}
-		if ( ! $template['Base'] ) {
-			$template['Base'] = "Could Not Determine";
+		if ( $template['Base'] ) {
+			$templateDescription .= "<tr><td nowrap>{$color}Base OS:</td><td>$color".$template['Base']."</td></tr>";
+			$templateDescription .= $template['stars'] ? "<tr><td nowrap>{$color}DockerHub Stars:</td><td>$color<i class='fa fa-star dockerHubStar' style='color:#FF8C2F;'></i> ".$template['stars']."</td></tr>" : "";
 		}
-		$templateDescription .= "<tr><td nowrap>{$color}Base OS:</td><td>$color".$template['Base']."</td></tr>";
-		$templateDescription .= $template['stars'] ? "<tr><td nowrap>{$color}DockerHub Stars:</td><td>$color<i class='fa fa-star dockerHubStar' style='color:#FF8C2F;'></i> ".$template['stars']."</td></tr>" : "";
 	}
 	# In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 	if ( $template['Date'] && $template['Plugin'] ) {

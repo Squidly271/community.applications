@@ -330,7 +330,7 @@ case 'convert_docker':
 	@unlink($communityPaths['Dockerfile']);
 
 	if ( ! $docker['Official'] ) {
-		$dockerURL = $docker['DockerHub']."~/dockerfile/";
+		$dockerURL = $docker['DockerHub']."/Dockerfile/";
 		download_url($dockerURL,$communityPaths['dockerfilePage']);
 
 		$dockerPage = file_get_contents($communityPaths['dockerfilePage']);
