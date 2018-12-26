@@ -88,6 +88,14 @@ Only request https (secure) images (when accessing server via https):
 	
 > When accessing your server via https, this option will not display any icon for the applications if it is not able to be displayed via https)  Note that the icon will still be displayed if the remote server does an automatic redirection from https to http 
 
+Disable mobile UI enhancements:
+: <select name='mobileAllowed' size='1'>
+	<?=mk_option($cfg['mobileAllowed'],"true", "No (default)")?>
+	<?=mk_option($cfg['mobileAllowed'],"false", "Yes")?>
+	</select>
+	
+> If you have problems with swiping to change pages, then disable the mobile UI enhancements
+
 <strong>Docker Hub Searching</strong>
 
 Enable additional search results from dockerHub?

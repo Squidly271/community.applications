@@ -1453,8 +1453,12 @@ function cookiesEnabled() {
 }
 
 function isTouch() {
+<?if ( $cfg['mobileAllowed'] == "true" ):?>
 	try{ document.createEvent("TouchEvent"); return true; }
 	catch(e){ return false; }
+<?else:?>
+	return false;
+<?endif;?>
 }
 
 function getFontSize() {
