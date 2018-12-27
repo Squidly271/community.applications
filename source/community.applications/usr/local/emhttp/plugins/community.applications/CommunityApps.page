@@ -1,7 +1,6 @@
 Menu="Apps"
 Icon="community.applications.png"
 Title="Community Applications"
-Tag="icon-apps"
 ---
 <?
 ###############################################################
@@ -1347,13 +1346,18 @@ function installMulti() {
 		pluginCount = 0;
 		cookieWarning = "<br>Cookies not enabled.  Plugins must be separately installed from docker applications";
 	}
+	if ( (dockerCount + pluginCount) > 1 ) {
+		var buttonText = "Yes, install them";
+	} else {
+		var buttonText = "Yes, install it";
+	}
 	swal({
 		title: "Install "+makePlural("Application",dockerCount+pluginCount)+"?",
 		text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?  <em>Docker applications will be installed utilizing the most recently saved template with no user input on your part</em><font color='red'>"+cookieWarning+"</font>",
 		type: "info",
 		showCancelButton: true,
 		showConfirmButton: true,
-		confirmButtonText: "Yes, install them",
+		confirmButtonText: buttonText,
 		closeOnConfirm: false,
 		showLoaderOnConfirm: true,
 		html: true
