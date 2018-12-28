@@ -348,17 +348,17 @@ case 'convert_docker':
 						continue;
 					}
 					$alreadyAttempted[$testline] = true;
-					logger("Community Applications: Attempting download of dockerfile");
+//					logger("Community Applications: Attempting download of dockerfile");
 					download_url("$tst/master/Dockerfile",$communityPaths['Dockerfile']);
 					if ( is_file($communityPaths['Dockerfile']) ) {
-						logger("Community Applications: Download succeeded");
+//						logger("Community Applications: Download succeeded");
 						break;
 					}
 				}
 			}
 		}
 		if ( ! is_file($communityPaths['Dockerfile']) ) {  #couldn't easily locate dockerfile.  Revert to scraping webpage
-			logger("Community Applications: Could not locate dockerfile.  Falling back to scraping web-page");
+//			logger("Community Applications: Could not locate dockerfile.  Falling back to scraping web-page");
 			$mystring = $dockerPage;
 			$thisstring = strstr($mystring,'"dockerfile":"');
 			$thisstring = trim($thisstring);
