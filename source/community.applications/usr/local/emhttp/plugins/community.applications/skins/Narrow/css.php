@@ -14,6 +14,7 @@
 	$startupColor = $unRaid66 ? "#FF8C2F" : "purple";
 ?>
 table {background-color:transparent;}
+table tbody td {line-height:1.5rem;}
 .ca_serverWarning {color:#cecc31}
 .ca_template_icon {color:#606E7F;width:37rem;float:left;display:inline-block;background-color: #C7C5CB;margin:0px;height:15rem;padding-top:1rem;border-radius:2rem 20px 0px 0px;}
 .ca_holder {display:inline-block;float:left;height:43.2rem;width:37rem;overflow:hidden;padding:0px;margin-bottom:.1rem;margin-right:.3rem;font-size:1.2rem;}
