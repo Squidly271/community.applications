@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2018.12.22">
-<!ENTITY md5       "81bd9d182f69e8f900a955a2999eaab4">
+<!ENTITY version   "2018.12.31">
+<!ENTITY md5       "b12fd88e869ab8c58236de03dfa82f5d">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,15 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
+###2018.12.31
+- Added: Ability to disable mobile UI enhancements
+- Removed: Log entries when converting dockerHub files
+- Fixed: Regression error.  Private repositories weren't getting added to lists
+- Changed: Don't display BaseOS if it is unknown
+- OCD: App popup link was present if initial warning was declined
+- Adjust CSS for unRaid 6.7.0
+- Adjust Icon on Azure / Grey themes unRaid 6.7.0
+
 ###2018.12.22
 - Add in automatic switching to backup server if primary offline
 
