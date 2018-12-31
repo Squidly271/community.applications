@@ -372,7 +372,7 @@ $(function(){
 				var leftMargin = getWindowWidth();
 				$("#searchFilter").hide();
 				$("#appWarningForm").css("width",leftMargin);
-				$("#homeIcon,#sectionIcon,#categoryIcon,#subcategoryIcon,#sortIcon,.topRightLinks").hide();
+				$("#homeIcon,#sectionIcon,#categoryIcon,#subcategoryIcon,#sortIcon,.topRightLinks,.ca_appPopup").hide();
 				$("#templates_content").html($("#appWarningForm").html());
 			}
 		});
