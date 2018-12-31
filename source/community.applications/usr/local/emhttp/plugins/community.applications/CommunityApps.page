@@ -1,6 +1,7 @@
 Menu="Apps"
 Icon="community.applications.png"
 Title="Community Applications"
+Tag="icon-apps"
 ---
 <?
 ###############################################################
