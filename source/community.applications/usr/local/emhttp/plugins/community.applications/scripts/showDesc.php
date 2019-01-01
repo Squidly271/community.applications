@@ -89,7 +89,12 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	if ( $color ) {
 		$templateDescription .= "<center><font size=6rem;><strong>{$template['SortName']}</strong></font></center><br>";
 	}
-	$templateDescription .= "<table style='margin:1.5rem 0 0 0;'><tr><td><figure style='margin-right:1rem;'><img id='icon' src='".$template['Icon']."' style='width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem';>";
+	$templateDescription .= "<table style='margin:1.5rem 0 0 0;'><tr><td>";
+	if ( $template['IconFA'] ) {
+		$templateDescription .= "<figure style='margin-right:1rem;'><i class='fa fa-{$template['IconFA']}' id='icon' style='color:#486dba; font-size:8rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem';></i>";
+	} else {
+		$templateDescription .= "<figure style='margin-right:1rem;'><img id='icon' src='".$template['Icon']."' style='width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem';>";
+	}
 	$templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
 	$templateDescription .= "</figure>";
 	$templateDescription .= "</td><td></td><td><table>";

@@ -231,6 +231,29 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
 			$template['display_iconSmall'] = "<img src='".$displayIcon."' class='$iconClass'>";
 		}
+		if ( $template['IconFA'] ) {
+			$displayIcon = $template['IconFA'];
+			$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><i class='ca_appPopup fa fa-$displayIcon $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></a>";
+			$template['display_iconSelectable'] = "<i class='fa fa-$displayIcon $iconClass'></i>";
+			if ( isset($ID) ) {
+				$template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' style='cursor:pointer' >".$template['display_iconSelectable']."</a>";
+				$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><i class='fa fa-$displayIcon ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></a>";
+			} else {
+				$template['display_iconClickable'] = $template['display_iconSelectable'];
+				$template['display_iconSmall'] = "<i class='fa fa-$displayIcon $iconClass'></i>";
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		$template['display_dockerName'] = ( $communitySettings['dockerSearch'] == "yes" && ! $template['Plugin'] ) ? "<a class='ca_tooltip ca_applicationName' data-appNumber='$ID' style='cursor:pointer' onclick='mySearch(this.innerText);' title='Search dockerHub for similar containers'>".$template['Name']."</a>" : "<span class='ca_applicationName'>{$template['Name']}</span>";
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 

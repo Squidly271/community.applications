@@ -48,7 +48,8 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .appIconsPopUp:hover {text-decoration:none;}
 .myReadmore {text-align:center;}
 .myReadmoreButton {color:blue;}
-.displayIcon {height:9.6rem;width:9.6rem;}
+img.displayIcon {height:9.6rem;width:9.6rem;}
+i.displayIcon {font-size:8rem;}
 .supportLink {font-weight:bold;color:<?=$linkColor?>;padding-left:.5rem;padding-right:.5rem;}
 .supportLink::after {content:"Support Thread"}
 .projectLink {font-weight:bold;color:<?=$linkColor?>;padding-left:.5rem;padding-right:.5rem;}
