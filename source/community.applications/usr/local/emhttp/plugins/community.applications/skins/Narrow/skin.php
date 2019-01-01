@@ -244,16 +244,6 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			}
 		}
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		$template['display_dockerName'] = ( $communitySettings['dockerSearch'] == "yes" && ! $template['Plugin'] ) ? "<a class='ca_tooltip ca_applicationName' data-appNumber='$ID' style='cursor:pointer' onclick='mySearch(this.innerText);' title='Search dockerHub for similar containers'>".$template['Name']."</a>" : "<span class='ca_applicationName'>{$template['Name']}</span>";
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
