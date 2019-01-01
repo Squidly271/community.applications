@@ -1,5 +1,8 @@
-<style>p { margin-left:2rem;margin-right:2rem; }
-.popUpLink { color:#FF8C2F; }
+<style>
+p {margin-left:2rem;margin-right:2rem;}
+.popUpLink {color:#FF8C2F;}
+i.popupIcon {color:#486dba;font-size:8rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
+img.popupIcon {width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
 </style>
 <div style='overflow:scroll; max-height:45rem; height:45rem; width:55rem; overflow-x:hidden; overflow-y:auto;font-size:1.2rem;'>
 <?PHP
@@ -95,9 +98,9 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$templateDescription .= "<table style='margin:1.5rem 0 0 0;'><tr><td>";
 	if ( $template['IconFA'] ) {
-		$templateDescription .= "<i class='fa fa-{$template['IconFA']}' id='icon' style='color:#486dba; font-size:8rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem';></i>";
+		$templateDescription .= "<i class='fa fa-{$template['IconFA']} popupIcon' id='icon'></i>";
 	} else {
-		$templateDescription .= "<img id='icon' src='{$template['Icon']}' style='width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem';>";
+		$templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
 	}
 	$templateDescription .= "</td><td></td><td><table>";
 	$templateDescription .= "<tr><td>{$color}Author:</td><td><a class='popUpLink' style='cursor:pointer;' onclick='doSearch(false,&quot;{$template['SortAuthor']}&quot;);'>".$template['Author']."</a></td></tr>";
