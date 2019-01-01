@@ -91,11 +91,11 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$templateDescription .= "<table style='margin:1.5rem 0 0 0;'><tr><td>";
 	if ( $template['IconFA'] ) {
-		$templateDescription .= "<figure style='margin-right:1rem;'><i class='fa fa-{$template['IconFA']}' id='icon' style='color:#486dba; font-size:8rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem';></i>";
+		$templateDescription .= "<i class='fa fa-{$template['IconFA']}' id='icon' style='color:#486dba; font-size:8rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem';></i>";
 	} else {
-		$templateDescription .= "<figure style='margin-right:1rem;'><img id='icon' src='".$template['Icon']."' style='width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem';>";
+		$templateDescription .= "<figure style='margin-right:1rem;'><img id='icon' src='{$template['Icon']}' style='width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem';>";
 	}
-	$templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
+//	$templateDescription .= ($template['Beta'] == "true") ? "<figcaption><font size='2' color='red'><center><strong>BETA</strong></center></font></figcaption>" : "";
 	$templateDescription .= "</figure>";
 	$templateDescription .= "</td><td></td><td><table>";
 	$templateDescription .= "<tr><td>{$color}Author:</td><td><a class='popUpLink' style='cursor:pointer;' onclick='doSearch(false,&quot;{$template['SortAuthor']}&quot;);'>".$template['Author']."</a></td></tr>";
@@ -129,7 +129,10 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		$niceDate = date("F j, Y",$template['Date']);
 	$templateDescription .= "<tr><td nowrap>{$color}Date Updated:</td><td>$color$niceDate<br></td></tr>";
 	}
-	$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>{$color}Minimum OS:</td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
+	$unraidVersion = parse_ini_file($communityPaths['unRaidVersion']);
+	if ( version_compare($unRaidVersion['version'],$template['MinVer'],">") ) {
+		$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>{$color}Minimum OS:</td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
+	}
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>{$color}Max OS:</td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
 	$downloads = getDownloads($template['downloads']);
