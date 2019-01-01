@@ -34,7 +34,7 @@ switch ($_GET['arg1']) {
 		} else {
 			$moderation = str_replace(" ","&nbsp;",$moderation);
 			$moderation = str_replace("\n","<br>",$moderation);
-			echo "All of these errors found have been fixed automatically.  These errors only affect the operation of Community Applications.  <b>The template <em>may</em> have other errors present</b><br><br><tt>$moderation";
+			echo "All of these errors found have been fixed automatically.  These errors only affect the operation of Community Applications.  <b>The template <em>may</em> have other errors present</b><br><br>Note that many of these errors can be avoided by following the directions <a href='https://forums.unraid.net/topic/57181-real-docker-faq/#comment-566084' target='_blank'>HERE</a><br><br><tt>$moderation";
 		}
 
 		$dupeList = readJsonFile($communityPaths['pluginDupes']);
