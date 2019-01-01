@@ -1,16 +1,21 @@
-<style>
-p {margin-left:2rem;margin-right:2rem;}
-.popUpLink {color:#FF8C2F;}
-i.popupIcon {color:#486dba;font-size:8rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
-img.popupIcon {width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
-</style>
-<div style='overflow:scroll; max-height:45rem; height:45rem; width:55rem; overflow-x:hidden; overflow-y:auto;font-size:1.2rem;'>
-<?PHP
+<?
 ###############################################################
 #                                                             #
 # Community Applications copyright 2015-2018, Andrew Zawadzki #
 #                                                             #
 ###############################################################
+
+# Adjust some styles for the popupIcon
+?>
+<style>
+p {margin-left:2rem;margin-right:2rem;}
+.popUpLink {color:#FF8C2F;cursor:pointer;}
+.popUpDeprecated {color:#FF8C2F;}
+i.popupIcon {color:#486dba;font-size:8rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
+img.popupIcon {width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
+</style>
+<div style='overflow:scroll; max-height:45rem; height:45rem; width:55rem; overflow-x:hidden; overflow-y:auto;font-size:1.2rem;'>
+<?PHP
 
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
@@ -98,12 +103,13 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$templateDescription .= "<table style='margin:1.5rem 0 0 0;'><tr><td>";
 	if ( $template['IconFA'] ) {
-		$templateDescription .= "<i class='fa fa-{$template['IconFA']} popupIcon' id='icon'></i>";
+		$templateIcon = (substr($template['IconFA'],0,5)) == "icon-" ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
+		$templateDescription .= "<i class='$templateIcon popupIcon' id='icon'></i>";
 	} else {
 		$templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
 	}
 	$templateDescription .= "</td><td></td><td><table>";
-	$templateDescription .= "<tr><td>{$color}Author:</td><td><a class='popUpLink' style='cursor:pointer;' onclick='doSearch(false,&quot;{$template['SortAuthor']}&quot;);'>".$template['Author']."</a></td></tr>";
+	$templateDescription .= "<tr><td>{$color}Author:</td><td><a class='popUpLink' onclick='doSearch(false,&quot;{$template['SortAuthor']}&quot;);'>".$template['Author']."</a></td></tr>";
 	if ( ! $template['Plugin'] ) {
 		$repository = explode(":",$template['Repository']);
 		$official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
@@ -111,7 +117,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
 	$repoSearch = explode("'",$template['RepoName']);
-	$templateDescription .= "<a class='popUpLink' style='cursor:pointer;' onclick='doSearch(false,&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a>";
+	$templateDescription .= "<a class='popUpLink' onclick='doSearch(false,&quot;{$repoSearch[0]}&quot;);'>".$template['RepoName']."</a>";
 	if ( $template['Profile'] ) {
 		$profileDescription = $template['Plugin'] ? "Author" : "Maintainer";
 		$templateDescription .= "&nbsp;&nbsp;&nbsp;&nbsp;<a class='popUpLink' href='{$template['Profile']}' target='_blank'>($profileDescription Profile)</a>";
@@ -126,9 +132,10 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		}
 		if ( $template['Base'] ) {
 			$templateDescription .= "<tr><td nowrap>{$color}Base OS:</td><td>$color".$template['Base']."</td></tr>";
-			$templateDescription .= $template['stars'] ? "<tr><td nowrap>{$color}DockerHub Stars:</td><td>$color<i class='fa fa-star dockerHubStar' style='color:#FF8C2F;'></i> ".$template['stars']."</td></tr>" : "";
 		}
 	}
+	$templateDescription .= $template['stars'] ? "<tr><td nowrap>{$color}DockerHub Stars:</td><td>$color<i class='fa fa-star dockerHubStar' style='color:#FF8C2F;'></i> ".$template['stars']."</td></tr>" : "";
+
 	# In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 	if ( $template['Date'] && $template['Plugin'] ) {
 		$niceDate = date("F j, Y",$template['Date']);
@@ -147,7 +154,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$templateDescription .= $template['Licence'] ? "<tr><td>{$color}Licence:</td><td>$color".$template['Licence']."</td></tr>" : "";
 	$templateDescription .= $template['trending'] ? "<tr><td>{$color}Monthly Trend:</td><td>$color+".$template['trending']."%</td></tr>" : "";
 	$templateDescription .= "</table></td></tr></table>";
-	$templateDescription .= "<center><span class='popUpLink'>";
+	$templateDescription .= "<center><span class='popUpDeprecated'>";
 	if ($template['Blacklist']) {
 		$templateDescription .= "This application / template has been blacklisted<br>";
 	}

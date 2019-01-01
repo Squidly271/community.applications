@@ -29,6 +29,7 @@ table tbody td {line-height:1.5rem;}
 .ca_repository {color:black;}
 .ca_highlight {color:#0e5d08;font-weight:bold;}
 .ca_description {color:#505E6F;}
+a.ca_appPopup {text-decoration:none;cursor:pointer;}
 input.appButtons {margin:0px;}
 input.viewButton {margin:.1rem;}
 input.sortButton {margin:.1rem;}
