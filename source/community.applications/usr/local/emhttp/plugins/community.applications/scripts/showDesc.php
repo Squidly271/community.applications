@@ -103,7 +103,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$templateDescription .= "<table style='margin:1.5rem 0 0 0;'><tr><td>";
 	if ( $template['IconFA'] ) {
-		$templateIcon = (substr($template['IconFA'],0,5)) == "icon-" ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
+		$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
 		$templateDescription .= "<i class='$templateIcon popupIcon' id='icon'></i>";
 	} else {
 		$templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";

@@ -233,7 +233,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		}
 		if ( $template['IconFA'] ) {
 			$displayIcon = $template['IconFA'];
-			$displayIconClass = (substr($displayIcon,0,5) == "icon-") ? $displayIcon : "fa fa-$displayIcon";
+			$displayIconClass = startsWith($displayIcon,"icon-") ? $displayIcon : "fa fa-$displayIcon";
 			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><i class='ca_appPopup $displayIconClass $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></a>";
 			$template['display_iconSelectable'] = "<i class='$displayIconClass $iconClass'></i>";
 			if ( isset($ID) ) {
