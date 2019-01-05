@@ -599,7 +599,7 @@ function changePage(pageNumber) {
 	var selected = data.selected;
 	data.currentpage = pageNumber;
 
-	$('html,body').animate({scrollTop:0},500);
+//	$('html,body').animate({scrollTop:0},500);
 	mySpinner();
 	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
 		if (data3) {
@@ -623,10 +623,10 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	disableTooltipster();
 	disableSearch();
 	var backgroundColor = ( ! textdescription && textimage ) ? "transparent" : "white";
-	if ( textimage ) {
-			textdescription = textdescription + "<br><br><center><i class='fa fa-spinner fa-spin' style='font-size:"+imagesize+"px;color:#DEB887;' aria-hidden='true'></i></center>";
-	}
-
+/* 	if ( textimage ) {
+		textdescription = textdescription + "<br><br><center><i class='fa fa-spinner fa-spin' style='font-size:"+imagesize+"px;color:#DEB887;' aria-hidden='true'></i></center>";
+		$("div.spinner").show();
+	} */
 	swal({
 		title: description,
 		text: textdescription,
@@ -648,6 +648,7 @@ function myCloseAlert() {
 }
 
 function mySpinner() {
+	$("div.spinner").show();
 	myAlert("",""," ",150);
 }
 
@@ -1584,6 +1585,7 @@ Sort Direction:
 </span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
 <span id='debugging'></span>
+<div class='spinner fixed'></div>
 <div id='appWarningForm' style='display:none;'>
 <br><br><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
 <font size='4' color='red'>All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein.

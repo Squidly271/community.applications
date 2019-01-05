@@ -77,7 +77,7 @@ i.displayIcon {font-size:8rem;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;}
 .pageDots{color:grey;cursor:default;}
 .pageDots::after {content:"...";}
-.pageNavigation {font-size:2rem;color:<?=$unRaid66color?>;font-weight:bold;}
+.pageNavigation {font-size:2rem;font-weight:bold;}
 .pageNavNoClick {font-size:2rem;color:grey;cursor:default;}
 .pageSelected {cursor:default;}
 .pageRight::after {content:"\f138";font-family:fontAwesome;font-weight:bold;}
@@ -96,8 +96,8 @@ i.displayIcon {font-size:8rem;}
 .notice.shift {margin-top:0px;}
 #searchBox{top:-0.6rem;padding:0.6rem;}
 .searchSubmit{height:3.4rem;}
-.startupMessage{font-size:2.5rem;font-weight:bold;color:<?=$startupColor?>;}
-.startupMessage2{font-size:1rem;font-weight:bold;color:<?=$startupColor?>;}
+.startupMessage{font-size:2.5rem;font-weight:bold;}
+.startupMessage2{font-size:1rem;font-weight:bold;}
 
 <?if ( $theme == "azure" ):?>
 .searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:#DADADA;border:none;cursor:pointer;}
@@ -119,3 +119,4 @@ i.displayIcon {font-size:8rem;}
 #searchBox{top:-0.6rem;padding:0.6rem;}
 .searchSubmit{height:3.4rem;}
 <?endif;?>
+@keyframes tooltipster-rotating{25%{transform:rotate(0deg)}75%{transform:rotate(0deg)}100%{transform:rotate(0)}}
