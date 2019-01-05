@@ -43,7 +43,7 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .pinned::after {content:"\f08d";font-family:fontAwesome;}
 .unpinned::after {content:"\f08d";font-family:fontAwesome;display:inline-block;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);	-o-transform: rotate(20deg);	transform: rotate(20deg);}
 .topRightLinks {padding-left:1.5rem;font-weight:bold;}
-.appIcons {font-size:2.5rem;color:<?=$linkColor?>;cursor:pointer;padding-left:.5rem;padding-right:.5rem;0.75}
+.appIcons {font-size:2.5rem;color:<?=$linkColor?>;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
 .appIcons:hover {text-decoration:none;}
 .appIconsPopUp {font-size:2.5rem;color:#FF8C2F;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
 .appIconsPopUp:hover {text-decoration:none;}
