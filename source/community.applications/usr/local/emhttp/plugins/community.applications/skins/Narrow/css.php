@@ -14,7 +14,7 @@
 	$startupColor = $unRaid66 ? "#FF8C2F" : "purple";
 ?>
 table {background-color:transparent;}
-table tbody td {line-height:1.5rem;}
+table tbody td {line-height:1.4rem;}
 .ca_serverWarning {color:#cecc31}
 .ca_template_icon {color:#606E7F;width:37rem;float:left;display:inline-block;background-color: #C7C5CB;margin:0px;height:15rem;padding-top:1rem;border-radius:2rem 20px 0px 0px;}
 .ca_holder {display:inline-block;float:left;height:43.2rem;width:37rem;overflow:hidden;padding:0px;margin-bottom:.1rem;margin-right:.3rem;font-size:1.2rem;}
@@ -36,14 +36,14 @@ input.sortButton {margin:.1rem;}
 input.dirButton {margin:.1rem;}
 input.allButtons {margin:0px;padding:1rem;}
 input[type=checkbox] {width:2rem;height:2rem;}
-.enabledIcon {cursor:pointer;color:<?=$unRaid66color?>;font-size:2.5rem;}
+.enabledIcon {cursor:pointer;color:<?=$unRaid66color?>;font-size:2.5rem;opacity:0.75}
 .disabledIcon {color:#040404;font-size:2.5rem;}
 .pinned {cursor:pointer;font-size:1.5rem;color:green;padding:.3rem;}
 .unpinned {cursor:pointer;font-size:1.5rem;color:#820101;padding:.3rem;}
 .pinned::after {content:"\f08d";font-family:fontAwesome;}
 .unpinned::after {content:"\f08d";font-family:fontAwesome;display:inline-block;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);	-o-transform: rotate(20deg);	transform: rotate(20deg);}
 .topRightLinks {padding-left:1.5rem;font-weight:bold;}
-.appIcons {font-size:2.5rem;color:<?=$linkColor?>;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
+.appIcons {font-size:2.5rem;color:<?=$linkColor?>;cursor:pointer;padding-left:.5rem;padding-right:.5rem;0.75}
 .appIcons:hover {text-decoration:none;}
 .appIconsPopUp {font-size:2.5rem;color:#FF8C2F;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
 .appIconsPopUp:hover {text-decoration:none;}
@@ -96,8 +96,8 @@ i.displayIcon {font-size:8rem;}
 .notice.shift {margin-top:0px;}
 #searchBox{top:-0.6rem;padding:0.6rem;}
 .searchSubmit{height:3.4rem;}
-.startupMessage{font-size:2.5rem;font-weight:bold;}
-.startupMessage2{font-size:1rem;font-weight:bold;}
+.startupMessage{font-size:2.5rem;}
+.startupMessage2{font-size:1rem;}
 
 <?if ( $theme == "azure" ):?>
 .searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:#DADADA;border:none;cursor:pointer;}

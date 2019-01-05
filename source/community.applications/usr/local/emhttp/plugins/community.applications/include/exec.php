@@ -992,7 +992,7 @@ case 'statistics':
 	}
 
 ?>
-<div style='overflow:scroll; overflow-x:hidden; overflow-y:hidden;'>
+<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;'>
 <table style='margin-top:1rem;'>
 <tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png'></td></tr>
 <tr><td colspan='2'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>
