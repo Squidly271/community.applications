@@ -1,7 +1,7 @@
 <?PHP
 ###############################################################
 #                                                             #
-# Community Applications copyright 2015-2018, Andrew Zawadzki #
+# Community Applications copyright 2015-2019, Andrew Zawadzki #
 #                                                             #
 ###############################################################
 
