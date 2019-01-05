@@ -181,6 +181,20 @@ $(function(){
 	});
 
 	$('.ca_toolsView').tooltipster({
+		trigger: 'hover',
+		delay: [1000,0],
+		animation: 'fade',
+		triggerClose: {mouseleave:true},
+		functionBefore: function(instance,helper){
+			if ( isIconEnabled("#sortIcon") ) {
+				instance.content("Sorting options");
+			} else {
+				instance.content("Sorting options unavailable");
+			}
+		}
+	});
+	$('.ca_toolsView').tooltipster({
+		multiple: true,
 		trigger: 'custom',
 		triggerOpen: {click:true,touchstart:true},
 		contentAsHTML: true,
@@ -246,8 +260,17 @@ $(function(){
 			});
 		}
 	});
-
 	$('.ca_section').tooltipster({
+		trigger: 'hover',
+		delay: [1000,0],
+		animation: 'fade',
+		triggerClose: {mouseleave:true},
+		functionBefore: function(instance,helper){
+			instance.content("Select Section");
+		}
+	});
+	$('.ca_section').tooltipster({
+		multiple: true,
 		trigger: 'custom',
 		triggerOpen: {click:true,touchstart:true},
 		contentAsHTML: true,
@@ -276,6 +299,20 @@ $(function(){
 	});
 
 	$('.ca_categories').tooltipster({
+		trigger: 'hover',
+		delay: [1000,0],
+		animation: 'fade',
+		triggerClose: {mouseleave:true},
+		functionBefore: function(instance,helper){
+			if ( isIconEnabled("#categoryIcon") ) {
+				instance.content("Select Category");
+			} else {
+				instance.content("No categories available to display");
+			}
+		}
+	});
+	$('.ca_categories').tooltipster({
+		multiple: true,
 		trigger: 'custom',
 		triggerOpen: {click:true,touchstart:true},
 		contentAsHTML: true,
@@ -306,6 +343,19 @@ $(function(){
 		}
 	});
 
+	$('.ca_subcategories').tooltipster({
+		trigger: 'hover',
+		delay: [1000,0],
+		animation: 'fade',
+		triggerClose: {mouseleave:true},
+		functionBefore: function(instance,helper){
+			if ( isIconEnabled("#subcategoryIcon") ) {
+				instance.content("Select Subcategory");
+			} else {
+				instance.content("No subcategories available to display");
+			}
+		}
+	});
 	$('.ca_subcategories').tooltipster({
 		trigger: 'custom',
 		triggerOpen: {click:true,touchstart:true},
@@ -1480,7 +1530,7 @@ function getFontSize() {
 <div style='float:right;'><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>
 <br>
 
-<i id='homeIcon' class='fa fa-home enabledIcon ca_staticTips' aria-hidden='true'></i>&nbsp;
+<i id='homeIcon' class='fa fa-home enabledIcon ca_staticTips' aria-hidden='true' title='Home'></i>&nbsp;
 <i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
