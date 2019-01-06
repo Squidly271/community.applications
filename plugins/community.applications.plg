@@ -17,6 +17,7 @@
 - Utilize unRaid's built-in spinner (not that I like it, but by request :( )
 - Reintegrate ability to display the raw appfeed (and backup)
 - Add in hover text to navigation icons
+- Remove the annoying "Shake" of pop-ups
 - Tone down the orange highlights
 - Support new styles for application icons (re: unRaid 6.7)
 - Various minor CSS changes
