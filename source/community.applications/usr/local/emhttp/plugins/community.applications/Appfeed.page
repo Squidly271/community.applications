@@ -9,6 +9,6 @@ $appfeed = download_json($communityPaths['application-feed'],"{$communityPaths['
 $appfeed = str_replace("\n","<br>",print_r($appfeed,true));
 $appfeed = str_replace(" ","&nbsp;",$appfeed);
 ?>
-<h3>PRIMARY APPFEED</h3> switch to <a href='/Apps/Appfeed-backup' target='_same'>Backup AppFeed</a>
+<h3>PRIMARY APPFEED</h3> switch to <a href='/Apps/Appfeed-backup' target='_self'>Backup AppFeed</a>
 <br><br>
 <?=$appfeed?>
