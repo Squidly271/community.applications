@@ -1,0 +1,14 @@
+Menu="hidden"
+Title="Community Applications"
+Icon="community.applications.png"
+---
+<?
+require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
+require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
+$appfeed = download_json($communityPaths['application-feedBackup'],"{$communityPaths['tempFiles']}/appfeed-check.json");
+$appfeed = str_replace("\n","<br>",print_r($appfeed,true));
+$appfeed = str_replace(" ","&nbsp;",$appfeed);
+?>
+<h3>BACKUP APPFEED</h3> switch to <a href='/Apps/Appfeed' target='_same'>Primary AppFeed</a>
+<br><br>
+<?=$appfeed?>

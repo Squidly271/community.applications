@@ -996,7 +996,7 @@ case 'statistics':
 <table style='margin-top:1rem;'>
 <tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png'></td></tr>
 <tr><td colspan='2'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>
-<tr><td class='ca_table'>Last Change To Application Feed</td><td class='ca_stat'><?=$updateTime?><br><?=$currentServer?> active</td></tr>
+<tr><td class='ca_table'><a href='/Apps/Appfeed' target='_blank'>Last Change To Application Feed</a></td><td class='ca_stat'><?=$updateTime?><br><?=$currentServer?> active</td></tr>
 <tr><td class='ca_table'>Number Of Templates</td><td class='ca_stat'><?=$statistics['totalApplications']?></td></tr>
 <tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></td><td class='ca_stat'><?=count($repositories)?></td></tr>
 <tr><td class='ca_table'>Number Of Docker Applications</td><td class='ca_stat'><?=$statistics['docker']?></td></tr>
