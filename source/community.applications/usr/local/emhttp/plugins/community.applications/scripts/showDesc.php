@@ -11,7 +11,7 @@
 p {margin-left:2rem;margin-right:2rem;}
 .popUpLink {color:#FF8C2F;cursor:pointer;}
 .popUpDeprecated {color:#FF8C2F;}
-i.popupIcon {color:#486dba;font-size:8rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
+i.popupIcon {color:#486dba;font-size:8rem;padding-left:1rem;width:9.6rem}
 img.popupIcon {width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
 </style>
 <div style='overflow:scroll; max-height:45rem; height:45rem; width:55rem; overflow-x:hidden; overflow-y:auto;font-size:1.2rem;'>
@@ -102,7 +102,8 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		$templateDescription .= "</center><br>";
 	}
 	$templateDescription .= "<table style='margin:1.5rem 0 0 0;'><tr><td>";
-	if ( $template['IconFA'] ) {
+	if ( $template['IconFA'] || (! startswith($template['Icon'],"http") && $template['Icon'] ) ) {
+		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
 		$templateDescription .= "<i class='$templateIcon popupIcon' id='icon'></i>";
 	} else {
