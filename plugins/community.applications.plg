@@ -13,7 +13,7 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
 
 <CHANGES>
-###2018.01.06
+###2019.01.06
 - Utilize unRaid's built-in spinner (not that I like it, but by request :( )
 - Reintegrate ability to display the raw appfeed (and backup)
 - Add in hover text to navigation icons
