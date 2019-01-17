@@ -2,17 +2,20 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.01.06">
-<!ENTITY md5       "abf5fdefd739c5ef6a7b7e73cac6b6b9">
+<!ENTITY version   "2019.01.17">
+<!ENTITY md5       "11df865d30386775791214fd6a5fc3b0">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
 ]>
 
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/">
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.01.17
+- CSS fixes for differing Icon styles
+
 ###2019.01.06
 - Utilize unRaid's built-in spinner (not that I like it, but by request :( )
 - Reintegrate ability to display the raw appfeed (and backup)
