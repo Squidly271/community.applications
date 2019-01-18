@@ -50,7 +50,7 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .myReadmore {text-align:center;}
 .myReadmoreButton {color:blue;}
 img.displayIcon {height:9.6rem;width:9.6rem;}
-i.displayIcon {font-size:8rem;}
+i.displayIcon {font-size:8rem;color:#626868;}
 .supportLink {font-weight:bold;color:<?=$linkColor?>;padding-left:.5rem;padding-right:.5rem;}
 .supportLink::after {content:"Support Thread"}
 .projectLink {font-weight:bold;color:<?=$linkColor?>;padding-left:.5rem;padding-right:.5rem;}
