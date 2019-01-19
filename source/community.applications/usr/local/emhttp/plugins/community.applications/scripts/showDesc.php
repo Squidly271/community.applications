@@ -13,6 +13,7 @@ p {margin-left:2rem;margin-right:2rem;}
 .popUpDeprecated {color:#FF8C2F;}
 i.popupIcon {color:#626868;font-size:8rem;padding-left:1rem;width:9.6rem}
 img.popupIcon {width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
+.display_beta {color:#FF8C2F;}
 </style>
 <div style='overflow:scroll; max-height:45rem; height:45rem; width:55rem; overflow-x:hidden; overflow-y:auto;font-size:1.2rem;'>
 <?PHP
@@ -97,7 +98,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	if ( $color ) {
 		$templateDescription .= "<center><font size=6rem;><strong>{$template['SortName']}</strong></font>";
 		if ( $template['Beta'] ) {
-			$templateDescription .= " <font color='blue'>BETA</font>";
+			$templateDescription .= " <span class='display_beta'>BETA</span>";
 		}
 		$templateDescription .= "</center><br>";
 	}
