@@ -170,15 +170,7 @@ $(function(){
 		}
 	}
 
-	$('.ca_staticTips').tooltipster({
-		animationDuration: [2000,350],
-		timer:15000,
-		animation:'fade',
-		arrow:true,
-		trigger:'custom',
-		triggerOpen:{mouseenter: true},
-		triggerClose:{click:true,scroll:true,mouseleave:true}
-	});
+
 
 	$('.ca_toolsView').tooltipster({
 		trigger: 'hover',
@@ -467,7 +459,6 @@ function updateContent(button) {
 				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
 			} else {
 				if ( myTrim(data) != "ok" ) {
-					myCloseAlert();
 					updateDisplay(data);
 				} else {
 					forceSortOrder("#Date","#Down");
@@ -549,6 +540,20 @@ function setToolTip() {
 	});
 	$('.ca_fa-stop').click(function() { stopStartContainer(this,false); });
 	$('.ca_fa-start').click(function() { stopStartContainer(this,true); });
+	
+	$('.ca_staticTips').tooltipster({
+		animationDuration: [2000,350],
+		timer:15000,
+		animation:'none',
+		contentAsHTML:true,
+		arrow:true,
+		trigger:'custom',
+		triggerOpen:{mouseenter: true},
+		triggerClose:{click:true,scroll:true,mouseleave:true}
+	});
+	
+	readMore();
+	myCloseAlert();
 }
 
 function stopStartContainer(container,stopStart) {
@@ -654,9 +659,6 @@ function changePage(pageNumber) {
 	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
 		if (data3) {
 			updateDisplay(data3);
-			readMore();
-			setToolTip();
-			myCloseAlert();
 		}
 	});
 }
@@ -769,9 +771,6 @@ function doSearch(button,newSearch) {
 			enableButtons();
 			updateDisplay(data);
 			data.section = "AppStore";
-			readMore();
-			myCloseAlert();
-			setToolTip();
 		}
 	});
 }
@@ -824,9 +823,6 @@ function changeSortOrder(button,buttonClass,previousApps) {
 	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
 		if (data3) {
 			updateDisplay(data3);
-			readMore();
-			setToolTip();
-			myCloseAlert();
 		}
 	});
 }
@@ -950,9 +946,6 @@ function getContent(init,category,description,newApp,startupDisplay) {
 				if ( initialize ) {
 					populateAutoComplete();
 				}
-				readMore();
-				myCloseAlert();
-				setToolTip();
 			}
 		});
 	}
@@ -1004,9 +997,6 @@ function dockerSearch(pageNumber) {
 	$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize()},function(data) {
 		if (data) {
 			updateDisplay(data);
-			readMore();
-			myCloseAlert();
-			setToolTip();
 		}
 	});
 }
@@ -1447,6 +1437,10 @@ function updateDisplay(data) {
 			});
 		}
 	});
+	
+
+	setToolTip();
+	
 	enableSearch();
 	saveState();
 }
@@ -1527,7 +1521,7 @@ function getFontSize() {
 </script>
 <div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </p></div>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
-<div style='float:right;'><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings <i class='fa fa-cog' aria-hidden='true'></i></a><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>
+<div style='float:right;'><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings</a><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>
 <br>
 
 <i id='homeIcon' class='fa fa-home enabledIcon ca_staticTips' aria-hidden='true' title='Home'></i>&nbsp;
