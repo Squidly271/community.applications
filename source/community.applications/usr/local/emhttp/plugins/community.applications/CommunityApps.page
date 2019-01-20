@@ -225,7 +225,6 @@ $(function(){
 		contentAsHTML: true,
 		distance: -15,
 		animation: 'none',
-		animationDuration: [1500,250],
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
 		interactive: true,
 		viewportAware: true,
@@ -240,7 +239,6 @@ $(function(){
 		contentAsHTML: true,
 		distance: -15,
 		animation: 'none',
-		animationDuration: [1500,250],
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
 		interactive: true,
 		viewportAware: true,
@@ -254,7 +252,7 @@ $(function(){
 	});
 	$('.ca_section').tooltipster({
 		trigger: 'hover',
-		delay: [1000,0],
+		delay: [<?=$cfg['hoverTime']?>,<?=$cfg['hoverTime']?>],
 		animation: 'fade',
 		triggerClose: {mouseleave:true},
 		functionBefore: function(instance,helper){
@@ -267,7 +265,6 @@ $(function(){
 		triggerOpen: {click:true,touchstart:true},
 		contentAsHTML: true,
 		animation: 'none',
-		delay: [1000, 2000],
 		distance: -15,
 		arrow: true,
 		triggerClose:{click:true,scroll:true,mouseleave:true},
@@ -292,7 +289,7 @@ $(function(){
 
 	$('.ca_categories').tooltipster({
 		trigger: 'hover',
-		delay: [1000,0],
+		delay: [<?=$cfg['hoverTime']?>,<?=$cfg['hoverTime']?>],
 		animation: 'fade',
 		triggerClose: {mouseleave:true},
 		functionBefore: function(instance,helper){
@@ -309,7 +306,6 @@ $(function(){
 		triggerOpen: {click:true,touchstart:true},
 		contentAsHTML: true,
 		animation: 'none',
-		delay: [1000, 2000],
 		distance: -15,
 		arrow: true,
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
@@ -337,7 +333,7 @@ $(function(){
 
 	$('.ca_subcategories').tooltipster({
 		trigger: 'hover',
-		delay: [1000,0],
+		delay: [<?=$cfg['hoverTime']?>,<?=$cfg['hoverTime']?>],
 		animation: 'fade',
 		triggerClose: {mouseleave:true},
 		functionBefore: function(instance,helper){
@@ -353,7 +349,6 @@ $(function(){
 		triggerOpen: {click:true,touchstart:true},
 		contentAsHTML: true,
 		animation: 'none',
-		delay: [1000, 2000],
 		distance: -15,
 		arrow: true,
 		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
@@ -513,7 +508,7 @@ function setToolTip() {
 		trigger: 'custom',
 		triggerOpen: {mouseenter:true,click:true,touchstart:true},
 		triggerClose:{click:true,scroll:false,mouseleave:true},
-		delay:[<?=$cfg['hoverTime']?>,<?=$cfg['hoverTime']?>],
+		delay:[<?=$cfg['hoverTime']?>,1000],
 		distance: -15,
 		interactive: true,
 		viewportAware: true,
@@ -529,7 +524,7 @@ function setToolTip() {
 		functionReady: function(instance,helper) {
 			$('.ca_apptooltip').tooltipster({
 				contentAsHTML:true,
-				delay:[1000,1],
+				delay:[<?=$cfg['hoverTime']?>,<?=$cfg['hoverTime']?>],
 				timer:15000,
 				animation:'none',
 				arrow:true, trigger:'custom',
@@ -542,13 +537,13 @@ function setToolTip() {
 	$('.ca_fa-start').click(function() { stopStartContainer(this,true); });
 	
 	$('.ca_staticTips').tooltipster({
-		animationDuration: [2000,350],
+		delay: [<?=$cfg['hoverTime']?>,<?=$cfg['hoverTime']?>],
 		timer:15000,
 		animation:'none',
 		contentAsHTML:true,
 		arrow:true,
 		trigger:'custom',
-		triggerOpen:{mouseenter: true},
+		triggerOpen:{mouseenter: true,click:true},
 		triggerClose:{click:true,scroll:true,mouseleave:true}
 	});
 	

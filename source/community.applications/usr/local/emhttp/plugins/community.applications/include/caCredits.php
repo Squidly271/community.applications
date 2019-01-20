@@ -7,7 +7,7 @@
 
 $caCredits = "
 <div style='overflow:scroll;overflow-x:hidden; overflow-y:auto;margin-top:auto;'>
-    <center><table style='margin-left:auto;'>
+    <center><table style='margin-left:auto;padding-top:0px;margin-top:0px;'>
 			<tr>
 				<td colspan='3'><center><img src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png' style='height:5rem;margin-top:2rem;'></td>
 			</tr>
@@ -49,7 +49,6 @@ $caCredits = "
     <center><em><font size='1rem;'>Copyright &copy; 2015-2019 Andrew Zawadzki</font></em></center>
     <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png' style='height:2.5rem;'></a></center>
 		<center>Ensuring only safe applications are present is a full time job
-    <br><br><center><a href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank'>Community Applications Support Thread</a></center>
   </div>";
   $caCredits = str_replace("\n","",$caCredits);
 ?>
