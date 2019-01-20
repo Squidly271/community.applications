@@ -1534,6 +1534,7 @@ function getFontSize() {
 > <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
 > <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> - Clicking this icon will take you to an application's GUI<br>
 > <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> - Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>
+> <span class='unpinned'> </span><span class='pinned'></span> Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br>
 > <br>Hovering over an application's icon (or clicking it) will display more information about the application<br>
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
