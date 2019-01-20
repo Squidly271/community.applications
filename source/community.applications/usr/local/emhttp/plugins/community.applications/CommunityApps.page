@@ -537,7 +537,7 @@ function setToolTip() {
 	$('.ca_fa-start').click(function() { stopStartContainer(this,true); });
 	
 	$('.ca_staticTips').tooltipster({
-		delay: [<?=$cfg['hoverTime']?>,<?=$cfg['hoverTime']?>],
+		delay: [<?=$cfg['hoverTime']?>,0],
 		timer:15000,
 		animation:'none',
 		contentAsHTML:true,

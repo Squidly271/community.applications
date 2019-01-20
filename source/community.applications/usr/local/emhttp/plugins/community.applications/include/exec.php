@@ -1310,7 +1310,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			if (! $app) { $app = array(); }
 			$appOfDay = array_values(array_unique($app));
 			writeJsonFile($communityPaths['appOfTheDay'],$appOfDay);
-			$startupMsg = "Random Apps Of The Day <i class='startup-icon fa fa-question-circle ca_staticTips' title='This list changes every 24 hours'></i>";
+			$startupMsg = "Random Applications Of The Day <i class='startup-icon fa fa-question-circle ca_staticTips' title='This list changes every 24 hours'></i>";
 			break;
 		case "new":
 			$sortOrder['sortBy'] = "Date";
@@ -1320,7 +1320,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				if ( ! checkRandomApp($i,$file,true,$info) ) continue;
 				$appOfDay[] = $file[$i]['ID'];
 			}
-			$startupMsg = "Newest Added / Recently Updated Apps <i class='startup-icon fa fa-question-circle ca_staticTips' title='<center>Select the New/Updated Category for the complete list<br><font size=&quot;0&quot;>Note that many authors and maintainers do not flag the application as being updated</font></center>'></i>";
+			$startupMsg = "Recently Updated Applications <i class='startup-icon fa fa-question-circle ca_staticTips' title='<center>Select the New/Updated Category for the complete list<br><font size=&quot;0&quot;>Note that many authors and maintainers do not flag the application as being updated</font></center>'></i>";
 			$startupMsg2 = "";
 			break;
 		case "onlynew":
@@ -1334,7 +1334,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 					if ( count($appOfDay) == 25 ) break;
 				}
 			}
-			$startupMsg = "Newest Added Applications";
+			$startupMsg = "Newly Added Applications";
 			break;
 		case "trending":
 			$sortOrder['sortBy'] = "trending";
@@ -1349,7 +1349,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 					if ( count($appOfDay) == 25 ) break;
 				}
 			}
-			$startupMsg = "Trending Applications <i class='startup-icon fa fa-question-circle ca_staticTips' title='<center>Largest % increase in downloads over 30 days.<br><font size=&quot;0&quot;>Note that this does not mean that any particular app is recommended.</font></center>'></i>";
+			$startupMsg = "Trending Applications <i class='startup-icon fa fa-question-circle ca_staticTips' title='<center>Largest % increase in downloads over 30 days.<br><font size=&quot;0&quot;>Note that this does not mean that any particular app is recommended.<br>Plugins are NOT included in this list</font></center>'></i>";
 			$startupMsg2 = "";
 			break;
 	}

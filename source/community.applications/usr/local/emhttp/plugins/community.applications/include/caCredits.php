@@ -21,14 +21,9 @@ $caCredits = "
       </tr>
       <tr>
         <td></td>
-        <td class='ca_credit'>bonienl</td>
+        <td class='ca_credit'>bonienl<br>eschultz</td>
         <td>Additional Contributions</td>
       </tr>
-			<tr>
-				<td></td>
-				<td class='ca_credit'>eschultz</td>
-				<td>Additional Contributions</td>
-			</tr>
 			<tr>
 				<td></td>
 				<td class='ca_credit'>Andrew Zawadzki<br>Kode<br>Limetech</td>
