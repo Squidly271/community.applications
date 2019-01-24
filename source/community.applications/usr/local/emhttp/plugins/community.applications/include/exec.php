@@ -1146,6 +1146,7 @@ function DownloadApplicationFeed() {
 			$o['Author']        = $o['PluginAuthor'];
 			$o['Repository']    = $o['PluginURL'];
 		}
+		$o['MinVer'] = max(array($o['MinVer'],$o['UpdateMinVer']));
 
 		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
 		$o = fixTemplates($o);
