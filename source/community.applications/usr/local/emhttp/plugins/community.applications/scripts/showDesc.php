@@ -102,8 +102,8 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		}
 		$templateDescription .= "</center><br>";
 	}
-	$templateDescription .= "<table style='margin:1.5rem 0 0 0;'><tr><td>";
-	if ( $template['IconFA'] || (! startswith($template['Icon'],"http") && $template['Icon'] ) ) {
+	$templateDescription .= "<table style='margin:1.5rem 0 0 0;'><tr><td width='33%;'>";
+	if ( $template['IconFA'] || (! startswith($template['Icon'],"http") && $template['Icon'] && strpos($template['Icon'],"/") ) ) {
 		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
 		$templateDescription .= "<i class='$templateIcon popupIcon' id='icon'></i>";
@@ -149,12 +149,21 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>{$color}Max OS:</td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
-	$downloads = getDownloads($template['downloads']);
+	$downloads = getDownloads($template['downloads'],true);
 	if ($downloads) {
 		$templateDescription .= "<tr><td>{$color}Downloads:</td><td>$color$downloads</td></tr>";
 	}
 	$templateDescription .= $template['Licence'] ? "<tr><td>{$color}Licence:</td><td>$color".$template['Licence']."</td></tr>" : "";
-	$templateDescription .= $template['trending'] ? "<tr><td>{$color}Monthly Trend:</td><td>$color+".$template['trending']."%</td></tr>" : "";
+	if ( $template['trending'] ) {
+		$templateDescription .= "<tr><td>{$color}Monthly Trend:</td><td>$color+{$template['trending']}%";
+		if ( $template['trendir'] == -1 ) {
+			$templateDescription .= " <i class='fa fa-arrow-down'></i>";
+		}
+		if ( $template['trendir'] == 1 ) {
+			$templateDescription .= " <i class='fa fa-arrow-up'></i>";
+		}
+		$template['description'] .= "</td></tr>";
+	}
 	$templateDescription .= "</table></td></tr></table>";
 	$templateDescription .= "<center><span class='popUpDeprecated'>";
 	if ($template['Blacklist']) {
