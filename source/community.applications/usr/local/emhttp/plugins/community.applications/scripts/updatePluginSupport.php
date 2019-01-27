@@ -1,5 +1,12 @@
 #!/usr/bin/php
 <?PHP
+###############################################################
+#                                                             #
+# Community Applications copyright 2015-2019, Andrew Zawadzki #
+#                    All Rights Reserved                      #
+#                                                             #
+###############################################################
+
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");

@@ -1,4 +1,11 @@
 <?php
+###############################################################
+#                                                             #
+# Community Applications copyright 2015-2019, Andrew Zawadzki #
+#                    All Rights Reserved                      #
+#                                                             #
+###############################################################
+
 	header("Content-type: text/css; charset: UTF-8");
 
 	$dynamix = @parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);

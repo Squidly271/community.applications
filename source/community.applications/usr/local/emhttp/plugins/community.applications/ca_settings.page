@@ -3,6 +3,13 @@ Title="Community Applications"
 Icon="community.applications.png"
 ---
 <?
+###############################################################
+#                                                             #
+# Community Applications copyright 2015-2019, Andrew Zawadzki #
+#                    All Rights Reserved                      #
+#                                                             #
+###############################################################
+
 function download_url($url, $path = "", $bg = false)
 {
 	exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
