@@ -150,18 +150,15 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>{$color}Max OS:</td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
-	$downloads = getDownloads($template['downloads'],true);
+	$downloads = getDownloads($template['downloads']);
 	if ($downloads) {
 		$templateDescription .= "<tr><td>{$color}Downloads:</td><td>$color$downloads</td></tr>";
 	}
 	$templateDescription .= $template['Licence'] ? "<tr><td>{$color}Licence:</td><td>$color".$template['Licence']."</td></tr>" : "";
 	if ( $template['trending'] ) {
 		$templateDescription .= "<tr><td>{$color}Monthly Trend:</td><td>$color+{$template['trending']}%";
-		if ( $template['trendir'] == -1 ) {
-			$templateDescription .= " <i class='fa fa-arrow-down'></i>";
-		}
-		if ( $template['trendir'] == 1 ) {
-			$templateDescription .= " <i class='fa fa-arrow-up'></i>";
+		if ( is_array($template['trends']) && (count($template['trends']) > 1) ) {
+			$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <i class='fa fa-arrow-up'></i>" : " <i class='fa fa-arrow-down'></i>";
 		}
 		$template['description'] .= "</td></tr>";
 	}
