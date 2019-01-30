@@ -474,11 +474,8 @@ function enableIcon(icon,enable) {
 	enable = (enable == "false") ? false : enable;
 	$(icon).each(function() {
 		$(this).removeClass("enabledIcon disabledIcon");
-		if ( enable ) {
-			$(this).addClass("enabledIcon");
-		} else {
-			$(this).addClass("disabledIcon");
-		}
+		var newClass = enable ? "enabledIcon" : "disabledIcon";
+		$(this).addClass(newClass);
 	});
 }
 
@@ -1287,11 +1284,7 @@ function displayTags(leadTemplate) {
 }
 
 function makePlural(string,count) {
-	if ( (count > 1) || (count == 0) ) {
-		return string + "s";
-	} else {
-		return string;
-	}
+	return ( (count > 1) || (count == 0) ) ? string + "s" : string;
 }
 
 function getSelectedApps() {
