@@ -20,7 +20,8 @@
 	$linkColor = "#486dba";
 	$startupColor = $unRaid66 ? "#FF8C2F" : "purple";
 ?>
-ul.caMenu {list-style-type: none;margin: 0;padding: 0;cursor:pointer;font-size:1.5rem;}
+ul.caMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;cursor:pointer;font-size:1.5rem;}
+li.caMenuItem {padding:0px 0px 5px 0px;}
 ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer;display:none;}
 .menuHeader { font-size:2rem; margin-bottom:1rem;margin-top:1rem;}
 .selectedMenu {color:<?=$unRaid66color?>;font-weight:bold;}

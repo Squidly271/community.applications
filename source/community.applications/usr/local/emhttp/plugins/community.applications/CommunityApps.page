@@ -1067,8 +1067,8 @@ function pinnedApps(button) {
 	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
 	enableIcon("#sortIcon",true);
 	resetSortByDate();
-	$("#Category").html("All Pinned Applications");
-	$.post(URL,{action:'pinnedApps'},function(data) {
+/* 	$("#Category").html("All Pinned Applications");
+ */	$.post(URL,{action:'pinnedApps'},function(data) {
 		if (data) {
 			refreshDisplay();
 			myCloseAlert();
