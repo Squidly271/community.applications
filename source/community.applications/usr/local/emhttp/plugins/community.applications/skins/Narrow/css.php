@@ -20,6 +20,7 @@
 	$linkColor = "#486dba";
 	$startupColor = $unRaid66 ? "#FF8C2F" : "purple";
 ?>
+.sortIcons {font-size:2.3rem;margin-right:20px;}
 ul.caMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;cursor:pointer;font-size:1.5rem;}
 li.caMenuItem {padding:0px 0px 5px 0px;}
 ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer;display:none;}
@@ -96,9 +97,9 @@ i.displayIcon {font-size:8rem;color:#626868;}
 .pageRight::after {content:"\f138";font-family:fontAwesome;font-weight:bold;}
 .pageLeft::after {content:"\f137";font-family:fontAwesome;font-weight:bold;}
 .specialCategory {font-size:1.5rem;color:<?=$unRaid66color?>;}
-.ca_table { padding:.5rem 2rem .5rem 0;}
-.ca_stat {color:coral;}
-.ca_credit { padding:.5rem 0 .5rem 0;}
+.ca_table { padding:.5rem 2rem .5rem 0; font-size:1.5rem;}
+.ca_stat {color:coral; font-size:1.5rem;}
+.ca_credit { padding:.5rem 0 1rem 0; font-size:2rem;line-height:3rem;}
 .ca_dateUpdated {font-weight:bold;text-align:center;}
 .ca_dateUpdated {font-weight:bold;text-align:center;}
 .ca_dateUpdated::before {content:"Date Updated: ";}

@@ -183,39 +183,6 @@ $(function(){
 			}
 		}
 	});
-	$('.ca_toolsView').tooltipster({
-		multiple: true,
-		trigger: 'custom',
-		triggerOpen: {click:true,touchstart:true},
-		contentAsHTML: true,
-		animation: 'none',
-		arrow: true,
-		distance: -15,
-		delay: [1000, 2000],
-		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1000},
-		interactive: true,
-		viewportAware: true,
-		functionBefore: function(instance,helper) {
-			var origin = $(helper.origin);
-
-			if ( ! isIconEnabled(origin) ) {
-				var displayContent = null;
-			} else {
-				setSortOrder();
-				var displayContent = $("#tooltipviews").html();
-				$("#tooltipviews").attr("data-backup",displayContent);
-				$("#tooltipviews").html(""); // The need for backup stems from the fact that we want user to be able to change view modes without having to disable the tooltipster popup.  A race condition can stem without the backup
-			}
-			instance.content(displayContent);
-		},
-		functionReady: function(instance,helper) {
-			$(".sortButton,.dirButton").click(function() { changeSortOrder(this.id,$(this).attr("class")); });
-		},
-		functionAfter: function(instance,helper) {
-			$("#tooltipviews").html($("#tooltipviews").attr("data-backup"));
-			setSortOrder();
-		}
-	});
 
 	$('.categoryMenu').on("click",function() {
 		var selectedCategory = $(this).attr("data-category");
@@ -229,6 +196,16 @@ $(function(){
 	$(".homeIcon").click(function()             { appStore(); });
 	$(".startupButton").click(function()				{ updateContent(this); });
 	initilizeMenu();
+	$("#sortIcon").click(function() {
+		if ( isIconEnabled("#sortIcon") ) {
+			$("#sortIconArea").toggle("slow");
+		}
+	});
+	$(".sortIcons").click(function() {
+		enableSortIcon(this);
+		changeSortOrder();
+		$("#sortIconArea").toggle("slow");
+	});
 
 <?if ( ! $unRaid66 ):?>
 	$("html").css("font-size","10px");
@@ -255,7 +232,7 @@ $(function(){
 				});
 			} else {
 				var leftMargin = getWindowWidth();
-				$("#searchFilter").hide();
+				$("#searchFilter,.menuItems").hide();
 				$("#appWarningForm").css("width",leftMargin);
 				$("#homeIcon,#sectionIcon,#categoryIcon,#subcategoryIcon,#sortIcon,.topRightLinks,.ca_appPopup").hide();
 				$("#templates_content").html($("#appWarningForm").html());
@@ -317,12 +294,18 @@ function updateContent(button) {
 				if ( myTrim(data) != "ok" ) {
 					updateDisplay(data);
 				} else {
-					forceSortOrder("#Date","#Down");
 					getContent(true,'INITIALIZE',"","",startupScreen);
 				}
 			}
 		}
 	});
+}
+
+function enableSortIcon(icon) {
+	$(".sortIcons").each(function() {
+		$(this).removeClass("enabledIcon");
+	});
+	$(icon).addClass("enabledIcon");
 }
 
 function enableIcon(icon,enable) {
@@ -458,7 +441,6 @@ function changeCategory(button,subSwitch) {
 	if ( typeof categoryDesc[button.id] !== "undefined" ) {
 		description = categoryDesc[button.id];
 	}
-	resetSortByDate();
 
 	getContent(false,category,description,false);
 }
@@ -539,7 +521,6 @@ function doSearch(button,newSearch) {
 	} else {
 		$("#searchBox").attr("placeholder","Search");
 	}
-	resetSortByDate();
 	data.docker = "";
 	data.section = "AppStore";
 	filter = filter.replace(/[^a-z0-9]/gi,' ')
@@ -622,17 +603,6 @@ function changeSortOrder(button,buttonClass,previousApps) {
 	var pageNumber = data.currentpage;
 	var selected = data.selected;
 
-	if ( previousApps != "true" )
-	{
-		$("."+buttonClass).prop("disabled", false);
-		$("#"+button).prop("disabled", true);
-	}
-
-	if ( button == "Date" || button == "Downloads" || button == "Trending" ) {
-		$("#Down").prop("disabled", true);
-		$("#Up").prop("disabled", false);
-	}
-
 	mySpinner();
 	var sortOrder = getSortOrder();
 	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
@@ -644,47 +614,38 @@ function changeSortOrder(button,buttonClass,previousApps) {
 
 function getSortOrder() {
 	var sortOrder = new Object();
-	var jsonOrder = new Object();
 
-	if ( $("#Name").prop("disabled") )					{ sortOrder.sortBy = ["sortBy","Name"];                 jsonOrder.sortBy = "#Name"; }
-	if ( $("#RepoName").prop("disabled") )			{ sortOrder.sortBy = ["sortBy","RepoName"];             jsonOrder.sortBy = "#RepoName"; }
-	if ( $("#Author").prop("disabled") )				{ sortOrder.sortBy = ["sortBy","SortAuthor"];           jsonOrder.sortBy = "#Author"; }
-	if ( $("#Date").prop("disabled") )					{ sortOrder.sortBy = ["sortBy","Date"];                 jsonOrder.sortBy = "#Date"; }
-	if ( $("#Downloads").prop("disabled") )			{ sortOrder.sortBy = ["sortBy","downloads"];            jsonOrder.sortBy = "#Downloads"; }
-	if ( $("#Trending").prop("disabled") )			{ sortOrder.sortBy = ["sortBy","trending"];							jsonOrder.sortBy = "#Trending";	}
-
-	if ( $("#Up").prop("disabled") )             { sortOrder.sortDir = ["sortDir","Up"];                 jsonOrder.sortDir = "#Up"; }
-	if ( $("#Down").prop("disabled") )           { sortOrder.sortDir = ["sortDir","Down"];               jsonOrder.sortDir = "#Down"; }
-
-	$("#sortorder").attr("data-sortorder",JSON.stringify(jsonOrder));
+	$(".sortIcons").each(function() {
+		if ( isIconEnabled(this) ) {
+			switch ( $(this).data("sort") ) {
+				case 'nameUp':
+					sortOrder.sortBy = ["sortBy","Name"];
+					sortOrder.sortDir = ["sortDir","Up"];
+					break;
+				case 'nameDown':
+					sortOrder.sortBy = ["sortBy","Name"];
+					sortOrder.sortDir = ["sortDir","Down"];		
+					break;
+				case 'downloadsDown':
+					sortOrder.sortBy = ["sortBy","downloads"];
+					sortOrder.sortDir = ["sortDir","Down"];
+					break;
+				case 'downloadsUp':
+					sortOrder.sortBy = ["sortBy","downloads"];
+					sortOrder.sortDir = ["sortDir","Up"];
+					break;
+				case 'trendDown':
+					sortOrder.sortBy = ["sortBy","trending"];
+					sortOrder.sortDir = ["sortDir","Down"];
+					break;
+				case 'trendUp':
+					sortOrder.sortBy = ["sortBy","trending"];
+					sortOrder.sortDir = ["sortDir","Up"];
+					break;
+			}
+		}
+	});
 	return [sortOrder.sortBy,sortOrder.sortDir];
-}
-
-function forceSortOrder(sort,dir) {
-	$(".sortButton,.dirButton").prop("disabled",false);
-	$(sort).prop("disabled",true);
-	$(dir).prop("disabled",true);
-	getSortOrder();
-}
-
-function isSortByDate() {
-	return $("#Date").prop("disabled");
-}
-
-function resetSortByDate() {
-	if ( isSortByDate() ) {
-		$("#dateButton").hide();
-		forceSortOrder("#Name","#Up");
-		getSortOrder();
-	}
-}
-
-// needed for tooltipster
-function setSortOrder() {
-	var sortOrder = JSON.parse($("#sortorder").attr("data-sortorder"));
-	$(".viewButton,.sortButton,.dirButton").prop("disabled",false);
-	$(sortOrder.sortBy).prop("disabled",true);
-	$(sortOrder.sortDir).prop("disabled",true);
 }
 
 function getContent(init,category,description,newApp,startupDisplay) {
@@ -693,45 +654,13 @@ function getContent(init,category,description,newApp,startupDisplay) {
 
 	enableSearch();
 	if ( init == true ) {
-		enableIcon("#sortIcon, #subcategoryIcon",false);
+		enableIcon("#sortIcon",false);
 	} else {
 		enableIcon("#sortIcon",true);
 		mySpinner();
 	}
-	$("#sortButtons,#templateSortButtons,#Total1").show();
+	$("#sortButtons,#Total1").show();
 	var windowWidth = getWindowWidth();
-
-	switch (category) {
-		case 'network:':
-			$("#MainCategory").hide();
-			$("#NetworkCategory,#NONE").show();
-			$("#network").prop("disabled",true);
-			break;
-		case 'MediaApp:':
-			$("#MainCategory").hide();
-			$("#MediaAppCategory,#NONE").show();
-			$("#MediaApp").prop("disabled",true);
-			break;
-		case 'MediaServer:':
-			$("#MainCategory").hide();
-			$("#MediaServerCategory,#NONE").show();
-			$("#MediaServer").prop("disabled",true);
-			break;
-		case 'tools:':
-			$("#MainCategory").hide();
-			$("#ToolsCategory,#NONE").show();
-			$("#tools").prop("disabled",true);
-			break;
-		case '':
-			$("#All").prop("disabled",true);
-			$("#NetworkCategory,#MediaServerCategory,#MediaAppCategory,#NONE,#ToolsCategory").hide();
-			$("#MainCategory,#New").show();
-			break;
-		case 'NONE':
-			$("#NetworkCategory,#MediaServerCategory,#MediaAppCategory,#NONE,#ToolsCategory").hide();
-			$("#MainCategory").show();
-			break;
-	}
 
 	if ( category != "NONE" ) {
 		if ( category == "INITIALIZE" ) {
@@ -739,9 +668,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 			category = "NONE";
 			initialize = true;
 			enableButtons();
-			$("#All").prop("disabled",true);
-			$("#NetworkCategory,#MediaServerCategory,#MediaAppCategory,#NONE,#ToolsCategory,#Total1").hide();
-			$("#MainCategory,#New").show();
+			$("#Total1").hide();
 		}
 		if ( (category == "New") || (category == "All") ) { category = ""; }
 
@@ -759,7 +686,6 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		});
 	}
 	$('.dockerSearch').hide();
-	setSortOrder();
 }
 
 function populateAutoComplete() {
@@ -851,7 +777,6 @@ function showModeration(script,title) {
 
 function previousApps(button,installed) {
 	setPageOne();
-	resetSortByDate();
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
 	data.docker = "";
 	if ( installed ) {
@@ -1020,7 +945,6 @@ function initializeAppStore() {
 	data.selected_category = "";
 	$("#NetworkCategory,#MediaAppCategory,#MediaServerCategory,#ToolsCategory,#NONE,.multi_installDiv").hide();
 	$("#AppsOnly,#templates_content,#MainCategory").show();
-	resetSortByDate();
 }
 function installPLGupdate(filename,plgName) {
 	$(".ca_appPopup").tooltipster('close');
@@ -1066,7 +990,6 @@ function pinnedApps(button) {
 	$(".dockerSearch,#AppsOnly,.multi_installDiv").hide();
 	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
 	enableIcon("#sortIcon",true);
-	resetSortByDate();
 /* 	$("#Category").html("All Pinned Applications");
  */	$.post(URL,{action:'pinnedApps'},function(data) {
 		if (data) {
@@ -1335,6 +1258,8 @@ function getFontSize() {
 }
 
 function showCredits() {
+	$(".multi_installDiv,.dockerSearch").hide();
+	$("#Category").html("");
 	$.post(URL,{action:'showCredits'},function(data) {
 		if (data) {
 			$("#templates_content").html(data);
@@ -1343,6 +1268,8 @@ function showCredits() {
 }
 
 function showStatistics() {
+	$(".multi_installDiv,.dockerSearch").hide();
+	$("#Category").html("");
 	$("#templates_content").html("<center>Gathering Statistics</center>");
 	$.post(URL,{action:'statistics'},function(data) {
 		if (data) {
@@ -1355,6 +1282,14 @@ function showStatistics() {
 <div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </p></div>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
 <div style='float:right;'>
+<span id='sortIconArea' style='display:none;'>
+<i class='sortIcons fa fa-sort-alpha-asc enabledIcon' data-sort='nameUp'></i>
+<i class='sortIcons fa fa-sort-alpha-desc' data-sort='nameDown'></i>
+<i class='sortIcons fa fa-sort-numeric-desc' data-sort='downloadsDown'></i>
+<i class='sortIcons fa fa-sort-numeric-asc' data-sort='downloadsUp'></i>
+<i class='sortIcons fa fa-sort-amount-desc' data-sort='trendDown'></i>
+<i class='sortIcons fa fa-sort-amount-asc' data-sort='trendUp'></i>
+</span>
 <i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
 <span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>
 </div>
