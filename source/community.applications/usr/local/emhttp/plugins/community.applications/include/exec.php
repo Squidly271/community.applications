@@ -123,10 +123,10 @@ case 'get_content':
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
 
-				echo "<br><center><span class='startupMessage'>$startupMsg</span></center>";
+/* 				echo "<br><center><span class='startupMessage'>$startupMsg</span></center>";
 				if ( $startupMsg2 ) {
 					echo "<center><span class='startupMessage2'>$startupMsg2</span></center><br>";
-				}
+				} */
 				$sortOrder['sortBy'] = "noSort";
 				echo my_display_apps($displayApplications['community'],"1",$runningDockers,$imagesDocker);
 				break;
@@ -989,7 +989,7 @@ case 'statistics':
 	}
 
 ?>
-<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;'>
+<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>
 <table style='margin-top:1rem;'>
 <tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png'></td></tr>
 <tr><td colspan='2'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>
@@ -1092,7 +1092,12 @@ case 'getCurrentServer':
 	echo $server ? "<br>$server Active" : "<br>Appfeed Download Failed";
 	break;
 
-}
+case 'showCredits':
+	echo file_get_contents("/usr/local/emhttp/plugins/community.applications/include/caCredits.html");
+	break;
+
+}	
+
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
 function DownloadApplicationFeed() {

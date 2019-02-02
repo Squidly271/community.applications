@@ -20,9 +20,9 @@
 	$linkColor = "#486dba";
 	$startupColor = $unRaid66 ? "#FF8C2F" : "purple";
 ?>
-ul.caMenu {list-style-type: none;margin: 0;padding: 0;cursor:pointer;}
+ul.caMenu {list-style-type: none;margin: 0;padding: 0;cursor:pointer;font-size:1.5rem;}
 ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer;display:none;}
-.header { font-size:2.5rem; margin-bottom:1rem;margin-top:1rem;}
+.menuHeader { font-size:2rem; margin-bottom:1rem;margin-top:1rem;}
 .selectedMenu {color:<?=$unRaid66color?>;font-weight:bold;}
 .hoverMenu {font-weight:bold;}
 table {background-color:transparent;}
@@ -55,7 +55,6 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .unpinned {cursor:pointer;font-size:1.5rem;color:#820101;padding:.3rem;}
 .pinned::after {content:"\f08d";font-family:fontAwesome;}
 .unpinned::after {content:"\f08d";font-family:fontAwesome;display:inline-block;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);	-o-transform: rotate(20deg);	transform: rotate(20deg);}
-.topRightLinks {padding-left:1.5rem;font-weight:bold;}
 .appIcons {font-size:2.5rem;color:<?=$linkColor?>;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
 .appIcons:hover {text-decoration:none;}
 .appIconsPopUp {font-size:2.5rem;color:#FF8C2F;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}

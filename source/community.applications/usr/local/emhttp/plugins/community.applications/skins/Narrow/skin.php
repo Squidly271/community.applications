@@ -47,8 +47,8 @@ function display_apps($pageNumber=1,$selectedApps=false) {
 
 	$totalApps = "$totalApplications";
 
-	$display .= "<script>$('#Total').html('$totalApps');</script>";
-	echo $bookmark;
+/* 	$display .= "<script>$('#Total').html('$totalApps');</script>";
+ */	echo $bookmark;
 	echo $display;
 }
 

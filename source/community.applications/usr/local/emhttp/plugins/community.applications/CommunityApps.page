@@ -14,7 +14,6 @@ Tag="users"
 $plugin = "community.applications";
 
 require_once("/usr/local/emhttp/plugins/$plugin/include/paths.php");
-require_once("/usr/local/emhttp/plugins/$plugin/include/caCredits.php");
 require_once("/usr/local/emhttp/plugins/$plugin/include/helpers.php");
 
 $installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$plugin.plg");
@@ -132,8 +131,6 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
-
-
 /* 	var startupButton = $.cookie("startup");
 	if ( ! startupButton ) {
 		startupButton = "startuponlynew";
@@ -172,8 +169,6 @@ $(function(){
 			}
 		}
 	}
-
-
 
 	$('.ca_toolsView').tooltipster({
 		trigger: 'hover',
@@ -219,38 +214,6 @@ $(function(){
 		functionAfter: function(instance,helper) {
 			$("#tooltipviews").html($("#tooltipviews").attr("data-backup"));
 			setSortOrder();
-		}
-	});
-
-	$('.ca_credits').tooltipster({
-		trigger: 'custom',
-		triggerOpen: {mouseenter:false,click:true,touchstart:true},
-		contentAsHTML: true,
-		distance: -15,
-		animation: 'none',
-		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
-		interactive: true,
-		viewportAware: true,
-		functionBefore: function(instance,helper) {
-			instance.content("<?=$caCredits?>");
-		}
-	});
-
-	$('.ca_stats').tooltipster({
-		trigger: 'custom',
-		triggerOpen: {mouseenter:false,click:true,touchstart:true},
-		contentAsHTML: true,
-		distance: -15,
-		animation: 'none',
-		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
-		interactive: true,
-		viewportAware: true,
-		functionBefore: function(instance,helper) {
-			$.post(URL,{action:'statistics'},function(data) {
-				if (data) {
-					instance.content(data);
-				}
-			});
 		}
 	});
 
@@ -786,8 +749,8 @@ function getContent(init,category,description,newApp,startupDisplay) {
 
 		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize(),startupDisplay:startupDisplay},function(data) {
 			if (data) {
-				$("#Category").html(description);
-				updateDisplay(data);
+/* 				$("#Category").html(description);
+ */				updateDisplay(data);
 
 				if ( initialize ) {
 					populateAutoComplete();
@@ -906,11 +869,11 @@ function previousApps(button,installed) {
 	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
 	enableIcon("#sortIcon",true);
 
-	if ( installed ) {
+/* 	if ( installed ) {
 		$("#Category").html("All Installed Applications");
 	} else {
 		$("#Category").html("All Previously Installed Applications");
-	}
+	} */
 
 	$.post(URL,{action:'previous_apps',installed:installed,fontSize:getFontSize()},function(data) {
 		if (data) {
@@ -1371,14 +1334,33 @@ function getFontSize() {
 	return fontSize.replace("px","");
 }
 
+function showCredits() {
+	$.post(URL,{action:'showCredits'},function(data) {
+		if (data) {
+			$("#templates_content").html(data);
+		}
+	});
+}
+
+function showStatistics() {
+	$("#templates_content").html("<center>Gathering Statistics</center>");
+	$.post(URL,{action:'statistics'},function(data) {
+		if (data) {
+			$("#templates_content").html(data);
+		}
+	});
+}
+
 </script>
 <div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </p></div>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
-<div style='float:right;'><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>
+<div style='float:right;'>
+<i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
+<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>
+</div>
 <br>
 
-<i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
-<strong><font size='3'><span id="Category"></span></strong><span id="Total1" style='display:none;';> (<span id="Total">0</span>)</span></font>
+<strong><font size='3'><span id="Category"></span></strong></font>
 </span><br>
 
 > <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps)<br>
@@ -1396,16 +1378,14 @@ function getFontSize() {
 <?if ( $upgradeAvailable ) :?>
 <span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</center></font></span>
 <?endif;?>
-<div class='dockerSearch' style='display:none'><center><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></center></div>
-<div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 <div style='position:absolute; left:0px;width:14rem;height:auto;' class='menuItems'>
-<div class='header'>MENU</div>
+<div class='menuHeader'>MENU</div>
 <ul class='caMenu'>
 	<li class='caMenuItem' onclick='previousApps(this.id,true);' data-category='installed_apps'>Installed Apps</li>
 	<li class='caMenuItem' onclick='previousApps(this.id,false);' data-category='previous_apps'>Previous Apps</li>
 	<li class='caMenuItem' onclick='pinnedApps(this.id);' data-category='pinned_apps'>Pinned Apps</li>
 </ul>
-<div class='header'>CATEGORIES</div>
+<div class='menuHeader'>CATEGORIES</div>
 <ul class='caMenu'>
 	<li class='startupButton caMenuItem' data-category='onlynew'>New Apps</li>
 	<li class='startupButton caMenuItem' data-category='new'>Updated Apps</li>
@@ -1452,20 +1432,23 @@ function getFontSize() {
 	</ul>
 	<li class='categoryMenu caMenuItem' data-category='other'>Other</li>
 	<li class='categoryMenu caMenuItem' data-category='plugins'>Plugins</li>
-	<li class='categoryMenu caMenuItem' data-category='New'>New / Updated</li>
 	<li class='categoryMenu caMenuItem' data-category='All'>All Apps</li>
 </ul>
-<div class='header'>OTHER</div>
+<div class='menuHeader'>OTHER</div>
 <ul class='caMenu'>
 	<li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'>Settings</a></li>
-	<li class='caMenuItem'>Statistics</li>
-	<li class='caMenuItem'>Credits</li>
+	<li class='caMenuItem' onclick='showStatistics();'>Statistics</li>
+	<li class='caMenuItem' onclick='showCredits();'>Credits</li>
 	<li class='caMenuItem' onclick='window.location="https://forums.unraid.net/topic/38582-plug-in-community-applications/"'>Support</li>
 </ul>
 <br><br><br>
 </div>
-<div style='position:absolute;left:14.5rem;right:0px; display:block;' id='templates_content'></div>
+<div style='position:absolute;left:14.5rem;right:0px; display:block;'>
+<div class='dockerSearch' style='display:none'><center><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></center></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
+<div id='templates_content'></div>
+<div style='width:100%; display:none; padding-bottom:100px;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
+</div>
 </center>
 <span id='miscScript'></span><span id='awesomepleteScript'></span>
 <div>
