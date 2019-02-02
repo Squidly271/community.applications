@@ -54,7 +54,6 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 	@unlink($communityPaths['community-templates-info']);
 }
 
-$selectCategoryMessage = "<br>Select a Section <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:2rem;cursor:auto;'></i> or Category <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:2rem;cursor:auto;'></i> above";
 
 ############################################
 ##                                        ##
@@ -110,7 +109,6 @@ case 'get_content':
 	if ( empty($file)) break;
 
 	if ( $category === "/NONE/i" ) {
-		echo "<script>$('.selectCategory').show();</script>";
 		$displayApplications = array();
 		if ( count($file) > 200) {
 			$appsOfDay = appOfDay($file,$startupMsg,$startupMsg2);
@@ -301,8 +299,6 @@ case 'display_content':
 
 	if ( file_exists($communityPaths['community-templates-displayed']) ) {
 		display_apps($pageNumber,$selectedApps);
-	} else {
-		echo "<center><font size='4'>$selectCategoryMessage</font></center>";
 	}
 	break;
 

@@ -232,7 +232,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
 			$template['display_iconSmall'] = "<img src='".$displayIcon."' class='$iconClass'>";
 		}
-		if ( $template['IconFA'] || (! startswith($template['Icon'],"http") && $template['Icon'] && strpos($template['Icon'],"/") ) ) {
+		if ( $template['IconFA'] || (! startswith($template['Icon'],"http") && $template['Icon']) ) {
 			$displayIcon = $template['IconFA'] ?: $template['Icon'];
 			$displayIconClass = startsWith($displayIcon,"icon-") ? $displayIcon : "fa fa-$displayIcon";
 			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><i class='ca_appPopup $displayIconClass $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></a>";

@@ -104,7 +104,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		$templateDescription .= "</center><br>";
 	}
 	$templateDescription .= "<table style='margin:1.5rem 0 0 0;'><tr><td width='150px;'>";
-	if ( $template['IconFA'] || (! startswith($template['Icon'],"http") && $template['Icon'] && strpos($template['Icon'],"/") ) ) {
+	if ( $template['IconFA'] || (! startswith($template['Icon'],"http") && $template['Icon']) ) {
 		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
 		$templateDescription .= "<i class='$templateIcon popupIcon' id='icon'></i>";
