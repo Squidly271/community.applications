@@ -4,6 +4,7 @@ Title="Community Applications"
 Tag="users"
 ---
 <?
+print_r($_COOKIE);
 ###############################################################
 #                                                             #
 # Community Applications copyright 2015-2019, Andrew Zawadzki #
@@ -106,7 +107,7 @@ var categoryDesc = {
 	MediaAppPhotos:"Media Applications: Photos",
 	MediaAppOther:"Media Applications: Other",
 	toolssystem:"Tools: System",
-	NONE:"None Selected",
+	NONE:"",
 	New:"New / Updated Applications (<font size='0'>Note: not all maintainers properly tag their apps with the date</font>)",
 	UNCATEGORIZED: "All Uncategorized Applications",
 	All: "All Available Applications",
@@ -434,7 +435,7 @@ function updateContent(button) {
 					updateDisplay(data);
 				} else {
 					forceSortOrder("#Date","#Down");
-					getContent(true,'INITIALIZE','None Selected',"",startupScreen);
+					getContent(true,'INITIALIZE',"","",startupScreen);
 				}
 			}
 		}
@@ -575,41 +576,8 @@ function changeCategory(button,subSwitch) {
 		description = categoryDesc[button.id];
 	}
 	resetSortByDate();
-	var newFlag = false;
-/* 	if ( ! subSwitch ) {
-		switch (category) {
-			case "network:":
-				enableIcon("#subcategoryIcon",true);
-				data.subcategory = "#NetworkCategory";
-				data.selected_subcategory = "network";
-				break;
-			case "MediaApp:":
-				enableIcon("#subcategoryIcon",true);
-				data.subcategory = "#MediaAppCategory";
-				data.selected_subcategory = "MediaApp";
-				break;
-			case "MediaServer:":
-				enableIcon("#subcategoryIcon",true);
-				data.subcategory = "#MediaServerCategory";
-				data.selected_subcategory = "MediaServer";
-				break;
-			case "tools:":
-				enableIcon("#subcategoryIcon",true);
-				data.subcategory = "#ToolsCategory";
-				data.selected_subcategory = "tools";
-				break;
-			case "New":
-				enableIcon("#subcategoryIcon",false);
-				$("#dateButton").show();
-				forceSortOrder("#Date","#Down");
-				newFlag = true;
-				break;
-			default:
-				enableIcon("#subcategoryIcon",false);
-				break;
-		}
-	} */
-	getContent(false,category,description,newFlag);
+
+	getContent(false,category,description,false);
 }
 
 function changePage(pageNumber) {
@@ -1157,7 +1125,7 @@ function appStore() {
 	data.prevpage = 0;
 	initializeAppStore();
 	updateContent();
-	$("#Category").html("None Selected");
+	$("#Category").html("");
 	data.docker = "";
 }
 
@@ -1401,11 +1369,9 @@ function saveState() {
 		$.cookie("categoryText",$("#Category").html());
 		$.cookie("data",JSON.stringify(data));
 		$.cookie("dockerSearchFlag",dockerSearchFlag);
-		$.cookie("homeIcon",isIconEnabled("#homeIcon"));
-		$.cookie("sectionIcon",isIconEnabled("#sectionIcon"));
-		$.cookie("categoryIcon",isIconEnabled("#categoryIcon"));
-		$.cookie("subcategoryIcon",isIconEnabled("#subcategoryIcon"));
+		$.cookie("selectedMenu",$(".selectedMenu").data("category"));
 		$.cookie("sortIcon",isIconEnabled("#sortIcon"));
+
 		$(".sortButton").each(function() {
 			if ( $(this).prop("disabled") ) {
 				$.cookie("sortButton",this.id);
@@ -1416,7 +1382,6 @@ function saveState() {
 				$.cookie("dirButton",this.id);
 			}
 		});
-
 	}
 }
 
@@ -1424,10 +1389,13 @@ function restoreState() {
 	$("#Category").html($.cookie("categoryText"));
 	data = JSON.parse($.cookie("data"));
 	dockerSearchFlag = $.cookie("dockerSearchFlag");
-	enableIcon("#homeIcon",$.cookie("homeIcon"));
-	enableIcon("#sectionIcon",$.cookie("sectionIcon"));
-	enableIcon("#categoryIcon",$.cookie("categoryIcon"));
-	enableIcon("#subcategoryIcon",$.cookie("subcategoryIcon"));
+	var selectedMenu = $.cookie("selectedMenu");
+	var menuItem = $.find(".caMenuItem[data-category='"+selectedMenu+"']");
+	$(".caMenuItem").each(function(){
+		$(this).removeClass("selectedMenu");
+	});
+	$(menuItem).addClass("selectedMenu");
+	$(menuItem).parent().show();
 	enableIcon("#sortIcon",$.cookie("sortIcon"));
 	$(".sortButton").prop("disabled",false);
 	$(".dirButton").prop("disabled",false);
