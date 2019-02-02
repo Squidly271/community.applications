@@ -4,7 +4,6 @@ Title="Community Applications"
 Tag="users"
 ---
 <?
-print_r($_COOKIE);
 ###############################################################
 #                                                             #
 # Community Applications copyright 2015-2019, Andrew Zawadzki #
@@ -135,11 +134,11 @@ var dockerSearchFlag = false;
 $(function(){
 
 
-	var startupButton = $.cookie("startup");
+/* 	var startupButton = $.cookie("startup");
 	if ( ! startupButton ) {
 		startupButton = "startuponlynew";
 	}
-	$("#"+startupButton).prop("disabled",true);
+	$("#"+startupButton).prop("disabled",true); */
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
@@ -254,92 +253,12 @@ $(function(){
 			});
 		}
 	});
-	$('.ca_section').tooltipster({
-		trigger: 'hover',
-		delay: [<?=$cfg['hoverTime']?>,<?=$cfg['hoverTime']?>],
-		animation: 'fade',
-		triggerClose: {mouseleave:true},
-		functionBefore: function(instance,helper){
-			instance.content("Select Section");
-		}
-	});
-	$('.ca_section').tooltipster({
-		multiple: true,
-		trigger: 'custom',
-		triggerOpen: {click:true,touchstart:true},
-		contentAsHTML: true,
-		animation: 'none',
-		distance: -15,
-		arrow: true,
-		triggerClose:{click:true,scroll:true,mouseleave:true},
-		interactive: true,
-		viewportAware: true,
-		functionBefore: function(instance,helper) {
-			var origin = $(helper.origin);
-			if ( !isIconEnabled(origin) ) {
-				var displayContent = null;
-			} else {
-				var currentSection = data.section;
-				$(".appButtons").prop("disabled",false);
-				$("#"+currentSection).prop("disabled",true);
-				var displayContent = $("#sections").html();
-			}
-			instance.content(displayContent);
-		},
-		functionReady: function(instance,helper) {
-			$(".appButtons").click(function() { $(this).prop("disabled",true); });
-		}
-	});
 
 	$('.categoryMenu').on("click",function() {
 		var selectedCategory = $(this).attr("data-category");
 		changeCategory(this,false);
 	});
 	
-	$('.ca_subcategories').tooltipster({
-		trigger: 'hover',
-		delay: [<?=$cfg['hoverTime']?>,<?=$cfg['hoverTime']?>],
-		animation: 'fade',
-		triggerClose: {mouseleave:true},
-		functionBefore: function(instance,helper){
-			if ( isIconEnabled("#subcategoryIcon") ) {
-				instance.content("Select Subcategory");
-			} else {
-				instance.content("No subcategories available to display");
-			}
-		}
-	});
-	$('.ca_subcategories').tooltipster({
-		trigger: 'custom',
-		triggerOpen: {click:true,touchstart:true},
-		contentAsHTML: true,
-		animation: 'none',
-		distance: -15,
-		arrow: true,
-		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
-		interactive: true,
-		viewportAware: true,
-		functionBefore: function(instance,helper) {
-			var origin = $(helper.origin);
-			if ( ! isIconEnabled(origin) ) {
-				var displayContent = null;
-			} else {
-				var currentSub = data.subcategory;
-				$(".allButtons").prop("disabled",false);
-				$("#"+data.selected_subcategory).prop("disabled",true);
-				var displayContent = $(currentSub).html();
-			}
-			instance.content(displayContent);
-		},
-		functionReady: function(instance,helper) {
-			$(".allButtons").click(function() {
-				$(this).prop("disabled",true);
-				data.selected_subcategory = this.id;
-				changeCategory(this,true);
-			});
-		}
-	});
-
 	$(".initDockerSearch").click(function()     { initDockerSearch(); });
 	$(".moduleButton").click(function()         { caModules(); });
 	$(".multi_installButton").click(function()  { installMulti(); });
@@ -415,9 +334,10 @@ function updateContent(button) {
 	var appFeedModeMsg = button ? "" : "Retrieving the latest application Lists";
 	startupScreen = $.cookie("startupButton") ? $.cookie("startupButton") : "onlynew";
 	
-	$(".caMenuItem[data-search='"+startupScreen+"']").addClass("selectedMenu")
-	startupScreen = button ? $(button).data("search") : startupScreen;
+	$(".caMenuItem[data-category='"+startupScreen+"']").addClass("selectedMenu")
+	startupScreen = button ? $(button).data("category") : startupScreen;
 	$.cookie("startupButton",startupScreen,{expires:365});
+	$.cookie("selectedMenu",startupScreen);
 	disableSearch();
 	mySpinner();
 	if ( appFeedModeMsg ) {
@@ -703,6 +623,7 @@ function doSearch(button,newSearch) {
 			enableButtons();
 			updateDisplay(data);
 			data.section = "AppStore";
+			$(".selectedMenu").removeClass("selectedMenu");
 		}
 	});
 }
@@ -978,22 +899,23 @@ function previousApps(button,installed) {
 	}
 
 	clearSearchBox();
-	$("#"+button).prop("disabled",true);
+/* 	$("#"+button).prop("disabled",true);
 	data.section = button;
-
+ */
 	$(".dockerSearch,#AppsOnly").hide();
 	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
 	enableIcon("#sortIcon",true);
 
-	if ( button == "OldApps" ) {
-		$("#Category").html("All Previously Installed Applications");
-	} else {
+	if ( installed ) {
 		$("#Category").html("All Installed Applications");
+	} else {
+		$("#Category").html("All Previously Installed Applications");
 	}
 
 	$.post(URL,{action:'previous_apps',installed:installed,fontSize:getFontSize()},function(data) {
 		if (data) {
 			changeSortOrder(null,null,"true");
+			saveState();
 		}
 	});
 }
@@ -1176,9 +1098,8 @@ function pinnedApps(button) {
 	setPageOne();
 	enableIcon("#categoryIcon, #subcategoryIcon",false);
 	data.docker = "";
-	$("#"+button).prop("disabled",true);
-	data.section = button;
-	clearSearchBox();
+/* 	data.section = button;
+ */	clearSearchBox();
 	$(".dockerSearch,#AppsOnly,.multi_installDiv").hide();
 	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
 	enableIcon("#sortIcon",true);
@@ -1369,7 +1290,12 @@ function saveState() {
 		$.cookie("categoryText",$("#Category").html());
 		$.cookie("data",JSON.stringify(data));
 		$.cookie("dockerSearchFlag",dockerSearchFlag);
-		$.cookie("selectedMenu",$(".selectedMenu").data("category"));
+		$.cookie("installMulti",$(".multi_installDiv").is(":visible"));
+		var selectedMenu = $(".selectedMenu").data("category");
+		if ( ! selectedMenu ) {
+			selectedMenu = "";
+		}
+		$.cookie("selectedMenu",selectedMenu);
 		$.cookie("sortIcon",isIconEnabled("#sortIcon"));
 
 		$(".sortButton").each(function() {
@@ -1387,15 +1313,22 @@ function saveState() {
 
 function restoreState() {
 	$("#Category").html($.cookie("categoryText"));
+	if ( $.cookie("installMulti") == "true" ) {
+		$(".multi_installDiv").show();
+	} else {
+		$(".multi_installDiv").hide();
+	}
 	data = JSON.parse($.cookie("data"));
 	dockerSearchFlag = $.cookie("dockerSearchFlag");
 	var selectedMenu = $.cookie("selectedMenu");
-	var menuItem = $.find(".caMenuItem[data-category='"+selectedMenu+"']");
-	$(".caMenuItem").each(function(){
-		$(this).removeClass("selectedMenu");
-	});
-	$(menuItem).addClass("selectedMenu");
-	$(menuItem).parent().show();
+	if ( selectedMenu ) {
+		var menuItem = $.find(".caMenuItem[data-category='"+selectedMenu+"']");
+		$(".caMenuItem").each(function(){
+			$(this).removeClass("selectedMenu");
+		});
+		$(menuItem).addClass("selectedMenu");
+		$(menuItem).parent().show();
+	}
 	enableIcon("#sortIcon",$.cookie("sortIcon"));
 	$(".sortButton").prop("disabled",false);
 	$(".dirButton").prop("disabled",false);
@@ -1444,7 +1377,6 @@ function getFontSize() {
 <div style='float:right;'><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>
 <br>
 
-<i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
 <strong><font size='3'><span id="Category"></span></strong><span id="Total1" style='display:none;';> (<span id="Total">0</span>)</span></font>
 </span><br>
@@ -1469,16 +1401,16 @@ function getFontSize() {
 <div style='position:absolute; left:0px;width:14rem;height:auto;' class='menuItems'>
 <div class='header'>MENU</div>
 <ul class='caMenu'>
-	<li class='caMenuItem'>Installed Apps</li>
-	<li class='caMenuItem'>Previous Apps</li>
-	<li class='caMenuItem'>Pinned Apps</li>
+	<li class='caMenuItem' onclick='previousApps(this.id,true);' data-category='installed_apps'>Installed Apps</li>
+	<li class='caMenuItem' onclick='previousApps(this.id,false);' data-category='previous_apps'>Previous Apps</li>
+	<li class='caMenuItem' onclick='pinnedApps(this.id);' data-category='pinned_apps'>Pinned Apps</li>
 </ul>
 <div class='header'>CATEGORIES</div>
 <ul class='caMenu'>
-	<li class='startupButton caMenuItem' data-search='onlynew'>New Apps</li>
-	<li class='startupButton caMenuItem' data-search='new'>Updated Apps</li>
-	<li class='startupButton caMenuItem' data-search='random'>Random Apps</li>
-	<li class='startupButton caMenuItem' data-search='trending'>Trending Apps</li>
+	<li class='startupButton caMenuItem' data-category='onlynew'>New Apps</li>
+	<li class='startupButton caMenuItem' data-category='new'>Updated Apps</li>
+	<li class='startupButton caMenuItem' data-category='random'>Random Apps</li>
+	<li class='startupButton caMenuItem' data-category='trending'>Trending Apps</li>
 </ul>
 <hr>
 <ul class='caMenu'>
@@ -1550,11 +1482,6 @@ Sort Direction:
 <input type='button' class='dirButton' id='Down' value='Descending'>
 </span></span>
 </div></div>
-<span id='sections' style='display:none;'>
-<input type='button' class='appButtons' id='InstalledApps' value='Installed Apps' onclick='previousApps(this.id,true);'></input>
-<input type='button' class='appButtons' id='OldApps' value='Previous Apps' onclick='previousApps(this.id,false);'></input>
-<input type='button' class='appButtons' id='PinnedApps' value='Pinned Apps' onclick='pinnedApps(this.id);'></input>
-</span>
 </span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
 <span id='debugging'></span>
