@@ -108,10 +108,8 @@ $(function(){
 	});
 	
 	$(".initDockerSearch").click(function()     { initDockerSearch(); });
-	$(".moduleButton").click(function()         { caModules(); });
 	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
-	$(".homeIcon").click(function()             { appStore(); });
 	$(".startupButton").click(function()				{ updateContent(this); });
 	initilizeMenu();
 	$("#sortIcon").click(function() {
@@ -152,7 +150,7 @@ $(function(){
 				var leftMargin = getWindowWidth();
 				$("#searchFilter,.menuItems").hide();
 				$("#appWarningForm").css("width",leftMargin);
-				$("#homeIcon,#sectionIcon,#categoryIcon,#subcategoryIcon,#sortIcon,.topRightLinks,.ca_appPopup").hide();
+				$(".topRightLinks,.ca_appPopup").hide();
 				$("#templates_content").html($("#appWarningForm").html());
 			}
 		});
@@ -349,7 +347,6 @@ function stopStartContainer(container,stopStart) {
 
 function showSpecialCategory(button) {
 	$(".multi_installDiv").hide();
-	enableIcon("#categoryIcon,#subcategoryIcon",true);
 	data.selected_category = "DOESNTMATTERWHATSHERE";
 	data.section = "AppStore";
 	changeCategory(button,false);
@@ -361,6 +358,7 @@ function changeCategory(button,subSwitch) {
 	clearSearchBox();
 	hideSortIcons();
 	clearCategory();
+	$(".multi_installDiv").hide();
 
 	getContent(false,category,description,false);
 }
@@ -371,7 +369,6 @@ function changePage(pageNumber) {
 	var selected = data.selected;
 	data.currentpage = pageNumber;
 
-//	$('html,body').animate({scrollTop:0},500);
 	mySpinner();
 	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
 		if (data3) {
@@ -392,10 +389,7 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	disableTooltipster();
 	disableSearch();
 	var backgroundColor = ( ! textdescription && textimage ) ? "transparent" : "white";
-/* 	if ( textimage ) {
-		textdescription = textdescription + "<br><br><center><i class='fa fa-spinner fa-spin' style='font-size:"+imagesize+"px;color:#DEB887;' aria-hidden='true'></i></center>";
-		$("div.spinner").show();
-	} */
+
 	swal({
 		title: description,
 		text: textdescription,
@@ -450,7 +444,6 @@ function doSearch(button,newSearch) {
 	filter = myTrim(filter);
 	$('#searchBox').val(filter);
 	$(".multi_installDiv").hide();
-	$("#templates_content,#AppsOnly").show();
 
 	if ($('#searchButton').hasClass('fa-search')) {
 		if (filter) {
@@ -465,15 +458,10 @@ function doSearch(button,newSearch) {
 		}
 	}
 
-	$("#Total1").show();
 	if (filter) {
 		$("#Category").html(" Search Results for <font color='<?=$unRaid66color?>'>"+filter+"</font>");
 	}
 
-	$("#sortButtons,#MainCategory").show();
-	enableIcon("#sortIcon,#categoryIcon",true);
-	enableIcon("#subcategoryIcon",false);
-	$("#NetworkCategory,#MediaAppCategory,#MediaServerCategory,#NONE,#ToolsCategory").hide();
 	window.scrollTo(0,0);
 	if ( !filter ) {
 		updateContent();
@@ -504,7 +492,6 @@ function enableTooltipster() {
 
 function forceUpdate() {
 	$("#Category").html("");
-	$("#Total").html("Updating...");
 	clearSearchBox();
 	$.post(URL,{action:'force_update'},function(data){
 		if (data) {
@@ -582,7 +569,6 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		enableIcon("#sortIcon",true);
 		mySpinner();
 	}
-	$("#sortButtons,#Total1").show();
 	var windowWidth = getWindowWidth();
 
 	if ( category != "NONE" ) {
@@ -591,7 +577,6 @@ function getContent(init,category,description,newApp,startupDisplay) {
 			category = "NONE";
 			initialize = true;
 			enableButtons();
-			$("#Total1").hide();
 		}
 		if ( (category == "New") || (category == "All") ) { category = ""; }
 
@@ -599,8 +584,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 
 		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize(),startupDisplay:startupDisplay},function(data) {
 			if (data) {
-/* 				$("#Category").html(description);
- */				updateDisplay(data);
+ 				updateDisplay(data);
 
 				if ( initialize ) {
 					populateAutoComplete();
@@ -638,7 +622,6 @@ function initDockerSearch() {
 	data.docker = "searching docker";
 	data.section = "";
 	data.selected_category = "";
-	enableIcon("#categoryIcon,#subcategoryIcon",false);
 }
 
 function dockerSearch(pageNumber) {
@@ -646,7 +629,6 @@ function dockerSearch(pageNumber) {
 	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
 	var windowWidth = getWindowWidth();
 	data.docker = "searching docker";
-	$("#AppsOnly,#New,#UNCATEGORIZED,#All,#sortButtons").show();
 	enableIcon("#sortIcon",false);
 	$(".dockerSearch,.multi_installDiv").hide();
 	$("#Category").html("DockerHub Search Results For <font color='<?=$unRaid66color?>'>"+filter+"</font> <span id='pageNumber'></span>");
@@ -661,14 +643,11 @@ function dockerSearch(pageNumber) {
 
 function dockerConvert(dockerID) {
 	mySpinner();
-	totalDisplayed = $("#Total").html();
-	$("#Total").html("Converting...");
 	$.post(URL,{action:'convert_docker',ID:dockerID},function(data) {
 		if (data) {
 			myCloseAlert();
 			templateURL = "Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
 			window.open(templateURL,"_self");
-			$("#Total").html(totalDisplayed);
 		}
 	});
 }
@@ -712,15 +691,8 @@ function previousApps(button,installed) {
 
 	clearSearchBox();
 
-	$(".dockerSearch,#AppsOnly").hide();
-	$("#templates_content,#sortButtons,#Total1").show();
+	$(".dockerSearch").hide();
 	enableIcon("#sortIcon",true);
-
-/* 	if ( installed ) {
-		$("#Category").html("All Installed Applications");
-	} else {
-		$("#Category").html("All Previously Installed Applications");
-	} */
 
 	$.post(URL,{action:'previous_apps',installed:installed,fontSize:getFontSize()},function(data) {
 		if (data) {
@@ -862,11 +834,9 @@ function appStore() {
 }
 
 function initializeAppStore() {
-	enableIcon("#categoryIcon",true);
 	data.section = "AppStore";
 	data.selected_category = "";
-	$("#NetworkCategory,#MediaAppCategory,#MediaServerCategory,#ToolsCategory,#NONE,.multi_installDiv").hide();
-	$("#AppsOnly,#templates_content,#MainCategory").show();
+	$(".multi_installDiv").hide();
 }
 function installPLGupdate(filename,plgName) {
 	$(".ca_appPopup").tooltipster('close');
@@ -912,8 +882,7 @@ function pinnedApps(button) {
 	data.docker = "";
 	clearSearchBox();
 	clearCategory();
-	$(".dockerSearch,#AppsOnly,.multi_installDiv").hide();
-	$("#templates_content,#sortButtons,#Total1").show();
+	$(".dockerSearch,.multi_installDiv").hide();
 	enableIcon("#sortIcon",true);
  	$.post(URL,{action:'pinnedApps'},function(data) {
 		if (data) {
@@ -1089,9 +1058,7 @@ function updateDisplay(data) {
 		}
 	});
 	
-
 	setToolTip();
-	
 	enableSearch();
 	saveState();
 }

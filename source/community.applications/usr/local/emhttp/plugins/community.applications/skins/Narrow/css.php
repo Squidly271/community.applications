@@ -20,7 +20,7 @@
 	$linkColor = "#486dba";
 	$startupColor = $unRaid66 ? "#FF8C2F" : "purple";
 ?>
-.sortIcons {font-size:2.3rem;margin-right:20px;}
+.sortIcons {font-size:2.3rem;margin-right:20px;cursor:pointer;}
 ul.caMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;cursor:pointer;font-size:1.5rem;}
 li.caMenuItem {padding:0px 0px 5px 0px;}
 ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer;display:none;}
@@ -112,7 +112,7 @@ i.displayIcon {font-size:8rem;color:#626868;}
 .startupMessage{font-size:2.5rem;}
 .startupMessage2{font-size:1rem;}
 .donate {background: #E68321;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;  -webkit-transition: all 800ms;  transition: all 800ms;  }
-
+a.donate {text-decoration:none;font-style:italic;}
 <?if ( $theme == "azure" ):?>
 .searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:#DADADA;border:none;cursor:pointer;}
 #searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;background-color:#DDDADF;}

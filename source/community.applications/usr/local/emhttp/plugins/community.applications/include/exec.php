@@ -544,12 +544,10 @@ case 'search_dockerhub':
 	$pageresults = json_decode($jsonPage,true);
 	$num_pages = $pageresults['num_pages'];
 
-	echo "<script>$('#Total').html(".$pageresults['num_results'].");</script>";
-
 	if ($pageresults['num_results'] == 0) {
 		echo "<center>No matching content found on dockerhub</center>";
 		echo suggestSearch($filter,true);
-		echo "<script>$('#dockerSearch').hide();$('#Total').html('0');</script>";
+		echo "<script>$('#dockerSearch').hide();</script>";
 		@unlink($communityPaths['dockerSerchResults']);
 		break;
 	}
