@@ -290,50 +290,6 @@ $(function(){
 		}
 	});
 
-	$('.ca_categories').tooltipster({
-		trigger: 'hover',
-		delay: [<?=$cfg['hoverTime']?>,<?=$cfg['hoverTime']?>],
-		animation: 'fade',
-		triggerClose: {mouseleave:true},
-		functionBefore: function(instance,helper){
-			if ( isIconEnabled("#categoryIcon") ) {
-				instance.content("Select Category");
-			} else {
-				instance.content("No categories available to display");
-			}
-		}
-	});
-	$('.ca_categories').tooltipster({
-		multiple: true,
-		trigger: 'custom',
-		triggerOpen: {click:true,touchstart:true},
-		contentAsHTML: true,
-		animation: 'none',
-		distance: -15,
-		arrow: true,
-		triggerClose:{click:true,scroll:true,mouseleave:true,delay:1},
-		interactive: true,
-		viewportAware: true,
-		functionBefore: function(instance,helper) {
-			var origin = $(helper.origin);
-			if ( ! isIconEnabled(origin) ) {
-				var displayContent = null;
-			} else {
-				$(".allButtons").prop("disabled",false);
-				$("#"+data.selected_category).prop("disabled",true);
-				var displayContent = $("#MainCategory").html();
-			}
-			instance.content(displayContent);
-		},
-		functionReady: function(instance,helper) {
-			$(".allButtons").click(function() {
-				$(this).prop("disabled",true);
-				data.selected_category = this.id;
-				changeCategory(this,false);
-			});
-		}
-	});
-
 	$('.categoryMenu').on("click",function() {
 		var selectedCategory = $(this).attr("data-category");
 		changeCategory(this,false);
@@ -452,19 +408,15 @@ function initilizeMenu() {
 }
 
 function updateContent(button) {
-	var startupScreen;
-	if (! button) {
-		var appFeedModeMsg = "Retrieving the latest application Lists";
-		$(".startupButton").each(function() {
-			if ( $(this).prop("disabled") ) {
-				button = this;
-			}
-		});
-	} else {
-		var appFeedModeMsg = "";
-	}
-	$(button).prop("disabled",true);
-	startupScreen = $(button).data("search");
+	$(".caMenuItem").each(function() {
+		$(this).removeClass("selectedMenu");
+	});
+	var appFeedModeMsg = button ? "" : "Retrieving the latest application Lists";
+	startupScreen = $.cookie("startupButton") ? $.cookie("startupButton") : "onlynew";
+	
+	$(".caMenuItem[data-search='"+startupScreen+"']").addClass("selectedMenu")
+	startupScreen = button ? $(button).data("search") : startupScreen;
+	$.cookie("startupButton",startupScreen,{expires:365});
 	disableSearch();
 	mySpinner();
 	if ( appFeedModeMsg ) {
@@ -483,11 +435,6 @@ function updateContent(button) {
 				} else {
 					forceSortOrder("#Date","#Down");
 					getContent(true,'INITIALIZE','None Selected',"",startupScreen);
-					$.post(URL,{action:'getCurrentServer'},function(currentServer) {
-						if (currentServer) {
-							$("#currentServer").html(myTrim(currentServer));
-						}
-					});
 				}
 			}
 		}
@@ -800,7 +747,6 @@ function enableTooltipster() {
 }
 
 function forceUpdate() {
-	$("#updateButton").prop("disabled",true);
 	$("#Category").html("");
 	$("#Total").html("Updating...");
 	clearSearchBox();
@@ -951,9 +897,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 
 		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize(),startupDisplay:startupDisplay},function(data) {
 			if (data) {
-				description = "Category: <font color='<?=$unRaid66color?>'>"+description+"</font>";
 				$("#Category").html(description);
-				$("#updateButton").prop("disabled",false);
 				updateDisplay(data);
 
 				if ( initialize ) {
@@ -1529,13 +1473,10 @@ function getFontSize() {
 </script>
 <div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </p></div>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
-<div style='float:right;'><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><a href='/Apps/ca_settings' target='_self' class='ca_staticTips topRightLinks' title='Adjust Settings'>CA Settings</a><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>
+<div style='float:right;'><a class='ca_stats topRightLinks' title='Gathering Statistics' style='cursor:pointer;'>Statistics</a><a class='ca_credits topRightLinks' style='cursor:pointer'>Credits</a><span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>
 <br>
 
-<i id='.homeIcon' class='fa fa-home enabledIcon ca_staticTips' aria-hidden='true' title='Home'></i>&nbsp;
 <i id='sectionIcon' class='fa fa-list-ul ca_section enabledIcon' aria-hidden='true'></i>&nbsp;
-<i id='categoryIcon' class='fa fa-folder ca_categories enabledIcon' aria-hidden='true'></i>&nbsp;
-<i id='subcategoryIcon' class='fa fa-folder-open ca_subcategories disabledIcon' aria-hidden='true'></i>&nbsp;
 <i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
 <strong><font size='3'><span id="Category"></span></strong><span id="Total1" style='display:none;';> (<span id="Total">0</span>)</span></font>
 </span><br>
@@ -1607,7 +1548,7 @@ function getFontSize() {
 	<li class='categoryMenu caMenuItem' data-category='productivity'>Productivity</li>
 	<li class='categoryMenu caMenuItem' data-category='tools'>Tools / Utilities</li>
 	<ul class='subCategory'>
-		<li class='categoryMenu caMenuItem' data=category='Tools:system'>System</li>
+		<li class='categoryMenu caMenuItem' data-category='Tools:system'>System</li>
 	</ul>
 	<li class='categoryMenu caMenuItem' data-category='other'>Other</li>
 	<li class='categoryMenu caMenuItem' data-category='plugins'>Plugins</li>
@@ -1619,15 +1560,13 @@ function getFontSize() {
 	<li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'>Settings</a></li>
 	<li class='caMenuItem'>Statistics</li>
 	<li class='caMenuItem'>Credits</li>
+	<li class='caMenuItem' onclick='window.location="https://forums.unraid.net/topic/38582-plug-in-community-applications/"'>Support</li>
 </ul>
 <br><br><br>
 </div>
 <div style='position:absolute;left:14.5rem;right:0px; display:block;' id='templates_content'></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 </center>
-<center><a href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank'>Support Thread</a></center><br>
-<center>Community Applications Version: <?=$installedVersion?>  <i class='ca_appPopup fa fa-info-circle' data-appPath='ca' style='cursor:pointer;font-size:1.5rem;color:lightblue;'></i><span id='currentServer'></span></center></div>
-
 <span id='miscScript'></span><span id='awesomepleteScript'></span>
 <div>
 <div id='tooltipviews' style='display:none;'>
@@ -1648,55 +1587,6 @@ Sort Direction:
 <input type='button' class='appButtons' id='OldApps' value='Previous Apps' onclick='previousApps(this.id,false);'></input>
 <input type='button' class='appButtons' id='PinnedApps' value='Pinned Apps' onclick='pinnedApps(this.id);'></input>
 </span>
-<div style='display:none;'>
-<span id='MainCategory'>
-<input class='allButtons' type=button id='backup' value='Backup'></input>
-<input class='allButtons' type=button id='cloud' value='Cloud'></input>
-<input class='allButtons' type=button id='downloaders' value='Downloaders'></input>
-<input class='allButtons' type=button id='HomeAutomation' value='Home Automation'></input>
-<input class='allButtons' type=button id='networkALL' value='Network Services'></input>
-<input class='allButtons' type=button id='mediaappALL' value='Media Applications'></input>
-<input class='allButtons' type=button id='mediaserverALL' value='Media Servers'></input>
-<input class='allButtons' type=button id='productivity' value='Productivity'></input>
-<input class='allButtons' type=button id='toolsALL' value='Tools/Utilities'></input>
-<input class='allButtons' type=button id='other' value='Other'></input>
-<input class='allButtons' type=button id='Plugins' value='Plugins'></input>
-&nbsp;&nbsp;&nbsp;&nbsp;
-<input class='allButtons' type=button id="New" value='New/Updated'></input>
-<input class='allButtons' type=button id="All" value='All Apps'></input>
-</span>
-<span id='NetworkCategory'>
-<input class='allButtons' type=button id='networkweb' value='Web Servers'></input>
-<input class='allButtons' type=button id='networkdns' value='DNS Clients / Servers'></input>
-<input class='allButtons' type=button id='networkftp' value='FTP Clients / Servers'></input>
-<input class='allButtons' type=button id='networkproxy' value='Proxies'></input>
-<input class='allButtons' type=button id='networkvoip' value='VOIP'></input>
-<input class='allButtons' type=button id='networkmanagement' value='Management / Analyzer'></input>
-<input class='allButtons' type=button id='networkmessenger' value='Messengers'></input>
-<input class='allButtons' type=button id='networkother' value='Other'></input>
-<input class='allButtons' type=button id='network' value='All Network Services'></input>
-</span>
-<span id='MediaAppCategory'>
-<input class='allButtons' type=button id='MediaAppVideo' value='Video'></input>
-<input class='allButtons' type=button id='MediaAppMusic' value='Music'></input>
-<input class='allButtons' type=button id='MediaAppBooks' value='Books / Comics'></input>
-<input class='allButtons' type=button id='MediaAppPhotos' value='Photos'></input>
-<input class='allButtons' type=button id='MediaAppOther' value='Other'></input>
-<input class='allButtons' type=button id='MediaApp' value='All Media Applications'></input>
-</span>
-<span id='MediaServerCategory'>
-<input class='allButtons' type=button id='MediaServerVideo' value='Video'></input>
-<input class='allButtons' type=button id='MediaServerMusic' value='Music'></input>
-<input class='allButtons' type=button id='MediaServerBooks' value='Books / Comics'></input>
-<input class='allButtons' type=button id='MediaServerPhotos' value='Photos'></input>
-<input class='allButtons' type=button id='MediaServerOther' value='Other'></input>
-<input class='allButtons' type=button id='MediaServer' value='All Media Server'></input>
-</span>
-<span id='ToolsCategory'>
-<input class='allButtons' type=button id='toolssystem' value='System Tools'></input>
-<input class='allButtons' type=button id='tools' value='All Tools/Utilities'></input>
-</span>
-</div>
 </span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
 <span id='debugging'></span>
