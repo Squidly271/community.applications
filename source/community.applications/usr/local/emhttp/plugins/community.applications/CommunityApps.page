@@ -188,7 +188,7 @@ function initilizeMenu() {
 		$(".subCategory").hide();
 		$(this).parent().show();
 		$(this).addClass("selectedMenu");
-		$(this).next().show();
+		$(this).next().show("slow");
 	});
 }
 
@@ -1170,38 +1170,6 @@ function showStatistics() {
 </script>
 <div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </p></div>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
-<div style='float:right;'>
-<span id='sortIconArea' style='display:none;'>
-<i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i>
-<i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name' data-sort='nameDown'></i>
-<i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i>
-<i class='sortIcons fa fa-sort-numeric-asc ca_staticTips' title='Sort By Downloads' data-sort='downloadsUp'></i>
-<i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i>
-<i class='sortIcons fa fa-sort-amount-asc ca_staticTips' title='Sort By Trend' data-sort='trendUp'></i>
-</span>
-<i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
-<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>
-</div>
-<br>
-
-<strong><font size='3'><span id="Category"></span></strong></font>
-</span><br>
-
-> <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps)<br>
-> <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This selects a category of apps to display<br>
-> <i class='fa fa-folder-open enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - When available, this selects a subcategory of apps to display<br>
-> <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
-> <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
-> <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> - Clicking this icon will take you to an application's GUI<br>
-> <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> - Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>
-> <span class='unpinned'> </span><span class='pinned'></span> Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br>
-> <br>Hovering over an application's icon (or clicking it) will display more information about the application<br>
-> <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
-> <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
-
-<?if ( $upgradeAvailable ) :?>
-<span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</center></font></span>
-<?endif;?>
 <div style='position:absolute; left:0px;width:14rem;height:auto;' class='menuItems'>
 <div class='menuHeader'>MENU</div>
 <ul class='caMenu'>
@@ -1266,10 +1234,43 @@ function showStatistics() {
 	<li class='caMenuItem' onclick='window.location="https://forums.unraid.net/topic/38582-plug-in-community-applications/"'>Support</li>
 </ul>
 <br><br><br>
+</div><div style='float:right;'>
+<span id='sortIconArea' style='display:none;'>
+<i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i>
+<i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name' data-sort='nameDown'></i>
+<i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i>
+<i class='sortIcons fa fa-sort-numeric-asc ca_staticTips' title='Sort By Downloads' data-sort='downloadsUp'></i>
+<i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i>
+<i class='sortIcons fa fa-sort-amount-asc ca_staticTips' title='Sort By Trend' data-sort='trendUp'></i>
+</span>
+<i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
+<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>
 </div>
+<br>
+
+
+</span><br>
+
+> <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps)<br>
+> <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This selects a category of apps to display<br>
+> <i class='fa fa-folder-open enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - When available, this selects a subcategory of apps to display<br>
+> <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
+> <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
+> <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> - Clicking this icon will take you to an application's GUI<br>
+> <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> - Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>
+> <span class='unpinned'> </span><span class='pinned'></span> Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br>
+> <br>Hovering over an application's icon (or clicking it) will display more information about the application<br>
+> <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
+> <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
+
+<?if ( $upgradeAvailable ) :?>
+<span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</center></font></span>
+<?endif;?>
+
 <div style='position:absolute;left:14.5rem;right:0px; display:block;'>
-<div class='dockerSearch' style='display:none'><center><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></center></div>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
+<strong><font size='3'><span id="Category"></span></strong></font>
+<div class='dockerSearch' style='display:none'><center><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></center></div>
 <div id='templates_content'></div>
 <div style='width:100%; display:none; padding-bottom:100px;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 </div>
