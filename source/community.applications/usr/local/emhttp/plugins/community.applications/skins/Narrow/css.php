@@ -101,7 +101,6 @@ i.displayIcon {font-size:8rem;color:#626868;}
 .ca_stat {color:coral; font-size:1.5rem;}
 .ca_credit { padding:.5rem 0 1rem 0; font-size:2rem;line-height:3rem;}
 .ca_dateUpdated {font-weight:bold;text-align:center;}
-.ca_dateUpdated {font-weight:bold;text-align:center;}
 .ca_dateUpdated::before {content:"Date Updated: ";}
 .ca_dateAdded {font-weight:bold;text-align:center;}
 .ca_dateAdded::before {content:"Dated Added: ";}
@@ -112,21 +111,8 @@ i.displayIcon {font-size:8rem;color:#626868;}
 .searchSubmit{height:3.4rem;}
 .startupMessage{font-size:2.5rem;}
 .startupMessage2{font-size:1rem;}
-.donate {
-  background: #E68321;
-  background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),
-              -webkit-linear-gradient(left, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);
-  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),
-              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);
-  background-position: 0 0;
-  background-size: 200% 100%;
-  border-radius: 15px;
-  color: #fff;
-  padding: 1px 10px 1px 10px;
-  text-shadow: 1px 1px 5px #666;
-  -webkit-transition: all 800ms;
-  transition: all 800ms;
-  }
+.donate {background: #E68321;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;  -webkit-transition: all 800ms;  transition: all 800ms;  }
+
 <?if ( $theme == "azure" ):?>
 .searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:#DADADA;border:none;cursor:pointer;}
 #searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;background-color:#DDDADF;}
