@@ -38,83 +38,6 @@ var last = $('input[name$="tabs"]').length;
 var searchBoxInput;
 var searchBoxAwesomplete;
 
-var categorySub = {
-	backup:"backup:",
-	cloud:"cloud:",
-	downloaders:"downloaders:",
-	HomeAutomation:"HomeAutomation:",
-	networkALL:"network:",
-	mediaappALL:"MediaApp:",
-	mediaserverALL:"MediaServer:",
-	productivity:"productivity:",
-	toolsALL:"tools:",
-	other:"other:",
-	Plugins:"Plugins:",
-	networkweb:"Network:web",
-	networkdns:"Network:DNS",
-	networkftp:"Network:FTP",
-	networkproxy:"network:proxy",
-	networkvoip:"Network:VOIP",
-	networkmanagement:"Network:Management",
-	networkmessenger:"Network:Messenger",
-	networkother:"Network:Other",
-	MediaServerVideo:"MediaServer:Video",
-	MediaServerMusic:"MediaServer:Music",
-	MediaServerBooks:"MediaServer:Books",
-	MediaServerPhotos:"MediaServer:Photos",
-	MediaServerOther:"MediaServer:Other",
-	MediaAppVideo:"MediaApp:Video",
-	MediaAppMusic:"MediaApp:Music",
-	MediaAppBooks:"MediaApp:Books",
-	MediaAppPhotos:"MediaApp:Photos",
-	MediaAppOther:"MediaApp:Other",
-	tools:"Tools:",
-	toolssystem:"Tools:System",
-	NONE:"NONE",
-	New:"New",
-	UNCATEGORIZED:"UNCATEGORIZED",
-	All:"All",
-	PRIVATE:"PRIVATE",
-	DEPRECATED:"DEPRECATED",
-	BLACKLIST:"BLACKLIST",
-	NOSUPPORT:"NOSUPPORT",
-	INCOMPATIBLE:"INCOMPATIBLE"
-	};
-
-var categoryDesc = {
-	mediaappALL:"All Media Applications",
-	mediaserverALL:"All Media Servers",
-	networkALL:"All Network Services",
-	toolsALL:"All Tools / Utilities",
-	networkweb:"Network Services: Web Servers",
-	networkdns:"Network Services: DNS Clients / Servers",
-	networkftp:"Network Services: FTP Clients / Servers",
-	networkproxy:"Network Services: Proxies",
-	networkvoip:"Network Services: Voice Over IP",
-	networkmanagement:"Network Services: Management / Analyzers",
-	networkmessenger:"Network Services: Messengers",
-	networkother:"Network Services: Other",
-	MediaServerVideo:"Media Servers: Video",
-	MediaServerMusic:"Media Servers: Music",
-	MediaServerBooks:"Media Servers: Books",
-	MediaServerPhotos:"Media Servers: Photos",
-	MediaServerOther:"Media Servers: Other",
-	MediaAppVideo:"Media Applications: Video",
-	MediaAppMusic:"Media Applications: Music",
-	MediaAppBooks:"Media Applications: Books",
-	MediaAppPhotos:"Media Applications: Photos",
-	MediaAppOther:"Media Applications: Other",
-	toolssystem:"Tools: System",
-	NONE:"",
-	New:"New / Updated Applications (<font size='0'>Note: not all maintainers properly tag their apps with the date</font>)",
-	UNCATEGORIZED: "All Uncategorized Applications",
-	All: "All Available Applications",
-	PRIVATE:"All private applications",
-	DEPRECATED:"All Deprecated Applications",
-	BLACKLIST:"All Blacklisted Applications",
-	NOSUPPORT:"All Applications with no support thread",
-	INCOMPATIBLE: "All Incompatible Applications"
-	};
 
 var data = new Object();
 data.oldWindowWidth = getWindowWidth();
@@ -131,11 +54,6 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
-/* 	var startupButton = $.cookie("startup");
-	if ( ! startupButton ) {
-		startupButton = "startuponlynew";
-	}
-	$("#"+startupButton).prop("disabled",true); */
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
@@ -249,6 +167,15 @@ $(function(){
 	}
 });
 
+function disableSort() {
+	hideSortIcons();
+	enableIcon("#sortIcon",false);
+}
+
+function hideSortIcons() {
+	$("#sortIconArea").hide("slow");
+}
+
 function initilizeMenu() {
 	$(".caMenuItem").on("mouseover",function() {
 		$(this).addClass("hoverMenu");
@@ -268,6 +195,7 @@ function initilizeMenu() {
 }
 
 function updateContent(button) {
+	hideSortIcons();
 	$(".caMenuItem").each(function() {
 		$(this).removeClass("selectedMenu");
 	});
@@ -431,16 +359,8 @@ function changeCategory(button,subSwitch) {
 	var description = $(button).text();
 	var category = $(button).attr("data-category");
 	clearSearchBox();
-
-	$('.allButtons').prop('disabled', false);
-	$(button).prop("disabled",true);
-
-	if ( typeof categorySub[button.id] !== "undefined" ) {
-		category = categorySub[button.id];
-	}
-	if ( typeof categoryDesc[button.id] !== "undefined" ) {
-		description = categoryDesc[button.id];
-	}
+	hideSortIcons();
+	clearCategory();
 
 	getContent(false,category,description,false);
 }
@@ -511,6 +431,9 @@ function readMore() {
 
 function doSearch(button,newSearch) {
 	var windowWidth = getWindowWidth();
+	
+	hideSortIcons();
+	
 	if ( ! newSearch === false ) {
 		$('#searchBox').val(newSearch);
 	}
@@ -527,7 +450,7 @@ function doSearch(button,newSearch) {
 	filter = myTrim(filter);
 	$('#searchBox').val(filter);
 	$(".multi_installDiv").hide();
-	$("#templates_content,#AppsOnly,#templateSortButtons").show();
+	$("#templates_content,#AppsOnly").show();
 
 	if ($('#searchButton').hasClass('fa-search')) {
 		if (filter) {
@@ -725,7 +648,7 @@ function dockerSearch(pageNumber) {
 	data.docker = "searching docker";
 	$("#AppsOnly,#New,#UNCATEGORIZED,#All,#sortButtons").show();
 	enableIcon("#sortIcon",false);
-	$(".dockerSearch,#templateSortButtons,.multi_installDiv").hide();
+	$(".dockerSearch,.multi_installDiv").hide();
 	$("#Category").html("DockerHub Search Results For <font color='<?=$unRaid66color?>'>"+filter+"</font> <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
 	mySpinner();
@@ -776,8 +699,9 @@ function showModeration(script,title) {
 }
 
 function previousApps(button,installed) {
+	hideSortIcons();
+	clearCategory();
 	setPageOne();
-	enableIcon("#categoryIcon, #subcategoryIcon",false);
 	data.docker = "";
 	if ( installed ) {
 		$(".multi_installDiv").hide();
@@ -787,11 +711,9 @@ function previousApps(button,installed) {
 	}
 
 	clearSearchBox();
-/* 	$("#"+button).prop("disabled",true);
-	data.section = button;
- */
+
 	$(".dockerSearch,#AppsOnly").hide();
-	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
+	$("#templates_content,#sortButtons,#Total1").show();
 	enableIcon("#sortIcon",true);
 
 /* 	if ( installed ) {
@@ -981,17 +903,19 @@ function setPageOne() {
 	data.currentpage = 1;
 }
 
+function clearCategory() {
+	$("#Category").html("");
+}
 function pinnedApps(button) {
 	setPageOne();
-	enableIcon("#categoryIcon, #subcategoryIcon",false);
+	hideSortIcons();
 	data.docker = "";
-/* 	data.section = button;
- */	clearSearchBox();
+	clearSearchBox();
+	clearCategory();
 	$(".dockerSearch,#AppsOnly,.multi_installDiv").hide();
-	$("#templates_content,#sortButtons,#Total1,#templateSortButtons").show();
+	$("#templates_content,#sortButtons,#Total1").show();
 	enableIcon("#sortIcon",true);
-/* 	$("#Category").html("All Pinned Applications");
- */	$.post(URL,{action:'pinnedApps'},function(data) {
+ 	$.post(URL,{action:'pinnedApps'},function(data) {
 		if (data) {
 			refreshDisplay();
 			myCloseAlert();
@@ -1184,14 +1108,9 @@ function saveState() {
 		$.cookie("selectedMenu",selectedMenu);
 		$.cookie("sortIcon",isIconEnabled("#sortIcon"));
 
-		$(".sortButton").each(function() {
-			if ( $(this).prop("disabled") ) {
-				$.cookie("sortButton",this.id);
-			}
-		});
-		$(".dirButton").each(function() {
-			if ( $(this).prop("disabled") ) {
-				$.cookie("dirButton",this.id);
+		$(".sortIcons").each(function() {
+			if ( isIconEnabled(this) ) {
+				$.cookie("sortButton",$(this).data("sort"));
 			}
 		});
 	}
@@ -1216,10 +1135,13 @@ function restoreState() {
 		$(menuItem).parent().show();
 	}
 	enableIcon("#sortIcon",$.cookie("sortIcon"));
-	$(".sortButton").prop("disabled",false);
-	$(".dirButton").prop("disabled",false);
-	$("#"+$.cookie("sortButton")).prop("disabled",true);
-	$("#"+$.cookie("dirButton")).prop("disabled",true);
+	$(".sortIcons").each(function() {
+		$(this).removeClass("enabledIcon");
+	});
+	var selectedSort = $.cookie("sortButton");
+	var sortIcon = $.find(".sortIcons[data-sort='"+selectedSort+"']");
+	$(sortIcon).addClass("enabledIcon");
+
 	if ( $("#Category").text() == "Category: None Selected" ) {
 		updateContent();
 	}
@@ -1259,7 +1181,7 @@ function getFontSize() {
 
 function showCredits() {
 	$(".multi_installDiv,.dockerSearch").hide();
-	$("#Category").html("");
+	clearCategory();
 	$.post(URL,{action:'showCredits'},function(data) {
 		if (data) {
 			$("#templates_content").html(data);
@@ -1269,7 +1191,7 @@ function showCredits() {
 
 function showStatistics() {
 	$(".multi_installDiv,.dockerSearch").hide();
-	$("#Category").html("");
+	clearCategory();
 	$("#templates_content").html("<center>Gathering Statistics</center>");
 	$.post(URL,{action:'statistics'},function(data) {
 		if (data) {
@@ -1283,12 +1205,12 @@ function showStatistics() {
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
 <div style='float:right;'>
 <span id='sortIconArea' style='display:none;'>
-<i class='sortIcons fa fa-sort-alpha-asc enabledIcon' data-sort='nameUp'></i>
-<i class='sortIcons fa fa-sort-alpha-desc' data-sort='nameDown'></i>
-<i class='sortIcons fa fa-sort-numeric-desc' data-sort='downloadsDown'></i>
-<i class='sortIcons fa fa-sort-numeric-asc' data-sort='downloadsUp'></i>
-<i class='sortIcons fa fa-sort-amount-desc' data-sort='trendDown'></i>
-<i class='sortIcons fa fa-sort-amount-asc' data-sort='trendUp'></i>
+<i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i>
+<i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name' data-sort='nameDown'></i>
+<i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i>
+<i class='sortIcons fa fa-sort-numeric-asc ca_staticTips' title='Sort By Downloads' data-sort='downloadsUp'></i>
+<i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i>
+<i class='sortIcons fa fa-sort-amount-asc ca_staticTips' title='Sort By Trend' data-sort='trendUp'></i>
 </span>
 <i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' style='font-size:2.3rem; position:relative;top:-0.2rem;' aria-hidden='true'></i>&nbsp;
 <span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>
@@ -1372,8 +1294,8 @@ function showStatistics() {
 <div class='menuHeader'>OTHER</div>
 <ul class='caMenu'>
 	<li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'>Settings</a></li>
-	<li class='caMenuItem' onclick='showStatistics();'>Statistics</li>
-	<li class='caMenuItem' onclick='showCredits();'>Credits</li>
+	<li class='caMenuItem' onclick='disableSort();showStatistics();'>Statistics</li>
+	<li class='caMenuItem' onclick='disableSort();showCredits();'>Credits</li>
 	<li class='caMenuItem' onclick='window.location="https://forums.unraid.net/topic/38582-plug-in-community-applications/"'>Support</li>
 </ul>
 <br><br><br>
@@ -1386,21 +1308,6 @@ function showStatistics() {
 </div>
 </center>
 <span id='miscScript'></span><span id='awesomepleteScript'></span>
-<div>
-<div id='tooltipviews' style='display:none;'>
-<span id='templateSortButtons'>Sort By:
-<input type='button' class='sortButton' id='Name' value='Name' disabled>
-<input type='button' class='sortButton' id='RepoName' value='Repository'>
-<input type='button' class='sortButton' id='Downloads' value='Downloads'>
-<input type='button' class='sortButton' id='Author' value='Author'>
-<input type='button' class='sortButton' id='Trending' value='Trending'>
-<span id='dateButton' hidden><input type='button' class='sortButton' id='Date' value='Date'></span>
-Sort Direction:
-<input type='button' class='dirButton' id='Up' value='Ascending' disabled>
-<input type='button' class='dirButton' id='Down' value='Descending'>
-</span></span>
-</div></div>
-</span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
 <span id='debugging'></span>
 <div class='spinner fixed'></div>
