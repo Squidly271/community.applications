@@ -182,13 +182,15 @@ function initilizeMenu() {
 		$(this).removeClass("hoverMenu");
 	});
 	$(".caMenuItem").on("click",function() {
+		if ( ! $(this).parent().hasClass("subCategory") ) {
+			$(".subCategory").hide(600,"linear");
+		}
 		$(".caMenuItem").each(function() {
 			$(this).removeClass("selectedMenu");
 		});
-		$(".subCategory").hide();
 		$(this).parent().show();
 		$(this).addClass("selectedMenu");
-		$(this).next().show(1200);
+		$(this).next().show(600,"linear");
 	});
 }
 
@@ -1158,7 +1160,7 @@ function showStatistics() {
 	<li class='categoryMenu caMenuItem' data-category='HomeAutomation'>Home Automation</li>
 	<li class='categoryMenu caMenuItem' data-category='network'>Network Services</li>
 	<ul class='subCategory'>
-		<li class='categoryMenu caMenuItem' data-category='Network:web'>Web Server</li>
+		<li class='categoryMenu caMenuItem' data-category='Network:web'>Web&nbsp;Server</li>
 		<li class='categoryMenu caMenuItem' data-category='Network:DNS'>DNS</li>
 		<li class='categoryMenu caMenuItem' data-category='Network:FTP'>FTP</li>
 		<li class='categoryMenu caMenuItem' data-category='Network:proxy'>Proxy</li>
