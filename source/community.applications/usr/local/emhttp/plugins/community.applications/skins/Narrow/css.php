@@ -125,7 +125,7 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .displayBeta {cursor:pointer;}
 .newApp {color:red;font-size:1.5rem;cursor:pointer;}
 .ca_fa-support::after {content:"\f059";font-family:fontAwesome;}
-.ca_fa-delete {color:#c70404;font-size:2rem;position:relative;float:right;top:.2rem;cursor:pointer;}
+.ca_fa-delete {color:#882626;font-size:2rem;position:relative;float:right;top:.2rem;cursor:pointer;}
 .ca_fa-delete::after {content:"\f2d3";font-family:fontAwesome;}
 .ca_fa-install::after {content:"\f019";font-family:fontAwesome;}
 .ca_fa-edit::after {content:"\f044";font-family:fontAwesome;}
