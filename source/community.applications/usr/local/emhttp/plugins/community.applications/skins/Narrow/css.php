@@ -23,18 +23,22 @@
 		case 'black':
 			$donateBackground = "#f2f2f2";
 			$donateText = "#1c1b1b";
+			$templateBackground = "#2c2b2b";
 			break;
 		case 'white':
 			$donateBackground = "#1c1b1b";
-			$donateText = "white";
+			$donateText = "#f2f2f2";
+			$templateBackground = "#e2e2e2";
 			break;
 		case 'azure':
 			$donateBackground = "#606e7f";
 			$donateText = "#e4e2e4";
+			$templateBackground = "#f6f2f6";
 			break;
 		case 'gray':
 			$donateBackground = "#606e7f";
 			$donateText = "#1b1d1b";
+			$templateBackground = "#2b2d2b";
 			break;
 	}
 ?>
@@ -52,7 +56,7 @@ a.ca_author {text-decoration:none;color:inherit;}
 a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_descriptionArea {margin:.5rem;width:auto;height:4rem;}
 
-.ca_holder {display:inline-block;float:left;height:24rem;width:37rem;overflow:hidden;padding:0px;margin-bottom:.5rem;margin-right:.5rem;font-size:1.2rem;border:1px solid;}
+.ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;width:37rem;overflow:hidden;padding:0px;margin-bottom:.5rem;margin-right:.5rem;font-size:1.2rem;border:1px solid;}
 <?if ( $theme == "black" ):?>
 .ca_holder {border-color:#2b2b2b;}
 <?endif;?>
