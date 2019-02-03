@@ -106,7 +106,7 @@ $(function(){
 		var selectedCategory = $(this).attr("data-category");
 		changeCategory(this,false);
 	});
-	
+
 	$(".initDockerSearch").click(function()     { initDockerSearch(); });
 	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
@@ -182,27 +182,24 @@ function initilizeMenu() {
 		$(this).removeClass("hoverMenu");
 	});
 	$(".caMenuItem").on("click",function() {
-		if ( ! $(this).parent().hasClass("subCategory") ) {
-			$(".subCategory").hide(600,"linear");
-		}
 		$(".caMenuItem").each(function() {
 			$(this).removeClass("selectedMenu");
 		});
+		if ( ! $(this).parent().hasClass("subCategory") ) {
+			$(".subCategory").hide(300,"linear");
+		}
+
 		$(this).parent().show();
 		$(this).addClass("selectedMenu");
-		$(this).next().show(600,"linear");
+		$(this).next().show(300,"linear");
 	});
 }
 
 function updateContent(button) {
 	hideSortIcons();
-	$(".caMenuItem").each(function() {
-		$(this).removeClass("selectedMenu");
-	});
 	var appFeedModeMsg = button ? "" : "Retrieving the latest application Lists";
 	startupScreen = $.cookie("startupButton") ? $.cookie("startupButton") : "onlynew";
-	
-	$(".caMenuItem[data-category='"+startupScreen+"']").addClass("selectedMenu")
+
 	startupScreen = button ? $(button).data("category") : startupScreen;
 	$.cookie("startupButton",startupScreen,{expires:365});
 	$.cookie("selectedMenu",startupScreen);
@@ -297,7 +294,7 @@ function setToolTip() {
 			});
 		}
 	});
-	
+
 	$('.ca_staticTips').tooltipster({
 		delay: [<?=$cfg['hoverTime']?>,0],
 		timer:15000,
@@ -308,7 +305,7 @@ function setToolTip() {
 		triggerOpen:{mouseenter: true,click:true},
 		triggerClose:{click:true,scroll:true,mouseleave:true}
 	});
-	
+
 	readMore();
 	myCloseAlert();
 }
@@ -393,9 +390,9 @@ function readMore() {
 
 function doSearch(button,newSearch) {
 	var windowWidth = getWindowWidth();
-	
+
 	hideSortIcons();
-	
+
 	if ( ! newSearch === false ) {
 		$('#searchBox').val(newSearch);
 	}
@@ -502,7 +499,7 @@ function getSortOrder() {
 					break;
 				case 'nameDown':
 					sortOrder.sortBy = ["sortBy","Name"];
-					sortOrder.sortDir = ["sortDir","Down"];		
+					sortOrder.sortDir = ["sortDir","Down"];
 					break;
 				case 'downloadsDown':
 					sortOrder.sortBy = ["sortBy","downloads"];
@@ -552,7 +549,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 
 		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize(),startupDisplay:startupDisplay},function(data) {
 			if (data) {
- 				updateDisplay(data);
+				updateDisplay(data);
 
 				if ( initialize ) {
 					populateAutoComplete();
@@ -852,7 +849,7 @@ function pinnedApps(button) {
 	clearCategory();
 	$(".dockerSearch,.multi_installDiv").hide();
 	enableIcon("#sortIcon",true);
- 	$.post(URL,{action:'pinnedApps'},function(data) {
+	$.post(URL,{action:'pinnedApps'},function(data) {
 		if (data) {
 			refreshDisplay();
 			myCloseAlert();
@@ -1025,7 +1022,7 @@ function updateDisplay(data) {
 			});
 		}
 	});
-	
+
 	setToolTip();
 	enableSearch();
 	saveState();
