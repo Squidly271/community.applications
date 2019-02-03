@@ -83,10 +83,6 @@ i.displayIcon {font-size:8rem;color:#626868;}
 .ca_fa-edit::after {content:"\f044";font-family:fontAwesome;}
 .ca_fa-globe::after {content:"\f0ac";font-family:fontAwesome;}
 .ca_fa-update::after {content:"\f021";font-family:fontAwesome;}
-.ca_fa-stop {color:maroon;}
-.ca_fa-stop::after {content:"\f28d";font-family:fontAwesome;}
-.ca_fa-start {color:green;}
-.ca_fa-start::after {content:"\f144";font-family:fontAwesome;}
 .ca_multiselect {cursor:pointer;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;}
 .pageDots{color:grey;cursor:default;}
