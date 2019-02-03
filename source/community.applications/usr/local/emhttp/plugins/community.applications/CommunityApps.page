@@ -397,7 +397,7 @@ function sweetAlertBackground(color) {
 
 function readMore() {
 /* 	$('.desc_readmore').readmore({maxHeight:5*getFontSize(),moreLink:"<a href='#' class='myReadmore' title='Show More'><i class='fa fa-chevron-down myReadmoreButton'></i></a>",lessLink:"<a class='myReadmore' href='#' title='Show Less'><i class='fa fa-chevron-up myReadmoreButton'></i></a>"});
- */	$('.desc_readmore').readmore({maxHeight:5*getFontSize(),moreLink:"blah",lessLink:""});
+ */	$('.desc_readmore').readmore({maxHeight:5*getFontSize(),moreLink:"",lessLink:""});
 
 	}
 
