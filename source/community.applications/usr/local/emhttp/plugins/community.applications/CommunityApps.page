@@ -1249,7 +1249,7 @@ function showStatistics() {
 
 <div style='position:absolute;left:14.5rem;right:0px; display:block;'>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
-<strong><font size='3'><span id="Category"></span></strong></font>
+<strong><font size='3'><span id="Category" class="categoryLine"></span></strong></font>
 <div class='dockerSearch' style='display:none'><center><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></center></div>
 <div id='templates_content'></div>
 <div style='width:100%; display:none; padding-bottom:100px;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
