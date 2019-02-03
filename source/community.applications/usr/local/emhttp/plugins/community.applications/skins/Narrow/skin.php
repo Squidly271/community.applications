@@ -132,7 +132,10 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
   	$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate' href='".$template['DonateLink']."' target='_blank' title='".$template['DonateText']."'>Donate</a>" : "";
 
 		$template['display_Project'] = $template['Project'] ? "<a class='ca_tooltip projectLink' target='_blank' title='Click to go the the Project Home Page' href='".$template['Project']."'></a>" : "";
+		$template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons' target='_blank' href='{$template['Project']}' title='Go to the project page'></a>" : "";
 		$template['display_Support'] = $template['Support'] ? "<a class='ca_tooltip supportLink' href='".$template['Support']."' target='_blank' title='Click to go to the support thread'></a>" : "";
+		$template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons' href='{$template['Support']}' target='_blank' title='Support Thread'></a>" : "";
+		
 		$template['display_webPage'] = $template['WebPageURL'] ? "<a class='ca_tooltip webLink' title='Click to go to {$template['SortAuthor']}&#39;s web page' href='".$template['WebPageURL']."' target='_blank'></a>" : "";
 
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
@@ -231,17 +234,17 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
 			$template['display_iconSmall'] = "<img src='".$displayIcon."' class='$iconClass'>";
 		}
-		if ( $template['IconFA'] || (! startswith($template['Icon'],"http") && $template['Icon']) ) {
+		if ( $template['IconFA'] ) {
 			$displayIcon = $template['IconFA'] ?: $template['Icon'];
 			$displayIconClass = startsWith($displayIcon,"icon-") ? $displayIcon : "fa fa-$displayIcon";
-			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><i class='ca_appPopup $displayIconClass $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></a>";
-			$template['display_iconSelectable'] = "<i class='$displayIconClass $iconClass'></i>";
+			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><center><i class='ca_appPopup $displayIconClass $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></center></a>";
+			$template['display_iconSelectable'] = "<center><i class='$displayIconClass $iconClass'></i></center>";
 			if ( isset($ID) ) {
 				$template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' style='cursor:pointer' >".$template['display_iconSelectable']."</a>";
-				$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><i class='fa fa-$displayIcon ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></a>";
+				$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><center><i class='fa fa-$displayIcon ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></center></a>";
 			} else {
 				$template['display_iconClickable'] = $template['display_iconSelectable'];
-				$template['display_iconSmall'] = "<i class='$displayIconClass $iconClass'></i>";
+				$template['display_iconSmall'] = "<center><i class='$displayIconClass $iconClass'></i></center>";
 			}
 		}
 		
@@ -482,7 +485,10 @@ function toNumericArray($template) {
 		$template['dockerWebIcon'],            #74
 		$template['display_multi_install'],     #75
 		$template['display_DonateImage'],      #76
-		$template['display_dockerBeta']        #77
+		$template['display_dockerBeta'],        #77
+		"<span class='ca_applicationName'>".str_replace("-"," ",$template['display_dockerName'])."</span><br><span class='ca_author'>{$template['display_author']}</span><br><span class='ca_categories'>{$template['Category']}</span>",  #78
+		$template['display_faSupport'],  #79
+		$template['display_faProject']   #80
 	);
 }
 ?>

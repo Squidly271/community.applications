@@ -1092,7 +1092,7 @@ case 'showCredits':
 	echo file_get_contents("/usr/local/emhttp/plugins/community.applications/include/caCredits.html");
 	break;
 
-}	
+}
 
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
