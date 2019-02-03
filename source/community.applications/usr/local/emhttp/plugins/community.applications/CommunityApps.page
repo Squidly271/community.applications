@@ -188,7 +188,7 @@ function initilizeMenu() {
 		$(".subCategory").hide();
 		$(this).parent().show();
 		$(this).addClass("selectedMenu");
-		$(this).next().show("slow");
+		$(this).next().show(1200);
 	});
 }
 
