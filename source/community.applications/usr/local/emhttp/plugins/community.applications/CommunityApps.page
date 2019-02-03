@@ -182,23 +182,33 @@ function initilizeMenu() {
 		$(this).removeClass("hoverMenu");
 	});
 	$(".caMenuItem").on("click",function() {
+		if ( $(this).hasClass("selectedMenu") ) {
+			return;
+		}
 		$(".caMenuItem").each(function() {
 			$(this).removeClass("selectedMenu");
 		});
+
 		if ( ! $(this).parent().hasClass("subCategory") ) {
-			$(".subCategory").hide(300,"linear");
+			$(".subCategory").hide(500,"linear");
 		}
 
-		$(this).parent().show();
 		$(this).addClass("selectedMenu");
-		$(this).next().show(300,"linear");
+		$(this).next().show(500,"linear");
 	});
 }
 
 function updateContent(button) {
 	hideSortIcons();
-	var appFeedModeMsg = button ? "" : "Retrieving the latest application Lists";
+	if ( ! button ) {
+		$(".caMenuItem").each(function() {
+			$(this).removeClass("selectedMenu");
+		});
+	}
 	startupScreen = $.cookie("startupButton") ? $.cookie("startupButton") : "onlynew";
+	$(".caMenuItem[data-category='"+startupScreen+"']").addClass("selectedMenu")
+
+	var appFeedModeMsg = button ? "" : "Retrieving the latest application Lists";
 
 	startupScreen = button ? $(button).data("category") : startupScreen;
 	$.cookie("startupButton",startupScreen,{expires:365});
@@ -587,6 +597,8 @@ function initDockerSearch() {
 	data.docker = "searching docker";
 	data.section = "";
 	data.selected_category = "";
+	$(".selectedMenu").removeClass("selectedMenu");
+	$(".subCategory").hide(300);
 }
 
 function dockerSearch(pageNumber) {

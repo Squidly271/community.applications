@@ -546,7 +546,6 @@ case 'search_dockerhub':
 
 	if ($pageresults['num_results'] == 0) {
 		echo "<center>No matching content found on dockerhub</center>";
-		echo suggestSearch($filter,true);
 		echo "<script>$('#dockerSearch').hide();</script>";
 		@unlink($communityPaths['dockerSerchResults']);
 		break;
@@ -582,7 +581,6 @@ case 'search_dockerhub':
 	$dockerFile['results'] = $dockerResults;
 
 	writeJsonFile($communityPaths['dockerSearchResults'],$dockerFile);
-	echo suggestSearch($filter,false);
 	displaySearchResults($pageNumber);
 	break;
 
@@ -1384,40 +1382,5 @@ function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
 		}
 	}
 	return true;
-}
-
-##########################################################################
-# function that comes up with alternate search suggestions for dockerHub #
-##########################################################################
-function suggestSearch($filter,$displayFlag) {
-	$dockerFilter = str_replace("_","-",$filter);
-	$dockerFilter = str_replace("%20","",$dockerFilter);
-	$dockerFilter = str_replace("/","-",$dockerFilter);
-	$otherSearch = explode("-",$dockerFilter);
-
-	if ( count($otherSearch) > 1 ) {
-		$returnSearch .= "Suggested Searches: ";
-
-		foreach ( $otherSearch as $suggestedSearch) {
-			$returnSearch .= "<a style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For $suggestedSearch'><font color='blue'>$suggestedSearch</font></a>&nbsp;&nbsp;&nbsp;&nbsp;";
-		}
-	} else {
-		$otherSearch = preg_split('/(?=[A-Z])/',$dockerFilter);
-
-		if ( count($otherSearch) > 1 ) {
-			$returnSearch .= "Suggested Searches: ";
-
-			foreach ( $otherSearch as $suggestedSearch) {
-				if ( strlen($suggestedSearch) > 1 ) {
-					$returnSearch .= "<a style='cursor:pointer' onclick='mySearch(this.innerHTML);' title='Search For $suggestedSearch'><font color='blue'>$suggestedSearch</font></a>&nbsp;&nbsp;&nbsp;&nbsp;";
-				}
-			}
-		} else {
-			if ( $displayFlag ) {
-				$returnSearch .= "Suggested Searches: Unknown";
-			}
-		}
-	}
-	return $returnSearch;
 }
 ?>

@@ -25,7 +25,7 @@ ul.caMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;cursor:point
 li.caMenuItem {padding:0px 0px 5px 0px;}
 ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer;display:none;}
 .menuHeader { font-size:2rem; margin-bottom:1rem;margin-top:1rem;}
-.selectedMenu {color:<?=$unRaid66color?>;font-weight:bold;}
+.selectedMenu {color:<?=$unRaid66color?>;font-weight:bold;cursor:default;}
 .hoverMenu {font-weight:bold;}
 table {background-color:transparent;}
 table tbody td {line-height:1.4rem;}
@@ -41,6 +41,7 @@ table tbody td {line-height:1.4rem;}
 .ca_categoryLink {color:<?=$linkColor?>;font-weight:normal;}
 .ca_author {color:<?=$linkColor?>;font-weight:bold;cursor:pointer;}
 .ca_applicationName {color:black;font-size:2rem;}
+a.ca_applicationName {text-decoration:none;}
 .ca_repository {color:black;}
 .ca_highlight {color:#0e5d08;font-weight:bold;}
 .ca_description {color:#505E6F;}
