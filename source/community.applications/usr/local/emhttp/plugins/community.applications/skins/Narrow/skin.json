@@ -3,7 +3,7 @@
 				"php": "/usr/local/emhttp/plugins/community.applications/skins/Narrow/skin.php",
         "templateWidth": 37.5,
         "header": "<div style='margin-left:%2$spx;display:inline-block;width:100%% ;'>",
-        "template": "<div class='ca_holder'><div class='ca_iconArea'><div class='ca_topRightArea'>%75$s%44$s</div><div class='ca_icon'>%65$s</div><div class='ca_infoArea'><div class='ca_applicationInfo'>%78$s</div></div></div><hr style='margin-left:10px;margin-right:10px;'><div class='ca_bottomLine'>%68$s %71$s %72$s %70$s %69$s %74$s%73$s %79$s %80$s %43$s &nbsp;&nbsp;%45$s</div><div class='ca_bottomRight'>%76$s</div><div class='ca_descriptionArea'><span class='desc_readmore'>%22$s</span></div></div>",
+        "template": "<div class='ca_holder'><div class='ca_iconArea'><div class='ca_topRightArea'>%75$s%44$s</div><div class='ca_icon'>%65$s</div><div class='ca_infoArea'><div class='ca_applicationInfo'>%78$s</div></div></div><div class='ca_hr'></div><div class='ca_bottomLine'>%68$s %71$s %72$s %70$s %69$s %74$s%73$s %79$s %80$s %43$s &nbsp;&nbsp;%45$s</div><div class='ca_bottomRight'>%76$s</div><div class='ca_descriptionArea'><span class='desc_readmore'>%22$s</span></div></div>",
         "footer": "</div>"
     }
 }

@@ -24,6 +24,8 @@
 			$donateBackground = "#f2f2f2";
 			$donateText = "#1c1b1b";
 			$templateBackground = "#2c2b2b";
+			$hrColor = "#3c3b3b";
+			$borderColor = "#3c3b3b";
 			break;
 		case 'white':
 			$donateBackground = "#1c1b1b";
@@ -56,19 +58,14 @@ a.ca_author {text-decoration:none;color:inherit;}
 a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_descriptionArea {margin:.5rem;width:auto;height:4rem;}
 
-.ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;width:37rem;overflow:hidden;padding:0px;margin-bottom:.5rem;margin-right:.5rem;font-size:1.2rem;border:1px solid;}
-<?if ( $theme == "black" ):?>
-.ca_holder {border-color:#2b2b2b;}
-<?endif;?>
-<?if ( $theme == "white" ):?>
-.ca_holder {border-color:#e3e3e3;}
-<?endif;?>
+.ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;width:37rem;overflow:hidden;padding:0px;margin-bottom:.5rem;margin-right:.5rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;}
+
 .ca_topRightArea {display:block;position:absolute;margin-left:33rem;z-index:9999;}
 img.displayIcon {height:9.6rem;width:9.6rem;}
 i.displayIcon {font-size:8rem;color:#626868;}
 .ca_bottomLine {display:block;position:absolute;padding-top:7rem;margin-left:1.5rem;}
 .ca_bottomRight {display:block;position:absolute;padding-top:7.5rem;margin-left:30.5rem;}
-
+.ca_hr {margin-left:10px;margin-right:10px;border:1px; border-color:<?=$hrColor?>; border-top-style:solid;border-right-style:none;border-bottom-style:none;border-left-style:none;}
 
 
 
