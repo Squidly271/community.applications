@@ -74,7 +74,7 @@ i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
 .ca_hr {margin-left:10px;margin-right:10px;border:1px; border-color:<?=$hrColor?>; border-top-style:solid;border-right-style:none;border-bottom-style:none;border-left-style:none;}
 
 
-.categoryLine {font-size:1.2rem;font-weight:normal;}
+.categoryLine {margin-left:120px;font-size:1.2rem;font-weight:normal;}
 
 
 
@@ -137,6 +137,7 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .ca_fa-globe::after {content:"\f0ac";font-family:fontAwesome;}
 .ca_fa-update::after {content:"\f021";font-family:fontAwesome;}
 .ca_fa-project::after {content:"\f08e";font-family:fontAwesome;}
+.ca_fa-info::after {content:"\f05a";font-family:fontAwesome;}
 .ca_donate {position:relative;margin-left:18rem;}
 .ca_multiselect {cursor:pointer;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;}
@@ -150,7 +151,7 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .specialCategory {font-size:1.5rem;color:<?=$unRaid66color?>;}
 .ca_table { padding:.5rem 2rem .5rem 0; font-size:1.5rem;}
 .ca_stat {color:coral; font-size:1.5rem;}
-.ca_credit { padding:.5rem 0 1rem 0; font-size:2rem;line-height:3rem;}
+.ca_credit { padding:.5rem 0 1rem 0; font-size:1.5rem;line-height:2rem;}
 .ca_dateUpdated {font-weight:bold;text-align:center;}
 .ca_dateUpdated::before {content:"Date Updated: ";}
 .ca_dateAdded {font-weight:bold;text-align:center;}

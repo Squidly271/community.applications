@@ -18,7 +18,6 @@ img.popupIcon {width:9.6rem;height:9.6rem;background-color:#C7C5CB;padding:0.3re
 </style>
 <div style='overflow:scroll; max-height:45rem; height:45rem; width:55rem; overflow-x:hidden; overflow-y:auto;font-size:1.2rem;'>
 <?PHP
-
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");

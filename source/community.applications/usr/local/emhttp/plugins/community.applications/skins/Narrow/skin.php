@@ -227,12 +227,15 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
 		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
 		$template['display_iconSelectable'] = "<img class='$iconClass' src='$displayIcon'>";
+		$template['display_infoIcon'] = "<a class='ca_appPopup appIcons ca_fa-info' title='Click for more information' data-appNumber='$ID' data-appPath='{$template['Path']}' data-appName='{$template['Name']}' style='cursor:pointer'></a>";
 		if ( isset($ID) ) {
 			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}'>".$template['display_iconSelectable']."</a>";
 			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
+			$template['display_iconOnly'] = "<img class='$iconClass'src='".$displayIcon."'></img>";
 		} else {
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
 			$template['display_iconSmall'] = "<img src='".$displayIcon."' class='$iconClass'>";
+			$template['display_iconOnly'] = $template['display_iconSmall'];
 		}
 		if ( $template['IconFA'] ) {
 			$displayIcon = $template['IconFA'] ?: $template['Icon'];
@@ -242,9 +245,11 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			if ( isset($ID) ) {
 				$template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' style='cursor:pointer' >".$template['display_iconSelectable']."</a>";
 				$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><center><i class='fa fa-$displayIcon ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></center></a>";
+				$template['display_iconOnly'] = "<center><i class='fa fa-$displayIcon $iconClass'></i></center>";
 			} else {
 				$template['display_iconClickable'] = $template['display_iconSelectable'];
 				$template['display_iconSmall'] = "<center><i class='$displayIconClass $iconClass'></i></center>";
+				$template['display_iconOnly'] = $template['display_iconSmall'];
 			}
 		}
 		
@@ -488,7 +493,9 @@ function toNumericArray($template) {
 		$template['display_dockerBeta'],        #77
 		"<span class='ca_applicationName'>".str_replace("-"," ",$template['display_dockerName'])."</span><br><span class='ca_author'>{$template['display_author']}</span><br><span class='ca_categories'>{$template['Category']}</span>",  #78
 		$template['display_faSupport'],  #79
-		$template['display_faProject']   #80
+		$template['display_faProject'],			#80
+		$template['display_iconOnly'],   #81
+		$template['display_infoIcon']  #82
 	);
 }
 ?>

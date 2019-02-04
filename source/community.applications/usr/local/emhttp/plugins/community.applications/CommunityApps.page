@@ -272,8 +272,14 @@ function setToolTip() {
 		triggerOpen:{mouseenter: true},
 		triggerClose:{click:true,scroll:true,mouseleave:true}
 	});
-
-	$('.ca_appPopup').tooltipster({
+	$('.ca_appPopup').click(function() {
+		var appnumber = $(this).data("appnumber");
+		var apppath = $(this).data("apppath");
+		var appname = $(this).data("appname");
+		
+		my_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,550,900,true,false);
+	});
+/* 	$('.ca_appPopup').tooltipster({
 		contentAsHTML: true,
 		animation: 'none',
 		arrow:true,
@@ -304,7 +310,7 @@ function setToolTip() {
 				triggerClose:{click:true,scroll:true,mouseleave:true}
 			});
 		}
-	});
+	}); */
 
 	$('.ca_staticTips').tooltipster({
 		delay: [<?=$cfg['hoverTime']?>,0],
