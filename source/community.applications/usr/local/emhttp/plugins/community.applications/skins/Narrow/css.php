@@ -6,49 +6,49 @@
 #                                                             #
 ###############################################################
 
-	header("Content-type: text/css; charset: UTF-8");
+header("Content-type: text/css; charset: UTF-8");
 
-	$dynamix = @parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
-	if ( ! $dynamix['display']['theme'] ) {
-		$dynamix = @parse_ini_file("/usr/local/emhttp/plugins/dynamix/default.cfg",true);
-	}
-	$theme = $dynamix['display']['theme'] ?: "black";
+$dynamix = @parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
+if ( ! $dynamix['display']['theme'] ) {
+  $dynamix = @parse_ini_file("/usr/local/emhttp/plugins/dynamix/default.cfg",true);
+}
+$theme = $dynamix['display']['theme'] ?: "black";
 
-	$unRaidSettings = parse_ini_file("/etc/unraid-version");
-	$unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
-	$unRaid66color = $unRaid66 ? "#FF8C2F" : "green";
-	$linkColor = "#486dba";
-	$startupColor = $unRaid66 ? "#FF8C2F" : "purple";
-	switch ($theme) {
-		case 'black':
-			$donateBackground = "#f2f2f2";
-			$donateText = "#1c1b1b";
-			$templateBackground = "#191818";
-			$hrColor = "#3c3b3b";
-			$borderColor = "#3c3b3b";
-			break;
-		case 'white':
-			$donateBackground = "#1c1b1b";
-			$donateText = "#f2f2f2";
-			$templateBackground = "#f2f2f2";
-			$hrColor = "lightgrey";
-			$borderColor = "lightgrey";
-			break;
-		case 'azure':
-			$donateBackground = "#606e7f";
-			$donateText = "#e4e2e4";
-			$templateBackground = "#e2e0e2";
-			$hrColor = "#606e7f";
-			$border = "#606e7f";
-			break;
-		case 'gray':
-			$donateBackground = "#606e7f";
-			$donateText = "#1b1d1b";
-			$templateBackground = "#1b1d1b";
-			$hrColor = "#606e7f";
-			$border = "#606e7f";
-			break;
-	}
+$unRaidSettings = parse_ini_file("/etc/unraid-version");
+$unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
+$unRaid66color = $unRaid66 ? "#FF8C2F" : "green";
+$linkColor = "#486dba";
+$startupColor = $unRaid66 ? "#FF8C2F" : "purple";
+switch ($theme) {
+  case 'black':
+    $donateBackground = "#f2f2f2";
+    $donateText = "#1c1b1b";
+    $templateBackground = "#191818";
+    $hrColor = "#3c3b3b";
+    $borderColor = "#3c3b3b";
+    break;
+  case 'white':
+    $donateBackground = "#1c1b1b";
+    $donateText = "#f2f2f2";
+    $templateBackground = "#f2f2f2";
+    $hrColor = "lightgrey";
+    $borderColor = "lightgrey";
+    break;
+  case 'azure':
+    $donateBackground = "#606e7f";
+    $donateText = "#e4e2e4";
+    $templateBackground = "#e2e0e2";
+    $hrColor = "#606e7f";
+    $border = "#606e7f";
+    break;
+  case 'gray':
+    $donateBackground = "#606e7f";
+    $donateText = "#1b1d1b";
+    $templateBackground = "#1b1d1b";
+    $hrColor = "#606e7f";
+    $border = "#606e7f";
+    break;
+}
 ?>
 .ca_iconArea {width:100%;height:8rem;margin:1rem;}
 .ca_icon {width:8rem;height:9rem;display:inline-block;padding-top:0.5rem;padding-left:1rem;}
@@ -63,23 +63,14 @@ a.ca_author {text-decoration:none;color:inherit;}
 .ca_categoryLink {color:<?=$linkColor?>;font-weight:normal;}
 a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_descriptionArea {margin:1rem;width:auto;height:4rem;}
-
 .ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;width:37rem;overflow:hidden;padding:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;}
-
 .ca_topRightArea {display:block;position:absolute;margin-left:33rem;z-index:9999;}
 img.displayIcon {height:6.4rem;width:6.4rem;}
 i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
 .ca_bottomLine {display:block;position:absolute;padding-top:9.5rem;margin-left:1.5rem;}
 .ca_bottomRight {display:block;position:absolute;padding-top:9.9rem;margin-left:30.2rem;}
 .ca_hr {margin-left:10px;margin-right:10px;border:1px; border-color:<?=$hrColor?>; border-top-style:solid;border-right-style:none;border-bottom-style:none;border-left-style:none;}
-
-
 .categoryLine {margin-left:120px;font-size:1.2rem;font-weight:normal;}
-
-
-
-
-
 .sortIcons {font-size:1.8rem;margin-right:20px;cursor:pointer;}
 ul.caMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;cursor:pointer;font-size:1.5rem;}
 li.caMenuItem {padding:0px 0px 5px 0px;}
@@ -92,10 +83,9 @@ table tbody td {line-height:1.4rem;}
 .startup-icon {color:lightblue;font-size:1.5rem;cursor:pointer;}
 .ca_serverWarning {color:#cecc31}
 .ca_template_icon {color:#606E7F;width:37rem;float:left;display:inline-block;background-color: #C7C5CB;margin:0px;height:15rem;padding-top:1rem;border-radius:2rem 20px 0px 0px;}
-.ca_template {color:#606E7F;border-radius:0px 0px 2rem 2rem;display:inline-block;text-align:left;overflow:auto;height:27rem;width:36rem;padding-left:.5rem;padding-right:.5rem;	background-color:#DDDADF;}
+.ca_template {color:#606E7F;border-radius:0px 0px 2rem 2rem;display:inline-block;text-align:left;overflow:auto;height:27rem;width:36rem;padding-left:.5rem;padding-right:.5rem; background-color:#DDDADF;}
 .ca_icon_wide {display:inline-block;float:left;width:9.5rem;margin-left:2.5rem;}
 .ca_wide_info {display: inline-block;float:left;text-align:left;margin-left:1rem;margin-top:1.5rem;width:20rem;}
-
 .ca_repository {color:black;}
 .ca_highlight {color:#0e5d08;font-weight:bold;}
 .ca_description {color:#505E6F;}
@@ -111,7 +101,7 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .pinned {font-size:2.0rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;color:<?=$unRaid66color?>;padding:.3rem;}
 .unpinned {font-size:2.0rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
 .pinned::after {content:"\f08d";font-family:fontAwesome;}
-.unpinned::after {content:"\f08d";font-family:fontAwesome;display:inline-block;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg);	-o-transform: rotate(20deg);	transform: rotate(20deg);}
+.unpinned::after {content:"\f08d";font-family:fontAwesome;display:inline-block;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg); -o-transform: rotate(20deg);  transform: rotate(20deg);}
 .appIcons {font-size:2.0rem;color:inherit;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
 .appIcons:hover {text-decoration:none;}
 .appIconsPopUp {font-size:2.5rem;color:#FF8C2F;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}

@@ -19,11 +19,11 @@ require_once("/usr/local/emhttp/plugins/$plugin/include/helpers.php");
 $installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$plugin.plg");
 $upgradeVersion = download_url($communityPaths['onlineCAVersion'],"",false,10);
 if ( $installedVersion < $upgradeVersion && $upgradeVersion) {
-	$upgradeAvailable = "true";
+  $upgradeAvailable = "true";
 }
 $cfg = parse_plugin_cfg($plugin);
 if ( ! is_file($communityPaths['warningAccepted']) ) {
-	$firstRun = "true";
+  $firstRun = "true";
 }
 $unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
@@ -54,1103 +54,1044 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
-	searchBoxInput = document.getElementById("searchBox");
-	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
+  searchBoxInput = document.getElementById("searchBox");
+  searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
-	if ( ! cookiesEnabled() ) {
-		$("#cookieWarning").show();
-	}
+  if ( ! cookiesEnabled() ) {
+    $("#cookieWarning").show();
+  }
 
-	if ( isTouch() ) {
-		$("#templates_content").on("swipeleft",swipelefthandler);
-		function swipelefthandler(event) {
-			if ( $(".pageNavigation").length ) {
-				if ( data.nextpage > 1 ) {
-					if ( dockerSearchFlag ) {
-						dockerSearch(data.nextpage);
-					} else {
-						changePage(data.nextpage);
-					}
-				}
-			}
-		}
-		$("#templates_content").on("swiperight",swiperighthandler);
-		function swiperighthandler(event) {
-			if ( $(".pageNavigation").length ) {
-				if ( data.prevpage > 0 ) {
-					if ( dockerSearchFlag ) {
-						dockerSearch(data.prevpage);
-					} else {
-						changePage(data.prevpage);
-					}
-				}
-			}
-		}
-	}
+  if ( isTouch() ) {
+    $("#templates_content").on("swipeleft",swipelefthandler);
+    function swipelefthandler(event) {
+      if ( $(".pageNavigation").length ) {
+        if ( data.nextpage > 1 ) {
+          if ( dockerSearchFlag ) {
+            dockerSearch(data.nextpage);
+          } else {
+            changePage(data.nextpage);
+          }
+        }
+      }
+    }
+    $("#templates_content").on("swiperight",swiperighthandler);
+    function swiperighthandler(event) {
+      if ( $(".pageNavigation").length ) {
+        if ( data.prevpage > 0 ) {
+          if ( dockerSearchFlag ) {
+            dockerSearch(data.prevpage);
+          } else {
+            changePage(data.prevpage);
+          }
+        }
+      }
+    }
+  }
 
-	$('.ca_toolsView').tooltipster({
-		trigger: 'hover',
-		delay: [1000,0],
-		animation: 'fade',
-		triggerClose: {mouseleave:true},
-		functionBefore: function(instance,helper){
-			if ( isIconEnabled("#sortIcon") ) {
-				instance.content("Sorting options");
-			} else {
-				instance.content("Sorting options unavailable");
-			}
-		}
-	});
+  $('.ca_toolsView').tooltipster({
+    trigger: 'hover',
+    delay: [1000,0],
+    animation: 'fade',
+    triggerClose: {mouseleave:true},
+    functionBefore: function(instance,helper){
+      if ( isIconEnabled("#sortIcon") ) {
+        instance.content("Sorting options");
+      } else {
+        instance.content("Sorting options unavailable");
+      }
+    }
+  });
 
-	$('.categoryMenu').on("click",function() {
-		var selectedCategory = $(this).attr("data-category");
-		changeCategory(this,false);
-	});
+  $('.categoryMenu').on("click",function() {
+    var selectedCategory = $(this).attr("data-category");
+    changeCategory(this,false);
+  });
 
-	$(".initDockerSearch").click(function()     { initDockerSearch(); });
-	$(".multi_installButton").click(function()  { installMulti(); });
-	$(".multi_installClear").click(function()   { clearMultiInstall(); });
-	$(".startupButton").click(function()				{ updateContent(this); });
-	initilizeMenu();
-	$("#sortIcon").click(function() {
-		if ( isIconEnabled("#sortIcon") ) {
-			$("#sortIconArea").toggle("slow");
-		}
-	});
-	$(".sortIcons").click(function() {
-		enableSortIcon(this);
-		changeSortOrder();
-		$("#sortIconArea").toggle("slow");
-	});
+  $(".initDockerSearch").click(function()     { initDockerSearch(); });
+  $(".multi_installButton").click(function()  { installMulti(); });
+  $(".multi_installClear").click(function()   { clearMultiInstall(); });
+  $(".startupButton").click(function()        { updateContent(this); });
+  initilizeMenu();
+  $("#sortIcon").click(function() {
+    if ( isIconEnabled("#sortIcon") ) {
+      $("#sortIconArea").toggle("slow");
+    }
+  });
+  $(".sortIcons").click(function() {
+    enableSortIcon(this);
+    changeSortOrder();
+    $("#sortIconArea").toggle("slow");
+  });
 
 <?if ( ! $unRaid66 ):?>
-	$("html").css("font-size","10px");
+  $("html").css("font-size","10px");
 <?endif;?>
 
-	/* Everything is now initialized.  This is the start of the actual "real" code */
-	if ( "<?=$firstRun?>" == "true" ) {
-		sweetAlertBackground("white");
-		swal({
-			title: 'Disclaimer',
-			text: 'All applications listed here are <b>3rd party</b> additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here. <br><em><font color="green">Every attempt is made to ensure that only safe and compatible applications are present</font></em><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>',
-			html: true,
-			type: 'error',
-			footer: "test",
-			showCancelButton: true,
-			showConfirmButton: true,
-			confirmButtonText: 'I Understand'
-		}, function (isConfirm) {
-			if ( isConfirm ) {
-				$.post(URL,{action:'dismiss_warning'},function(data) {
-					if (data) {
-						location.reload();
-					}
-				});
-			} else {
-				var leftMargin = getWindowWidth();
-				$("#searchFilter,.menuItems").hide();
-				$("#appWarningForm").css("width",leftMargin);
-				$(".topRightLinks,.ca_appPopup").hide();
-				$("#templates_content").html($("#appWarningForm").html());
-			}
-		});
-	} else {
-		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() ) {
-			populateAutoComplete();
-			restoreState();
-			refreshDisplay();
-		} else {
-			updateContent();
-		}
-	}
+  /* Everything is now initialized.  This is the start of the actual "real" code */
+  if ( "<?=$firstRun?>" == "true" ) {
+    sweetAlertBackground("white");
+    swal({
+      title: 'Disclaimer',
+      text: 'All applications listed here are <b>3rd party</b> additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here. <br><em><font color="green">Every attempt is made to ensure that only safe and compatible applications are present</font></em><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>',
+      html: true,
+      type: 'error',
+      footer: "test",
+      showCancelButton: true,
+      showConfirmButton: true,
+      confirmButtonText: 'I Understand'
+    }, function (isConfirm) {
+      if ( isConfirm ) {
+        $.post(URL,{action:'dismiss_warning'},function(data) {
+          if (data) {
+            location.reload();
+          }
+        });
+      } else {
+        var leftMargin = getWindowWidth();
+        $("#searchFilter,.menuItems").hide();
+        $("#appWarningForm").css("width",leftMargin);
+        $(".topRightLinks,.ca_appPopup").hide();
+        $("#templates_content").html($("#appWarningForm").html());
+      }
+    });
+  } else {
+    if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() ) {
+      populateAutoComplete();
+      restoreState();
+      refreshDisplay();
+    } else {
+      updateContent();
+    }
+  }
 });
 
 function disableSort() {
-	hideSortIcons();
-	enableIcon("#sortIcon",false);
+  hideSortIcons();
+  enableIcon("#sortIcon",false);
 }
 
 function hideSortIcons() {
-	$("#sortIconArea").hide("slow");
+  $("#sortIconArea").hide("slow");
 }
 
 function initilizeMenu() {
-	$(".caMenuItem").on("mouseover",function() {
-		$(this).addClass("hoverMenu");
-	});
-	$(".caMenuItem").on("mouseleave",function() {
-		$(this).removeClass("hoverMenu");
-	});
-	$(".caMenuItem").on("click",function() {
-		if ( $(this).hasClass("selectedMenu") ) {
-			return;
-		}
+  $(".caMenuItem").on("mouseover",function() {
+    $(this).addClass("hoverMenu");
+  });
+  $(".caMenuItem").on("mouseleave",function() {
+    $(this).removeClass("hoverMenu");
+  });
+  $(".caMenuItem").on("click",function() {
+    if ( $(this).hasClass("selectedMenu") ) {
+      return;
+    }
 
 
-		if ( ! $(this).parent().hasClass("subCategory") ) {
-			$(".subCategory").hide(500,"linear");
-		}
-		$(".caMenuItem").each(function() {
-			$(this).removeClass("selectedMenu");
-		});
-		$(this).addClass("selectedMenu");
-		$(this).next().show(500,"linear");
-	});
+    if ( ! $(this).parent().hasClass("subCategory") ) {
+      $(".subCategory").hide(500,"linear");
+    }
+    $(".caMenuItem").each(function() {
+      $(this).removeClass("selectedMenu");
+    });
+    $(this).addClass("selectedMenu");
+    $(this).next().show(500,"linear");
+  });
 }
 
 function updateContent(button) {
-	hideSortIcons();
-	$(".caMenuItem").each(function() {
-		$(this).removeClass("selectedMenu");
-	});
-	$(".subCategory").each(function() {
-		$(this).hide();
-	});
-	startupScreen = $.cookie("startupButton") ? $.cookie("startupButton") : "onlynew";
-	$(".caMenuItem[data-category='"+startupScreen+"']").addClass("selectedMenu")
+  hideSortIcons();
+  $(".caMenuItem").each(function() {
+    $(this).removeClass("selectedMenu");
+  });
+  $(".subCategory").each(function() {
+    $(this).hide();
+  });
+  startupScreen = $.cookie("startupButton") ? $.cookie("startupButton") : "onlynew";
+  $(".caMenuItem[data-category='"+startupScreen+"']").addClass("selectedMenu")
 
-	var appFeedModeMsg = button ? "" : "Retrieving the latest application Lists";
+  var appFeedModeMsg = button ? "" : "Retrieving the latest application Lists";
 
-	startupScreen = button ? $(button).data("category") : startupScreen;
-	$.cookie("startupButton",startupScreen,{expires:365});
-	$.cookie("selectedMenu",startupScreen);
-	disableSearch();
-	mySpinner();
-	if ( appFeedModeMsg ) {
-		myAlert("Updating Content",appFeedModeMsg,true,"40");
-	}
-	$.post(URL,{action:'force_update'}, function(data) {
-		if (data) {
-			if ( $.cookie("plugininstallpending" || ! appFeedModeMsg ) ) {
-				var plugins = $.cookie("plugininstallpending");
-				$.removeCookie("plugininstallpending");
-				myCloseAlert();
-				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
-			} else {
-				if ( myTrim(data) != "ok" ) {
-					updateDisplay(data);
-				} else {
-					getContent(true,'INITIALIZE',"","",startupScreen);
-				}
-			}
-		}
-	});
+  startupScreen = button ? $(button).data("category") : startupScreen;
+  $.cookie("startupButton",startupScreen,{expires:365});
+  $.cookie("selectedMenu",startupScreen);
+  disableSearch();
+  mySpinner();
+  if ( appFeedModeMsg ) {
+    myAlert("Updating Content",appFeedModeMsg,true,"40");
+  }
+  $.post(URL,{action:'force_update'}, function(data) {
+    if (data) {
+      if ( $.cookie("plugininstallpending" || ! appFeedModeMsg ) ) {
+        var plugins = $.cookie("plugininstallpending");
+        $.removeCookie("plugininstallpending");
+        myCloseAlert();
+        openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
+      } else {
+        if ( myTrim(data) != "ok" ) {
+          updateDisplay(data);
+        } else {
+          getContent(true,'INITIALIZE',"","",startupScreen);
+        }
+      }
+    }
+  });
 }
 
 function enableSortIcon(icon) {
-	$(".sortIcons").each(function() {
-		$(this).removeClass("enabledIcon");
-	});
-	$(icon).addClass("enabledIcon");
+  $(".sortIcons").each(function() {
+    $(this).removeClass("enabledIcon");
+  });
+  $(icon).addClass("enabledIcon");
 }
 
 function enableIcon(icon,enable) {
-	enable = (enable == "false") ? false : enable;
-	$(icon).each(function() {
-		$(this).removeClass("enabledIcon disabledIcon");
-		var newClass = enable ? "enabledIcon" : "disabledIcon";
-		$(this).addClass(newClass);
-	});
+  enable = (enable == "false") ? false : enable;
+  $(icon).each(function() {
+    $(this).removeClass("enabledIcon disabledIcon");
+    var newClass = enable ? "enabledIcon" : "disabledIcon";
+    $(this).addClass(newClass);
+  });
 }
 
 function isIconEnabled(icon) {
-	return $(icon).hasClass("enabledIcon");
+  return $(icon).hasClass("enabledIcon");
 }
 
 function setToolTip() {
-	$('.ca_multiselect').click( function() {
-		enableMultiInstall();
-	});
-	$('.ca_appPopup').attr('title','Loading...');
-	$('.ca_tooltip').tooltipster({
-		contentAsHTML:true,
-		delay:[<?=$cfg['hoverTime']?>,1],
-		timer:15000,
-		animation:'none',
-		arrow:true,
-		trigger:'custom',
-		triggerOpen:{mouseenter: true},
-		triggerClose:{click:true,scroll:true,mouseleave:true}
-	});
-	$('.ca_appPopup').click(function() {
-		var appnumber = $(this).data("appnumber");
-		var apppath = $(this).data("apppath");
-		var appname = $(this).data("appname");
-		
-		my_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,550,900,true,false);
-	});
-/* 	$('.ca_appPopup').tooltipster({
-		contentAsHTML: true,
-		animation: 'none',
-		arrow:true,
-		trigger: 'custom',
-		triggerOpen: {mouseenter:true,click:true,touchstart:true},
-		triggerClose:{click:true,scroll:false,mouseleave:true},
-		delay:[<?=$cfg['hoverTime']?>,1000],
-		distance: -15,
-		interactive: true,
-		viewportAware: true,
-		functionBefore: function(instance,helper) {
-			var origin = $(helper.origin);
-			var appPath = origin.attr('data-appPath');
-			$.post("/plugins/<?=$plugin?>/scripts/showDesc.php",{action:'none',appPath:appPath},function(data) {
-				if (data) {
-					instance.content(data);
-				}
-			});
-		},
-		functionReady: function(instance,helper) {
-			$('.ca_apptooltip').tooltipster({
-				contentAsHTML:true,
-				delay:[<?=$cfg['hoverTime']?>,<?=$cfg['hoverTime']?>],
-				timer:15000,
-				animation:'none',
-				arrow:true, trigger:'custom',
-				triggerOpen:{mouseenter: true},
-				triggerClose:{click:true,scroll:true,mouseleave:true}
-			});
-		}
-	}); */
+  $('.ca_multiselect').click( function() {
+    enableMultiInstall();
+  });
 
-	$('.ca_staticTips').tooltipster({
-		delay: [<?=$cfg['hoverTime']?>,0],
-		timer:15000,
-		animation:'none',
-		contentAsHTML:true,
-		arrow:true,
-		trigger:'custom',
-		triggerOpen:{mouseenter: true,click:true},
-		triggerClose:{click:true,scroll:true,mouseleave:true}
-	});
+  $('.ca_tooltip,.ca_staticTips').tooltipster({
+    contentAsHTML:true,
+    delay:[<?=$cfg['hoverTime']?>,1],
+    timer:15000,
+    animation:'none',
+    arrow:true,
+    trigger:'custom',
+    triggerOpen:{mouseenter: true},
+    triggerClose:{click:true,scroll:true,mouseleave:true}
+  });
+  
+  $('.ca_appPopup').click(function() {
+    var appnumber = $(this).data("appnumber");
+    var apppath = $(this).data("apppath");
+    var appname = $(this).data("appname");
+    
+    my_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,550,900,true,false);
+  });
 
-	readMore();
-	myCloseAlert();
+  readMore();
+  myCloseAlert();
 }
 
 function showSpecialCategory(button) {
-	$(".multi_installDiv").hide();
-	data.selected_category = "DOESNTMATTERWHATSHERE";
-	data.section = "AppStore";
-	changeCategory(button,false);
+  $(".multi_installDiv").hide();
+  data.selected_category = "DOESNTMATTERWHATSHERE";
+  data.section = "AppStore";
+  changeCategory(button,false);
 }
 
 function changeCategory(button,subSwitch) {
-	var description = $(button).text();
-	var category = $(button).attr("data-category");
-	clearSearchBox();
-	hideSortIcons();
-	clearCategory();
-	$(".multi_installDiv").hide();
+  var description = $(button).text();
+  var category = $(button).attr("data-category");
+  clearSearchBox();
+  hideSortIcons();
+  clearCategory();
+  $(".multi_installDiv").hide();
 
-	getContent(false,category,description,false);
+  getContent(false,category,description,false);
 }
 
 function changePage(pageNumber) {
-	var sortOrder = getSortOrder();
-	var windowWidth = getWindowWidth();
-	var selected = data.selected;
-	data.currentpage = pageNumber;
+  var sortOrder = getSortOrder();
+  var windowWidth = getWindowWidth();
+  var selected = data.selected;
+  data.currentpage = pageNumber;
 
-	mySpinner();
-	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
-		if (data3) {
-			updateDisplay(data3);
-		}
-	});
+  mySpinner();
+  $.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
+    if (data3) {
+      updateDisplay(data3);
+    }
+  });
 }
 
 function getWindowWidth() {
-	return $('#templates_content').width();
+  return $('#templates_content').width();
 }
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
-	if ( !outsideClick ) outsideClick = false;
-	if ( !showCancel )   showCancel = false;
-	if ( !showConfirm )  showConfirm = false;
-	if ( imagesize == "" ) { imagesize = "80"; }
-	disableTooltipster();
-	disableSearch();
-	var backgroundColor = ( ! textdescription && textimage ) ? "transparent" : "white";
+  if ( !outsideClick ) outsideClick = false;
+  if ( !showCancel )   showCancel = false;
+  if ( !showConfirm )  showConfirm = false;
+  if ( imagesize == "" ) { imagesize = "80"; }
+  disableSearch();
+  var backgroundColor = ( ! textdescription && textimage ) ? "transparent" : "white";
 
-	swal({
-		title: description,
-		text: textdescription,
-		allowOutsideClick: outsideClick,
-		showConfirmButton: showConfirm,
-		showCancelButton: showCancel,
-		type: alertType,
-		animation: false,
-		html: true
-	});
-	sweetAlertBackground(backgroundColor);
+  swal({
+    title: description,
+    text: textdescription,
+    allowOutsideClick: outsideClick,
+    showConfirmButton: showConfirm,
+    showCancelButton: showCancel,
+    type: alertType,
+    animation: false,
+    html: true
+  });
+  sweetAlertBackground(backgroundColor);
 }
 
 function myCloseAlert() {
-	swal.close();
-	enableTooltipster();
-	enableSearch();
-	$("div.spinner").hide();
+  swal.close();
+  enableSearch();
+  $("div.spinner").hide();
 }
 
 function mySpinner() {
-	$("div.spinner").show();
-	myAlert("",""," ",150);
+  $("div.spinner").show();
+  myAlert("",""," ",150);
 }
 
 function sweetAlertBackground(color) {
-	$(".sweet-alert").css("background",color);
+  $(".sweet-alert").css("background",color);
 }
 
 function readMore() {
-/* 	$('.desc_readmore').readmore({maxHeight:5*getFontSize(),moreLink:"<a href='#' class='myReadmore' title='Show More'><i class='fa fa-chevron-down myReadmoreButton'></i></a>",lessLink:"<a class='myReadmore' href='#' title='Show Less'><i class='fa fa-chevron-up myReadmoreButton'></i></a>"});
- */	$('.desc_readmore').readmore({maxHeight:5*getFontSize(),moreLink:"",lessLink:""});
-
-	}
+  $('.desc_readmore').readmore({maxHeight:5*getFontSize(),moreLink:"",lessLink:""});
+}
 
 function doSearch(button,newSearch) {
-	var windowWidth = getWindowWidth();
+  var windowWidth = getWindowWidth();
 
-	hideSortIcons();
+  hideSortIcons();
 
-	if ( ! newSearch === false ) {
-		$('#searchBox').val(newSearch);
-	}
-	var filter = $('#searchBox').val();
-	if ( button && ! filter) {
-		$("#searchBox").attr("placeholder","Please enter search term");
-		return;
-	} else {
-		$("#searchBox").attr("placeholder","Search");
-	}
-	data.docker = "";
-	data.section = "AppStore";
-	filter = filter.replace(/[^a-z0-9]/gi,' ')
-	filter = myTrim(filter);
-	$('#searchBox').val(filter);
-	$(".multi_installDiv").hide();
+  if ( ! newSearch === false ) {
+    $('#searchBox').val(newSearch);
+  }
+  var filter = $('#searchBox').val();
+  if ( button && ! filter) {
+    $("#searchBox").attr("placeholder","Please enter search term");
+    return;
+  } else {
+    $("#searchBox").attr("placeholder","Search");
+  }
+  data.docker = "";
+  data.section = "AppStore";
+  filter = filter.replace(/[^a-z0-9]/gi,' ')
+  filter = myTrim(filter);
+  $('#searchBox').val(filter);
+  $(".multi_installDiv").hide();
 
-	if ($('#searchButton').hasClass('fa-search')) {
-		if (filter) {
-			$('#searchButton').toggleClass('fa-search fa-remove');
-		}
-	} else if (button) {
-		clearSearchBox();
-		filter = '';
-	} else {
-		if (!filter) {
-			return;
-		}
-	}
+  if ($('#searchButton').hasClass('fa-search')) {
+    if (filter) {
+      $('#searchButton').toggleClass('fa-search fa-remove');
+    }
+  } else if (button) {
+    clearSearchBox();
+    filter = '';
+  } else {
+    if (!filter) {
+      return;
+    }
+  }
 
-	if (filter) {
-		$("#Category").html(" Search Results for <font color='<?=$unRaid66color?>'>"+filter+"</font>");
-	}
+  if (filter) {
+    $("#Category").html(" Search Results for <font color='<?=$unRaid66color?>'>"+filter+"</font>");
+  }
 
-	window.scrollTo(0,0);
-	if ( !filter ) {
-		updateContent();
-		return;
-	}
-	var sortOrder = getSortOrder();
-	if ( "<?=$cfg['dockerSearch']?>" == "yes" ) {
-		$('.dockerSearch').show();
-	}
-	mySpinner();
+  window.scrollTo(0,0);
+  if ( !filter ) {
+    updateContent();
+    return;
+  }
+  var sortOrder = getSortOrder();
+  if ( "<?=$cfg['dockerSearch']?>" == "yes" ) {
+    $('.dockerSearch').show();
+  }
+  mySpinner();
 
-	$.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize()},function(data) {
-		if (data) {
-			enableButtons();
-			updateDisplay(data);
-			data.section = "AppStore";
-			$(".selectedMenu").removeClass("selectedMenu");
-		}
-	});
-}
-
-function disableTooltipster() {
-	$('.tooltipstered').tooltipster('disable');
-}
-function enableTooltipster() {
-	$('.tooltipstered').tooltipster('enable');
+  $.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize()},function(data) {
+    if (data) {
+      enableButtons();
+      updateDisplay(data);
+      data.section = "AppStore";
+      $(".selectedMenu").removeClass("selectedMenu");
+    }
+  });
 }
 
 function forceUpdate() {
-	$("#Category").html("");
-	clearSearchBox();
-	$.post(URL,{action:'force_update'},function(data){
-		if (data) {
-			getContent(true,'INITIALIZE','None Selected');
-		}
-	});
+  $("#Category").html("");
+  clearSearchBox();
+  $.post(URL,{action:'force_update'},function(data){
+    if (data) {
+      getContent(true,'INITIALIZE','None Selected');
+    }
+  });
 }
 
 function enableButtons() {
-	data.selected_category = "";
+  data.selected_category = "";
 }
 
 function refreshDisplay() {
-	changeSortOrder(null,null,null);
+  changeSortOrder(null,null,null);
 }
 
 function changeSortOrder(button,buttonClass,previousApps) {
-	var windowWidth = getWindowWidth();
-	var pageNumber = data.currentpage;
-	var selected = data.selected;
+  var windowWidth = getWindowWidth();
+  var pageNumber = data.currentpage;
+  var selected = data.selected;
 
-	mySpinner();
-	var sortOrder = getSortOrder();
-	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
-		if (data3) {
-			updateDisplay(data3);
-		}
-	});
+  mySpinner();
+  var sortOrder = getSortOrder();
+  $.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
+    if (data3) {
+      updateDisplay(data3);
+    }
+  });
 }
 
 function getSortOrder() {
-	var sortOrder = new Object();
+  var sortOrder = new Object();
 
-	$(".sortIcons").each(function() {
-		if ( isIconEnabled(this) ) {
-			switch ( $(this).data("sort") ) {
-				case 'nameUp':
-					sortOrder.sortBy = ["sortBy","Name"];
-					sortOrder.sortDir = ["sortDir","Up"];
-					break;
-				case 'nameDown':
-					sortOrder.sortBy = ["sortBy","Name"];
-					sortOrder.sortDir = ["sortDir","Down"];
-					break;
-				case 'downloadsDown':
-					sortOrder.sortBy = ["sortBy","downloads"];
-					sortOrder.sortDir = ["sortDir","Down"];
-					break;
-				case 'downloadsUp':
-					sortOrder.sortBy = ["sortBy","downloads"];
-					sortOrder.sortDir = ["sortDir","Up"];
-					break;
-				case 'trendDown':
-					sortOrder.sortBy = ["sortBy","trending"];
-					sortOrder.sortDir = ["sortDir","Down"];
-					break;
-				case 'trendUp':
-					sortOrder.sortBy = ["sortBy","trending"];
-					sortOrder.sortDir = ["sortDir","Up"];
-					break;
-			}
-		}
-	});
-	return [sortOrder.sortBy,sortOrder.sortDir];
+  $(".sortIcons").each(function() {
+    if ( isIconEnabled(this) ) {
+      switch ( $(this).data("sort") ) {
+        case 'nameUp':
+          sortOrder.sortBy = ["sortBy","Name"];
+          sortOrder.sortDir = ["sortDir","Up"];
+          break;
+        case 'nameDown':
+          sortOrder.sortBy = ["sortBy","Name"];
+          sortOrder.sortDir = ["sortDir","Down"];
+          break;
+        case 'downloadsDown':
+          sortOrder.sortBy = ["sortBy","downloads"];
+          sortOrder.sortDir = ["sortDir","Down"];
+          break;
+        case 'downloadsUp':
+          sortOrder.sortBy = ["sortBy","downloads"];
+          sortOrder.sortDir = ["sortDir","Up"];
+          break;
+        case 'trendDown':
+          sortOrder.sortBy = ["sortBy","trending"];
+          sortOrder.sortDir = ["sortDir","Down"];
+          break;
+        case 'trendUp':
+          sortOrder.sortBy = ["sortBy","trending"];
+          sortOrder.sortDir = ["sortDir","Up"];
+          break;
+      }
+    }
+  });
+  return [sortOrder.sortBy,sortOrder.sortDir];
 }
 
 function getContent(init,category,description,newApp,startupDisplay) {
-	data.currentpage = 1;
-	var initialize;
+  data.currentpage = 1;
+  var initialize;
 
-	enableSearch();
-	if ( init == true ) {
-		enableIcon("#sortIcon",false);
-	} else {
-		enableIcon("#sortIcon",true);
-		mySpinner();
-	}
-	var windowWidth = getWindowWidth();
+  enableSearch();
+  if ( init == true ) {
+    enableIcon("#sortIcon",false);
+  } else {
+    enableIcon("#sortIcon",true);
+    mySpinner();
+  }
+  var windowWidth = getWindowWidth();
 
-	if ( category != "NONE" ) {
-		if ( category == "INITIALIZE" ) {
-			initializeAppStore();
-			category = "NONE";
-			initialize = true;
-			enableButtons();
-		}
-		if ( (category == "New") || (category == "All") ) { category = ""; }
+  if ( category != "NONE" ) {
+    if ( category == "INITIALIZE" ) {
+      initializeAppStore();
+      category = "NONE";
+      initialize = true;
+      enableButtons();
+    }
+    if ( (category == "New") || (category == "All") ) { category = ""; }
 
-		var sortOrder = getSortOrder();
+    var sortOrder = getSortOrder();
 
-		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize(),startupDisplay:startupDisplay},function(data) {
-			if (data) {
-				updateDisplay(data);
+    $.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize(),startupDisplay:startupDisplay},function(data) {
+      if (data) {
+        updateDisplay(data);
 
-				if ( initialize ) {
-					populateAutoComplete();
-				}
-			}
-		});
-	}
-	$('.dockerSearch').hide();
+        if ( initialize ) {
+          populateAutoComplete();
+        }
+      }
+    });
+  }
+  $('.dockerSearch').hide();
 }
 
 function populateAutoComplete() {
-	$.post(URL,{action:'populateAutoComplete'},function(data) {
-		if (data) {
-			$("#awesomepleteScript").html(data);
-			searchBoxAwesomplete.maxItems = 20;
-			Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',function() {
-				doSearch();
-			});
-		}
-	});
+  $.post(URL,{action:'populateAutoComplete'},function(data) {
+    if (data) {
+      $("#awesomepleteScript").html(data);
+      searchBoxAwesomplete.maxItems = 20;
+      Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',function() {
+        doSearch();
+      });
+    }
+  });
 }
 
 function mySearch(filter) {
-	filter = filter.replace(/<(?:.|\n)*?>/gm, '');
-	$('#searchBox').val(filter);
+  filter = filter.replace(/<(?:.|\n)*?>/gm, '');
+  $('#searchBox').val(filter);
 
-	if ( $("#searchButton").hasClass('fa-search') ) {
-		$('#searchButton').toggleClass('fa-search fa-remove');
-	}
-	initDockerSearch(1);
+  if ( $("#searchButton").hasClass('fa-search') ) {
+    $('#searchButton').toggleClass('fa-search fa-remove');
+  }
+  initDockerSearch(1);
 }
 
 function initDockerSearch() {
-	dockerSearch(1);
-	data.docker = "searching docker";
-	data.section = "";
-	data.selected_category = "";
-	$(".selectedMenu").removeClass("selectedMenu");
-	$(".subCategory").hide(300);
+  dockerSearch(1);
+  data.docker = "searching docker";
+  data.section = "";
+  data.selected_category = "";
+  $(".selectedMenu").removeClass("selectedMenu");
+  $(".subCategory").hide(300);
 }
 
 function dockerSearch(pageNumber) {
-	var filter = $('#searchBox').val();
-	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
-	var windowWidth = getWindowWidth();
-	data.docker = "searching docker";
-	enableIcon("#sortIcon",false);
-	$(".dockerSearch,.multi_installDiv").hide();
-	$("#Category").html("DockerHub Search Results For <font color='<?=$unRaid66color?>'>"+filter+"</font> <span id='pageNumber'></span>");
-	var sortOrder = getSortOrder();
-	mySpinner();
-	$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize()},function(data) {
-		if (data) {
-			updateDisplay(data);
-		}
-	});
+  var filter = $('#searchBox').val();
+  var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
+  var windowWidth = getWindowWidth();
+  data.docker = "searching docker";
+  enableIcon("#sortIcon",false);
+  $(".dockerSearch,.multi_installDiv").hide();
+  $("#Category").html("DockerHub Search Results For <font color='<?=$unRaid66color?>'>"+filter+"</font> <span id='pageNumber'></span>");
+  var sortOrder = getSortOrder();
+  mySpinner();
+  $.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize()},function(data) {
+    if (data) {
+      updateDisplay(data);
+    }
+  });
 }
 
 function dockerConvert(dockerID) {
-	mySpinner();
-	$.post(URL,{action:'convert_docker',ID:dockerID},function(data) {
-		if (data) {
-			myCloseAlert();
-			templateURL = "Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
-			window.open(templateURL,"_self");
-		}
-	});
+  mySpinner();
+  $.post(URL,{action:'convert_docker',ID:dockerID},function(data) {
+    if (data) {
+      myCloseAlert();
+      templateURL = "Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
+      window.open(templateURL,"_self");
+    }
+  });
 }
 
 function clearSearchBox() {
-	$("#searchBox").val("");
-	if ($('#searchButton').hasClass('fa-remove')) {
-		$('#searchButton').toggleClass('fa-remove fa-search');
-	}
+  $("#searchBox").val("");
+  if ($('#searchButton').hasClass('fa-remove')) {
+    $('#searchButton').toggleClass('fa-remove fa-search');
+  }
 }
 
 function installPlugin(pluginURL) {
-	$(".ca_appPopup").tooltipster('close');
-	disableSearch();
-	my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,'Install Plugin',600,900,true,"refreshDisplay()");
+  $(".ca_appPopup").tooltipster('close');
+  disableSearch();
+  my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,'Install Plugin',600,900,true,"refreshDisplay()");
 }
 
 function my_openBox(cmd,title,height,width,load,func) {
-	// open shadowbox window (run in foreground)
-	var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
-	var options = load ? {modal:true,onClose:function(){ eval(func); }} : {modal:true};
-	Shadowbox.open({content:run, player:'iframe', title:title, height:height, width:width, options:options});
+  // open shadowbox window (run in foreground)
+  var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
+  var options = load ? {modal:true,onClose:function(){ eval(func); }} : {modal:true};
+  Shadowbox.open({content:run, player:'iframe', title:title, height:height, width:width, options:options});
 }
 
 function showModeration(script,title) {
-	$("#sb-nav-close").css("visisbility","visible");
-	my_openBox("/plugins/<?=$plugin?>/scripts/showStatistics.php?arg1="+script,title,550,900,true,false);
+  $("#sb-nav-close").css("visisbility","visible");
+  my_openBox("/plugins/<?=$plugin?>/scripts/showStatistics.php?arg1="+script,title,550,900,true,false);
 }
 
 function previousApps(button,installed) {
-	hideSortIcons();
-	clearCategory();
-	setPageOne();
-	data.docker = "";
-	if ( installed ) {
-		$(".multi_installDiv").hide();
-	} else {
-		$(".multi_installDiv").show();
-		clearMultiInstall();
-	}
+  hideSortIcons();
+  clearCategory();
+  setPageOne();
+  data.docker = "";
+  if ( installed ) {
+    $(".multi_installDiv").hide();
+  } else {
+    $(".multi_installDiv").show();
+    clearMultiInstall();
+  }
 
-	clearSearchBox();
+  clearSearchBox();
 
-	$(".dockerSearch").hide();
-	enableIcon("#sortIcon",true);
+  $(".dockerSearch").hide();
+  enableIcon("#sortIcon",true);
 
-	$.post(URL,{action:'previous_apps',installed:installed,fontSize:getFontSize()},function(data) {
-		if (data) {
-			changeSortOrder(null,null,"true");
-			saveState();
-		}
-	});
+  $.post(URL,{action:'previous_apps',installed:installed,fontSize:getFontSize()},function(data) {
+    if (data) {
+      changeSortOrder(null,null,"true");
+      saveState();
+    }
+  });
 }
 
 function removeApp(application, humanName) {
-	sweetAlertBackground("white");
-	disableSearch();
-	swal({
-		title: "Delete Template?",
-		text: "Are you sure you want to delete <font color='red'><strong><em>"+humanName+"</em></strong></font> from the list of previously installed applications?<br><font size='0'>"+application+"</font>",
-		type: "warning",
-		confirmButtonText: "Yes, delete it!",
-		showCancelButton: true,
-		showConfirmButton: true,
-		html: true
-	}, function(isConfirm) {
-		if (isConfirm) {
-			$.post(URL,{action:'remove_application',application:application}, function(data) {
-				if (data) {
-					enableSearch();
-					previousApps("OldApps",false);
-				}
-			});
-		} else {
-			enableSearch();
-		}
-	 });
+  sweetAlertBackground("white");
+  disableSearch();
+  swal({
+    title: "Delete Template?",
+    text: "Are you sure you want to delete <font color='red'><strong><em>"+humanName+"</em></strong></font> from the list of previously installed applications?<br><font size='0'>"+application+"</font>",
+    type: "warning",
+    confirmButtonText: "Yes, delete it!",
+    showCancelButton: true,
+    showConfirmButton: true,
+    html: true
+  }, function(isConfirm) {
+    if (isConfirm) {
+      $.post(URL,{action:'remove_application',application:application}, function(data) {
+        if (data) {
+          enableSearch();
+          previousApps("OldApps",false);
+        }
+      });
+    } else {
+      enableSearch();
+    }
+   });
 }
 
 function uninstallApp(application,humanName) {
-	if ( humanName == "Community Applications" ) {
-		myAlert("AE-35 Error","<b><font color='red'>"+humanName+"</font></b> cannot be uninstalled this way.  You must go to the plugins tab and remove Community Applications from there.  <em><font color='purple'>But, why would you ever want to uninstall CA?</font></em>",null,null,true,false,true,"error");
-	} else {
-		sweetAlertBackground("white");
-		disableSearch();
-		swal({
-			title: "Uninstall Application?",
-			text: "Are you sure you want to uninstall <font color='red'><strong><em>"+humanName+"</em></strong></font>?",
-			type: "warning",
-			showCancelButton: true,
-			showConfirmButton: true,
-			confirmButtonText: "Yes, uninstall it!",
-			closeOnConfirm: false,
-			showLoaderOnConfirm: true,
-			html: true
-		}, function(isConfirm) {
-			if (isConfirm) {
-				myAlert("","Uninstalling "+humanName);
-				$.post(URL,{action:'uninstall_application',application:application}, function(data) {
-					if (data) {
-						previousApps("InstalledApps",true);
-						enableSearch();
-					}
-				});
-			} else {
-				enableSearch();
-			}
-		});
-	}
+  if ( humanName == "Community Applications" ) {
+    myAlert("AE-35 Error","<b><font color='red'>"+humanName+"</font></b> cannot be uninstalled this way.  You must go to the plugins tab and remove Community Applications from there.  <em><font color='purple'>But, why would you ever want to uninstall CA?</font></em>",null,null,true,false,true,"error");
+  } else {
+    sweetAlertBackground("white");
+    disableSearch();
+    swal({
+      title: "Uninstall Application?",
+      text: "Are you sure you want to uninstall <font color='red'><strong><em>"+humanName+"</em></strong></font>?",
+      type: "warning",
+      showCancelButton: true,
+      showConfirmButton: true,
+      confirmButtonText: "Yes, uninstall it!",
+      closeOnConfirm: false,
+      showLoaderOnConfirm: true,
+      html: true
+    }, function(isConfirm) {
+      if (isConfirm) {
+        myAlert("","Uninstalling "+humanName);
+        $.post(URL,{action:'uninstall_application',application:application}, function(data) {
+          if (data) {
+            previousApps("InstalledApps",true);
+            enableSearch();
+          }
+        });
+      } else {
+        enableSearch();
+      }
+    });
+  }
 }
 
 function deletePrivateApp(path,name,author) {
-	var displayPath = path.replace("/boot/config/plugins/","...");
-	sweetAlertBackground("white");
-	disableSearch();
-	swal({
-		title: "Remove Private Application?",
-		text: "Are you sure you want to remove the private application <em><font color='red'><b>"+name+"</b></font> by <font color='red'><b>"+author+"</b></font>?<br><font size='0'>("+displayPath+")",
-		type: "warning",
-			showCancelButton: true,
-			showConfirmButton: true,
-			confirmButtonText: "Yes, remove it!",
-			closeOnConfirm: false,
-			showLoaderOnConfirm: true,
-			html: true
-	}, function(isConfirm) {
-		if ( isConfirm ) {
-			swal("Removing "+name,"","info");
-			getSelectedApps();
-			$.post(URL,{action:'removePrivateApp',path:path},function(data) {
-				if (data) {
-					myCloseAlert();
-					refreshDisplay();
-					enableSearch();
-				}
-			});
-		} else {
-			enableSearch();
-		}
-	});
+  var displayPath = path.replace("/boot/config/plugins/","...");
+  sweetAlertBackground("white");
+  disableSearch();
+  swal({
+    title: "Remove Private Application?",
+    text: "Are you sure you want to remove the private application <em><font color='red'><b>"+name+"</b></font> by <font color='red'><b>"+author+"</b></font>?<br><font size='0'>("+displayPath+")",
+    type: "warning",
+      showCancelButton: true,
+      showConfirmButton: true,
+      confirmButtonText: "Yes, remove it!",
+      closeOnConfirm: false,
+      showLoaderOnConfirm: true,
+      html: true
+  }, function(isConfirm) {
+    if ( isConfirm ) {
+      swal("Removing "+name,"","info");
+      getSelectedApps();
+      $.post(URL,{action:'removePrivateApp',path:path},function(data) {
+        if (data) {
+          myCloseAlert();
+          refreshDisplay();
+          enableSearch();
+        }
+      });
+    } else {
+      enableSearch();
+    }
+  });
 }
 
 function myTrim(x) {
-	return x.replace(/^\s+|\s+$/gm,'');
+  return x.replace(/^\s+|\s+$/gm,'');
 }
 
 function uninstallDocker(application,humanName) {
-	sweetAlertBackground("white");
-	disableSearch();
-	swal({
-		title: "Uninstall Application?",
-		text: "Are you sure you want to uninstall <font color='red'><strong><em>"+humanName+"</em></strong></font>?",
-		type: "warning",
-		showCancelButton: true,
-		showConfirmButton: true,
-		confirmButtonText: "Yes, uninstall it!",
-		closeOnConfirm: false,
-		showLoaderOnConfirm: true,
-		html: true
-	}, function( isConfirm ) {
-		if ( isConfirm ) {
-			myAlert("","Uninstalling "+humanName);
-			$.post(URL,{action:'uninstall_docker',application:application},function(data) {
-				if (data) {
-					enableSearch();
-					previousApps("InstalledApps",true);
-				}
-			});
-		} else {
-			enableSearch();
-
-		}
-	});
+  sweetAlertBackground("white");
+  disableSearch();
+  swal({
+    title: "Uninstall Application?",
+    text: "Are you sure you want to uninstall <font color='red'><strong><em>"+humanName+"</em></strong></font>?",
+    type: "warning",
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonText: "Yes, uninstall it!",
+    closeOnConfirm: false,
+    showLoaderOnConfirm: true,
+    html: true
+  }, function( isConfirm ) {
+    if ( isConfirm ) {
+      myAlert("","Uninstalling "+humanName);
+      $.post(URL,{action:'uninstall_docker',application:application},function(data) {
+        if (data) {
+          enableSearch();
+          previousApps("InstalledApps",true);
+        }
+      });
+    } else {
+      enableSearch();
+    }
+  });
 }
 
 function appStore() {
-	mySpinner();
-	data.nextpage = 0;
-	data.prevpage = 0;
-	initializeAppStore();
-	updateContent();
-	$("#Category").html("");
-	data.docker = "";
+  mySpinner();
+  data.nextpage = 0;
+  data.prevpage = 0;
+  initializeAppStore();
+  updateContent();
+  $("#Category").html("");
+  data.docker = "";
 }
 
 function initializeAppStore() {
-	data.section = "AppStore";
-	data.selected_category = "";
-	$(".multi_installDiv").hide();
+  data.section = "AppStore";
+  data.selected_category = "";
+  $(".multi_installDiv").hide();
 }
 function installPLGupdate(filename,plgName) {
-	$(".ca_appPopup").tooltipster('close');
-	$("#sortorder").attr("data-plgfilename",filename);
-	if ( filename == "community.applications.plg" ) {
-		openBox('/plugins/<?=$plugin?>/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true);
-	} else {
-		my_openBox('/plugins/<?=$plugin?>/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true,"checkPLGupdate()");
-	}
+  $(".ca_appPopup").tooltipster('close');
+  $("#sortorder").attr("data-plgfilename",filename);
+  if ( filename == "community.applications.plg" ) {
+    openBox('/plugins/<?=$plugin?>/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true);
+  } else {
+    my_openBox('/plugins/<?=$plugin?>/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true,"checkPLGupdate()");
+  }
 }
 function checkPLGupdate() {
-	var filename = $("#sortorder").attr("data-plgfilename");
-	$.post(URL,{action:'updatePLGstatus',filename:filename},function(data) {
-		if (data) {
-			var pageNumber = data.currentpage;
-			changePage(pageNumber);
-		}
-	});
+  var filename = $("#sortorder").attr("data-plgfilename");
+  $.post(URL,{action:'updatePLGstatus',filename:filename},function(data) {
+    if (data) {
+      var pageNumber = data.currentpage;
+      changePage(pageNumber);
+    }
+  });
 }
 
 function pinApp(button,repository) {
-	$(button).toggleClass("pinned unpinned");
-	if ( $(button).hasClass("unpinned") ) {
-		$(button).attr("title","Click to pin this application");
-	} else {
-		$(button).attr("title","Click to unpin this application");
-	}
-	$(button).tooltipster('content',$(button).attr("title"));
-	$(button).attr("title","");
-	$.post(URL,{action:'pinApp',repository:repository});
+  $(button).toggleClass("pinned unpinned");
+  var pinned = ( $(button).hasClass("unpinned") ) ? "Click to pin this application" : "Click to unpin this application";
+  $(button).tooltipster('content',pinned);
+  $.post(URL,{action:'pinApp',repository:repository});
 }
 
 function setPageOne() {
-	data.currentpage = 1;
+  data.currentpage = 1;
 }
 
 function clearCategory() {
-	$("#Category").html("");
+  $("#Category").html("");
 }
 function pinnedApps(button) {
-	setPageOne();
-	hideSortIcons();
-	data.docker = "";
-	clearSearchBox();
-	clearCategory();
-	$(".dockerSearch,.multi_installDiv").hide();
-	enableIcon("#sortIcon",true);
-	$.post(URL,{action:'pinnedApps'},function(data) {
-		if (data) {
-			refreshDisplay();
-			myCloseAlert();
-		}
-	});
+  setPageOne();
+  hideSortIcons();
+  data.docker = "";
+  clearSearchBox();
+  clearCategory();
+  $(".dockerSearch,.multi_installDiv").hide();
+  enableIcon("#sortIcon",true);
+  $.post(URL,{action:'pinnedApps'},function(data) {
+    if (data) {
+      refreshDisplay();
+      myCloseAlert();
+    }
+  });
 }
 
 function displayTags(leadTemplate) {
-	$.post(URL,{action:'displayTags',leadTemplate:leadTemplate},function(data) {
-		if (data) {
-			$(".ca_appPopup").tooltipster('close');
-			sweetAlertBackground("white");
-			disableSearch();
-			swal({
-				title: "Choose A Branch To Install",
-				text: data,
-				html: true,
-				type: "warning",
-				showCancelButton: true,
-				showConfirmButton: false,
-				allowOutsideClick: true
-			}, function(isConfirm) {
-				if ( ! isConfirm ) {
-					enableSearch();
-				}
-			});
-		}
-	});
+  $.post(URL,{action:'displayTags',leadTemplate:leadTemplate},function(data) {
+    if (data) {
+      $(".ca_appPopup").tooltipster('close');
+      sweetAlertBackground("white");
+      disableSearch();
+      swal({
+        title: "Choose A Branch To Install",
+        text: data,
+        html: true,
+        type: "warning",
+        showCancelButton: true,
+        showConfirmButton: false,
+        allowOutsideClick: true
+      }, function(isConfirm) {
+        if ( ! isConfirm ) {
+          enableSearch();
+        }
+      });
+    }
+  });
 }
 
 function makePlural(string,count) {
-	return ( (count > 1) || (count == 0) ) ? string + "s" : string;
+  return ( (count > 1) || (count == 0) ) ? string + "s" : string;
 }
 
 function getSelectedApps() {
-	if ( data.selected ) {
-		var selected = JSON.parse(data.selected);
-		var docker = selected.docker;
-		var plugin = selected.plugin;
-	} else {
-		var selected = new Object();
-		var docker = new Array();
-		var plugin = new Array();
-	}
+  if ( data.selected ) {
+    var selected = JSON.parse(data.selected);
+    var docker = selected.docker;
+    var plugin = selected.plugin;
+  } else {
+    var selected = new Object();
+    var docker = new Array();
+    var plugin = new Array();
+  }
 
-	$(".ca_multiselect").each(function() {
-		var name = $(this).attr("data-name");
-		if ( $(this).is(':checked') ) {
-			if ( $(this).attr("data-type") == "plugin" ) {
-				plugin.push(name);
-			} else {
-				docker.push(name);
-			}
-		} else {
-			var index = plugin.indexOf(name);
-			if ( index > -1 ) {
-				plugin.splice(index,1);
-			}
-			var index = docker.indexOf(name);
-			if (index > -1 ) {
-				docker.splice(index,1);
-			}
-		}
-	});
-	selected.docker = uniqueArrayElements(docker);
-	selected.plugin = uniqueArrayElements(plugin);
-	data.selected = JSON.stringify(selected);
-	return selected;
+  $(".ca_multiselect").each(function() {
+    var name = $(this).attr("data-name");
+    if ( $(this).is(':checked') ) {
+      if ( $(this).attr("data-type") == "plugin" ) {
+        plugin.push(name);
+      } else {
+        docker.push(name);
+      }
+    } else {
+      var index = plugin.indexOf(name);
+      if ( index > -1 ) {
+        plugin.splice(index,1);
+      }
+      var index = docker.indexOf(name);
+      if (index > -1 ) {
+        docker.splice(index,1);
+      }
+    }
+  });
+  selected.docker = uniqueArrayElements(docker);
+  selected.plugin = uniqueArrayElements(plugin);
+  data.selected = JSON.stringify(selected);
+  return selected;
 }
 
 function uniqueArrayElements(sourceArray) {
-	var uniqueEntries = new Array();
-	$.each(sourceArray, function(i, el) {
-		if ($.inArray(el,uniqueEntries) === -1) {
-			uniqueEntries.push(el)
-		}
-	});
-	return uniqueEntries;
+  var uniqueEntries = new Array();
+  $.each(sourceArray, function(i, el) {
+    if ($.inArray(el,uniqueEntries) === -1) {
+      uniqueEntries.push(el)
+    }
+  });
+  return uniqueEntries;
 }
 
 function enableMultiInstall() {
-	var selected = getSelectedApps();
-	if ( $.isEmptyObject(selected.docker) && $.isEmptyObject(selected.plugin) ) {
-		$(".multi_install,.multi_installClear").attr("disabled",true);
-		$(".multi_installButton").val("Install Selected Applications");
-	} else {
-		$(".multi_install,.multi_installClear").attr("disabled",false);
-		var count = selected.plugin.length + selected.docker.length;
-		$(".multi_installButton").val("Install "+(selected.plugin.length+selected.docker.length)+" Selected "+makePlural("Application",count));
-	}
-	getSelectedApps();
+  var selected = getSelectedApps();
+  if ( $.isEmptyObject(selected.docker) && $.isEmptyObject(selected.plugin) ) {
+    $(".multi_install,.multi_installClear").attr("disabled",true);
+    $(".multi_installButton").val("Install Selected Applications");
+  } else {
+    $(".multi_install,.multi_installClear").attr("disabled",false);
+    var count = selected.plugin.length + selected.docker.length;
+    $(".multi_installButton").val("Install "+(selected.plugin.length+selected.docker.length)+" Selected "+makePlural("Application",count));
+  }
+  getSelectedApps();
 }
 
 function clearMultiInstall() {
-	data.selected = "";
-	$(".ca_multiselect").each(function() {
-		$(this).prop("checked",false);
-	});
-	$(".multi_install,.multi_installClear").attr("disabled",true);
-	enableMultiInstall();
+  data.selected = "";
+  $(".ca_multiselect").each(function() {
+    $(this).prop("checked",false);
+  });
+  $(".multi_install,.multi_installClear").attr("disabled",true);
+  enableMultiInstall();
 }
 
 function installMulti() {
-	var docker = new Array();
-	var plugin = "";
-	var pluginCount = 0;
-	var dockerCount = 0;
-	var selected = getSelectedApps();
-	var cookieWarning = "";
+  var docker = new Array();
+  var plugin = "";
+  var pluginCount = 0;
+  var dockerCount = 0;
+  var selected = getSelectedApps();
+  var cookieWarning = "";
 
-	$.each(selected.plugin,function(i,el) {
-		plugin += el + "*";
-		pluginCount += 1;
-	});
-	$.each(selected.docker,function(i,el) {
-		docker.push(el);
-		dockerCount += 1;
-	});
-	sweetAlertBackground("white");
-	disableSearch();
-	if ( ! cookiesEnabled() && dockerCount && pluginCount ) {
-		pluginCount = 0;
-		cookieWarning = "<br>Cookies not enabled.  Plugins must be separately installed from docker applications";
-	}
-	if ( (dockerCount + pluginCount) > 1 ) {
-		var buttonText = "Yes, install them";
-	} else {
-		var buttonText = "Yes, install it";
-	}
-	swal({
-		title: "Install "+makePlural("Application",dockerCount+pluginCount)+"?",
-		text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?  <em>Docker applications will be installed utilizing the most recently saved template with no user input on your part</em><font color='red'>"+cookieWarning+"</font>",
-		type: "info",
-		showCancelButton: true,
-		showConfirmButton: true,
-		confirmButtonText: buttonText,
-		closeOnConfirm: false,
-		showLoaderOnConfirm: true,
-		html: true
-	}, function( isConfirm ) {
-		if ( isConfirm ) {
-			myCloseAlert();
-			if ( docker.length && plugin.length ) {
-				$.cookie("plugininstallpending",plugin);
-			}
-			if ( docker.length ) {
-				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
-				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,'Install Docker '+makePlural("Application",dockerCount),600,1100,true);
-			} else {
-				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugin,'Install Plugin '+makePlural("Application",pluginCount),600,900,true);
-				enableSearch();
-			}
-		} else {
-			enableSearch();
-		}
-	});
+  $.each(selected.plugin,function(i,el) {
+    plugin += el + "*";
+    pluginCount += 1;
+  });
+  $.each(selected.docker,function(i,el) {
+    docker.push(el);
+    dockerCount += 1;
+  });
+  sweetAlertBackground("white");
+  disableSearch();
+  if ( ! cookiesEnabled() && dockerCount && pluginCount ) {
+    pluginCount = 0;
+    cookieWarning = "<br>Cookies not enabled.  Plugins must be separately installed from docker applications";
+  }
+  if ( (dockerCount + pluginCount) > 1 ) {
+    var buttonText = "Yes, install them";
+  } else {
+    var buttonText = "Yes, install it";
+  }
+  swal({
+    title: "Install "+makePlural("Application",dockerCount+pluginCount)+"?",
+    text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?  <em>Docker applications will be installed utilizing the most recently saved template with no user input on your part</em><font color='red'>"+cookieWarning+"</font>",
+    type: "info",
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonText: buttonText,
+    closeOnConfirm: false,
+    showLoaderOnConfirm: true,
+    html: true
+  }, function( isConfirm ) {
+    if ( isConfirm ) {
+      myCloseAlert();
+      if ( docker.length && plugin.length ) {
+        $.cookie("plugininstallpending",plugin);
+      }
+      if ( docker.length ) {
+        $("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
+        openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,'Install Docker '+makePlural("Application",dockerCount),600,1100,true);
+      } else {
+        openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugin,'Install Plugin '+makePlural("Application",pluginCount),600,900,true);
+        enableSearch();
+      }
+    } else {
+      enableSearch();
+    }
+  });
 }
 
 function updateDisplay(data) {
-	$('#templates_content').html(data);
-	$('img').on("error",function() {
-		var origSource = $(this).attr('src');
-		if ( document.referrer.startsWith("https") && "<?=$cfg['secureImage']?>" == "secure" ) {
-			$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
-		} else {
-			var newSource = origSource.replace("https://","http://");
-			$(this).attr('src',newSource);
-			$(this).on("error",function() {
-				$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
-			});
-		}
-	});
+  $('#templates_content').html(data);
+  $('img').on("error",function() {
+    var origSource = $(this).attr('src');
+    if ( document.referrer.startsWith("https") && "<?=$cfg['secureImage']?>" == "secure" ) {
+      $(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+    } else {
+      var newSource = origSource.replace("https://","http://");
+      $(this).attr('src',newSource);
+      $(this).on("error",function() {
+        $(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+      });
+    }
+  });
 
-	setToolTip();
-	enableSearch();
-	saveState();
+  setToolTip();
+  enableSearch();
+  saveState();
 }
 function saveState() {
-	if ( ! dockerSearchFlag ) {
-		$.cookie("categoryText",$("#Category").html());
-		$.cookie("data",JSON.stringify(data));
-		$.cookie("dockerSearchFlag",dockerSearchFlag);
-		$.cookie("installMulti",$(".multi_installDiv").is(":visible"));
-		var selectedMenu = $(".selectedMenu").data("category");
-		if ( ! selectedMenu ) {
-			selectedMenu = "";
-		}
-		$.cookie("selectedMenu",selectedMenu);
-		$.cookie("sortIcon",isIconEnabled("#sortIcon"));
+  if ( ! dockerSearchFlag ) {
+    $.cookie("categoryText",$("#Category").html());
+    $.cookie("data",JSON.stringify(data));
+    $.cookie("dockerSearchFlag",dockerSearchFlag);
+    $.cookie("installMulti",$(".multi_installDiv").is(":visible"));
+    var selectedMenu = $(".selectedMenu").data("category");
+    if ( ! selectedMenu ) {
+      selectedMenu = "";
+    }
+    $.cookie("selectedMenu",selectedMenu);
+    $.cookie("sortIcon",isIconEnabled("#sortIcon"));
 
-		$(".sortIcons").each(function() {
-			if ( isIconEnabled(this) ) {
-				$.cookie("sortButton",$(this).data("sort"));
-			}
-		});
-	}
+    $(".sortIcons").each(function() {
+      if ( isIconEnabled(this) ) {
+        $.cookie("sortButton",$(this).data("sort"));
+      }
+    });
+  }
 }
 
 function restoreState() {
-	$("#Category").html($.cookie("categoryText"));
-	if ( $.cookie("installMulti") == "true" ) {
-		$(".multi_installDiv").show();
-	} else {
-		$(".multi_installDiv").hide();
-	}
-	data = JSON.parse($.cookie("data"));
-	dockerSearchFlag = $.cookie("dockerSearchFlag");
-	var selectedMenu = $.cookie("selectedMenu");
-	if ( selectedMenu ) {
-		var menuItem = $.find(".caMenuItem[data-category='"+selectedMenu+"']");
-		$(".caMenuItem").each(function(){
-			$(this).removeClass("selectedMenu");
-		});
-		$(menuItem).addClass("selectedMenu");
-		$(menuItem).parent().show();
-	}
-	enableIcon("#sortIcon",$.cookie("sortIcon"));
-	$(".sortIcons").each(function() {
-		$(this).removeClass("enabledIcon");
-	});
-	var selectedSort = $.cookie("sortButton");
-	var sortIcon = $.find(".sortIcons[data-sort='"+selectedSort+"']");
-	$(sortIcon).addClass("enabledIcon");
+  $("#Category").html($.cookie("categoryText"));
+  if ( $.cookie("installMulti") == "true" ) {
+    $(".multi_installDiv").show();
+  } else {
+    $(".multi_installDiv").hide();
+  }
+  data = JSON.parse($.cookie("data"));
+  dockerSearchFlag = $.cookie("dockerSearchFlag");
+  var selectedMenu = $.cookie("selectedMenu");
+  if ( selectedMenu ) {
+    var menuItem = $.find(".caMenuItem[data-category='"+selectedMenu+"']");
+    $(".caMenuItem").each(function(){
+      $(this).removeClass("selectedMenu");
+    });
+    $(menuItem).addClass("selectedMenu");
+    $(menuItem).parent().show();
+  }
+  enableIcon("#sortIcon",$.cookie("sortIcon"));
+  $(".sortIcons").each(function() {
+    $(this).removeClass("enabledIcon");
+  });
+  var selectedSort = $.cookie("sortButton");
+  var sortIcon = $.find(".sortIcons[data-sort='"+selectedSort+"']");
+  $(sortIcon).addClass("enabledIcon");
 
-	if ( $("#Category").text() == "Category: None Selected" ) {
-		updateContent();
-	}
+  if ( $("#Category").text() == "Category: None Selected" ) {
+    updateContent();
+  }
 }
 
 function disableSearch() {
-	$("#searchBox").prop("disabled",true);
+  $("#searchBox").prop("disabled",true);
 }
 
 function enableSearch() {
-	$("#searchBox").prop("disabled",false);
+  $("#searchBox").prop("disabled",false);
 }
 
 function evaluateBoolean(str) {
-		regex=/^\s*(true|1|on)\s*$/i
-		return regex.test(str);
+  regex=/^\s*(true|1|on)\s*$/i
+  return regex.test(str);
 }
 
 function cookiesEnabled() {
-	return evaluateBoolean(navigator.cookieEnabled);
+  return evaluateBoolean(navigator.cookieEnabled);
 }
 
 function isTouch() {
 <?if ( $cfg['mobileAllowed'] == "true" ):?>
-	try{ document.createEvent("TouchEvent"); return true; }
-	catch(e){ return false; }
+  try{ document.createEvent("TouchEvent"); return true; }
+  catch(e){ return false; }
 <?else:?>
-	return false;
+  return false;
 <?endif;?>
 }
 
 function getFontSize() {
-	var elem = document.getElementById("fontSize");
-	var fontSize = window.getComputedStyle(elem,null).getPropertyValue("font-size");
-	return fontSize.replace("px","");
+  var elem = document.getElementById("fontSize");
+  var fontSize = window.getComputedStyle(elem,null).getPropertyValue("font-size");
+  return fontSize.replace("px","");
 }
 
 function showCredits() {
-	$(".multi_installDiv,.dockerSearch").hide();
-	clearCategory();
-	$.post(URL,{action:'showCredits'},function(data) {
-		if (data) {
-			$("#templates_content").html(data);
-		}
-	});
+  $(".multi_installDiv,.dockerSearch").hide();
+  clearCategory();
+  $.post(URL,{action:'showCredits'},function(data) {
+    if (data) {
+      $("#templates_content").html(data);
+    }
+  });
 }
 
 function showStatistics() {
-	$(".multi_installDiv,.dockerSearch").hide();
-	clearCategory();
-	$("#templates_content").html("<center>Gathering Statistics</center>");
-	$.post(URL,{action:'statistics'},function(data) {
-		if (data) {
-			$("#templates_content").html(data);
-		}
-	});
+  $(".multi_installDiv,.dockerSearch").hide();
+  clearCategory();
+  $("#templates_content").html("<center>Gathering Statistics</center>");
+  $.post(URL,{action:'statistics'},function(data) {
+    if (data) {
+      $("#templates_content").html(data);
+    }
+  });
 }
 
 </script>
@@ -1159,65 +1100,65 @@ function showStatistics() {
 <div style='position:absolute; left:0px;width:14rem;height:auto;' class='menuItems'>
 <div class='menuHeader'>MENU</div>
 <ul class='caMenu'>
-	<li class='caMenuItem' onclick='previousApps(this.id,true);' data-category='installed_apps'>Installed Apps</li>
-	<li class='caMenuItem' onclick='previousApps(this.id,false);' data-category='previous_apps'>Previous Apps</li>
-	<li class='caMenuItem' onclick='pinnedApps(this.id);' data-category='pinned_apps'>Pinned Apps</li>
+  <li class='caMenuItem' onclick='previousApps(this.id,true);' data-category='installed_apps'>Installed Apps</li>
+  <li class='caMenuItem' onclick='previousApps(this.id,false);' data-category='previous_apps'>Previous Apps</li>
+  <li class='caMenuItem' onclick='pinnedApps(this.id);' data-category='pinned_apps'>Pinned Apps</li>
 </ul>
 <div class='menuHeader'>CATEGORIES</div>
 <ul class='caMenu'>
-	<li class='startupButton caMenuItem' data-category='onlynew'>New Apps</li>
-	<li class='startupButton caMenuItem' data-category='new'>Updated Apps</li>
-	<li class='startupButton caMenuItem' data-category='random'>Random Apps</li>
-	<li class='startupButton caMenuItem' data-category='trending'>Trending Apps</li>
+  <li class='startupButton caMenuItem' data-category='onlynew'>New Apps</li>
+  <li class='startupButton caMenuItem' data-category='new'>Updated Apps</li>
+  <li class='startupButton caMenuItem' data-category='random'>Random Apps</li>
+  <li class='startupButton caMenuItem' data-category='trending'>Trending Apps</li>
 </ul>
 <hr>
 <ul class='caMenu'>
-	<li class='categoryMenu caMenuItem' data-category='backup'>Backup</li>
-	<li class='categoryMenu caMenuItem' data-category='cloud'>Cloud</li>
-	<li class='categoryMenu caMenuItem' data-category='downloaders'>Downloaders</li>
-	<li class='categoryMenu caMenuItem' data-category='HomeAutomation'>Home Automation</li>
-	<li class='categoryMenu caMenuItem' data-category='network'>Network Services</li>
-	<ul class='subCategory'>
-		<li class='categoryMenu caMenuItem' data-category='Network:web'>Web&nbsp;Server</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:DNS'>DNS</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:FTP'>FTP</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:proxy'>Proxy</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:VOIP'>VOIP</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:Management'>Management</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:Messenger'>Messenger</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:Other'>Other</li>
-	</ul>
-	<li class='categoryMenu caMenuItem' data-category='mediaapp'>Media Applications</li>
-	<ul class='subCategory'>
-		<li class='categoryMenu caMenuItem' data-category='MediaApp:Video'>Video</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaApp:Music'>Music</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaApp:Books'>Books</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaApp:Photos'>Photos</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaApp:Other'>Other</li>
-	</ul>
-	<li class='categoryMenu caMenuItem' data-category='mediaserver'>Media Servers</li>
-	<ul class='subCategory'>
-		<li class='categoryMenu caMenuItem' data-category='MediaServer:Video'>Video</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaServer:Music'>Music</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaServer:Books'>Books</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaServer:Photos'>Photos</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaServer:Other'>Other</li>
-	</ul>
-	<li class='categoryMenu caMenuItem' data-category='productivity'>Productivity</li>
-	<li class='categoryMenu caMenuItem' data-category='tools'>Tools / Utilities</li>
-	<ul class='subCategory'>
-		<li class='categoryMenu caMenuItem' data-category='Tools:system'>System</li>
-	</ul>
-	<li class='categoryMenu caMenuItem' data-category='other'>Other</li>
-	<li class='categoryMenu caMenuItem' data-category='plugins'>Plugins</li>
-	<li class='categoryMenu caMenuItem' data-category='All'>All Apps</li>
+  <li class='categoryMenu caMenuItem' data-category='backup'>Backup</li>
+  <li class='categoryMenu caMenuItem' data-category='cloud'>Cloud</li>
+  <li class='categoryMenu caMenuItem' data-category='downloaders'>Downloaders</li>
+  <li class='categoryMenu caMenuItem' data-category='HomeAutomation'>Home Automation</li>
+  <li class='categoryMenu caMenuItem' data-category='network'>Network Services</li>
+  <ul class='subCategory'>
+    <li class='categoryMenu caMenuItem' data-category='Network:web'>Web&nbsp;Server</li>
+    <li class='categoryMenu caMenuItem' data-category='Network:DNS'>DNS</li>
+    <li class='categoryMenu caMenuItem' data-category='Network:FTP'>FTP</li>
+    <li class='categoryMenu caMenuItem' data-category='Network:proxy'>Proxy</li>
+    <li class='categoryMenu caMenuItem' data-category='Network:VOIP'>VOIP</li>
+    <li class='categoryMenu caMenuItem' data-category='Network:Management'>Management</li>
+    <li class='categoryMenu caMenuItem' data-category='Network:Messenger'>Messenger</li>
+    <li class='categoryMenu caMenuItem' data-category='Network:Other'>Other</li>
+  </ul>
+  <li class='categoryMenu caMenuItem' data-category='mediaapp'>Media Applications</li>
+  <ul class='subCategory'>
+    <li class='categoryMenu caMenuItem' data-category='MediaApp:Video'>Video</li>
+    <li class='categoryMenu caMenuItem' data-category='MediaApp:Music'>Music</li>
+    <li class='categoryMenu caMenuItem' data-category='MediaApp:Books'>Books</li>
+    <li class='categoryMenu caMenuItem' data-category='MediaApp:Photos'>Photos</li>
+    <li class='categoryMenu caMenuItem' data-category='MediaApp:Other'>Other</li>
+  </ul>
+  <li class='categoryMenu caMenuItem' data-category='mediaserver'>Media Servers</li>
+  <ul class='subCategory'>
+    <li class='categoryMenu caMenuItem' data-category='MediaServer:Video'>Video</li>
+    <li class='categoryMenu caMenuItem' data-category='MediaServer:Music'>Music</li>
+    <li class='categoryMenu caMenuItem' data-category='MediaServer:Books'>Books</li>
+    <li class='categoryMenu caMenuItem' data-category='MediaServer:Photos'>Photos</li>
+    <li class='categoryMenu caMenuItem' data-category='MediaServer:Other'>Other</li>
+  </ul>
+  <li class='categoryMenu caMenuItem' data-category='productivity'>Productivity</li>
+  <li class='categoryMenu caMenuItem' data-category='tools'>Tools / Utilities</li>
+  <ul class='subCategory'>
+    <li class='categoryMenu caMenuItem' data-category='Tools:system'>System</li>
+  </ul>
+  <li class='categoryMenu caMenuItem' data-category='other'>Other</li>
+  <li class='categoryMenu caMenuItem' data-category='plugins'>Plugins</li>
+  <li class='categoryMenu caMenuItem' data-category='All'>All Apps</li>
 </ul>
 <div class='menuHeader'>OTHER</div>
 <ul class='caMenu'>
-	<li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'>Settings</a></li>
-	<li class='caMenuItem' onclick='disableSort();showStatistics();'>Statistics</li>
-	<li class='caMenuItem' onclick='disableSort();showCredits();'>Credits</li>
-	<li class='caMenuItem' onclick='window.location="https://forums.unraid.net/topic/38582-plug-in-community-applications/"'>Support</li>
+  <li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'>Settings</a></li>
+  <li class='caMenuItem' onclick='disableSort();showStatistics();'>Statistics</li>
+  <li class='caMenuItem' onclick='disableSort();showCredits();'>Credits</li>
+  <li class='caMenuItem' onclick='window.location="https://forums.unraid.net/topic/38582-plug-in-community-applications/"'>Support</li>
 </ul>
 <br><br><br>
 </div><div style='float:right;'>
