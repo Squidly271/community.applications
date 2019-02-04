@@ -152,6 +152,9 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
       $pinnedTitle = "Click to pin this application";
     }
     $template['display_pinButton'] = "<span class='ca_tooltip $pinned' title='$pinnedTitle' onclick='pinApp(this,&quot;".$template['Repository']."&quot;);'></span>";
+    if ($template['Blacklist']) {
+      unset($template['display_pinButton']);
+    }
     if ( $template['Uninstall'] ) {
       $template['display_Uninstall'] = "<a class='ca_tooltip ca_fa-delete' title='Uninstall Application' ";
       $template['display_Uninstall'] .= ( $template['Plugin'] ) ? "onclick='uninstallApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" : "onclick='uninstallDocker(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>";
