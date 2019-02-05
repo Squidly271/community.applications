@@ -24,15 +24,15 @@ switch ($theme) {
     $donateBackground = "#f2f2f2";
     $donateText = "#1c1b1b";
     $templateBackground = "#191818";
-    $hrColor = "#3c3b3b";
-    $borderColor = "#3c3b3b";
+    $hrColor = "#2b2b2b";
+    $borderColor = "#2b2b2b";
     break;
   case 'white':
     $donateBackground = "#1c1b1b";
     $donateText = "#f2f2f2";
     $templateBackground = "#f2f2f2";
-    $hrColor = "lightgrey";
-    $borderColor = "lightgrey";
+    $hrColor = "#f5f5f5";
+    $borderColor = "#f5f5f5";
     break;
   case 'azure':
     $donateBackground = "#606e7f";

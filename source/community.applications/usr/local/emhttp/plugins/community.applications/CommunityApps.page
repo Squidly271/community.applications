@@ -309,6 +309,7 @@ function changePage(pageNumber) {
   var selected = data.selected;
   data.currentpage = pageNumber;
 
+  hideSortIcons();
   mySpinner();
   $.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
     if (data3) {
