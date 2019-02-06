@@ -17,18 +17,18 @@ function startsWith($haystack, $needle) {
 $unRaidVersion = parse_ini_file($communityPaths['unRaidVersion']);
 
 if ( version_compare($unRaidVersion['version'],"6.6.2",">=") ) {
-	$exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";
+  $exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";
 } else {
-	$exeFile = "/tmp/community.applications/tempFiles/newCreateDocker.php";
-	$dockerInstall = file("/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php",FILE_IGNORE_NEW_LINES);
-	foreach ($dockerInstall as $line) {
-		if ( startsWith(trim($line),"removeContainer(") ) {
-			$line = "#$line";
-		}
-		$newInstall[] = $line;
-	}
-	file_put_contents($exeFile,implode("\n",$newInstall));
-	chmod($exeFile,0777);
+  $exeFile = "/tmp/community.applications/tempFiles/newCreateDocker.php";
+  $dockerInstall = file("/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php",FILE_IGNORE_NEW_LINES);
+  foreach ($dockerInstall as $line) {
+    if ( startsWith(trim($line),"removeContainer(") ) {
+      $line = "#$line";
+    }
+    $newInstall[] = $line;
+  }
+  file_put_contents($exeFile,implode("\n",$newInstall));
+  chmod($exeFile,0777);
 }
 $javascript = file_get_contents("/usr/local/emhttp/plugins/dynamix/javascript/dynamix.js");
 echo "<script>$javascript</script>";
@@ -39,7 +39,7 @@ if ( $_GET['docker'] ) {
   echo "Installing docker applications ".str_replace(",",", ",$_GET['docker'])."<br>";
   $_GET['updateContainer'] = true;
   $_GET['ct'] = $dockers;
-	$_GET['communityApplications'] = true;
+  $_GET['communityApplications'] = true;
   include($exeFile);
   echo "</div>";
 ?>
@@ -111,6 +111,6 @@ function addCloseButton() {
   } else {
     echo "<script>top.Shadowbox.close();</script>";
   }
-	@unlink("/tmp/community.applications/tempFiles/newCreateDocker.php");
+  @unlink("/tmp/community.applications/tempFiles/newCreateDocker.php");
 }
 ?>

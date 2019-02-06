@@ -135,7 +135,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     $template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons' target='_blank' href='{$template['Project']}' title='Go to the project page'></a>" : "";
     $template['display_Support'] = $template['Support'] ? "<a class='ca_tooltip supportLink' href='".$template['Support']."' target='_blank' title='Click to go to the support thread'></a>" : "";
     $template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons' href='{$template['Support']}' target='_blank' title='Support Thread'></a>" : "";
-    
+    $template['display_faWarning'] = ($template['CAComment'] || $template['ModeratorComment'] || $template['Blacklist'] || $template['Deprecated']) ? "<a class='ca_tooltip ca_fa-warning appIcons'></a> " : "";
     $template['display_webPage'] = $template['WebPageURL'] ? "<a class='ca_tooltip webLink' title='Click to go to {$template['SortAuthor']}&#39;s web page' href='".$template['WebPageURL']."' target='_blank'></a>" : "";
 
     $template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
@@ -498,7 +498,8 @@ function toNumericArray($template) {
     $template['display_faSupport'],  #79
     $template['display_faProject'],     #80
     $template['display_iconOnly'],   #81
-    $template['display_infoIcon']  #82
+    $template['display_infoIcon'],  #82
+		$template['display_faWarning']  #83
   );
 }
 ?>

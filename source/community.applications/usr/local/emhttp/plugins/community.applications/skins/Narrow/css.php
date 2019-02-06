@@ -128,6 +128,7 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .ca_fa-update::after {content:"\f021";font-family:fontAwesome;}
 .ca_fa-project::after {content:"\f08e";font-family:fontAwesome;}
 .ca_fa-info::after {content:"\f05a";font-family:fontAwesome;}
+.ca_fa-warning::after {content:"\f071";font-family:fontAwesome;}
 .ca_donate {position:relative;margin-left:18rem;}
 .ca_multiselect {cursor:pointer;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;}
