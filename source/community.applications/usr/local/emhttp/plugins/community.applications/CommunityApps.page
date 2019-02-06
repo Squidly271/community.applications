@@ -186,7 +186,6 @@ function initilizeMenu() {
       return;
     }
 
-
     if ( ! $(this).parent().hasClass("subCategory") ) {
       $(".subCategory").hide(500,"linear");
     }
@@ -278,7 +277,7 @@ function setToolTip() {
     var apppath = $(this).data("apppath");
     var appname = $(this).data("appname");
     
-    my_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,550,900,true,false);
+    my_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,550,true,false);
   });
 
   readMore();
