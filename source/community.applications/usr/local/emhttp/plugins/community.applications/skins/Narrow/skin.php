@@ -135,7 +135,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     $template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons' target='_blank' href='{$template['Project']}' title='Go to the project page'></a>" : "";
     $template['display_Support'] = $template['Support'] ? "<a class='ca_tooltip supportLink' href='".$template['Support']."' target='_blank' title='Click to go to the support thread'></a>" : "";
     $template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons' href='{$template['Support']}' target='_blank' title='Support Thread'></a>" : "";
-    $template['display_faWarning'] = ($template['CAComment'] || $template['ModeratorComment'] || $template['Blacklist'] || $template['Deprecated']) ? "<a class='ca_tooltip ca_fa-warning appIcons'></a> " : "";
+
     $template['display_webPage'] = $template['WebPageURL'] ? "<a class='ca_tooltip webLink' title='Click to go to {$template['SortAuthor']}&#39;s web page' href='".$template['WebPageURL']."' target='_blank'></a>" : "";
 
     $template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
@@ -188,7 +188,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
         if ( checkInstalledPlugin($template) ) {
           $pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
           $tmpVar = $pluginSettings ? "" : " disabled ";
-          $template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip appIcons ca_fa-globe' title='Click to go to the plugin settings' href='$pluginSettings'></a>" : "";
+          $template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons' title='Click to go to the plugin settings' href='$pluginSettings'></a>" : "";
         } else {
           $buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
           $template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');></a>";
@@ -215,16 +215,26 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     } else {
       $specialCategoryComment = $template['NoInstall'];
     }
+		$warningColor = "warning-white";
+    if ( $template['Deprecated'] ) {
+      $template['display_compatible'] .= "This application / template has been deprecated.<br>";
+			$warningColor = "warning-yellow";
+    }
     if ( ! $template['Compatible'] && ! $template['UnknownCompatible'] ) {
-      $template['display_compatible'] = "NOTE: This application is listed as being NOT compatible with your version of unRaid<br>";
+      $template['display_compatible'] .= "NOTE: This application is listed as being NOT compatible with your version of unRaid<br>";
       $template['display_compatibleShort'] = "Incompatible";
+			$warningColor = "warning-red";
     }
     if ( $template['Blacklist'] ) {
       $template['display_compatible'] .= "This application / template has been blacklisted.<br>";
+			$warningColor = "warning-red";
     }
-    if ( $template['Deprecated'] ) {
-      $template['display_compatible'] .= "This application / template has been deprecated.<br>";
-    }
+
+		if ( $template['CAComment'] || $template['ModeratorComment'] || $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist']) {
+			$template['display_warning-text'] = "{$template['CAComment']}{$template['ModeratorComment']}<br>{$template['display_compatible']}";
+		}
+    $template['display_faWarning'] = $template['display_warning-text'] ? "<span class='ca_tooltip-warning ca_fa-warning appIcons $warningColor' title='".htmlspecialchars($template['display_warning-text'],ENT_COMPAT | ENT_QUOTES)."'></span>" : "";
+
     $template['display_author'] = "<a class='ca_tooltip ca_author' onclick='doSearch(false,this.innerText);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
     $displayIcon = $template['Icon'];
     $displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";

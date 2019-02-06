@@ -271,7 +271,13 @@ function setToolTip() {
     triggerOpen:{mouseenter: true},
     triggerClose:{click:true,scroll:true,mouseleave:true}
   });
-  
+  $('.ca_tooltip-warning').tooltipster({
+    contentAsHTML:true,
+    interactive:true,
+    trigger:'custom',
+    triggerOpen:{click: true},
+    triggerClose:{click:true,scroll:true,mouseleave:true}
+  });  
   $('.ca_appPopup').click(function() {
     var appnumber = $(this).data("appnumber");
     var apppath = $(this).data("apppath");

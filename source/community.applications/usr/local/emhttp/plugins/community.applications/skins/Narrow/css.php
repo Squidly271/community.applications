@@ -31,8 +31,8 @@ switch ($theme) {
     $donateBackground = "#1c1b1b";
     $donateText = "#f2f2f2";
     $templateBackground = "#f2f2f2";
-    $hrColor = "#f5f5f5";
-    $borderColor = "#f5f5f5";
+    $hrColor = "lightgrey";
+    $borderColor = "lightgrey";
     break;
   case 'azure':
     $donateBackground = "#606e7f";
@@ -104,6 +104,7 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .unpinned::after {content:"\f08d";font-family:fontAwesome;display:inline-block;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg); -o-transform: rotate(20deg);  transform: rotate(20deg);}
 .appIcons {font-size:2.0rem;color:inherit;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
 .appIcons:hover {text-decoration:none;}
+a.appIcons {text-decoration:none;}
 .appIconsPopUp {font-size:2.5rem;color:#FF8C2F;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
 .appIconsPopUp:hover {text-decoration:none;}
 .myReadmore {text-align:center;}
@@ -121,7 +122,7 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .newApp {color:red;font-size:1.5rem;cursor:pointer;}
 .ca_fa-support::after {content:"\f059";font-family:fontAwesome;}
 .ca_fa-delete {color:#882626;font-size:2rem;position:relative;float:right;top:.2rem;cursor:pointer;}
-.ca_fa-delete::after {content:"\f2d3";font-family:fontAwesome;}
+.ca_fa-delete::after {content:"\f00d";font-family:fontAwesome;}
 .ca_fa-install::after {content:"\f019";font-family:fontAwesome;}
 .ca_fa-edit::after {content:"\f044";font-family:fontAwesome;}
 .ca_fa-globe::after {content:"\f0ac";font-family:fontAwesome;}
@@ -129,6 +130,9 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .ca_fa-project::after {content:"\f08e";font-family:fontAwesome;}
 .ca_fa-info::after {content:"\f05a";font-family:fontAwesome;}
 .ca_fa-warning::after {content:"\f071";font-family:fontAwesome;}
+.warning-red {color:#882626;}
+.warning-yellow {color:#FF8C2F;}
+.ca_fa-pluginSettings::after {content:"\f013";font-family:fontAwesome;}
 .ca_donate {position:relative;margin-left:18rem;}
 .ca_multiselect {cursor:pointer;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;}
