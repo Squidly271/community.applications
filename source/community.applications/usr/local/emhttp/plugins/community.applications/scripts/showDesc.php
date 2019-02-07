@@ -176,8 +176,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
   if ( !$template['Compatible'] ) {
     $templateDescription .= "This application is not compatible with your version of unRaid<br>";
   }
-  $templateDescription .= "</span></center>";
-  $templateDescription .= "<center>";
+  $templateDescription .= "</span></center><hr>";
 
   if ( $Displayed && ! $template['NoInstall'] ) {
     if ( ! $template['Plugin'] ) {
@@ -213,7 +212,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
       }
     }
   }
-  $templateDescription .= "<br></center></center>";
+  $templateDescription .= "<br></center></center><hr>";
   $templateDescription .= $template['Description'];
   $templateDescription .= $template['ModeratorComment'] ? "<br><br><b><font color='red'>Moderator Comments:</font></b> ".$template['ModeratorComment'] : "";
   $templateDescription .= "</p><br><center>";
