@@ -12,7 +12,7 @@
 p {margin-left:2rem;margin-right:2rem;}
 .popUpLink {cursor:pointer;}
 .popUpDeprecated {color:#FF8C2F;}
-i.popupIcon {color:#626868;font-size:5.6rem;padding-left:1rem;width:9.6rem}
+i.popupIcon {color:#626868;font-size:3.5rem;padding-left:1rem;width:4.8rem}
 img.popupIcon {width:4.8rem;height:4.8rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
 .display_beta {color:#FF8C2F;}
 body {margin-left:1.5rem;margin-right:1.5rem;font-family:"Open Sans";}
