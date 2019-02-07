@@ -143,7 +143,7 @@ a.appIcons {text-decoration:none;}
 .pageSelected {cursor:default;}
 .pageRight::after {content:"\f138";font-family:fontAwesome;font-weight:bold;}
 .pageLeft::after {content:"\f137";font-family:fontAwesome;font-weight:bold;}
-.specialCategory {font-size:1.5rem;color:<?=$unRaid66color?>;}
+.specialCategory {font-size:1.5rem;}
 .ca_table { padding:.5rem 2rem .5rem 0; font-size:1.5rem;}
 .ca_stat {color:coral; font-size:1.5rem;}
 .ca_credit { padding:.5rem 0 1rem 0; font-size:1.5rem;line-height:2rem;}
