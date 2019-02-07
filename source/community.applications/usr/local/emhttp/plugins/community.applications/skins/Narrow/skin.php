@@ -122,7 +122,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     $previousAppName = $template['Plugin'] ? $template['PluginURL'] : $template['Name'];
     $checked = $checkedOffApps[$previousAppName] ? "checked" : "";
 
-    $template['Category'] = categoryToLink($template['Category']);
+    $template['Category'] = categoryList($template['Category']);
 
     $RepoName = ( $template['Private'] == "true" ) ? $template['RepoName']."<font color=red> (Private)</font>" : $template['RepoName'];
     if ( ! $template['DonateText'] ) {

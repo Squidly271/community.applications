@@ -452,24 +452,21 @@ function getRunningContainers() {
   return $infoTmp ?: array();
 }
 
-#################################
-# Sets the links for categories #
-#################################
-function categoryToLink($cat,$popUp = false) {
-  $class = $popUp ? "ca_tooltip ca_categoryLink popUpLink" : "ca_tooltip ca_categoryLink";
-  $cat = str_replace(array(":,"," "),",",$cat);
-
+############################
+# Trims the category lists #
+############################
+function categoryList($cat,$popUp = false) {
+  $cat = str_replace(array(":,",": "," "),",",$cat);
+  $cat = rtrim($cat,":");
   $all_categories = explode(",",$cat);
-  sort($all_categories);
+  
+  $categoryList = $popUp ? $all_categories : array_slice($all_categories,0,4);
 
-  foreach ($all_categories as $category) {
-    if ( ! $category ) { continue; }
-    $category = preg_replace('/(?<! )(?<!^)(?<![A-Z])[A-Z]/',' $0', $category);
-    $category = str_replace(": ",":",$category);
-    $category = rtrim($category,":");
-    $categories .= "<a onclick='doSearch(false,&quot;$category&quot;);' class='$class' style='cursor:pointer;' title='Search for $category'>$category</a>, ";
+  if ( count($all_categories) > count($categoryList) ) {
+    $excess = count($all_categories) - count($categoryList);
+    $categoryList[] = " and $excess more";
   }
-  return rtrim($categories,", ");
+  return rtrim(implode(", ",$categoryList),", ");
 }
 
 #####################################
