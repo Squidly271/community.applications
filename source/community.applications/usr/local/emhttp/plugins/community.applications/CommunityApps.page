@@ -668,7 +668,7 @@ function removeApp(application, humanName) {
 
 function uninstallApp(application,humanName) {
   if ( humanName == "Community Applications" ) {
-    myAlert("AE-35 Error","<b><font color='red'>"+humanName+"</font></b> cannot be uninstalled this way.  You must go to the plugins tab and remove Community Applications from there.  <em><font color='purple'>But, why would you ever want to uninstall CA?</font></em>",null,null,true,false,true,"error");
+    myAlert("AE-35 Error","<em>I'm sorry Dave, but I can't do that</em>.  You must go to the plugins tab and remove Community Applications from there.  <em><font color='purple'>But, why would you ever want to uninstall CA?</font></em>",null,null,true,false,true,"error");
   } else {
     sweetAlertBackground("white");
     disableSearch();
@@ -1101,6 +1101,15 @@ function showStatistics() {
 }
 
 </script>
+> <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
+> <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
+> <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' style='font-size:2rem;'></i> - Clicking these icons will take you to an application's GUI or settings<br>
+> <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> - Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>
+> <span class='unpinned'> </span><span class='pinned'></span> Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br>
+> <i class='fa fa-info-circle' aria-hidden='true' style='font-size:2rem;'></i> Clicking this will display more information about the application<br>
+> <i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:2rem;'></i> Clicking this will display any warnings or extra comments about the application<br>
+> <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
+> <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 <div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </p></div>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
 <div style='position:absolute; left:0px;width:14rem;height:auto;' class='menuItems'>
@@ -1180,26 +1189,10 @@ function showStatistics() {
 <span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox'  placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button>
 </div>
 <br>
-
-
 </span><br>
-
-> <i class='fa fa-list-ul enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses which "section" to display (Available Apps, Installed Apps, Previously Installed Apps, Pinned Apps)<br>
-> <i class='fa fa-folder enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This selects a category of apps to display<br>
-> <i class='fa fa-folder-open enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - When available, this selects a subcategory of apps to display<br>
-> <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
-> <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
-> <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> - Clicking this icon will take you to an application's GUI<br>
-> <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> - Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>
-> <span class='unpinned'> </span><span class='pinned'></span> Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br>
-> <br>Hovering over an application's icon (or clicking it) will display more information about the application<br>
-> <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
-> <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
-
 <?if ( $upgradeAvailable ) :?>
 <span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</center></font></span>
 <?endif;?>
-
 <div style='position:absolute;left:14.5rem;right:0px; display:block;'>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 <strong><font size='3'><span id="Category" class="categoryLine"></span></strong></font>

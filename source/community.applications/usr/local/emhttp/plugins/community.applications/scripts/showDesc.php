@@ -294,5 +294,4 @@ if ( $template['Changes'] ) {
       });
     }
   });
-
 </script>
