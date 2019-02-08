@@ -23,7 +23,6 @@ if ( $installedVersion < $upgradeVersion && $upgradeVersion) {
 }
 
 $cfg = parse_plugin_cfg($plugin);
-
 if ( ! is_file($communityPaths['warningAccepted']) ) {
   $firstRun = "true";
 }
@@ -285,7 +284,7 @@ function setToolTip() {
     var apppath = $(this).data("apppath");
     var appname = $(this).data("appname");
     
-    my_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,false);
+    my_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,"refreshDisplay()");
   });
 
   readMore();

@@ -177,17 +177,17 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
     if ( ! $template['Plugin'] ) {
       if ( $communitySettings['dockerRunning'] ) {
         if ( $selected ) {
-          $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'> Reinstall (default)</a>";
-          $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-edit' title='Click to edit the application values' href='/Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'> Edit</a>";
+          $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall (default)</a>";
+          $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-edit' title='Click to edit the application values' href='/Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'>&nbsp;&nbsp;Edit</a>";
           if ( $info[$name]['url'] && $info[$name]['running'] ) {
-            $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'> WebUI</a>";
+            $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'>&nbsp;&nbsp;WebUI</a>";
           }
         } else {
           if ( $template['MyPath'] ) {
-            $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'> Reinstall (default)</a>";
+            $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall (default)</a>";
           } else {
-            $install              = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'> Install</a>";
-            $installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'> Install</a>" : $install;
+            $install              = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Install</a>";
+            $installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'>&nbsp;&nbsp;Install</a>" : $install;
           }
         }
       }
@@ -196,22 +196,22 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
       if ( file_exists("/var/log/plugins/$pluginName") ) {
         $pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
         if ( $pluginSettings ) {
-          $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' title='Click to go to the plugin settings' href='/Apps/$pluginSettings' target='$tabMode'> Settings</a>";
+          $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' title='Click to go to the plugin settings' href='/Apps/$pluginSettings' target='$tabMode'>&nbsp;&nbsp;Settings</a>";
         }
       } else {
         $buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
-        $installLine .= "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');> Install</a>";
+        $installLine .= "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>&nbsp;&nbsp;Install</a>";
       }
     }
   }
   if ( $template['Support'] || $template['Project'] ) {
     $installLine .= "<span style='float:right;'>";
-    $installLine .= $template['Support'] ? "<a class='appIconsPopUp ca_fa-support' href='".$template['Support']."' target='_blank'> Support</strong></a>&nbsp;&nbsp;" : "";
-    $installLine .= $template['Project'] ? "<a class='appIconsPopUp ca_fa-project' href='".$template['Project']."' target='_blank'> Project</strong></a>&nbsp;&nbsp;" : "";
+    $installLine .= $template['Support'] ? "<a class='appIconsPopUp ca_fa-support' href='".$template['Support']."' target='_blank'>&nbsp;&nbsp;Support</strong></a>&nbsp;&nbsp;" : "";
+    $installLine .= $template['Project'] ? "<a class='appIconsPopUp ca_fa-project' href='".$template['Project']."' target='_blank'>&nbsp;&nbsp;Project</strong></a>" : "";
     $installLine .= "</span>";
   }
   if ( $installLine ) {
-    $templateDescription .= "$installLine<br><hr>";
+    $templateDescription .= "<font size:0.9rem;>$installLine</font><br><hr>";
   }
   $templateDescription .= $template['Description'];
   $templateDescription .= $template['ModeratorComment'] ? "<br><br><b><font color='red'>Moderator Comments:</font></b> ".$template['ModeratorComment'] : "";
@@ -260,8 +260,8 @@ if ( $template['Changes'] ) {
   $templateDescription .= "<center><font size='4'><b>Change Log</b></center></font><br>$changeLogMessage$appInformation";
 }
 ?>
-<div style='height:20px;'></div>
-<?=$templateDescription?>
+<divstyle='height:20px;'></div>
+<span id='popUpContent'><?=$templateDescription?></span>
 <script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
 <link type="text/css" rel="stylesheet" href='<?autov("/webGui/styles/font-awesome.css")?>'>
 <link type="text/css" rel="stylesheet" href='<?autov("/plugins/community.applications/skins/Narrow/css.php")?>'>
@@ -278,26 +278,27 @@ body {margin-left:1.5rem;margin-right:1.5rem;font-family:clear-sans;font-size:0.
 a.appIconsPopUp { text-decoration:none;color:inherit;}
 </style>
 <script>
-  $('img').each(function() { // This handles any http images embedded in changelogs
-    if ( $(this).hasClass('displayIcon') ) { // ie: don't change any images on the main display
-      return;
-    }
-    var origSource = $(this).attr("src");
-    if ( origSource.startsWith("http://") ) {
-      var newSource = origSource.replace("http://","https://");
-      $(this).attr("src",newSource);
-    }
-  });
-  $('img').on("error",function() {
-    var origSource = $(this).attr('src');
-    var newSource = origSource.replace("https://","http://");
-    if ( document.referrer.startsWith("https") && "<?=$communitySettings['secureImage']?>" == "secure" ) {
+
+$('img').each(function() { // This handles any http images embedded in changelogs
+  if ( $(this).hasClass('displayIcon') ) { // ie: don't change any images on the main display
+    return;
+  }
+  var origSource = $(this).attr("src");
+  if ( origSource.startsWith("http://") ) {
+    var newSource = origSource.replace("http://","https://");
+    $(this).attr("src",newSource);
+  }
+});
+$('img').on("error",function() {
+  var origSource = $(this).attr('src');
+  var newSource = origSource.replace("https://","http://");
+  if ( document.referrer.startsWith("https") && "<?=$communitySettings['secureImage']?>" == "secure" ) {
+    $(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+  } else {
+    $(this).attr('src',newSource);
+    $(this).on("error",function() {
       $(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
-    } else {
-      $(this).attr('src',newSource);
-      $(this).on("error",function() {
-        $(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
-      });
-    }
-  });
+    });
+  }
+});
 </script>

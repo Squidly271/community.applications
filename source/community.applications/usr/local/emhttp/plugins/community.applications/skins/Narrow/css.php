@@ -105,7 +105,7 @@ input[type=checkbox] {width:2rem;height:2rem;}
 .appIcons {font-size:2.0rem;color:inherit;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
 .appIcons:hover {text-decoration:none;}
 a.appIcons {text-decoration:none;}
-.appIconsPopUp {font-size:1.2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
+.appIconsPopUp {font-size:1rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
 .appIconsPopUp:hover {text-decoration:none;}
 .myReadmore {text-align:center;}
 .myReadmoreButton {color:blue;}
