@@ -187,14 +187,14 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
     if ( ! $template['Plugin'] ) {
       if ( $communitySettings['dockerRunning'] ) {
         if ( $selected ) {
-          $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'> Reinstall</a>";
+          $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'> Reinstall (default)</a>";
           $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-edit' title='Click to edit the application values' href='/Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'> Edit</a>";
           if ( $info[$name]['url'] && $info[$name]['running'] ) {
             $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'> WebUI</a>";
           }
         } else {
           if ( $template['MyPath'] ) {
-            $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'> Reinstall</a>";
+            $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'> Reinstall (default)</a>";
           } else {
             $install              = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'> Install</a>";
             $installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'> Install</a>" : $install;

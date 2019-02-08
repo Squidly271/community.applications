@@ -1102,7 +1102,7 @@ function showStatistics() {
 
 </script>
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
-> <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-refresh' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <b>Install, Edit, or Update</b> an application<br>
+> <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <b>Install or Edit</b> an application<br>
 > <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' style='font-size:2rem;'></i> - Clicking these icons will take you to an application's GUI or settings<br>
 > <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> - Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>
 > <span class='unpinned'> </span><span class='pinned'></span> Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br>
