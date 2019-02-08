@@ -8,17 +8,7 @@
 
 # Adjust some styles for the popupIcon
 ?>
-<style>
-p {margin-left:2rem;margin-right:2rem;}
-.popUpLink {cursor:pointer;color:inherit;}
-a.popUpLink {text-decoration:none;}
-.popUpDeprecated {color:#FF8C2F;}
-i.popupIcon {color:#626868;font-size:3.5rem;padding-left:1rem;width:4.8rem}
-img.popupIcon {width:4.8rem;height:4.8rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
-.display_beta {color:#FF8C2F;}
-body {margin-left:1.5rem;margin-right:1.5rem;font-family:sans-serif;}
-a.appIconsPopUp { text-decoration:none;color:inherit;}
-</style>
+
 <?PHP
 require_once("/usr/local/emhttp/plugins/dynamix/include/Helpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
@@ -275,6 +265,18 @@ if ( $template['Changes'] ) {
 <script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
 <link type="text/css" rel="stylesheet" href='<?autov("/webGui/styles/font-awesome.css")?>'>
 <link type="text/css" rel="stylesheet" href='<?autov("/plugins/community.applications/skins/Narrow/css.php")?>'>
+<link type="text/css" rel="stylesheet" href='<?autov("/webGui/styles/default-fonts.css")?>'>
+<style>
+p {margin-left:2rem;margin-right:2rem;}
+.popUpLink {cursor:pointer;color:inherit;}
+a.popUpLink {text-decoration:none;}
+.popUpDeprecated {color:#FF8C2F;}
+i.popupIcon {color:#626868;font-size:3.5rem;padding-left:1rem;width:4.8rem}
+img.popupIcon {width:4.8rem;height:4.8rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
+.display_beta {color:#FF8C2F;}
+body {margin-left:1.5rem;margin-right:1.5rem;font-family:clear-sans;}
+a.appIconsPopUp { text-decoration:none;color:inherit;}
+</style>
 <script>
   $('img').each(function() { // This handles any http images embedded in changelogs
     if ( $(this).hasClass('displayIcon') ) { // ie: don't change any images on the main display
