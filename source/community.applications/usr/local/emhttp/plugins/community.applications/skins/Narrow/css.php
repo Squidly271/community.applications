@@ -30,7 +30,7 @@ switch ($theme) {
   case 'white':
     $donateBackground = "#1c1b1b";
     $donateText = "#f2f2f2";
-    $templateBackground = "#f2f2f2";
+    $templateBackground = "#f5f5f5";
     $hrColor = "lightgrey";
     $borderColor = "lightgrey";
     break;

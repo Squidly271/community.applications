@@ -94,7 +94,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
   $template['ModeratorComment'] .= $template['CAComment'];
 
   if ( $color ) {
-    $templateDescription .= "<center><font size=6rem;><strong>{$template['SortName']}</strong></font>";
+    $templateDescription .= "<center><strong>{$template['SortName']}</strong>";
     if ( $template['Beta'] ) {
       $templateDescription .= " <span class='display_beta'>BETA</span>";
     }
@@ -109,7 +109,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
     $templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
   }
   $templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
-  $templateDescription .= "<table>";
+  $templateDescription .= "<table style='font-size:0.9rem;'>";
   $templateDescription .= "<tr><td>{$color}Author:</td><td>{$template['SortAuthor']}</a></td></tr>";
   if ( ! $template['Plugin'] ) {
     $repository = explode(":",$template['Repository']);
@@ -274,7 +274,7 @@ a.popUpLink {text-decoration:none;}
 i.popupIcon {color:#626868;font-size:3.5rem;padding-left:1rem;width:4.8rem}
 img.popupIcon {width:4.8rem;height:4.8rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
 .display_beta {color:#FF8C2F;}
-body {margin-left:1.5rem;margin-right:1.5rem;font-family:clear-sans;}
+body {margin-left:1.5rem;margin-right:1.5rem;font-family:clear-sans;font-size:0.9rem;}
 a.appIconsPopUp { text-decoration:none;color:inherit;}
 </style>
 <script>
