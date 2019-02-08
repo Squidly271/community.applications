@@ -228,7 +228,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
   $templateDescription .= "</p><br><center>";
 
   if ( $donatelink ) {
-    $templateDescription .= "<span style='float:right;text-align:right;'>$donatetext&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>Donate</a></span><br>";
+    $templateDescription .= "<span style='float:right;text-align:right;'><font size=0.75rem;>$donatetext</font>&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>Donate</a></span><br>";
   }
   $templateDescription .= "</center>";
   if ($template['Plugin']) {

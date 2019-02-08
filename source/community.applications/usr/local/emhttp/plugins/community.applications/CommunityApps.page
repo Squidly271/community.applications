@@ -21,7 +21,9 @@ $upgradeVersion = download_url($communityPaths['onlineCAVersion'],"",false,10);
 if ( $installedVersion < $upgradeVersion && $upgradeVersion) {
   $upgradeAvailable = "true";
 }
+
 $cfg = parse_plugin_cfg($plugin);
+
 if ( ! is_file($communityPaths['warningAccepted']) ) {
   $firstRun = "true";
 }
@@ -1191,7 +1193,7 @@ function showStatistics() {
 <br>
 </span><br>
 <?if ( $upgradeAvailable ) :?>
-<span id='upgradeAvailable'><center> <font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</center></font></span>
+<div><center><font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</center></font></div>
 <?endif;?>
 <div style='position:absolute;left:14.5rem;right:0px; display:block;'>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
