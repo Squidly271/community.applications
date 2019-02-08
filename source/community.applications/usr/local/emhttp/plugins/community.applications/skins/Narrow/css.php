@@ -16,9 +16,9 @@ $theme = $dynamix['display']['theme'] ?: "black";
 
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
-$unRaid66color = $unRaid66 ? "#FF8C2F" : "green";
+$unRaid66color = "#FF8C2F";
 $linkColor = "#486dba";
-$startupColor = $unRaid66 ? "#FF8C2F" : "purple";
+$startupColor = "#FF8C2F";
 switch ($theme) {
   case 'black':
     $donateBackground = "#f2f2f2";
