@@ -106,7 +106,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
     $templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
     $templateDescription .= "<i class='$templateIcon popupIcon' id='icon'></i>";
   } else {
-    $templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
+    $templateDescription .= "<img style='display:none;' class='popupIcon' id='icon' src='{$template['Icon']}'>";
   }
   $templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
   $templateDescription .= "<table style='font-size:0.9rem;'>";
@@ -218,7 +218,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
   $templateDescription .= "</p><br><center>";
 
   if ( $donatelink ) {
-    $templateDescription .= "<span style='float:right;text-align:right;'><font size=0.75rem;>$donatetext</font>&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>Donate</a></span><br>";
+    $templateDescription .= "<span style='float:right;text-align:right;'><font size=0.75rem;>$donatetext</font>&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>Donate</a></span><br><br>";
   }
   $templateDescription .= "</center>";
   if ($template['Plugin']) {
@@ -274,31 +274,49 @@ a.popUpLink {text-decoration:none;}
 i.popupIcon {color:#626868;font-size:3.5rem;padding-left:1rem;width:4.8rem}
 img.popupIcon {width:4.8rem;height:4.8rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
 .display_beta {color:#FF8C2F;}
-body {margin-left:1.5rem;margin-right:1.5rem;font-family:clear-sans;font-size:0.9rem;}
+body {margin-left:1.5rem;margin-right:1.5rem;margin-top:1.5rem;font-family:clear-sans;font-size:0.9rem;}
 a.appIconsPopUp { text-decoration:none;color:inherit;}
+hr { margin-top:1rem;margin-bottom:1rem; }
 </style>
 <script>
-
-$('img').each(function() { // This handles any http images embedded in changelogs
-  if ( $(this).hasClass('displayIcon') ) { // ie: don't change any images on the main display
-    return;
-  }
-  var origSource = $(this).attr("src");
-  if ( origSource.startsWith("http://") ) {
-    var newSource = origSource.replace("http://","https://");
-    $(this).attr("src",newSource);
-  }
-});
-$('img').on("error",function() {
-  var origSource = $(this).attr('src');
-  var newSource = origSource.replace("https://","http://");
-  if ( document.referrer.startsWith("https") && "<?=$communitySettings['secureImage']?>" == "secure" ) {
-    $(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
-  } else {
-    $(this).attr('src',newSource);
-    $(this).on("error",function() {
+$(function() {
+  $("#icon").show();
+  $('img').each(function() { // This handles any http images embedded in changelogs
+    if ( $(this).hasClass('displayIcon') ) { // ie: don't change any images on the main display
+      return;
+    }
+    var origSource = $(this).attr("src");
+    if ( origSource.startsWith("http://") ) {
+      var newSource = origSource.replace("http://","https://");
+      $(this).attr("src",newSource);
+    }
+  });
+  $('img').on("error",function() {
+    var origSource = $(this).attr('src');
+    var newSource = origSource.replace("https://","http://");
+    if ( document.referrer.startsWith("https") && "<?=$communitySettings['secureImage']?>" == "secure" ) {
       $(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
-    });
-  }
+    } else {
+      $(this).attr('src',newSource);
+      $(this).on("error",function() {
+        $(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+      });
+    }
+  });
 });
+
+function installPlugin(pluginURL) {
+  $("#popUpContent").html("<br><br><center><font size='6'>Please Wait.  Installing Plugin...</font></center>");
+  $.post("/plugins/community.applications/include/exec.php",{action:'installPlugin',pluginURL:pluginURL,csrf_token:'<?=$csrf_token?>'},function(data) {
+    if (data) {
+      var output = JSON.parse(data);
+      if ( output.retval == "0" ) {
+        window.parent.Shadowbox.close();
+      } else {
+        $("#popUpContent").html("<font size=0>"+output.output+"</font>");
+      }
+    }
+  });
+}
+      
 </script>

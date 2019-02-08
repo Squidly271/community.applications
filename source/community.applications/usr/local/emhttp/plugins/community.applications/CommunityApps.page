@@ -450,10 +450,15 @@ function changeSortOrder(button,buttonClass,previousApps) {
   var windowWidth = getWindowWidth();
   var pageNumber = data.currentpage;
   var selected = data.selected;
-
-  mySpinner();
   var sortOrder = getSortOrder();
-  $.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
+  var startup = false;
+  mySpinner();
+  $(".startupButton").each(function(){
+    if ($(this).hasClass("selectedMenu")) {
+      startup = "true";
+    }
+  });
+  $.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize(),startup:startup},function(data3) {
     if (data3) {
       updateDisplay(data3);
     }

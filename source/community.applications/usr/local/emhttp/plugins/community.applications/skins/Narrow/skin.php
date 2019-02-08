@@ -11,7 +11,7 @@
 # Routines that actually displays the template containers. #
 #                                                          #
 ############################################################
-function display_apps($pageNumber=1,$selectedApps=false) {
+function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
   global $communityPaths, $separateOfficial, $officialRepo, $communitySettings;
 
   $file = readJsonFile($communityPaths['community-templates-displayed']);
@@ -28,7 +28,7 @@ function display_apps($pageNumber=1,$selectedApps=false) {
       $logos = readJsonFile($communityPaths['logos']);
       $display .= $logos[$officialRepo] ? "<img src='".$logos[$officialRepo]."' style='width:4.8rem'>&nbsp;&nbsp;" : "";
       $display .= "$officialRepo</div><br>";
-      $display .= my_display_apps($officialApplications,1,true,$selectedApps);
+      $display .= my_display_apps($officialApplications,1,true,$selectedApps,$startup);
     }
   }
   if ( count($communityApplications) ) {
@@ -36,7 +36,7 @@ function display_apps($pageNumber=1,$selectedApps=false) {
       $navigate[] = "<a href='#COMMUNITY'>Community Supported Applications</a>";
       $display .= "<div class='separateOfficial' id='COMMUNITY'>Community Supported Applications</div><br>";
     }
-    $display .= my_display_apps($communityApplications,$pageNumber,false,$selectedApps);
+    $display .= my_display_apps($communityApplications,$pageNumber,false,$selectedApps,$startup);
   }
   unset($navigate[0]);
 
@@ -47,15 +47,14 @@ function display_apps($pageNumber=1,$selectedApps=false) {
 
   $totalApps = "$totalApplications";
 
-/*  $display .= "<script>$('#Total').html('$totalApps');</script>";
- */ echo $bookmark;
+  echo $bookmark;
   echo $display;
 }
 
 # skin specific PHP
 #my_display_apps(), getPageNavigation(), displaySearchResults() must accept all parameters
 #note that many template entries in my_display_apps() are not actually used in the skin, but are present for future possible use.
-function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=false) {
+function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=false,$startup=false) {
   global $communityPaths, $communitySettings, $plugin, $displayDeprecated, $sortOrder;
 
   $viewMode = "detail";
@@ -74,6 +73,9 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
   $pinnedApps = readJsonFile($communityPaths['pinned']);
   $iconSize = $communitySettings['iconSize'];
   $checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
+  if ( filter_var($startup,FILTER_VALIDATE_BOOLEAN) ) {
+    $sortOrder['sortBy'] = "noSort";
+  }
   if ( $sortOrder['sortBy'] != "noSort" ) {
     if ( $sortOrder['sortBy'] == "Name" ) $sortOrder['sortBy'] = "SortName";
     usort($file,"mySort");

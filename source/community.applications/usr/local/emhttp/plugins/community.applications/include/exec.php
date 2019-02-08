@@ -6,6 +6,7 @@
 #                                                             #
 ###############################################################
 
+file_put_contents("/tmp/blah",print_r($_POST,true),FILE_APPEND);
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
@@ -293,12 +294,13 @@ case 'display_content':
   $sortOrder = getSortOrder(getPostArray('sortOrder'));
   $windowWidth = getPost("windowWidth",false);
   $pageNumber = getPost("pageNumber","1");
+  $startup = getPost("startup",false);
   $selectedApps = json_decode(getPost("selected",false),true);
   getMaxColumns($windowWidth);
   $communitySettings['fontSize'] = getPost("fontSize",false);
 
   if ( file_exists($communityPaths['community-templates-displayed']) ) {
-    display_apps($pageNumber,$selectedApps);
+    display_apps($pageNumber,$selectedApps,$startup);
   }
   break;
 
@@ -1092,6 +1094,11 @@ case 'showCredits':
   echo file_get_contents("/usr/local/emhttp/plugins/community.applications/include/caCredits.html");
   break;
 
+case 'installPlugin':
+  $pluginURL = getPost("pluginURL",false);
+  exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin install ".escapeshellarg($pluginURL),$output,$retval);
+  echo json_encode(array("retval"=>$retval,"output"=>implode("<br>",$output)));
+  break;
 }
 
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
