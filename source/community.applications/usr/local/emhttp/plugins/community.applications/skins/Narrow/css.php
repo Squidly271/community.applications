@@ -120,19 +120,19 @@ a.appIcons {text-decoration:none;}
 .separateOfficial {text-align:center;width:auto;font-size:2.5rem;}
 .displayBeta {cursor:pointer;}
 .newApp {color:red;font-size:1.5rem;cursor:pointer;}
-.ca_fa-support::after {content:"\f059";font-family:fontAwesome;}
+.ca_fa-support::before {content:"\f059";font-family:fontAwesome;}
 .ca_fa-delete {color:#882626;font-size:2rem;position:relative;float:right;top:.2rem;cursor:pointer;}
-.ca_fa-delete::after {content:"\f00d";font-family:fontAwesome;}
-.ca_fa-install::after {content:"\f019";font-family:fontAwesome;}
-.ca_fa-edit::after {content:"\f044";font-family:fontAwesome;}
-.ca_fa-globe::after {content:"\f0ac";font-family:fontAwesome;}
-.ca_fa-update::after {content:"\f021";font-family:fontAwesome;}
-.ca_fa-project::after {content:"\f08e";font-family:fontAwesome;}
-.ca_fa-info::after {content:"\f05a";font-family:fontAwesome;}
-.ca_fa-warning::after {content:"\f071";font-family:fontAwesome;}
+.ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
+.ca_fa-install::before {content:"\f019";font-family:fontAwesome;}
+.ca_fa-edit::before {content:"\f044";font-family:fontAwesome;}
+.ca_fa-globe::before {content:"\f0ac";font-family:fontAwesome;}
+.ca_fa-update::before {content:"\f021";font-family:fontAwesome;}
+.ca_fa-project::before {content:"\f08e";font-family:fontAwesome;}
+.ca_fa-info::before {content:"\f05a";font-family:fontAwesome;}
+.ca_fa-warning::before {content:"\f071";font-family:fontAwesome;}
 .warning-red {color:#882626;}
 .warning-yellow {color:#FF8C2F;}
-.ca_fa-pluginSettings::after {content:"\f013";font-family:fontAwesome;}
+.ca_fa-pluginSettings::before {content:"\f013";font-family:fontAwesome;}
 .ca_donate {position:relative;margin-left:18rem;}
 .ca_multiselect {cursor:pointer;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;}
@@ -160,6 +160,8 @@ a.appIcons {text-decoration:none;}
 .startupMessage2{font-size:1rem;}
 .donate {background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;  -webkit-transition: all 800ms;  transition: all 800ms;  }
 a.donate {text-decoration:none;font-style:italic;color:<?=$donateText?>;}
+.popup-donate {background:black;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;  -webkit-transition: all 800ms;  transition: all 800ms;  }
+a.popup-donate {text-decoration:none;font-style:italic;color:white;}
 <?if ( $theme == "azure" ):?>
 .searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:#DADADA;border:none;cursor:pointer;}
 #searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;background-color:#DDDADF;}

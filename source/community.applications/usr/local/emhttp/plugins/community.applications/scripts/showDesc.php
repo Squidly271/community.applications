@@ -10,14 +10,14 @@
 ?>
 <style>
 p {margin-left:2rem;margin-right:2rem;}
-.popUpLink {cursor:pointer;}
+.popUpLink {cursor:pointer;color:inherit;}
+a.popUpLink {text-decoration:none;}
 .popUpDeprecated {color:#FF8C2F;}
 i.popupIcon {color:#626868;font-size:3.5rem;padding-left:1rem;width:4.8rem}
 img.popupIcon {width:4.8rem;height:4.8rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
 .display_beta {color:#FF8C2F;}
 body {margin-left:1.5rem;margin-right:1.5rem;font-family:"Open Sans";}
-.appIconsPopUp { color:black;}
-a.appIconsPopUp { text-decoration:none;}
+a.appIconsPopUp { text-decoration:none;color:inherit;}
 </style>
 <?PHP
 require_once("/usr/local/emhttp/plugins/dynamix/include/Helpers.php");
@@ -80,7 +80,12 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
   $ID = $template['ID'];
 
   $donatelink = $template['DonateLink'];
-  $donatetext = $template['DonateText'] ?: "Donate To Author";
+  if ( $donatelink ) {
+    $donatetext = $template['DonateText'];
+    if ( ! $donatetext ) {
+      $donatetext = $template['Plugin'] ? "Donate To Author" : "Donate To Maintainer";
+    }
+  }
 
   if ( ! $template['Plugin'] ) {
     foreach ($dockerRunning as $testDocker) {
@@ -115,7 +120,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
   }
   $templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
   $templateDescription .= "<table>";
-  $templateDescription .= "<tr><td>{$color}Author:</td><td>{$template['Author']}</a></td></tr>";
+  $templateDescription .= "<tr><td>{$color}Author:</td><td>{$template['SortAuthor']}</a></td></tr>";
   if ( ! $template['Plugin'] ) {
     $repository = explode(":",$template['Repository']);
     $official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
@@ -182,17 +187,17 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
     if ( ! $template['Plugin'] ) {
       if ( $communitySettings['dockerRunning'] ) {
         if ( $selected ) {
-          $templateDescription .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application using default values' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'></a>";
-          $templateDescription .= "<a class='ca_apptooltip appIconsPopUp ca_fa-edit' title='Click to edit the application values' href='/Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'></a>";
+          $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'> Reinstall</a>";
+          $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-edit' title='Click to edit the application values' href='/Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'> Edit</a>";
           if ( $info[$name]['url'] && $info[$name]['running'] ) {
-            $templateDescription .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'></a>";
+            $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'> WebUI</a>";
           }
         } else {
           if ( $template['MyPath'] ) {
-            $templateDescription .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'></a>";
+            $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'> Reinstall</a>";
           } else {
-            $install              = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'></a>";
-            $templateDescription .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'></a>" : $install;
+            $install              = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'> Install</a>";
+            $installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'> Install</a>" : $install;
           }
         }
       }
@@ -201,30 +206,29 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
       if ( file_exists("/var/log/plugins/$pluginName") ) {
         $pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
         if ( $pluginSettings ) {
-          $templateDescription .= "<i class='ca_apptooltip appIconsPopUp ca_fa-globe fa fa-globe' title='Click to go to the plugin settings' href='/Apps/$pluginSettings'></i>";
+          $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' title='Click to go to the plugin settings' href='/Apps/$pluginSettings' target='$tabMode'> Settings</a>";
         }
       } else {
         $buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
-        $templateDescription .= "<i style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');></i>";
-      }
-      if ( checkPluginUpdate($template['PluginURL']) ) {
-        $templateDescription .= "<a class='ca_apptooltip appIconsPopUp ca_fa-update' title='Update Available.  Click To Install' onclick='installPLGupdate(&quot;".basename($template['PluginURL'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'></a>";
+        $installLine .= "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');> Install</a>";
       }
     }
   }
-  $templateDescription .= "<br></center></center><hr>";
+  if ( $template['Support'] || $template['Project'] ) {
+    $installLine .= "<span style='float:right;'>";
+    $installLine .= $template['Support'] ? "<a class='appIconsPopUp ca_fa-support' href='".$template['Support']."' target='_blank'> Support</strong></a>&nbsp;&nbsp;" : "";
+    $installLine .= $template['Project'] ? "<a class='appIconsPopUp ca_fa-project' href='".$template['Project']."' target='_blank'> Project</strong></a>&nbsp;&nbsp;" : "";
+    $installLine .= "</span>";
+  }
+  if ( $installLine ) {
+    $templateDescription .= "$installLine<br><hr>";
+  }
   $templateDescription .= $template['Description'];
   $templateDescription .= $template['ModeratorComment'] ? "<br><br><b><font color='red'>Moderator Comments:</font></b> ".$template['ModeratorComment'] : "";
   $templateDescription .= "</p><br><center>";
-  $templateDescription .= $template['Support'] ? "&nbsp;&nbsp;<a class='popUpLink' href='".$template['Support']."' target='_blank'>Support Thread</strong></a>&nbsp;&nbsp;" : "";
-  $templateDescription .= $template['Project'] ? "&nbsp;&nbsp;<a class='popUpLink' href='".$template['Project']."' target='_blank'>Project Page</strong></a>&nbsp;&nbsp;" : "";
-  $templateDescription .= $template['WebPageURL'] ? "&nbsp;&nbsp;<a class='popUpLink' href='".$template['WebPageURL']."' target='_blank'>Web Page</strong></a>&nbsp;&nbsp;" : "";
 
   if ( $donatelink ) {
-    $templateDescription .= "<br><br><center>$donatetext<br><a class='donateLink' href='$donatelink' target='_blank'><img src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button-small.png' style='height:1.8rem;'></a>";
-    if ( $template['RepoName'] != "Squid's plugin Repository" ) {
-      $templateDescription .= "<br><font size='0'>The above link is set by the author of the template, not the author of Community Applications</font></center>";
-    }
+    $templateDescription .= "<span style='float:right'>$donatetext&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>Donate</a></span><br>";
   }
   $templateDescription .= "</center>";
   if ($template['Plugin']) {
