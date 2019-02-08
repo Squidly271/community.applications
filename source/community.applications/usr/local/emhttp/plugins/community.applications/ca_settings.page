@@ -51,18 +51,6 @@ foreach ($repoName as $display1) {
 <form markdown="1" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="<?=$plugin?>/<?=$plugin?>.cfg">
 
-Hover Time delay (miliseconds):
-: <input type="number" name="hoverTime" class="narrow" maxlength="5" value="<?=$cfg['hoverTime']?>" placeholder="1000">
-
-> This setting determines how long you have to hover over any element prior to the pop up appearing
-
-Favourite Repository:
-: <select name="favourite" size="1">
-	<?=$displayOptions?>
-	</select>
-
-> Set this option to your favourite repository, so that it's applications will display first
-
 Show already installed apps within available apps:
 : <select name='separateInstalled' size='1'>
 	<?=mk_option($cfg['separateInstalled'], "true", "No (default)")?>
@@ -102,6 +90,13 @@ Disable mobile UI enhancements:
 	</select>
 	
 > If you have problems with swiping to change pages, then disable the mobile UI enhancements
+
+Favourite Repository:
+: <select name="favourite" size="1">
+	<?=$displayOptions?>
+	</select>
+
+> Set this option to your favourite repository, so that it's applications will display first
 
 <strong>Docker Hub Searching</strong>
 

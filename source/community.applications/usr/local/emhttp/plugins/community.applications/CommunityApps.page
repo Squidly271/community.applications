@@ -264,7 +264,7 @@ function setToolTip() {
 
   $('.ca_tooltip,.ca_staticTips').tooltipster({
     contentAsHTML:true,
-    delay:[<?=$cfg['hoverTime']?>,1],
+    delay:[1000,1],
     timer:15000,
     animation:'none',
     arrow:true,

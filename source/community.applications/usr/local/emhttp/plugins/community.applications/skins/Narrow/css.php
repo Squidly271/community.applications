@@ -121,7 +121,7 @@ a.appIcons {text-decoration:none;}
 .displayBeta {cursor:pointer;}
 .newApp {color:red;font-size:1.5rem;cursor:pointer;}
 .ca_fa-support::before {content:"\f059";font-family:fontAwesome;}
-.ca_fa-delete {color:#882626;font-size:2rem;position:relative;float:right;top:.2rem;cursor:pointer;}
+.ca_fa-delete {color:#882626;font-size:2rem;position:relative;float:right;cursor:pointer;}
 .ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
 .ca_fa-install::before {content:"\f019";font-family:fontAwesome;}
 .ca_fa-edit::before {content:"\f044";font-family:fontAwesome;}

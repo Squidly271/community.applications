@@ -1097,6 +1097,7 @@ case 'showCredits':
 case 'installPlugin':
   $pluginURL = getPost("pluginURL",false);
   exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin install ".escapeshellarg($pluginURL),$output,$retval);
+  exec("/usr/local/emhttp/plugins/community.applications/scripts/updatePluginSupport.php",$output);
   echo json_encode(array("retval"=>$retval,"output"=>implode("<br>",$output)));
   break;
 }
