@@ -900,20 +900,7 @@ case "pinnedApps":
 ################################################
 case 'displayTags':
   $leadTemplate = getPost("leadTemplate","oops");
-  $file = readJsonFile($communityPaths['community-templates-info']);
-  $template = $file[$leadTemplate];
-  $childTemplates = $file[$leadTemplate]['BranchID'];
-  if ( ! is_array($childTemplates) ) {
-    echo "Something really went wrong here";
-  } else {
-    $defaultTag = $template['BranchDefault'] ? $template['BranchDefault'] : "latest";
-    echo "<table>";
-    echo "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='Apps/AddContainer?xmlTemplate=default:".$template['Path']."' target='_self'>Default</a></td><td>Install Using The Template's Default Tag (<font color='purple'>:$defaultTag</font>)</td></tr>";
-    foreach ($childTemplates as $child) {
-      echo "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='Apps/AddContainer?xmlTemplate=default:".$file[$child]['Path']."' target='_self'>".$file[$child]['BranchName']."</a></td><td>".$file[$child]['BranchDescription']."</td></tr>";
-    }
-    echo "</table>";
-  }
+  echo formatTags($leadTemplate,"_self");
   break;
 
 ###########################################

@@ -519,4 +519,24 @@ function fixDescription($Description) {
   return $Description;
 }
 
+function formatTags($leadTemplate,$tabMode="_self") {
+  global $communityPaths;
+  
+  $file = readJsonFile($communityPaths['community-templates-info']);
+  $template = $file[$leadTemplate];
+  $childTemplates = $file[$leadTemplate]['BranchID'];
+  if ( ! is_array($childTemplates) ) {
+    $o =  "Something really went wrong here";
+  } else {
+    $defaultTag = $template['BranchDefault'] ? $template['BranchDefault'] : "latest";
+    $o = "<table>";
+    $o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='/Apps/AddContainer?xmlTemplate=default:".$template['Path']."' target='$tabMode'>Default</a></td><td>Install Using The Template's Default Tag (<font color='purple'>:$defaultTag</font>)</td></tr>";
+    foreach ($childTemplates as $child) {
+      $o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='/Apps/AddContainer?xmlTemplate=default:".$file[$child]['Path']."' target='$tabMode'>".$file[$child]['BranchName']."</a></td><td>".$file[$child]['BranchDescription']."</td></tr>";
+    }
+    $o .= "</table>";
+  }
+  return $o;
+}
+
 ?>

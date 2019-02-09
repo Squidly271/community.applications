@@ -106,7 +106,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
   }
   $templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
   $templateDescription .= "<table style='font-size:0.9rem;'>";
-  $templateDescription .= "<tr><td>{$color}Author:</td><td>{$template['SortAuthor']}</a></td></tr>";
+  $templateDescription .= "<tr><td style='width:25%'>{$color}Author:</td><td>{$template['SortAuthor']}</a></td></tr>";
   if ( ! $template['Plugin'] ) {
     $repository = explode(":",$template['Repository']);
     $official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
@@ -183,7 +183,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
             $installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall (default)</a>";
           } else {
             $install              = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Install</a>";
-            $installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'>&nbsp;&nbsp;Install</a>" : $install;
+            $installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' onclick='$(&quot;#branch&quot;).show();'>&nbsp;&nbsp;Install</a>" : $install;
           }
         }
       }
@@ -207,7 +207,13 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
     $installLine .= "</span>";
   }
   if ( $installLine ) {
-    $templateDescription .= "<font size:0.9rem;>$installLine</font><br><hr>";
+    $templateDescription .= "<font size:0.9rem;>$installLine</font><br>";
+    if ($template['BranchID']) {
+      $templateDescription .= "<span id='branch' style='display:none;'>";
+      $templateDescription .= formatTags($template['ID'],"_parent");
+      $templateDescription .= "</span>";
+    }
+    $templateDescription .= "<hr>";
   }
   $templateDescription .= $template['Description'];
   $templateDescription .= $template['ModeratorComment'] ? "<br><br><b><font color='red'>Moderator Comments:</font></b> ".$template['ModeratorComment'] : "";
