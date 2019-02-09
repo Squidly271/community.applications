@@ -102,7 +102,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
     $templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
     $templateDescription .= "<i class='$templateIcon popupIcon' id='icon'></i>";
   } else {
-    $templateDescription .= "<img style='display:none;' class='popupIcon' id='icon' src='{$template['Icon']}'>";
+    $templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
   }
   $templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
   $templateDescription .= "<table style='font-size:0.9rem;'>";
@@ -263,7 +263,7 @@ if ( $template['Changes'] ) {
 }
 ?>
 <divstyle='height:20px;'></div>
-<span id='popUpContent'><?=$templateDescription?></span>
+<span id='popUpContent' style='display:none;'><?=$templateDescription?></span>
 <script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
 <link type="text/css" rel="stylesheet" href='<?autov("/webGui/styles/font-awesome.css")?>'>
 <link type="text/css" rel="stylesheet" href='<?autov("/plugins/community.applications/skins/Narrow/css.php")?>'>
@@ -282,7 +282,6 @@ hr { margin-top:1rem;margin-bottom:1rem; }
 </style>
 <script>
 $(function() {
-  $("#icon").show();
   $('img').each(function() { // This handles any http images embedded in changelogs
     if ( $(this).hasClass('displayIcon') ) { // ie: don't change any images on the main display
       return;
@@ -305,6 +304,7 @@ $(function() {
       });
     }
   });
+  $("#popUpContent").show();
 });
 
 function installPlugin(pluginURL) {

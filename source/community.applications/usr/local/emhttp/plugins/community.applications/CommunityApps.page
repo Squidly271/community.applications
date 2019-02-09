@@ -409,6 +409,7 @@ function doSearch(button,newSearch) {
 
   if (filter) {
     $("#Category").html(" Search Results for <font color='<?=$unRaid66color?>'>"+filter+"</font>");
+    enableIcon("#sortIcon",true);
   }
 
   window.scrollTo(0,0);
