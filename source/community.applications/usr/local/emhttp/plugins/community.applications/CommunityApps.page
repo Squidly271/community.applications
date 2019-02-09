@@ -28,6 +28,10 @@ if ( ! is_file($communityPaths['warningAccepted']) ) {
 }
 $unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
+
+if ( is_file($communityPaths['addConverted']) ) {
+  $dockerConvertFlag = "true";
+}
 ?>
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/community.applications/skins/Narrow/css.php")?>" >
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/community.applications/styles/awesomplete.css")?>'>
@@ -156,7 +160,7 @@ $(function(){
       }
     });
   } else {
-    if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() ) {
+    if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") ) {
       populateAutoComplete();
       restoreState();
       refreshDisplay();
@@ -591,7 +595,7 @@ function dockerConvert(dockerID) {
   $.post(URL,{action:'convert_docker',ID:dockerID},function(data) {
     if (data) {
       myCloseAlert();
-      templateURL = "Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
+      templateURL = "/Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
       window.open(templateURL,"_self");
     }
   });

@@ -405,13 +405,13 @@ function displaySearchResults($pageNumber) {
     }
 
     $result['display_Repository'] = $result['Repository'];
-    $result['display_iconClickable'] = $result['Icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
+    $result['display_iconOnly'] = $result['Icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
     $result['display_dockerName'] = "<a class='ca_tooltip ca_applicationName' style='cursor:pointer;' onclick='mySearch(this.innerText);' title='Search for similar containers'>{$result['Name']}</a>";
     $result['display_author'] = "<a class='ca_tooltip ca_author' onclick='mySearch(this.innerText);' title='Search For Containers From {$result['Author']}'>{$result['Author']}</a>";
     $result['Category'] = "Docker Hub Search";
-    $result['display_iconClickable'] = "<img class='displayIcon' src='{$result['Icon']}'>";
+    $result['display_iconOnly'] = "<img class='displayIcon' src='{$result['Icon']}'>";
     $result['Description'] = $result['Description'] ?: "No description present";
-    $result['display_Project'] = "<a class='ca_tooltip dockerHubLink' target='_blank' href='{$result['DockerHub']}'>dockerHub Page</a>";
+    $result['display_faProject'] = "<a class='ca_tooltip ca_fa-project appIcons' title='Go to dockerHub page' target='_blank' href='{$result['DockerHub']}'></a>";
     $result['display_dockerInstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click To Install' onclick='dockerConvert(&#39;".$result['ID']."&#39;);'></a>";
     $ct .= vsprintf($displayTemplate,toNumericArray($result));
     $count++;

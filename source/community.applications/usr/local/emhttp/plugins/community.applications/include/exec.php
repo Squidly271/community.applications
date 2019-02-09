@@ -6,7 +6,6 @@
 #                                                             #
 ###############################################################
 
-file_put_contents("/tmp/blah",print_r($_POST,true),FILE_APPEND);
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
@@ -101,7 +100,6 @@ case 'get_content':
   $newAppTime = strtotime($communitySettings['timeNew']);
 
   if ( file_exists($communityPaths['addConverted']) ) {
-    @unlink($communityPaths['community-templates-info']);
     @unlink($communityPaths['addConverted']);
     getConvertedTemplates();
   }
