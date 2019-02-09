@@ -37,10 +37,6 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 
 $appNumber =  urldecode($_GET['appPath']);
 $appName = urldecode($_GET['appName']);
-if ( ! $appNumber ) {
-  $appNumber = $_POST['appPath'];
-  $color="<font color='white'>";
-}
 
 if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
   # $appNumber is actually the path to the template.  It's pretty much always going to be the same even if the database is out of sync.

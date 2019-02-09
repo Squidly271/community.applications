@@ -456,7 +456,9 @@ function changeSortOrder(button,buttonClass,previousApps) {
   var selected = data.selected;
   var sortOrder = getSortOrder();
   var startup = false;
-  mySpinner();
+  if ( button != null || buttonClass != null || previousApps != null ) {
+    mySpinner();
+  }
   $(".startupButton").each(function(){
     if ($(this).hasClass("selectedMenu")) {
       startup = "true";
@@ -1110,6 +1112,14 @@ function showStatistics() {
   });
 }
 
+function caChangeLog() {
+  $.post(URL,{action:'caChangeLog'},function(data) {
+    if (data) {
+      $("#templates_content").html(data);
+    }
+  });
+}
+
 </script>
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <b>Install or Edit</b> an application<br>
@@ -1184,7 +1194,8 @@ function showStatistics() {
   <li class='caMenuItem' onclick='disableSort();showStatistics();'>Statistics</li>
   <li class='caMenuItem' onclick='disableSort();showCredits();'>Credits</li>
   <li class='caMenuItem' onclick='window.location="https://forums.unraid.net/topic/38582-plug-in-community-applications/"'>Support</li>
-</ul>
+  <li class='caMenuItem' onclick='disableSort();caChangeLog();'>Change Log</li>
+  </ul>
 <br><br><br>
 </div><div style='float:right;'>
 <span id='sortIconArea' style='display:none;'>

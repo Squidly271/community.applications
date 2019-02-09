@@ -1059,27 +1059,9 @@ case 'populateAutoComplete':
   echo "<script>searchBoxAwesomplete.list = [".rtrim($autoScript,",")."];</script>";
   break;
 
-#############################
-# Stops a running container #
-#############################
-case 'stopStartContainer':
-  $containerName = getPost("name","");
-  $containerID = getPost("id","");
-  $stopStart = filter_var(getPost("stopStart",""),FILTER_VALIDATE_BOOLEAN);
-  if ( $stopStart ) {
-    myStartContainer($containerID);
-  } else {
-    myStopContainer($containerID);
-  }
-  $info = getRunningContainers();
-  $runState = $stopStart ? $info[$containerName]['running'] : !$info[$containerName]['running'];
-  if ($runState) {
-    echo "ok";
-  } else {
-    echo "problem";
-  }
-  break;
-
+#######################################
+# Gets which appfeed server is active #
+#######################################
 case 'getCurrentServer':
   $server = @file_get_contents($communityPaths['currentServer']);
   if ($server != "Primary Server") {
@@ -1088,18 +1070,31 @@ case 'getCurrentServer':
   echo $server ? "<br>$server Active" : "<br>Appfeed Download Failed";
   break;
 
+######################
+# Shows CA's credits #
+######################
 case 'showCredits':
   echo file_get_contents("/usr/local/emhttp/plugins/community.applications/include/caCredits.html");
   break;
 
+####################################
+# Installs a plugin from the modal #
+####################################
 case 'installPlugin':
   $pluginURL = getPost("pluginURL",false);
   exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin install ".escapeshellarg($pluginURL),$output,$retval);
   exec("/usr/local/emhttp/plugins/community.applications/scripts/updatePluginSupport.php",$output);
   echo json_encode(array("retval"=>$retval,"output"=>implode("<br>",$output)));
   break;
-}
 
+case 'caChangeLog':
+  require_once("webGui/include/Markdown.php");
+  echo "<div style='margin:auto;width:500px;'>";
+  echo "<center><font size='4rem'>Community Applications Changelog</font></center><br><br>";
+  echo Markdown(plugin("changes","/var/log/plugins/community.applications.plg"));
+  break;
+
+}
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
 function DownloadApplicationFeed() {
