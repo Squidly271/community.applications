@@ -261,6 +261,10 @@ function isIconEnabled(icon) {
   return $(icon).hasClass("enabledIcon");
 }
 
+function stripTags(string) {
+  return string.replace(/(<([^>]+)>)/ig,"");
+}
+
 function setToolTip() {
   $('.ca_multiselect').click( function() {
     enableMultiInstall();
@@ -287,7 +291,7 @@ function setToolTip() {
     var appnumber = $(this).data("appnumber");
     var apppath = $(this).data("apppath");
     var appname = $(this).data("appname");
-    
+    appname = stripTags(appname);
     my_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,"refreshDisplay()");
   });
 

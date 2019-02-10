@@ -215,7 +215,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
     }
     $templateDescription .= "<hr>";
   }
-  $templateDescription .= $template['Description'];
+  $templateDescription .= strip_tags($template['Description']);
   $templateDescription .= $template['ModeratorComment'] ? "<br><br><b><font color='red'>Moderator Comments:</font></b> ".$template['ModeratorComment'] : "";
   $templateDescription .= "</p><br><center>";
 
