@@ -73,6 +73,7 @@ i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
 .categoryLine {margin-left:120px;font-size:1.2rem;font-weight:normal;}
 .sortIcons {font-size:1.8rem;margin-right:20px;cursor:pointer;}
 ul.caMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;cursor:pointer;font-size:1.5rem;}
+ul.nonselectMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;font-size:1.5rem;}
 li.caMenuItem {padding:0px 0px 5px 0px;}
 ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer;display:none;}
 .menuHeader { font-size:2rem; margin-bottom:1rem;margin-top:1rem;}
@@ -113,7 +114,7 @@ a.appIcons {text-decoration:none;}
 .dockerHubStar {font-size:1rem;}
 .dockerDisabled {text-align:center;width:auto;color:purple;}
 .separateOfficial {text-align:center;width:auto;font-size:2.5rem;}
-.displayBeta {cursor:pointer;}
+.displayBeta {margin-left:2rem;cursor:pointer;}
 .newApp {color:red;font-size:1.5rem;cursor:pointer;}
 .ca_fa-support::before {content:"\f059";font-family:fontAwesome;}
 .ca_fa-delete {color:#882626;font-size:2rem;position:relative;float:right;cursor:pointer;}

@@ -1195,9 +1195,13 @@ function caChangeLog() {
   <li class='caMenuItem' onclick='disableSort();showStatistics();'>Statistics</li>
   <li class='caMenuItem' onclick='disableSort();showCredits();'>Credits</li>
   <li class='caMenuItem' onclick='window.location="https://forums.unraid.net/topic/38582-plug-in-community-applications/"'>Support</li>
-  <li class='caMenuItem' onclick='disableSort();caChangeLog();'>Change Log</li>
   </ul>
-<br><br><br>
+<div class='menuHeader'>VERSION</div>
+<ul class='nonselectMenu'>
+  <li class='caMenuItem' style='cursor:pointer;' onclick='disableSort();caChangeLog();'>Change Log</li>
+  <li><?=$installedVersion?></li>
+</ul>
+ <br><br><br>
 </div><div style='float:right;'>
 <span id='sortIconArea' style='display:none;'>
 <i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i>

@@ -27,7 +27,7 @@ $communityPaths['defaultSkinPHP'] = $skinSettings['detail']['php'];
 
 require_once($communityPaths['defaultSkinPHP']);
 
-$communitySettings['maxPerPage']    = isMobile() ? 10 : 25;
+$communitySettings['maxPerPage']    = isMobile() ? 10 : 24;
 $communitySettings['unRaidVersion'] = $unRaidSettings['version'];
 $communitySettings['timeNew']       = "-10 years";
 

@@ -218,6 +218,14 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
       $specialCategoryComment = $template['NoInstall'];
     }
 		$warningColor = "warning-white";
+    if ( $template['Beta'] ) {
+      $template['display_compatible'] .= "This application has been marked as being <em>Beta</em>.";
+      if (! $template['Blacklist'] && ! $template['Deprecated'] ) {
+        $template['display_compatible'] .= "This does NOT neccessarily mean that there will be issues.<br>";
+      } else {
+        $template['display_compatible'] .= "<br>";
+      }
+    }
     if ( $template['Deprecated'] ) {
       $template['display_compatible'] .= "This application / template has been deprecated.<br>";
 			$warningColor = "warning-yellow";
@@ -232,8 +240,8 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$warningColor = "warning-red";
     }
 
-		if ( $template['CAComment'] || $template['ModeratorComment'] || $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist']) {
-			$template['display_warning-text'] = "{$template['CAComment']}{$template['ModeratorComment']}<br>{$template['display_compatible']}";
+		if ( $template['CAComment'] || $template['ModeratorComment'] || $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] || $template['Beta']) {
+			$template['display_warning-text'] = trim("{$template['CAComment']}{$template['ModeratorComment']}<br>{$template['display_compatible']}");
 		}
     $template['display_faWarning'] = $template['display_warning-text'] ? "<span class='ca_tooltip-warning ca_fa-warning appIcons $warningColor' title='".htmlspecialchars($template['display_warning-text'],ENT_COMPAT | ENT_QUOTES)."'></span>" : "";
 
@@ -272,7 +280,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     $template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
     if ( ( $template['Beta'] == "true" ) ) {
-      $template['display_dockerBeta'] .= "<span class='ca_tooltip displayBeta' title='Beta Container &#13;See support forum for potential issues'>Beta</span>";
+      $template['display_dockerBeta'] .= "<span class='ca_tooltip displayBeta' title='Beta Container &#13;See support forum for potential issues'>(Beta)</span>";
     }
 # Entries created.  Now display it
     $ct .= vsprintf($displayTemplate,toNumericArray($template));
