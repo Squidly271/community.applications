@@ -10,7 +10,7 @@ header("Content-type: text/css; charset: UTF-8");
 
 $dynamix = @parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
 if ( ! $dynamix['display']['theme'] ) {
-  $dynamix = @parse_ini_file("/usr/local/emhttp/plugins/dynamix/default.cfg",true);
+	$dynamix = @parse_ini_file("/usr/local/emhttp/plugins/dynamix/default.cfg",true);
 }
 $theme = $dynamix['display']['theme'] ?: "black";
 
@@ -20,34 +20,34 @@ $unRaid66color = "#FF8C2F";
 $linkColor = "#486dba";
 $startupColor = "#FF8C2F";
 switch ($theme) {
-  case 'black':
-    $donateBackground = "#f2f2f2";
-    $donateText = "#1c1b1b";
-    $templateBackground = "#191818";
-    $hrColor = "#2b2b2b";
-    $borderColor = "#2b2b2b";
-    break;
-  case 'white':
-    $donateBackground = "#1c1b1b";
-    $donateText = "#f2f2f2";
-    $templateBackground = "#f5f5f5";
-    $hrColor = "lightgrey";
-    $borderColor = "lightgrey";
-    break;
-  case 'azure':
-    $donateBackground = "#606e7f";
-    $donateText = "#e4e2e4";
-    $templateBackground = "#e2e0e2";
-    $hrColor = "#606e7f";
-    $border = "#606e7f";
-    break;
-  case 'gray':
-    $donateBackground = "#606e7f";
-    $donateText = "#1b1d1b";
-    $templateBackground = "#1b1d1b";
-    $hrColor = "#606e7f";
-    $border = "#606e7f";
-    break;
+	case 'black':
+		$donateBackground = "#f2f2f2";
+		$donateText = "#1c1b1b";
+		$templateBackground = "#191818";
+		$hrColor = "#2b2b2b";
+		$borderColor = "#2b2b2b";
+		break;
+	case 'white':
+		$donateBackground = "#1c1b1b";
+		$donateText = "#f2f2f2";
+		$templateBackground = "#f5f5f5";
+		$hrColor = "lightgrey";
+		$borderColor = "lightgrey";
+		break;
+	case 'azure':
+		$donateBackground = "#606e7f";
+		$donateText = "#e4e2e4";
+		$templateBackground = "#e2e0e2";
+		$hrColor = "#606e7f";
+		$border = "#606e7f";
+		break;
+	case 'gray':
+		$donateBackground = "#606e7f";
+		$donateText = "#1b1d1b";
+		$templateBackground = "#1b1d1b";
+		$hrColor = "#606e7f";
+		$border = "#606e7f";
+		break;
 }
 ?>
 .ca_iconArea {width:100%;height:8rem;margin:1rem;}
@@ -179,3 +179,10 @@ a.popup-donate {text-decoration:none;font-style:italic;color:white;}
 .searchSubmit{height:3.4rem;}
 <?endif;?>
 @keyframes tooltipster-rotating{25%{transform:rotate(0deg)}75%{transform:rotate(0deg)}100%{transform:rotate(0)}}
+.popUpLink {cursor:pointer;color:inherit;}
+a.popUpLink {text-decoration:none;}
+.popUpDeprecated {color:#FF8C2F;}
+i.popupIcon {color:#626868;font-size:3.5rem;padding-left:1rem;width:4.8rem}
+img.popupIcon {width:4.8rem;height:4.8rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
+.display_beta {color:#FF8C2F;}
+a.appIconsPopUp { text-decoration:none;color:inherit;}
