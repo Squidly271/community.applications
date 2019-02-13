@@ -11,7 +11,6 @@
 require_once("/usr/local/emhttp/plugins/dynamix/include/Helpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
-require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
@@ -105,7 +104,8 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
   }
   $templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
   $templateDescription .= "<table style='font-size:0.9rem;'>";
-  $templateDescription .= "<tr><td style='width:25%'>{$color}Author:</td><td>{$template['SortAuthor']}</a></td></tr>";
+  $author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
+  $templateDescription .= "<tr><td style='width:25%'>{$color}Author:</td><td>$author</a></td></tr>";
   if ( ! $template['Plugin'] ) {
     $repository = explode(":",$template['Repository']);
     $official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
