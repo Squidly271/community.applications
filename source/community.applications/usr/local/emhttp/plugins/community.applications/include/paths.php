@@ -47,5 +47,6 @@ $communityPaths['pluginDupes']                         = $communityPaths['tempFi
 $communityPaths['appFeedDownloadError']                = $communityPaths['tempFiles']."/appfeedTemporaryFileForAnalysis";
 $communityPaths['defaultSkin']                         = "/usr/local/emhttp/plugins/$plugin/skins/default.skin";
 $communityPaths['defaultSkinPHP']                      = $communityPaths['defaultSkin'].".php";
+$communityPaths['pluginTempDownload']                  = $communityPaths['tempFiles']."/pluginTempFile.plg";
 
 ?>

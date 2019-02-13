@@ -5,14 +5,13 @@
 #                    All Rights Reserved                      #
 #                                                             #
 ###############################################################
-
-# Adjust some styles for the popupIcon
 ?>
 
 <?PHP
 require_once("/usr/local/emhttp/plugins/dynamix/include/Helpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
+require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
@@ -238,10 +237,16 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
       $templateDescription .= "<br>This plugin has a duplicated name from another plugin $duplicated.  This will impact your ability to install both plugins simultaneously<br>";
     }
   }
-  if ( $template['Plugin'] && is_file("/var/log/plugins/$pluginName") && ! $template['Changes'] ) {
-    $template['Changes'] = "This change log is from the already installed version and may not be up to date if an upgrade to the plugin is available\n\n".shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin changes /var/log/plugins/$pluginName");
+
+  if ( $template['Plugin'] ) {
+    download_url($template['PluginURL'],$communityPaths['pluginTempDownload']);
+    $template['Changes'] = @plugin("changes",$communityPaths['pluginTempDownload']);
+    @unlink($communityPaths['pluginTempDownload']);
   }
-  $changeLogMessage = "<center><font size='0'>Note: not all maintainers keep up to date on change logs</font></center><br>";
+  $changeLogMessage = "<center><font size='0'>Note: not all ";
+  $changeLogMessage .= $template['PluginURL'] ? "authors" : "maintainers";
+  $changeLogMessage .= " keep up to date on change logs</font></center><br>";
+
 } else {
   $template['Changes'] = ($appNumber == "ca") ? plugin("changes","/var/log/plugins/community.applications.plg") : plugin("changes","/tmp/plugins/community.applications.plg");
   $template['Plugin'] = true;
