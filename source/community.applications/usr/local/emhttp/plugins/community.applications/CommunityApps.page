@@ -313,7 +313,7 @@ function changeCategory(button,subSwitch) {
   hideSortIcons();
   clearCategory();
   $(".multi_installDiv").hide();
-
+  scrollToTop();
   getContent(false,category,description,false);
 }
 
@@ -1125,6 +1125,10 @@ function caChangeLog() {
   });
 }
 
+function scrollToTop() {
+  $("html, body").animate({ scrollTop: "0px" });
+}
+
 </script>
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <b>Install or Edit</b> an application<br>
@@ -1196,14 +1200,14 @@ function caChangeLog() {
 <div class='menuHeader'>OTHER</div>
 <ul class='caMenu'>
   <li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'>Settings</a></li>
-  <li class='caMenuItem' onclick='disableSort();showStatistics();'>Statistics</li>
-  <li class='caMenuItem' onclick='disableSort();showCredits();'>Credits</li>
+  <li class='caMenuItem' onclick='disableSort();scrollToTop();showStatistics();'>Statistics</li>
+  <li class='caMenuItem' onclick='disableSort();scrollToTop();showCredits();'>Credits</li>
   <li class='caMenuItem' onclick='window.location="https://forums.unraid.net/topic/38582-plug-in-community-applications/"'>Support</li>
   </ul>
 <div class='menuHeader'>VERSION</div>
 <ul class='nonselectMenu'>
-  <li class='caMenuItem' style='cursor:pointer;' onclick='disableSort();caChangeLog();'>Change Log</li>
   <li><?=$installedVersion?></li>
+  <li class='caMenuItem' style='cursor:pointer;' onclick='disableSort();scrollToTop();caChangeLog();'>Change Log</li>
 </ul>
  <br><br><br>
 </div><div style='float:right;'>
