@@ -181,7 +181,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 					if ( $template['MyPath'] ) {
 						$installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to reinstall the application' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall (default)</a>";
 					} else {
-						$install              = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Install</a>";
+						$install = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Install</a>";
 						$installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install the application' onclick='$(&quot;#branch&quot;).show();'>&nbsp;&nbsp;Install</a>" : $install;
 					}
 				}
@@ -189,7 +189,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		} else {
 			$pluginName = basename($template['PluginURL']);
 			if ( file_exists("/var/log/plugins/$pluginName") ) {
-				$pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
+				$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 				if ( $pluginSettings ) {
 					$installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' title='Click to go to the plugin settings' href='/Apps/$pluginSettings' target='$tabMode'>&nbsp;&nbsp;Settings</a>";
 				}

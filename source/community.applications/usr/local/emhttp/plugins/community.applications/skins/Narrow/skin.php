@@ -188,7 +188,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
       if ( $template['Plugin'] ) {
         $pluginName = basename($template['PluginURL']);
         if ( checkInstalledPlugin($template) ) {
-          $pluginSettings = plugin("launch","/var/log/plugins/$pluginName");
+          $pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
           $tmpVar = $pluginSettings ? "" : " disabled ";
           $template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons' title='Click to go to the plugin settings' href='$pluginSettings'></a>" : "";
         } else {
