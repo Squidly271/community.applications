@@ -8,6 +8,8 @@
 ?>
 
 <?PHP
+libxml_use_internal_errors(true); # Suppress any warnings from xml errors.  FCP will catch those errors
+
 require_once("/usr/local/emhttp/plugins/dynamix/include/Helpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
