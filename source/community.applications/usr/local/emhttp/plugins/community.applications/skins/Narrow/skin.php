@@ -43,7 +43,7 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
   if ( count($navigate) ) {
     $bookmark = "Jump To: ".implode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$navigate);
   }
-  $display .= ( $totalApplications == 0 ) ? "<center><font size='3'>No Matching Applications Found</font></center>" : "";
+  $display .= ( $totalApplications == 0 ) ? "<div class='ca_NoAppsFound'></div>" : "";
 
   $totalApps = "$totalApplications";
 

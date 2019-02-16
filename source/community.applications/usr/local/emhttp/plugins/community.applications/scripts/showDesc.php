@@ -89,13 +89,6 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$template['Description'] = trim($template['Description']);
 	$template['ModeratorComment'] .= $template['CAComment'];
 
-	if ( $color ) {
-		$templateDescription .= "<center><strong>{$template['SortName']}</strong>";
-		if ( $template['Beta'] ) {
-			$templateDescription .= " <span class='display_beta'>BETA</span>";
-		}
-		$templateDescription .= "</center><br>";
-	}
 	$templateDescription .= "<div style='width:60px;height:60px;display:inline-block;position:absolute;'>";
 	if ( $template['IconFA'] ) {
 		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
@@ -107,13 +100,13 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
 	$templateDescription .= "<table style='font-size:0.9rem;'>";
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
-	$templateDescription .= "<tr><td style='width:25%'>{$color}Author:</td><td>$author</a></td></tr>";
+	$templateDescription .= "<tr><td style='width:25%'>Author:</td><td>$author</a></td></tr>";
 	if ( ! $template['Plugin'] ) {
 		$repository = explode(":",$template['Repository']);
 		$official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
-		$templateDescription .= "<tr><td>{$color}DockerHub:</td><td>{$repository[0]}</td></tr>";
+		$templateDescription .= "<tr><td>DockerHub:</td><td>{$repository[0]}</td></tr>";
 	}
-	$templateDescription .= "<tr><td>{$color}Repository:</td><td>$color";
+	$templateDescription .= "<tr><td>Repository:</td><td>";
 	$repoSearch = explode("'",$template['RepoName']);
 	$templateDescription .= "{$template['RepoName']}</a>";
 	if ( $template['Profile'] ) {
@@ -123,36 +116,36 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$templateDescription .= "</td></tr>";
 	$templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
 	if ( $template['Category'] ) {
-		$templateDescription .= "<tr><td>{$color}Categories:</td><td>$color".$template['Category']."</td></tr>";
+		$templateDescription .= "<tr><td>Categories:</td><td>".$template['Category']."</td></tr>";
 	}
 	if ( ! $template['Plugin'] ) {
 		if ( strtolower($template['Base']) == "unknown" || ! $template['Base']) {
 			$template['Base'] = $template['BaseImage'];
 		}
 		if ( $template['Base'] ) {
-			$templateDescription .= "<tr><td nowrap>{$color}Base OS:</td><td>$color".$template['Base']."</td></tr>";
+			$templateDescription .= "<tr><td nowrap>Base OS:</td><td>".$template['Base']."</td></tr>";
 		}
 	}
-	$templateDescription .= $template['stars'] ? "<tr><td nowrap>{$color}DockerHub Stars:</td><td>$color<i class='fa fa-star dockerHubStar'></i> ".$template['stars']."</td></tr>" : "";
+	$templateDescription .= $template['stars'] ? "<tr><td nowrap>DockerHub Stars:</td><td><i class='fa fa-star dockerHubStar'></i> ".$template['stars']."</td></tr>" : "";
 
 	# In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 	if ( $template['Date'] && $template['Plugin'] ) {
 		$niceDate = date("F j, Y",$template['Date']);
-	$templateDescription .= "<tr><td nowrap>{$color}Date Updated:</td><td>$color$niceDate<br></td></tr>";
+	$templateDescription .= "<tr><td nowrap>Date Updated:</td><td>$niceDate<br></td></tr>";
 	}
 	$unraidVersion = parse_ini_file($communityPaths['unRaidVersion']);
 	if ( version_compare($unRaidVersion['version'],$template['MinVer'],">") ) {
-		$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>{$color}Minimum OS:</td><td>{$color}unRaid v".$template['MinVer']."</td></tr>" : "";
+		$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>Minimum OS:</td><td>unRaid v".$template['MinVer']."</td></tr>" : "";
 	}
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
-	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>{$color}Max OS:</td><td>{$color}unRaid v".$template['MaxVer']."</td></tr>" : "";
+	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>Max OS:</td><td>unRaid v".$template['MaxVer']."</td></tr>" : "";
 	$downloads = getDownloads($template['downloads']);
 	if ($downloads) {
-		$templateDescription .= "<tr><td>{$color}Downloads:</td><td>$color$downloads</td></tr>";
+		$templateDescription .= "<tr><td>Downloads:</td><td>$downloads</td></tr>";
 	}
-	$templateDescription .= $template['Licence'] ? "<tr><td>{$color}Licence:</td><td>$color".$template['Licence']."</td></tr>" : "";
+	$templateDescription .= $template['Licence'] ? "<tr><td>Licence:</td><td>".$template['Licence']."</td></tr>" : "";
 	if ( $template['trending'] ) {
-		$templateDescription .= "<tr><td>{$color}Monthly Trend:</td><td>$color+{$template['trending']}%";
+		$templateDescription .= "<tr><td>Monthly Trend:</td><td>+{$template['trending']}%";
 		if ( is_array($template['trends']) && (count($template['trends']) > 1) ) {
 			$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <i class='fa fa-arrow-up'></i>" : " <i class='fa fa-arrow-down'></i>";
 		}
