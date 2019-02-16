@@ -1140,6 +1140,9 @@ function scrollToTop() {
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 <div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </p></div>
+<?if ( $upgradeAvailable ) :?>
+<div class='notice'><center><font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</center></font></div>
+<?endif;?>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
 <div style='position:absolute; left:0px;width:14rem;height:auto;' class='menuItems'>
 <div class='menuHeader'>MENU</div>
@@ -1224,9 +1227,6 @@ function scrollToTop() {
 </div>
 <br>
 </span><br>
-<?if ( $upgradeAvailable ) :?>
-<div><center><font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</center></font></div>
-<?endif;?>
 <div style='position:absolute;left:14.5rem;right:0px; display:block;'>
 <div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 <strong><font size='3'><span id="Category" class="categoryLine"></span></strong></font>
