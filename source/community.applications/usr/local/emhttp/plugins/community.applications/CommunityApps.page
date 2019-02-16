@@ -137,7 +137,7 @@ $(function(){
 		sweetAlertBackground("white");
 		swal({
 			title: 'Disclaimer',
-			text: 'All applications listed here are <b>3rd party</b> additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here. <br><em><font color="green">Every attempt is made to ensure that only safe and compatible applications are present</font></em><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>',
+			text: 'All applications listed here are <span class="ca_bold">3rd party</span> additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here. <br><span class="ca_italic"><font color="green">Every attempt is made to ensure that only safe and compatible applications are present</font></span><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>',
 			html: true,
 			type: 'error',
 			footer: "test",
@@ -663,7 +663,7 @@ function removeApp(application, humanName) {
 	disableSearch();
 	swal({
 		title: "Delete Template?",
-		text: "Are you sure you want to delete <font color='red'><strong><em>"+humanName+"</em></strong></font> from the list of previously installed applications?<br><font size='0'>"+application+"</font>",
+		text: "Are you sure you want to delete <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font> from the list of previously installed applications?<br><font size='0'>"+application+"</font>",
 		type: "warning",
 		confirmButtonText: "Yes, delete it!",
 		showCancelButton: true,
@@ -685,13 +685,13 @@ function removeApp(application, humanName) {
 
 function uninstallApp(application,humanName) {
 	if ( humanName == "Community Applications" ) {
-		myAlert("AE-35 Error","<em>I'm sorry Dave, but I can't do that</em>.  You must go to the plugins tab and remove Community Applications from there.  <em><font color='purple'>But, why would you ever want to uninstall CA?</font></em>",null,null,true,false,true,"error");
+		myAlert("AE-35 Error","<span class='ca_italic'>I'm sorry Dave, but I can't do that</span>.  You must go to the plugins tab and remove Community Applications from there.  <span class='ca_italic'><font color='purple'>But, why would you ever want to uninstall CA?</font></span>",null,null,true,false,true,"error");
 	} else {
 		sweetAlertBackground("white");
 		disableSearch();
 		swal({
 			title: "Uninstall Application?",
-			text: "Are you sure you want to uninstall <font color='red'><strong><em>"+humanName+"</em></strong></font>?",
+			text: "Are you sure you want to uninstall <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>?",
 			type: "warning",
 			showCancelButton: true,
 			showConfirmButton: true,
@@ -721,7 +721,7 @@ function deletePrivateApp(path,name,author) {
 	disableSearch();
 	swal({
 		title: "Remove Private Application?",
-		text: "Are you sure you want to remove the private application <em><font color='red'><b>"+name+"</b></font> by <font color='red'><b>"+author+"</b></font>?<br><font size='0'>("+displayPath+")",
+		text: "Are you sure you want to remove the private application <span class='ca_italic'><font color='red'><span class='ca_bold'>"+name+"</span></font> by <font color='red'><span class='ca_bold'>"+author+"</span></font>?<br><font size='0'>("+displayPath+")",
 		type: "warning",
 			showCancelButton: true,
 			showConfirmButton: true,
@@ -755,7 +755,7 @@ function uninstallDocker(application,humanName) {
 	disableSearch();
 	swal({
 		title: "Uninstall Application?",
-		text: "Are you sure you want to uninstall <font color='red'><strong><em>"+humanName+"</em></strong></font>?",
+		text: "Are you sure you want to uninstall <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>?",
 		type: "warning",
 		showCancelButton: true,
 		showConfirmButton: true,
@@ -966,7 +966,7 @@ function installMulti() {
 	}
 	swal({
 		title: "Install "+makePlural("Application",dockerCount+pluginCount)+"?",
-		text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?  <em>Docker applications will be installed utilizing the most recently saved template with no user input on your part</em><font color='red'>"+cookieWarning+"</font>",
+		text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?  <span class='ca_italic'>Docker applications will be installed utilizing the most recently saved template with no user input on your part</span><font color='red'>"+cookieWarning+"</font>",
 		type: "info",
 		showCancelButton: true,
 		showConfirmButton: true,
@@ -1131,7 +1131,7 @@ function scrollToTop() {
 
 </script>
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
-> <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <b>Install or Edit</b> an application<br>
+> <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <span class='ca_bold'>Install or Edit</span> an application<br>
 > <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' style='font-size:2rem;'></i> - Clicking these icons will take you to an application's GUI or settings<br>
 > <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> - Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>
 > <span class='unpinned'> </span><span class='pinned'></span> Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br>
@@ -1243,7 +1243,7 @@ function scrollToTop() {
 <div id='appWarningForm' style='display:none;'>
 <br><br><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
 <font size='4' color='red'>All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein.
-<br><em>Every attempt is made to ensure that only safe and compatible applications are present</em>
+<br><span class='ca_italic'>Every attempt is made to ensure that only safe and compatible applications are present</span>
 <br><br>You must accept the disclaimer before you can utilize this plugin</font>
 <br><br><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>
 </div>

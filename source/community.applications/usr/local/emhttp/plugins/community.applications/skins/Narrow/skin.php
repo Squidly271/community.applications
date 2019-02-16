@@ -141,7 +141,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 
     $template['display_webPage'] = $template['WebPageURL'] ? "<a class='ca_tooltip webLink' title='Click to go to {$template['SortAuthor']}&#39;s web page' href='".$template['WebPageURL']."' target='_blank'></a>" : "";
 
-    $template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</b></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
+    $template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</span></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
     $tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=2.0rem;>" : "";
     $template['display_Repository'] = "<span class='ca_repository'>$RepoName $tempLogo</span>";
     $template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star dockerHubStar' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
@@ -183,7 +183,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
       $template['UpdateAvailable'] = checkPluginUpdate($template['PluginURL']);
     }
     if ( $template['UpdateAvailable'] ) {
-      $template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><center><font color='red'><b>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</b></center></font>" : "<br><center><font color='red'><b>Update Available.  Click <a href='Docker'>Here</a> to install</b></font></center>";
+      $template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><center><font color='red'><span class='ca_bold'>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</span></center></font>" : "<br><center><font color='red'><span class='ca_bold'>Update Available.  Click <a href='Docker'>Here</a> to install</span></font></center>";
     }
     if ( ! $template['NoInstall'] ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
       if ( $template['Plugin'] ) {
@@ -220,7 +220,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     }
 		$warningColor = "warning-white";
     if ( $template['Beta'] ) {
-      $template['display_compatible'] .= "This application has been marked as being <em>Beta</em>.";
+      $template['display_compatible'] .= "This application has been marked as being <span class='ca_italic'>Beta</span>.";
       if (! $template['Blacklist'] && ! $template['Deprecated'] ) {
         $template['display_compatible'] .= "This does NOT neccessarily mean that there will be issues.<br>";
       } else {
@@ -299,7 +299,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
   }
 
   if ( $specialCategoryComment ) {
-    $displayHeader .= "<span class='specialCategory'><center>This display is informational <em>ONLY</em>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</center><br>";
+    $displayHeader .= "<span class='specialCategory'><center>This display is informational <span class='ca_italic'>ONLY</span>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</center><br>";
     $displayHeader .= "<center>$specialCategoryComment</center></span>";
   }
   return "$displayHeader$ct";
@@ -359,7 +359,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
   $swipeScript .= ( $pageNumber < $totalPages ) ? "data.nextpage = $nextPage;" : "data.nextpage = 0;";
   $swipeScript .= ( $dockerSearch ) ? "dockerSearchFlag = true;" : "dockerSearchFlag = false";
   $swipeScript .= "</script>";
-  $o .= "</font></div></b></center><script>data.currentpage = $pageNumber;</script>";
+  $o .= "</font></div></span></center><script>data.currentpage = $pageNumber;</script>";
   return $o.$swipeScript;
 }
 
@@ -427,7 +427,7 @@ function displaySearchResults($pageNumber) {
   }
   $ct .= vsprintf($skin[$viewMode]['footer'],$templateFormatArray);
   if ( $foundTemplateFlag ) {
-    echo "<br><b>Containers with an Icon displayed are already available within the Apps tab.  It is recommended to install that version instead of a dockerHub conversion</b><br><br>";
+    echo "<br><span class='ca_bold'>Containers with an Icon displayed are already available within the Apps tab.  It is recommended to install that version instead of a dockerHub conversion</span><br><br>";
   }
   echo $ct.dockerNavigate($num_pages,$pageNumber);
 }

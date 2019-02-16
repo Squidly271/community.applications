@@ -194,3 +194,5 @@ i.popupIcon {color:#626868;font-size:3.5rem;padding-left:1rem;width:4.8rem}
 img.popupIcon {width:4.8rem;height:4.8rem;padding:0.3rem;border-radius:1rem 1rem 1rem 1rem;}
 .display_beta {color:#FF8C2F;}
 a.appIconsPopUp { text-decoration:none;color:inherit;}
+.ca_italic {font-style:italic;}
+.ca_bold {font-weight:bold;}

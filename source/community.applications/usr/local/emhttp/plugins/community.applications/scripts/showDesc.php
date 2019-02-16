@@ -216,7 +216,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		$templateDescription .= "<hr>";
 	}
 	$templateDescription .= strip_tags($template['Description']);
-	$templateDescription .= $template['ModeratorComment'] ? "<br><br><b><font color='red'>Moderator Comments:</font></b> ".$template['ModeratorComment'] : "";
+	$templateDescription .= $template['ModeratorComment'] ? "<br><br><span class='ca_bold'><font color='red'>Moderator Comments:</font></span> ".$template['ModeratorComment'] : "";
 	$templateDescription .= "</p><br><center>";
 
 	if ( $donatelink ) {
@@ -268,7 +268,7 @@ if ( trim($template['Changes']) ) {
 		$appInformation = str_replace("[","<",$appInformation);
 		$appInformation = str_replace("]",">",$appInformation);
 	}
-	$templateDescription .= "<center><font size='4'><b>Change Log</b></center></font><br>$changeLogMessage$appInformation";
+	$templateDescription .= "<center><font size='4'><span class='ca_bold'>Change Log</span></center></font><br>$changeLogMessage$appInformation";
 }
 ?>
 <script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
