@@ -123,17 +123,12 @@ case 'get_content':
 			if ( $displayApplications['community'] ) {
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-
-/*        echo "<br><center><span class='startupMessage'>$startupMsg</span></center>";
-				if ( $startupMsg2 ) {
-					echo "<center><span class='startupMessage2'>$startupMsg2</span></center><br>";
-				} */
 				$sortOrder['sortBy'] = "noSort";
 				echo my_display_apps($displayApplications['community'],"1",$runningDockers,$imagesDocker);
 				break;
 			} else {
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-				echo "<br><center><font size='4' color='purple'><span class='ca_bold'>An error occurred.  Could not find any Random Apps of the day</span></font><br><br>";
+				echo "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>An error occurred.  Could not find any Random Apps of the day</span></font><br><br>";
 				break;
 			}
 		}
@@ -263,19 +258,19 @@ case 'force_update':
 			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
 			@unlink($tmpfile);
 			echo "<script>$('.startupButton').hide();</script>";
-			echo "<center><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <span class='ca_italic'><span class='ca_bold'>requires</span></span> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <span class='ca_bold'>208.67.222.222 and 208.67.220.220</span> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://www.githubstatus.com/' target='_blank'>HERE</a>";
+			echo "<div class='ca_center'><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <span class='ca_italic'><span class='ca_bold'>requires</span></span> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <span class='ca_bold'>208.67.222.222 and 208.67.220.220</span> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://www.githubstatus.com/' target='_blank'>HERE</a>";
 			$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
 			$downloaded = @file_get_contents($tempFile);
 			if (strlen($downloaded) > 100) {
 				echo "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Please try again later)</font>";
 			}
-			echo "<center>Last JSON error Recorded: ";
+			echo "<div class='ca_center'>Last JSON error Recorded: ";
 			$jsonDecode = json_decode($downloaded,true);
 			echo "JSON Error: ".jsonError(json_last_error());
 			if ( $publicServiceAnnouncement ) {
 				echo "<br><font size='3' color='purple'>$publicServiceAnnouncement</font>";
 			}
-			echo "</center>";
+			echo "</div>";
 			echo "<script>$('.ca_stats').hide();</script>";
 			@unlink($communityPaths['appFeedDownloadError']);
 			@unlink($communityPaths['community-templates-info']);
@@ -547,7 +542,7 @@ case 'search_dockerhub':
 	$num_pages = $pageresults['num_pages'];
 
 	if ($pageresults['num_results'] == 0) {
-		echo "<center>No matching content found on dockerhub</center>";
+		echo "<div class='ca_center'>No matching content found on dockerhub</div>";
 		echo "<script>$('#dockerSearch').hide();</script>";
 		@unlink($communityPaths['dockerSerchResults']);
 		break;
@@ -977,8 +972,8 @@ case 'statistics':
 ?>
 <div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>
 <table style='margin-top:1rem;'>
-<tr style='height:6rem;'><td colspan='2'><center><img style='height:4.8rem;' src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png'></td></tr>
-<tr><td colspan='2'><center><font size='5rem;' color='white'>Community Applications</font></center></td></tr>
+<tr style='height:6rem;'><td colspan='2'><div class='ca_center'><img style='height:4.8rem;' src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png'></td></tr>
+<tr><td colspan='2'><div class='ca_center'><font size='5rem;' color='white'>Community Applications</font></div></td></tr>
 <tr><td class='ca_table'><a href='/Apps/Appfeed' target='_blank'>Last Change To Application Feed</a></td><td class='ca_stat'><?=$updateTime?><br><?=$currentServer?> active</td></tr>
 <tr><td class='ca_table'>Number Of Templates</td><td class='ca_stat'><?=$statistics['totalApplications']?></td></tr>
 <tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></td><td class='ca_stat'><?=count($repositories)?></td></tr>
@@ -993,8 +988,8 @@ case 'statistics':
 <tr><td class='ca_table'><a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Number Of Moderation Entries</a></td><td class='ca_stat'><?=$statistics['totalModeration']?>+</td></tr>
 <tr><td class='ca_table'>Memory Usage (CA / DataFiles / Flash)</td><td class='ca_stat'><?=$memCA[0]?> / <?=$memTmp[0]?> / <?=$memFlash[0]?></td></tr>
 </table>
-<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></center>
-<center>Ensuring only safe applications are present is a full time job</center><br>
+<div class='ca_center'><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></div>
+<div class='ca_center'>Ensuring only safe applications are present is a full time job</div><br>
 <?
 	break;
 
@@ -1080,7 +1075,7 @@ case 'installPlugin':
 case 'caChangeLog':
 	require_once("webGui/include/Markdown.php");
 	echo "<div style='margin:auto;width:500px;'>";
-	echo "<center><font size='4rem'>Community Applications Changelog</font></center><br><br>";
+	echo "<div class='ca_center'><font size='4rem'>Community Applications Changelog</font></div><br><br>";
 	echo Markdown(plugin("changes","/var/log/plugins/community.applications.plg"));
 	break;
 
@@ -1310,8 +1305,6 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				if ( ! checkRandomApp($i,$file,true,$info) ) continue;
 				$appOfDay[] = $file[$i]['ID'];
 			}
-			$startupMsg = "Recently Updated Applications <i class='startup-icon fa fa-question-circle ca_staticTips' title='<center>Select the New/Updated Category for the complete list<br><font size=&quot;0&quot;>Note that many authors and maintainers do not flag the application as being updated</font></center>'></i>";
-			$startupMsg2 = "";
 			break;
 		case "onlynew":
 			$sortOrder['sortBy'] = "FirstSeen";
@@ -1324,7 +1317,6 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 					if ( count($appOfDay) == 25 ) break;
 				}
 			}
-			$startupMsg = "Newly Added Applications";
 			break;
 		case "trending":
 			$sortOrder['sortBy'] = "trending";
@@ -1339,8 +1331,6 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 					if ( count($appOfDay) == 25 ) break;
 				}
 			}
-			$startupMsg = "Trending Applications <i class='startup-icon fa fa-question-circle ca_staticTips' title='<center>Largest % increase in downloads over 30 days.<br><font size=&quot;0&quot;>Note that this does not mean that any particular app is recommended.<br>Plugins are NOT included in this list</font></center>'></i>";
-			$startupMsg2 = "";
 			break;
 	}
 	return $appOfDay ?: array();

@@ -30,7 +30,7 @@ switch ($_GET['arg1']) {
 	case 'Invalid':
 		$moderation = @file_get_contents($communityPaths['invalidXML_txt']);
 		if ( ! $moderation ) {
-			echo "<br><br><center><span class='ca_bold'>No invalid templates found</span></center>";
+			echo "<br><br><div class='ca_center'><span class='ca_bold'>No invalid templates found</span></div>";
 			return;
 		}
 		$moderation = str_replace(" ","&nbsp;",$moderation);
@@ -41,7 +41,7 @@ switch ($_GET['arg1']) {
 		$moderation = @file_get_contents($communityPaths['fixedTemplates_txt']);
 				
 		if ( ! $moderation ) {
-			echo "<br><br><center><span class='ca_bold'>No templates were automatically fixed</span></center>";
+			echo "<br><br><div class='ca_center'><span class='ca_bold'>No templates were automatically fixed</span></div>";
 		} else {
 			$moderation = str_replace(" ","&nbsp;",$moderation);
 			$moderation = str_replace("\n","<br>",$moderation);
@@ -90,12 +90,12 @@ switch ($_GET['arg1']) {
 			}
 		}
 		if ( $repoComment ) {
-			echo "<br><center><strong>Global Repository Comments:</strong><br>(Applied to all applications)</center><br><br><tt><table>$repoComment</table><br><br>";
+			echo "<br><div class='ca_center'><strong>Global Repository Comments:</strong><br>(Applied to all applications)</div><br><br><tt><table>$repoComment</table><br><br>";
 		}
 		if ( ! $moderation ) {
-			echo "<br><br><center><span class='ca_bold'>No moderation entries found</span></center>";
+			echo "<br><br><div class='ca_center'><span class='ca_bold'>No moderation entries found</span></div>";
 		}
-		echo "</tt><center><strong>Individual Application Moderation</strong></center><br><br>";
+		echo "</tt><div class='ca_center'><strong>Individual Application Moderation</strong></div><br><br>";
 		$moderation = str_replace(" ","&nbsp;",$moderation);
 		$moderation = str_replace("\n","<br>",$moderation);
 		echo "<tt>$moderation";

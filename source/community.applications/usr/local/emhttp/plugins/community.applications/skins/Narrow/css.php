@@ -196,5 +196,6 @@ img.popupIcon {width:4.8rem;height:4.8rem;padding:0.3rem;border-radius:1rem 1rem
 a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_italic {font-style:italic;}
 .ca_bold {font-weight:bold;}
+.ca_center {margin:auto;text-align:center;}
 .ca_NoAppsFound {font-size:3rem;margin:auto;text-align:center;}
 .ca_NoAppsFound::after{content:"No Matching Applications Found"}

@@ -93,7 +93,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	if ( $template['IconFA'] ) {
 		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
-		$templateDescription .= "<i class='$templateIcon popupIcon' id='icon'></i>";
+		$templateDescription .= "<i class='$templateIcon popupIcon ca_center' id='icon'></i>";
 	} else {
 		$templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
 	}
@@ -152,7 +152,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		$template['description'] .= "</td></tr>";
 	}
 	$templateDescription .= "</table></div>";
-	$templateDescription .= "<center><span class='popUpDeprecated'>";
+	$templateDescription .= "<div class='ca_center'><span class='popUpDeprecated'>";
 	if ($template['Blacklist']) {
 		$templateDescription .= "This application / template has been blacklisted<br>";
 	}
@@ -162,7 +162,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	if ( !$template['Compatible'] ) {
 		$templateDescription .= "This application is not compatible with your version of unRaid<br>";
 	}
-	$templateDescription .= "</span></center><hr>";
+	$templateDescription .= "</span></div><hr>";
 
 	if ( $Displayed && ! $template['NoInstall'] ) {
 		if ( ! $template['Plugin'] ) {
@@ -212,12 +212,12 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$templateDescription .= strip_tags($template['Description']);
 	$templateDescription .= $template['ModeratorComment'] ? "<br><br><span class='ca_bold'><font color='red'>Moderator Comments:</font></span> ".$template['ModeratorComment'] : "";
-	$templateDescription .= "</p><br><center>";
+	$templateDescription .= "</p><br><div class='ca_center'>";
 
 	if ( $donatelink ) {
 		$templateDescription .= "<span style='float:right;text-align:right;'><font size=0.75rem;>$donatetext</font>&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>Donate</a></span><br><br>";
 	}
-	$templateDescription .= "</center>";
+	$templateDescription .= "</div>";
 	if ($template['Plugin']) {
 		$dupeList = readJsonFile($communityPaths['pluginDupes']);
 		if ( $dupeList[basename($template['Repository'])] == 1 ){
@@ -239,9 +239,9 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		$template['Changes'] = @plugin("changes",$communityPaths['pluginTempDownload']);
 		@unlink($communityPaths['pluginTempDownload']);
 	}
-	$changeLogMessage = "<center><font size='0'>Note: not all ";
+	$changeLogMessage = "<div class='ca_center'><font size='0'>Note: not all ";
 	$changeLogMessage .= $template['PluginURL'] ? "authors" : "maintainers";
-	$changeLogMessage .= " keep up to date on change logs</font></center><br>";
+	$changeLogMessage .= " keep up to date on change logs</font></div><br>";
 
 } else {
 	$template['Changes'] = ($appNumber == "ca") ? plugin("changes","/var/log/plugins/community.applications.plg") : plugin("changes","/tmp/plugins/community.applications.plg");
@@ -250,7 +250,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 
 if ( trim($template['Changes']) ) {
 	if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
-		$templateDescription .= "</center><hr>";
+		$templateDescription .= "</div><hr>";
 	}
 	if ( $template['Plugin'] ) {
     if ( file_exists("/var/log/plugins/$pluginName") ) {
@@ -263,7 +263,7 @@ if ( trim($template['Changes']) ) {
 		$appInformation = str_replace("[","<",$appInformation);
 		$appInformation = str_replace("]",">",$appInformation);
 	}
-	$templateDescription .= "<center><font size='4'><span class='ca_bold'>Change Log</span></center></font><br>$changeLogMessage$appInformation";
+	$templateDescription .= "<div class='ca_center'><font size='4'><span class='ca_bold'>Change Log</span></div></font><br>$changeLogMessage$appInformation";
 }
 ?>
 <script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
@@ -304,7 +304,7 @@ $(function() {
 });
 
 function installPlugin(pluginURL) {
-	$("#popUpContent").html("<br><br><center><font size='6'>Please Wait.  Installing Plugin...</font></center>");
+	$("#popUpContent").html("<br><br><div class='ca_center'><font size='6'>Please Wait.  Installing Plugin...</font></div>");
 	$.post("/plugins/community.applications/include/exec.php",{action:'installPlugin',pluginURL:pluginURL,csrf_token:'<?=$csrf_token?>'},function(data) {
 		if (data) {
 			var output = JSON.parse(data);

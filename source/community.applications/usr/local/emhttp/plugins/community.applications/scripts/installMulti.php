@@ -80,12 +80,12 @@ function addCloseButton() {
 </script>
 <?
 	foreach ($dockers as $docker) {
-		echo "Starting <b>$docker</b><br>";
+		echo "Starting <span class='ca_bold'>$docker</span><br>";
 		unset($output);
 		exec("docker start $docker 2>&1",$output,$retval);
 		if ($retval) {
 			$failFlag = true;
-			echo "<b>$docker</b> failed to start.  You should install it by itself to fix the errors<br>";
+			echo "<span class='ca_bold'>$docker</span> failed to start.  You should install it by itself to fix the errors<br>";
 			foreach ($output as $line) {
 				echo "<tt>$line</tt><br>";
 			}

@@ -145,7 +145,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     $tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=2.0rem;>" : "";
     $template['display_Repository'] = "<span class='ca_repository'>$RepoName $tempLogo</span>";
     $template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star dockerHubStar' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
-    $template['display_Downloads'] = $template['downloads'] ? "<center>".number_format($template['downloads'])."</center>" : "<center>Not Available</center>";
+    $template['display_Downloads'] = $template['downloads'] ? "<div class='ca_center'>".number_format($template['downloads'])."</div>" : "<div class='ca_center'>Not Available</div>";
 
     if ( $pinnedApps[$template['Repository']] ) {
       $pinned = "pinned";
@@ -183,7 +183,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
       $template['UpdateAvailable'] = checkPluginUpdate($template['PluginURL']);
     }
     if ( $template['UpdateAvailable'] ) {
-      $template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><center><font color='red'><span class='ca_bold'>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</span></center></font>" : "<br><center><font color='red'><span class='ca_bold'>Update Available.  Click <a href='Docker'>Here</a> to install</span></font></center>";
+      $template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</span></div></font>" : "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a href='Docker'>Here</a> to install</span></font></div>";
     }
     if ( ! $template['NoInstall'] ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
       if ( $template['Plugin'] ) {
@@ -264,15 +264,15 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     if ( $template['IconFA'] ) {
       $displayIcon = $template['IconFA'] ?: $template['Icon'];
       $displayIconClass = startsWith($displayIcon,"icon-") ? $displayIcon : "fa fa-$displayIcon";
-      $template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><center><i class='ca_appPopup $displayIconClass $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></center></a>";
-      $template['display_iconSelectable'] = "<center><i class='$displayIconClass $iconClass'></i></center>";
+      $template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><div class='ca_center'><i class='ca_appPopup $displayIconClass $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></div></a>";
+      $template['display_iconSelectable'] = "<div class='ca_center'><i class='$displayIconClass $iconClass'></i></div>";
       if ( isset($ID) ) {
         $template['display_iconClickable'] = "<a class='ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' style='cursor:pointer' >".$template['display_iconSelectable']."</a>";
-        $template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><center><i class='fa fa-$displayIcon ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></center></a>";
-        $template['display_iconOnly'] = "<center><i class='fa fa-$displayIcon $iconClass'></i></center>";
+        $template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><div class='ca_center'><i class='fa fa-$displayIcon ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></div></a>";
+        $template['display_iconOnly'] = "<div class='ca_center'><i class='fa fa-$displayIcon $iconClass'></i></div>";
       } else {
         $template['display_iconClickable'] = $template['display_iconSelectable'];
-        $template['display_iconSmall'] = "<center><i class='$displayIconClass $iconClass'></i></center>";
+        $template['display_iconSmall'] = "<div class='ca_center'><i class='$displayIconClass $iconClass'></i></div>";
         $template['display_iconOnly'] = $template['display_iconSmall'];
       }
     }
@@ -299,8 +299,8 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
   }
 
   if ( $specialCategoryComment ) {
-    $displayHeader .= "<span class='specialCategory'><center>This display is informational <span class='ca_italic'>ONLY</span>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</center><br>";
-    $displayHeader .= "<center>$specialCategoryComment</center></span>";
+    $displayHeader .= "<span class='specialCategory'><div class='ca_center'>This display is informational <span class='ca_italic'>ONLY</span>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</div><br>";
+    $displayHeader .= "<div class='ca_center'>$specialCategoryComment</div></span>";
   }
   return "$displayHeader$ct";
 }
@@ -324,7 +324,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
   if ( $endApp > $totalApps ) {
     $endApp = $totalApps;
   }
-  $o = "<center>";
+  $o = "<div class='ca_center'>";
   if ( ! $dockerSearch && $displayCount) {
     $o .= "<span class='pageNavigation'>Displaying $startApp - $endApp (of $totalApps)</span><br>";
   }
@@ -359,7 +359,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
   $swipeScript .= ( $pageNumber < $totalPages ) ? "data.nextpage = $nextPage;" : "data.nextpage = 0;";
   $swipeScript .= ( $dockerSearch ) ? "dockerSearchFlag = true;" : "dockerSearchFlag = false";
   $swipeScript .= "</script>";
-  $o .= "</font></div></span></center><script>data.currentpage = $pageNumber;</script>";
+  $o .= "</font></div></span></div><script>data.currentpage = $pageNumber;</script>";
   return $o.$swipeScript;
 }
 
