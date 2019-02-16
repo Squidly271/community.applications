@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.02.08">
-<!ENTITY md5       "f443aecc93623c238681636d5811fc9e">
+<!ENTITY version   "2019.02.16">
+<!ENTITY md5       "7e9ce64b144d7811dde43d1e899701fe">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2016.02.16
+- Fixed: Don't display categories on pop up if no categories are present
+- Changed: Identify a private (dockerHub Conversion) app on main displays
+- Changed: Scroll back to top of screen when changing categories, etc
+- Added: Always get the changelog for a plugin via the .plg file
+- OCD Change: When hitting settings on the CA template, go to settings instead of reloading the page
+- Revert back to using tabs instead of spaces (I tried it, and I hate spaces)
+- Fixed: Author would be wrong when displaying a plugin
+- Changed: Don't highlight search results on popup
+- Changed: Display 24 results (12 on mobile) instead of 25/10
+
 ###2019.02.08
 - Complete overhaul of UI
 
