@@ -1143,6 +1143,7 @@ function scrollToTop() {
 <?if ( $upgradeAvailable ) :?>
 <div class='notice'><center><font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</center></font></div>
 <?endif;?>
+<div class='dockerDisabled notice'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
 <div style='position:absolute; left:0px;width:14rem;height:auto;' class='menuItems'>
 <div class='menuHeader'>MENU</div>

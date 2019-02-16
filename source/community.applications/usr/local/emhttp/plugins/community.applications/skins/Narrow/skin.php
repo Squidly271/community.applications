@@ -67,7 +67,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
   }
 
   if ( ! $communitySettings['dockerRunning'] ) {
-    $displayHeader = "<div class='dockerDisabled'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div><br><br>";
+    $displayHeader = "<script>$('.dockerDisabled').show();</script>";
   }
 
   $pinnedApps = readJsonFile($communityPaths['pinned']);

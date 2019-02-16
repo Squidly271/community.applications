@@ -113,7 +113,7 @@ a.appIcons {text-decoration:none;}
 .webLink::after {content:"Web Page"}
 .donateLink {font-size:1.2rem;}
 .dockerHubStar {font-size:1rem;}
-.dockerDisabled {text-align:center;width:auto;color:purple;}
+.dockerDisabled {display:none;}
 .separateOfficial {text-align:center;width:auto;font-size:2.5rem;}
 .displayBeta {margin-left:2rem;cursor:pointer;}
 .newApp {color:red;font-size:1.5rem;cursor:pointer;}
