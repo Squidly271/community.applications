@@ -257,7 +257,10 @@ if ( $template['Changes'] ) {
 		$templateDescription .= "</center><hr>";
 	}
 	if ( $template['Plugin'] ) {
-		$appInformation = Markdown($template['Changes']);
+    if ( file_exists("/var/log/plugins/$pluginName") ) {
+      $appInformation = "Currently Installed Version: ".plugin("version","/var/log/plugins/$pluginName");
+    }
+		$appInformation .= Markdown($template['Changes']);
 	} else {
 		$appInformation = $template['Changes'];
 		$appInformation = str_replace("\n","<br>",$appInformation);
