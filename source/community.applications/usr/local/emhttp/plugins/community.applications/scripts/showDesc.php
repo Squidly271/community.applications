@@ -270,7 +270,6 @@ if ( $template['Changes'] ) {
 	$templateDescription .= "<center><font size='4'><b>Change Log</b></center></font><br>$changeLogMessage$appInformation";
 }
 ?>
-<span id='popUpContent' style='display:none;'><?=$templateDescription?></span>
 <script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
 <link type="text/css" rel="stylesheet" href='<?autov("/webGui/styles/font-awesome.css")?>'>
 <link type="text/css" rel="stylesheet" href='<?autov("/plugins/community.applications/skins/Narrow/css.php")?>'>
@@ -321,5 +320,5 @@ function installPlugin(pluginURL) {
 		}
 	});
 }
-			
 </script>
+<span id='popUpContent' style='display:none;'><?=$templateDescription?></span>

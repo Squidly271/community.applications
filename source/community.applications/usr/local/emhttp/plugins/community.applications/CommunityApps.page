@@ -1126,7 +1126,7 @@ function caChangeLog() {
 }
 
 function scrollToTop() {
-	$("html, body").animate({ scrollTop: "0px" });
+  window.scrollTo(0,0);
 }
 
 </script>
