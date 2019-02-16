@@ -16,6 +16,7 @@ $theme = $dynamix['display']['theme'] ?: "black";
 
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
+$unRaid67 = version_compare($unRaidSettings['version'],"6.6.6",">");
 $unRaid66color = "#FF8C2F";
 $linkColor = "#486dba";
 $startupColor = "#FF8C2F";
@@ -118,7 +119,12 @@ a.appIcons {text-decoration:none;}
 .newApp {color:red;font-size:1.5rem;cursor:pointer;}
 .ca_fa-support::before {content:"\f059";font-family:fontAwesome;}
 .ca_fa-delete {color:#882626;font-size:2rem;position:relative;float:right;cursor:pointer;}
+<?if ($unRaid67):?>
+.ca_fa-delete::before {content:"\e92f";font-family:Unraid;}
+<?else:?>
 .ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
+<?endif;?>
+a.ca_fa-delete{text-decoration:none;}
 .ca_fa-install::before {content:"\f019";font-family:fontAwesome;}
 .ca_fa-edit::before {content:"\f044";font-family:fontAwesome;}
 .ca_fa-globe::before {content:"\f0ac";font-family:fontAwesome;}
