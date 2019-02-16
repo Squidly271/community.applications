@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.02.16">
-<!ENTITY md5       "7e9ce64b144d7811dde43d1e899701fe">
+<!ENTITY version   "2019.02.16a">
+<!ENTITY md5       "e6c052f21ff4afdf7779f4a250d831c2">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2016.02.16a
+- Fixed: Don't try and display changelog if the entry exists but is blank
+
 ###2016.02.16
 - Fixed: Don't display categories on pop up if no categories are present
 - Changed: Identify a private (dockerHub Conversion) app on main displays

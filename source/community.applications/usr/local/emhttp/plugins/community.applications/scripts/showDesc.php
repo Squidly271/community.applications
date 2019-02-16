@@ -253,7 +253,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$template['Plugin'] = true;
 }
 
-if ( $template['Changes'] ) {
+if ( trim($template['Changes']) ) {
 	if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		$templateDescription .= "</center><hr>";
 	}
