@@ -300,19 +300,6 @@ function validURL($URL) {
 	return filter_var($URL, FILTER_VALIDATE_URL);
 }
 
-###########################################################
-# Returns the maximum number of columns per display width #
-###########################################################
-function getMaxColumns($windowWidth) {
-	global $communitySettings, $communityPaths;
-
-	# routine needed for proper centering
-	$templateSkin = readJsonFile($communityPaths['defaultSkin']);
-	$communitySettings['windowWidth'] = $windowWidth;
-	$communitySettings['maxDetailColumns'] = floor($windowWidth / ($templateSkin['detail']['templateWidth'] * $communitySettings['fontSize']));
-	if ( ! $communitySettings['maxDetailColumns'] ) $communitySettings['maxDetailColumns'] = 1;
-}
-
 #######################################################
 # Function used to determine if a search term matches #
 #######################################################

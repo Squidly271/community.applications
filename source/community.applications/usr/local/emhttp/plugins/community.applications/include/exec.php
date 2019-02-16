@@ -75,8 +75,6 @@ case 'get_content':
 	$category    = "/".getPost("category",false)."/i";
 	$newApp      = filter_var(getPost("newApp",false),FILTER_VALIDATE_BOOLEAN);
 	$sortOrder   = getSortOrder(getPostArray("sortOrder"));
-	$windowWidth = getPost("windowWidth",false);
-	getMaxColumns($windowWidth);
 	$communitySettings['startup'] = getPost("startupDisplay",false);
 
 	switch ($category) {
@@ -287,11 +285,9 @@ case 'force_update':
 ####################################################################################
 case 'display_content':
 	$sortOrder = getSortOrder(getPostArray('sortOrder'));
-	$windowWidth = getPost("windowWidth",false);
 	$pageNumber = getPost("pageNumber","1");
 	$startup = getPost("startup",false);
 	$selectedApps = json_decode(getPost("selected",false),true);
-	getMaxColumns($windowWidth);
 	$communitySettings['fontSize'] = getPost("fontSize",false);
 
 	if ( file_exists($communityPaths['community-templates-displayed']) ) {

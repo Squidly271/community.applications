@@ -101,11 +101,12 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     }
     $displayedTemplates[] = $template;
   }
-  $maxColumnDisplayed = count($displayedTemplates) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($displayedTemplates);
+/*   $maxColumnDisplayed = count($displayedTemplates) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($displayedTemplates);
   $leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']*$communitySettings['fontSize']) / 2;
   $templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
-  $ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
-  $iconClass = "displayIcon";
+  $ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray); */
+  $ct .= $skin[$viewMode]['header'];
+	$iconClass = "displayIcon";
 
 # Create entries for skins.  Note that MANY entries are not used in the current skins
   foreach ($displayedTemplates as $template) {
@@ -380,9 +381,7 @@ function dockerNavigate($num_pages, $pageNumber) {
 function displaySearchResults($pageNumber) {
   global $communityPaths, $communitySettings, $plugin;
 
-  $windowWidth = getPost("windowWidth",false);
   $fontSize = getPost("fontSize",false);
-  getMaxColumns($windowWidth);
 
   $tempFile = readJsonFile($communityPaths['dockerSearchResults']);
   $num_pages = $tempFile['num_pages'];

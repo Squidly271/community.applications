@@ -45,7 +45,6 @@ var searchBoxAwesomplete;
 
 
 var data = new Object();
-data.oldWindowWidth = getWindowWidth();
 data.docker = "";
 data.section = "AppStore";
 data.selected_category = "";
@@ -152,9 +151,7 @@ $(function(){
 					}
 				});
 			} else {
-				var leftMargin = getWindowWidth();
 				$("#searchFilter,.menuItems").hide();
-				$("#appWarningForm").css("width",leftMargin);
 				$(".topRightLinks,.ca_appPopup").hide();
 				$("#templates_content").html($("#appWarningForm").html());
 			}
@@ -319,21 +316,16 @@ function changeCategory(button,subSwitch) {
 
 function changePage(pageNumber) {
 	var sortOrder = getSortOrder();
-	var windowWidth = getWindowWidth();
 	var selected = data.selected;
 	data.currentpage = pageNumber;
 
 	hideSortIcons();
 	mySpinner();
-	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
+	$.post(URL,{action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
 		if (data3) {
 			updateDisplay(data3);
 		}
 	});
-}
-
-function getWindowWidth() {
-	return $('#templates_content').width();
 }
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
@@ -377,8 +369,6 @@ function readMore() {
 }
 
 function doSearch(button,newSearch) {
-	var windowWidth = getWindowWidth();
-
 	hideSortIcons();
 
 	if ( ! newSearch === false ) {
@@ -427,7 +417,7 @@ function doSearch(button,newSearch) {
 	}
 	mySpinner();
 
-	$.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize()},function(data) {
+	$.post(URL,{action:'get_content',filter:filter,sortOrder:sortOrder,fontSize:getFontSize()},function(data) {
 		if (data) {
 			enableButtons();
 			updateDisplay(data);
@@ -456,7 +446,6 @@ function refreshDisplay() {
 }
 
 function changeSortOrder(button,buttonClass,previousApps) {
-	var windowWidth = getWindowWidth();
 	var pageNumber = data.currentpage;
 	var selected = data.selected;
 	var sortOrder = getSortOrder();
@@ -469,7 +458,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 			startup = "true";
 		}
 	});
-	$.post(URL,{action:'display_content',sortOrder:sortOrder,windowWidth:windowWidth,pageNumber:pageNumber,selected:selected,fontSize:getFontSize(),startup:startup},function(data3) {
+	$.post(URL,{action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,fontSize:getFontSize(),startup:startup},function(data3) {
 		if (data3) {
 			updateDisplay(data3);
 		}
@@ -523,7 +512,6 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		enableIcon("#sortIcon",true);
 		mySpinner();
 	}
-	var windowWidth = getWindowWidth();
 
 	if ( category != "NONE" ) {
 		if ( category == "INITIALIZE" ) {
@@ -536,7 +524,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 
 		var sortOrder = getSortOrder();
 
-		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize(),startupDisplay:startupDisplay},function(data) {
+		$.post(URL,{action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,fontSize:getFontSize(),startupDisplay:startupDisplay},function(data) {
 			if (data) {
 				updateDisplay(data);
 
@@ -583,14 +571,13 @@ function initDockerSearch() {
 function dockerSearch(pageNumber) {
 	var filter = $('#searchBox').val();
 	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
-	var windowWidth = getWindowWidth();
 	data.docker = "searching docker";
 	enableIcon("#sortIcon",false);
 	$(".dockerSearch,.multi_installDiv").hide();
 	$("#Category").html("DockerHub Search Results For <font color='<?=$unRaid66color?>'>"+filter+"</font> <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
 	mySpinner();
-	$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder,windowWidth:windowWidth,fontSize:getFontSize()},function(data) {
+	$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder,fontSize:getFontSize()},function(data) {
 		if (data) {
 			updateDisplay(data);
 		}
