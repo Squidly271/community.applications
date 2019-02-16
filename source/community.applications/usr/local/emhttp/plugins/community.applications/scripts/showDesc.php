@@ -120,8 +120,9 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$templateDescription .= "</td></tr>";
 	$templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
-	$templateDescription .= "<tr><td>{$color}Categories:</td><td>$color".$template['Category']."</td></tr>";
-
+	if ( $template['Category'] ) {
+		$templateDescription .= "<tr><td>{$color}Categories:</td><td>$color".$template['Category']."</td></tr>";
+	}
 	if ( ! $template['Plugin'] ) {
 		if ( strtolower($template['Base']) == "unknown" || ! $template['Base']) {
 			$template['Base'] = $template['BaseImage'];
