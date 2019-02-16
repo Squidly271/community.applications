@@ -126,6 +126,8 @@ a.appIcons {text-decoration:none;}
 .ca_fa-project::before {content:"\f08e";font-family:fontAwesome;}
 .ca_fa-info::before {content:"\f05a";font-family:fontAwesome;}
 .ca_fa-warning::before {content:"\f071";font-family:fontAwesome;}
+.ca_private::after {content:"\f069";font-family:fontAwesome;}
+.ca_private{color:#882626;}
 .warning-red {color:#882626;}
 .warning-yellow {color:#FF8C2F;}
 .ca_fa-pluginSettings::before {content:"\f013";font-family:fontAwesome;}

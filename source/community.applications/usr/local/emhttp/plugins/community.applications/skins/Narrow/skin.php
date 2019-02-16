@@ -130,6 +130,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     if ( ! $template['DonateText'] ) {
       $template['DonateText'] = "Donate To Author";
     }
+		$template['display_Private'] = ( $template['Private'] == "true" ) ? "<span class='ca_tooltip ca_private' title='Private (dockerHub Conversion)'></span>" : "";
     $template['display_DonateLink'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink' href='".$template['DonateLink']."' target='_blank' title='".$template['DonateText']."'>Donate To Author</a>" : "";
     $template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate' href='".$template['DonateLink']."' target='_blank' title='".$template['DonateText']."'>Donate</a>" : "";
 
@@ -514,12 +515,12 @@ function toNumericArray($template) {
     $template['display_multi_install'],     #75
     $template['display_DonateImage'],      #76
     $template['display_dockerBeta'],        #77
-    "<span class='ca_applicationName'>".str_replace("-"," ",$template['display_dockerName'])."</span><br><span class='ca_author'>{$template['display_author']}</span><br><span class='ca_categories'>{$template['Category']}</span>",  #78
+"<span class='ca_applicationName'>".str_replace("-"," ",$template['display_dockerName'])."</span>{$template['display_Private']}<br><span class='ca_author'>{$template['display_author']}</span><br><span class='ca_categories'>{$template['Category']}</span>",  #78
     $template['display_faSupport'],  #79
     $template['display_faProject'],     #80
     $template['display_iconOnly'],   #81
     $template['display_infoIcon'],  #82
-		$template['display_faWarning']  #83
+		$template['display_faWarning']		#83
   );
 }
 ?>
