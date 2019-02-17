@@ -18,6 +18,7 @@ require_once("/usr/local/emhttp/plugins/$plugin/include/helpers.php");
 
 $installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$plugin.plg");
 $upgradeVersion = download_url($communityPaths['onlineCAVersion'],"",false,10);
+
 if ( $installedVersion < $upgradeVersion && $upgradeVersion) {
 	$upgradeAvailable = "true";
 }
@@ -283,7 +284,7 @@ function setToolTip() {
 		trigger:'custom',
 		triggerOpen:{click: true},
 		triggerClose:{click:true,scroll:true,mouseleave:true}
-	});  
+	});
 	$('.ca_appPopup').click(function() {
 		var appnumber = $(this).data("appnumber");
 		var apppath = $(this).data("apppath");
@@ -1113,7 +1114,7 @@ function caChangeLog() {
 }
 
 function scrollToTop() {
-  window.scrollTo(0,0);
+	window.scrollTo(0,0);
 }
 
 </script>
@@ -1126,9 +1127,9 @@ function scrollToTop() {
 > <i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:2rem;'></i> Clicking this will display any warnings or extra comments about the application<br>
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
-<div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be 100% functional when cookies are not enabled.  You should enable them for the best experience. </p></div>
+<div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.</p></div>
 <?if ( $upgradeAvailable ) :?>
-<div class='notice'><div class='ca_center'><font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</div></font></div>
+<div class='notice'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</div>
 <?endif;?>
 <div class='dockerDisabled notice'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div>
 <div id='warningNotAccepted' style='display:none;'><p class='notice shift'>Installations of apps disabled.  You must accept the warning to be able to install applications.  Click <a onclick='window.location.reload();' style='cursor:pointer;'>HERE</a></p></div>
