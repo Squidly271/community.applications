@@ -34,7 +34,9 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 	$info = array();
 	$dockerRunning = array();
 }
-
+if ( ! is_file($communityPaths['warningAccepted']) ) {
+	$communitySettings['NoInstalls'] = true;
+}
 $appNumber =  urldecode($_GET['appPath']);
 $appName = urldecode($_GET['appName']);
 
@@ -164,7 +166,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	}
 	$templateDescription .= "</span></div><hr>";
 
-	if ( $Displayed && ! $template['NoInstall'] ) {
+	if ( $Displayed && ! $template['NoInstall'] && ! $communitySettings['NoInstalls']) {
 		if ( ! $template['Plugin'] ) {
 			if ( $communitySettings['dockerRunning'] ) {
 				if ( $selected ) {

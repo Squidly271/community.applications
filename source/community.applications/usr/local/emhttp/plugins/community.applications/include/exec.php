@@ -17,6 +17,8 @@ require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelper
 
 $unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
 
+
+
 ################################################################################
 # Set up any default settings (when not explicitely set by the settings module #
 ################################################################################
@@ -32,6 +34,9 @@ require_once($communityPaths['defaultSkinPHP']);
 $communitySettings['maxPerPage']    = isMobile() ? 12 : 24;
 $communitySettings['unRaidVersion'] = $unRaidSettings['version'];
 $communitySettings['timeNew']       = "-10 years";
+if ( ! is_file($communityPaths['warningAccepted']) ) {
+	$communitySettings['NoInstalls'] = true;
+}
 
 if ( $communitySettings['favourite'] != "None" ) {
 	$officialRepo = str_replace("*","'",$communitySettings['favourite']);
@@ -969,7 +974,7 @@ case 'statistics':
 <div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>
 <table style='margin-top:1rem;'>
 <tr style='height:6rem;'><td colspan='2'><div class='ca_center'><img style='height:4.8rem;' src='https://raw.githubusercontent.com/Squidly271/plugin-repository/master/CA.png'></td></tr>
-<tr><td colspan='2'><div class='ca_center'><font size='5rem;' color='white'>Community Applications</font></div></td></tr>
+<tr><td colspan='2'><div class='ca_center'><font size='5rem;'>Community Applications</font></div></td></tr>
 <tr><td class='ca_table'><a href='/Apps/Appfeed' target='_blank'>Last Change To Application Feed</a></td><td class='ca_stat'><?=$updateTime?><br><?=$currentServer?> active</td></tr>
 <tr><td class='ca_table'>Number Of Templates</td><td class='ca_stat'><?=$statistics['totalApplications']?></td></tr>
 <tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></td><td class='ca_stat'><?=count($repositories)?></td></tr>

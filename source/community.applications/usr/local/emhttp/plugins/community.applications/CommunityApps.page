@@ -151,9 +151,8 @@ $(function(){
 					}
 				});
 			} else {
-				$("#searchFilter,.menuItems").hide();
-				$(".topRightLinks,.ca_appPopup").hide();
-				$("#templates_content").html($("#appWarningForm").html());
+				$("#warningNotAccepted").show();
+				updateContent();
 			}
 		});
 	} else {
@@ -1132,8 +1131,9 @@ function scrollToTop() {
 <div class='notice'><center><font color='red'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</center></font></div>
 <?endif;?>
 <div class='dockerDisabled notice'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div>
+<div id='warningNotAccepted' style='display:none;'><p class='notice shift'>Installations of apps disabled.  You must accept the warning to be able to install applications</p></div>
 <span style='display:none;font-size:1rem;' id='fontSize'>rwar</span>
-<div style='position:absolute; left:0px;width:14rem;height:auto;' class='menuItems'>
+<div class='menuItems'>
 <div class='menuHeader'>MENU</div>
 <ul class='caMenu'>
 	<li class='caMenuItem' onclick='previousApps(this.id,true);' data-category='installed_apps'>Installed Apps</li>
@@ -1194,7 +1194,7 @@ function scrollToTop() {
 	<li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'>Settings</a></li>
 	<li class='caMenuItem' onclick='disableSort();scrollToTop();showStatistics();'>Statistics</li>
 	<li class='caMenuItem' onclick='disableSort();scrollToTop();showCredits();'>Credits</li>
-	<li class='caMenuItem' onclick='window.location="https://forums.unraid.net/topic/38582-plug-in-community-applications/"'>Support</li>
+	<li class='caMenuItem'><a class='caMenuItem' href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank' style='text-decoration:none;color:inherit;'>Support</a></li>
 	</ul>
 <div class='menuHeader'>VERSION</div>
 <ul class='nonselectMenu'>
@@ -1216,22 +1216,15 @@ function scrollToTop() {
 </div>
 <br>
 </span><br>
-<div style='position:absolute;left:14.5rem;right:0px; display:block;'>
-<div style='width:100%; display:none;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
+<div class='mainArea'>
+<div class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 <strong><font size='3'><span id="Category" class="categoryLine"></span></strong></font>
 <div class='dockerSearch' style='display:none'><center><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></center></div>
 <div id='templates_content'></div>
-<div style='width:100%; display:none; padding-bottom:100px;' class='multi_installDiv'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
+<div class='multi_installDiv bottomSpace'><center><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></center></div>
 </div>
 </center>
 <span id='miscScript'></span><span id='awesomepleteScript'></span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
 <span id='debugging'></span>
 <div class='spinner fixed'></div>
-<div id='appWarningForm' style='display:none;'>
-<br><br><center><img src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Warning2.png' height='50px' width='50px'><br>
-<font size='4' color='red'>All Applications listed here are 3rd party additions to unRaid.<br>Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any applications listed herein.
-<br><span class='ca_italic'>Every attempt is made to ensure that only safe and compatible applications are present</span>
-<br><br>You must accept the disclaimer before you can utilize this plugin</font>
-<br><br><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>
-</div>

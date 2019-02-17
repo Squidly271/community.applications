@@ -66,7 +66,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     $selectedApps = array();
   }
 
-  if ( ! $communitySettings['dockerRunning'] ) {
+  if ( ! $communitySettings['dockerRunning'] && ! $communitySettings['NoInstalls']) {
     $displayHeader = "<script>$('.dockerDisabled').show();</script>";
   }
 
@@ -105,7 +105,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
   $ct .= $skin[$viewMode]['header'];
 	$iconClass = "displayIcon";
 
-# Create entries for skins.  Note that MANY entries are not used in the current skins
+	# Create entries for skins.  Note that MANY entries are not used in the current skins
   foreach ($displayedTemplates as $template) {
     $displayTemplate = $skin[$viewMode]['template'];
 
@@ -183,7 +183,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     if ( $template['UpdateAvailable'] ) {
       $template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</span></div></font>" : "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a href='Docker'>Here</a> to install</span></font></div>";
     }
-    if ( ! $template['NoInstall'] ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
+    if ( ! $template['NoInstall'] && ! $communitySettings['NoInstalls'] ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
       if ( $template['Plugin'] ) {
         $pluginName = basename($template['PluginURL']);
         if ( checkInstalledPlugin($template) ) {
