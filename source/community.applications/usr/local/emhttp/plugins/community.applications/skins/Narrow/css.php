@@ -63,13 +63,13 @@ a.ca_applicationName {text-decoration:none;color:inherit;}
 a.ca_author {text-decoration:none;color:inherit;}
 .ca_categoryLink {color:<?=$linkColor?>;font-weight:normal;}
 a.ca_categoryLink {text-decoration:none;color:inherit;}
-.ca_descriptionArea {margin:1rem;width:auto;height:4rem;}
-.ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;width:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;}
+.ca_descriptionArea {margin:1rem;width:auto;height:4rem;position:relative;margin-top:-11rem;}
+.ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;}
 .ca_topRightArea {display:block;position:absolute;margin-left:33rem;z-index:9999;}
 img.displayIcon {height:6.4rem;width:6.4rem;}
 i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
-.ca_bottomLine {display:block;position:absolute;padding-top:9.5rem;margin-left:1.5rem;}
-.ca_bottomRight {display:block;position:absolute;padding-top:9.9rem;margin-left:30.2rem;}
+.ca_bottomLine {display:block;position:relative;padding-top:9.5rem;margin-left:1.5rem;}
+.ca_bottomRight {float:right;margin-right:2rem;padding-top:0.9rem;}
 .ca_hr {margin-left:10px;margin-right:10px;border:1px; border-color:<?=$hrColor?>; border-top-style:solid;border-right-style:none;border-bottom-style:none;border-left-style:none;}
 .categoryLine {margin-left:120px;font-size:1.2rem;font-weight:normal;}
 .sortIcons {font-size:1.8rem;margin-right:20px;cursor:pointer;}
@@ -199,4 +199,4 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_center {margin:auto;text-align:center;}
 .ca_NoAppsFound {font-size:3rem;margin:auto;text-align:center;}
 .ca_NoAppsFound::after{content:"No Matching Applications Found"}
-.ca_templatesDisplay {display:flex;flex-wrap:wrap;justify-content:center;'
+.ca_templatesDisplay {display:flex;flex-wrap:wrap;justify-content:center;'}

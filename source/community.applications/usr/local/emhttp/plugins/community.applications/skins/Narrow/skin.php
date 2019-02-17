@@ -101,10 +101,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     }
     $displayedTemplates[] = $template;
   }
-/*   $maxColumnDisplayed = count($displayedTemplates) >= $communitySettings['maxDetailColumns'] ? $communitySettings['maxDetailColumns'] : count($displayedTemplates);
-  $leftMargin = ($communitySettings['windowWidth'] - $maxColumnDisplayed*$skin[$viewMode]['templateWidth']*$communitySettings['fontSize']) / 2;
-  $templateFormatArray = array(1 => $communitySettings['windowWidth'],2=>$leftMargin);      # this array is only used on header, sol, eol, footer
-  $ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray); */
+
   $ct .= $skin[$viewMode]['header'];
 	$iconClass = "displayIcon";
 
