@@ -82,7 +82,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
   }
 
   if ( ! $officialFlag ) {
-    $displayHeader .= "<br>".getPageNavigation($pageNumber,count($file),false)."<br>";
+    $displayHeader .= getPageNavigation($pageNumber,count($file),false)."<br>";
   }
 
   $columnNumber = 0;
@@ -294,7 +294,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
   }
   $ct .= vsprintf($skin[$viewMode]['footer'],$templateFormatArray);
   if ( ! $officialFlag ) {
-    $ct .= "<br>".getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
+    $ct .= getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
   }
   if ( $communitySettings['dockerSearch'] != "yes" ) {
     $ct .= "<script>$('.dockerSearch').hide();</script>";

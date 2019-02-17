@@ -204,5 +204,4 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 #warningNotAccepted {display:none;}
 .menuItems {position:absolute; left:0px;width:14rem;height:auto;}
 .mainArea {position:absolute;left:18.5rem;right:0px; display:block;}
-.multi_InstallDiv {width:100%; display:none;}
-.bottomSpace {padding-bottom:100px;}
+.multi_installDiv {width:100%; display:none;padding-bottom:20px;}
