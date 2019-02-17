@@ -40,6 +40,9 @@ div.spinner .unraid_mark_7{animation:mark_7 1.5s ease infinite}
 </style>
 <script>
 $(function() {
+	setTimeout(function() {
+		$(".spinner").show();
+	},250);
 	$.post("/plugins/community.applications/scripts/getPopupDescription.php",{appName:'<?=$appName?>',appPath:'<?=$appNumber?>',csrf_token:'<?=$csrf_token?>'},function(data) {
 		if (data) {
 			$("#popUpContent").hide();
@@ -85,4 +88,4 @@ function installPlugin(pluginURL) {
 	});
 }
 </script>
-<span id='popUpContent'><div class='spinner fixed'><?readfile("/usr/local/emhttp/plugins/dynamix/images/animated-logo.svg")?></div></span>
+<span id='popUpContent'><div class='spinner fixed' style='display:none;'><?readfile("/usr/local/emhttp/plugins/dynamix/images/animated-logo.svg")?></div></span>
