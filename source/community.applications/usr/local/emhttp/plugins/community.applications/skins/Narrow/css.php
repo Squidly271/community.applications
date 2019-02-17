@@ -205,3 +205,4 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .menuItems {position:absolute; left:0px;width:14rem;height:auto;}
 .mainArea {position:absolute;left:18.5rem;right:0px; display:block;}
 .multi_installDiv {width:100%; display:none;padding-bottom:20px;}
+.ca_toolsView {font-size:2.3rem; position:relative;top:-0.2rem;}
