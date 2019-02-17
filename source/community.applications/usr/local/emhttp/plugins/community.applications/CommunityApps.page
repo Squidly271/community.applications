@@ -201,6 +201,7 @@ function initilizeMenu() {
 
 function updateContent(button) {
 	hideSortIcons();
+	$("#Category").html("");
 	$(".caMenuItem").each(function() {
 		$(this).removeClass("selectedMenu");
 	});
