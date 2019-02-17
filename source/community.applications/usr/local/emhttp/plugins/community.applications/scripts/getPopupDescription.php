@@ -1,4 +1,10 @@
 <?PHP
+###############################################################
+#                                                             #
+# Community Applications copyright 2015-2019, Andrew Zawadzki #
+#                    All Rights Reserved                      #
+#                                                             #
+###############################################################
 
 libxml_use_internal_errors(true); # Suppress any warnings from xml errors.  FCP will catch those errors
 
@@ -10,7 +16,6 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("webGui/include/Markdown.php");
 
-logger("got here");
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $communitySettings = parse_plugin_cfg("community.applications");
 $csrf_token = $unRaidVars['csrf_token'];
@@ -237,7 +242,6 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	$changeLogMessage = "<div class='ca_center'><font size='0'>Note: not all ";
 	$changeLogMessage .= $template['PluginURL'] ? "authors" : "maintainers";
 	$changeLogMessage .= " keep up to date on change logs</font></div><br>";
-
 } else {
 	$template['Changes'] = ($appNumber == "ca") ? plugin("changes","/var/log/plugins/community.applications.plg") : plugin("changes","/tmp/plugins/community.applications.plg");
 	$template['Plugin'] = true;
