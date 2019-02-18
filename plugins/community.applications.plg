@@ -27,6 +27,7 @@
 - Fixed: Better method of installing plugin via popup
 - Added: Show spinner on popup if it takes a bit to gather the information
 - Added: Any click outside the popup will now close it
+- Fixed: "Wiggle" when closing popup
 
 ###2016.02.16a
 - Fixed: Don't try and display changelog if the entry exists but is blank
