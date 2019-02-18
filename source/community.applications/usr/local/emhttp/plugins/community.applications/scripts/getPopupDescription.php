@@ -191,7 +191,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 				}
 			} else {
 				$buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
-				$installLine .= "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>&nbsp;&nbsp;Install</a>";
+				$installLine .= "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install pluginInstall' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');>&nbsp;&nbsp;Install</a>";
 			}
 		}
 	}

@@ -71,6 +71,10 @@ $(function() {
 					});
 				}
 			});
+			
+			if ( ! cookiesEnabled() ) {
+				$(".pluginInstall").hide();
+			}
 			$("#popUpContent").show();
 		}
 	});
@@ -79,6 +83,15 @@ $(function() {
 function installPlugin(pluginURL) {
 	$.cookie("installPluginURL",pluginURL,{path:"/"});
 	window.parent.Shadowbox.close();
+}
+
+function cookiesEnabled() {
+	return evaluateBoolean(navigator.cookieEnabled);
+}
+
+function evaluateBoolean(str) {
+	regex=/^\s*(true|1|on)\s*$/i
+	return regex.test(str);
 }
 </script>
 <span id='popUpContent'><div class='spinner fixed' style='display:none;'><?readfile("/usr/local/emhttp/plugins/dynamix/images/animated-logo.svg")?></div></span>
