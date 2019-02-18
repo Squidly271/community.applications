@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.02.18">
-<!ENTITY md5       "273778b75f69b540c1dddc23ae282e2e">
+<!ENTITY version   "2019.02.18a">
+<!ENTITY md5       "a49a81321389051b2cab99fca36d163b">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2016.02.18a
+- Fixed: Search box wasn't being cleared when going back to a startup category
+
 ###2016.02.18
 - Changed: When running 6.7 begin to utilize new navigation icons
 - Changed: Upgrade available is now a banner
