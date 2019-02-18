@@ -40,6 +40,8 @@ div.spinner .unraid_mark_7{animation:mark_7 1.5s ease infinite}
 </style>
 <script>
 $(function() {
+	$.removeCookie("installPluginURL",{path:"/"});
+
 	setTimeout(function() {
 		$(".spinner").show();
 	},250);
@@ -75,17 +77,8 @@ $(function() {
 });
 
 function installPlugin(pluginURL) {
-	$("#popUpContent").html("<br><br><div class='ca_center'><font size='6'>Please Wait.  Installing Plugin...</font></div>");
-	$.post("/plugins/community.applications/include/exec.php",{action:'installPlugin',pluginURL:pluginURL,csrf_token:'<?=$csrf_token?>'},function(data) {
-		if (data) {
-			var output = JSON.parse(data);
-			if ( output.retval == "0" ) {
-				window.parent.Shadowbox.close();
-			} else {
-				$("#popUpContent").html("<font size=0>"+output.output+"</font>");
-			}
-		}
-	});
+	$.cookie("installPluginURL",pluginURL,{path:"/"});
+	window.parent.Shadowbox.close();
 }
 </script>
 <span id='popUpContent'><div class='spinner fixed' style='display:none;'><?readfile("/usr/local/emhttp/plugins/dynamix/images/animated-logo.svg")?></div></span>

@@ -42,6 +42,7 @@ var URL = "/plugins/<?=$plugin?>/include/exec.php";
 var last = $('input[name$="tabs"]').length;
 var searchBoxInput;
 var searchBoxAwesomplete;
+var pluginInstallIntervalTimer;
 
 
 var data = new Object();
@@ -289,11 +290,27 @@ function setToolTip() {
 		var apppath = $(this).data("apppath");
 		var appname = $(this).data("appname");
 		appname = stripTags(appname);
-		my_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,"refreshDisplay()");
+		showDesc_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,"checkForPluginInstallRequested()");
 	});
-
 	readMore();
 	myCloseAlert();
+}
+
+// Wait for the showDesc modal to close before opening another to install plugin
+function checkForPluginInstallRequested() {
+	var pluginURL = $.cookie("installPluginURL");
+	if ( pluginURL ) { 
+		pluginInstallIntervalTimer = setInterval(modalPluginInstall,100);
+	}
+}
+
+function modalPluginInstall() {
+	if ( ! $("#sb-container").is(":visible") ) {
+		clearInterval(pluginInstallIntervalTimer);
+		var pluginURL = $.cookie("installPluginURL");
+		$.removeCookie("installPluginURL");
+		installPlugin(pluginURL);
+	}
 }
 
 function showSpecialCategory(button) {
@@ -603,7 +620,6 @@ function clearSearchBox() {
 }
 
 function installPlugin(pluginURL) {
-	$(".ca_appPopup").tooltipster('close');
 	disableSearch();
 	my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,'Install Plugin',600,900,true,"refreshDisplay()");
 }
@@ -612,6 +628,12 @@ function my_openBox(cmd,title,height,width,load,func) {
 	// open shadowbox window (run in foreground)
 	var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
 	var options = load ? {modal:true,onClose:function(){ eval(func); }} : {modal:true};
+	Shadowbox.open({content:run, player:'iframe', title:title, height:height, width:width, options:options});
+}
+function showDesc_openBox(cmd,title,height,width,load,func) {
+	// open shadowbox window (run in foreground)
+	var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
+	var options = load ? {modal:false,onClose:function(){ eval(func); }} : {modal:true};
 	Shadowbox.open({content:run, player:'iframe', title:title, height:height, width:width, options:options});
 }
 
