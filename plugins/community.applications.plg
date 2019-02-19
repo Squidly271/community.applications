@@ -13,10 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
-###2016.02.18a
+###2019.02.18a
 - Fixed: Search box wasn't being cleared when going back to a startup category
 
-###2016.02.18
+###2019.02.18
 - Changed: When running 6.7 begin to utilize new navigation icons
 - Changed: Upgrade available is now a banner
 - Changed: Docker not available is now a banner
@@ -32,10 +32,10 @@
 - Added: Any click outside the popup will now close it
 - Fixed: "Wiggle" when closing popup
 
-###2016.02.16a
+###2019.02.16a
 - Fixed: Don't try and display changelog if the entry exists but is blank
 
-###2016.02.16
+###2019.02.16
 - Fixed: Don't display categories on pop up if no categories are present
 - Changed: Identify a private (dockerHub Conversion) app on main displays
 - Changed: Scroll back to top of screen when changing categories, etc
