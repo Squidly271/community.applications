@@ -98,7 +98,15 @@ Favourite Repository:
 
 > Set this option to your favourite repository, so that it's applications will display first
 
-<strong>Docker Hub Searching</strong>
+<strong>Advanced</strong>
+
+Enable Reinstall Default:
+: <select name='defaultReinstall' size='1'>
+	<?=mk_option($cfg['defaultReinstall'],'fase','No (default)')?>
+	<?=mk_option($cfg['defaultReinstall'],'true',"Yes")?>
+	</select>
+	
+> This option enables another button on the cards and popups which will allow you to reinstall an installed application using it's default template values.  This option can be confusing at times, and is only generally used if you wish to install and have an application running twice simultaneously
 
 Enable additional search results from dockerHub?
 : <select name="dockerSearch" size="1">

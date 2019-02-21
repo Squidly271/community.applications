@@ -10,7 +10,6 @@ Tag="users"
 #                    All Rights Reserved                      #
 #                                                             #
 ###############################################################
-
 $plugin = "community.applications";
 
 require_once("/usr/local/emhttp/plugins/$plugin/include/paths.php");
@@ -216,7 +215,7 @@ function updateContent(button) {
 
 	startupScreen = button ? $(button).data("category") : startupScreen;
 	$.cookie("startupButton",startupScreen,{expires:365});
-	$.cookie("selectedMenu",startupScreen);
+	$.cookie("selectedMenu",startupScreen,{expires:365});
 	disableSearch();
 	mySpinner();
 	if ( appFeedModeMsg ) {
@@ -333,17 +332,41 @@ function changeCategory(button,subSwitch) {
 }
 
 function changePage(pageNumber) {
+	if ( data.currentpage < pageNumber ) {
+		var directionOut = "Left";
+		var directionIn = "Right";
+	} else {
+		var directionOut = "Right";
+		var directionIn = "Left";
+	}
 	var sortOrder = getSortOrder();
 	var selected = data.selected;
 	data.currentpage = pageNumber;
 
-	hideSortIcons();
-	mySpinner();
-	$.post(URL,{action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
-		if (data3) {
-			updateDisplay(data3);
-		}
+	animateCSS(".ca_templatesDisplay","fadeOut"+directionOut,function() {
+ 		$("#templates_content").html("");
+		hideSortIcons();
+ 		mySpinner();
+		$.post(URL,{action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
+			if (data3) {
+				updateDisplay(data3,directionIn);
+			}
+		});
 	});
+}
+
+function animateCSS(element, animationName, callback) {
+  const node = document.querySelector(element)
+  node.classList.add('animated', animationName)
+
+  function handleAnimationEnd() {
+    node.classList.remove('animated', animationName)
+    node.removeEventListener('animationend', handleAnimationEnd)
+
+    if (typeof callback === 'function') callback()
+  }
+
+  node.addEventListener('animationend', handleAnimationEnd)
 }
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
@@ -1003,8 +1026,12 @@ function installMulti() {
 	});
 }
 
-function updateDisplay(data) {
-	$('#templates_content').html(data);
+function updateDisplay(data,direction="") {
+	$("#templates_content").html(data)
+	if ( direction != "" ) {
+		animateCSS(".ca_templatesDisplay","fadeIn"+direction);
+	}
+			
 	$('img').on("error",function() {
 		var origSource = $(this).attr('src');
 		if ( document.referrer.startsWith("https") && "<?=$cfg['secureImage']?>" == "secure" ) {
@@ -1140,6 +1167,7 @@ function scrollToTop() {
 }
 
 </script>
+
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <span class='ca_bold'>Install or Edit</span> an application<br>
 > <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' style='font-size:2rem;'></i> - Clicking these icons will take you to an application's GUI or settings<br>

@@ -437,6 +437,8 @@ function displaySearchResults($pageNumber) {
 # (Because the associate tag order can change depending upon the template) #
 ############################################################################
 function toNumericArray($template) {
+	global $communitySettings;
+	
   return array(
     $template['Repository'],              # 1
     $template['Author'],                  # 2
@@ -506,7 +508,7 @@ function toNumericArray($template) {
     str_replace("-"," ",$template['display_dockerName']),      #66
     $template['Path'],                    #67
     $template['display_pluginInstallIcon'],#68
-    $template['display_dockerDefaultIcon'],#69
+    $communitySettings['defaultReinstall'] == "true" ? $template['display_dockerDefaultIcon'] : "",#69
     $template['display_dockerEditIcon'],  #70
     $template['display_dockerReinstallIcon'], #71
     $template['display_dockerInstallIcon'], #72
