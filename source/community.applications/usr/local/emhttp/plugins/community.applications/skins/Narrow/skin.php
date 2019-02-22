@@ -357,7 +357,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
   $swipeScript .= ( $pageNumber < $totalPages ) ? "data.nextpage = $nextPage;" : "data.nextpage = 0;";
   $swipeScript .= ( $dockerSearch ) ? "dockerSearchFlag = true;" : "dockerSearchFlag = false";
   $swipeScript .= "</script>";
-  $o .= "</font></div></span></div><script>data.currentpage = $pageNumber;</script>";
+  $o .= "</div></div><script>data.currentpage = $pageNumber;</script>";
   return $o.$swipeScript;
 }
 
