@@ -275,10 +275,6 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
       }
     }
 		
-		if ( strlen($template['Description']) > 240 ) {
-			$template['Description'] = substr($template['Description'],0,240)." ...";
-		}
-    
     $template['display_dockerName'] = ( $communitySettings['dockerSearch'] == "yes" && ! $template['Plugin'] ) ? "<a class='ca_tooltip ca_applicationName' data-appNumber='$ID' style='cursor:pointer' onclick='mySearch(this.innerText);' title='Search dockerHub for similar containers'>".$template['Name']."</a>" : "<span class='ca_applicationName'>{$template['Name']}</span>";
     $template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
@@ -333,31 +329,31 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 
   $o .= "<div class='pageNavigation'>";
   $previousPage = $pageNumber - 1;
-  $o .= ( $pageNumber == 1 ) ? "<span class='pageLeft pageNumber pageNavNoClick'></span>" : "<span class='pageLeft ca_tooltip pageNumber' onclick='{$my_function}(&quot;$previousPage&quot;)' title='Go To Page $previousPage'></span>";
+  $o .= ( $pageNumber == 1 ) ? "<span class='pageLeft pageNumber pageNavNoClick'></span>" : "<span class='pageLeft ca_tooltip pageNumber' onclick='{$my_function}(&quot;$previousPage&quot;)'></span>";
   $swipeScript .= "data.prevpage = $previousPage;";
   $startingPage = $pageNumber - 5;
   if ($startingPage < 3 ) {
     $startingPage = 1;
   } else {
-    $o .= "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;1&quot;);' title='Go To Page 1'>1</a><span class='pageNumber pageDots'></span>";
+    $o .= "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;1&quot;);'>1</a><span class='pageNumber pageDots'></span>";
   }
   $endingPage = $pageNumber + 5;
   if ( $endingPage > $totalPages ) {
     $endingPage = $totalPages;
   }
   for ($i = $startingPage; $i <= $endingPage; $i++) {
-    $o .= ( $i == $pageNumber ) ? "<span class='pageNumber pageSelected'>$i</span>" : "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;$i&quot;);' title='Go To Page $i'>$i</a>";
+    $o .= ( $i == $pageNumber ) ? "<span class='pageNumber pageSelected'>$i</span>" : "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;$i&quot;);'>$i</a>";
   }
   if ( $endingPage != $totalPages) {
     if ( ($totalPages - $pageNumber ) > 6){
       $o .= "<span class='pageNumber pageDots'></span>";
     }
     if ( ($totalPages - $pageNumber ) >5 ) {
-      $o .= "<a class='ca_tooltip pageNumber' title='Go To Page $totalPages' onclick='{$my_function}(&quot;$totalPages&quot;);'>$totalPages</a>";
+      $o .= "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;$totalPages&quot;);'>$totalPages</a>";
     }
   }
   $nextPage = $pageNumber + 1;
-  $o .= ( $pageNumber < $totalPages ) ? "<span class='ca_tooltip pageNumber pageRight' title='Go To Page $nextPage' onclick='{$my_function}(&quot;$nextPage&quot;);'></span>" : "<span class='pageRight pageNumber pageNavNoClick'></span>";
+  $o .= ( $pageNumber < $totalPages ) ? "<span class='ca_tooltip pageNumber pageRight' onclick='{$my_function}(&quot;$nextPage&quot;);'></span>" : "<span class='pageRight pageNumber pageNavNoClick'></span>";
   $swipeScript .= ( $pageNumber < $totalPages ) ? "data.nextpage = $nextPage;" : "data.nextpage = 0;";
   $swipeScript .= ( $dockerSearch ) ? "dockerSearchFlag = true;" : "dockerSearchFlag = false";
   $swipeScript .= "</script>";
@@ -522,7 +518,8 @@ function toNumericArray($template) {
     $template['display_faProject'],     #80
     $template['display_iconOnly'],   #81
     $template['display_infoIcon'],  #82
-		$template['display_faWarning']		#83
+		$template['display_faWarning'], #83
+		$template['CardDescription']	#84
   );
 }
 ?>

@@ -299,7 +299,7 @@ function setToolTip() {
 // Wait for the showDesc modal to close before opening another to install plugin
 function checkForPluginInstallRequested() {
 	var pluginURL = $.cookie("installPluginURL");
-	if ( pluginURL ) { 
+	if ( pluginURL ) {
 		pluginInstallIntervalTimer = setInterval(modalPluginInstall,100);
 	}
 }
@@ -344,10 +344,10 @@ function changePage(pageNumber) {
 	data.currentpage = pageNumber;
 
 	animateCSS(".ca_templatesDisplay","fadeOut"+directionOut,function() {
- 		$("#templates_content").html("");
+		$("#templates_content").html("");
 		hideSortIcons();
- 		mySpinner();
-		$.post(URL,{action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
+/* 		mySpinner(); */
+   	$.post(URL,{action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
 			if (data3) {
 				updateDisplay(data3,directionIn);
 			}
@@ -356,17 +356,16 @@ function changePage(pageNumber) {
 }
 
 function animateCSS(element, animationName, callback) {
-  const node = document.querySelector(element)
-  node.classList.add('animated', animationName)
+	const node = document.querySelector(element)
+	node.classList.add('animated', animationName,'fast')
 
-  function handleAnimationEnd() {
-    node.classList.remove('animated', animationName)
-    node.removeEventListener('animationend', handleAnimationEnd)
+	function handleAnimationEnd() {
+		node.classList.remove('animated', animationName)
+		node.removeEventListener('animationend', handleAnimationEnd)
 
-    if (typeof callback === 'function') callback()
-  }
-
-  node.addEventListener('animationend', handleAnimationEnd)
+		if (typeof callback === 'function') callback()
+	}
+	node.addEventListener('animationend', handleAnimationEnd)
 }
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
@@ -394,9 +393,12 @@ function myCloseAlert() {
 	swal.close();
 	enableSearch();
 	$("div.spinner").hide();
+	$(".sweet-overlay").css("background-color","rgba(0, 0, 0, 0.4)");
+
 }
 
 function mySpinner() {
+	$(".sweet-overlay").css("background-color","rgba(0, 0, 0, 0)");
 	$("div.spinner").show();
 	myAlert("",""," ",150);
 }
@@ -1031,7 +1033,7 @@ function updateDisplay(data,direction="") {
 	if ( direction != "" ) {
 		animateCSS(".ca_templatesDisplay","fadeIn"+direction);
 	}
-			
+
 	$('img').on("error",function() {
 		var origSource = $(this).attr('src');
 		if ( document.referrer.startsWith("https") && "<?=$cfg['secureImage']?>" == "secure" ) {

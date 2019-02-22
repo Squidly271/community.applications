@@ -56,7 +56,7 @@ function writeJsonFile($filename,$jsonArray) {
 }
 function download_url($url, $path = "", $bg = false, $timeout=45){
 	if ( ! strpos($url,"?") ) $url .= "?".time();
-	exec("curl --compressed --max-time $timeout --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
+	exec("curl --compressed --connect-timeout 15 --max-time $timeout --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
 	return ($exit_code === 0 ) ? implode("\n", $out) : false;
 }
 function download_json($url,$path) {

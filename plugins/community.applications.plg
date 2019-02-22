@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.02.18a">
-<!ENTITY md5       "a49a81321389051b2cab99fca36d163b">
+<!ENTITY version   "2019.02.21">
+<!ENTITY md5       "db278483efbb1b87d4f857f618603121">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.02.21
+- Fixed: Under certain circumstances displays could get corrupted
+- Changed: "Reinstall Default" for docker apps optional (enable in settings)
+- Added: When swiping on mobile device to change page, scroll display
+- Changed: Remove "dimming" when spinner displays
+
 ###2019.02.18a
 - Fixed: Search box wasn't being cleared when going back to a startup category
 

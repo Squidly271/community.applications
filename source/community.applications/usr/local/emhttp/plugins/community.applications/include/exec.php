@@ -204,6 +204,7 @@ case 'get_content':
 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
 				$template['Name'] = highlight($filter, $template['Name']);
+				$template['CardDescription'] = highlight($filter,$template['CardDescription']);
 			} else continue;
 		}
 
@@ -557,6 +558,8 @@ case 'search_dockerhub':
 		$o['Author'] = $details[0];
 		$o['Name'] = $details[1];
 		$o['Description'] = $result['description'];
+		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
+
 		$o['Automated'] = $result['is_automated'];
 		$o['Stars'] = $result['star_count'];
 		$o['Official'] = $result['is_official'];
@@ -1127,6 +1130,9 @@ function DownloadApplicationFeed() {
 		$o['RepoName']      = $o['Repo'];
 		$o['SortAuthor']    = $o['Author'];
 		$o['SortName']      = $o['Name'];
+		
+		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
+		
 		if ( $o['PluginURL'] ) {
 			$o['Author']        = $o['PluginAuthor'];
 			$o['Repository']    = $o['PluginURL'];
@@ -1235,6 +1241,7 @@ function getConvertedTemplates() {
 		$o['Date']         = ( $o['Date'] ) ? strtotime( $o['Date'] ) : 0;
 		$o['SortAuthor']   = $o['Author'];
 		$o['Compatible']   = versionCheck($o);
+		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
 
 		$o = fixTemplates($o);
 		$myTemplates[$i]  = $o;
