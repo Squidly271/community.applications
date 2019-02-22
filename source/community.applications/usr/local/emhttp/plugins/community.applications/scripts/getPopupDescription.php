@@ -131,7 +131,7 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	# In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 	if ( $template['Date'] && $template['Plugin'] ) {
 		$niceDate = date("F j, Y",$template['Date']);
-	$templateDescription .= "<tr><td nowrap>Date Updated:</td><td>$niceDate<br></td></tr>";
+		$templateDescription .= "<tr><td nowrap>Date Updated:</td><td>$niceDate<br></td></tr>";
 	}
 	$unraidVersion = parse_ini_file($communityPaths['unRaidVersion']);
 	if ( version_compare($unRaidVersion['version'],$template['MinVer'],">") ) {
@@ -237,7 +237,6 @@ if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 	if ( $template['Plugin'] ) {
 		download_url($template['PluginURL'],$communityPaths['pluginTempDownload']);
 		$template['Changes'] = @plugin("changes",$communityPaths['pluginTempDownload']);
-		@unlink($communityPaths['pluginTempDownload']);
 	}
 	$changeLogMessage = "<div class='ca_center'><font size='0'>Note: not all ";
 	$changeLogMessage .= $template['PluginURL'] ? "authors" : "maintainers";
@@ -254,7 +253,12 @@ if ( trim($template['Changes']) ) {
 	if ( $template['Plugin'] ) {
     if ( file_exists("/var/log/plugins/$pluginName") ) {
       $appInformation = "Currently Installed Version: ".plugin("version","/var/log/plugins/$pluginName");
+			if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$communityPaths['pluginTempDownload']) ) {
+				copy($communityPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
+				$appInformation .= " - <span class='ca_bold'>Install the update <a href='/Apps/Plugins' target='_parent'>HERE</a></span>";
+			}
     }
+		
 		$appInformation .= Markdown($template['Changes']);
 	} else {
 		$appInformation = $template['Changes'];
@@ -264,5 +268,6 @@ if ( trim($template['Changes']) ) {
 	}
 	$templateDescription .= "<div class='ca_center'><font size='4'><span class='ca_bold'>Change Log</span></div></font><br>$changeLogMessage$appInformation";
 }
+@unlink($communityPaths['pluginTempDownload']);
 echo $templateDescription;
 ?>

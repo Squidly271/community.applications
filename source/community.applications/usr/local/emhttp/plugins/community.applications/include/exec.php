@@ -6,8 +6,6 @@
 #                                                             #
 ###############################################################
 
-libxml_use_internal_errors(true); # Suppress any warnings from xml errors.  FCP will catch those errors
-
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
@@ -16,8 +14,6 @@ require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHel
 require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
 
 $unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
-
-
 
 ################################################################################
 # Set up any default settings (when not explicitely set by the settings module #
@@ -60,7 +56,6 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 	@mkdir($communityPaths['templates-community'],0777,true);
 	@unlink($communityPaths['community-templates-info']);
 }
-
 
 ############################################
 ##                                        ##

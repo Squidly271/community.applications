@@ -346,7 +346,6 @@ function changePage(pageNumber) {
 	animateCSS(".ca_templatesDisplay","fadeOut"+directionOut,function() {
 		$("#templates_content").html("");
 		hideSortIcons();
-/* 		mySpinner(); */
    	$.post(URL,{action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,fontSize:getFontSize()},function(data3) {
 			if (data3) {
 				updateDisplay(data3,directionIn);
@@ -357,7 +356,7 @@ function changePage(pageNumber) {
 
 function animateCSS(element, animationName, callback) {
 	const node = document.querySelector(element)
-	node.classList.add('animated', animationName,'fast')
+	node.classList.add('animated', animationName,'faster')
 
 	function handleAnimationEnd() {
 		node.classList.remove('animated', animationName)
