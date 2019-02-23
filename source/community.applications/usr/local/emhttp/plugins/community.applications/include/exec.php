@@ -1346,6 +1346,7 @@ function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
 	global $communitySettings;
 
 	$test = $file[$randomApp];
+	if ( $test['Name'] == "Community Applications" )  return false;
 	if ( $test['BranchName'] )                        return false;
 	if ( ! $test['Displayable'] )                     return false;
 	if ( ! $test['Compatible'] )                      return false;
