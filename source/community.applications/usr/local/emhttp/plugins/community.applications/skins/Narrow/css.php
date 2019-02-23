@@ -51,8 +51,6 @@ switch ($theme) {
 		break;
 }
 ?>
-
-
 .ca_iconArea {width:100%;height:8rem;margin:1rem;}
 .ca_icon {width:8rem;height:9rem;display:inline-block;padding-top:0.5rem;padding-left:1rem;}
 .ca_infoArea {height:10rem;margin:1rem;display:inline-block;position:absolute;width:auto;}
@@ -97,14 +95,14 @@ a.ca_appPopup {text-decoration:none;cursor:pointer;}
 input[type=checkbox] {width:2rem;height:2rem;}
 .enabledIcon {cursor:default;color:<?=$unRaid66color?>;}
 .disabledIcon {color:#040404;font-size:2.5rem;}
-.pinned {font-size:2.0rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;color:<?=$unRaid66color?>;padding:.3rem;}
-.unpinned {font-size:2.0rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
+.pinned {font-size:1.8rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;color:<?=$unRaid66color?>;padding:.3rem;}
+.unpinned {font-size:1.8rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
 .pinned::after {content:"\f08d";font-family:fontAwesome;}
 .unpinned::after {content:"\f08d";font-family:fontAwesome;display:inline-block;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg); -o-transform: rotate(20deg);  transform: rotate(20deg);}
-.appIcons {font-size:2.0rem;color:inherit;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
+.appIcons {font-size:2rem;color:inherit;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
 .appIcons:hover {text-decoration:none;}
 a.appIcons {text-decoration:none;}
-.appIconsPopUp {font-size:1rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
+.appIconsPopUp {font-size:1.1rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;}
 .appIconsPopUp:hover {text-decoration:none;}
 .myReadmore {text-align:center;}
 .myReadmoreButton {color:blue;}
@@ -123,16 +121,17 @@ a.appIcons {text-decoration:none;}
 <?if ($unRaid67):?>
 .ca_fa-delete {color:#882626;font-size:1.5rem;position:relative;cursor:pointer;}
 .ca_fa-delete::before {content:"\e92f";font-family:Unraid;}
+.ca_fa-project::before {content:"\e953";font-family:Unraid;}
 <?else:?>
 .ca_fa-delete {color:#882626;font-size:2rem;position:relative;cursor:pointer;}
 .ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
+.ca_fa-project::before {content:"\f08e";font-family:fontAwesome;}
 <?endif;?>
 a.ca_fa-delete{text-decoration:none;}
 .ca_fa-install::before {content:"\f019";font-family:fontAwesome;}
 .ca_fa-edit::before {content:"\f044";font-family:fontAwesome;}
 .ca_fa-globe::before {content:"\f0ac";font-family:fontAwesome;}
 .ca_fa-update::before {content:"\f021";font-family:fontAwesome;}
-.ca_fa-project::before {content:"\f08e";font-family:fontAwesome;}
 .ca_fa-info::before {content:"\f05a";font-family:fontAwesome;}
 .ca_fa-warning::before {content:"\f071";font-family:fontAwesome;}
 .ca_private::after {content:"\f069";font-family:fontAwesome;}
@@ -174,7 +173,7 @@ a.popup-donate {text-decoration:none;font-style:italic;color:white;}
 #searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;background-color:#DDDADF;}
 <?endif;?>
 <?if ( $theme == "black" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.6rem;border:1px; solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
+.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.6rem;border:1px solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
 #searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;background-color:#262626;}
 <?endif;?>
 <?if ( $theme == "gray" ):?>
@@ -189,7 +188,6 @@ a.popup-donate {text-decoration:none;font-style:italic;color:white;}
 #searchBox{top:-0.6rem;padding:0.6rem;}
 .searchSubmit{height:3.4rem;}
 <?endif;?>
-@keyframes tooltipster-rotating{25%{transform:rotate(0deg)}75%{transform:rotate(0deg)}100%{transform:rotate(0)}}
 .popUpLink {cursor:pointer;color:inherit;}
 a.popUpLink {text-decoration:none;}
 .popUpDeprecated {color:#FF8C2F;}

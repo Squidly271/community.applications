@@ -94,4 +94,8 @@ function evaluateBoolean(str) {
 	return regex.test(str);
 }
 </script>
+<html>
+<body>
 <span id='popUpContent'><div class='spinner fixed' style='display:none;'><?readfile("/usr/local/emhttp/plugins/dynamix/images/animated-logo.svg")?></div></span>
+</body>
+</html>
