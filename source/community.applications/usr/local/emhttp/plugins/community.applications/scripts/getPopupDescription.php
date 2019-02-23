@@ -129,7 +129,7 @@ if ( ! $template['Plugin'] ) {
 		$templateDescription .= "<tr><td nowrap>Base OS:</td><td>".$template['Base']."</td></tr>";
 	}
 }
-$templateDescription .= $template['stars'] ? "<tr><td nowrap>DockerHub Stars:</td><td><i class='fa fa-star dockerHubStar'></i> ".$template['stars']."</td></tr>" : "";
+$templateDescription .= $template['stars'] ? "<tr><td nowrap>DockerHub Stars:</td><td><span class='dockerHubStar'></span> ".$template['stars']."</td></tr>" : "";
 
 # In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 if ( $template['Date'] && $template['Plugin'] ) {
@@ -150,7 +150,7 @@ $templateDescription .= $template['Licence'] ? "<tr><td>Licence:</td><td>".$temp
 if ( $template['trending'] ) {
 	$templateDescription .= "<tr><td>Monthly Trend:</td><td>+{$template['trending']}%";
 	if ( is_array($template['trends']) && (count($template['trends']) > 1) ) {
-		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <i class='fa fa-arrow-up'></i>" : " <i class='fa fa-arrow-down'></i>";
+		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
 	}
 	$template['description'] .= "</td></tr>";
 }

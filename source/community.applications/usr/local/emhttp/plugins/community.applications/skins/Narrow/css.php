@@ -122,10 +122,12 @@ a.appIcons {text-decoration:none;}
 .ca_fa-delete {color:#882626;font-size:1.5rem;position:relative;cursor:pointer;}
 .ca_fa-delete::before {content:"\e92f";font-family:Unraid;}
 .ca_fa-project::before {content:"\e953";font-family:Unraid;}
+.dockerHubStar::before{content:"\e95a";font-family:UnRaid;}
 <?else:?>
 .ca_fa-delete {color:#882626;font-size:2rem;position:relative;cursor:pointer;}
 .ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
 .ca_fa-project::before {content:"\f08e";font-family:fontAwesome;}
+.dockerHubStar:before {content:"\f005";font-family:fontAwesome;}
 <?endif;?>
 a.ca_fa-delete{text-decoration:none;}
 .ca_fa-install::before {content:"\f019";font-family:fontAwesome;}
@@ -134,6 +136,8 @@ a.ca_fa-delete{text-decoration:none;}
 .ca_fa-update::before {content:"\f021";font-family:fontAwesome;}
 .ca_fa-info::before {content:"\f05a";font-family:fontAwesome;}
 .ca_fa-warning::before {content:"\f071";font-family:fontAwesome;}
+.trendingUp::before {content:"\f062";font-family:fontAwesome;}
+.trendingDown::before {content:"\f063";font-family:fontAwesome;}
 .ca_private::after {content:"\f069";font-family:fontAwesome;}
 .ca_private{color:#882626;}
 .warning-red {color:#882626;}
