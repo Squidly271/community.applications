@@ -188,13 +188,13 @@ function initilizeMenu() {
 		}
 
 		if ( ! $(this).parent().hasClass("subCategory") ) {
-			$(".subCategory").hide(500,"linear");
+			$(".subCategory").hide();
 		}
 		$(".caMenuItem").each(function() {
 			$(this).removeClass("selectedMenu");
 		});
 		$(this).addClass("selectedMenu");
-		$(this).next().show(500,"linear");
+		$(this).next().show();
 	});
 }
 
@@ -399,8 +399,8 @@ function myCloseAlert() {
 function mySpinner() {
 	$(".sweet-overlay").css("background-color","rgba(0, 0, 0, 0)");
 	$("div.spinner").show();
-	myAlert("",""," ",150);
-}
+/* 	myAlert("",""," ",150);
+ */}
 
 function sweetAlertBackground(color) {
 	$(".sweet-alert").css("background",color);

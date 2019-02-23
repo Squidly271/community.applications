@@ -16,7 +16,7 @@ $theme = $dynamix['display']['theme'] ?: "black";
 
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
-$unRaid67 = version_compare($unRaidSettings['version'],"6.6.6",">");
+$unRaid67 = version_compare($unRaidSettings['version'],"6.7.0-rc4",">");
 $unRaid66color = "#FF8C2F";
 $linkColor = "#486dba";
 $startupColor = "#FF8C2F";

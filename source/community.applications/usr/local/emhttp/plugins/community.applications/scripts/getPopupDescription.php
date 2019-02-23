@@ -92,7 +92,7 @@ $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.do
 $template['Description'] = trim($template['Description']);
 $template['ModeratorComment'] .= $template['CAComment'];
 
-$templateDescription .= "<div style='width:60px;height:60px;display:inline-block;position:absolute;'>";
+$templateDescription = "<div style='width:60px;height:60px;display:inline-block;position:absolute;'>";
 if ( $template['IconFA'] ) {
 	$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
 	$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
