@@ -1181,7 +1181,7 @@ function scrollToTop() {
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 <div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be available. <span class='ca_staticTips' style='cursor:pointer;' title='No personal identification is ever collected, and no information is ever transmitted to any other server.  Not having cookies enabled will directly impact the Previous Apps Section, Plugin Installations via the popup, etc'>HOVER HERE</span></p></div>
 <?if ( $upgradeAvailable ) :?>
-<div class='notice'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update</div>
+<div class='notice'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update  <i class='fa fa-info-circle ca_appPopup' style='cursor:pointer' data-apppath='ca' data-appname='Community Applications'></i></div>
 <?endif;?>
 <div class='dockerDisabled notice'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div>
 <div id='warningNotAccepted' style='display:none;'><p class='notice shift'>Installations of apps disabled.  You must accept the warning to be able to install applications.  Click <a onclick='window.location.reload();' style='cursor:pointer;'>HERE</a></p></div>
