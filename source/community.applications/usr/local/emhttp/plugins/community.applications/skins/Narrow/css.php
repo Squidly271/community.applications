@@ -71,7 +71,8 @@ i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
 .ca_bottomLine {display:block;position:relative;padding-top:9.5rem;margin-left:1.5rem;}
 .ca_bottomRight {float:right;margin-right:2rem;padding-top:0.5rem;}
 .ca_hr {margin-left:10px;margin-right:10px;border:1px; border-color:<?=$hrColor?>; border-top-style:solid;border-right-style:none;border-bottom-style:none;border-left-style:none;}
-.categoryLine {margin-left:120px;font-size:1.2rem;font-weight:normal;}
+.categoryLine {margin-left:10px;font-size:1rem;font-weight:normal;z-index:1;width:auto;}
+.searchArea {float:right;z-index:2;width:auto;position:static;}
 .sortIcons {font-size:1.8rem;margin-right:20px;cursor:pointer;}
 ul.caMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;cursor:pointer;font-size:1.5rem;}
 ul.nonselectMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;font-size:1.5rem;}
@@ -173,20 +174,20 @@ a.donate {text-decoration:none;font-style:italic;color:<?=$donateText?>;}
 .popup-donate {background:black;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
 a.popup-donate {text-decoration:none;font-style:italic;color:white;}
 <?if ( $theme == "azure" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:#DADADA;border:none;cursor:pointer;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;background-color:#DDDADF;}
+.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:transparent;border:none;cursor:pointer;}
+#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;}
 <?endif;?>
 <?if ( $theme == "black" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.6rem;border:1px solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;background-color:#262626;}
+.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2rem;border:1px solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;}
+#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.5rem;border:none;}
 <?endif;?>
 <?if ( $theme == "gray" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:#DADADA;border:none;cursor:pointer;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;background-color:#12150e;}
+.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:transparent;border:none;cursor:pointer;}
+#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;}
 <?endif;?>
 <?if ( $theme == "white" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.6rem;border:1px; solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:#DADADA;border:none;cursor:pointer;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;background-color:#e8e8e8}
+.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.6rem;border:1px; solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;}
+#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.5rem;border:none;}
 <?endif;?>
 <?if ($unRaid66 && ( $theme == "black" || $theme == "white") ):?>
 #searchBox{top:-0.6rem;padding:0.6rem;}
