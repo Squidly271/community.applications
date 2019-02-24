@@ -51,30 +51,6 @@ foreach ($repoName as $display1) {
 <form markdown="1" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="<?=$plugin?>/<?=$plugin?>.cfg">
 
-Show already installed apps within available apps:
-: <select name='separateInstalled' size='1'>
-	<?=mk_option($cfg['separateInstalled'], "true", "No (default)")?>
-	<?=mk_option($cfg['separateInstalled'], "false", "Yes")?>
-	</select>
-
-> This setting determines if already installed applications will also appear when displaying available apps
- 
-Hide Deprecated Applications:
-: <select name='hideDeprecated' size='1'>
-	<?=mk_option($cfg['hideDeprecated'], "true", "Yes (default)")?>
-	<?=mk_option($cfg['hideDeprecated'], "false", "No")?>
-	</select>
-
-> This setting hides deprecated applications from the list of available apps.  Deprecated apps will still however display within the <em>installed</em> and <em>previous</em> apps sections.
-	
-Hide Incompatible Applications:
-: <select name='hideIncompatible' size='1'>
-	<?=mk_option($cfg['hideIncompatible'], "true", "Yes (default)")?>
-	<?=mk_option($cfg['hideIncompatible'], "false", "No")?>
-	</select>
-
-> This setting will hide applications that are listed as being incompatible with your version of unRaid
-
 Only request https (secure) images (when accessing server via https):
 : <select name='secureImage' size='1'>
 	<?=mk_option($cfg['secureImage'],'all','Display all images (default)')?>
@@ -99,6 +75,23 @@ Favourite Repository:
 > Set this option to your favourite repository, so that it's applications will display first
 
 <strong>Advanced</strong>
+
+
+Hide Deprecated Applications:
+: <select name='hideDeprecated' size='1'>
+	<?=mk_option($cfg['hideDeprecated'], "true", "Yes (default)")?>
+	<?=mk_option($cfg['hideDeprecated'], "false", "No")?>
+	</select>
+
+> This setting hides deprecated applications from the list of available apps.  Deprecated apps will still however display within the <em>installed</em> and <em>previous</em> apps sections.
+	
+Hide Incompatible Applications:
+: <select name='hideIncompatible' size='1'>
+	<?=mk_option($cfg['hideIncompatible'], "true", "Yes (default)")?>
+	<?=mk_option($cfg['hideIncompatible'], "false", "No")?>
+	</select>
+
+> This setting will hide applications that are listed as being incompatible with your version of unRaid
 
 Enable Reinstall Default:
 : <select name='defaultReinstall' size='1'>

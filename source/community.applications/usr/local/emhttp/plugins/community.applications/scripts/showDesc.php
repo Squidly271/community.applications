@@ -18,6 +18,7 @@ $appName = str_replace("'","",$appName);
 ?>
 
 <script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
+<script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
 <link type="text/css" rel="stylesheet" href='<?autov("/webGui/styles/font-awesome.css")?>'>
 <link type="text/css" rel="stylesheet" href='<?autov("/plugins/community.applications/skins/Narrow/css.php")?>'>
 <link type="text/css" rel="stylesheet" href='<?autov("/webGui/styles/default-fonts.css")?>'>

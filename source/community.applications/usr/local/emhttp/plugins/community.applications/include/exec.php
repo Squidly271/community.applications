@@ -133,9 +133,7 @@ case 'get_content':
 	$official            = array();
 
 	$communitySettingsBackup = $communitySettings;
-	if ( $displayBlacklisted || $displayDeprecated || $displayIncompatible || $displayPrivates || $displayNoSupport) {
-		$communitySettings['separateInstalled'] = false; # show installed containers in the "special" categories
-	}
+
 	foreach ($file as $template) {
 		$template['NoInstall'] = $noInstallComment;
 
@@ -159,29 +157,6 @@ case 'get_content':
 
 		$name = $template['Name'];
 
-# Skip over installed containers
-
-		if ( $newApp != "true" && $filter == "" && $communitySettings['separateInstalled'] == "true" && ! $displayPrivates) {
-			if ( $template['Plugin'] ) {
-				$pluginName = basename($template['PluginURL']);
-
-				if ( file_exists("/var/log/plugins/$pluginName") ) continue;
-			} else {
-				$selected = false;
-				foreach ($dockerRunning as $installedDocker) {
-					$installedImage = $installedDocker['Image'];
-					$installedName = $installedDocker['Name'];
-
-					if ( startsWith($installedImage,$template['Repository']) ) {
-						if ( $installedName == $template['Name'] ) {
-							$selected = true;
-							break;
-						}
-					}
-				}
-				if ( $selected ) continue;
-			}
-		}
 		if ( $template['Plugin'] && file_exists("/var/log/plugins/".basename($template['PluginURL'])) ) {
 			$template['MyPath'] = $template['PluginURL'];
 		}
@@ -1065,7 +1040,6 @@ function getConvertedTemplates() {
 function appOfDay($file,&$startupMsg,&$startupMsg2) {
 	global $communityPaths,$communitySettings,$sortOrder;
 
-	$communitySettings['separateInstalled'] = "false";
 	$info = getRunningContainers();
 	switch ($communitySettings['startup']) {
 		case "random":
@@ -1166,18 +1140,7 @@ function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
 	if ( ($test['ModeratorComment']) && (! $newApp) ) return false;
 	if ( $test['Deprecated'] )                        return false;
 	if ( ($test['Beta'] == "true" ) && (! $newApp ) ) return false;
-	if ( $communitySettings['separateInstalled'] != "false" ) {
-		if ( $test['Plugin'] ) {
-			if ( file_exists("/var/log/plugins/".basename($test['PluginURL'])) ) { return false; }
-		} else {
-			if ( ! strpos($test['Repository'],":") ) {
-				$test['Repository'] .= ":latest";
-			}
-			foreach ($info as $tst) {
-				if ($test['Repository'] == $tst['repository'] ) return false;
-			}
-		}
-	}
+
 	return true;
 }
 ?>

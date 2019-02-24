@@ -157,6 +157,7 @@ if ( $template['trending'] ) {
 	$template['description'] .= "</td></tr>";
 }
 $templateDescription .= "</table></div>";
+
 $templateDescription .= "<div class='ca_center'><span class='popUpDeprecated'>";
 if ($template['Blacklist']) {
 	$templateDescription .= "This application / template has been blacklisted<br>";
@@ -258,6 +259,8 @@ if ( trim($template['Changes']) ) {
 			if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$communityPaths['pluginTempDownload']) ) {
 				copy($communityPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 				$appInformation .= " - <span class='ca_bold'>Install the update <a href='/Apps/Plugins' target='_parent'>HERE</a></span>";
+			} else {
+				$appInformation .= " - <font color='green'>Latest Version</font>";
 			}
     }
 		
