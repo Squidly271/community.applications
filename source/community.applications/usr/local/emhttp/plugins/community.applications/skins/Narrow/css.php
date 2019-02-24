@@ -192,7 +192,7 @@ a.popup-donate {text-decoration:none;font-style:italic;color:white;}
 #searchBox{top:-0.6rem;padding:0.6rem;}
 .searchSubmit{height:3.4rem;}
 <?endif;?>
-.popUpLink {cursor:pointer;color:inherit;}
+.popUpLink {cursor:pointer;}
 a.popUpLink {text-decoration:none;}
 .popUpDeprecated {color:#FF8C2F;}
 i.popupIcon {color:#626868;font-size:3.5rem;padding-left:1rem;width:4.8rem}
