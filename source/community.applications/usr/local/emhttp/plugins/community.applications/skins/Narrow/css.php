@@ -211,7 +211,8 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .multi_installDiv {width:100%; display:none;padding-bottom:20px;}
 .ca_toolsView {font-size:2.3rem; position:relative;top:-0.2rem;}
 #templates_content {overflow-x:hidden;}
-
+.caWarning {display:inline-block;line-height:normal;vertical-align:middle;}
+.caNotice {display:none;margin-bottom:10px;}
 /*!
  * Excerpts from animate.css - https://daneden.github.io/animate.css/
  * Version - 3.7.0

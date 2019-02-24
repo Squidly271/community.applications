@@ -58,11 +58,14 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
+	if ( '<?=$upgradeAvailable?>' == "true" ) {
+		addWarning("An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg','CommunityApplications'); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update  <i class='fa fa-info-circle ca_appPopup' style='cursor:pointer' data-apppath='ca' data-appname='Community Applications'></i>");
+	}
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
 	if ( ! cookiesEnabled() ) {
-		$("#cookieWarning").show();
+		addWarning("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.");
 	}
 
 	if ( isTouch() ) {
@@ -151,7 +154,7 @@ $(function(){
 					}
 				});
 			} else {
-				$("#warningNotAccepted").show();
+				addWarning("Installations of apps disabled.  You must accept the warning to be able to install applications.  Click <a onclick='window.location.reload();' style='cursor:pointer;'>HERE</a>");
 				updateContent();
 			}
 		});
@@ -292,7 +295,6 @@ function setToolTip() {
 		appname = stripTags(appname);
 		showDesc_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,"checkForPluginInstallRequested()");
 	});
-	readMore();
 	myCloseAlert();
 }
 
@@ -392,22 +394,14 @@ function myCloseAlert() {
 	swal.close();
 	enableSearch();
 	$("div.spinner").hide();
-	$(".sweet-overlay").css("background-color","rgba(0, 0, 0, 0.4)");
-
 }
 
 function mySpinner() {
-	$(".sweet-overlay").css("background-color","rgba(0, 0, 0, 0)");
 	$("div.spinner").show();
-/* 	myAlert("",""," ",150); */
 }
 
 function sweetAlertBackground(color) {
 	$(".sweet-alert").css("background",color);
-}
-
-function readMore() {
-	$('.desc_readmore').readmore({maxHeight:100,moreLink:"",lessLink:""});
 }
 
 function doSearch(button,newSearch) {
@@ -1162,6 +1156,14 @@ function scrollToTop() {
 	window.scrollTo(0,0);
 }
 
+function addWarning(text) {
+	var existingWarning = $('.caWarning').html();
+	if ( existingWarning.indexOf(text) < 1 ) {
+		$('.caWarning').append("&bull; "+text+"<br>");
+	}
+	$('.caNotice').show();
+}
+
 </script>
 
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
@@ -1173,12 +1175,9 @@ function scrollToTop() {
 > <i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:2rem;'></i> Clicking this will display any warnings or extra comments about the application<br>
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
-<div id='cookieWarning'><p class='notice shift'>Community Applications works best when cookies are enabled in your browser.  Certain features may not be available. <span class='ca_staticTips' style='cursor:pointer;' title='No personal identification is ever collected, and no information is ever transmitted to any other server.  Not having cookies enabled will directly impact the Previous Apps Section, Plugin Installations via the popup, etc'>HOVER HERE</span></p></div>
-<?if ( $upgradeAvailable ) :?>
-<div class='notice'>An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg',"CommunityApplications"); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update  <i class='fa fa-info-circle ca_appPopup' style='cursor:pointer' data-apppath='ca' data-appname='Community Applications'></i></div>
-<?endif;?>
-<div class='dockerDisabled notice'>Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed</div>
-<div id='warningNotAccepted' style='display:none;'><p class='notice shift'>Installations of apps disabled.  You must accept the warning to be able to install applications.  Click <a onclick='window.location.reload();' style='cursor:pointer;'>HERE</a></p></div>
+<div class='notice caNotice'>
+	<span class='caWarning'></span>
+</div>
 <div class='menuItems'>
 <div class='menuHeader'>MENU</div>
 <ul class='caMenu'>
