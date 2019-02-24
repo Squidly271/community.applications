@@ -288,7 +288,7 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
       break;
     }
   }
-  $ct .= vsprintf($skin[$viewMode]['footer'],$templateFormatArray);
+  $ct .= $skin[$viewMode]['footer'];
   if ( ! $officialFlag ) {
     $ct .= getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
   }
@@ -388,7 +388,7 @@ function displaySearchResults($pageNumber) {
  # this array is only used on header, sol, eol, footer
   $ct = dockerNavigate($num_pages,$pageNumber)."<br>";
 
-  $ct .= vsprintf($skin[$viewMode]['header'],$templateFormatArray);
+  $ct .= $skin[$viewMode]['header'];
 
   $columnNumber = 0;
   foreach ($file as $result) {
@@ -415,7 +415,7 @@ function displaySearchResults($pageNumber) {
     $ct .= vsprintf($displayTemplate,toNumericArray($result));
     $count++;
   }
-  $ct .= vsprintf($skin[$viewMode]['footer'],$templateFormatArray);
+  $ct .= $skin[$viewMode]['footer'];
   if ( $foundTemplateFlag ) {
     echo "<br><span class='ca_bold'>Containers with an Icon displayed are already available within the Apps tab.  It is recommended to install that version instead of a dockerHub conversion</span><br><br>";
   }

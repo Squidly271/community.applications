@@ -605,6 +605,13 @@ function initDockerSearch() {
 }
 
 function dockerSearch(pageNumber) {
+	if ( data.prevpage < pageNumber ) {
+		var directionOut = "Left";
+		var directionIn = "Right";
+	} else {
+		var directionOut = "Right";
+		var directionIn = "Left";
+	}
 	var filter = $('#searchBox').val();
 	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
 	data.docker = "searching docker";
@@ -613,10 +620,13 @@ function dockerSearch(pageNumber) {
 	$("#Category").html("DockerHub Search Results For <font color='<?=$unRaid66color?>'>"+filter+"</font> <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
 	mySpinner();
-	$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(data) {
-		if (data) {
-			updateDisplay(data);
-		}
+	animateCSS(".ca_templatesDisplay","fadeOut"+directionOut,function() {
+		$("#templates_content").html("");
+		$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(data) {
+			if (data) {
+				updateDisplay(data,directionIn);
+			}
+		});
 	});
 }
 
