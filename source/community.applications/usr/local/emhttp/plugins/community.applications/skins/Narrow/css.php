@@ -252,6 +252,7 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .animated.delay-5s {-webkit-animation-delay: 5s;animation-delay: 5s;}
 .animated.fast {-webkit-animation-duration: 800ms;animation-duration: 800ms;}
 .animated.faster {-webkit-animation-duration: 500ms;animation-duration: 500ms;}
+.animated.fastest {-webkit-animation-duration: 300ms;animation-duration: 300ms;}
 .animated.slow {-webkit-animation-duration: 2s;animation-duration: 2s;}
 .animated.slower {-webkit-animation-duration: 3s;animation-duration: 3s;}
 @media (print), (prefers-reduced-motion) {.animated {-webkit-animation: unset !important;animation: unset !important;-webkit-transition: none !important;transition: none !important;}

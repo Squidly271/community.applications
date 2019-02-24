@@ -358,7 +358,7 @@ function changePage(pageNumber) {
 
 function animateCSS(element, animationName, callback) {
 	const node = document.querySelector(element)
-	node.classList.add('animated', animationName,'faster')
+	node.classList.add('animated', animationName,'fastest')
 
 	function handleAnimationEnd() {
 		node.classList.remove('animated', animationName)
