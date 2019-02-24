@@ -63,8 +63,6 @@ if ( !is_dir($communityPaths['templates-community']) ) {
 ##                                        ##
 ############################################
 
-$communitySettings['fontSize'] = getPost("fontSize",12.5);
-
 switch ($_POST['action']) {
 
 ######################################################################################
@@ -289,7 +287,6 @@ case 'display_content':
 	$pageNumber = getPost("pageNumber","1");
 	$startup = getPost("startup",false);
 	$selectedApps = json_decode(getPost("selected",false),true);
-	$communitySettings['fontSize'] = getPost("fontSize",false);
 
 	if ( file_exists($communityPaths['community-templates-displayed']) ) {
 		display_apps($pageNumber,$selectedApps,$startup);
@@ -530,7 +527,6 @@ case 'search_dockerhub':
 	$filter     = getPost("filter","");
 	$pageNumber = getPost("page","1");
 	$sortOrder  = getSortOrder(getPostArray('sortOrder'));
-	$communitySettings['fontSize'] = getPost("fontSize",false);
 
 	$communityTemplates = readJsonFile($communityPaths['community-templates-info']);
 	$filter = str_replace(" ","%20",$filter);
@@ -593,7 +589,6 @@ case 'dismiss_warning':
 ###############################################################
 case 'previous_apps':
 	$installed = getPost("installed","");
-	$communitySettings['fontSize'] = getPost("fontSize",false);
 	$dockerUpdateStatus = readJsonFile($communityPaths['dockerUpdateStatus']);
 	$moderation = readJsonFile($communityPaths['moderation']);
 	if ( $communitySettings['dockerRunning'] ) {
