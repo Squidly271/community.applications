@@ -153,6 +153,9 @@ if ( $template['trending'] ) {
 	$templateDescription .= "<tr><td>Monthly Trend:</td><td>+{$template['trending']}%";
 	if ( is_array($template['trends']) && (count($template['trends']) > 1) ) {
 		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
+		$templateDescription .= " <a onclick='$(&quot;#trendChart&quot;).toggle();' style='cursor:pointer;'>Show/Hide Graph</a>";
+		$templateDescription .= "</td></tr>";
+		$templateDescription .= "<td></td><td><canvas id='trendChart'] height=100 width=200 style='border:1px solid;display:none;'></canvas>";
 	}
 	$template['description'] .= "</td></tr>";
 }
@@ -248,7 +251,6 @@ $changeLogMessage = "<div class='ca_center'><font size='0'>Note: not all ";
 $changeLogMessage .= $template['PluginURL'] ? "authors" : "maintainers";
 $changeLogMessage .= " keep up to date on change logs</font></div><br>";
 
-
 if ( trim($template['Changes']) ) {
 	if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
 		$templateDescription .= "</div><hr>";
@@ -273,6 +275,21 @@ if ( trim($template['Changes']) ) {
 	}
 	$templateDescription .= "<div class='ca_center'><font size='4'><span class='ca_bold'>Change Log</span></div></font><br>$changeLogMessage$appInformation";
 }
+if ($template['trends']) {
+	foreach ($template['trends'] as $trend) {
+		if ( $trend == null ) { $trend = "0"; }
+		$data .= "$trend,";
+		$labels .= "'',";
+	}
+	$data = rtrim($data,",");
+	$labels = rtrim($labels,",");
+
+	$data = "var chartData = [$data];";
+	$labels = "var chartLabel = [$labels];";
+	$chartScript = "<script>$data$labels</script>";
+}
+
 @unlink($communityPaths['pluginTempDownload']);
-echo $templateDescription;
+echo $templateDescription.$chartScript;
 ?>
+

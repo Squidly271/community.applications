@@ -19,9 +19,11 @@ $appName = str_replace("'","",$appName);
 
 <script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
+
 <link type="text/css" rel="stylesheet" href='<?autov("/webGui/styles/font-awesome.css")?>'>
 <link type="text/css" rel="stylesheet" href='<?autov("/plugins/community.applications/skins/Narrow/css.php")?>'>
 <link type="text/css" rel="stylesheet" href='<?autov("/webGui/styles/default-fonts.css")?>'>
+
 <!-- Specific styling for the popup -->
 <style>
 p {margin-left:2rem;margin-right:2rem;}
@@ -77,6 +79,19 @@ $(function() {
 				$(".pluginInstall").hide();
 			}
 			$("#popUpContent").show();
+			if ( typeof chartData !== 'undefined' ) {
+				var ctx = document.getElementById("trendChart").getContext('2d');
+				let chart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						datasets: [{
+							label: 'Monthly Trend',
+							data: chartData
+						}],
+						labels: chartLabel,
+					}
+				});
+			}
 		}
 	});
 });
