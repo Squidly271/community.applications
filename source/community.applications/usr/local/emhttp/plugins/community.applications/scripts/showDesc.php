@@ -9,6 +9,7 @@
 <?PHP
 require_once("/usr/local/emhttp/plugins/dynamix/include/Helpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
+
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $communitySettings = parse_plugin_cfg("community.applications");
 $csrf_token = $unRaidVars['csrf_token'];
@@ -16,14 +17,12 @@ $appNumber =  urldecode($_GET['appPath']);
 $appName = urldecode($_GET['appName']);
 $appName = str_replace("'","",$appName);
 ?>
-
 <script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
 
 <link type="text/css" rel="stylesheet" href='<?autov("/webGui/styles/font-awesome.css")?>'>
 <link type="text/css" rel="stylesheet" href='<?autov("/plugins/community.applications/skins/Narrow/css.php")?>'>
 <link type="text/css" rel="stylesheet" href='<?autov("/webGui/styles/default-fonts.css")?>'>
-
 <!-- Specific styling for the popup -->
 <style>
 p {margin-left:2rem;margin-right:2rem;}
@@ -88,7 +87,10 @@ $(function() {
 							label: 'Monthly Trend',
 							data: chartData
 						}],
-						labels: chartLabel,
+						labels: chartLabel
+					},
+					options: {
+						events: []
 					}
 				});
 			}
