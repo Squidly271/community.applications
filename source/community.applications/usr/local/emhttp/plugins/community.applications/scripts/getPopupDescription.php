@@ -153,7 +153,7 @@ if ( $template['trending'] ) {
 	$templateDescription .= "<tr><td>Monthly Trend:</td><td>+{$template['trending']}%";
 	if ( is_array($template['trends']) && (count($template['trends']) > 1) ) {
 		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
-		$templateDescription .= " <a onclick='$(&quot;#trendChart&quot;).toggle(&quot;slow&quot;);' style='cursor:pointer;'>Show/Hide Graph</a>";
+		$templateDescription .= " <a class='graphLink' onclick='$(&quot;#trendChart&quot;).toggle(&quot;slow&quot;);'>Show/Hide Graph</a>";
 		$templateDescription .= "</td></tr>";
 		$templateDescription .= "<td></td><td><canvas id='trendChart'] height=100 width=200 style='border:1px solid;display:none;'></canvas>";
 	}
