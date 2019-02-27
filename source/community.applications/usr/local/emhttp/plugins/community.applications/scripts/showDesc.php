@@ -85,7 +85,9 @@ $(function() {
 					data: {
 						datasets: [{
 							label: 'Monthly Trend',
-							data: chartData
+							data: chartData,
+							backgroundColor: '#c2c8c8',
+							borderColor: '#828888'
 						}],
 						labels: chartLabel
 					},

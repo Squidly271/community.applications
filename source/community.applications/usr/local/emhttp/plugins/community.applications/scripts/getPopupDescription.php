@@ -151,11 +151,11 @@ if ($downloads) {
 $templateDescription .= $template['Licence'] ? "<tr><td>Licence:</td><td>".$template['Licence']."</td></tr>" : "";
 if ( $template['trending'] ) {
 	$templateDescription .= "<tr><td>Monthly Trend:</td><td>+{$template['trending']}%";
-	if ( is_array($template['trends']) && (count($template['trends']) > 1) ) {
+	if ( is_array($template['trends']) && (count($template['trends']) > 1) && $template['trends'][count($template['trends'])-2]) {
 		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
 		$templateDescription .= " <a class='graphLink' onclick='$(&quot;#trendChart&quot;).toggle(&quot;slow&quot;);'>Show/Hide Graph</a>";
 		$templateDescription .= "</td></tr>";
-		$templateDescription .= "<td></td><td><canvas id='trendChart'] height=100 width=200 style='border:1px solid;display:none;'></canvas>";
+		$templateDescription .= "<td></td><td><canvas id='trendChart' class='caChart' height=100 width=200 style='display:none;'></canvas>";
 	}
 	$template['description'] .= "</td></tr>";
 }
@@ -277,7 +277,7 @@ if ( trim($template['Changes']) ) {
 }
 if ($template['trends']) {
 	foreach ($template['trends'] as $trend) {
-		if ( $trend == null ) { $trend = "0"; }
+		if ( $trend == null ) { continue; }
 		$data .= "$trend,";
 		$labels .= "'',";
 	}
