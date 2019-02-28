@@ -275,21 +275,15 @@ if ( trim($template['Changes']) ) {
 	}
 	$templateDescription .= "<div class='ca_center'><font size='4'><span class='ca_bold'>Change Log</span></div></font><br>$changeLogMessage$appInformation";
 }
-if ($template['trends']) {
+/* if ($template['trends']) {
 	foreach ($template['trends'] as $trend) {
-		if ( $trend == null ) { continue; }
-		$data .= "$trend,";
-		$labels .= "'',";
-	}
-	$data = rtrim($data,",");
-	$labels = rtrim($labels,",");
+		$chartLabel[] = "";
+	} */
+	$chartLabel = array_fill(0,count($template['trends']),"");
 
-	$data = "var chartData = [$data];";
-	$labels = "var chartLabel = [$labels];";
-	$chartScript = "<script>$data$labels</script>";
-}
+
 
 @unlink($communityPaths['pluginTempDownload']);
-echo $templateDescription.$chartScript;
+echo json_encode(array("description"=>$templateDescription,"chartData"=>$template['trends'],"chartLabel"=>$chartLabel));
 ?>
 

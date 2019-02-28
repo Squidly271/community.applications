@@ -49,8 +49,9 @@ $(function() {
 	},250);
 	$.post("/plugins/community.applications/scripts/getPopupDescription.php",{appName:'<?=$appName?>',appPath:'<?=$appNumber?>',csrf_token:'<?=$csrf_token?>'},function(data) {
 		if (data) {
+			var descData = JSON.parse(data);
 			$("#popUpContent").hide();
-			$("#popUpContent").html(data);
+			$("#popUpContent").html(descData.description);
 			$('img').each(function() { // This handles any http images embedded in changelogs
 				if ( $(this).hasClass('displayIcon') ) { // ie: don't change any images on the main display
 					return;
@@ -78,18 +79,18 @@ $(function() {
 				$(".pluginInstall").hide();
 			}
 			$("#popUpContent").show();
-			if ( typeof chartData !== 'undefined' ) {
+			if ( descData.chartData ) {
 				var ctx = document.getElementById("trendChart").getContext('2d');
 				let chart = new Chart(ctx, {
 					type: 'line',
 					data: {
 						datasets: [{
 							label: 'Monthly Trend',
-							data: chartData,
+							data: descData.chartData,
 							backgroundColor: '#c2c8c8',
 							borderColor: '#828888'
 						}],
-						labels: chartLabel
+						labels: descData.chartLabel
 					},
 					options: {
 						events: []
