@@ -51,6 +51,7 @@ $(function() {
 		if (data) {
 			var descData = JSON.parse(data);
 			$("#popUpContent").hide();
+			
 			$("#popUpContent").html(descData.description);
 			$('img').each(function() { // This handles any http images embedded in changelogs
 				if ( $(this).hasClass('displayIcon') ) { // ie: don't change any images on the main display
