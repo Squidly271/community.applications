@@ -214,10 +214,8 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 #templates_content {overflow-x:hidden;}
 .caWarning {display:inline-block;line-height:normal;vertical-align:middle;}
 .caNotice {display:none;margin-bottom:10px;}
-.graphLink {color:-webkit-link;cursor:pointer;}
+.graphLink {cursor:pointer;text-decoration:none;}
 .caChart {display:none;border:1px solid #c2c8c8;border-radius:4px 4px 4px 4px;}
-tr.caChart {display:none;}
-
 /*!
  * Excerpts from animate.css - https://daneden.github.io/animate.css/
  * Version - 3.7.0

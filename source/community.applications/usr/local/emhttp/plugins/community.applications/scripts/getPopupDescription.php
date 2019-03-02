@@ -16,6 +16,12 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("webGui/include/Markdown.php");
 
+function convert_number($bytes, $decimals = 2){
+    $size = array('','K','M');
+    $factor = floor((strlen($bytes) - 1) / 3);
+    return sprintf("%.{$decimals}f", $bytes / pow(1000, $factor)) . @$size[$factor];
+}
+
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $communitySettings = parse_plugin_cfg("community.applications");
 $csrf_token = $unRaidVars['csrf_token'];
@@ -57,9 +63,11 @@ foreach ($displayed as $file) {
 }
 # handle case where the app being asked to display isn't on the most recent displayed list (ie: multiple browser tabs open)
 if ( ! $template ) {
+	$file = readJsonFile($communityPaths['community-templates-info']);
+	$index = searchArray($file,"Path",$appNumber);
 
 	if ( $index === false ) {
-		echo "Something really wrong happened<br>Reloading the Apps tab will probably fix the problem";
+		echo json_encode(array("description"=>"Something really wrong happened<br>Reloading the Apps tab will probably fix the problem"));
 		return;
 	}
 	$template = $file[$index];
@@ -91,8 +99,6 @@ $template['Category'] = categoryList($template['Category'],true);
 $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 $template['Description'] = trim($template['Description']);
 $template['ModeratorComment'] .= $template['CAComment'];
-
-
 
 $templateDescription .= "<div style='width:60px;height:60px;display:inline-block;position:absolute;'>";
 if ( $template['IconFA'] ) {
@@ -146,7 +152,7 @@ $template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 $templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>Max OS:</td><td>unRaid v".$template['MaxVer']."</td></tr>" : "";
 $downloads = getDownloads($template['downloads']);
 if ($downloads) {
-	$templateDescription .= "<tr><td>Downloads:</td><td>$downloads</td></tr>";
+	$templateDescription .= "<tr><td>Total Downloads:</td><td>$downloads</td></tr>";
 }
 $templateDescription .= $template['Licence'] ? "<tr><td>Licence:</td><td>".$template['Licence']."</td></tr>" : "";
 if ( $template['trending'] ) {
@@ -154,9 +160,12 @@ if ( $template['trending'] ) {
 
 	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
-		$templateDescription .= " <a class='graphLink' onclick='$(&quot;#trendChart&quot;).toggle(&quot;slow&quot;);'>Show/Hide Graph</a>";
+		$templateDescription .= " <a class='graphLink' href='#' onclick='$(&quot;.caChart&quot;).toggle(&quot;slow&quot;);'>Show/Hide Graph</a>";
 		$templateDescription .= "</td></tr>";
-		$templateDescription .= "<td></td><td><canvas id='trendChart' class='caChart' height=100 width=200 style='display:none;'></canvas>";
+		$templateDescription .= "<tr><td colspan='2'><canvas id='trendChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
+		if ( $template['downloadtrend'] ) {
+			$templateDescription .= "<tr><td colspan='2'><canvas id='downloadChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
+		}
 	}
 	$template['description'] .= "</td></tr>";
 }
@@ -276,12 +285,21 @@ if ( trim($template['Changes']) ) {
 	}
 	$templateDescription .= "<div class='ca_center'><font size='4'><span class='ca_bold'>Change Log</span></div></font><br>$changeLogMessage$appInformation";
 }
-
 if ( is_array($template['trends']) ) {
 	$chartLabel = array_fill(0,count($template['trends']),"");
+	if ( is_array($template['downloadtrend']) ) {
+		$minDownload = min($template['downloadtrend']);
+		foreach ($template['downloadtrend'] as $download) {
+			$down[] = intval($download - $minDownload);
+			$minDownload = $download;
+		}
+	}	else {
+		$down = array();
+	}
+	$downloadLabel = array_fill(0,count($down),"");
 }
 
 @unlink($communityPaths['pluginTempDownload']);
-echo json_encode(array("description"=>$templateDescription,"chartData"=>$template['trends'],"chartLabel"=>$chartLabel));
+echo json_encode(array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel));
 ?>
 

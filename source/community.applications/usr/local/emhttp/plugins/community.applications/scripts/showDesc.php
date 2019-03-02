@@ -80,18 +80,36 @@ $(function() {
 				$(".pluginInstall").hide();
 			}
 			$("#popUpContent").show();
-			if ( descData.chartData ) {
+			if ( $("#trendChart").length ) {
 				var ctx = document.getElementById("trendChart").getContext('2d');
 				let chart = new Chart(ctx, {
 					type: 'line',
 					data: {
 						datasets: [{
-							label: 'Monthly Trend',
-							data: descData.chartData,
+							label: (descData.trendData.length-1) + " Month Trend",
+							data: descData.trendData,
 							backgroundColor: '#c2c8c8',
 							borderColor: '#828888'
 						}],
-						labels: descData.chartLabel
+						labels: descData.trendLabel
+					},
+					options: {
+						events: []
+					}
+				});
+			}
+			if ( $("#downloadChart").length ) {
+				var ctx = document.getElementById("downloadChart").getContext('2d');
+				let chart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						datasets: [{
+							label: "Downloads over " + (descData.downloadtrend.length-1) + " "+ makePlural("month",descData.downloadtrend.length-1),
+							data: descData.downloadtrend,
+							backgroundColor: '#c2c8c8',
+							borderColor: '#828888'
+						}],
+						labels: descData.downloadLabel
 					},
 					options: {
 						events: []
@@ -114,6 +132,9 @@ function cookiesEnabled() {
 function evaluateBoolean(str) {
 	regex=/^\s*(true|1|on)\s*$/i
 	return regex.test(str);
+}
+function makePlural(string,count) {
+	return ( (count > 1) || (count == 0) ) ? string + "s" : string;
 }
 </script>
 <html>
