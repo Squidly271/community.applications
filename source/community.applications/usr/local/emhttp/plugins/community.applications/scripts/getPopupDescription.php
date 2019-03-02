@@ -151,7 +151,11 @@ if ($downloads) {
 $templateDescription .= $template['Licence'] ? "<tr><td>Licence:</td><td>".$template['Licence']."</td></tr>" : "";
 if ( $template['trending'] ) {
 	$templateDescription .= "<tr><td>Monthly Trend:</td><td>+{$template['trending']}%";
-	if ( is_array($template['trends']) && (count($template['trends']) > 1) && $template['trends'][count($template['trends'])-2]) {
+	if ($template['trends']) {
+		$template['trends'] = array_filter($template['trends'], function($value) { return $value !== null; });
+		$template['trends'] = array_values($template['trends']);
+	}
+	if (count($template['trends']) > 1){
 		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
 		$templateDescription .= " <a class='graphLink' onclick='$(&quot;#trendChart&quot;).toggle(&quot;slow&quot;);'>Show/Hide Graph</a>";
 		$templateDescription .= "</td></tr>";
@@ -275,13 +279,8 @@ if ( trim($template['Changes']) ) {
 	}
 	$templateDescription .= "<div class='ca_center'><font size='4'><span class='ca_bold'>Change Log</span></div></font><br>$changeLogMessage$appInformation";
 }
-/* if ($template['trends']) {
-	foreach ($template['trends'] as $trend) {
-		$chartLabel[] = "";
-	} */
-	$chartLabel = array_fill(0,count($template['trends']),"");
 
-
+$chartLabel = array_fill(0,count($template['trends']),"");
 
 @unlink($communityPaths['pluginTempDownload']);
 echo json_encode(array("description"=>$templateDescription,"chartData"=>$template['trends'],"chartLabel"=>$chartLabel));
