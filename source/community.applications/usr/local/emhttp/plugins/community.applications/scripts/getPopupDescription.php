@@ -113,7 +113,7 @@ $templateDescription .= "<tr><td style='width:25%'>Author:</td><td>$author</a></
 if ( ! $template['Plugin'] ) {
 	$repository = explode(":",$template['Repository']);
 	$official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
-	$templateDescription .= "<tr><td>DockerHub:</td><td>{$repository[0]}</td></tr>";
+	$templateDescription .= "<tr><td>DockerHub:</td><td><a class='popUpLink' href='{$template['Registry']}' target='_blank'>{$repository[0]}</a></td></tr>";
 }
 $templateDescription .= "<tr><td>Repository:</td><td>";
 $repoSearch = explode("'",$template['RepoName']);
