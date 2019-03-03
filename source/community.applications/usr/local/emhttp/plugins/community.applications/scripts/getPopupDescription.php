@@ -16,12 +16,6 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("webGui/include/Markdown.php");
 
-function convert_number($bytes, $decimals = 2){
-    $size = array('','K','M');
-    $factor = floor((strlen($bytes) - 1) / 3);
-    return sprintf("%.{$decimals}f", $bytes / pow(1000, $factor)) . @$size[$factor];
-}
-
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $communitySettings = parse_plugin_cfg("community.applications");
 $csrf_token = $unRaidVars['csrf_token'];
@@ -94,11 +88,15 @@ if ( ! $template['Plugin'] ) {
 			break;
 		}
 	}
+} else {
+	$pluginName = basename($template['PluginURL']);
 }
 $template['Category'] = categoryList($template['Category'],true);
 $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 $template['Description'] = trim($template['Description']);
 $template['ModeratorComment'] .= $template['CAComment'];
+
+
 
 $templateDescription .= "<div style='width:60px;height:60px;display:inline-block;position:absolute;'>";
 if ( $template['IconFA'] ) {
@@ -122,7 +120,7 @@ $repoSearch = explode("'",$template['RepoName']);
 $templateDescription .= "{$template['RepoName']}</a>";
 if ( $template['Profile'] ) {
 	$profileDescription = $template['Plugin'] ? "Author" : "Maintainer";
-	$templateDescription .= "&nbsp;&nbsp;&nbsp;&nbsp;<a class='popUpLink' href='{$template['Profile']}' target='_blank'>($profileDescription Profile)</a>";
+	$templateDescription .= "<span style='float:right;'><a class='popUpLink' href='{$template['Profile']}' target='_blank'>$profileDescription Profile</a></span>";
 }
 $templateDescription .= "</td></tr>";
 $templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
@@ -160,7 +158,7 @@ if ( $template['trending'] ) {
 
 	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
-		$templateDescription .= " <a class='graphLink' href='#' onclick='$(&quot;.caChart&quot;).toggle(&quot;slow&quot;);'>Show/Hide Graph</a>";
+		$templateDescription .= " <span style='float:right;'><a class='graphLink' href='#' onclick='$(&quot;.caChart&quot;).toggle(&quot;slow&quot;);'>Show/Hide Graph</a></span>";
 		$templateDescription .= "</td></tr>";
 		$templateDescription .= "<tr><td colspan='2'><canvas id='trendChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
 		if ( $template['downloadtrend'] ) {
@@ -183,6 +181,9 @@ if ( !$template['Compatible'] ) {
 }
 $templateDescription .= "</span></div><hr>";
 
+if ( ! $Displayed ) {
+	$templateDescription .= "<div><span class='ca_fa-warning warning-yellow'></span>&nbsp; <font size='1'>Another browser tab or device has updated the displayed templates.  Some actions are not available</font></div>";
+}
 if ( $Displayed && ! $template['NoInstall'] && ! $communitySettings['NoInstalls']) {
 	if ( ! $template['Plugin'] ) {
 		if ( $communitySettings['dockerRunning'] ) {
@@ -202,7 +203,7 @@ if ( $Displayed && ! $template['NoInstall'] && ! $communitySettings['NoInstalls'
 			}
 		}
 	} else {
-		$pluginName = basename($template['PluginURL']);
+		
 		if ( file_exists("/var/log/plugins/$pluginName") ) {
 			$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 			if ( $pluginSettings ) {
@@ -266,16 +267,16 @@ if ( trim($template['Changes']) ) {
 		$templateDescription .= "</div><hr>";
 	}
 	if ( $template['Plugin'] ) {
-    if ( file_exists("/var/log/plugins/$pluginName") ) {
-      $appInformation = "Currently Installed Version: ".plugin("version","/var/log/plugins/$pluginName");
+		if ( file_exists("/var/log/plugins/$pluginName") ) {
+			$appInformation = "Currently Installed Version: ".plugin("version","/var/log/plugins/$pluginName");
 			if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$communityPaths['pluginTempDownload']) ) {
 				copy($communityPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 				$appInformation .= " - <span class='ca_bold'>Install the update <a href='/Apps/Plugins' target='_parent'>HERE</a></span>";
 			} else {
 				$appInformation .= " - <font color='green'>Latest Version</font>";
 			}
-    }
-		
+		}
+
 		$appInformation .= Markdown($template['Changes']);
 	} else {
 		$appInformation = $template['Changes'];
