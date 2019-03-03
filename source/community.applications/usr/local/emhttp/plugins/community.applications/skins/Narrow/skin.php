@@ -239,8 +239,8 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 			$warningColor = "warning-red";
     }
 
-		if ( $template['CAComment'] || $template['ModeratorComment'] || $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] || $template['Beta']) {
-			$template['display_warning-text'] = trim("{$template['CAComment']}{$template['ModeratorComment']}<br>{$template['display_compatible']}");
+		if ( $template['ModeratorComment'] || $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] || $template['Beta']) {
+			$template['display_warning-text'] = trim("{$template['ModeratorComment']}<br>{$template['display_compatible']}");
 		}
     $template['display_faWarning'] = $template['display_warning-text'] ? "<span class='ca_tooltip-warning ca_fa-warning appIcons $warningColor' title='".htmlspecialchars($template['display_warning-text'],ENT_COMPAT | ENT_QUOTES)."'></span>" : "";
 
