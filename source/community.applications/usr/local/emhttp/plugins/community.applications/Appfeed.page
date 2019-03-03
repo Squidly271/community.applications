@@ -18,4 +18,4 @@ $appfeed = str_replace(" ","&nbsp;",$appfeed);
 ?>
 <h3>PRIMARY APPFEED</h3> switch to <a href='/Apps/Appfeed-backup' target='_self'>Backup AppFeed</a>
 <br><br>
-<?=$appfeed?>
+<font face='courier'><?=$appfeed?></font>

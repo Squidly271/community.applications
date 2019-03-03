@@ -86,15 +86,15 @@ $(function() {
 					type: 'line',
 					data: {
 						datasets: [{
-							label: (descData.trendData.length-1) + " Month Trend",
+							label: "Trend Per Month",
 							data: descData.trendData,
-							backgroundColor: '#c2c8c8',
-							borderColor: '#828888'
+							backgroundColor: '#c0c0c0',
+							borderColor: '#FF8C2F'
 						}],
 						labels: descData.trendLabel
 					},
 					options: {
-						events: []
+						events: ["mousemove","mouseout"]
 					}
 				});
 			}
@@ -104,15 +104,15 @@ $(function() {
 					type: 'line',
 					data: {
 						datasets: [{
-							label: "Downloads over " + (descData.downloadtrend.length-1) + " "+ makePlural("month",descData.downloadtrend.length-1),
+							label: "Downloads Per Month",
 							data: descData.downloadtrend,
-							backgroundColor: '#c2c8c8',
-							borderColor: '#828888'
+							backgroundColor: '#c0c0c0',
+							borderColor: '#FF8C2F'
 						}],
 						labels: descData.downloadLabel
 					},
 					options: {
-						events: []
+						events: ["mousemove","mouseout"]
 					}
 				});
 			}

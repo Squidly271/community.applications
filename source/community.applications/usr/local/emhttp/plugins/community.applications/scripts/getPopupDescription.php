@@ -156,7 +156,7 @@ if ($downloads) {
 }
 $templateDescription .= $template['Licence'] ? "<tr><td>Licence:</td><td>".$template['Licence']."</td></tr>" : "";
 if ( $template['trending'] ) {
-	$templateDescription .= "<tr><td>Monthly Trend:</td><td>+{$template['trending']}%";
+	$templateDescription .= "<tr><td>Monthly Trend:</td><td>{$template['trending']}%";
 
 	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
@@ -288,15 +288,14 @@ if ( trim($template['Changes']) ) {
 if ( is_array($template['trends']) ) {
 	$chartLabel = array_fill(0,count($template['trends']),"");
 	if ( is_array($template['downloadtrend']) ) {
-		$minDownload = min($template['downloadtrend']);
+		#get what the previous download value would have been based upon the trend
+		$minDownload = intval(  ((100 - $template['trends'][0]) / 100)  * ($template['downloadtrend'][0]) );
 		foreach ($template['downloadtrend'] as $download) {
 			$down[] = intval($download - $minDownload);
 			$minDownload = $download;
 		}
-	}	else {
-		$down = array();
 	}
-	$downloadLabel = array_fill(0,count($down),"");
+	$down = is_array($down) ? $down : array();
 }
 
 @unlink($communityPaths['pluginTempDownload']);
