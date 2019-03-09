@@ -67,7 +67,7 @@ $(function() {
 				var origSource = $(this).attr('src');
 				var newSource = origSource.replace("https://","http://");
 				if ( document.referrer.startsWith("https") && "<?=$communitySettings['secureImage']?>" == "secure" ) {
-					$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+					$(this).attr('src',"https://github.com/Squidly271/community.applications/raw/master/webImages/no_https.png");
 				} else {
 					$(this).attr('src',newSource);
 					$(this).on("error",function() {

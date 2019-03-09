@@ -109,7 +109,7 @@ if ( $template['IconFA'] ) {
 $templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
 $templateDescription .= "<table style='font-size:0.9rem;'>";
 $author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
-$templateDescription .= "<tr><td style='width:25%'>Author:</td><td>$author</a></td></tr>";
+$templateDescription .= "<tr><td style='width:25%;'>Author:</td><td>$author</a></td></tr>";
 if ( ! $template['Plugin'] ) {
 	$repository = explode(":",$template['Repository']);
 	$official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
@@ -120,7 +120,7 @@ $repoSearch = explode("'",$template['RepoName']);
 $templateDescription .= "{$template['RepoName']}</a>";
 if ( $template['Profile'] ) {
 	$profileDescription = $template['Plugin'] ? "Author" : "Maintainer";
-	$templateDescription .= "<span style='float:right;'><a class='popUpLink' href='{$template['Profile']}' target='_blank'>$profileDescription Profile</a></span>";
+	$templateDescription .= "<span>&nbsp;&nbsp;<a class='popUpLink' href='{$template['Profile']}' target='_blank'>$profileDescription Profile</a></span>";
 }
 $templateDescription .= "</td></tr>";
 $templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
@@ -158,7 +158,7 @@ if ( $template['trending'] ) {
 
 	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
-		$templateDescription .= " <span style='float:right;'><a class='graphLink' href='#' onclick='$(&quot;.caChart&quot;).toggle(&quot;slow&quot;);'>Show/Hide Graph</a></span>";
+		$templateDescription .= " <span>&nbsp;&nbsp;<a class='graphLink' href='#' onclick='$(&quot;.caChart&quot;).toggle(&quot;slow&quot;);'>Show/Hide Graph</a></span>";
 		$templateDescription .= "</td></tr>";
 		$templateDescription .= "<tr><td colspan='2'><canvas id='trendChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
 		if ( $template['downloadtrend'] ) {

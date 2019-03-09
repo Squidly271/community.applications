@@ -1044,7 +1044,7 @@ function updateDisplay(data,direction="") {
 	$('img').on("error",function() {
 		var origSource = $(this).attr('src');
 		if ( document.referrer.startsWith("https") && "<?=$cfg['secureImage']?>" == "secure" ) {
-			$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+			$(this).attr('src',"https://github.com/Squidly271/community.applications/raw/master/webImages/no_https.png");
 		} else {
 			var newSource = origSource.replace("https://","http://");
 			$(this).attr('src',newSource);
