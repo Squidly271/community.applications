@@ -318,6 +318,7 @@ function modalPluginInstall() {
 }
 
 function showSpecialCategory(button) {
+	$(".caMenuItem").removeClass("selectedMenu");
 	$(".multi_installDiv").hide();
 	data.selected_category = "DOESNTMATTERWHATSHERE";
 	data.section = "AppStore";
