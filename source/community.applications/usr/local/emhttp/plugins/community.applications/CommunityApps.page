@@ -1036,6 +1036,22 @@ function installMulti() {
 	});
 }
 
+function updateDisplay(data,direction="") {
+	if ( direction == "" ) {
+		animateCSS(getAnimateClass(),"fadeOutLeft",function() {
+			$("#templates_content").html(data)
+			animateCSS(getAnimateClass(),"fadeInRight");
+			afterUpdateDisplay();
+		});
+	} else {
+		$("#templates_content").html(data)
+		animateCSS(getAnimateClass(),"fadeIn"+direction,function() {
+			handle_HTTP_icons();
+			afterUpdateDisplay();
+		});
+	}
+}
+
 function getAnimateClass() {
 	if ( $(".ca_templatesDisplay").length ) {
 		return ".ca_templatesDisplay";
@@ -1043,23 +1059,12 @@ function getAnimateClass() {
 		return "#templates_content";
 	}
 }
-function updateDisplay(data,direction="") {
-	if ( direction == "" ) {
-		animateCSS(getAnimateClass(),"fadeOutLeft",function() {
-			$("#templates_content").html(data)
-			animateCSS(getAnimateClass(),"fadeInRight");
-			handle_HTTP_icons();
-		});
-	} else {
-		$("#templates_content").html(data)
-		animateCSS(getAnimateClass(),"fadeIn"+direction,function() {
-			handle_HTTP_icons();
-		});
-	}
 
+function afterUpdateDisplay() {
 	setToolTip();
 	enableSearch();
 	saveState();
+	handle_HTTP_icons();
 }
 
 function handle_HTTP_icons() {
@@ -1076,6 +1081,7 @@ function handle_HTTP_icons() {
 		}
 	});
 }
+
 function saveState() {
 	if ( ! dockerSearchFlag ) {
 		$.cookie("categoryText",$("#Category").html());
