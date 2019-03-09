@@ -86,7 +86,7 @@ $(function() {
 					type: 'line',
 					data: {
 						datasets: [{
-							label: "Trend Per Month",
+							label: "Trend Per Month (%)",
 							data: descData.trendData,
 							backgroundColor: '#c0c0c0',
 							borderColor: '#FF8C2F'

@@ -1037,11 +1037,25 @@ function installMulti() {
 }
 
 function updateDisplay(data,direction="") {
-	$("#templates_content").html(data)
-	if ( direction != "" ) {
-		animateCSS(".ca_templatesDisplay","fadeIn"+direction);
+	if ( direction == "" && $(".ca_templatesDisplay").length ) {
+		animateCSS(".ca_templatesDisplay","fadeOutLeft",function() {
+			$("#templates_content").html(data)
+			animateCSS(".ca_templatesDisplay","fadeInRight");
+			handle_HTTP_icons();
+		});
+	} else {
+		$("#templates_content").html(data)
+		animateCSS(".ca_templatesDisplay","fadeIn"+direction,function() {
+			handle_HTTP_icons();
+		});
 	}
 
+	setToolTip();
+	enableSearch();
+	saveState();
+}
+
+function handle_HTTP_icons() {
 	$('img').on("error",function() {
 		var origSource = $(this).attr('src');
 		if ( document.referrer.startsWith("https") && "<?=$cfg['secureImage']?>" == "secure" ) {
@@ -1054,10 +1068,6 @@ function updateDisplay(data,direction="") {
 			});
 		}
 	});
-
-	setToolTip();
-	enableSearch();
-	saveState();
 }
 function saveState() {
 	if ( ! dockerSearchFlag ) {
@@ -1143,6 +1153,7 @@ function showCredits() {
 	$.post(URL,{action:'showCredits'},function(data) {
 		if (data) {
 			$("#templates_content").html(data);
+			animateCSS("#templates_content","fadeInRight");
 		}
 	});
 }
@@ -1268,7 +1279,7 @@ function addWarning(text) {
 <div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
 <strong><font size='3'></strong></font>
 <div class='dockerSearch' style='display:none'><div class='ca_center'><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></div></div>
-<div id='templates_content'></div>
+<div id='templates_content'><div class='ca_templatesDisplay'></div></div>
 <div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
 </div>
 </div>

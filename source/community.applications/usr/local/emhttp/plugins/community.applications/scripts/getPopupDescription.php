@@ -286,6 +286,7 @@ if ( trim($template['Changes']) ) {
 	}
 	$templateDescription .= "<div class='ca_center'><font size='4'><span class='ca_bold'>Change Log</span></div></font><br>$changeLogMessage$appInformation";
 }
+
 if ( is_array($template['trends']) ) {
 	$chartLabel = array_fill(0,count($template['trends']),"");
 	if ( is_array($template['downloadtrend']) ) {
@@ -295,6 +296,7 @@ if ( is_array($template['trends']) ) {
 			$down[] = intval($download - $minDownload);
 			$minDownload = $download;
 		}
+		
 	}
 	$down = is_array($down) ? $down : array();
 }
