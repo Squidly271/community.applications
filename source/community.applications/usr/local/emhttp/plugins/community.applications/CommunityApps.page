@@ -349,7 +349,7 @@ function changePage(pageNumber) {
 	data.currentpage = pageNumber;
 
 	animateCSS(".ca_templatesDisplay","fadeOut"+directionOut,function() {
-		$("#templates_content").html("");
+		$(".ca_templatesDisplay").html("");
 		hideSortIcons();
    	$.post(URL,{action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected},function(data3) {
 			if (data3) {
@@ -1036,16 +1036,23 @@ function installMulti() {
 	});
 }
 
+function getAnimateClass() {
+	if ( $(".ca_templatesDisplay").length ) {
+		return ".ca_templatesDisplay";
+	} else {
+		return "#templates_content";
+	}
+}
 function updateDisplay(data,direction="") {
-	if ( direction == "" && $(".ca_templatesDisplay").length ) {
-		animateCSS(".ca_templatesDisplay","fadeOutLeft",function() {
+	if ( direction == "" ) {
+		animateCSS(getAnimateClass(),"fadeOutLeft",function() {
 			$("#templates_content").html(data)
-			animateCSS(".ca_templatesDisplay","fadeInRight");
+			animateCSS(getAnimateClass(),"fadeInRight");
 			handle_HTTP_icons();
 		});
 	} else {
 		$("#templates_content").html(data)
-		animateCSS(".ca_templatesDisplay","fadeIn"+direction,function() {
+		animateCSS(getAnimateClass(),"fadeIn"+direction,function() {
 			handle_HTTP_icons();
 		});
 	}
@@ -1152,8 +1159,7 @@ function showCredits() {
 	clearCategory();
 	$.post(URL,{action:'showCredits'},function(data) {
 		if (data) {
-			$("#templates_content").html(data);
-			animateCSS("#templates_content","fadeInRight");
+			updateDisplay(data);
 		}
 	});
 }
@@ -1161,10 +1167,10 @@ function showCredits() {
 function showStatistics() {
 	$(".multi_installDiv,.dockerSearch").hide();
 	clearCategory();
-	$("#templates_content").html("<div class='ca_center'>Gathering Statistics</div>");
+	updateDisplay("");
 	$.post(URL,{action:'statistics'},function(data) {
 		if (data) {
-			$("#templates_content").html(data);
+			updateDisplay(data);
 		}
 	});
 }
@@ -1172,13 +1178,13 @@ function showStatistics() {
 function caChangeLog() {
 	$.post(URL,{action:'caChangeLog'},function(data) {
 		if (data) {
-			$("#templates_content").html(data);
+			updateDisplay(data);
 		}
 	});
 }
 
 function scrollToTop() {
-	window.scrollTo(0,0);
+  $('html,body').animate({scrollTop:0},500);
 }
 
 function addWarning(text) {
