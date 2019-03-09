@@ -158,7 +158,7 @@ if ( $template['trending'] ) {
 
 	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
-		$templateDescription .= " <span>&nbsp;&nbsp;<a class='graphLink' href='#' onclick='$(&quot;.caChart&quot;).toggle(&quot;slow&quot;);'>Show/Hide Graph</a></span>";
+		$templateDescription .= " <span>&nbsp;&nbsp;<a class='graphLink' href='#' onclick='$(&quot;.caChart&quot;).toggle(&quot;slow&quot;);showGraphs();'>Show/Hide Graph</a></span>";
 		$templateDescription .= "</td></tr>";
 		$templateDescription .= "<tr><td colspan='2'><canvas id='trendChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
 		if ( $template['downloadtrend'] ) {

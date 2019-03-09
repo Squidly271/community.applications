@@ -671,7 +671,7 @@ function showDesc_openBox(cmd,title,height,width,load,func) {
 
 function showModeration(script,title) {
 	$("#sb-nav-close").css("visisbility","visible");
-	my_openBox("/plugins/<?=$plugin?>/scripts/showStatistics.php?arg1="+script,title,550,900,true,false);
+	showDesc_openBox("/plugins/<?=$plugin?>/scripts/showStatistics.php?arg1="+script,title,550,900,true,false);
 }
 
 function previousApps(button,installed) {
