@@ -136,6 +136,16 @@ function evaluateBoolean(str) {
 function makePlural(string,count) {
 	return ( (count > 1) || (count == 0) ) ? string + "s" : string;
 }
+
+function showGraphs() {
+	$(".caChart").toggle("slow",function() {
+		if ( $(".caChart").is(":visible") ) {
+			$(".graphLink").html("Hide Graphs");
+		} else {
+			$(".graphLink").html("Show Graphs");
+		}
+	});
+}
 </script>
 <html>
 <body>
