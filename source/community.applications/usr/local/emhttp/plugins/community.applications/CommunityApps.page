@@ -135,7 +135,7 @@ $(function(){
 <?if ( ! $unRaid66 ):?>
 	$("html").css("font-size","10px");
 <?endif;?>
-
+	
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
 		sweetAlertBackground("white");
@@ -1039,14 +1039,16 @@ function installMulti() {
 function updateDisplay(data,direction="") {
 	if ( direction == "" ) {
 		animateCSS(getAnimateClass(),"fadeOutLeft",function() {
-			$("#templates_content").html(data)
-			animateCSS(getAnimateClass(),"fadeInRight");
-			afterUpdateDisplay();
+			$("#templates_content").html(data);
+			handle_HTTP_icons();
+			animateCSS(getAnimateClass(),"fadeInRight",function() {
+				afterUpdateDisplay();
+			});
 		});
 	} else {
-		$("#templates_content").html(data)
+		$("#templates_content").html(data);
+		handle_HTTP_icons();
 		animateCSS(getAnimateClass(),"fadeIn"+direction,function() {
-			handle_HTTP_icons();
 			afterUpdateDisplay();
 		});
 	}
