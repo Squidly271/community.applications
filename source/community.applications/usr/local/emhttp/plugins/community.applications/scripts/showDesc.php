@@ -86,7 +86,7 @@ $(function() {
 					type: 'line',
 					data: {
 						datasets: [{
-							label: "Trend Per Month (%)",
+							label: "Trend Per Month",
 							data: descData.trendData,
 							backgroundColor: '#c0c0c0',
 							borderColor: '#FF8C2F'
@@ -94,7 +94,16 @@ $(function() {
 						labels: descData.trendLabel
 					},
 					options: {
-						events: ["mousemove","mouseout"]
+						events: ["mousemove","mouseout"],
+						scales: {
+							yAxes: [{
+								ticks: {
+									callback: function(label,index,labels) {
+										return label + " %";
+									}
+								}
+							}]
+						}
 					}
 				});
 			}
@@ -112,7 +121,16 @@ $(function() {
 						labels: descData.downloadLabel
 					},
 					options: {
-						events: ["mousemove","mouseout"]
+						events: ["mousemove","mouseout"],
+						scales: {
+							yAxes: [{
+								ticks: {
+									callback: function(label,index,labels) {
+										return label.toLocaleString();
+									}
+								}
+							}]
+						}
 					}
 				});
 			}
