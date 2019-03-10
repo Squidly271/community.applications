@@ -59,7 +59,7 @@ var dockerSearchFlag = false;
 
 $(function(){
 	$("#title").append('<div id="Category" class="categoryLine ca_italic"></div>');
-	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-numeric-asc ca_staticTips' title='Sort By Downloads' data-sort='downloadsUp'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i><i class='sortIcons fa fa-sort-amount-asc ca_staticTips' title='Sort By Trend' data-sort='trendUp'></i></span><i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' aria-hidden='true'></i>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='Search' autofocus onchange='doSearch(false);'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
+	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-numeric-asc ca_staticTips' title='Sort By Downloads' data-sort='downloadsUp'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i><i class='sortIcons fa fa-sort-amount-asc ca_staticTips' title='Sort By Trend' data-sort='trendUp'></i></span><i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' aria-hidden='true'></i>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
 	if ( '<?=$upgradeAvailable?>' == "true" ) {
 		addWarning("An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg','CommunityApplications'); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update  <i class='fa fa-info-circle ca_appPopup' style='cursor:pointer' data-apppath='ca' data-appname='Community Applications'></i>");
 	}
@@ -116,6 +116,12 @@ $(function(){
 		changeCategory(this,false);
 	});
 
+	$("#searchBox").keydown(function(e) {
+		if (e.which === 13) {
+			doSearch();
+		}
+	});
+	
 	$(".initDockerSearch").click(function()     { initDockerSearch(); });
 	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
@@ -441,7 +447,7 @@ function doSearch(button,newSearch) {
 	}
 
 	if (filter) {
-		$("#Category").html("Search for <font color='<?=$unRaid66color?>'>"+filter+"</font>");
+		$("#Category").html("Search for "+filter);
 		enableIcon("#sortIcon",true);
 	}
 
@@ -581,11 +587,13 @@ function populateAutoComplete() {
 		if (data) {
 			$("#awesomepleteScript").html(data);
 			searchBoxAwesomplete.maxItems = 20;
-			Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',function() {
-				doSearch();
-			});
+			Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch)
+			Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch)
 		}
 	});
+}
+function awesompleteSearch() {
+	doSearch(false);
 }
 
 function mySearch(filter) {
@@ -621,7 +629,7 @@ function dockerSearch(pageNumber) {
 	data.docker = "searching docker";
 	enableIcon("#sortIcon",false);
 	$(".dockerSearch,.multi_installDiv").hide();
-	$("#Category").html("DockerHub Search For <font color='<?=$unRaid66color?>'>"+filter+"</font> <span id='pageNumber'></span>");
+	$("#Category").html("DockerHub Search for "+filter+" <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
 	mySpinner();
 	animateCSS(".ca_templatesDisplay","fadeOut"+directionOut,function() {
