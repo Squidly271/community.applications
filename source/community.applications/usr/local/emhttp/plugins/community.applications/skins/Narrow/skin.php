@@ -392,23 +392,12 @@ function displaySearchResults($pageNumber) {
 
   $columnNumber = 0;
   foreach ($file as $result) {
-    foreach ($templates as $template) {
-      if ( $template['Repository'] == $result['Repository'] ) {
-        $result['Description'] = $template['Description'];
-        $result['Description'] = str_replace("'","&#39;",$result['Description']);
-        $result['Description'] = str_replace('"',"&quot;",$result['Description']);
-        $result['Icon'] = $template['Icon'];
-        $foundTemplateFlag = true;
-        break;
-      }
-    }
-
     $result['display_Repository'] = $result['Repository'];
-    $result['display_iconOnly'] = $result['Icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
+    $result['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
     $result['display_dockerName'] = "<a class='ca_tooltip ca_applicationName' style='cursor:pointer;' onclick='mySearch(this.innerText);' title='Search for similar containers'>{$result['Name']}</a>";
     $result['display_author'] = "<a class='ca_tooltip ca_author' onclick='mySearch(this.innerText);' title='Search For Containers From {$result['Author']}'>{$result['Author']}</a>";
     $result['Category'] = "Docker Hub Search";
-    $result['display_iconOnly'] = "<img class='displayIcon' src='{$result['Icon']}'>";
+    $result['display_iconClickable'] = "<i class='displayIcon fa fa-docker'></i>";
     $result['Description'] = $result['Description'] ?: "No description present";
     $result['display_faProject'] = "<a class='ca_tooltip ca_fa-project appIcons' title='Go to dockerHub page' target='_blank' href='{$result['DockerHub']}'></a>";
     $result['display_dockerInstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click To Install' onclick='dockerConvert(&#39;".$result['ID']."&#39;);'></a>";
