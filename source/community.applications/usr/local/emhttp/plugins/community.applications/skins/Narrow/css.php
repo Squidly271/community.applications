@@ -94,7 +94,7 @@ table tbody td {line-height:1.4rem;}
 .ca_description {color:#505E6F;}
 a.ca_appPopup {text-decoration:none;cursor:pointer;}
 input[type=checkbox] {width:2rem;height:2rem;}
-.enabledIcon {cursor:default;color:<?=$unRaid66color?>;}
+.enabledIcon {cursor:pointer;color:<?=$unRaid66color?>;}
 .disabledIcon {color:#040404;font-size:2.5rem;}
 .pinned {font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;color:<?=$unRaid66color?>;padding:.3rem;}
 .unpinned {font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}

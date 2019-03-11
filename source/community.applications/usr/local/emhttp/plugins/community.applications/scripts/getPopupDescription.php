@@ -94,20 +94,16 @@ if ( ! $template['Plugin'] ) {
 
 if ( $template['trending'] ) {
 	$allApps = readJsonFile($communityPaths['community-templates-info']);
-	foreach ($allApps as $app) {
-		if ( ! $app['BranchName'] ) {
-			$allTrends[] = $app['trending'];
-		}
-	}
+
+	$allTrends = array_unique(array_column($allApps,"trending"));
 	rsort($allTrends);
 	$trendRank = array_search($template['trending'],$allTrends) + 1;
 }
+
 $template['Category'] = categoryList($template['Category'],true);
 $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 $template['Description'] = trim($template['Description']);
 $template['ModeratorComment'] .= $template['CAComment'];
-
-
 
 $templateDescription .= "<div style='width:60px;height:60px;display:inline-block;position:absolute;'>";
 if ( $template['IconFA'] ) {
@@ -147,6 +143,10 @@ if ( ! $template['Plugin'] ) {
 	}
 }
 $templateDescription .= $template['stars'] ? "<tr><td nowrap>DockerHub Stars:</td><td><span class='dockerHubStar'></span> ".$template['stars']."</td></tr>" : "";
+
+if ( $template['FirstSeen'] > 1 ) {
+	$templateDescription .= "<tr><td>Added to CA:</td><td>".date("M d, Y",$template['FirstSeen'])."</td></tr>";
+}
 
 # In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 if ( $template['Date'] && $template['Plugin'] ) {
@@ -209,12 +209,11 @@ if ( $Displayed && ! $template['NoInstall'] && ! $communitySettings['NoInstalls'
 					$installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall</a>";
 				} else {
 					$install = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Install</a>";
-					$installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' onclick='$(&quot;#branch&quot;).show();'>&nbsp;&nbsp;Install</a>" : $install;
+					$installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' onclick='$(&quot;#branch&quot;).show(500);'>&nbsp;&nbsp;Install</a>" : $install;
 				}
 			}
 		}
 	} else {
-		
 		if ( file_exists("/var/log/plugins/$pluginName") ) {
 			$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 			if ( $pluginSettings ) {
@@ -307,7 +306,6 @@ if ( is_array($template['trends']) ) {
 			$down[] = intval($download - $minDownload);
 			$minDownload = $download;
 		}
-		
 	}
 	$down = is_array($down) ? $down : array();
 }
@@ -315,4 +313,3 @@ if ( is_array($template['trends']) ) {
 @unlink($communityPaths['pluginTempDownload']);
 echo json_encode(array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel));
 ?>
-

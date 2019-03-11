@@ -121,17 +121,8 @@ function mySort($a, $b) {
 # returns the index number of the array       #
 # return value === false if not found         #
 ###############################################
-function searchArray($array,$key,$value,$startingIndex=0) {
-	$result = false;
-	if (count($array) ) {
-		for ($i = $startingIndex; $i <= max(array_keys($array)); $i++) {
-			if ( $array[$i][$key] == $value ) {
-				$result = $i;
-				break;
-			}
-		}
-	}
-	return $result;
+function searchArray($array,$key,$value) {
+	return array_search($value,array_column($array,$key));
 }
 
 #############################
