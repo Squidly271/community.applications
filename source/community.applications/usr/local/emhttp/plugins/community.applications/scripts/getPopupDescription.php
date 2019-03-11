@@ -91,6 +91,17 @@ if ( ! $template['Plugin'] ) {
 } else {
 	$pluginName = basename($template['PluginURL']);
 }
+
+if ( $template['trending'] ) {
+	$allApps = readJsonFile($communityPaths['community-templates-info']);
+	foreach ($allApps as $app) {
+		if ( ! $app['BranchName'] ) {
+			$allTrends[] = $app['trending'];
+		}
+	}
+	rsort($allTrends);
+	$trendRank = array_search($template['trending'],$allTrends) + 1;
+}
 $template['Category'] = categoryList($template['Category'],true);
 $template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 $template['Description'] = trim($template['Description']);
@@ -154,7 +165,7 @@ if ($downloads) {
 }
 $templateDescription .= $template['Licence'] ? "<tr><td>Licence:</td><td>".$template['Licence']."</td></tr>" : "";
 if ( $template['trending'] ) {
-	$templateDescription .= "<tr><td>Monthly Trend:</td><td>{$template['trending']}%";
+	$templateDescription .= "<tr><td>Monthly Trend:</td><td>{$template['trending']}% (Rank: #$trendRank)";
 
 	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";

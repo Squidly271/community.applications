@@ -5,8 +5,7 @@
 #                    All Rights Reserved                      #
 #                                                             #
 ###############################################################
-?>
-<?PHP
+
 require_once("/usr/local/emhttp/plugins/dynamix/include/Helpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 
