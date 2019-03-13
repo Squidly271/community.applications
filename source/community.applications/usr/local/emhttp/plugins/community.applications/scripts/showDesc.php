@@ -134,6 +134,33 @@ $(function() {
 					}
 				});
 			}
+			if ( $("#totalDownloadChart").length ) {
+				var ctx = document.getElementById("totalDownloadChart").getContext('2d');
+				let chart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						datasets: [{
+							label: "Total Downloads",
+							data: descData.totaldown,
+							backgroundColor: '#c0c0c0',
+							borderColor: '#FF8C2F'
+						}],
+						labels: descData.totaldownLabel
+					},
+					options: {
+						events: ["mousemove","mouseout"],
+						scales: {
+							yAxes: [{
+								ticks: {
+									callback: function(label,index,labels) {
+										return label.toLocaleString();
+									}
+								}
+							}]
+						}
+					}
+				});
+			}
 		}
 	});
 });

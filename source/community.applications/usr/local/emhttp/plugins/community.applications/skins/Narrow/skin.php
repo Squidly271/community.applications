@@ -385,9 +385,8 @@ function displaySearchResults($pageNumber) {
   $skin = readJsonFile($communityPaths['defaultSkin']);
   $viewMode = "detail";
   $displayTemplate = $skin[$viewMode]['template'];
- # this array is only used on header, sol, eol, footer
-  $ct = dockerNavigate($num_pages,$pageNumber)."<br>";
 
+  $ct = dockerNavigate($num_pages,$pageNumber)."<br>";
   $ct .= $skin[$viewMode]['header'];
 
   $columnNumber = 0;
@@ -405,9 +404,7 @@ function displaySearchResults($pageNumber) {
     $count++;
   }
   $ct .= $skin[$viewMode]['footer'];
-  if ( $foundTemplateFlag ) {
-    echo "<br><span class='ca_bold'>Containers with an Icon displayed are already available within the Apps tab.  It is recommended to install that version instead of a dockerHub conversion</span><br><br>";
-  }
+
   echo $ct.dockerNavigate($num_pages,$pageNumber);
 }
 

@@ -132,7 +132,11 @@ if ( $template['Profile'] ) {
 $templateDescription .= "</td></tr>";
 $templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
 if ( $template['Category'] ) {
-	$templateDescription .= "<tr><td>Categories:</td><td>".$template['Category']."</td></tr>";
+	$templateDescription .= "<tr><td>Categories:</td><td>".$template['Category'];
+	if ( $template['Beta'] ) {
+		$templateDescription .= " (Beta)";
+	}
+	$templateDescription .= "</td></tr>";
 }
 if ( ! $template['Plugin'] ) {
 	if ( strtolower($template['Base']) == "unknown" || ! $template['Base']) {
@@ -174,6 +178,7 @@ if ( $template['trending'] ) {
 		$templateDescription .= "<tr><td colspan='2'><canvas id='trendChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
 		if ( $template['downloadtrend'] ) {
 			$templateDescription .= "<tr><td colspan='2'><canvas id='downloadChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
+			$templateDescription .= "<tr><td colspan='2'><canvas id='totalDownloadChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
 		}
 	}
 	$template['description'] .= "</td></tr>";
@@ -303,13 +308,15 @@ if ( is_array($template['trends']) ) {
 		#get what the previous download value would have been based upon the trend
 		$minDownload = intval(  ((100 - $template['trends'][0]) / 100)  * ($template['downloadtrend'][0]) );
 		foreach ($template['downloadtrend'] as $download) {
+			$totalDown[] = $download;
 			$down[] = intval($download - $minDownload);
 			$minDownload = $download;
 		}
+		$downloadLabel = array_fill(0,count($template['downloadtrend']),"");
 	}
 	$down = is_array($down) ? $down : array();
 }
 
 @unlink($communityPaths['pluginTempDownload']);
-echo json_encode(array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel));
+echo json_encode(array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel));
 ?>
