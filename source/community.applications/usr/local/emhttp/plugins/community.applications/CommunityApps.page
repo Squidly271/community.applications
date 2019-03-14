@@ -15,13 +15,6 @@ $plugin = "community.applications";
 require_once("/usr/local/emhttp/plugins/$plugin/include/paths.php");
 require_once("/usr/local/emhttp/plugins/$plugin/include/helpers.php");
 
-$installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$plugin.plg");
-$upgradeVersion = download_url($communityPaths['onlineCAVersion'],"",false,10);
-
-if ( $installedVersion < $upgradeVersion && $upgradeVersion) {
-	$upgradeAvailable = "true";
-}
-
 $cfg = parse_plugin_cfg($plugin);
 if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$firstRun = "true";
@@ -58,11 +51,13 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
+	if ( typeof PluginUpdateCheck == "function" ) {
+		PluginUpdateCheck("community.applications.plg");
+	}
+	
 	$("#title").append('<div id="Category" class="categoryLine ca_italic"></div>');
 	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-numeric-asc ca_staticTips' title='Sort By Downloads' data-sort='downloadsUp'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i><i class='sortIcons fa fa-sort-amount-asc ca_staticTips' title='Sort By Trend' data-sort='trendUp'></i></span><i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' aria-hidden='true'></i>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
-	if ( '<?=$upgradeAvailable?>' == "true" ) {
-		addWarning("An update to Community Applications is Available. Click <a onclick=installPLGupdate('community.applications.plg','CommunityApplications'); style='cursor:pointer;top:-1rem;'>HERE</a> to install the update  <i class='fa fa-info-circle ca_appPopup' style='cursor:pointer' data-apppath='ca' data-appname='Community Applications'></i>");
-	}
+
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 

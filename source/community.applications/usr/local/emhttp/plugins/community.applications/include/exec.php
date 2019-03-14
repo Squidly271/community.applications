@@ -394,7 +394,7 @@ case 'previous_apps':
 # now correlate that to a template;
 # this section handles containers that have not been renamed from the appfeed
 if ( $communitySettings['dockerRunning'] ) {
-	$all_files = glob("{$communityPaths['dockerManTemplates']}/*.xml");
+	$all_files = glob("/boot/config/plugins/dockerMan/templates-user/*.xml");
 	$all_files = $all_files ?: array();
 
 	if ( $installed == "true" ) {

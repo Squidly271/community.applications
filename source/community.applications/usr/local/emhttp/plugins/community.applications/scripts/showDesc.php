@@ -97,7 +97,6 @@ $(function() {
 						scales: {
 							yAxes: [{
 								ticks: {
-									beginAtZero: true,
 									callback: function(label,index,labels) {
 										return label + " %";
 									}
