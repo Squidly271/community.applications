@@ -25,6 +25,7 @@ $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 if ( is_file($communityPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
+$installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$plugin.plg");
 ?>
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/community.applications/skins/Narrow/css.php")?>" >
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/community.applications/styles/awesomplete.css")?>'>
