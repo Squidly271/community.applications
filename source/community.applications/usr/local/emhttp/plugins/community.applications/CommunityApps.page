@@ -51,8 +51,8 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
-	if ( typeof PluginUpdateCheck == "function" ) {
-		PluginUpdateCheck("community.applications.plg");
+	if ( typeof caPluginUpdateCheck == "function" ) {
+		caPluginUpdateCheck("community.applications.plg");
 	}
 	
 	$("#title").append('<div id="Category" class="categoryLine ca_italic"></div>');
