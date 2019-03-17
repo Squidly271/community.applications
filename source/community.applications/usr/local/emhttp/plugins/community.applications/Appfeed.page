@@ -1,6 +1,6 @@
 Menu="hidden"
 Title="Community Applications"
-Icon="community.applications.png"
+Tag="users"
 ---
 <?
 ###############################################################
@@ -12,10 +12,18 @@ Icon="community.applications.png"
 
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
+$backup = $_GET['source'] == "backup";
+$source = $backup ? $communityPaths['application-feedBackup'] : $communityPaths['application-feed'];
 $appfeed = download_json($communityPaths['application-feed'],"{$communityPaths['tempFiles']}/appfeed-check.json");
 $appfeed = str_replace("\n","<br>",print_r($appfeed,true));
 $appfeed = str_replace(" ","&nbsp;",$appfeed);
 ?>
-<h3>PRIMARY APPFEED</h3> switch to <a href='/Apps/Appfeed-backup' target='_self'>Backup AppFeed</a>
+<h3>
+<? if ( ! $backup ):?>
+PRIMARY APPFEED
+<?else:?>
+BACKUP AppFeed
+<?endif;?>
+</h3> switch to <a href='/Apps/Appfeed?source=<?if (!$backup):?>backup<?endif;?>' target='_self'><?if (!$backup):?>Backup <?else:?>Primary <?endif;?>AppFeed</a>
 <br><br>
 <font face='courier'><?=$appfeed?></font>
