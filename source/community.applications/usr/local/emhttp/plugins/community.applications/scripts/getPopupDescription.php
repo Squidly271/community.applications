@@ -165,16 +165,17 @@ $template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 $templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>Max OS:</td><td>unRaid v".$template['MaxVer']."</td></tr>" : "";
 $downloads = getDownloads($template['downloads']);
 if ($downloads) {
-	$templateDescription .= "<tr><td>Total Downloads:</td><td>$downloads</td></tr>";
+	$templateDescription .= "<tr><td>Total&nbsp;Downloads:</td><td>$downloads</td></tr>";
 }
 $templateDescription .= $template['Licence'] ? "<tr><td>Licence:</td><td>".$template['Licence']."</td></tr>" : "";
 if ( $template['trending'] ) {
 	$templateDescription .= "<tr><td>Monthly Trend:</td><td>{$template['trending']}% (Rank: #$trendRank)";
-
 	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 		$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
 		$templateDescription .= " <span>&nbsp;&nbsp;<a class='graphLink' href='#' onclick='showGraphs();'>Show Graphs</a></span></td></tr>";
-		$templateDescription .= "<tr><td></td><td>(As of ".date("M d, Y - h:i a",$template['LastUpdateScan']).")</td></tr>";
+	}
+	$templateDescription .= "<tr><td></td><td>(As of ".date("M d, Y - h:i a",$template['LastUpdateScan']).")</td></tr>";
+	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 		$templateDescription .= "<tr><td colspan='2'><canvas id='trendChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
 		if ( $template['downloadtrend'] ) {
 			$templateDescription .= "<tr><td colspan='2'><canvas id='downloadChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
