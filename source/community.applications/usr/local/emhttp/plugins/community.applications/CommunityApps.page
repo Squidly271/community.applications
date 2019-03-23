@@ -841,7 +841,6 @@ function initializeAppStore() {
 	$(".multi_installDiv").hide();
 }
 function installPLGupdate(filename,plgName) {
-	$(".ca_appPopup").tooltipster('close');
 	$("#sortorder").attr("data-plgfilename",filename);
 	if ( filename == "community.applications.plg" ) {
 		openBox('/plugins/<?=$plugin?>/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true);
@@ -893,7 +892,6 @@ function pinnedApps(button) {
 function displayTags(leadTemplate) {
 	$.post(URL,{action:'displayTags',leadTemplate:leadTemplate},function(data) {
 		if (data) {
-			$(".ca_appPopup").tooltipster('close');
 			sweetAlertBackground("white");
 			disableSearch();
 			swal({
