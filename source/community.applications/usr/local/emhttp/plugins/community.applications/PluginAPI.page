@@ -54,23 +54,25 @@ function caPluginUpdateCheck(plugin,options=[],callback) {
   $.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'checkPlugin',options:{plugin:plugin}},function(data) {
 		if (data) {
 			var result = JSON.parse(data);
-			if ( $.cookie(plugin) == result.version ) return;
+			
 			if ( options.debug == true ) result.updateAvailable = true;
-			if ( result.updateAvailable ) {
-				var name = options.name ? options.name : "this plugin ("+plugin+")";
-				var HTML = "An upgrade to "+name+" is available.  Click <a class='ca_PluginUpdateInstall' onclick='ca_pluginUpdateInstall(&quot;"+plugin+"&quot;);'>here</a> to install version "+result.version+" <i class='ca_pluginUpdateInfo fa fa-info-circle' onclick=ca_pluginUpdateShowInfo('/plugins/dynamix.plugin.manager/include/ShowChanges.php?file=%2Ftmp%2Fplugins%2F"+pluginFilename+".txt','Release&nbsp;Notes',600,900); return false;'></i>";
-				if ( ! ca_pluginUpdate_evaluateBoolean(options.noDismiss) ) {
-					HTML = HTML.concat("<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='ca_hidePluginUpdate(&quot;"+result.version+"&quot;);'></i>");
-				}
-				ca_PluginUpdateElement = options.element ? options.element : ".ca_plugin_notice";
-
-				if ( ! ca_pluginUpdate_evaluateBoolean(options.dontShow) ) {
-					if ( ! options.element ) {
-					$(".upgrade_notice").after("<div class='ca_plugin_notice ca_element_notice'>"+HTML+"</div>");
-					} else {		
-						$(ca_PluginUpdateElement).html(HTML);		
+			if ( $.cookie(plugin) != result.version ) {
+				if ( result.updateAvailable ) {
+					var name = options.name ? options.name : "this plugin ("+plugin+")";
+					var HTML = "An upgrade to "+name+" is available.  Click <a class='ca_PluginUpdateInstall' onclick='ca_pluginUpdateInstall(&quot;"+plugin+"&quot;);'>here</a> to install version "+result.version+" <i class='ca_pluginUpdateInfo fa fa-info-circle' onclick=ca_pluginUpdateShowInfo('/plugins/dynamix.plugin.manager/include/ShowChanges.php?file=%2Ftmp%2Fplugins%2F"+pluginFilename+".txt','Release&nbsp;Notes',600,900); return false;'></i>";
+					if ( ! ca_pluginUpdate_evaluateBoolean(options.noDismiss) ) {
+						HTML = HTML.concat("<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='ca_hidePluginUpdate(&quot;"+result.version+"&quot;);'></i>");
 					}
-					$(ca_PluginUpdateElement).addClass("ca_element_notice").show();
+					ca_PluginUpdateElement = options.element ? options.element : ".ca_plugin_notice";
+
+					if ( ! ca_pluginUpdate_evaluateBoolean(options.dontShow) ) {
+						if ( ! options.element ) {
+						$(".upgrade_notice").after("<div class='ca_plugin_notice ca_element_notice'>"+HTML+"</div>");
+						} else {		
+							$(ca_PluginUpdateElement).html(HTML);		
+						}
+						$(ca_PluginUpdateElement).addClass("ca_element_notice").show();
+					}
 				}
 			}
 			if ( typeof options === "function" ) {

@@ -25,7 +25,6 @@ $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 if ( is_file($communityPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
-$installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin version /var/log/plugins/$plugin.plg");
 ?>
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/community.applications/skins/Narrow/css.php")?>" >
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/community.applications/styles/awesomplete.css")?>'>
@@ -51,7 +50,12 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
-	caPluginUpdateCheck("community.applications.plg",{noDismiss:true,name:"Community Applications"});
+	caPluginUpdateCheck("community.applications.plg",{debug:true,noDismiss:true,name:"Community Applications"},function(data) {
+		if (data) {
+			var result = JSON.parse(data);
+			$("#caInstalledVersion").html(result.installedVersion);
+		}
+	});
 	
 	$("#title").append('<div id="Category" class="categoryLine ca_italic"></div>');
 	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-numeric-asc ca_staticTips' title='Sort By Downloads' data-sort='downloadsUp'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i><i class='sortIcons fa fa-sort-amount-asc ca_staticTips' title='Sort By Trend' data-sort='trendUp'></i></span><i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' aria-hidden='true'></i>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
@@ -1285,7 +1289,7 @@ function addWarning(text) {
 	</ul>
 <div class='menuHeader'>VERSION</div>
 <ul class='nonselectMenu'>
-	<li><?=$installedVersion?></li>
+	<li><span id='caInstalledVersion'></span></li>
 	<li class='caMenuItem' style='cursor:pointer;' onclick='disableSort();scrollToTop();caChangeLog();'>Change Log</li>
 </ul>
  <br><br><br>

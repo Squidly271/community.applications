@@ -17,9 +17,10 @@ download_url($url,"/tmp/plugins/$plugin");
 
 $changes = @plugin("changes","/tmp/plugins/$plugin");
 $version = @plugin("version","/tmp/plugins/$plugin");
+$installedVersion = @plugin("version","/boot/config/plugins/$plugin");
 $min = @plugin("min","/tmp/plugins/$plugin") ?: "6.4.0";
 file_put_contents("/tmp/plugins/".pathinfo($plugin, PATHINFO_FILENAME).".txt",$changes);
-if ( strcmp($version,@plugin("version","/boot/config/plugins/$plugin")) > 0 ) {
+if ( strcmp($version,$installedVersion) > 0 ) {
 	$unraid = parse_ini_file($communityPaths['unRaidVersion']);
 	if ( version_compare($min,$unraid['version'],">") ) {
 		$update = false;
@@ -29,6 +30,6 @@ if ( strcmp($version,@plugin("version","/boot/config/plugins/$plugin")) > 0 ) {
 } else {
 	$update = false;
 }
-echo json_encode(array("updateAvailable" => $update,"version" => $version,"min"=>$min,"changes"=>$changes));
+echo json_encode(array("updateAvailable" => $update,"version" => $version,"min"=>$min,"changes"=>$changes,"installedVersion"=>$installedVersion));
 
 ?>
