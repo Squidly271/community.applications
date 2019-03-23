@@ -519,6 +519,7 @@ if ( $communitySettings['dockerRunning'] ) {
 						$o['Removable'] = true;
 						$o['MyPath'] = $tempPath;
 						$o['Name'] = $tempName;
+						$o['SortName'] = $o['Name'];
 						break;
 					}
 				}
