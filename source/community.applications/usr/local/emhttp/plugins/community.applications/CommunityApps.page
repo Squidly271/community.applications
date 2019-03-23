@@ -51,7 +51,7 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
-	caPluginUpdateCheck("community.applications.plg",{debug:true,noDismiss:true,name:"Community Applications"});
+	caPluginUpdateCheck("community.applications.plg",{noDismiss:true,name:"Community Applications"});
 	
 	$("#title").append('<div id="Category" class="categoryLine ca_italic"></div>');
 	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-numeric-asc ca_staticTips' title='Sort By Downloads' data-sort='downloadsUp'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i><i class='sortIcons fa fa-sort-amount-asc ca_staticTips' title='Sort By Trend' data-sort='trendUp'></i></span><i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' aria-hidden='true'></i>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
