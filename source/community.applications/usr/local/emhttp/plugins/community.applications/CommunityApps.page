@@ -1219,6 +1219,7 @@ function addWarning(text) {
 > <span class='unpinned'> </span><span class='pinned'></span> Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br>
 > <i class='fa fa-info-circle' aria-hidden='true' style='font-size:2rem;'></i> Clicking this will display more information about the application<br>
 > <i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:2rem;'></i> Clicking this will display any warnings or extra comments about the application<br>
+> <br>Note that any and all statistics relating to an individual application (eg: Download counts) are only updated every 30 days<br>
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 <div class='notice caNotice'>
