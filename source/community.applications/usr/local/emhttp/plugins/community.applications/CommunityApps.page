@@ -1171,7 +1171,7 @@ function isTouch() {
 
 function showCredits() {
 	$(".multi_installDiv,.dockerSearch").hide();
-	clearCategory();
+	clearCategory(); clearSearchBox();
 	$.post(URL,{action:'showCredits'},function(data) {
 		if (data) {
 			updateDisplay(data);
@@ -1181,7 +1181,7 @@ function showCredits() {
 
 function showStatistics() {
 	$(".multi_installDiv,.dockerSearch").hide();
-	clearCategory();
+	clearCategory(); clearSearchBox();
 	updateDisplay("");
 	$.post(URL,{action:'statistics'},function(data) {
 		if (data) {
@@ -1191,6 +1191,8 @@ function showStatistics() {
 }
 
 function caChangeLog() {
+	$(".multi_installDiv,.dockerSearch").hide();
+	clearCategory(); clearSearchBox();
 	$.post(URL,{action:'caChangeLog'},function(data) {
 		if (data) {
 			updateDisplay(data);
