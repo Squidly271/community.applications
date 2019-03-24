@@ -50,7 +50,7 @@ data.currentpage = 1;
 var dockerSearchFlag = false;
 
 $(function(){
-	caPluginUpdateCheck("community.applications.plg",{debug:true,noDismiss:true,name:"Community Applications"},function(data) {
+	caPluginUpdateCheck("community.applications.plg",{noDismiss:true,name:"Community Applications"},function(data) {
 		if (data) {
 			var result = JSON.parse(data);
 			$("#caInstalledVersion").html(result.installedVersion);
@@ -583,7 +583,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 function populateAutoComplete() {
 	$.post(URL,{action:'populateAutoComplete'},function(data) {
 		if (data) {
-			$("#awesomepleteScript").html(data);
+			searchBoxAwesomplete.list = JSON.parse(data);
 			searchBoxAwesomplete.maxItems = 20;
 			Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch)
 			Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch)

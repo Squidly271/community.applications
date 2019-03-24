@@ -825,10 +825,8 @@ case 'populateAutoComplete':
 			$autoComplete[strtolower($repo[0])] = $repo[0];
 		}
 	}
-	foreach ($autoComplete as $auto) {
-		$autoScript .= "'$auto',";
-	}
-	echo "<script>searchBoxAwesomplete.list = [".rtrim($autoScript,",")."];</script>";
+
+	echo json_encode(array_values($autoComplete));
 	break;
 
 #######################################
