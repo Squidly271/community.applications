@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.02.21">
-<!ENTITY md5       "db278483efbb1b87d4f857f618603121">
+<!ENTITY version   "2019.03.27">
+<!ENTITY md5       "d71cc889e0f67bdc73de4f3921ea5580">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,35 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.03.27
+- Fixed: Clear search bar when going to Stats, changelog, etc
+- Fixed: Apps with branches would only install from the popup
+- Fixed: Renamed applications wouldn't appear in alphabetical order on previous apps
+- Added: API for plugin authors to use for display of plugin update notifications
+- Added: Graphs on app popups for Trends, Downloads per month, total downloads
+- Removed: Ability to search dockerHub by simply clicking on the name of an application
+- Added: Display the rank of an application based on its trend
+- Misc code cleanup, faster internal searches, etc
+- Fixed: Autocomplete box wouldn't close on some types of searches
+- Added: Clicking on the app's icon will bring up it's info popup
+- Fixed: Some bugs with handling of http only icons when https is accessing the server and CA's settings are set to not display http
+- Fixed: More consistent scrolling of displays
+- Added: Animate all page transitions
+- Fixed: Selecting a special category within stats would leave Stats menu selected
+- Updated credits to include 3rd party libraries used
+- Added: Link to dockerHub page for all apps on the popup
+- Fixed: Certain applications would have moderator comments listed twice on the warning icon
+- Fixed: Popup would crash if displaying a plugin and another browser tab had updated the displays
+- Changed: Always show installed applications within available application lists
+- Fixed: Obscenely long search terms would corrupt the display
+- Changed: Move search bar to the title bar
+- Fixed: Sort icons wouldn't disappear when going to a docker search
+- Changed: Multiple warning banners from CA will now all display within same banner
+- Updated: Awesomplete library
+- Fixed: "Flicker" when displaying spinner
+- Changed: Do not display CA itself in the list of updated applications
+- Added: Display if a plugin has an update available on its popup
+
 ###2019.02.21
 - Fixed: Under certain circumstances displays could get corrupted
 - Changed: "Reinstall Default" for docker apps optional (enable in settings)
