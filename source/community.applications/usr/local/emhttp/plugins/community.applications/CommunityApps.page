@@ -630,7 +630,7 @@ function dockerSearch(pageNumber) {
 	$("#Category").html("DockerHub Search for "+filter+" <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
 	mySpinner();
-	animateCSS(".ca_templatesDisplay","fadeOut"+directionOut,function() {
+	animateCSS(getAnimateClass(),"fadeOut"+directionOut,function() {
 		$("#templates_content").html("");
 		$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(data) {
 			if (data) {

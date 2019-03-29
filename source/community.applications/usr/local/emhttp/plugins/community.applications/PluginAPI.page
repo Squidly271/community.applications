@@ -79,7 +79,7 @@ function caPluginUpdateCheck(plugin,options=[],callback) {
 				callback = options;
 			}
 			if ( typeof callback === "function" ) {
-				eval(callback(data));
+				callback(data);
 			}
 		}
 	});
