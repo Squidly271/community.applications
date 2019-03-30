@@ -216,34 +216,3 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .caNotice {display:none;margin-bottom:10px;}
 .graphLink {cursor:pointer;text-decoration:none;}
 .caChart {display:none;border:1px solid #c2c8c8;border-radius:4px 4px 4px 4px;}
-/*!
- * Excerpts from animate.css - https://daneden.github.io/animate.css/
- * Version - 3.7.0
- * Licensed under the MIT license - http://opensource.org/licenses/MIT
- *
- * Copyright (c) 2018 Daniel Eden
- */
-
-@-webkit-keyframes fadeInLeft {from {opacity: 0;-webkit-transform: translate3d(-100%, 0, 0);transform: translate3d(-100%, 0, 0);}to {opacity: 1;-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0);}}
-@keyframes fadeInLeft {from {opacity: 0;-webkit-transform: translate3d(-100%, 0, 0);transform: translate3d(-100%, 0, 0);}to {opacity: 1;-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0);}}
-.fadeInLeft {-webkit-animation-name: fadeInLeft;animation-name: fadeInLeft;}
-@-webkit-keyframes fadeInRight {from {opacity: 0;-webkit-transform: translate3d(100%, 0, 0);transform: translate3d(100%, 0, 0);}to {opacity: 1;-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0);}}
-@keyframes fadeInRight {from {opacity: 0;-webkit-transform: translate3d(100%, 0, 0);transform: translate3d(100%, 0, 0);}to {opacity: 1;-webkit-transform: translate3d(0, 0, 0);transform: translate3d(0, 0, 0);}}
-.fadeInRight {-webkit-animation-name: fadeInRight;animation-name: fadeInRight;}
-@keyframes fadeOutLeft {from {opacity: 1;}to {opacity: 0;-webkit-transform: translate3d(-100%, 0, 0);transform: translate3d(-100%, 0, 0);}}
-.fadeOutLeft {-webkit-animation-name: fadeOutLeft;animation-name: fadeOutLeft;}
-@keyframes fadeOutRight {from {opacity: 1;}to {opacity: 0;-webkit-transform: translate3d(100%, 0, 0);transform: translate3d(100%, 0, 0);}}
-.fadeOutRight {-webkit-animation-name: fadeOutRight;animation-name: fadeOutRight;}
-.animated {-webkit-animation-duration: 1s;animation-duration: 1s;-webkit-animation-fill-mode: both;animation-fill-mode: both;}
-.animated.infinite {-webkit-animation-iteration-count: infinite;animation-iteration-count: infinite;}
-.animated.delay-1s {-webkit-animation-delay: 1s;animation-delay: 1s;}
-.animated.delay-2s {-webkit-animation-delay: 2s;animation-delay: 2s;}
-.animated.delay-3s {-webkit-animation-delay: 3s;animation-delay: 3s;}
-.animated.delay-4s {-webkit-animation-delay: 4s;animation-delay: 4s;}
-.animated.delay-5s {-webkit-animation-delay: 5s;animation-delay: 5s;}
-.animated.fast {-webkit-animation-duration: 800ms;animation-duration: 800ms;}
-.animated.faster {-webkit-animation-duration: 500ms;animation-duration: 500ms;}
-.animated.fastest {-webkit-animation-duration: 300ms;animation-duration: 300ms;}
-.animated.slow {-webkit-animation-duration: 2s;animation-duration: 2s;}
-.animated.slower {-webkit-animation-duration: 3s;animation-duration: 3s;}
-@media (print), (prefers-reduced-motion) {.animated {-webkit-animation: unset !important;animation: unset !important;-webkit-transition: none !important;transition: none !important;}
