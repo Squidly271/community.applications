@@ -352,27 +352,24 @@ function changePage(pageNumber) {
 	data.currentpage = pageNumber;
 
 	animateCSS(".ca_templatesDisplay","fadeOut"+directionOut,function() {
-		$(".ca_templatesDisplay").html("");
+		var oldHeight = $(".ca_templatesDisplay").height();
+		$(".ca_templatesDisplay").css("height",oldHeight).html("");
 		hideSortIcons();
    	$.post(URL,{action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected},function(data3) {
 			if (data3) {
 				updateDisplay(data3,directionIn);
+				$(".ca_templatesDisplay").css("height","auto");
 			}
 		});
 	});
 }
 
 function animateCSS(element, animationName, callback) {
-	const node = document.querySelector(element)
-	node.classList.add('animated', animationName,'fastest')
-
-	function handleAnimationEnd() {
-		node.classList.remove('animated', animationName)
-		node.removeEventListener('animationend', handleAnimationEnd)
-
-		if (typeof callback === 'function') callback()
+	var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+	$(element).addClass('animated fastest ' + animationName);
+	if ( typeof callback === 'function' ) {
+		$(element).one(animationEnd,function() { callback(); });
 	}
-	node.addEventListener('animationend', handleAnimationEnd)
 }
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
