@@ -248,9 +248,7 @@ function updateContent(button) {
 }
 
 function enableSortIcon(icon) {
-	$(".sortIcons").each(function() {
-		$(this).removeClass("enabledIcon");
-	});
+	$(".sortIcons").removeClass("enabledIcon");
 	$(icon).addClass("enabledIcon");
 }
 
@@ -351,25 +349,15 @@ function changePage(pageNumber) {
 	var selected = data.selected;
 	data.currentpage = pageNumber;
 
-	animateCSS(".ca_templatesDisplay","fadeOut"+directionOut,function() {
-		var oldHeight = $(".ca_templatesDisplay").height();
-		$(".ca_templatesDisplay").css("height",oldHeight).html("");
-		hideSortIcons();
-   	$.post(URL,{action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected},function(data3) {
-			if (data3) {
-				updateDisplay(data3,directionIn);
-				$(".ca_templatesDisplay").css("height","auto");
-			}
-		});
+	var oldHeight = $(".ca_templatesDisplay").height();
+	$(".ca_templatesDisplay").css("height",oldHeight).html("");
+	hideSortIcons();
+	$.post(URL,{action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected},function(data3) {
+		if (data3) {
+			updateDisplay(data3,directionIn);
+			$(".ca_templatesDisplay").css("height","auto");
+		}
 	});
-}
-
-function animateCSS(element, animationName, callback) {
-	var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-	$(element).addClass('animated fastest ' + animationName);
-	if ( typeof callback === 'function' ) {
-		$(element).one(animationEnd,function() { callback(); });
-	}
 }
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
@@ -627,13 +615,11 @@ function dockerSearch(pageNumber) {
 	$("#Category").html("DockerHub Search for "+filter+" <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
 	mySpinner();
-	animateCSS(getAnimateClass(),"fadeOut"+directionOut,function() {
-		$("#templates_content").html("");
-		$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(data) {
-			if (data) {
-				updateDisplay(data,directionIn);
-			}
-		});
+	$("#templates_content").html("");
+	$.post(URL,{action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(data) {
+		if (data) {
+			updateDisplay(data,directionIn);
+		}
 	});
 }
 
@@ -1043,27 +1029,13 @@ function installMulti() {
 
 function updateDisplay(data,direction="") {
 	if ( direction == "" ) {
-		animateCSS(getAnimateClass(),"fadeOutLeft",function() {
-			$("#templates_content").html(data);
-			handle_HTTP_icons();
-			animateCSS(getAnimateClass(),"fadeInRight",function() {
-				afterUpdateDisplay();
-			});
-		});
+		$("#templates_content").html(data);
+		handle_HTTP_icons();
+		afterUpdateDisplay();
 	} else {
 		$("#templates_content").html(data);
 		handle_HTTP_icons();
-		animateCSS(getAnimateClass(),"fadeIn"+direction,function() {
-			afterUpdateDisplay();
-		});
-	}
-}
-
-function getAnimateClass() {
-	if ( $(".ca_templatesDisplay").length ) {
-		return ".ca_templatesDisplay";
-	} else {
-		return "#templates_content";
+		afterUpdateDisplay();
 	}
 }
 
