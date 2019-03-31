@@ -822,7 +822,7 @@ case 'populateAutoComplete':
 			$autoComplete[strtolower($template['Name'])] = $template['Name'];
 			$autoComplete[strtolower($template['Author'])] = $template['Author'];
 			$repo = explode("'",$template['Repo']);
-			$autoComplete[strtolower($repo[0])] = $repo[0];
+			$autoComplete[$template['Repo']] = $template['Repo'];
 		}
 	}
 

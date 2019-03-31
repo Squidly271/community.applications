@@ -568,7 +568,12 @@ function getContent(init,category,description,newApp,startupDisplay) {
 function populateAutoComplete() {
 	$.post(URL,{action:'populateAutoComplete'},function(data) {
 		if (data) {
-			searchBoxAwesomplete.list = JSON.parse(data);
+			try {
+				searchBoxAwesomplete.list = JSON.parse(data);
+			} catch(objError) {
+				$("#debugging").html(data);
+				return;
+			}
 			searchBoxAwesomplete.maxItems = 20;
 			Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch)
 			Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch)
@@ -1278,5 +1283,5 @@ function addWarning(text) {
 </div>
 <span id='miscScript'></span><span id='awesomepleteScript'></span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
-<span id='debugging'></span>
+<div id='debugging'></div>
 <div class='spinner fixed'></div>

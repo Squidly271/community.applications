@@ -493,7 +493,7 @@ function toNumericArray($template) {
     $template['display_multi_install'],     #75
     $template['display_DonateImage'],      #76
     $template['display_dockerBeta'],        #77
-"<span class='ca_applicationName'>".str_replace("-"," ",$template['display_dockerName'])."</span>{$template['display_Private']}<br><span class='ca_author'>{$template['display_author']}</span><br><span class='ca_categories'>{$template['Category']}</span>",  #78
+		"<span class='ca_applicationName'>".str_replace("-"," ",$template['display_dockerName'])."</span>{$template['display_Private']}<br><span class='ca_author'>{$template['display_author']}</span><br><span class='ca_categories'>{$template['Category']}</span>",  #78
     $template['display_faSupport'],  #79
     $template['display_faProject'],     #80
     $template['display_iconOnly'],   #81
