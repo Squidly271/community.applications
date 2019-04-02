@@ -95,7 +95,7 @@ Hide Incompatible Applications:
 
 Enable Reinstall Default:
 : <select name='defaultReinstall' size='1'>
-	<?=mk_option($cfg['defaultReinstall'],'fase','No (default)')?>
+	<?=mk_option($cfg['defaultReinstall'],'false','No (default)')?>
 	<?=mk_option($cfg['defaultReinstall'],'true',"Yes")?>
 	</select>
 	

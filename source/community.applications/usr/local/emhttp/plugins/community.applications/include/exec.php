@@ -821,7 +821,6 @@ case 'populateAutoComplete':
 		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $communitySettings['hideDeprecated'] == "true") && ($template['Compatible'] || $communitySettings['hideIncompatible'] != "true") ) {
 			$autoComplete[strtolower($template['Name'])] = $template['Name'];
 			$autoComplete[strtolower($template['Author'])] = $template['Author'];
-			$repo = explode("'",$template['Repo']);
 			$autoComplete[$template['Repo']] = $template['Repo'];
 		}
 	}
@@ -1099,6 +1098,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
 			foreach ($file as $template) {
+				if ( ! $template['Compatible'] == "true" && $communitySettings['hideIncompatible'] == "true" ) continue;
 				if ( $template['FirstSeen'] > 1538357652 ) {
 					if ( $template['BranchName'] ) continue;
 					$appOfDay[] = $template['ID'];

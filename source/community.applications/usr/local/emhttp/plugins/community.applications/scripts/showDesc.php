@@ -48,12 +48,7 @@ $(function() {
 	},250);
 	$.post("/plugins/community.applications/scripts/getPopupDescription.php",{appName:'<?=$appName?>',appPath:'<?=$appNumber?>',csrf_token:'<?=$csrf_token?>'},function(data) {
 		if (data) {
-			try {
-				var descData = JSON.parse(data);
-			} catch(objError) {
-				$("#popUpContent").html(data);
-				return;
-			}
+			var descData = JSON.parse(data);
 			$("#popUpContent").hide();
 
 			$("#popUpContent").html(descData.description);
