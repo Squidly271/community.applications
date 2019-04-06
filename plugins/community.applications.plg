@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.04.01">
-<!ENTITY md5       "49126a0e5f4ba3be1781c509e8a67ed6">
+<!ENTITY version   "2019.04.06">
+<!ENTITY md5       "05fb893213f20f40330bf445c647ac1f">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.04.06
+- Fixed: Regression Error - Plugins were not getting support thread populated in Plugins Tab
+
 ###2019.04.01
 - Fixed: Incompatible applications would appear in New Apps
 - Changed: Display entire Repository name in autocomplete drop down
