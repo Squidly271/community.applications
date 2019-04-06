@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.04.06">
-<!ENTITY md5       "05fb893213f20f40330bf445c647ac1f">
+<!ENTITY version   "2019.04.06a">
+<!ENTITY md5       "070a0c357c17d83d7f3633c314ff3bf9">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -15,6 +15,7 @@
 <CHANGES>
 ###2019.04.06
 - Fixed: Regression Error - Plugins were not getting support thread populated in Plugins Tab
+- Fixed: Plugin update API would not work if plugins had never been checked for updates
 
 ###2019.04.01
 - Fixed: Incompatible applications would appear in New Apps

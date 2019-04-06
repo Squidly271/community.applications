@@ -11,6 +11,7 @@ if ( ! $plugin ) {
 	return;
 }
 
+exec("mkdir -p /tmp/plugins");
 @unlink("/tmp/plugins/$plugin");
 $url = @plugin("pluginURL","/boot/config/plugins/$plugin");
 download_url($url,"/tmp/plugins/$plugin");
