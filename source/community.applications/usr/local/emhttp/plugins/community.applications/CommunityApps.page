@@ -92,7 +92,8 @@ $(function(){
 				}
 			}
 		}
-	}
+	}	
+
 
 	$('.ca_toolsView').tooltipster({
 		trigger: 'hover',
@@ -128,7 +129,15 @@ $(function(){
 			doSearch();
 		}
 	});
-
+	
+	$('.mainArea').on("click",'.ca_multiselect',function() {enableMultiInstall();});
+	$('.mainArea').on("click",".ca_appPopup",function() {
+		var appnumber = $(this).data("appnumber");
+		var apppath = $(this).data("apppath");
+		var appname = $(this).data("appname");
+		appname = stripTags(appname);
+		showDesc_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,"checkForPluginInstallRequested()");
+	});
 	$(".initDockerSearch").click(function()     { initDockerSearch(); });
 	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
@@ -280,10 +289,6 @@ function stripTags(string) {
 }
 
 function setToolTip() {
-	$('.ca_multiselect').click( function() {
-		enableMultiInstall();
-	});
-
 	$('.ca_tooltip').tooltipster({
 		contentAsHTML:true,
 		delay:[1000,1],
@@ -301,14 +306,6 @@ function setToolTip() {
 		triggerOpen:{click: true},
 		triggerClose:{click:true,scroll:true,mouseleave:true}
 	});
-	$('.ca_appPopup').click(function() {
-		var appnumber = $(this).data("appnumber");
-		var apppath = $(this).data("apppath");
-		var appname = $(this).data("appname");
-		appname = stripTags(appname);
-		showDesc_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,"checkForPluginInstallRequested()");
-	});
-	myCloseAlert();
 }
 
 // Wait for the showDesc modal to close before opening another to install plugin
@@ -1037,22 +1034,13 @@ function installMulti() {
 	});
 }
 
-function updateDisplay(data,direction="") {
-	if ( direction == "" ) {
-		$("#templates_content").html(data);
-		handle_HTTP_icons();
-		afterUpdateDisplay();
-	} else {
-		$("#templates_content").html(data);
-		handle_HTTP_icons();
-		afterUpdateDisplay();
-	}
-}
-
-function afterUpdateDisplay() {
+function updateDisplay(data) {
+	$("#templates_content").html(data);
+	handle_HTTP_icons();
 	setToolTip();
 	enableSearch();
 	saveState();
+	myCloseAlert();
 }
 
 function handle_HTTP_icons() {
