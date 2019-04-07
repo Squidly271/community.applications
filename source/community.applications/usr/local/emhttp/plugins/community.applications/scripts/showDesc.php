@@ -65,7 +65,7 @@ $(function() {
 			$('img').on("error",function() {
 				var origSource = $(this).attr('src');
 				var newSource = origSource.replace("https://","http://");
-				if ( document.referrer.startsWith("https") && "<?=$communitySettings['secureImage']?>" == "secure" ) {
+				if ( document.referrer.startsWith("https") ) {
 					$(this).attr('src',"https://github.com/Squidly271/community.applications/raw/master/webImages/no_https.png");
 				} else {
 					$(this).attr('src',newSource);
