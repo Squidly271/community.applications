@@ -107,6 +107,16 @@ $(function(){
 			}
 		}
 	});
+	$('.ca_staticTips').tooltipster({
+		contentAsHTML:true,
+		delay:[1000,1],
+		timer:15000,
+		animation:'none',
+		arrow:true,
+		trigger:'custom',
+		triggerOpen:{mouseenter: true},
+		triggerClose:{click:true,scroll:true,mouseleave:true}
+	});
 
 	$('.categoryMenu').on("click",function() {
 		var selectedCategory = $(this).attr("data-category");
@@ -274,7 +284,7 @@ function setToolTip() {
 		enableMultiInstall();
 	});
 
-	$('.ca_tooltip,.ca_staticTips').tooltipster({
+	$('.ca_tooltip').tooltipster({
 		contentAsHTML:true,
 		delay:[1000,1],
 		timer:15000,
@@ -1048,8 +1058,11 @@ function afterUpdateDisplay() {
 function handle_HTTP_icons() {
 	$('img').on("error",function() {
 		var origSource = $(this).attr('src');
-		if ( document.referrer.startsWith("https") && "<?=$cfg['secureImage']?>" == "secure" ) {
+		if ( document.referrer.startsWith("https") ) {
 			$(this).attr('src',"https://github.com/Squidly271/community.applications/raw/master/webImages/no_https.png");
+			$(this).on("error",function() {
+				$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+			});
 		} else {
 			var newSource = origSource.replace("https://","http://");
 			$(this).attr('src',newSource);

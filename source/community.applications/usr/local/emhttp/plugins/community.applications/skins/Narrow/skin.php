@@ -12,49 +12,21 @@
 #                                                          #
 ############################################################
 function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
-  global $communityPaths, $separateOfficial, $officialRepo, $communitySettings;
+  global $communityPaths, $communitySettings;
 
   $file = readJsonFile($communityPaths['community-templates-displayed']);
-  $officialApplications = is_array($file['official']) ? $file['official'] : array();
   $communityApplications = is_array($file['community']) ? $file['community'] : array();
-  $totalApplications = count($officialApplications) + count($communityApplications);
-  $navigate = array();
+  $totalApplications = count($communityApplications);
 
-  if ( $separateOfficial ) {
-    if ( count($officialApplications) ) {
-      $navigate[] = "doesn't matter what's here -> first element gets deleted anyways";
-      $display = "<div class='separateOfficial'>";
+  $display = ( $totalApplications ) ? my_display_apps($communityApplications,$pageNumber,$selectedApps,$startup) : "<div class='ca_NoAppsFound'></div>";
 
-      $logos = readJsonFile($communityPaths['logos']);
-      $display .= $logos[$officialRepo] ? "<img src='".$logos[$officialRepo]."' style='width:4.8rem'>&nbsp;&nbsp;" : "";
-      $display .= "$officialRepo</div><br>";
-      $display .= my_display_apps($officialApplications,1,true,$selectedApps,$startup);
-    }
-  }
-  if ( count($communityApplications) ) {
-    if ( $separateOfficial && count($officialApplications) ) {
-      $navigate[] = "<a href='#COMMUNITY'>Community Supported Applications</a>";
-      $display .= "<div class='separateOfficial' id='COMMUNITY'>Community Supported Applications</div><br>";
-    }
-    $display .= my_display_apps($communityApplications,$pageNumber,false,$selectedApps,$startup);
-  }
-  unset($navigate[0]);
-
-  if ( count($navigate) ) {
-    $bookmark = "Jump To: ".implode("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",$navigate);
-  }
-  $display .= ( $totalApplications == 0 ) ? "<div class='ca_NoAppsFound'></div>" : "";
-
-  $totalApps = "$totalApplications";
-
-  echo $bookmark;
   echo $display;
 }
 
 # skin specific PHP
 #my_display_apps(), getPageNavigation(), displaySearchResults() must accept all parameters
 #note that many template entries in my_display_apps() are not actually used in the skin, but are present for future possible use.
-function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=false,$startup=false) {
+function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false) {
   global $communityPaths, $communitySettings, $plugin, $displayDeprecated, $sortOrder;
 
   $viewMode = "detail";
@@ -81,13 +53,11 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
     usort($file,"mySort");
   }
 
-  if ( ! $officialFlag ) {
-    $displayHeader .= getPageNavigation($pageNumber,count($file),false)."<br>";
-  }
-
+	$displayHeader .= getPageNavigation($pageNumber,count($file),false)."<br>";
+  
   $columnNumber = 0;
   $appCount = 0;
-  $startingApp = $officialFlag ? 1 : ($pageNumber -1) * $communitySettings['maxPerPage'] + 1;
+  $startingApp = ($pageNumber -1) * $communitySettings['maxPerPage'] + 1;
   $startingAppCounter = 0;
 
   $displayedTemplates = array();
@@ -284,14 +254,12 @@ function my_display_apps($file,$pageNumber=1,$officialFlag=false,$selectedApps=f
 # Entries created.  Now display it
     $ct .= vsprintf($displayTemplate,toNumericArray($template));
     $count++;
-    if ( ! $officialFlag && ($count == $communitySettings['maxPerPage']) ) {
+    if ( $count == $communitySettings['maxPerPage'] ) {
       break;
     }
   }
   $ct .= $skin[$viewMode]['footer'];
-  if ( ! $officialFlag ) {
-    $ct .= getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
-  }
+  $ct .= getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
   if ( $communitySettings['dockerSearch'] != "yes" ) {
     $ct .= "<script>$('.dockerSearch').hide();</script>";
   }

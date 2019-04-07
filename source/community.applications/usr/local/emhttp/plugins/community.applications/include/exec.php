@@ -34,10 +34,6 @@ if ( ! is_file($communityPaths['warningAccepted']) ) {
 	$communitySettings['NoInstalls'] = true;
 }
 
-if ( $communitySettings['favourite'] != "None" ) {
-	$officialRepo = str_replace("*","'",$communitySettings['favourite']);
-	$separateOfficial = true;
-}
 $DockerClient = new DockerClient();
 $DockerTemplates = new DockerTemplates();
 
@@ -120,7 +116,7 @@ case 'get_content':
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
 				$sortOrder['sortBy'] = "noSort";
-				echo my_display_apps($displayApplications['community'],"1",$runningDockers,$imagesDocker);
+				echo my_display_apps($displayApplications['community'],"1");
 				break;
 			} else {
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
@@ -131,8 +127,6 @@ case 'get_content':
 	}
 	$display             = array();
 	$official            = array();
-
-	$communitySettingsBackup = $communitySettings;
 
 	foreach ($file as $template) {
 		$template['NoInstall'] = $noInstallComment;
@@ -176,18 +170,8 @@ case 'get_content':
 			} else continue;
 		}
 
-		if ( $separateOfficial ) {
-			if ( $template['RepoName'] == $officialRepo ) {
-				$official[] = $template;
-			} else {
-				$display[] = $template;
-			}
-		} else {
-			$display[] = $template;
-		}
+		$display[] = $template;
 	}
-	$communitySettings = $communitySettingsBackup; # restore backup settings
-	$displayApplications['official']  = $official;
 	$displayApplications['community'] = $display;
 
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
