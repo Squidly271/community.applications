@@ -93,6 +93,14 @@ $(function() {
 						labels: descData.trendLabel
 					},
 					options: {
+						title: {
+							display: true,
+							text: "Trend Per Month",
+							fontSize: 16
+						},
+						legend: {
+							display: false
+						},
 						events: ["mousemove","mouseout"],
 						scales: {
 							yAxes: [{
@@ -100,7 +108,7 @@ $(function() {
 									callback: function(label,index,labels) {
 										return label + " %";
 									},
-									beginAtZero: true
+									precision: 0
 								}
 							}]
 						}
@@ -121,6 +129,14 @@ $(function() {
 						labels: descData.downloadLabel
 					},
 					options: {
+						title: {
+							display: true,
+							text: "Downloads Per Month",
+							fontSize: 16
+						},
+						legend: {
+							display: false
+						},
 						events: ["mousemove","mouseout"],
 						scales: {
 							yAxes: [{
@@ -148,6 +164,14 @@ $(function() {
 						labels: descData.totaldownLabel
 					},
 					options: {
+						title: {
+							display: true,
+							text: "Total Downloads",
+							fontSize: 16
+						},
+						legend: {
+							display: false
+						},
 						events: ["mousemove","mouseout"],
 						scales: {
 							yAxes: [{
