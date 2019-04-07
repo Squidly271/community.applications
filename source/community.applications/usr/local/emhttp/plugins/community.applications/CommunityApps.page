@@ -217,9 +217,7 @@ function initilizeMenu() {
 		if ( ! $(this).parent().hasClass("subCategory") ) {
 			$(".subCategory").hide();
 		}
-		$(".caMenuItem").each(function() {
-			$(this).removeClass("selectedMenu");
-		});
+		$(".caMenuItem").removeClass("selectedMenu");
 		$(this).addClass("selectedMenu");
 		$(this).next().show();
 	});
@@ -340,7 +338,6 @@ function changeCategory(button,subSwitch) {
 	hideSortIcons();
 	clearCategory();
 	$(".multi_installDiv").hide();
-	scrollToTop();
 	getContent(false,category,description,false);
 }
 
@@ -787,7 +784,7 @@ function deletePrivateApp(path,name,author) {
 }
 
 function myTrim(x) {
-	return x.replace(/^\s+|\s+$/gm,'');
+	return $.trim(x);
 }
 
 function uninstallDocker(application,humanName) {
