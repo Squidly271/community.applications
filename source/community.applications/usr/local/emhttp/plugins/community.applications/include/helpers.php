@@ -446,7 +446,7 @@ function categoryList($cat,$popUp = false) {
 	$cat = str_replace(array(":,",": "," "),",",$cat);
 	$cat = rtrim($cat,":");
 	$all_categories = explode(",",$cat);
-	
+
 	$categoryList = $popUp ? $all_categories : array_slice($all_categories,0,4);
 
 	if ( count($all_categories) > count($categoryList) ) {
@@ -508,7 +508,7 @@ function fixDescription($Description) {
 
 function formatTags($leadTemplate,$tabMode="_self") {
 	global $communityPaths;
-	
+
 	$file = readJsonFile($communityPaths['community-templates-info']);
 	$template = $file[$leadTemplate];
 	$childTemplates = $file[$leadTemplate]['BranchID'];

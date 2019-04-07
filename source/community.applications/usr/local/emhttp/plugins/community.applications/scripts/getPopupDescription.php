@@ -307,7 +307,7 @@ if ( is_array($template['trends']) ) {
 	if ( count($template['trends']) < count($template['downloadtrend']) ) {
 		array_shift($template['downloadtrend']);
 	}
-		
+
 	$chartLabel = array_fill(0,count($template['trends']),"");
 	if ( is_array($template['downloadtrend']) ) {
 		#get what the previous download value would have been based upon the trend

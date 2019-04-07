@@ -894,9 +894,9 @@ function DownloadApplicationFeed() {
 		$o['RepoName']      = $o['Repo'];
 		$o['SortAuthor']    = $o['Author'];
 		$o['SortName']      = $o['Name'];
-		
+
 		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
-		
+
 		if ( $o['PluginURL'] ) {
 			$o['Author']        = $o['PluginAuthor'];
 			$o['Repository']    = $o['PluginURL'];

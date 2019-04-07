@@ -26,6 +26,6 @@ PRIMARY APPFEED
 BACKUP APPFEED
 <?endif;?>
 </h3>
-(<?=$source?>)<br><br> switch to <a href='/Apps/Appfeed?source=<?if (!$backup):?>backup<?endif;?>' target='_self'><?if (!$backup):?>Backup <?else:?>Primary <?endif;?>AppFeed</a> 
+(<?=$source?>)<br><br> switch to <a href='/Apps/Appfeed?source=<?if (!$backup):?>backup<?endif;?>' target='_self'><?if (!$backup):?>Backup <?else:?>Primary <?endif;?>AppFeed</a>
 <br><br>
 <code><?=$appfeed?></code>

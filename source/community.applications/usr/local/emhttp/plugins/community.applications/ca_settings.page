@@ -57,7 +57,7 @@ Disable mobile UI enhancements:
 	<?=mk_option($cfg['mobileAllowed'],"true", "No (default)")?>
 	<?=mk_option($cfg['mobileAllowed'],"false", "Yes")?>
 	</select>
-	
+
 > If you have problems with swiping to change pages, then disable the mobile UI enhancements
 
 
@@ -68,7 +68,7 @@ Hide Deprecated Applications:
 	</select>
 
 > This setting hides deprecated applications from the list of available apps.  Deprecated apps will still however display within the <em>installed</em> and <em>previous</em> apps sections.
-	
+
 Hide Incompatible Applications:
 : <select name='hideIncompatible' size='1'>
 	<?=mk_option($cfg['hideIncompatible'], "true", "Yes (default)")?>
@@ -82,7 +82,7 @@ Enable Reinstall Default:
 	<?=mk_option($cfg['defaultReinstall'],'false','No (default)')?>
 	<?=mk_option($cfg['defaultReinstall'],'true',"Yes")?>
 	</select>
-	
+
 > This option enables another button on the cards and popups which will allow you to reinstall an installed application using it's default template values.  This option can be confusing at times, and is only generally used if you wish to install and have an application running twice simultaneously
 
 Enable additional search results from dockerHub?

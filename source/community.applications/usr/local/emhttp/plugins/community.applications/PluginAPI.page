@@ -37,10 +37,10 @@ function ca_pluginUpdateInstall(plugin) {
 }
 
 function ca_pluginUpdateShowInfo(cmd,title,height,width,load,func,id) {
-  // open shadowbox window (run in foreground)
-  var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
-  var options = load ? (func ? {modal:true,onClose:function(){setTimeout(func+'('+'"'+(id||'')+'")',0);}} : {modal:false,onClose:function(){location=location;}}) : {modal:false};
-  Shadowbox.open({content:run, player:'iframe', title:title, height:Math.min(height,screen.availHeight), width:Math.min(width,screen.availWidth), options:options});
+	// open shadowbox window (run in foreground)
+	var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
+	var options = load ? (func ? {modal:true,onClose:function(){setTimeout(func+'('+'"'+(id||'')+'")',0);}} : {modal:false,onClose:function(){location=location;}}) : {modal:false};
+	Shadowbox.open({content:run, player:'iframe', title:title, height:Math.min(height,screen.availHeight), width:Math.min(width,screen.availWidth), options:options});
 }
 
 function ca_pluginUpdate_evaluateBoolean(str) {
@@ -51,10 +51,10 @@ function ca_pluginUpdate_evaluateBoolean(str) {
 function caPluginUpdateCheck(plugin,options=[],callback) {
 	ca_PluginUpdatePLG = plugin;
 	pluginFilename = plugin.substr(0, plugin.lastIndexOf("."));
-  $.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'checkPlugin',options:{plugin:plugin}},function(data) {
+	$.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'checkPlugin',options:{plugin:plugin}},function(data) {
 		if (data) {
 			var result = JSON.parse(data);
-			
+
 			if ( options.debug == true ) result.updateAvailable = true;
 			if ( $.cookie(plugin) != result.version ) {
 				if ( result.updateAvailable ) {
@@ -68,8 +68,8 @@ function caPluginUpdateCheck(plugin,options=[],callback) {
 					if ( ! ca_pluginUpdate_evaluateBoolean(options.dontShow) ) {
 						if ( ! options.element ) {
 						$(".upgrade_notice").after("<div class='ca_plugin_notice ca_element_notice'>"+HTML+"</div>");
-						} else {		
-							$(ca_PluginUpdateElement).html(HTML);		
+						} else {
+							$(ca_PluginUpdateElement).html(HTML);
 						}
 						$(ca_PluginUpdateElement).addClass("ca_element_notice").show();
 					}
