@@ -99,7 +99,8 @@ $(function() {
 								ticks: {
 									callback: function(label,index,labels) {
 										return label + " %";
-									}
+									},
+									beginAtZero: true
 								}
 							}]
 						}
