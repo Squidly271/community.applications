@@ -16,7 +16,7 @@ $backup = $_GET['source'] == "backup";
 $source = $backup ? $communityPaths['application-feedBackup'] : $communityPaths['application-feed'];
 $appfeed = download_json($source,"{$communityPaths['tempFiles']}/appfeed-check.json");
 $appfeed = str_replace("\n","<br>",print_r($appfeed,true));
-$appfeed = str_replace(" ","&nbsp;",$appfeed);
+$appfeed = str_replace("    ","<span style='padding-right:15px;'></span>",$appfeed);
 @unlink("{$communityPaths['tempFiles']}/appfeed-check.json");
 ?>
 <h3>
@@ -28,4 +28,4 @@ BACKUP AppFeed
 </h3>
 (<?=$source?>)<br><br> switch to <a href='/Apps/Appfeed?source=<?if (!$backup):?>backup<?endif;?>' target='_self'><?if (!$backup):?>Backup <?else:?>Primary <?endif;?>AppFeed</a> 
 <br><br>
-<font face='courier'><?=$appfeed?></font>
+<code><?=$appfeed?></code>

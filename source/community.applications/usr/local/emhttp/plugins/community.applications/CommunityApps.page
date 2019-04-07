@@ -1152,6 +1152,7 @@ function showStatistics() {
 	$(".multi_installDiv,.dockerSearch").hide();
 	clearCategory(); clearSearchBox();
 	updateDisplay("");
+	mySpinner();
 	$.post(URL,{action:'statistics'},function(data) {
 		if (data) {
 			updateDisplay(data);
