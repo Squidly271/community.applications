@@ -23,7 +23,7 @@ $appfeed = str_replace("    ","<span style='padding-right:15px;'></span>",$appfe
 <? if ( ! $backup ):?>
 PRIMARY APPFEED
 <?else:?>
-BACKUP AppFeed
+BACKUP APPFEED
 <?endif;?>
 </h3>
 (<?=$source?>)<br><br> switch to <a href='/Apps/Appfeed?source=<?if (!$backup):?>backup<?endif;?>' target='_self'><?if (!$backup):?>Backup <?else:?>Primary <?endif;?>AppFeed</a> 
