@@ -342,11 +342,7 @@ function checkInstalledPlugin($template) {
 	if ( ! file_exists("/var/log/plugins/$pluginName") ) return false;
 	$dupeList = readJsonFile($communityPaths['pluginDupes']);
 	if ( ! $dupeList[$pluginName] ) return true;
-	if ( strtolower(trim(plugin("pluginURL","/var/log/plugins/$pluginName"))) != strtolower(trim($template['PluginURL']))) {
-		return false;
-	} else {
-		return true;
-	}
+	return strtolower(trim(plugin("pluginURL","/var/log/plugins/$pluginName"))) != strtolower(trim($template['PluginURL']));
 }
 
 ###########################################################
@@ -475,14 +471,6 @@ function myStopContainer($id) {
 	global $DockerClient;
 
 	$DockerClient->stopContainer($id);
-}
-######################
-# Starts a container #
-######################
-function myStartContainer($id) {
-	global $DockerClient;
-
-	$DockerClient->startContainer($id);
 }
 #####################################
 # Fix Descriptions on previous apps #
