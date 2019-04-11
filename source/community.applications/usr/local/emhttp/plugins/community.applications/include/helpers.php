@@ -138,7 +138,7 @@ function searchArray($array,$key,$value,$startingIndex=0) {
 # Highlights search results #
 #############################
 function highlight($text, $search) {
-	return preg_replace('#'. preg_quote($text,'#') .'#si', '<span style="color:#FF0000;font-weight:bold;">\\0</span>', $search);
+	return preg_replace('#'. preg_quote($text,'#') .'#si', '<span class="caHighlight">\\0</span>', $search);
 }
 
 ########################################################
@@ -323,10 +323,10 @@ function pluginDupe($templates) {
 	global $communityPaths;
 
 	$pluginList = array();
-	foreach ($templates as $template) {
+ 	foreach ($templates as $template) {
 		if ( $template['Plugin'] ) $pluginList[basename($template['Repository'])]++;
 	}
-	foreach (array_keys($pluginList) as $plugin) {
+ 	foreach (array_keys($pluginList) as $plugin) {
 		if ( $pluginList[$plugin] > 1 ) $dupeList[$plugin]++;
 	}
 	writeJsonFile($communityPaths['pluginDupes'],$dupeList);
