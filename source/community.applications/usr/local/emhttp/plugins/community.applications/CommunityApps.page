@@ -1042,19 +1042,7 @@ function updateDisplay(data) {
 
 function handle_HTTP_icons() {
 	$('img').on("error",function() {
-		var origSource = $(this).attr('src');
-		if ( document.referrer.startsWith("https") ) {
-			$(this).attr('src',"https://github.com/Squidly271/community.applications/raw/master/webImages/no_https.png");
-			$(this).on("error",function() {
-				$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
-			});
-		} else {
-			var newSource = origSource.replace("https://","http://");
-			$(this).attr('src',newSource);
-			$(this).on("error",function() {
-				$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
-			});
-		}
+		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
 	});
 }
 
@@ -1211,11 +1199,11 @@ function addWarning(text) {
 </ul>
 <hr>
 <ul class='caMenu'>
-	<li class='categoryMenu caMenuItem' data-category='backup'>Backup</li>
-	<li class='categoryMenu caMenuItem' data-category='cloud'>Cloud</li>
-	<li class='categoryMenu caMenuItem' data-category='downloaders'>Downloaders</li>
-	<li class='categoryMenu caMenuItem' data-category='HomeAutomation'>Home Automation</li>
-	<li class='categoryMenu caMenuItem' data-category='network'>Network Services</li>
+	<li class='categoryMenu caMenuItem' data-category='backup:'>Backup</li>
+	<li class='categoryMenu caMenuItem' data-category='cloud:'>Cloud</li>
+	<li class='categoryMenu caMenuItem' data-category='downloaders:'>Downloaders</li>
+	<li class='categoryMenu caMenuItem' data-category='HomeAutomation:'>Home Automation</li>
+	<li class='categoryMenu caMenuItem' data-category='network:'>Network Services</li>
 	<ul class='subCategory'>
 		<li class='categoryMenu caMenuItem' data-category='Network:web'>Web&nbsp;Server</li>
 		<li class='categoryMenu caMenuItem' data-category='Network:DNS'>DNS</li>
@@ -1226,7 +1214,7 @@ function addWarning(text) {
 		<li class='categoryMenu caMenuItem' data-category='Network:Messenger'>Messenger</li>
 		<li class='categoryMenu caMenuItem' data-category='Network:Other'>Other</li>
 	</ul>
-	<li class='categoryMenu caMenuItem' data-category='mediaapp'>Media Applications</li>
+	<li class='categoryMenu caMenuItem' data-category='mediaapp:'>Media Applications</li>
 	<ul class='subCategory'>
 		<li class='categoryMenu caMenuItem' data-category='MediaApp:Video'>Video</li>
 		<li class='categoryMenu caMenuItem' data-category='MediaApp:Music'>Music</li>
@@ -1234,7 +1222,7 @@ function addWarning(text) {
 		<li class='categoryMenu caMenuItem' data-category='MediaApp:Photos'>Photos</li>
 		<li class='categoryMenu caMenuItem' data-category='MediaApp:Other'>Other</li>
 	</ul>
-	<li class='categoryMenu caMenuItem' data-category='mediaserver'>Media Servers</li>
+	<li class='categoryMenu caMenuItem' data-category='mediaserver:'>Media Servers</li>
 	<ul class='subCategory'>
 		<li class='categoryMenu caMenuItem' data-category='MediaServer:Video'>Video</li>
 		<li class='categoryMenu caMenuItem' data-category='MediaServer:Music'>Music</li>
@@ -1242,13 +1230,13 @@ function addWarning(text) {
 		<li class='categoryMenu caMenuItem' data-category='MediaServer:Photos'>Photos</li>
 		<li class='categoryMenu caMenuItem' data-category='MediaServer:Other'>Other</li>
 	</ul>
-	<li class='categoryMenu caMenuItem' data-category='productivity'>Productivity</li>
-	<li class='categoryMenu caMenuItem' data-category='tools'>Tools / Utilities</li>
+	<li class='categoryMenu caMenuItem' data-category='productivity:'>Productivity</li>
+	<li class='categoryMenu caMenuItem' data-category='tools:'>Tools / Utilities</li>
 	<ul class='subCategory'>
 		<li class='categoryMenu caMenuItem' data-category='Tools:system'>System</li>
 	</ul>
-	<li class='categoryMenu caMenuItem' data-category='other'>Other</li>
-	<li class='categoryMenu caMenuItem' data-category='plugins'>Plugins</li>
+	<li class='categoryMenu caMenuItem' data-category='other:'>Other</li>
+	<li class='categoryMenu caMenuItem' data-category='plugins:'>Plugins</li>
 	<li class='categoryMenu caMenuItem' data-category='All'>All Apps</li>
 </ul>
 <div class='menuHeader'>OTHER</div>

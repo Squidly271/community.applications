@@ -733,6 +733,7 @@ case 'statistics':
 	$totalFlash = exec("du -h -s /boot/config/plugins/community.applications/");
 	$memCA = explode("\t",$totalCA);
 	$memTmp = explode("\t",$totalTmp);
+	if ( ! $memIcon[0] ) { $memIcon[0] = "0K";}
 	$memFlash = explode("\t",$totalFlash);
 
 	$currentServer = @file_get_contents($communityPaths['currentServer']);
@@ -840,20 +841,24 @@ case 'installPlugin':
 	echo json_encode(array("retval"=>$retval,"output"=>implode("<br>",$output)));
 	break;
 
+##########################
+# Displays the changelog #
+##########################
 case 'caChangeLog':
 	require_once("webGui/include/Markdown.php");
 	echo "<div style='margin:auto;width:500px;'>";
 	echo "<div class='ca_center'><font size='4rem'>Community Applications Changelog</font></div><br><br>";
 	echo Markdown(plugin("changes","/var/log/plugins/community.applications.plg"));
 	break;
-
-}
+	
+}	
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
 function DownloadApplicationFeed() {
 	global $communityPaths, $communitySettings, $statistics;
 
 	exec("rm -rf '{$communityPaths['templates-community']}'");
+	exec("rm -rf '{$communityPaths['HTTPicons']}'");
 	@mkdir($communityPaths['templates-community'],0777,true);
 
 	$downloadURL = randomFile();
