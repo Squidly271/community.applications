@@ -39,14 +39,23 @@ switch ($_GET['arg1']) {
 		break;
 	case 'Fixed':
 		$moderation = @file_get_contents($communityPaths['fixedTemplates_txt']);
-				
+ 		$json = json_decode($moderation,true);
+		ksort($json,SORT_NATURAL | SORT_FLAG_CASE);
 		if ( ! $moderation ) {
 			echo "<br><br><div class='ca_center'><span class='ca_bold'>No templates were automatically fixed</span></div>";
 		} else {
-			$moderation = str_replace(" ","&nbsp;",$moderation);
-			$moderation = str_replace("\n","<br>",$moderation);
-			echo "All of these errors found have been fixed automatically.  These errors only affect the operation of Community Applications.  <span class='ca_bold'>The template <span class='ca_italic'>may</span> have other errors present</span><br><br>Note that many of these errors can be avoided by following the directions <a href='https://forums.unraid.net/topic/57181-real-docker-faq/#comment-566084' target='_blank'>HERE</a><br><br><tt>$moderation";
-		}
+			echo "All of these errors found have been fixed automatically.  These errors only affect the operation of Community Applications.  <span class='ca_bold'>The template <span class='ca_italic'>may</span> have other errors present</span><br><br>Note that many of these errors can be avoided by following the directions <a href='https://forums.unraid.net/topic/57181-real-docker-faq/#comment-566084' target='_blank'>HERE</a><br><br>";
+			foreach (array_keys($json) as $repository) {
+				echo "<br><b><span style='font-size:20px;'>$repository</span></b><br>";
+				foreach (array_keys($json[$repository]) as $repo) {
+					echo "<code>&nbsp;&nbsp;&nbsp;&nbsp;<b><span style='font-size:16px;'>$repo:</span></b><br>";
+					foreach ($json[$repository][$repo] as $error) {
+						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".str_replace(" ","&nbsp;",$error)."<br>";
+					}
+					echo "</code>";
+				}
+			}
+		}	
 
 		$dupeList = readJsonFile($communityPaths['pluginDupes']);
 		if ($dupeList) {
