@@ -1256,6 +1256,7 @@ function addWarning(text) {
 <br>
 </span><br>
 <div class='mainArea'>
+<div class='spinner fixed'></div>
 <div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
 <strong><font size='3'></strong></font>
 <div class='dockerSearch' style='display:none'><div class='ca_center'><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></div></div>
@@ -1266,4 +1267,3 @@ function addWarning(text) {
 <span id='miscScript'></span><span id='awesomepleteScript'></span>
 <span id='sortorder' data-sortorder='' data-selected=''></span>
 <span id='debugging'></span>
-<div class='spinner fixed'></div>

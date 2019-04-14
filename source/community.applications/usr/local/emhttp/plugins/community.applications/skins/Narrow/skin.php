@@ -74,11 +74,15 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$ct .= $skin[$viewMode]['header'];
 	$iconClass = "displayIcon";
+		
+	$displayTemplate = $skin[$viewMode]['template'];
+	$currentServer = file_get_contents($communityPaths['currentServer']);
 
 	# Create entries for skins.  Note that MANY entries are not used in the current skins
 	foreach ($displayedTemplates as $template) {
-		$displayTemplate = $skin[$viewMode]['template'];
-
+		if ( $currentServer == "Primary Server" && $template['IconHTTPS']) {
+			$template['Icon'] = $template['IconHTTPS'];
+		}
 		$name = $template['SortName'];
 		$appName = str_replace(" ","",$template['SortName']);
 		$ID = $template['ID'];

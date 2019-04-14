@@ -67,6 +67,12 @@ if ( ! $template ) {
 	$template = $file[$index];
 	$Displayed = false;
 }
+$currentServer = file_get_contents($communityPaths['currentServer']);
+
+	# Create entries for skins.  Note that MANY entries are not used in the current skins
+if ( $currentServer == "Primary Server" && $template['IconHTTPS']) {
+	$template['Icon'] = $template['IconHTTPS'];
+}
 
 $ID = $template['ID'];
 
