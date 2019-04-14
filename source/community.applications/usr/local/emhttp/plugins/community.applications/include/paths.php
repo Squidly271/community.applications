@@ -49,4 +49,5 @@ $communityPaths['defaultSkin']                         = "/usr/local/emhttp/plug
 $communityPaths['defaultSkinPHP']                      = $communityPaths['defaultSkin'].".php";
 $communityPaths['pluginTempDownload']                  = $communityPaths['tempFiles']."/pluginTempFile.plg";
 $communityPaths['dockerManTemplates']                  = "/boot/config/plugins/dockerMan/templates-user";
+$communityPaths['iconHTTPSbase']                       = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/https-images/";
 ?>

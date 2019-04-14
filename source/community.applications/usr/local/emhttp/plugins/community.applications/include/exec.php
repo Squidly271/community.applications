@@ -900,7 +900,9 @@ function DownloadApplicationFeed() {
 		$o['SortAuthor']    = $o['Author'];
 		$o['SortName']      = $o['Name'];
 		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
-
+		if ( $o['IconHTTPS'] ) {
+			$o['IconHTTPS'] = $communityPaths['iconHTTPSbase'] .$o['IconHTTPS'];
+		}
 
 		if ( $o['PluginURL'] ) {
 			$o['Author']        = $o['PluginAuthor'];

@@ -44,7 +44,7 @@ switch ($_GET['arg1']) {
 		if ( ! $moderation ) {
 			echo "<br><br><div class='ca_center'><span class='ca_bold'>No templates were automatically fixed</span></div>";
 		} else {
-			echo "All of these errors found have been fixed automatically.  These errors only affect the operation of Community Applications.  <span class='ca_bold'>The template <span class='ca_italic'>may</span> have other errors present</span><br><br>Note that many of these errors can be avoided by following the directions <a href='https://forums.unraid.net/topic/57181-real-docker-faq/#comment-566084' target='_blank'>HERE</a><br><br>";
+			echo "All of these errors found have been fixed automatically.<br><br>Note that many of these errors can be avoided by following the directions <a href='https://forums.unraid.net/topic/57181-real-docker-faq/#comment-566084' target='_blank'>HERE</a><br><br>";
 			foreach (array_keys($json) as $repository) {
 				echo "<br><b><span style='font-size:20px;'>$repository</span></b><br>";
 				foreach (array_keys($json[$repository]) as $repo) {
