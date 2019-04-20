@@ -119,8 +119,21 @@ case 'get_content':
 				echo my_display_apps($displayApplications['community'],"1");
 				break;
 			} else {
+				switch ($communitySettings['startup']) {
+					case "onlynew":
+						$startupType = "New"; break;
+					case "new":
+						$startupType = "Updated"; break;
+					case "trending":
+						$startupType = "Top Performing"; break;
+					case "random": 
+						$startupType = "Random"; break;
+					case "upandcoming":
+						$startupType = "Trending"; break;
+				}
+						
 				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-				echo "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>An error occurred.  Could not find any Random Apps of the day</span></font><br><br>";
+				echo "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>An error occurred.  Could not find any $startupType Apps</span></font><br><br>";
 				break;
 			}
 		}
@@ -1103,7 +1116,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				}
 			}
 			break;
-		case "trending":
+		case "topperforming":
 			$sortOrder['sortBy'] = "trending";
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
@@ -1119,7 +1132,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				}
 			}
 			break;
-		case "upandcoming":
+		case "trending":
 			$sortOrder['sortBy'] = "trendDelta";
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
