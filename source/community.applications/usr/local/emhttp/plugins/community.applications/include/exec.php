@@ -929,10 +929,7 @@ function DownloadApplicationFeed() {
 			continue;
 		}
 		if ( is_array($o['trends']) && count($o['trends']) > 1 ) {
-			$delta = end($o['trends']) - prev($o['trends']);
-			if ( $delta > 0 ) {
-				$o['trendDelta'] = $delta;
-			}
+			$o['trendDelta'] = end($o['trends']) - prev($o['trends']);
 		}
 
 		$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
