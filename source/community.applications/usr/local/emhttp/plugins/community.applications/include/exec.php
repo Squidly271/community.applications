@@ -1108,6 +1108,8 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
 			foreach ($file as $template) {
+				if ( ! is_array($template['trends']) ) continue;
+				if ( count($template['trends']) < 2 ) continue;
 				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
 					if ( $template['Deprecated'] && ($communitySettings['hideDeprecated'] == "true" ) ) continue;
 					if ( $template['Blacklist'] ) continue;
