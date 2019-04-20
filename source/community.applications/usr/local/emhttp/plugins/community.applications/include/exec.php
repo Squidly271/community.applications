@@ -915,6 +915,12 @@ function DownloadApplicationFeed() {
 		if ( ! $o ) {
 			continue;
 		}
+		if ( is_array($o['trends']) && count($o['trends']) > 1 ) {
+			$delta = end($o['trends']) - prev($o['trends']);
+			if ( $delta > 0 ) {
+				$o['trendDelta'] = $delta;
+			}
+		}
 
 		$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
 		$o['Category'] = str_replace("Status:Stable","",$o['Category']);
@@ -1111,6 +1117,20 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				}
 			}
 			break;
+		case "upandcoming":
+			$sortOrder['sortBy'] = "trendDelta";
+			$sortOrder['sortDir'] = "Down";
+			usort($file,"mySort");
+			foreach ($file as $template) {
+				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
+					if ( $template['Deprecated'] && ($communitySettings['hideDeprecated'] == "true" ) ) continue;
+					if ( $template['Blacklist'] ) continue;
+					if ( $template['BranchName'] ) continue; # stops all the sub branches from appearing in the list when only the first is necessary
+					$appOfDay[] = $template['ID'];
+					if ( count($appOfDay) == 25 ) break;
+				}
+			}
+			break;			
 	}
 	return $appOfDay ?: array();
 }

@@ -1196,6 +1196,7 @@ function addWarning(text) {
 	<li class='startupButton caMenuItem' data-category='new'>Updated Apps</li>
 	<li class='startupButton caMenuItem' data-category='random'>Random Apps</li>
 	<li class='startupButton caMenuItem' data-category='trending'>Trending Apps</li>
+	<li class='startupButton caMenuItem' data-category='upandcoming'>Up and Coming</li>
 </ul>
 <hr>
 <ul class='caMenu'>
