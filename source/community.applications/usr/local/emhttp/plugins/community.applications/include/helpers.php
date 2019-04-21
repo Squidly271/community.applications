@@ -93,8 +93,6 @@ function first_str_replace($haystack, $needle, $replace) {
 	return $haystack;
 }
 
-
-
 #######################
 # Custom sort routine #
 #######################
@@ -208,7 +206,7 @@ function fixAttributes(&$template,$attribute) {
 
 	if ( $template[$attribute] ) {
 		foreach ($template[$attribute] as $tempArray) {
-				$tempArray2[] = $tempArray['value'] ? array('@attributes'=>$tempArray['@attributes'],'@value'=>$tempArray['value']) : array('@attributes'=>$tempArray['@attributes']);
+			$tempArray2[] = $tempArray['value'] ? array('@attributes'=>$tempArray['@attributes'],'@value'=>$tempArray['value']) : array('@attributes'=>$tempArray['@attributes']);
 		}
 		$template[$attribute] = $tempArray2;
 	}
