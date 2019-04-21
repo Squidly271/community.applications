@@ -10,41 +10,8 @@ Icon="community.applications.png"
 #                                                             #
 ###############################################################
 
-function download_url($url, $path = "", $bg = false)
-{
-	exec("curl --compressed --max-time 60 --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
-	return ($exit_code === 0 ) ? implode("\n", $out) : false;
-}
-
-$vars = parse_ini_file("/var/local/emhttp/var.ini");
-
 $plugin = "community.applications";
 $cfg = parse_plugin_cfg($plugin);
-
-# Get the available repositories and setup the display for favourites
-
-@mkdir("/tmp/community.applications/tempFiles",0777,true);
-
-$Repositories = "/tmp/community.applications/tempFiles/Repositories.json";
-download_url("https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Repositories.json",$Repositories);
-$Repos = json_decode(@file_get_contents($Repositories),true);
-
-if ( ! $Repos ) {
-	$Repos = array();
-}
-
-$repoName = array();
-foreach ($Repos as $Repo) {
-	$repoName[] = $Repo['name'];
-}
-natcasesort($repoName);
-
-$displayOptions = mk_option($cfg['favourite'], "None", "None (default)");
-
-foreach ($repoName as $display1) {
-	$optionName = str_replace("'","*",$display1);
-	$displayOptions .= mk_option($cfg['favourite'], $optionName, $display1);
-}
 
 ?>
 

@@ -48,6 +48,6 @@ $communityPaths['appFeedDownloadError']                = $communityPaths['tempFi
 $communityPaths['defaultSkin']                         = "/usr/local/emhttp/plugins/$plugin/skins/default.skin";
 $communityPaths['defaultSkinPHP']                      = $communityPaths['defaultSkin'].".php";
 $communityPaths['pluginTempDownload']                  = $communityPaths['tempFiles']."/pluginTempFile.plg";
-$communityPaths['dockerManTemplates']                  = "/boot/config/plugins/dockerMan/templates-user";
+$communityPaths['dockerManTemplates']                  = $dockerManPaths['templates-user'];
 $communityPaths['iconHTTPSbase']                       = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/https-images/";
 ?>

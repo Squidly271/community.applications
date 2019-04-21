@@ -6,9 +6,9 @@
 #                                                             #
 ###############################################################
 
+require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php"); # must be first include due to paths defined
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
-require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php");
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
@@ -1108,6 +1108,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				if ( ! $template['Compatible'] == "true" && $communitySettings['hideIncompatible'] == "true" ) continue;
 				if ( $template['FirstSeen'] > 1538357652 ) {
 					if ( $template['BranchName'] ) continue;
+					if ( $template['Blacklist'] ) continue;
 					$appOfDay[] = $template['ID'];
 					if ( count($appOfDay) == 25 ) break;
 				}

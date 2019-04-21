@@ -92,7 +92,7 @@ switch ($_GET['arg1']) {
 
 		break;
 	case 'Moderation':
-		$moderation = file_get_contents($communityPaths['moderationURL']);
+		$moderation = file_get_contents($communityPaths['moderation']);
 		foreach ($repositories as $repo) {
 			if ($repo['RepoComment']) {
 				$repoComment .= "<tr><td>{$repo['name']}</td><td>{$repo['RepoComment']}</td></tr>";
