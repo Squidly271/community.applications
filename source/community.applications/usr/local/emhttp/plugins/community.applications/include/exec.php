@@ -104,7 +104,7 @@ case 'get_content':
 	if ( $category === "/NONE/i" ) {
 		$displayApplications = array();
 		if ( count($file) > 200) {
-			$appsOfDay = appOfDay($file,$startupMsg,$startupMsg2);
+			$appsOfDay = appOfDay($file);
 
 			$displayApplications['community'] = array();
 			for ($i=0;$i<$communitySettings['maxPerPage'];$i++) {
@@ -1042,7 +1042,7 @@ function getConvertedTemplates() {
 #############################
 # Selects an app of the day #
 #############################
-function appOfDay($file,&$startupMsg,&$startupMsg2) {
+function appOfDay($file) {
 	global $communityPaths,$communitySettings,$sortOrder;
 
 	switch ($communitySettings['startup']) {
@@ -1052,51 +1052,36 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			$oldAppDay = intval($oldAppDay / 86400);
 			$currentDay = intval(time() / 86400);
 			if ( $oldAppDay == $currentDay ) {
-				$app = readJsonFile($communityPaths['appOfTheDay']);
+				$appOfDay = readJsonFile($communityPaths['appOfTheDay']);
 				$flag = false;
-				foreach ($app as $testApp) {
-					if ( ! checkRandomApp($testApp,$file) ) {
+				foreach ($appOfDay as $testApp) {
+					if ( ! checkRandomApp($file[$testApp]) ) {
 						$flag = true;
 						break;
 					}
 				}
 				if ( $flag ) {
-					$app = array();
+					unset($app);
 				}
 			}
 			if ( ! $app ) {
-				for ( $ii=0; $ii<25; $ii++ ) {
-					$flag = false;
-					if ( $app[$ii] ) {
-						$flag = checkRandomApp($app[$ii],$file);
-					}
-					if ( ! $flag ) {
-						for ( $jj = 0; $jj<20; $jj++) { # only give it 20 shots to find an app of the day
-							$randomApp = mt_rand(0,count($file) -1);
-							$flag = checkRandomApp($randomApp,$file);
-							if ( $flag ) {
-								break;
-							}
-						}
-					}
-					if ( ! $flag ) {
-						continue;
-					}
-					$app[$ii] = $randomApp;
+				shuffle($file);
+				foreach ($file as $template) {
+					if ( ! checkRandomApp($template) ) continue;
+					$appOfDay[] = $template['ID'];
+					if (count($appOfDay) == 25) break;
 				}
 			}
-			if (! $app) { $app = array(); }
-			$appOfDay = array_values(array_unique($app));
 			writeJsonFile($communityPaths['appOfTheDay'],$appOfDay);
-			$startupMsg = "Random Applications Of The Day <i class='startup-icon fa fa-question-circle ca_staticTips' title='This list changes every 24 hours'></i>";
 			break;
 		case "new":
 			$sortOrder['sortBy'] = "Date";
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
-			for ( $i = 0; $i <100; $i++) {
-				if ( ! checkRandomApp($i,$file) ) continue;
-				$appOfDay[] = $file[$i]['ID'];
+			foreach ($file as $template) {
+				if ( ! checkRandomApp($template) ) continue;
+				$appOfDay[] = $template['ID'];
+				if (count($appOfDay) == 25) break;
 			}
 			break;
 		case "onlynew":
@@ -1106,7 +1091,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			foreach ($file as $template) {
 				if ( ! $template['Compatible'] == "true" && $communitySettings['hideIncompatible'] == "true" ) continue;
 				if ( $template['FirstSeen'] > 1538357652 ) {
-					if ( checkRandomApp($template,false) ) {
+					if ( checkRandomApp($template) ) {
 						$appOfDay[] = $template['ID'];
 						if ( count($appOfDay) == 25 ) break;
 					}
@@ -1121,7 +1106,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				if ( ! is_array($template['trends']) ) continue;
 				if ( count($template['trends']) < 2 ) continue;
 				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
-					if ( checkRandomApp($template,false) ) {
+					if ( checkRandomApp($template) ) {
 						$appOfDay[] = $template['ID'];
 						if ( count($appOfDay) == 25 ) break;
 					}
@@ -1134,7 +1119,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			usort($file,"mySort");
 			foreach ($file as $template) {
 				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
-					if ( checkRandomApp($template,false) ) {
+					if ( checkRandomApp($template) ) {
 						$appOfDay[] = $template['ID'];
 						if ( count($appOfDay) == 25 ) break;
 					}
@@ -1148,10 +1133,8 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 #####################################################
 # Checks selected app for eligibility as app of day #
 #####################################################
-function checkRandomApp($randomApp,$file=false) {
+function checkRandomApp($test) {
 	global $communitySettings;
-
-	$test = is_array($randomApp) ? $randomApp : $file[$randomApp];
 
 	if ( $test['Name'] == "Community Applications" )  return false;
 	if ( $test['BranchName'] )                        return false;
