@@ -826,17 +826,6 @@ case 'populateAutoComplete':
 	echo json_encode(array_values($autoComplete));
 	break;
 
-#######################################
-# Gets which appfeed server is active #
-#######################################
-case 'getCurrentServer':
-	$server = @file_get_contents($communityPaths['currentServer']);
-	if ($server != "Primary Server") {
-		$server = "<i class='fa fa-exclamation-triangle ca_serverWarning' aria-hidden='true'></i> $server";
-	}
-	echo $server ? "<br>$server Active" : "<br>Appfeed Download Failed";
-	break;
-
 ######################
 # Shows CA's credits #
 ######################
