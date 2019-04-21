@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.04.06a">
-<!ENTITY md5       "070a0c357c17d83d7f3633c314ff3bf9">
+<!ENTITY version   "2019.04.20">
+<!ENTITY md5       "7908f1b3c49dbc9691a4027eb71d041f">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.04.06
+- Added: Support appfeed caching of HTTPS icons
+- Renamed: Trending Apps -&gt; Top Performing Apps
+- Added: Trending Apps ( highest delta improvement )
+- Various improvements and changes across the board	
+
 ###2019.04.06
 - Fixed: Regression Error - Plugins were not getting support thread populated in Plugins Tab
 - Fixed: Plugin update API would not work if plugins had never been checked for updates
