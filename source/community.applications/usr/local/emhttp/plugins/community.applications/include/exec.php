@@ -1045,7 +1045,6 @@ function getConvertedTemplates() {
 function appOfDay($file,&$startupMsg,&$startupMsg2) {
 	global $communityPaths,$communitySettings,$sortOrder;
 
-	$info = getRunningContainers();
 	switch ($communitySettings['startup']) {
 		case "random":
 			$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
@@ -1056,7 +1055,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				$app = readJsonFile($communityPaths['appOfTheDay']);
 				$flag = false;
 				foreach ($app as $testApp) {
-					if ( ! checkRandomApp($testApp,$file,false,$info) ) {
+					if ( ! checkRandomApp($testApp,$file) ) {
 						$flag = true;
 						break;
 					}
@@ -1074,7 +1073,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 					if ( ! $flag ) {
 						for ( $jj = 0; $jj<20; $jj++) { # only give it 20 shots to find an app of the day
 							$randomApp = mt_rand(0,count($file) -1);
-							$flag = checkRandomApp($randomApp,$file,false,$info);
+							$flag = checkRandomApp($randomApp,$file);
 							if ( $flag ) {
 								break;
 							}
@@ -1096,7 +1095,7 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
 			for ( $i = 0; $i <100; $i++) {
-				if ( ! checkRandomApp($i,$file,true,$info) ) continue;
+				if ( ! checkRandomApp($i,$file) ) continue;
 				$appOfDay[] = $file[$i]['ID'];
 			}
 			break;
@@ -1107,10 +1106,10 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			foreach ($file as $template) {
 				if ( ! $template['Compatible'] == "true" && $communitySettings['hideIncompatible'] == "true" ) continue;
 				if ( $template['FirstSeen'] > 1538357652 ) {
-					if ( $template['BranchName'] ) continue;
-					if ( $template['Blacklist'] ) continue;
-					$appOfDay[] = $template['ID'];
-					if ( count($appOfDay) == 25 ) break;
+					if ( checkRandomApp($template,false) ) {
+						$appOfDay[] = $template['ID'];
+						if ( count($appOfDay) == 25 ) break;
+					}
 				}
 			}
 			break;
@@ -1122,11 +1121,10 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 				if ( ! is_array($template['trends']) ) continue;
 				if ( count($template['trends']) < 2 ) continue;
 				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
-					if ( $template['Deprecated'] && ($communitySettings['hideDeprecated'] == "true" ) ) continue;
-					if ( $template['Blacklist'] ) continue;
-					if ( $template['BranchName'] ) continue; # stops all the sub branches from appearing in the list when only the first is necessary
-					$appOfDay[] = $template['ID'];
-					if ( count($appOfDay) == 25 ) break;
+					if ( checkRandomApp($template,false) ) {
+						$appOfDay[] = $template['ID'];
+						if ( count($appOfDay) == 25 ) break;
+					}
 				}
 			}
 			break;
@@ -1136,11 +1134,10 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 			usort($file,"mySort");
 			foreach ($file as $template) {
 				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
-					if ( $template['Deprecated'] && ($communitySettings['hideDeprecated'] == "true" ) ) continue;
-					if ( $template['Blacklist'] ) continue;
-					if ( $template['BranchName'] ) continue; # stops all the sub branches from appearing in the list when only the first is necessary
-					$appOfDay[] = $template['ID'];
-					if ( count($appOfDay) == 25 ) break;
+					if ( checkRandomApp($template,false) ) {
+						$appOfDay[] = $template['ID'];
+						if ( count($appOfDay) == 25 ) break;
+					}
 				}
 			}
 			break;			
@@ -1151,18 +1148,17 @@ function appOfDay($file,&$startupMsg,&$startupMsg2) {
 #####################################################
 # Checks selected app for eligibility as app of day #
 #####################################################
-function checkRandomApp($randomApp,$file,$newApp=false,$info=array() ) {
+function checkRandomApp($randomApp,$file=false) {
 	global $communitySettings;
 
-	$test = $file[$randomApp];
+	$test = is_array($randomApp) ? $randomApp : $file[$randomApp];
+
 	if ( $test['Name'] == "Community Applications" )  return false;
 	if ( $test['BranchName'] )                        return false;
 	if ( ! $test['Displayable'] )                     return false;
 	if ( ! $test['Compatible'] )                      return false;
 	if ( $test['Blacklist'] )                         return false;
-	if ( ($test['ModeratorComment']) && (! $newApp) ) return false;
-	if ( $test['Deprecated'] )                        return false;
-	if ( ($test['Beta'] == "true" ) && (! $newApp ) ) return false;
+	if ( $test['Deprecated'] && ( $communitySettings['hideDeprecated'] == "true" ) ) return false;
 
 	return true;
 }

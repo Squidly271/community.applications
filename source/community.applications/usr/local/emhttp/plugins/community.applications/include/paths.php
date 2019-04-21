@@ -21,7 +21,6 @@ $communityPaths['application-feedBackup']              = "https://s3.amazonaws.c
 $communityPaths['application-feed-last-updatedBackup'] = "https://s3.amazonaws.com/dnld.lime-technology.com/appfeed/master/applicationFeed-lastUpdated.json";
 $communityPaths['appFeedBackupUSB']                    = "/boot/config/plugins/$plugin/applicationFeed.json";
 $communityPaths['currentServer']                       = $communityPaths['tempFiles']."/currentServer.txt";
-$communityPaths['onlineCAVersion']                     = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/caVersion";
 $communityPaths['lastUpdated']                         = $communityPaths['tempFiles']."/lastUpdated.json";
 $communityPaths['lastUpdated-old']                     = $communityPaths['tempFiles']."/lastUpdated-old.json";
 $communityPaths['addConverted']                        = $communityPaths['tempFiles']."/TrippingTheRift";                    /* flag to indicate a rescan needed since a dockerHub container was added */
