@@ -47,6 +47,7 @@ data.lastUpdated = 0;
 data.nextpage = 0;
 data.prevpage = 0;
 data.currentpage = 1;
+data.searchFlag = false;
 var dockerSearchFlag = false;
 
 $(function(){
@@ -433,14 +434,14 @@ function doSearch(button,newSearch) {
 		}
 	}
 
+	scrollToTop();
 	if (filter) {
 		$("#Category").html("Search for "+filter);
 		enableIcon("#sortIcon",true);
-	}
-
-	scrollToTop();
-	if ( !filter ) {
+		data.searchFlag = true;
+	} else {
 		updateContent();
+		data.searchFlag = false;
 		return;
 	}
 	var sortOrder = getSortOrder();
@@ -1077,7 +1078,7 @@ function restoreState() {
 	data = JSON.parse($.cookie("data"));
 	dockerSearchFlag = $.cookie("dockerSearchFlag");
 	var selectedMenu = $.cookie("selectedMenu");
-	if ( selectedMenu ) {
+	if ( selectedMenu && ! data.searchFlag) {
 		var menuItem = $.find(".caMenuItem[data-category='"+selectedMenu+"']");
 		$(".caMenuItem").each(function(){
 			$(this).removeClass("selectedMenu");
