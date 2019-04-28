@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.04.20">
-<!ENTITY md5       "7908f1b3c49dbc9691a4027eb71d041f">
+<!ENTITY version   "2019.04.28">
+<!ENTITY md5       "b6889dd902e097492fb95fee7def1ca4">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,7 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
-###2019.04.06
+###2019.04.28
+- Support appfeed v2019.04.28
+- Fixed: After installing app from a search, a category would incorrectly selected when going back to Apps Tab
+- Code Cleanup, and simplifications
+- Fixed: Don't include blacklisted apps in startup displays
+
+###2019.04.20
 - Added: Support appfeed caching of HTTPS icons
 - Renamed: Trending Apps -&gt; Top Performing Apps
 - Added: Trending Apps ( highest delta improvement )
