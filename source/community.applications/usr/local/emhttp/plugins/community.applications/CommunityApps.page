@@ -1204,6 +1204,7 @@ function addWarning(text) {
 	<li class='categoryMenu caMenuItem' data-category='backup:'>Backup</li>
 	<li class='categoryMenu caMenuItem' data-category='cloud:'>Cloud</li>
 	<li class='categoryMenu caMenuItem' data-category='downloaders:'>Downloaders</li>
+	<li class='categoryMenu caMenuItem' data-category='gameservers:'>Game Servers</li>
 	<li class='categoryMenu caMenuItem' data-category='HomeAutomation:'>Home Automation</li>
 	<li class='categoryMenu caMenuItem' data-category='network:'>Network Services</li>
 	<ul class='subCategory'>

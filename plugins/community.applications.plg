@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.04.28">
-<!ENTITY md5       "b6889dd902e097492fb95fee7def1ca4">
+<!ENTITY version   "2019.04.28a">
+<!ENTITY md5       "724319b0dcc292bf5c5a3bee1e63076e">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.04.28a
+- Added Game Servers as a category
+
 ###2019.04.28
 - Support appfeed v2019.04.28
 - Fixed: After installing app from a search, a category would incorrectly selected when going back to Apps Tab
