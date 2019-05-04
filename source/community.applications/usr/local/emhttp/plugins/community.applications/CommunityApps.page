@@ -120,10 +120,7 @@ $(function(){
 		triggerClose:{click:true,scroll:true,mouseleave:true}
 	});
 
-	$('.categoryMenu').on("click",function() {
-		var selectedCategory = $(this).attr("data-category");
-		changeCategory(this,false);
-	});
+
 
 	$("#searchBox").keydown(function(e) {
 		if (e.which === 13) {
@@ -143,7 +140,6 @@ $(function(){
 	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
 	$(".startupButton").click(function()        { updateContent(this); });
-	initilizeMenu();
 	$("#sortIcon").click(function() {
 		if ( isIconEnabled("#sortIcon") ) {
 			$("#sortIconArea").toggle("slow");
@@ -204,6 +200,10 @@ function hideSortIcons() {
 }
 
 function initilizeMenu() {
+	$('.categoryMenu').on("click",function() {
+		var selectedCategory = $(this).attr("data-category");
+		changeCategory(this,false);
+	});
 	$(".caMenuItem").on("mouseover",function() {
 		$(this).addClass("hoverMenu");
 	});
@@ -261,6 +261,12 @@ function updateContent(button) {
 					getContent(true,'INITIALIZE',"","",startupScreen);
 				}
 			}
+			$.post(URL,{action:'get_categories'},function(data) {
+				if (data) {
+					$("#category_list").html(data);
+					initilizeMenu();
+				}
+			});
 		}
 	});
 }
@@ -456,16 +462,6 @@ function doSearch(button,newSearch) {
 			updateDisplay(data);
 			data.section = "AppStore";
 			$(".selectedMenu").removeClass("selectedMenu");
-		}
-	});
-}
-
-function forceUpdate() {
-	$("#Category").html("");
-	clearSearchBox();
-	$.post(URL,{action:'force_update'},function(data){
-		if (data) {
-			getContent(true,'INITIALIZE','None Selected');
 		}
 	});
 }
@@ -1201,45 +1197,7 @@ function addWarning(text) {
 </ul>
 <hr>
 <ul class='caMenu'>
-	<li class='categoryMenu caMenuItem' data-category='backup:'>Backup</li>
-	<li class='categoryMenu caMenuItem' data-category='cloud:'>Cloud</li>
-	<li class='categoryMenu caMenuItem' data-category='downloaders:'>Downloaders</li>
-	<li class='categoryMenu caMenuItem' data-category='gameservers:'>Game Servers</li>
-	<li class='categoryMenu caMenuItem' data-category='HomeAutomation:'>Home Automation</li>
-	<li class='categoryMenu caMenuItem' data-category='network:'>Network Services</li>
-	<ul class='subCategory'>
-		<li class='categoryMenu caMenuItem' data-category='Network:web'>Web&nbsp;Server</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:DNS'>DNS</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:FTP'>FTP</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:proxy'>Proxy</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:VOIP'>VOIP</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:Management'>Management</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:Messenger'>Messenger</li>
-		<li class='categoryMenu caMenuItem' data-category='Network:Other'>Other</li>
-	</ul>
-	<li class='categoryMenu caMenuItem' data-category='mediaapp:'>Media Applications</li>
-	<ul class='subCategory'>
-		<li class='categoryMenu caMenuItem' data-category='MediaApp:Video'>Video</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaApp:Music'>Music</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaApp:Books'>Books</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaApp:Photos'>Photos</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaApp:Other'>Other</li>
-	</ul>
-	<li class='categoryMenu caMenuItem' data-category='mediaserver:'>Media Servers</li>
-	<ul class='subCategory'>
-		<li class='categoryMenu caMenuItem' data-category='MediaServer:Video'>Video</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaServer:Music'>Music</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaServer:Books'>Books</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaServer:Photos'>Photos</li>
-		<li class='categoryMenu caMenuItem' data-category='MediaServer:Other'>Other</li>
-	</ul>
-	<li class='categoryMenu caMenuItem' data-category='productivity:'>Productivity</li>
-	<li class='categoryMenu caMenuItem' data-category='tools:'>Tools / Utilities</li>
-	<ul class='subCategory'>
-		<li class='categoryMenu caMenuItem' data-category='Tools:system'>System</li>
-	</ul>
-	<li class='categoryMenu caMenuItem' data-category='other:'>Other</li>
-	<li class='categoryMenu caMenuItem' data-category='plugins:'>Plugins</li>
+	<span id='category_list'></span>
 	<li class='categoryMenu caMenuItem' data-category='All'>All Apps</li>
 </ul>
 <div class='menuHeader'>OTHER</div>

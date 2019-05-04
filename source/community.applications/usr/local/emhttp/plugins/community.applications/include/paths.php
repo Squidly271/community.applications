@@ -19,6 +19,7 @@ $communityPaths['application-feed']                    = "https://raw.githubuser
 $communityPaths['application-feed-last-updated']       = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/applicationFeed-lastUpdated.json";
 $communityPaths['application-feedBackup']              = "https://s3.amazonaws.com/dnld.lime-technology.com/appfeed/master/applicationFeed.json";
 $communityPaths['application-feed-last-updatedBackup'] = "https://s3.amazonaws.com/dnld.lime-technology.com/appfeed/master/applicationFeed-lastUpdated.json";
+$communityPaths['application-feed-raw']                = $communityPaths['tempFiles']."/rawappfeed.json";
 $communityPaths['appFeedBackupUSB']                    = "/boot/config/plugins/$plugin/applicationFeed.json";
 $communityPaths['currentServer']                       = $communityPaths['tempFiles']."/currentServer.txt";
 $communityPaths['lastUpdated']                         = $communityPaths['tempFiles']."/lastUpdated.json";

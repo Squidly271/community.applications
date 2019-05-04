@@ -853,6 +853,28 @@ case 'caChangeLog':
 	echo Markdown(plugin("changes","/var/log/plugins/community.applications.plg"));
 	break;
 	
+###############################
+# Populates the category list #
+###############################
+case 'get_categories':
+	$appfeed = readJsonFile($communityPaths['application-feed-raw']);
+	if ( ! is_array($appfeed['categories']) ) {
+		echo "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
+		break;
+	}
+	foreach ($appfeed['categories'] as $category) {
+		$cat .= "<li class='categoryMenu caMenuItem' data-category='{$category['Cat']}'>{$category['Des']}</li>";
+		if (is_array($category['Sub'])) {
+			$cat .= "<ul class='subCategory'>";
+			foreach($category['Sub'] as $subcategory) {
+				$cat .= "<li class='categoryMenu caMenuItem' data-category='{$subcategory['Cat']}'>{$subcategory['Des']}</li>";
+			}
+			$cat .= "</ul>";
+		}
+	}
+	echo $cat;
+	break;
+
 }	
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
@@ -863,16 +885,16 @@ function DownloadApplicationFeed() {
 	exec("rm -rf '{$communityPaths['HTTPicons']}'");
 	@mkdir($communityPaths['templates-community'],0777,true);
 
-	$downloadURL = randomFile();
 	$currentFeed = "Primary Server";
-	$ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
+	$ApplicationFeed = download_json($communityPaths['application-feed'],$communityPaths['application-feed-raw']);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
 		$currentFeed = "Backup Server";
-		$ApplicationFeed = download_json($communityPaths['application-feedBackup'],$downloadURL);
+		$ApplicationFeed = download_json($communityPaths['application-feedBackup'],$communityPaths['application-feed-raw']);
 		if ( ! is_array($ApplicationFeed['applist']) ) {
 			if ( is_file($communityPaths['appFeedBackupUSB']) ) {
 				$currentFeed = "USB Backup File";
 				$ApplicationFeed = readJsonFile($communityPaths['appFeedBackupUSB']);
+				copy($communityPaths['appFeedBackupUSB'],$communityPaths['application-feed-raw']);
 			}
 		}
 	}
@@ -882,7 +904,6 @@ function DownloadApplicationFeed() {
 		return false;
 	}
 	file_put_contents($communityPaths['currentServer'],$currentFeed);
-	@unlink($downloadURL);
 	$i = 0;
 	$lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];
 	writeJsonFile($communityPaths['lastUpdated-old'],$lastUpdated);
