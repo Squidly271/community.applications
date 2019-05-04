@@ -857,12 +857,12 @@ case 'caChangeLog':
 # Populates the category list #
 ###############################
 case 'get_categories':
-	$appfeed = readJsonFile($communityPaths['application-feed-raw']);
-	if ( ! is_array($appfeed['categories']) ) {
+	$categories = readJsonFile($communityPaths['categoryList']);
+	if ( ! is_array($categories) ) {
 		echo "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
 		break;
 	}
-	foreach ($appfeed['categories'] as $category) {
+	foreach ($categories as $category) {
 		$cat .= "<li class='categoryMenu caMenuItem' data-category='{$category['Cat']}'>{$category['Des']}</li>";
 		if (is_array($category['Sub'])) {
 			$cat .= "<ul class='subCategory'>";
@@ -886,18 +886,19 @@ function DownloadApplicationFeed() {
 	@mkdir($communityPaths['templates-community'],0777,true);
 
 	$currentFeed = "Primary Server";
-	$ApplicationFeed = download_json($communityPaths['application-feed'],$communityPaths['application-feed-raw']);
+	$downloadURL = randomFile();
+	$ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
 		$currentFeed = "Backup Server";
-		$ApplicationFeed = download_json($communityPaths['application-feedBackup'],$communityPaths['application-feed-raw']);
+		$ApplicationFeed = download_json($communityPaths['application-feedBackup'],$downloadURL);
 		if ( ! is_array($ApplicationFeed['applist']) ) {
 			if ( is_file($communityPaths['appFeedBackupUSB']) ) {
 				$currentFeed = "USB Backup File";
 				$ApplicationFeed = readJsonFile($communityPaths['appFeedBackupUSB']);
-				copy($communityPaths['appFeedBackupUSB'],$communityPaths['application-feed-raw']);
 			}
 		}
 	}
+	@unlink($downloadURL);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
 		@unlink($communityPaths['currentServer']);
 		file_put_contents($communityPaths['appFeedDownloadError'],$downloadURL);
@@ -999,7 +1000,7 @@ function DownloadApplicationFeed() {
 		@unlink($communityPaths['invalidXML_txt']);
 	}
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
-
+	writeJsonFile($communityPaths['categoryList'],$ApplicationFeed['categories']);
 	return true;
 }
 
