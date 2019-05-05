@@ -136,6 +136,29 @@ $(function(){
 		appname = stripTags(appname);
 		showDesc_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,"checkForPluginInstallRequested()");
 	});
+	$('.menuItems').on("click",'.categoryMenu',function() {
+		var selectedCategory = $(this).attr("data-category");
+		changeCategory(this,false);
+	});
+	$('.menuItems').on("mouseover",".caMenuItem",function() {
+		$(this).addClass("hoverMenu");
+	});
+	$('.menuItems').on("mouseleave",".caMenuItem",function() {
+		$(this).removeClass("hoverMenu");
+	});
+	$('.menuItems').on("click",".caMenuItem",function() {
+		if ( $(this).hasClass("selectedMenu") ) {
+			return;
+		}
+		if ( ! $(this).parent().hasClass("subCategory") ) {
+			$(".subCategory").hide();
+		}
+		$(".caMenuItem").removeClass("selectedMenu");
+		$(this).addClass("selectedMenu");
+		$(this).next().show();
+	});
+	
+	
 	$(".initDockerSearch").click(function()     { initDockerSearch(); });
 	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
@@ -199,31 +222,6 @@ function hideSortIcons() {
 	$("#sortIconArea").hide("slow");
 }
 
-function initilizeMenu() {
-	$('.categoryMenu').on("click",function() {
-		var selectedCategory = $(this).attr("data-category");
-		changeCategory(this,false);
-	});
-	$(".caMenuItem").on("mouseover",function() {
-		$(this).addClass("hoverMenu");
-	});
-	$(".caMenuItem").on("mouseleave",function() {
-		$(this).removeClass("hoverMenu");
-	});
-	$(".caMenuItem").on("click",function() {
-		if ( $(this).hasClass("selectedMenu") ) {
-			return;
-		}
-
-		if ( ! $(this).parent().hasClass("subCategory") ) {
-			$(".subCategory").hide();
-		}
-		$(".caMenuItem").removeClass("selectedMenu");
-		$(this).addClass("selectedMenu");
-		$(this).next().show();
-	});
-}
-
 function updateContent(button) {
 	hideSortIcons();
 	clearSearchBox();
@@ -264,7 +262,6 @@ function updateContent(button) {
 			$.post(URL,{action:'get_categories'},function(data) {
 				if (data) {
 					$("#category_list").html(data);
-					initilizeMenu();
 				}
 			});
 		}
@@ -1195,7 +1192,6 @@ function addWarning(text) {
 	<li class='startupButton caMenuItem' data-category='topperforming'>Top Performing</li>
 	<li class='startupButton caMenuItem' data-category='trending'>Trending Apps</li>
 </ul>
-<hr>
 <ul class='caMenu'>
 	<span id='category_list'></span>
 	<li class='categoryMenu caMenuItem' data-category='All'>All Apps</li>
