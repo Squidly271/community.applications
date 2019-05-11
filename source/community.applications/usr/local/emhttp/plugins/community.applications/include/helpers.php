@@ -52,7 +52,7 @@ function readJsonFile($filename) {
 	return $json;
 }
 function writeJsonFile($filename,$jsonArray) {
-	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES));
+	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 }
 function download_url($url, $path = "", $bg = false, $timeout=45){
 	if ( ! strpos($url,"?") ) $url .= "?".time();
@@ -151,6 +151,7 @@ function fixTemplates($template) {
 	if ($template['Date'] == 1) unset($template['Date']);
 	if ( ($template['Date'] == $template['FirstSeen']) && ( $template['FirstSeen'] >= 1538357652 )) {# 1538357652 is when the new appfeed first started
 		$template['BrandNewApp'] = true;
+		unset($template['Date']);
 	}
 
 	# fix where template author includes <Blacklist> or <Deprecated> entries in template (CA used booleans, but appfeed winds up saying "FALSE" which equates to be true
