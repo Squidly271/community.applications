@@ -943,6 +943,7 @@ function DownloadApplicationFeed() {
 		}
 		if ( is_array($o['trends']) && count($o['trends']) > 1 ) {
 			$o['trendDelta'] = end($o['trends']) - prev($o['trends']);
+			$o['trendAverage'] = array_sum($o['trends'])/count($o['trends']);
 		}
 
 		$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
@@ -1118,7 +1119,7 @@ function appOfDay($file) {
 			foreach ($file as $template) {
 				if ( ! is_array($template['trends']) ) continue;
 				if ( count($template['trends']) < 2 ) continue;
-				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
+				if ( $template['trending'] && ($template['downloads'] > 100000) ) {
 					if ( checkRandomApp($template) ) {
 						$appOfDay[] = $template['ID'];
 						if ( count($appOfDay) == 25 ) break;
