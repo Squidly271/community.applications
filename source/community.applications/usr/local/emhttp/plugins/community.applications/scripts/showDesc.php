@@ -101,6 +101,11 @@ $(function() {
 									},
 									precision: 0
 								}
+							}],
+							xAxes: [{
+								ticks: {
+									fontSize: 10
+								}
 							}]
 						}
 					}
@@ -136,6 +141,11 @@ $(function() {
 										return label.toLocaleString();
 									}
 								}
+							}],
+							xAxes: [{
+								ticks: {
+									fontSize: 10
+								}
 							}]
 						}
 					}
@@ -170,6 +180,11 @@ $(function() {
 									callback: function(label,index,labels) {
 										return label.toLocaleString();
 									}
+								}
+							}],
+							xAxes: [{
+								ticks: {
+									fontSize: 10
 								}
 							}]
 						}

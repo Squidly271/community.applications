@@ -309,12 +309,18 @@ if ( trim($template['Changes']) ) {
 	$templateDescription .= "<div class='ca_center'><font size='4'><span class='ca_bold'>Change Log</span></div></font><br>$changeLogMessage$appInformation";
 }
 
+if (is_array($template['trendsDate']) ) {
+	array_walk($template['trendsDate'],function(&$entry) {
+		$entry = date("M j",$entry);
+	});
+}
+
 if ( is_array($template['trends']) ) {
 	if ( count($template['trends']) < count($template['downloadtrend']) ) {
 		array_shift($template['downloadtrend']);
 	}
 
-	$chartLabel = array_fill(0,count($template['trends']),"");
+	$chartLabel = $template['trendsDate'];
 	if ( is_array($template['downloadtrend']) ) {
 		#get what the previous download value would have been based upon the trend
 		$minDownload = intval(  ((100 - $template['trends'][0]) / 100)  * ($template['downloadtrend'][0]) );
@@ -323,7 +329,7 @@ if ( is_array($template['trends']) ) {
 			$down[] = intval($download - $minDownload);
 			$minDownload = $download;
 		}
-		$downloadLabel = array_fill(0,count($template['downloadtrend']),"");
+		$downloadLabel = $template['trendsDate'];
 	}
 	$down = is_array($down) ? $down : array();
 }
