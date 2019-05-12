@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.04.28a">
-<!ENTITY md5       "724319b0dcc292bf5c5a3bee1e63076e">
+<!ENTITY version   "2019.05.12">
+<!ENTITY md5       "e4f3cd9f57256a917be2b344f2f15ffd">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,14 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.05.12
+- Fixed: Prevent a blank icon from showing on Grey / Azure themes
+- Added: Dates to graphs on popups
+- Changed: Dynamically generate categories from appfeed
+- Changed: Minimum qualification for Top Performing is now 100,000 downloads
+- Changed: Updated Apps will no longer display any new apps
+- Various simplifications in code
+
 ###2019.04.28a
 - Added Game Servers as a category
 
