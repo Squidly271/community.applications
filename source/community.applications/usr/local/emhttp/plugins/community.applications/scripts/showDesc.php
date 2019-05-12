@@ -71,6 +71,15 @@ $(function() {
 			}
 			$("#popUpContent").show();
 			if ( $("#trendChart").length ) {
+				var fontSize = 14;
+
+				if (descData.trendLabel.length > 3) {
+					var fontSize = 12;
+				}
+				if (descData.trendLabel.length > 6) {
+					var fontSize = 11;
+				}
+				
 				var ctx = document.getElementById("trendChart").getContext('2d');
 				let chart = new Chart(ctx, {
 					type: 'line',
@@ -104,7 +113,7 @@ $(function() {
 							}],
 							xAxes: [{
 								ticks: {
-									fontSize: 10
+									fontSize: fontSize
 								}
 							}]
 						}
@@ -144,7 +153,7 @@ $(function() {
 							}],
 							xAxes: [{
 								ticks: {
-									fontSize: 10
+									fontSize: fontSize
 								}
 							}]
 						}
@@ -184,7 +193,7 @@ $(function() {
 							}],
 							xAxes: [{
 								ticks: {
-									fontSize: 10
+									fontSize: fontSize
 								}
 							}]
 						}
