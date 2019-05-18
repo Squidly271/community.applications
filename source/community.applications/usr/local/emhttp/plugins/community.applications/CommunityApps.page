@@ -157,8 +157,7 @@ $(function(){
 		$(this).addClass("selectedMenu");
 		$(this).next().show();
 	});
-	
-	
+		
 	$(".initDockerSearch").click(function()     { initDockerSearch(); });
 	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
@@ -217,11 +216,9 @@ function disableSort() {
 	hideSortIcons();
 	enableIcon("#sortIcon",false);
 }
-
 function hideSortIcons() {
 	$("#sortIconArea").hide("slow");
 }
-
 function updateContent(button) {
 	hideSortIcons();
 	clearSearchBox();
@@ -573,6 +570,7 @@ function populateAutoComplete() {
 		}
 	});
 }
+
 function awesompleteSearch() {
 	doSearch(false);
 }
@@ -650,6 +648,7 @@ function my_openBox(cmd,title,height,width,load,func) {
 	var options = load ? {modal:true,onClose:function(){ eval(func); }} : {modal:true};
 	Shadowbox.open({content:run, player:'iframe', title:title, height:height, width:width, options:options});
 }
+
 function showDesc_openBox(cmd,title,height,width,load,func) {
 	// open shadowbox window (run in foreground)
 	var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
@@ -825,6 +824,7 @@ function initializeAppStore() {
 	data.selected_category = "";
 	$(".multi_installDiv").hide();
 }
+
 function installPLGupdate(filename,plgName) {
 	$("#sortorder").attr("data-plgfilename",filename);
 	if ( filename == "community.applications.plg" ) {
@@ -833,6 +833,7 @@ function installPLGupdate(filename,plgName) {
 		my_openBox('/plugins/<?=$plugin?>/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true,"checkPLGupdate()");
 	}
 }
+
 function checkPLGupdate() {
 	var filename = $("#sortorder").attr("data-plgfilename");
 	post({action:'updatePLGstatus',filename:filename},function(data) {
@@ -857,6 +858,7 @@ function setPageOne() {
 function clearCategory() {
 	$("#Category").html("");
 }
+
 function pinnedApps(button) {
 	mySpinner();
 	setPageOne();
@@ -1169,6 +1171,7 @@ function post(options,callback) {
 	console.log(JSON.stringify(options));
 	if ( typeof callback === "function" ) {
 		$.post(URL,options,function(data){
+			console.log(data);
 			eval(callback(data));
 		});
 	} else {
