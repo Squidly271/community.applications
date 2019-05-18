@@ -1157,17 +1157,22 @@ function addWarning(text) {
 function post(options,callback) {
 	if ( typeof options === "function" ) {
 		callback = options;
+	} else {
+		console.log(JSON.stringify(options));
 	}
-	console.log(JSON.stringify(options));
-	mySpinner();
+	var spinner = setTimeout(function(){
+		mySpinner();
+	},100);
 	if ( typeof callback === "function" ) {
 		$.post(URL,options,function(data){
 			console.log(data);
 			eval(callback(data));
+			clearTimeout(spinner);
 			$("div.spinner").hide();
 		});
 	} else {
 		$.post(URL,options);
+		clearTimeout(spinner);
 		$("div.spinner").hide();
 	}
 }
