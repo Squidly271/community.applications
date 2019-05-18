@@ -388,7 +388,6 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 function myCloseAlert() {
 	swal.close();
 	enableSearch();
-	$("div.spinner").hide();
 }
 
 function mySpinner() {
@@ -1155,25 +1154,33 @@ function addWarning(text) {
 }
 
 function post(options,callback) {
+	var spinner;
+	
 	if ( typeof options === "function" ) {
 		callback = options;
 	} else {
 		console.log(JSON.stringify(options));
 	}
-	var spinner = setTimeout(function(){
-		mySpinner();
-	},100);
+	if ( $("div.spinner").is(":hidden") ) {
+		spinner = setTimeout(function(){
+			mySpinner();
+		},100);
+	}
 	if ( typeof callback === "function" ) {
 		$.post(URL,options,function(data){
 			console.log(data);
 			eval(callback(data));
-			clearTimeout(spinner);
-			$("div.spinner").hide();
+			if ( spinner ) {
+				clearTimeout(spinner);
+				$("div.spinner").hide();
+			}
 		});
 	} else {
 		$.post(URL,options);
-		clearTimeout(spinner);
-		$("div.spinner").hide();
+		if ( spinner ) {
+			clearTimeout(spinner);
+			$("div.spinner").hide();
+		}
 	}
 }
 </script>
