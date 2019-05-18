@@ -26,8 +26,8 @@ if ( is_file($communityPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
 ?>
-<link type='text/css' rel='stylesheet' href="<?=autov("/plugins/community.applications/skins/Narrow/css.php")?>" >
-<link type='text/css' rel='stylesheet' href='<?=autov("/plugins/community.applications/styles/awesomplete.css")?>'>
+<link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
+<link type='text/css' rel='stylesheet' href='<?=autov("/plugins/$plugin/styles/awesomplete.css")?>'>
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
 <script>
 var URL = "/plugins/<?=$plugin?>/include/exec.php";
@@ -95,7 +95,6 @@ $(function(){
 		}
 	}	
 
-
 	$('.ca_toolsView').tooltipster({
 		trigger: 'hover',
 		delay: [1000,0],
@@ -109,6 +108,7 @@ $(function(){
 			}
 		}
 	});
+	
 	$('.ca_staticTips').tooltipster({
 		contentAsHTML:true,
 		delay:[1000,1],
@@ -119,8 +119,6 @@ $(function(){
 		triggerOpen:{mouseenter: true},
 		triggerClose:{click:true,scroll:true,mouseleave:true}
 	});
-
-
 
 	$("#searchBox").keydown(function(e) {
 		if (e.which === 13) {
@@ -203,7 +201,6 @@ $(function(){
 		});
 	} else {
 		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") ) {
-			populateAutoComplete();
 			restoreState();
 			refreshDisplay();
 		} else {
@@ -557,7 +554,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 function populateAutoComplete() {
 	post({action:'populateAutoComplete'},function(data) {
 		if (data) {
-			searchBoxAwesomplete.list = JSON.parse(data);
+			searchBoxAwesomplete.list = data;
 			searchBoxAwesomplete.maxItems = 20;
 			Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch)
 			Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch)
@@ -1159,6 +1156,7 @@ function post(options,callback) {
 	if ( typeof options === "function" ) {
 		callback = options;
 	} else {
+		console.time(options.action);
 		console.log(JSON.stringify(options));
 	}
 	if ( $("div.spinner").is(":hidden") ) {
@@ -1167,9 +1165,18 @@ function post(options,callback) {
 		},100);
 	}
 	if ( typeof callback === "function" ) {
-		$.post(URL,options,function(data){
+		$.post(URL,options,function(retval){
+			try {
+				var data = JSON.parse(retval);
+			} catch(e) {
+				var data = retval;
+			}
+			console.groupCollapsed("Data "+options.action);
+			console.timeEnd(options.action);
 			console.log(data);
+			console.groupEnd();
 			eval(callback(data));
+
 			if ( spinner ) {
 				clearTimeout(spinner);
 				$("div.spinner").hide();

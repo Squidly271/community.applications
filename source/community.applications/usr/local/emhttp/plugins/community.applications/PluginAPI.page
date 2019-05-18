@@ -52,8 +52,14 @@ function ca_pluginUpdate_evaluateBoolean(str) {
 function caPluginUpdateCheck(plugin,options=[],callback) {
 	ca_PluginUpdatePLG = plugin;
 	pluginFilename = plugin.substr(0, plugin.lastIndexOf("."));
+	console.time("checkPlugin");
+	console.log("checkPlugin  "+plugin);
 	$.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'checkPlugin',options:{plugin:plugin}},function(data) {
 		if (data) {
+			console.groupCollapsed("Data checkPlugin:");
+			console.log(data);
+			console.timeEnd("checkPlugin");
+			console.groupEnd();
 			var result = JSON.parse(data);
 
 			if ( options.debug == true ) result.updateAvailable = true;

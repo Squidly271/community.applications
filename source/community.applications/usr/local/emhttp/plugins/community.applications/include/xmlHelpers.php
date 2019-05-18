@@ -1,4 +1,4 @@
- <?PHP
+<?PHP
 
  /**
  * @copyright Copyright 2006-2012, Miles Johnson - http://milesj.me
