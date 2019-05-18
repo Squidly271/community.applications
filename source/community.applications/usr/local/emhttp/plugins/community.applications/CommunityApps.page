@@ -177,7 +177,6 @@ $(function(){
 
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
-		sweetAlertBackground("white");
 		swal({
 			title: 'Disclaimer',
 			text: 'All applications listed here are <span class="ca_bold">3rd party</span> additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here. <br><span class="ca_italic"><font color="green">Every attempt is made to ensure that only safe and compatible applications are present</font></span><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>',
@@ -367,7 +366,6 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	if ( !showConfirm )  showConfirm = false;
 	if ( imagesize == "" ) { imagesize = "80"; }
 	disableSearch();
-	var backgroundColor = ( ! textdescription && textimage ) ? "transparent" : "white";
 
 	swal({
 		title: description,
@@ -379,7 +377,6 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 		animation: false,
 		html: true
 	});
-	sweetAlertBackground(backgroundColor);
 }
 
 function myCloseAlert() {
@@ -389,10 +386,6 @@ function myCloseAlert() {
 
 function mySpinner() {
 	$("div.spinner").show();
-}
-
-function sweetAlertBackground(color) {
-	$(".sweet-alert").css("background",color);
 }
 
 function doSearch(button,newSearch) {
@@ -675,7 +668,6 @@ function previousApps(button,installed) {
 }
 
 function removeApp(application, humanName) {
-	sweetAlertBackground("white");
 	disableSearch();
 	swal({
 		title: "Delete Template?",
@@ -697,14 +689,16 @@ function removeApp(application, humanName) {
 		} else {
 			enableSearch();
 		}
-	 });
+	});
 }
 
 function uninstallApp(application,humanName) {
 	if ( humanName == "Community Applications" ) {
-		myAlert("AE-35 Error","<span class='ca_italic'>I'm sorry Dave, but I can't do that</span>.  You must go to the plugins tab and remove Community Applications from there.  <span class='ca_italic'><font color='purple'>But, why would you ever want to uninstall CA?</font></span>",null,null,true,false,true,"error");
+		sound = new Audio("https://github.com/Squidly271/community.applications/raw/master/webImages/cantdo.wav");
+		sound.volume = 0.1;
+		sound.play();
+		myAlert("AE-35 Error","Community Applications cannot be uninstalled this way.  You must go to the plugins tab and remove Community Applications from there.  <span class='ca_italic'><font color='purple'>But, why would you ever want to uninstall CA?</font></span>",null,null,true,false,true,"error");
 	} else {
-		sweetAlertBackground("white");
 		disableSearch();
 		swal({
 			title: "Uninstall Application?",
@@ -735,7 +729,6 @@ function uninstallApp(application,humanName) {
 
 function deletePrivateApp(path,name,author) {
 	var displayPath = path.replace("/boot/config/plugins/","...");
-	sweetAlertBackground("white");
 	disableSearch();
 	swal({
 		title: "Remove Private Application?",
@@ -770,7 +763,6 @@ function myTrim(x) {
 }
 
 function uninstallDocker(application,humanName) {
-	sweetAlertBackground("white");
 	disableSearch();
 	swal({
 		title: "Uninstall Application?",
@@ -866,7 +858,6 @@ function pinnedApps(button) {
 function displayTags(leadTemplate) {
 	post({action:'displayTags',leadTemplate:leadTemplate},function(data) {
 		if (data) {
-			sweetAlertBackground("white");
 			disableSearch();
 			swal({
 				title: "Choose A Branch To Install",
@@ -973,7 +964,6 @@ function installMulti() {
 		docker.push(el);
 		dockerCount += 1;
 	});
-	sweetAlertBackground("white");
 	disableSearch();
 	if ( ! cookiesEnabled() && dockerCount && pluginCount ) {
 		pluginCount = 0;
