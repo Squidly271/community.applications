@@ -238,7 +238,6 @@ function updateContent(button) {
 	$.cookie("startupButton",startupScreen,{expires:365});
 	$.cookie("selectedMenu",startupScreen,{expires:365});
 	disableSearch();
-	mySpinner();
 	if ( appFeedModeMsg ) {
 		myAlert("Updating Content",appFeedModeMsg,true,"40");
 	}
@@ -448,7 +447,6 @@ function doSearch(button,newSearch) {
 	if ( "<?=$cfg['dockerSearch']?>" == "yes" ) {
 		$('.dockerSearch').show();
 	}
-	mySpinner();
 
 	post({action:'get_content',filter:filter,sortOrder:sortOrder},function(data) {
 		if (data) {
@@ -473,9 +471,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 	var selected = data.selected;
 	var sortOrder = getSortOrder();
 	var startup = false;
-	if ( button != null || buttonClass != null || previousApps != null ) {
-		mySpinner();
-	}
+
 	$(".startupButton").each(function(){
 		if ($(this).hasClass("selectedMenu")) {
 			startup = "true";
@@ -533,7 +529,6 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		enableIcon("#sortIcon",false);
 	} else {
 		enableIcon("#sortIcon",true);
-		mySpinner();
 	}
 
 	if ( category != "NONE" ) {
@@ -610,7 +605,6 @@ function dockerSearch(pageNumber) {
 	$(".dockerSearch,.multi_installDiv").hide();
 	$("#Category").html("DockerHub Search for "+filter+" <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
-	mySpinner();
 	$("#templates_content").html("");
 	post({action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(data) {
 		if (data) {
@@ -620,7 +614,6 @@ function dockerSearch(pageNumber) {
 }
 
 function dockerConvert(dockerID) {
-	mySpinner();
 	post({action:'convert_docker',ID:dockerID},function(data) {
 		if (data) {
 			myCloseAlert();
@@ -810,7 +803,6 @@ function uninstallDocker(application,humanName) {
 }
 
 function appStore() {
-	mySpinner();
 	data.nextpage = 0;
 	data.prevpage = 0;
 	initializeAppStore();
@@ -860,7 +852,6 @@ function clearCategory() {
 }
 
 function pinnedApps(button) {
-	mySpinner();
 	setPageOne();
 	hideSortIcons();
 	data.docker = "";
@@ -1134,7 +1125,6 @@ function showStatistics() {
 	$(".multi_installDiv,.dockerSearch").hide();
 	clearCategory(); clearSearchBox();
 	updateDisplay("");
-	mySpinner();
 	post({action:'statistics'},function(data) {
 		if (data) {
 			updateDisplay(data);
@@ -1169,13 +1159,16 @@ function post(options,callback) {
 		callback = options;
 	}
 	console.log(JSON.stringify(options));
+	mySpinner();
 	if ( typeof callback === "function" ) {
 		$.post(URL,options,function(data){
 			console.log(data);
 			eval(callback(data));
+			$("div.spinner").hide();
 		});
 	} else {
 		$.post(URL,options);
+		$("div.spinner").hide();
 	}
 }
 </script>
