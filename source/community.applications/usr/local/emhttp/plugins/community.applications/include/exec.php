@@ -114,9 +114,10 @@ case 'get_content':
 			}
 			if ( $displayApplications['community'] ) {
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
-				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
+				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
 				$sortOrder['sortBy'] = "noSort";
-				echo my_display_apps($displayApplications['community'],"1");
+				$o['display'] = my_display_apps($displayApplications['community'],"1");
+				execReturn($o);
 				break;
 			} else {
 				switch ($communitySettings['startup']) {
@@ -132,8 +133,9 @@ case 'get_content':
 						$startupType = "Trending"; break;
 				}
 						
-				echo "<script>$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);</script>";
-				echo "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>An error occurred.  Could not find any $startupType Apps</span></font><br><br>";
+				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
+				$o['display'] =  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>An error occurred.  Could not find any $startupType Apps</span></font><br><br>";
+				execReturn($o);
 				break;
 			}
 		}
@@ -188,7 +190,8 @@ case 'get_content':
 	$displayApplications['community'] = $display;
 
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
-	display_apps();
+	$o['display'] = display_apps();
+	execReturn($o);
 	break;
 
 ########################################################
@@ -261,8 +264,11 @@ case 'display_content':
 	$selectedApps = json_decode(getPost("selected",false),true);
 
 	if ( file_exists($communityPaths['community-templates-displayed']) ) {
-		display_apps($pageNumber,$selectedApps,$startup);
+		$o['display'] = display_apps($pageNumber,$selectedApps,$startup);
+	} else {
+		$o['display'] = "";
 	}
+	execReturn($o);
 	break;
 
 ########################################################################

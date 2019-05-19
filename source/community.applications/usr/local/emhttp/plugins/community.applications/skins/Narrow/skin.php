@@ -20,7 +20,7 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 
 	$display = ( $totalApplications ) ? my_display_apps($communityApplications,$pageNumber,$selectedApps,$startup) : "<div class='ca_NoAppsFound'></div>";
 
-	echo $display;
+	return $display;
 }
 
 # skin specific PHP

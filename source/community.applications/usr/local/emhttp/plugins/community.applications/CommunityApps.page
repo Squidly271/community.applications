@@ -330,13 +330,6 @@ function changeCategory(button,subSwitch) {
 }
 
 function changePage(pageNumber) {
-	if ( data.currentpage < pageNumber ) {
-		var directionOut = "Left";
-		var directionIn = "Right";
-	} else {
-		var directionOut = "Right";
-		var directionIn = "Left";
-	}
 	var sortOrder = getSortOrder();
 	var selected = data.selected;
 	data.currentpage = pageNumber;
@@ -344,8 +337,8 @@ function changePage(pageNumber) {
 	var oldHeight = $(".ca_templatesDisplay").height();
 	$(".ca_templatesDisplay").css("height",oldHeight).html("");
 	hideSortIcons();
-	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected},function(data3) {
-		updateDisplay(data3,directionIn);
+	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected},function(data) {
+		updateDisplay(data.display);
 		$(".ca_templatesDisplay").css("height","auto");
 	});
 }
@@ -429,7 +422,7 @@ function doSearch(button,newSearch) {
 
 	post({action:'get_content',filter:filter,sortOrder:sortOrder},function(data) {
 		enableButtons();
-		updateDisplay(data);
+		updateDisplay(data.display);
 		data.section = "AppStore";
 		$(".selectedMenu").removeClass("selectedMenu");
 	});
@@ -454,8 +447,8 @@ function changeSortOrder(button,buttonClass,previousApps) {
 			startup = "true";
 		}
 	});
-	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,startup:startup},function(data3) {
-		updateDisplay(data3);
+	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,startup:startup},function(data) {
+		updateDisplay(data.display);
 	});
 }
 
@@ -518,7 +511,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		var sortOrder = getSortOrder();
 
 		post({action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,startupDisplay:startupDisplay},function(data) {
-			updateDisplay(data);
+			updateDisplay(data.display);
 
 			if ( initialize ) {
 				populateAutoComplete();
@@ -562,13 +555,6 @@ function initDockerSearch() {
 }
 
 function dockerSearch(pageNumber) {
-	if ( data.prevpage < pageNumber ) {
-		var directionOut = "Left";
-		var directionIn = "Right";
-	} else {
-		var directionOut = "Right";
-		var directionIn = "Left";
-	}
 	var filter = $('#searchBox').val();
 	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
 	data.docker = "searching docker";
@@ -579,7 +565,7 @@ function dockerSearch(pageNumber) {
 	$("#templates_content").html("");
 	post({action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(data) {
 		if (data) {
-			updateDisplay(data,directionIn);
+			updateDisplay(data);
 		}
 	});
 }
@@ -1099,7 +1085,7 @@ function addWarning(text) {
 }
 
 function post(options,callback) {
-	var spinner;
+	var spinner = false;
 	
 	if ( typeof options === "function" ) {
 		callback = options;
