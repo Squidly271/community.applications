@@ -582,17 +582,6 @@ case 'remove_application':
 	postReturn(['status'=>"ok"]);
 	break;
 
-#######################
-# Uninstalls a plugin #
-#######################
-case 'uninstall_application':
-	$application = getPost("application","");
-
-	$filename = basename($application);
-	shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin remove ".escapeshellarg($filename));
-	postReturn(["status"=>"ok"]);
-	break;
-
 ###################################################################################
 # Checks for an update still available (to update display) after update installed #
 ###################################################################################

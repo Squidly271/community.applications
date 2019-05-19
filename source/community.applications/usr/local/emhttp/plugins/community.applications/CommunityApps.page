@@ -667,22 +667,28 @@ function uninstallApp(application,humanName) {
 			showCancelButton: true,
 			showConfirmButton: true,
 			confirmButtonText: "Yes, uninstall it!",
-			closeOnConfirm: false,
-			showLoaderOnConfirm: true,
+			closeOnConfirm: true,
+			showLoaderOnConfirm: false,
 			allowOutsideClick: true,
 			html: true
 		}, function(isConfirm) {
 			if (isConfirm) {
-				myAlert("","Uninstalling "+humanName);
-				post({action:'uninstall_application',application:application}, function(result) {
-					previousApps("InstalledApps",true);
-					enableSearch();
-				});
+				application = basename(application);
+				my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=remove&arg2='+application,'Uninstall Plugin',600,900,true,"postUninstallPlugin()");
 			} else {
 				enableSearch();
 			}
 		});
 	}
+}
+
+function postUninstallPlugin() {
+	previousApps("InstalledApps",true);
+	enableSearch();
+}
+
+function basename(path) {
+	return path.split('/').reverse()[0];
 }
 
 function deletePrivateApp(path,name,author) {
