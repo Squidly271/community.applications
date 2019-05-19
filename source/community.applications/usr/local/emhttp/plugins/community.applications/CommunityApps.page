@@ -965,6 +965,7 @@ function handle_HTTP_icons() {
 
 function saveState() {
 	if ( ! dockerSearchFlag ) {
+		console.log("Save State");
 		$.cookie("categoryText",$("#Category").html());
 		$.cookie("data",JSON.stringify(data));
 		$.cookie("dockerSearchFlag",dockerSearchFlag);
@@ -985,6 +986,7 @@ function saveState() {
 }
 
 function restoreState() {
+	console.log("Restore State");
 	$("#Category").html($.cookie("categoryText"));
 	if ( $.cookie("installMulti") == "true" ) {
 		$(".multi_installDiv").show();
@@ -1085,7 +1087,7 @@ function post(options,callback) {
 		callback = options;
 	} else {
 		console.time(options.action);
-		console.log(JSON.stringify(options));
+		console.log("Post: "+JSON.stringify(options));
 	}
 	if ( $("div.spinner").is(":hidden") ) {
 		spinner = setTimeout(function(){
@@ -1102,9 +1104,9 @@ function post(options,callback) {
 			} catch(e) {
 				var result = retval;
 			}
-			console.groupCollapsed("Data "+options.action);
+			console.groupCollapsed("Result "+options.action);
 			console.timeEnd(options.action);
-			console.log(JSON.stringify(data));
+			console.log(JSON.stringify(result));
 			console.groupEnd();
 			eval(callback(result));
 			if (result.script) {
