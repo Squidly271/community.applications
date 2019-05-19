@@ -564,14 +564,14 @@ function dockerSearch(pageNumber) {
 	var sortOrder = getSortOrder();
 	$("#templates_content").html("");
 	post({action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(result) {
-		updateDisplay(result);
+		updateDisplay(result.display);
 	});
 }
 
 function dockerConvert(dockerID) {
 	post({action:'convert_docker',ID:dockerID},function(result) {
 		myCloseAlert();
-		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + $.trim(result);
+		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + $.trim(result.xml);
 		window.open(templateURL,"_self");
 	});
 }
@@ -806,7 +806,7 @@ function displayTags(leadTemplate) {
 		disableSearch();
 		swal({
 			title: "Choose A Branch To Install",
-			text: result,
+			text: result.tags,
 			html: true,
 			type: "warning",
 			showCancelButton: true,
@@ -1102,6 +1102,7 @@ function post(options,callback) {
 					alert(result.error);
 				}
 			} catch(e) {
+				alert("No JSON returned: "+options.action);
 				var result = retval;
 			}
 			console.groupCollapsed("Result "+options.action);

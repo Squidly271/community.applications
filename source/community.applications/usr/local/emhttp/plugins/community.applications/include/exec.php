@@ -117,7 +117,7 @@ case 'get_content':
 				$sortOrder['sortBy'] = "noSort";
 				$o['display'] = my_display_apps($displayApplications['community'],"1");
 				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
-				execReturn($o);
+				postReturn($o);
 				break;
 			} else {
 				switch ($communitySettings['startup']) {
@@ -135,7 +135,7 @@ case 'get_content':
 						
 				$o['display'] =  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>An error occurred.  Could not find any $startupType Apps</span></font><br><br>";
 				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
-				execReturn($o);
+				postReturn($o);
 				break;
 			}
 		}
@@ -191,7 +191,7 @@ case 'get_content':
 
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 	$o['display'] = display_apps();
-	execReturn($o);
+	postReturn($o);
 	break;
 
 ########################################################
@@ -245,13 +245,13 @@ case 'force_update':
 			$o['data'] .= "</div>";
 			@unlink($communityPaths['appFeedDownloadError']);
 			@unlink($communityPaths['community-templates-info']);
-			execReturn($o);
+			postReturn($o);
 			break;
 		}
 	}
 	getConvertedTemplates();
 	moderateTemplates();
-	execReturn(['status'=>"ok"]);
+	postReturn(['status'=>"ok"]);
 	break;
 
 ####################################################################################
@@ -268,20 +268,7 @@ case 'display_content':
 	} else {
 		$o['display'] = "";
 	}
-	execReturn($o);
-	break;
-
-########################################################################
-# change_docker_view - called when the view mode for dockerHub changes #
-########################################################################
-case 'change_docker_view':
-	$sortOrder = getSortOrder(getPostArray('sortOrder'));
-	if ( ! file_exists($communityPaths['dockerSearchResults']) ) {
-		break;
-	}
-	$file = readJsonFile($communityPaths['dockerSearchResults']);
-	$pageNumber = $file['page_number'];
-	displaySearchResults($pageNumber);
+	postReturn($o);
 	break;
 
 #######################################################################
@@ -312,7 +299,7 @@ case 'convert_docker':
 	$xmlFile .= str_replace("/","-",$docker['Repository']).".xml";
 	file_put_contents($xmlFile,$dockerXML);
 	file_put_contents($communityPaths['addConverted'],"Dante");
-	echo $xmlFile;
+	postReturn(['xml'=>$xmlFile]);
 	break;
 
 #########################################################
@@ -330,8 +317,9 @@ case 'search_dockerhub':
 	$num_pages = $pageresults['num_pages'];
 
 	if ($pageresults['num_results'] == 0) {
-		echo "<div class='ca_center'>No matching content found on dockerhub</div>";
-		echo "<script>$('#dockerSearch').hide();</script>";
+		$o['display'] = "<div class='ca_center'>No matching content found on dockerhub</div>";
+		$o['script'] = "$('#dockerSearch').hide();";
+		postReturn($o);
 		@unlink($communityPaths['dockerSerchResults']);
 		break;
 	}
@@ -368,7 +356,7 @@ case 'search_dockerhub':
 	$dockerFile['results'] = $dockerResults;
 
 	writeJsonFile($communityPaths['dockerSearchResults'],$dockerFile);
-	displaySearchResults($pageNumber);
+	postReturn(['display'=>displaySearchResults($pageNumber)]);
 	break;
 
 #####################################################################
@@ -376,7 +364,7 @@ case 'search_dockerhub':
 #####################################################################
 case 'dismiss_warning':
 	file_put_contents($communityPaths['warningAccepted'],"warning dismissed");
-	echo "warning dismissed";
+	postReturn(['status'=>"warning dismissed"]);
 	break;
 
 ###############################################################
@@ -580,7 +568,7 @@ if ( $communitySettings['dockerRunning'] ) {
 	}
 	$displayedApplications['community'] = $displayed;
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayedApplications);
-	echo "ok";
+	postReturn(['status'=>"ok"]);
 	break;
 
 ####################################################################################
@@ -591,7 +579,7 @@ case 'remove_application':
 	if ( pathinfo($application,PATHINFO_EXTENSION) == "xml" || pathinfo($application,PATHINFO_EXTENSION) == "plg" ) {
 		@unlink($application);
 	}
-	echo "ok";
+	postReturn(['status'=>"ok"]);
 	break;
 
 #######################
@@ -602,7 +590,7 @@ case 'uninstall_application':
 
 	$filename = basename($application);
 	shell_exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin remove ".escapeshellarg($filename));
-	echo "ok";
+	postReturn(["status"=>"ok"]);
 	break;
 
 ###################################################################################
@@ -621,7 +609,7 @@ case 'updatePLGstatus':
 		}
 	}
 	writeJsonFile($communityPaths['community-templates-displayed'],$newDisplayed);
-	execReturn(['status'=>"ok"]);
+	postReturn(['status'=>"ok"]);
 	break;
 
 #######################
@@ -644,7 +632,7 @@ case 'uninstall_docker':
 	$DockerClient->removeContainer($containerName,$dockerRunning[$container]['Id']);
 	$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
 
-	execReturn(['status'=>"Uninstalled"]);
+	postReturn(['status'=>"Uninstalled"]);
 	break;
 
 ##################################################
@@ -680,7 +668,7 @@ case "pinnedApps":
 	$displayedApplications['community'] = $displayed;
 	$displayedApplications['pinnedFlag']  = true;
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayedApplications);
-	execReturn(["status"=>"ok"]);
+	postReturn(["status"=>"ok"]);
 	break;
 
 ################################################
@@ -688,7 +676,7 @@ case "pinnedApps":
 ################################################
 case 'displayTags':
 	$leadTemplate = getPost("leadTemplate","oops");
-	echo formatTags($leadTemplate,"_self");
+	postReturn(['tags'=>formatTags($leadTemplate,"_self")]);
 	break;
 
 ###########################################
@@ -783,7 +771,7 @@ case 'statistics':
 		<div class='ca_center'><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></div>
 		<div class='ca_center'>Ensuring only safe applications are present is a full time job</div><br>
 	";
-	execReturn(['statistics'=>$o]);
+	postReturn(['statistics'=>$o]);
 	break;
 
 #######################################
@@ -793,7 +781,7 @@ case 'removePrivateApp':
 	$path = getPost("path",false);
 
 	if ( ! $path || pathinfo($path,PATHINFO_EXTENSION) != "xml") {
-		execReturn(["error"=>"Something went wrong-> not an xml file: $path"]);
+		postReturn(["error"=>"Something went wrong-> not an xml file: $path"]);
 		break;
 	}
 	$templates = readJsonFile($communityPaths['community-templates-info']);
@@ -813,7 +801,7 @@ case 'removePrivateApp':
 	writeJsonFile($communityPaths['community-templates-info'],$templates);
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayed);
 	@unlink($path);
-	execReturn(["status"=>"ok"]);
+	postReturn(["status"=>"ok"]);
 	break;
 
 ####################################################
@@ -831,14 +819,14 @@ case 'populateAutoComplete':
 		}
 	}
 
-	execReturn(array_values($autoComplete));
+	postReturn(array_values($autoComplete));
 	break;
 
 ######################
 # Shows CA's credits #
 ######################
 case 'showCredits':
-	execReturn(["credits"=>file_get_contents("/usr/local/emhttp/plugins/community.applications/include/caCredits.html")]);
+	postReturn(["credits"=>file_get_contents("/usr/local/emhttp/plugins/community.applications/include/caCredits.html")]);
 	break;
 
 ##########################
@@ -849,7 +837,7 @@ case 'caChangeLog':
 	$o = "<div style='margin:auto;width:500px;'>";
 	$o .= "<div class='ca_center'><font size='4rem'>Community Applications Changelog</font></div><br><br>";
 	$o .= Markdown(plugin("changes","/var/log/plugins/community.applications.plg"));
-	execReturn(["changelog"=>$o]);
+	postReturn(["changelog"=>$o]);
 	break;
 	
 ###############################
@@ -872,7 +860,7 @@ case 'get_categories':
 			}
 		}
 	}
-	execReturn(["categories"=>$cat]);
+	postReturn(["categories"=>$cat]);
 	break;
 
 }	

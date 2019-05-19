@@ -374,7 +374,7 @@ function displaySearchResults($pageNumber) {
 	}
 	$ct .= $skin[$viewMode]['footer'];
 
-	echo $ct.dockerNavigate($num_pages,$pageNumber);
+	return $ct.dockerNavigate($num_pages,$pageNumber);
 }
 
 ############################################################################
