@@ -621,7 +621,7 @@ case 'updatePLGstatus':
 		}
 	}
 	writeJsonFile($communityPaths['community-templates-displayed'],$newDisplayed);
-	echo "ok";
+	execReturn(['status'=>"ok"]);
 	break;
 
 #######################

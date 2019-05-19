@@ -756,7 +756,7 @@ function initializeAppStore() {
 }
 
 function installPLGupdate(filename,plgName) {
-	$("#sortorder").attr("data-plgfilename",filename);
+	data.plgfilename = filename;
 	if ( filename == "community.applications.plg" ) {
 		openBox('/plugins/<?=$plugin?>/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true);
 	} else {
@@ -765,7 +765,7 @@ function installPLGupdate(filename,plgName) {
 }
 
 function checkPLGupdate() {
-	var filename = $("#sortorder").attr("data-plgfilename");
+	var filename = data.plgfilename;
 	post({action:'updatePLGstatus',filename:filename},function(result) {
 		var pageNumber = data.currentpage;
 		changePage(pageNumber);
@@ -1187,6 +1187,4 @@ function post(options,callback) {
 <div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
 </div>
 </div>
-<span id='miscScript'></span><span id='awesomepleteScript'></span>
-<span id='sortorder' data-sortorder='' data-selected=''></span>
 <span id='debugging'></span>
