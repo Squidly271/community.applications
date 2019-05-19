@@ -240,7 +240,7 @@ function updateContent(button) {
 			myCloseAlert();
 			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
 		} else {
-			if ( myTrim(result.status) != "ok" ) {
+			if ( result.data ) {
 				updateDisplay(result.data);
 			} else {
 				getContent(true,'INITIALIZE',"","",startupScreen);
@@ -388,7 +388,7 @@ function doSearch(button,newSearch) {
 	data.docker = "";
 	data.section = "AppStore";
 	filter = filter.replace(/[^a-z0-9]/gi,' ')
-	filter = myTrim(filter);
+	filter = $.trim(filter);
 	$('#searchBox').val(filter);
 	$(".multi_installDiv").hide();
 
@@ -571,7 +571,7 @@ function dockerSearch(pageNumber) {
 function dockerConvert(dockerID) {
 	post({action:'convert_docker',ID:dockerID},function(result) {
 		myCloseAlert();
-		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + myTrim(result);
+		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + $.trim(result);
 		window.open(templateURL,"_self");
 	});
 }
@@ -712,10 +712,6 @@ function deletePrivateApp(path,name,author) {
 			enableSearch();
 		}
 	});
-}
-
-function myTrim(x) {
-	return $.trim(x);
 }
 
 function uninstallDocker(application,humanName) {
