@@ -226,29 +226,29 @@ case 'force_update':
 			download_url($communityPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
 			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
 			@unlink($tmpfile);
-			echo "<script>$('.startupButton').hide();</script>";
-			echo "<div class='ca_center'><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <span class='ca_italic'><span class='ca_bold'>requires</span></span> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <span class='ca_bold'>208.67.222.222 and 208.67.220.220</span> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://www.githubstatus.com/' target='_blank'>HERE</a>";
+			$o['script'] = "$('.startupButton').hide();";
+			$o['data'] =  "<div class='ca_center'><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <span class='ca_italic'><span class='ca_bold'>requires</span></span> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <span class='ca_bold'>208.67.222.222 and 208.67.220.220</span> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://www.githubstatus.com/' target='_blank'>HERE</a>";
 			$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
 			$downloaded = @file_get_contents($tempFile);
 			if (strlen($downloaded) > 100) {
-				echo "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Please try again later)</font>";
+				$o['data'] .= "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Please try again later)</font>";
 			}
-			echo "<div class='ca_center'>Last JSON error Recorded: ";
+			$o['data'] .=  "<div class='ca_center'>Last JSON error Recorded: ";
 			$jsonDecode = json_decode($downloaded,true);
-			echo "JSON Error: ".jsonError(json_last_error());
+			$o['data'] .= "JSON Error: ".jsonError(json_last_error());
 			if ( $publicServiceAnnouncement ) {
-				echo "<br><font size='3' color='purple'>$publicServiceAnnouncement</font>";
+				$o['data'] .= "<br><font size='3' color='purple'>$publicServiceAnnouncement</font>";
 			}
-			echo "</div>";
-			echo "<script>$('.ca_stats').hide();</script>";
+			$o['data'] .= "</div>";
 			@unlink($communityPaths['appFeedDownloadError']);
 			@unlink($communityPaths['community-templates-info']);
+			execReturn($o);
 			break;
 		}
 	}
 	getConvertedTemplates();
 	moderateTemplates();
-	echo "ok";
+	execReturn(['status'=>"ok"]);
 	break;
 
 ####################################################################################
@@ -638,7 +638,7 @@ case 'uninstall_docker':
 	$DockerClient->removeContainer($containerName,$dockerRunning[$container]['Id']);
 	$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
 
-	echo "Uninstalled";
+	execReturn(['status'=>"Uninstalled"]);
 	break;
 
 ##################################################
@@ -674,7 +674,7 @@ case "pinnedApps":
 	$displayedApplications['community'] = $displayed;
 	$displayedApplications['pinnedFlag']  = true;
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayedApplications);
-	echo "fini!";
+	execReturn(["status"=>"ok"]);
 	break;
 
 ################################################
@@ -754,29 +754,30 @@ case 'statistics':
 		$currentServer = "<i class='fa fa-exclamation-triangle ca_serverWarning' aria-hidden='true'></i> $currentServer";
 	}
 
-?>
-<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>
-<table style='margin-top:1rem;'>
-<tr style='height:6rem;'><td colspan='2'><div class='ca_center'><i class='fa fa-users' style='font-size:6rem;'></i></td></tr>
-<tr><td colspan='2'><div class='ca_center'><font size='5rem;'>Community Applications</font></div></td></tr>
-<tr><td class='ca_table'>Last Change To Application Feed</td><td class='ca_stat'><?=$updateTime?><br><?=$currentServer?> active</td></tr>
-<tr><td class='ca_table'>Number Of Docker Applications</td><td class='ca_stat'><?=$statistics['docker']?></td></tr>
-<tr><td class='ca_table'>Number Of Plugins</td><td class='ca_stat'><?=$statistics['plugin']?></td></tr>
-<tr><td class='ca_table'>Number Of Templates</td><td class='ca_stat'><?=$statistics['totalApplications']?></td></tr>
-<tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></td><td class='ca_stat'><?=count($repositories)?></td></tr>
-<tr><td class='ca_table'><a data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>Number Of Private Docker Applications</a></td><td class='ca_stat'><?=$statistics['private']?></td></tr>
-<tr><td class='ca_table'><a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Number Of Invalid Templates</a></td><td class='ca_stat'><?=count($invalidXML)?></td></tr>
-<tr><td class='ca_table'><a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Number Of Template Errors</a></td><td class='ca_stat'><?=$statistics['caFixed']?>+</td></tr>
-<tr><td class='ca_table'><a data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Blacklisted Apps</a></td><td class='ca_stat'><?=$statistics['blacklist']?></td></tr>
-<tr><td class='ca_table'><a data-category='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Incompatible Applications</a></td><td class='ca_stat'><?=$statistics['totalIncompatible']?></td></tr>
-<tr><td class='ca_table'><a data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></td><td class='ca_stat'><?=$statistics['totalDeprecated']?></td></tr>
-<tr><td class='ca_table'><a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Number Of Moderation Entries</a></td><td class='ca_stat'><?=$statistics['totalModeration']?>+</td></tr>
-<tr><td class='ca_table'>Memory Usage (CA / DataFiles / Flash)</td><td class='ca_stat'><?=$memCA[0]?> / <?=$memTmp[0]?> / <?=$memFlash[0]?></td></tr>
-<tr><td class='ca_table'><a href='<?=$communityPaths['application-feed']?>' target='_blank'>Primary Server</a> / <a href='<?=$communityPaths['application-feedBackup']?>' target='_blank'> Backup Server</a></td></tr>
-</table>
-<div class='ca_center'><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></div>
-<div class='ca_center'>Ensuring only safe applications are present is a full time job</div><br>
-<?
+	$o = "
+		<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>
+		<table style='margin-top:1rem;'>
+		<tr style='height:6rem;'><td colspan='2'><div class='ca_center'><i class='fa fa-users' style='font-size:6rem;'></i></td></tr>
+		<tr><td colspan='2'><div class='ca_center'><font size='5rem;'>Community Applications</font></div></td></tr>
+		<tr><td class='ca_table'>Last Change To Application Feed</td><td class='ca_stat'>$updateTime<br>$currentServer active</td></tr>
+		<tr><td class='ca_table'>Number Of Docker Applications</td><td class='ca_stat'>{$statistics['docker']}</td></tr>
+		<tr><td class='ca_table'>Number Of Plugins</td><td class='ca_stat'>{$statistics['plugin']}</td></tr>
+		<tr><td class='ca_table'>Number Of Templates</td><td class='ca_stat'>{$statistics['totalApplications']}</td></tr>
+		<tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></td><td class='ca_stat'>".count($repositories)."</td></tr>
+		<tr><td class='ca_table'><a data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>Number Of Private Docker Applications</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>
+		<tr><td class='ca_table'><a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Number Of Invalid Templates</a></td><td class='ca_stat'>".count($invalidXML)."</td></tr>
+		<tr><td class='ca_table'><a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Number Of Template Errors</a></td><td class='ca_stat'>{$statistics['caFixed']}+</td></tr>
+		<tr><td class='ca_table'><a data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Blacklisted Apps</a></td><td class='ca_stat'>{$statistics['blacklist']}</td></tr>
+		<tr><td class='ca_table'><a data-category='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Incompatible Applications</a></td><td class='ca_stat'>{$statistics['totalIncompatible']}</td></tr>
+		<tr><td class='ca_table'><a data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></td><td class='ca_stat'>{$statistics['totalDeprecated']}</td></tr>
+		<tr><td class='ca_table'><a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Number Of Moderation Entries</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>
+		<tr><td class='ca_table'>Memory Usage (CA / DataFiles / Flash)</td><td class='ca_stat'>{$memCA[0]} / {$memTmp[0]} / {$memFlash[0]}</td></tr>
+		<tr><td class='ca_table'><a href='{$communityPaths['application-feed']}' target='_blank'>Primary Server</a> / <a href='{$communityPaths['application-feedBackup']}' target='_blank'> Backup Server</a></td></tr>
+		</table>
+		<div class='ca_center'><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></div>
+		<div class='ca_center'>Ensuring only safe applications are present is a full time job</div><br>
+	";
+	execReturn(['statistics'=>$o]);
 	break;
 
 #######################################
@@ -786,7 +787,7 @@ case 'removePrivateApp':
 	$path = getPost("path",false);
 
 	if ( ! $path || pathinfo($path,PATHINFO_EXTENSION) != "xml") {
-		echo "something went wrong";
+		execReturn(["error"=>"Something went wrong-> not an xml file: $path"]);
 		break;
 	}
 	$templates = readJsonFile($communityPaths['community-templates-info']);
@@ -806,7 +807,7 @@ case 'removePrivateApp':
 	writeJsonFile($communityPaths['community-templates-info'],$templates);
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayed);
 	@unlink($path);
-	echo "done";
+	execReturn(["status"=>"ok"]);
 	break;
 
 ####################################################
@@ -815,7 +816,7 @@ case 'removePrivateApp':
 case 'populateAutoComplete':
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 
-	$autoComplete = array("backup"=>"Backup","cloud"=>"Cloud","downloaders"=>"Downloaders","homeautomation"=>"Home Automation","network"=>"Network","mediaapp"=>"Media App","mediaserver"=>"Media Server","productivity"=>"Productivity","tools"=>"Tools","other"=>"Other","plugins"=>"Plugins","uncategorized"=>"Uncategorized");
+	$autoComplete = array("gameserver"=>"GameServers","backup"=>"Backup","cloud"=>"Cloud","downloaders"=>"Downloaders","homeautomation"=>"HomeAutomation","network"=>"Network","mediaapp"=>"MediaApp","mediaserver"=>"MediaServer","productivity"=>"Productivity","tools"=>"Tools","other"=>"Other","plugins"=>"Plugins","uncategorized"=>"Uncategorized");
 	foreach ($templates as $template) {
 		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $communitySettings['hideDeprecated'] == "true") && ($template['Compatible'] || $communitySettings['hideIncompatible'] != "true") ) {
 			$autoComplete[strtolower($template['Name'])] = $template['Name'];
@@ -824,24 +825,14 @@ case 'populateAutoComplete':
 		}
 	}
 
-	echo json_encode(array_values($autoComplete));
+	execReturn(array_values($autoComplete));
 	break;
 
 ######################
 # Shows CA's credits #
 ######################
 case 'showCredits':
-	echo file_get_contents("/usr/local/emhttp/plugins/community.applications/include/caCredits.html");
-	break;
-
-####################################
-# Installs a plugin from the modal #
-####################################
-case 'installPlugin':
-	$pluginURL = getPost("pluginURL",false);
-	exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/plugin install ".escapeshellarg($pluginURL),$output,$retval);
-	exec("/usr/local/emhttp/plugins/community.applications/scripts/updatePluginSupport.php",$output);
-	echo json_encode(array("retval"=>$retval,"output"=>implode("<br>",$output)));
+	execReturn(["credits"=>file_get_contents("/usr/local/emhttp/plugins/community.applications/include/caCredits.html")]);
 	break;
 
 ##########################
@@ -849,9 +840,10 @@ case 'installPlugin':
 ##########################
 case 'caChangeLog':
 	require_once("webGui/include/Markdown.php");
-	echo "<div style='margin:auto;width:500px;'>";
-	echo "<div class='ca_center'><font size='4rem'>Community Applications Changelog</font></div><br><br>";
-	echo Markdown(plugin("changes","/var/log/plugins/community.applications.plg"));
+	$o = "<div style='margin:auto;width:500px;'>";
+	$o .= "<div class='ca_center'><font size='4rem'>Community Applications Changelog</font></div><br><br>";
+	$o .= Markdown(plugin("changes","/var/log/plugins/community.applications.plg"));
+	execReturn(["changelog"=>$o]);
 	break;
 	
 ###############################
@@ -860,20 +852,21 @@ case 'caChangeLog':
 case 'get_categories':
 	$categories = readJsonFile($communityPaths['categoryList']);
 	if ( ! is_array($categories) ) {
-		echo "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
+		$cat = "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
 		break;
-	}
-	foreach ($categories as $category) {
-		$cat .= "<li class='categoryMenu caMenuItem' data-category='{$category['Cat']}'>{$category['Des']}</li>";
-		if (is_array($category['Sub'])) {
-			$cat .= "<ul class='subCategory'>";
-			foreach($category['Sub'] as $subcategory) {
-				$cat .= "<li class='categoryMenu caMenuItem' data-category='{$subcategory['Cat']}'>{$subcategory['Des']}</li>";
+	} else {
+		foreach ($categories as $category) {
+			$cat .= "<li class='categoryMenu caMenuItem' data-category='{$category['Cat']}'>{$category['Des']}</li>";
+			if (is_array($category['Sub'])) {
+				$cat .= "<ul class='subCategory'>";
+				foreach($category['Sub'] as $subcategory) {
+					$cat .= "<li class='categoryMenu caMenuItem' data-category='{$subcategory['Cat']}'>{$subcategory['Des']}</li>";
+				}
+				$cat .= "</ul>";
 			}
-			$cat .= "</ul>";
 		}
 	}
-	echo $cat;
+	execReturn(["categories"=>$cat]);
 	break;
 
 }	

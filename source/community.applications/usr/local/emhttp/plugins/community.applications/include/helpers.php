@@ -513,4 +513,12 @@ function formatTags($leadTemplate,$tabMode="_self") {
 	return $o;
 }
 
+function execReturn($retArray) {
+	if (is_array($retArray)) {
+		echo json_encode($retArray);
+	} else {
+		echo $retArray;
+	}
+}
+
 ?>

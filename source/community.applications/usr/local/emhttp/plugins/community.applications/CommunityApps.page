@@ -52,10 +52,8 @@ var dockerSearchFlag = false;
 
 $(function(){
 	caPluginUpdateCheck("community.applications.plg",{noDismiss:true,name:"Community Applications"},function(data) {
-		if (data) {
-			var result = JSON.parse(data);
-			$("#caInstalledVersion").html(result.installedVersion);
-		}
+		var result = JSON.parse(data);
+		$("#caInstalledVersion").html(result.installedVersion);
 	});
 
 	$("#title").append('<div id="Category" class="categoryLine ca_italic"></div>');
@@ -189,9 +187,7 @@ $(function(){
 		}, function (isConfirm) {
 			if ( isConfirm ) {
 				post({action:'dismiss_warning'},function(data) {
-					if (data) {
-						location.reload();
-					}
+					location.reload();
 				});
 			} else {
 				addWarning("Installations of apps disabled.  You must accept the warning to be able to install applications.  Click <a onclick='window.location.reload();' style='cursor:pointer;'>HERE</a>");
@@ -238,25 +234,21 @@ function updateContent(button) {
 		myAlert("Updating Content",appFeedModeMsg,true,"40");
 	}
 	post({action:'force_update'}, function(data) {
-		if (data) {
-			if ( $.cookie("plugininstallpending" || ! appFeedModeMsg ) ) {
-				var plugins = $.cookie("plugininstallpending");
-				$.removeCookie("plugininstallpending");
-				myCloseAlert();
-				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
+		if ( $.cookie("plugininstallpending" || ! appFeedModeMsg ) ) {
+			var plugins = $.cookie("plugininstallpending");
+			$.removeCookie("plugininstallpending");
+			myCloseAlert();
+			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
+		} else {
+			if ( myTrim(data.status) != "ok" ) {
+				updateDisplay(data.data);
 			} else {
-				if ( myTrim(data) != "ok" ) {
-					updateDisplay(data);
-				} else {
-					getContent(true,'INITIALIZE',"","",startupScreen);
-				}
+				getContent(true,'INITIALIZE',"","",startupScreen);
 			}
-			post({action:'get_categories'},function(data) {
-				if (data) {
-					$("#category_list").html(data);
-				}
-			});
 		}
+		post({action:'get_categories'},function(data) {
+			$("#category_list").html(data.categories);
+		});
 	});
 }
 
@@ -353,10 +345,8 @@ function changePage(pageNumber) {
 	$(".ca_templatesDisplay").css("height",oldHeight).html("");
 	hideSortIcons();
 	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected},function(data3) {
-		if (data3) {
-			updateDisplay(data3,directionIn);
-			$(".ca_templatesDisplay").css("height","auto");
-		}
+		updateDisplay(data3,directionIn);
+		$(".ca_templatesDisplay").css("height","auto");
 	});
 }
 
@@ -438,12 +428,10 @@ function doSearch(button,newSearch) {
 	}
 
 	post({action:'get_content',filter:filter,sortOrder:sortOrder},function(data) {
-		if (data) {
-			enableButtons();
-			updateDisplay(data);
-			data.section = "AppStore";
-			$(".selectedMenu").removeClass("selectedMenu");
-		}
+		enableButtons();
+		updateDisplay(data);
+		data.section = "AppStore";
+		$(".selectedMenu").removeClass("selectedMenu");
 	});
 }
 
@@ -467,9 +455,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 		}
 	});
 	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,startup:startup},function(data3) {
-		if (data3) {
-			updateDisplay(data3);
-		}
+		updateDisplay(data3);
 	});
 }
 
@@ -532,12 +518,10 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		var sortOrder = getSortOrder();
 
 		post({action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,startupDisplay:startupDisplay},function(data) {
-			if (data) {
-				updateDisplay(data);
+			updateDisplay(data);
 
-				if ( initialize ) {
-					populateAutoComplete();
-				}
+			if ( initialize ) {
+				populateAutoComplete();
 			}
 		});
 	}
@@ -546,12 +530,10 @@ function getContent(init,category,description,newApp,startupDisplay) {
 
 function populateAutoComplete() {
 	post({action:'populateAutoComplete'},function(data) {
-		if (data) {
-			searchBoxAwesomplete.list = data;
-			searchBoxAwesomplete.maxItems = 20;
-			Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch)
-			Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch)
-		}
+		searchBoxAwesomplete.list = data;
+		searchBoxAwesomplete.maxItems = 20;
+		Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch)
+		Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch)
 	});
 }
 
@@ -604,11 +586,9 @@ function dockerSearch(pageNumber) {
 
 function dockerConvert(dockerID) {
 	post({action:'convert_docker',ID:dockerID},function(data) {
-		if (data) {
-			myCloseAlert();
-			templateURL = "/Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
-			window.open(templateURL,"_self");
-		}
+		myCloseAlert();
+		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
+		window.open(templateURL,"_self");
 	});
 }
 
@@ -654,16 +634,14 @@ function previousApps(button,installed) {
 	enableIcon("#sortIcon",true);
 
 	post({action:'previous_apps',installed:installed},function(data) {
-		if (data) {
-			if ( installed ) {
-				$(".multi_installDiv").hide();
-			} else {
-				$(".multi_installDiv").show();
-				clearMultiInstall();
-			}
-			changeSortOrder(null,null,"true");
-			saveState();
+		if ( installed ) {
+			$(".multi_installDiv").hide();
+		} else {
+			$(".multi_installDiv").show();
+			clearMultiInstall();
 		}
+		changeSortOrder(null,null,"true");
+		saveState();
 	});
 }
 
@@ -681,10 +659,8 @@ function removeApp(application, humanName) {
 	}, function(isConfirm) {
 		if (isConfirm) {
 			post({action:'remove_application',application:application}, function(data) {
-				if (data) {
-					enableSearch();
-					previousApps("OldApps",false);
-				}
+				enableSearch();
+				previousApps("OldApps",false);
 			});
 		} else {
 			enableSearch();
@@ -715,10 +691,8 @@ function uninstallApp(application,humanName) {
 			if (isConfirm) {
 				myAlert("","Uninstalling "+humanName);
 				post({action:'uninstall_application',application:application}, function(data) {
-					if (data) {
-						previousApps("InstalledApps",true);
-						enableSearch();
-					}
+					previousApps("InstalledApps",true);
+					enableSearch();
 				});
 			} else {
 				enableSearch();
@@ -746,11 +720,9 @@ function deletePrivateApp(path,name,author) {
 			swal("Removing "+name,"","info");
 			getSelectedApps();
 			post({action:'removePrivateApp',path:path},function(data) {
-				if (data) {
-					myCloseAlert();
-					refreshDisplay();
-					enableSearch();
-				}
+				myCloseAlert();
+				refreshDisplay();
+				enableSearch();
 			});
 		} else {
 			enableSearch();
@@ -779,10 +751,8 @@ function uninstallDocker(application,humanName) {
 		if ( isConfirm ) {
 			myAlert("","Uninstalling "+humanName);
 			post({action:'uninstall_docker',application:application},function(data) {
-				if (data) {
-					enableSearch();
-					previousApps("InstalledApps",true);
-				}
+				enableSearch();
+				previousApps("InstalledApps",true);
 			});
 		} else {
 			enableSearch();
@@ -817,10 +787,8 @@ function installPLGupdate(filename,plgName) {
 function checkPLGupdate() {
 	var filename = $("#sortorder").attr("data-plgfilename");
 	post({action:'updatePLGstatus',filename:filename},function(data) {
-		if (data) {
-			var pageNumber = data.currentpage;
-			changePage(pageNumber);
-		}
+		var pageNumber = data.currentpage;
+		changePage(pageNumber);
 	});
 }
 
@@ -848,31 +816,27 @@ function pinnedApps(button) {
 	$(".dockerSearch,.multi_installDiv").hide();
 	enableIcon("#sortIcon",true);
 	post({action:'pinnedApps'},function(data) {
-		if (data) {
-			refreshDisplay();
-			myCloseAlert();
-		}
+		refreshDisplay();
+		myCloseAlert();
 	});
 }
 
 function displayTags(leadTemplate) {
 	post({action:'displayTags',leadTemplate:leadTemplate},function(data) {
-		if (data) {
-			disableSearch();
-			swal({
-				title: "Choose A Branch To Install",
-				text: data,
-				html: true,
-				type: "warning",
-				showCancelButton: true,
-				showConfirmButton: false,
-				allowOutsideClick: true
-			}, function(isConfirm) {
-				if ( ! isConfirm ) {
-					enableSearch();
-				}
-			});
-		}
+		disableSearch();
+		swal({
+			title: "Choose A Branch To Install",
+			text: data,
+			html: true,
+			type: "warning",
+			showCancelButton: true,
+			showConfirmButton: false,
+			allowOutsideClick: true
+		}, function(isConfirm) {
+			if ( ! isConfirm ) {
+				enableSearch();
+			}
+		});
 	});
 }
 
@@ -1101,9 +1065,7 @@ function showCredits() {
 	$(".multi_installDiv,.dockerSearch").hide();
 	clearCategory(); clearSearchBox();
 	post({action:'showCredits'},function(data) {
-		if (data) {
-			updateDisplay(data);
-		}
+		updateDisplay(data.credits);
 	});
 }
 
@@ -1112,9 +1074,7 @@ function showStatistics() {
 	clearCategory(); clearSearchBox();
 	updateDisplay("");
 	post({action:'statistics'},function(data) {
-		if (data) {
-			updateDisplay(data);
-		}
+		updateDisplay(data.statistics);
 	});
 }
 
@@ -1122,9 +1082,7 @@ function caChangeLog() {
 	$(".multi_installDiv,.dockerSearch").hide();
 	clearCategory(); clearSearchBox();
 	post({action:'caChangeLog'},function(data) {
-		if (data) {
-			updateDisplay(data);
-		}
+		updateDisplay(data.changelog);
 	});
 }
 
@@ -1158,6 +1116,9 @@ function post(options,callback) {
 		$.post(URL,options,function(retval){
 			try {
 				var data = JSON.parse(retval);
+				if (data.error) {
+					alert(data.error);
+				}
 			} catch(e) {
 				var data = retval;
 			}
@@ -1166,6 +1127,13 @@ function post(options,callback) {
 			console.log(data);
 			console.groupEnd();
 			eval(callback(data));
+			if (data.script) {
+				try {
+					eval(data.script);
+				} catch(e) {
+					alert("Could not execute Script "+e);
+				}
+			}
 
 			if ( spinner ) {
 				clearTimeout(spinner);
