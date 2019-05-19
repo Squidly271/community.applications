@@ -51,8 +51,8 @@ data.searchFlag = false;
 var dockerSearchFlag = false;
 
 $(function(){
-	caPluginUpdateCheck("community.applications.plg",{noDismiss:true,name:"Community Applications"},function(data) {
-		var result = JSON.parse(data);
+	caPluginUpdateCheck("community.applications.plg",{noDismiss:true,name:"Community Applications"},function(result) {
+		var result = JSON.parse(result);
 		$("#caInstalledVersion").html(result.installedVersion);
 	});
 
@@ -186,7 +186,7 @@ $(function(){
 			confirmButtonText: 'I Understand'
 		}, function (isConfirm) {
 			if ( isConfirm ) {
-				post({action:'dismiss_warning'},function(data) {
+				post({action:'dismiss_warning'},function(result) {
 					location.reload();
 				});
 			} else {
@@ -233,21 +233,21 @@ function updateContent(button) {
 	if ( appFeedModeMsg ) {
 		myAlert("Updating Content",appFeedModeMsg,true,"40");
 	}
-	post({action:'force_update'}, function(data) {
+	post({action:'force_update'}, function(result) {
 		if ( $.cookie("plugininstallpending" || ! appFeedModeMsg ) ) {
 			var plugins = $.cookie("plugininstallpending");
 			$.removeCookie("plugininstallpending");
 			myCloseAlert();
 			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
 		} else {
-			if ( myTrim(data.status) != "ok" ) {
-				updateDisplay(data.data);
+			if ( myTrim(result.status) != "ok" ) {
+				updateDisplay(result.data);
 			} else {
 				getContent(true,'INITIALIZE',"","",startupScreen);
 			}
 		}
-		post({action:'get_categories'},function(data) {
-			$("#category_list").html(data.categories);
+		post({action:'get_categories'},function(result) {
+			$("#category_list").html(result.categories);
 		});
 	});
 }
@@ -337,8 +337,8 @@ function changePage(pageNumber) {
 	var oldHeight = $(".ca_templatesDisplay").height();
 	$(".ca_templatesDisplay").css("height",oldHeight).html("");
 	hideSortIcons();
-	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected},function(data) {
-		updateDisplay(data.display);
+	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected},function(result) {
+		updateDisplay(result.display);
 		$(".ca_templatesDisplay").css("height","auto");
 	});
 }
@@ -420,9 +420,9 @@ function doSearch(button,newSearch) {
 		$('.dockerSearch').show();
 	}
 
-	post({action:'get_content',filter:filter,sortOrder:sortOrder},function(data) {
+	post({action:'get_content',filter:filter,sortOrder:sortOrder},function(result) {
 		enableButtons();
-		updateDisplay(data.display);
+		updateDisplay(result.display);
 		data.section = "AppStore";
 		$(".selectedMenu").removeClass("selectedMenu");
 	});
@@ -447,8 +447,8 @@ function changeSortOrder(button,buttonClass,previousApps) {
 			startup = "true";
 		}
 	});
-	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,startup:startup},function(data) {
-		updateDisplay(data.display);
+	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,startup:startup},function(result) {
+		updateDisplay(result.display);
 	});
 }
 
@@ -510,8 +510,8 @@ function getContent(init,category,description,newApp,startupDisplay) {
 
 		var sortOrder = getSortOrder();
 
-		post({action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,startupDisplay:startupDisplay},function(data) {
-			updateDisplay(data.display);
+		post({action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,startupDisplay:startupDisplay},function(result) {
+			updateDisplay(result.display);
 
 			if ( initialize ) {
 				populateAutoComplete();
@@ -522,8 +522,8 @@ function getContent(init,category,description,newApp,startupDisplay) {
 }
 
 function populateAutoComplete() {
-	post({action:'populateAutoComplete'},function(data) {
-		searchBoxAwesomplete.list = data;
+	post({action:'populateAutoComplete'},function(result) {
+		searchBoxAwesomplete.list = result;
 		searchBoxAwesomplete.maxItems = 20;
 		Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch)
 		Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch)
@@ -563,17 +563,15 @@ function dockerSearch(pageNumber) {
 	$("#Category").html("DockerHub Search for "+filter+" <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
 	$("#templates_content").html("");
-	post({action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(data) {
-		if (data) {
-			updateDisplay(data);
-		}
+	post({action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(result) {
+		updateDisplay(result);
 	});
 }
 
 function dockerConvert(dockerID) {
-	post({action:'convert_docker',ID:dockerID},function(data) {
+	post({action:'convert_docker',ID:dockerID},function(result) {
 		myCloseAlert();
-		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + myTrim(data);
+		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + myTrim(result);
 		window.open(templateURL,"_self");
 	});
 }
@@ -619,7 +617,7 @@ function previousApps(button,installed) {
 	$(".dockerSearch").hide();
 	enableIcon("#sortIcon",true);
 
-	post({action:'previous_apps',installed:installed},function(data) {
+	post({action:'previous_apps',installed:installed},function(result) {
 		if ( installed ) {
 			$(".multi_installDiv").hide();
 		} else {
@@ -644,7 +642,7 @@ function removeApp(application, humanName) {
 		html: true
 	}, function(isConfirm) {
 		if (isConfirm) {
-			post({action:'remove_application',application:application}, function(data) {
+			post({action:'remove_application',application:application}, function(result) {
 				enableSearch();
 				previousApps("OldApps",false);
 			});
@@ -676,7 +674,7 @@ function uninstallApp(application,humanName) {
 		}, function(isConfirm) {
 			if (isConfirm) {
 				myAlert("","Uninstalling "+humanName);
-				post({action:'uninstall_application',application:application}, function(data) {
+				post({action:'uninstall_application',application:application}, function(result) {
 					previousApps("InstalledApps",true);
 					enableSearch();
 				});
@@ -705,7 +703,7 @@ function deletePrivateApp(path,name,author) {
 		if ( isConfirm ) {
 			swal("Removing "+name,"","info");
 			getSelectedApps();
-			post({action:'removePrivateApp',path:path},function(data) {
+			post({action:'removePrivateApp',path:path},function(result) {
 				myCloseAlert();
 				refreshDisplay();
 				enableSearch();
@@ -736,7 +734,7 @@ function uninstallDocker(application,humanName) {
 	}, function( isConfirm ) {
 		if ( isConfirm ) {
 			myAlert("","Uninstalling "+humanName);
-			post({action:'uninstall_docker',application:application},function(data) {
+			post({action:'uninstall_docker',application:application},function(result) {
 				enableSearch();
 				previousApps("InstalledApps",true);
 			});
@@ -772,7 +770,7 @@ function installPLGupdate(filename,plgName) {
 
 function checkPLGupdate() {
 	var filename = $("#sortorder").attr("data-plgfilename");
-	post({action:'updatePLGstatus',filename:filename},function(data) {
+	post({action:'updatePLGstatus',filename:filename},function(result) {
 		var pageNumber = data.currentpage;
 		changePage(pageNumber);
 	});
@@ -801,18 +799,18 @@ function pinnedApps(button) {
 	clearCategory();
 	$(".dockerSearch,.multi_installDiv").hide();
 	enableIcon("#sortIcon",true);
-	post({action:'pinnedApps'},function(data) {
+	post({action:'pinnedApps'},function(result) {
 		refreshDisplay();
 		myCloseAlert();
 	});
 }
 
 function displayTags(leadTemplate) {
-	post({action:'displayTags',leadTemplate:leadTemplate},function(data) {
+	post({action:'displayTags',leadTemplate:leadTemplate},function(result) {
 		disableSearch();
 		swal({
 			title: "Choose A Branch To Install",
-			text: data,
+			text: result,
 			html: true,
 			type: "warning",
 			showCancelButton: true,
@@ -1050,8 +1048,8 @@ function isTouch() {
 function showCredits() {
 	$(".multi_installDiv,.dockerSearch").hide();
 	clearCategory(); clearSearchBox();
-	post({action:'showCredits'},function(data) {
-		updateDisplay(data.credits);
+	post({action:'showCredits'},function(result) {
+		updateDisplay(result.credits);
 	});
 }
 
@@ -1059,16 +1057,16 @@ function showStatistics() {
 	$(".multi_installDiv,.dockerSearch").hide();
 	clearCategory(); clearSearchBox();
 	updateDisplay("");
-	post({action:'statistics'},function(data) {
-		updateDisplay(data.statistics);
+	post({action:'statistics'},function(result) {
+		updateDisplay(result.statistics);
 	});
 }
 
 function caChangeLog() {
 	$(".multi_installDiv,.dockerSearch").hide();
 	clearCategory(); clearSearchBox();
-	post({action:'caChangeLog'},function(data) {
-		updateDisplay(data.changelog);
+	post({action:'caChangeLog'},function(result) {
+		updateDisplay(result.changelog);
 	});
 }
 
@@ -1101,21 +1099,21 @@ function post(options,callback) {
 	if ( typeof callback === "function" ) {
 		$.post(URL,options,function(retval){
 			try {
-				var data = JSON.parse(retval);
-				if (data.error) {
-					alert(data.error);
+				var result = JSON.parse(retval);
+				if (result.error) {
+					alert(result.error);
 				}
 			} catch(e) {
-				var data = retval;
+				var result = retval;
 			}
 			console.groupCollapsed("Data "+options.action);
 			console.timeEnd(options.action);
-			console.log(data);
+			console.log(JSON.stringify(data));
 			console.groupEnd();
-			eval(callback(data));
-			if (data.script) {
+			eval(callback(result));
+			if (result.script) {
 				try {
-					eval(data.script);
+					eval(result.script);
 				} catch(e) {
 					alert("Could not execute Script "+e);
 				}

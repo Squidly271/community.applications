@@ -114,9 +114,9 @@ case 'get_content':
 			}
 			if ( $displayApplications['community'] ) {
 				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
-				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
 				$sortOrder['sortBy'] = "noSort";
 				$o['display'] = my_display_apps($displayApplications['community'],"1");
+				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
 				execReturn($o);
 				break;
 			} else {
@@ -133,8 +133,8 @@ case 'get_content':
 						$startupType = "Trending"; break;
 				}
 						
-				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
 				$o['display'] =  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>An error occurred.  Could not find any $startupType Apps</span></font><br><br>";
+				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
 				execReturn($o);
 				break;
 			}

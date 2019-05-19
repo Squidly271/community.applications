@@ -264,9 +264,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	}
 	$ct .= $skin[$viewMode]['footer'];
 	$ct .= getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
-	if ( $communitySettings['dockerSearch'] != "yes" ) {
-		$ct .= "<script>$('.dockerSearch').hide();</script>";
-	}
 
 	if ( $specialCategoryComment ) {
 		$displayHeader .= "<span class='specialCategory'><div class='ca_center'>This display is informational <span class='ca_italic'>ONLY</span>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</div><br>";

@@ -46,160 +46,158 @@ $(function() {
 	setTimeout(function() {
 		$(".spinner").show();
 	},250);
-	$.post("/plugins/community.applications/scripts/getPopupDescription.php",{appName:'<?=$appName?>',appPath:'<?=$appNumber?>',csrf_token:'<?=$csrf_token?>'},function(data) {
-		if (data) {
-			var descData = JSON.parse(data);
-			$("#popUpContent").hide();
+	$.post("/plugins/community.applications/scripts/getPopupDescription.php",{appName:'<?=$appName?>',appPath:'<?=$appNumber?>',csrf_token:'<?=$csrf_token?>'},function(result) {
+		var descData = JSON.parse(result);
+		$("#popUpContent").hide();
 
-			$("#popUpContent").html(descData.description);
-			$('img').each(function() { // This handles any http images embedded in changelogs
-				if ( $(this).hasClass('displayIcon') ) { // ie: don't change any images on the main display
-					return;
-				}
-				var origSource = $(this).attr("src");
-				if ( origSource.startsWith("http://") ) {
-					var newSource = origSource.replace("http://","https://");
-					$(this).attr("src",newSource);
+		$("#popUpContent").html(descData.description);
+		$('img').each(function() { // This handles any http images embedded in changelogs
+			if ( $(this).hasClass('displayIcon') ) { // ie: don't change any images on the main display
+				return;
+			}
+			var origSource = $(this).attr("src");
+			if ( origSource.startsWith("http://") ) {
+				var newSource = origSource.replace("http://","https://");
+				$(this).attr("src",newSource);
+			}
+		});
+		$('img').on("error",function() {
+			$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+		});
+
+		if ( ! cookiesEnabled() ) {
+			$(".pluginInstall").hide();
+		}
+		$("#popUpContent").show();
+		if ( $("#trendChart").length ) {
+			var fontSize = 14;
+
+			if (descData.trendLabel.length > 3) {
+				var fontSize = 12;
+			}
+			if (descData.trendLabel.length > 6) {
+				var fontSize = 11;
+			}
+			
+			var ctx = document.getElementById("trendChart").getContext('2d');
+			let chart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					datasets: [{
+						label: "Trend Per Month",
+						data: descData.trendData,
+						backgroundColor: '#c0c0c0',
+						borderColor: '#FF8C2F'
+					}],
+					labels: descData.trendLabel
+				},
+				options: {
+					title: {
+						display: true,
+						text: "Trend Per Month",
+						fontSize: 16
+					},
+					legend: {
+						display: false
+					},
+					events: ["mousemove","mouseout"],
+					scales: {
+						yAxes: [{
+							ticks: {
+								callback: function(label,index,labels) {
+									return label + " %";
+								},
+								precision: 0
+							}
+						}],
+						xAxes: [{
+							ticks: {
+								fontSize: fontSize
+							}
+						}]
+					}
 				}
 			});
-			$('img').on("error",function() {
-				$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+		}
+		if ( $("#downloadChart").length ) {
+			var ctx = document.getElementById("downloadChart").getContext('2d');
+			let chart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					datasets: [{
+						label: "Downloads Per Month",
+						data: descData.downloadtrend,
+						backgroundColor: '#c0c0c0',
+						borderColor: '#FF8C2F'
+					}],
+					labels: descData.downloadLabel
+				},
+				options: {
+					title: {
+						display: true,
+						text: "Downloads Per Month",
+						fontSize: 16
+					},
+					legend: {
+						display: false
+					},
+					events: ["mousemove","mouseout"],
+					scales: {
+						yAxes: [{
+							ticks: {
+								callback: function(label,index,labels) {
+									return label.toLocaleString();
+								}
+							}
+						}],
+						xAxes: [{
+							ticks: {
+								fontSize: fontSize
+							}
+						}]
+					}
+				}
 			});
-
-			if ( ! cookiesEnabled() ) {
-				$(".pluginInstall").hide();
-			}
-			$("#popUpContent").show();
-			if ( $("#trendChart").length ) {
-				var fontSize = 14;
-
-				if (descData.trendLabel.length > 3) {
-					var fontSize = 12;
+		}
+		if ( $("#totalDownloadChart").length ) {
+			var ctx = document.getElementById("totalDownloadChart").getContext('2d');
+			let chart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					datasets: [{
+						label: "Total Downloads",
+						data: descData.totaldown,
+						backgroundColor: '#c0c0c0',
+						borderColor: '#FF8C2F'
+					}],
+					labels: descData.totaldownLabel
+				},
+				options: {
+					title: {
+						display: true,
+						text: "Total Downloads",
+						fontSize: 16
+					},
+					legend: {
+						display: false
+					},
+					events: ["mousemove","mouseout"],
+					scales: {
+						yAxes: [{
+							ticks: {
+								callback: function(label,index,labels) {
+									return label.toLocaleString();
+								}
+							}
+						}],
+						xAxes: [{
+							ticks: {
+								fontSize: fontSize
+							}
+						}]
+					}
 				}
-				if (descData.trendLabel.length > 6) {
-					var fontSize = 11;
-				}
-				
-				var ctx = document.getElementById("trendChart").getContext('2d');
-				let chart = new Chart(ctx, {
-					type: 'line',
-					data: {
-						datasets: [{
-							label: "Trend Per Month",
-							data: descData.trendData,
-							backgroundColor: '#c0c0c0',
-							borderColor: '#FF8C2F'
-						}],
-						labels: descData.trendLabel
-					},
-					options: {
-						title: {
-							display: true,
-							text: "Trend Per Month",
-							fontSize: 16
-						},
-						legend: {
-							display: false
-						},
-						events: ["mousemove","mouseout"],
-						scales: {
-							yAxes: [{
-								ticks: {
-									callback: function(label,index,labels) {
-										return label + " %";
-									},
-									precision: 0
-								}
-							}],
-							xAxes: [{
-								ticks: {
-									fontSize: fontSize
-								}
-							}]
-						}
-					}
-				});
-			}
-			if ( $("#downloadChart").length ) {
-				var ctx = document.getElementById("downloadChart").getContext('2d');
-				let chart = new Chart(ctx, {
-					type: 'line',
-					data: {
-						datasets: [{
-							label: "Downloads Per Month",
-							data: descData.downloadtrend,
-							backgroundColor: '#c0c0c0',
-							borderColor: '#FF8C2F'
-						}],
-						labels: descData.downloadLabel
-					},
-					options: {
-						title: {
-							display: true,
-							text: "Downloads Per Month",
-							fontSize: 16
-						},
-						legend: {
-							display: false
-						},
-						events: ["mousemove","mouseout"],
-						scales: {
-							yAxes: [{
-								ticks: {
-									callback: function(label,index,labels) {
-										return label.toLocaleString();
-									}
-								}
-							}],
-							xAxes: [{
-								ticks: {
-									fontSize: fontSize
-								}
-							}]
-						}
-					}
-				});
-			}
-			if ( $("#totalDownloadChart").length ) {
-				var ctx = document.getElementById("totalDownloadChart").getContext('2d');
-				let chart = new Chart(ctx, {
-					type: 'line',
-					data: {
-						datasets: [{
-							label: "Total Downloads",
-							data: descData.totaldown,
-							backgroundColor: '#c0c0c0',
-							borderColor: '#FF8C2F'
-						}],
-						labels: descData.totaldownLabel
-					},
-					options: {
-						title: {
-							display: true,
-							text: "Total Downloads",
-							fontSize: 16
-						},
-						legend: {
-							display: false
-						},
-						events: ["mousemove","mouseout"],
-						scales: {
-							yAxes: [{
-								ticks: {
-									callback: function(label,index,labels) {
-										return label.toLocaleString();
-									}
-								}
-							}],
-							xAxes: [{
-								ticks: {
-									fontSize: fontSize
-								}
-							}]
-						}
-					}
-				});
-			}
+			});
 		}
 	});
 });
