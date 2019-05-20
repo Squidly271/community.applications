@@ -15,6 +15,7 @@ $csrf_token = $unRaidVars['csrf_token'];
 $appNumber =  urldecode($_GET['appPath']);
 $appName = urldecode($_GET['appName']);
 $appName = str_replace("'","",$appName);
+
 ?>
 <script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>

@@ -246,9 +246,7 @@ function updateContent(button) {
 				getContent(true,'INITIALIZE',"","",startupScreen);
 			}
 		}
-		post({action:'get_categories'},function(result) {
-			$("#category_list").html(result.categories);
-		});
+		getCategories();
 	});
 }
 
@@ -523,7 +521,9 @@ function getContent(init,category,description,newApp,startupDisplay) {
 
 function populateAutoComplete() {
 	post({action:'populateAutoComplete'},function(result) {
-		searchBoxAwesomplete.list = result;
+		var test = JSON.stringify(result.autocomplete);
+		var test2 = JSON.parse(test);
+		searchBoxAwesomplete.list = test.replace(/\"/g,"");
 		searchBoxAwesomplete.maxItems = 20;
 		Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch)
 		Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch)
@@ -1017,7 +1017,8 @@ function restoreState() {
 	var selectedSort = $.cookie("sortButton");
 	var sortIcon = $.find(".sortIcons[data-sort='"+selectedSort+"']");
 	$(sortIcon).addClass("enabledIcon");
-
+	populateAutoComplete();
+	getCategories();
 	if ( $("#Category").text() == "Category: None Selected" ) {
 		updateContent();
 	}
@@ -1108,12 +1109,12 @@ function post(options,callback) {
 					alert(result.error);
 				}
 			} catch(e) {
-				alert("No JSON returned: "+options.action);
+				alert("Error from POST call "+options.action+".  "+stripTags(retval));
 				var result = retval;
 			}
 			console.groupCollapsed("Result "+options.action);
 			console.timeEnd(options.action);
-			console.log(JSON.stringify(result));
+			console.log(result);
 			console.groupEnd();
 			eval(callback(result));
 			if (result.script) {
@@ -1136,6 +1137,12 @@ function post(options,callback) {
 			$("div.spinner").hide();
 		}
 	}
+}
+
+function getCategories() {
+	post({action:'get_categories'},function(result) {
+		$("#category_list").html(result.categories);
+	});
 }
 </script>
 
