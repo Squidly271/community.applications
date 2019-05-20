@@ -47,7 +47,7 @@ $(function() {
 	setTimeout(function() {
 		$(".spinner").show();
 	},250);
-	$.post("/plugins/community.applications/scripts/getPopupDescription.php",{appName:'<?=$appName?>',appPath:'<?=$appNumber?>',csrf_token:'<?=$csrf_token?>'},function(result) {
+	$.post("/plugins/community.applications/include/exec.php",{action:'getPopupDescription',appName:'<?=$appName?>',appPath:'<?=$appNumber?>',csrf_token:'<?=$csrf_token?>'},function(result) {
 		try {
 			var descData = JSON.parse(result);
 		} catch(e) {

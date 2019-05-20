@@ -850,6 +850,11 @@ case 'get_categories':
 	}
 	postReturn(["categories"=>$cat]);
 	break;
+	
+case 'getPopupDescription':
+	$appNumber = getPost("appPath","");
+	postReturn(getPopupDescription($appNumber));
+	break;
 
 }	
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
