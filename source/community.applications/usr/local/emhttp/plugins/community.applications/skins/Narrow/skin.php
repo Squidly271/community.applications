@@ -377,7 +377,9 @@ function displaySearchResults($pageNumber) {
 	return $ct.dockerNavigate($num_pages,$pageNumber);
 }
 
-
+######################################
+# Generate the display for the popup #
+######################################
 function getPopupDescription($appNumber) {
 	global $communitySettings, $communityPaths;
 	

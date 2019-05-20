@@ -798,8 +798,7 @@ case 'removePrivateApp':
 ####################################################
 case 'populateAutoComplete':
 	$templates = readJsonFile($communityPaths['community-templates-info']);
-
-	$autoComplete = array("gameserver"=>"GameServers","backup"=>"Backup","cloud"=>"Cloud","downloaders"=>"Downloaders","homeautomation"=>"HomeAutomation","network"=>"Network","mediaapp"=>"MediaApp","mediaserver"=>"MediaServer","productivity"=>"Productivity","tools"=>"Tools","other"=>"Other","plugins"=>"Plugins","uncategorized"=>"Uncategorized");
+	$autoComplete = array_map(function($x){return str_replace(":","",$x['Cat']);},readJsonFile($communityPaths['categoryList']));
 	foreach ($templates as $template) {
 		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $communitySettings['hideDeprecated'] == "true") && ($template['Compatible'] || $communitySettings['hideIncompatible'] != "true") ) {
 			$autoComplete[strtolower($template['Name'])] = $template['Name'];
@@ -851,6 +850,9 @@ case 'get_categories':
 	postReturn(["categories"=>$cat]);
 	break;
 	
+##############################
+# Get the html for the popup #
+##############################
 case 'getPopupDescription':
 	$appNumber = getPost("appPath","");
 	postReturn(getPopupDescription($appNumber));
