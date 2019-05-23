@@ -736,8 +736,9 @@ case 'statistics':
 	if ( $currentServer != "Primary Server" ) {
 		$currentServer = "<i class='fa fa-exclamation-triangle ca_serverWarning' aria-hidden='true'></i> $currentServer";
 	}
-
-	$o = "
+  $statistics['invalidXML'] = count($invalidXML);
+	$statistics['repositories'] = count($repositories);
+	$o = <<<EOF
 		<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>
 		<table style='margin-top:1rem;'>
 		<tr style='height:6rem;'><td colspan='2'><div class='ca_center'><i class='fa fa-users' style='font-size:6rem;'></i></td></tr>
@@ -746,20 +747,20 @@ case 'statistics':
 		<tr><td class='ca_table'>Number Of Docker Applications</td><td class='ca_stat'>{$statistics['docker']}</td></tr>
 		<tr><td class='ca_table'>Number Of Plugins</td><td class='ca_stat'>{$statistics['plugin']}</td></tr>
 		<tr><td class='ca_table'>Number Of Templates</td><td class='ca_stat'>{$statistics['totalApplications']}</td></tr>
-		<tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;Repository List&quot;);' style='cursor:pointer;'>Number Of Repositories</a></td><td class='ca_stat'>".count($repositories)."</td></tr>
+		<tr><td class='ca_table'><a onclick='showModeration("Repository","Repository List");' style='cursor:pointer;'>Number Of Repositories</a></td><td class='ca_stat'>{$statistics['repositories']}</td></tr>
 		<tr><td class='ca_table'><a data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>Number Of Private Docker Applications</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>
-		<tr><td class='ca_table'><a onclick='showModeration(&quot;Invalid&quot;,&quot;All Invalid Templates Found&quot;);' style='cursor:pointer'>Number Of Invalid Templates</a></td><td class='ca_stat'>".count($invalidXML)."</td></tr>
-		<tr><td class='ca_table'><a onclick='showModeration(&quot;Fixed&quot;,&quot;Template Errors&quot;);' style='cursor:pointer'>Number Of Template Errors</a></td><td class='ca_stat'>{$statistics['caFixed']}+</td></tr>
+		<tr><td class='ca_table'><a onclick='showModeration("Invalid","All Invalid Templates Found");' style='cursor:pointer'>Number Of Invalid Templates</a></td><td class='ca_stat'>{$statistics['invalidXML']}</td></tr>
+		<tr><td class='ca_table'><a onclick='showModeration("Fixed","Template Errors");' style='cursor:pointer'>Number Of Template Errors</a></td><td class='ca_stat'>{$statistics['caFixed']}+</td></tr>
 		<tr><td class='ca_table'><a data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Blacklisted Apps</a></td><td class='ca_stat'>{$statistics['blacklist']}</td></tr>
 		<tr><td class='ca_table'><a data-category='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Incompatible Applications</a></td><td class='ca_stat'>{$statistics['totalIncompatible']}</td></tr>
 		<tr><td class='ca_table'><a data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></td><td class='ca_stat'>{$statistics['totalDeprecated']}</td></tr>
-		<tr><td class='ca_table'><a onclick='showModeration(&quot;Moderation&quot;,&quot;All Moderation Entries&quot;);' style='cursor:pointer'>Number Of Moderation Entries</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>
+		<tr><td class='ca_table'><a onclick='showModeration("Moderation","All Moderation Entries");' style='cursor:pointer'>Number Of Moderation Entries</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>
 		<tr><td class='ca_table'>Memory Usage (CA / DataFiles / Flash)</td><td class='ca_stat'>{$memCA[0]} / {$memTmp[0]} / {$memFlash[0]}</td></tr>
 		<tr><td class='ca_table'><a href='{$communityPaths['application-feed']}' target='_blank'>Primary Server</a> / <a href='{$communityPaths['application-feedBackup']}' target='_blank'> Backup Server</a></td></tr>
 		</table>
 		<div class='ca_center'><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></div>
 		<div class='ca_center'>Ensuring only safe applications are present is a full time job</div><br>
-	";
+EOF;
 	postReturn(['statistics'=>$o]);
 	break;
 
@@ -823,8 +824,7 @@ case 'caChangeLog':
 	require_once("webGui/include/Markdown.php");
 	$o = "<div style='margin:auto;width:500px;'>";
 	$o .= "<div class='ca_center'><font size='4rem'>Community Applications Changelog</font></div><br><br>";
-	$o .= Markdown(plugin("changes","/var/log/plugins/community.applications.plg"));
-	postReturn(["changelog"=>$o]);
+	postReturn(["changelog"=>$o.Markdown(plugin("changes","/var/log/plugins/community.applications.plg"))]);
 	break;
 	
 ###############################
