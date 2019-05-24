@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.05.12">
-<!ENTITY md5       "e4f3cd9f57256a917be2b344f2f15ffd">
+<!ENTITY version   "2019.05.24">
+<!ENTITY md5       "e929677127fc068cf8cbc9851efd4e10">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.05.24
+- Fixed: Docker search API changed
+- Changed: Populate Autocomplete categories from category list
+- Fixed: Under certain circumstances, autocomplete list wouldn't populate
+- Changed: Uninstall plugins via popup instead of modal
+- Changed: Client/Server communication infrastructure for future expansion
+- Fixed: Under certain circumstances, internal data structure could get corrupted
+- Remove unused code, simplifications, etc
+- Add sound to easter egg
+- Changed: All client requests to server will display a spinner if operation takes 100+ ms
+
 ###2019.05.12
 - Fixed: Prevent a blank icon from showing on Grey / Azure themes
 - Added: Dates to graphs on popups
