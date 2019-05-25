@@ -49,6 +49,13 @@ switch ($theme) {
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
 		break;
+	default:
+		$donateBackground = "#f2f2f2";
+		$donateText = "#1c1b1b";
+		$templateBackground = "#191818";
+		$hrColor = "#2b2b2b";
+		$borderColor = "#2b2b2b";
+		break;
 }
 ?>
 .ca_iconArea {width:100%;height:8rem;margin:1rem;}
