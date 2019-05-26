@@ -493,6 +493,9 @@ function fixDescription($Description) {
 	return $Description;
 }
 
+############################
+# displays the branch tags #
+############################
 function formatTags($leadTemplate,$tabMode="_self") {
 	global $communityPaths;
 
@@ -513,6 +516,9 @@ function formatTags($leadTemplate,$tabMode="_self") {
 	return $o;
 }
 
+###########################
+# handles the POST return #
+###########################
 function postReturn($retArray) {
 	if (is_array($retArray)) {
 		echo json_encode($retArray);
@@ -521,4 +527,31 @@ function postReturn($retArray) {
 	}
 }
 
+####################################
+# Converts the pinned json to a v2 #
+####################################
+# eventually deprecate this function as it won't be needed -> fuck the user if they haven't already converted the file.
+function convertPinnedAppsToV2() {
+	global $communityPaths;
+	
+	$pinnedApps = readJsonFile($communityPaths['pinned']);
+	$file = readJsonFile($communityPaths['community-templates-info']);
+	$startIndex = 0;
+	foreach ($pinnedApps as $pinned) {
+		for ($i=0;$i<10;$i++) {
+			$index = searchArray($file,"Repository",$pinned,$startIndex);
+			if ( $index !== false ) {
+				if ( $file[$index]['Blacklist'] ) { #This handles things like duplicated templates
+					$startIndex = $index + 1;
+					continue;
+				}
+				$name = $file[$index]['SortName'];
+				$pinnedV2["$pinned&$name"] = "$pinned&$name";
+				break;
+			}
+		}
+	}
+	writeJsonFile($communityPaths['pinnedV2'],$pinnedV2);
+	@unlink($communityPaths['pinned']);
+}
 ?>

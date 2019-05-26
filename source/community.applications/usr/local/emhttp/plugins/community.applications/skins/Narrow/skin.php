@@ -41,8 +41,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	if ( ! $communitySettings['dockerRunning'] && ! $communitySettings['NoInstalls']) {
 		$displayHeader = "<script>addWarning('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed');</script>";
 	}
-
-	$pinnedApps = readJsonFile($communityPaths['pinned']);
+	if ( is_file($communityPaths['pinned']) ) {
+		convertPinnedAppsToV2();
+	}
+	$pinnedApps = readJsonFile($communityPaths['pinnedV2']);
 	$iconSize = $communitySettings['iconSize'];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
 	if ( filter_var($startup,FILTER_VALIDATE_BOOLEAN) ) {
@@ -119,14 +121,14 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star dockerHubStar' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
 		$template['display_Downloads'] = $template['downloads'] ? "<div class='ca_center'>".number_format($template['downloads'])."</div>" : "<div class='ca_center'>Not Available</div>";
 
-		if ( $pinnedApps[$template['Repository']] ) {
+		if ( $pinnedApps["{$template['Repository']}&{$template['SortName']}"] ) {
 			$pinned = "pinned";
 			$pinnedTitle = "Click to unpin this application";
 		} else {
 			$pinned = "unpinned";
 			$pinnedTitle = "Click to pin this application";
 		}
-		$template['display_pinButton'] = "<span class='ca_tooltip $pinned' title='$pinnedTitle' onclick='pinApp(this,&quot;".$template['Repository']."&quot;);'></span>";
+		$template['display_pinButton'] = "<span class='ca_tooltip $pinned' title='$pinnedTitle' onclick='pinApp(this,&quot;{$template['Repository']}&quot;,&quot;{$template['SortName']}&quot;);'></span>";
 		if ($template['Blacklist']) {
 			unset($template['display_pinButton']);
 		}

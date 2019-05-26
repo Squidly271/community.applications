@@ -778,11 +778,11 @@ function checkPLGupdate() {
 	});
 }
 
-function pinApp(button,repository) {
+function pinApp(button,repository,name) {
 	$(button).toggleClass("pinned unpinned");
 	var pinned = ( $(button).hasClass("unpinned") ) ? "Click to pin this application" : "Click to unpin this application";
 	$(button).tooltipster('content',pinned);
-	post({action:'pinApp',repository:repository});
+	post({action:'pinApp',repository:repository,name:name});
 }
 
 function setPageOne() {

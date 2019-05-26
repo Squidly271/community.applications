@@ -629,24 +629,32 @@ case 'uninstall_docker':
 ##################################################
 case "pinApp":
 	$repository = getPost("repository","oops");
-	$pinnedApps = readJsonFile($communityPaths['pinned']);
-	$pinnedApps[$repository] = $pinnedApps[$repository] ? false : $repository;
-	writeJsonFile($communityPaths['pinned'],$pinnedApps);
+	$name = getPost("name","oops");
+	$pinnedApps = readJsonFile($communityPaths['pinnedV2']);
+	$pinnedApps["$repository&$name"] = $pinnedApps["$repository&$name"] ? false : "$repository&$name";
+	writeJsonFile($communityPaths['pinnedV2'],$pinnedApps);
 	break;
 
 ####################################
 # Displays the pinned applications #
 ####################################
 case "pinnedApps":
-	$pinnedApps = readJsonFile($communityPaths['pinned']);
+	$pinnedApps = readJsonFile($communityPaths['pinnedV2']);
 	$file = readJsonFile($communityPaths['community-templates-info']);
-	$startIndex = 0;
+
 	foreach ($pinnedApps as $pinned) {
+		$startIndex = 0;	
+		$search = explode("&",$pinned);
+		file_put_contents("/tmp/blah",print_r($search,true),FILE_APPEND);
 		for ($i=0;$i<10;$i++) {
-			$index = searchArray($file,"Repository",$pinned,$startIndex);
+			$index = searchArray($file,"Repository",$search[0],$startIndex);
 			if ( $index !== false ) {
 				if ( $file[$index]['Blacklist'] ) { #This handles things like duplicated templates
 					$startIndex = $index + 1;
+					continue;
+				}
+				if ($file[$index]['SortName'] !== $search[1]) {
+					$startIndex = $index +1;
 					continue;
 				}
 				$displayed[] = $file[$index];

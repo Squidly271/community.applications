@@ -36,6 +36,7 @@ $communityPaths['logos']                               = $communityPaths['tempFi
 $communityPaths['unRaidVars']                          = "/var/local/emhttp/var.ini";
 $communityPaths['dockerUpdateStatus']                  = "/var/lib/docker/unraid-update-status.json";
 $communityPaths['pinned']                              = "/boot/config/plugins/$plugin/pinned_apps.json"; # stored on flash instead of docker.img so it will work without docker running
+$communityPaths['pinnedV2']                            = "/boot/config/plugins/$plugin/pinned_appsV2.json";
 $communityPaths['appOfTheDay']                         = $communityPaths['tempFiles']."/appOfTheDay.json";
 $communityPaths['statistics']                          = $communityPaths['tempFiles']."/statistics.json";
 $communityPaths['statisticsURL']                       = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/statistics.json";
