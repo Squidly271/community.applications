@@ -810,13 +810,6 @@ case 'populateAutoComplete':
 	postReturn(['autocomplete'=>array_values($autoComplete)]);
 	break;
 
-######################
-# Shows CA's credits #
-######################
-case 'showCredits':
-	postReturn(["credits"=>file_get_contents("/usr/local/emhttp/plugins/community.applications/include/caCredits.html")]);
-	break;
-
 ##########################
 # Displays the changelog #
 ##########################
