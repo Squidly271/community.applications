@@ -196,7 +196,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		if ( $template['Beta'] ) {
 			$template['display_compatible'] .= "This application has been marked as being <span class='ca_italic'>Beta</span>.";
 			if (! $template['Blacklist'] && ! $template['Deprecated'] ) {
-				$template['display_compatible'] .= "This does NOT neccessarily mean that there will be issues.<br>";
+				$template['display_compatible'] .= "&nbsp;&nbsp;This does NOT neccessarily mean that there will be issues.<br>";
 			} else {
 				$template['display_compatible'] .= "<br>";
 			}
