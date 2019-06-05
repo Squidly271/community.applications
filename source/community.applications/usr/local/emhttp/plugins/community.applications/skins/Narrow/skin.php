@@ -165,7 +165,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				if ( checkInstalledPlugin($template) ) {
 					$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 					$tmpVar = $pluginSettings ? "" : " disabled ";
-					$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons' title='Click to go to the plugin settings' href='$pluginSettings'></a>" : "";
+					$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons' title='Click to go to the plugin settings' href='/Apps/$pluginSettings'></a>" : "";
 				} else {
 					$buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
 					$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');></a>";
