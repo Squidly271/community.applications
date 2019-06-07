@@ -333,7 +333,7 @@ function changePage(pageNumber) {
 	data.currentpage = pageNumber;
 
 	var oldHeight = $(".ca_templatesDisplay").height();
-	$(".ca_templatesDisplay").css("height",oldHeight).html("");
+	$(".ca_templatesDisplay").css("height",oldHeight);
 	hideSortIcons();
 	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected},function(result) {
 		updateDisplay(result.display);
@@ -558,7 +558,6 @@ function dockerSearch(pageNumber) {
 	$(".dockerSearch,.multi_installDiv").hide();
 	$("#Category").html("DockerHub Search for "+filter+" <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
-	$("#templates_content").html("");
 	post({action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(result) {
 		updateDisplay(result.display);
 	});
@@ -1056,7 +1055,6 @@ function showCredits() {
 function showStatistics() {
 	$(".multi_installDiv,.dockerSearch").hide();
 	clearCategory(); clearSearchBox();
-	updateDisplay("");
 	post({action:'statistics'},function(result) {
 		updateDisplay(result.statistics);
 	});

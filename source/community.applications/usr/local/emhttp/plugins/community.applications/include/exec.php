@@ -753,7 +753,7 @@ case 'statistics':
 		<tr><td colspan='2'><div class='ca_center'><font size='5rem;'>Community Applications</font></div></td></tr>
 		<tr><td class='ca_table'>Last Change To Application Feed</td><td class='ca_stat'>$updateTime<br>$currentServer active</td></tr>
 		<tr><td class='ca_table'>Number Of Docker Applications</td><td class='ca_stat'>{$statistics['docker']}</td></tr>
-		<tr><td class='ca_table'>Number Of Plugins</td><td class='ca_stat'>{$statistics['plugin']}</td></tr>
+		<tr><td class='ca_table'>Number Of Plugin Applications</td><td class='ca_stat'>{$statistics['plugin']}</td></tr>
 		<tr><td class='ca_table'>Number Of Templates</td><td class='ca_stat'>{$statistics['totalApplications']}</td></tr>
 		<tr><td class='ca_table'><a onclick='showModeration("Repository","Repository List");' style='cursor:pointer;'>Number Of Repositories</a></td><td class='ca_stat'>{$statistics['repositories']}</td></tr>
 		<tr><td class='ca_table'><a data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>Number Of Private Docker Applications</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>
