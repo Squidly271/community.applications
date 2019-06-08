@@ -21,6 +21,10 @@ Link='nav-user'
 var ca_PluginUpdatePLG;
 var ca_PluginUpdateElement;
 
+$(function() {
+	$(".upgrade_notice").after("<div class='ca_plugin_notice ca_element_notice'></div>");
+});
+
 function ca_PluginUpdate_openBox(cmd,title,height,width,load,func) {
 	// open shadowbox window (run in foreground)
 	var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
@@ -69,15 +73,21 @@ function caPluginUpdateCheck(plugin,options=[],callback) {
 				if ( ! ca_pluginUpdate_evaluateBoolean(options.noDismiss) ) {
 					HTML = HTML.concat("<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='ca_hidePluginUpdate(&quot;"+result.version+"&quot;);'></i>");
 				}
+				result.HTML = HTML;
 				ca_PluginUpdateElement = options.element ? options.element : ".ca_plugin_notice";
 
 				if ( ! ca_pluginUpdate_evaluateBoolean(options.dontShow) ) {
 					if ( ! options.element ) {
-					$(".upgrade_notice").after("<div class='ca_plugin_notice ca_element_notice'>"+HTML+"</div>");
+						$(".ca_element_notice").html(HTML);
+						if (options.priority) {
+							var z_index = $(".upgrade_notice").css("z-index");
+							$(".ca_element_notice").css("z-index",z_index+1);
+						}
 					} else {
 						$(ca_PluginUpdateElement).html(HTML);
 					}
 					$(ca_PluginUpdateElement).addClass("ca_element_notice").show();
+
 				}
 			}
 		}
@@ -85,7 +95,7 @@ function caPluginUpdateCheck(plugin,options=[],callback) {
 			callback = options;
 		}
 		if ( typeof callback === "function" ) {
-			callback(caAPIresult);
+			callback(JSON.stringify(result));
 		}
 	});
 }

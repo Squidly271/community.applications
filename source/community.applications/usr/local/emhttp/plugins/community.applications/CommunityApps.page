@@ -49,12 +49,23 @@ data.prevpage = 0;
 data.currentpage = 1;
 data.searchFlag = false;
 var dockerSearchFlag = false;
+var ca_WarningItems = [];
+var currentWarning = 0;
+var warningInterval;
 
 $(function(){
-	caPluginUpdateCheck("community.applications.plg",{noDismiss:true,name:"Community Applications"},function(result) {
-		var result = JSON.parse(result);
-		$("#caInstalledVersion").html(result.installedVersion);
-	});
+	caPluginUpdateCheck("community.applications.plg",{
+			noDismiss:true,
+			name:"Community Applications",
+			priority:true
+		},function(result) {
+			var result = JSON.parse(result);
+			$("#caInstalledVersion").html(result.installedVersion);
+			if ( result.updateAvailable ) {
+				ca_WarningItems.push(result.HTML);
+			}
+		}
+	);
 
 	$("#title").append('<div id="Category" class="categoryLine ca_italic"></div>');
 	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-numeric-asc ca_staticTips' title='Sort By Downloads' data-sort='downloadsUp'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i><i class='sortIcons fa fa-sort-amount-asc ca_staticTips' title='Sort By Trend' data-sort='trendUp'></i></span><i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' aria-hidden='true'></i>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
@@ -1073,11 +1084,28 @@ function scrollToTop() {
 }
 
 function addWarning(text) {
-	var existingWarning = $('.caWarning').html();
-	if ( existingWarning.indexOf(text) < 1 ) {
-		$('.caWarning').append("&bull; "+text+"<br>");
+		var z_index = $(".upgrade_notice").css("z-index"); 
+	$(".ca_element_notice").css("z-index",z_index+1); // Warnings take precendence over unRaid's OS warnings
+	$(".upgrade_notice").hide();
+
+	ca_WarningItems.push(text);
+	showWarnings();
+	if ( ! warningInterval ) {
+		warningInterval = setInterval(function() {
+			showWarnings()
+		},10000);
 	}
-	$('.caNotice').show();
+}
+
+function showWarnings() {
+
+ 	if ( currentWarning >= ca_WarningItems.length ) {
+		currentWarning = 0;
+	}
+
+	$(".ca_plugin_notice,.ca_element_notice").show();
+	$(".ca_plugin_notice").html(ca_WarningItems[currentWarning]);
+  currentWarning++;
 }
 
 function post(options,callback) {
@@ -1137,9 +1165,6 @@ function getCategories() {
 > <br>Note that any and all statistics relating to an individual application (eg: Download counts) are only updated every 30 days<br>
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
-<div class='notice caNotice'>
-	<span class='caWarning'></span>
-</div>
 <div class='menuItems'>
 <div class='menuHeader'>MENU</div>
 <ul class='caMenu'>
