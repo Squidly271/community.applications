@@ -222,3 +222,4 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .graphLink {cursor:pointer;text-decoration:none;}
 .caChart {display:none;border:1px solid #c2c8c8;border-radius:4px 4px 4px 4px;}
 .caHighlight {color:#FF0000;font-weight:bold;}
+.caChangeLog {cursor:pointer;}

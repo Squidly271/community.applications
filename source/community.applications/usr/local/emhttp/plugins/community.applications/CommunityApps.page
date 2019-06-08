@@ -57,6 +57,7 @@ $(function(){
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
 			name:"Community Applications",
+			debug:false,
 			priority:true
 		},function(result) {
 			var result = JSON.parse(result);
@@ -135,6 +136,7 @@ $(function(){
 		}
 	});
 	
+	$('.caChangeLog').on("click",function() {disableSort();scrollToTop();caChangeLog();});
 	$('.mainArea').on("click",'.ca_multiselect',function() {enableMultiInstall();});
 	$('.mainArea').on("click",".ca_appPopup",function() {
 		var appnumber = $(this).data("appnumber");
@@ -1084,13 +1086,11 @@ function scrollToTop() {
 }
 
 function addWarning(text) {
-		var z_index = $(".upgrade_notice").css("z-index"); 
+	var z_index = $(".upgrade_notice").css("z-index"); 
 	$(".ca_element_notice").css("z-index",z_index+1); // Warnings take precendence over unRaid's OS warnings
-	$(".upgrade_notice").hide();
-
-	ca_WarningItems.push(text);
+	ca_WarningItems.push("<i class='fa fa-warning'></i>  "+text);
 	showWarnings();
-	if ( ! warningInterval ) {
+	if ( ! warningInterval && ca_WarningItems.length > 0) {
 		warningInterval = setInterval(function() {
 			showWarnings()
 		},10000);
@@ -1098,11 +1098,10 @@ function addWarning(text) {
 }
 
 function showWarnings() {
-
  	if ( currentWarning >= ca_WarningItems.length ) {
 		currentWarning = 0;
 	}
-
+	$(".upgrade_notice").hide();
 	$(".ca_plugin_notice,.ca_element_notice").show();
 	$(".ca_plugin_notice").html(ca_WarningItems[currentWarning]);
   currentWarning++;
@@ -1194,7 +1193,7 @@ function getCategories() {
 <div class='menuHeader'>VERSION</div>
 <ul class='nonselectMenu'>
 	<li><span id='caInstalledVersion'></span></li>
-	<li class='caMenuItem' style='cursor:pointer;' onclick='disableSort();scrollToTop();caChangeLog();'>Change Log</li>
+	<li class='caMenuItem caChangeLog'>Change Log</li>
 </ul>
  <br><br><br>
 </div>
