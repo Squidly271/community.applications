@@ -78,7 +78,7 @@ $(function(){
 		addWarning("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.");
 	}
 
-	if ( isTouch() ) {
+/* 	if ( isTouch() ) {
 		$("#templates_content").on("swipeleft",swipelefthandler);
 		function swipelefthandler(event) {
 			if ( $(".pageNavigation").length ) {
@@ -103,7 +103,68 @@ $(function(){
 				}
 			}
 		}
-	}	
+	}	 */
+	if ( isTouch ) {
+		templates_content.addEventListener("touchstart", startTouch, false);
+		templates_content.addEventListener("touchmove", moveTouch, false);
+		 
+		// Swipe Up / Down / Left / Right
+		var initialX = null;
+		var initialY = null;
+		 
+		function startTouch(e) {
+			initialX = e.touches[0].clientX;
+			initialY = e.touches[0].clientY;
+		};
+		 
+		function moveTouch(e) {
+			if (initialX === null) {
+				return;
+			}
+		 
+			if (initialY === null) {
+				return;
+			}
+		 
+			var currentX = e.touches[0].clientX;
+			var currentY = e.touches[0].clientY;
+		 
+			var diffX = initialX - currentX;
+			var diffY = initialY - currentY;
+		 
+			if (Math.abs(diffX) > Math.abs(diffY)) {
+				// sliding horizontally
+				if (diffX > 0) {
+					// swiped left
+					if ( $(".pageNavigation").length ) {
+						if ( data.nextpage > 1 ) {
+							if ( dockerSearchFlag ) {
+								dockerSearch(data.nextpage);
+							} else {
+								changePage(data.nextpage);
+							}
+						}
+					}
+				} else {
+					// swiped right
+					if ( $(".pageNavigation").length ) {
+						if ( data.prevpage > 0 ) {
+							if ( dockerSearchFlag ) {
+								dockerSearch(data.prevpage);
+							} else {
+								changePage(data.prevpage);
+							}
+						}
+					}
+				}  
+			}
+		 
+			initialX = null;
+			initialY = null;
+			 
+			e.preventDefault();
+		};		
+	}
 
 	$('.ca_toolsView').tooltipster({
 		trigger: 'hover',
@@ -1255,11 +1316,6 @@ function getCategories() {
 				<td></td>
 				<td class='ca_credit'>Lea Verou</td>
 				<td class='ca_credit'>Awesomeplete</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td class='ca_credit'>JQuery Foundation</td>
-				<td class='ca_credit'>JQuery Mobile (excerpts)</td>
 			</tr>
 			<tr>
 				<td></td>
