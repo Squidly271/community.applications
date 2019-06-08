@@ -847,6 +847,10 @@ case 'get_categories':
 				$cat .= "</ul>";
 			}
 		}
+		$templates = readJsonFile($communityPaths['community-templates-info']);
+		if ( searchArray($templates,"Private",true) ) {
+			$cat .= "<li class='categoryMenu caMenuItem' data-category='PRIVATE'>Private Apps</li>";
+		}
 	}
 	postReturn(["categories"=>$cat]);
 	break;
