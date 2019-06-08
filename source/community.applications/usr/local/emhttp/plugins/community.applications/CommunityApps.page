@@ -78,32 +78,6 @@ $(function(){
 		addWarning("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.");
 	}
 
-/* 	if ( isTouch() ) {
-		$("#templates_content").on("swipeleft",swipelefthandler);
-		function swipelefthandler(event) {
-			if ( $(".pageNavigation").length ) {
-				if ( data.nextpage > 1 ) {
-					if ( dockerSearchFlag ) {
-						dockerSearch(data.nextpage);
-					} else {
-						changePage(data.nextpage);
-					}
-				}
-			}
-		}
-		$("#templates_content").on("swiperight",swiperighthandler);
-		function swiperighthandler(event) {
-			if ( $(".pageNavigation").length ) {
-				if ( data.prevpage > 0 ) {
-					if ( dockerSearchFlag ) {
-						dockerSearch(data.prevpage);
-					} else {
-						changePage(data.prevpage);
-					}
-				}
-			}
-		}
-	}	 */
 	if ( isTouch ) {
 		templates_content.addEventListener("touchstart", startTouch, false);
 		templates_content.addEventListener("touchmove", moveTouch, false);
@@ -208,6 +182,7 @@ $(function(){
 	});
 	$('.menuItems').on("click",'.categoryMenu',function() {
 		var selectedCategory = $(this).attr("data-category");
+		scrollToTop();
 		changeCategory(this,false);
 	});
 	$('.menuItems').on("mouseover",".caMenuItem",function() {
