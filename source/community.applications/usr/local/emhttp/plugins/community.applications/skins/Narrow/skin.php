@@ -132,7 +132,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		if ($template['Blacklist']) {
 			unset($template['display_pinButton']);
 		}
-		if ( $template['Uninstall'] ) {
+		if ( $template['Uninstall'] && $template['Name'] != "Community Applications" ) {
 			$template['display_Uninstall'] = "<a class='ca_tooltip ca_fa-delete' title='Uninstall Application' ";
 			$template['display_Uninstall'] .= ( $template['Plugin'] ) ? "onclick='uninstallApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" : "onclick='uninstallDocker(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>";
 			$template['display_Uninstall'] .= "</a>";

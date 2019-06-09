@@ -698,33 +698,26 @@ function removeApp(application, humanName) {
 }
 
 function uninstallApp(application,humanName) {
-	if ( humanName == "Community Applications" ) {
-		sound = new Audio("https://github.com/Squidly271/community.applications/raw/master/webImages/cantdo.wav");
-		sound.volume = 0.1;
-		sound.play();
-		myAlert("AE-35 Error","Community Applications cannot be uninstalled this way.  You must go to the plugins tab and remove Community Applications from there.  <span class='ca_italic'><font color='purple'>But, why would you ever want to uninstall CA?</font></span>",null,null,true,false,true,"error");
-	} else {
-		disableSearch();
-		swal({
-			title: "Uninstall Application?",
-			text: "Are you sure you want to uninstall <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>?",
-			type: "warning",
-			showCancelButton: true,
-			showConfirmButton: true,
-			confirmButtonText: "Yes, uninstall it!",
-			closeOnConfirm: true,
-			showLoaderOnConfirm: false,
-			allowOutsideClick: true,
-			html: true
-		}, function(isConfirm) {
-			if (isConfirm) {
-				application = basename(application);
-				my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=remove&arg2='+application,'Uninstall Plugin',600,900,true,"postUninstallPlugin()");
-			} else {
-				enableSearch();
-			}
-		});
-	}
+	disableSearch();
+	swal({
+		title: "Uninstall Application?",
+		text: "Are you sure you want to uninstall <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>?",
+		type: "warning",
+		showCancelButton: true,
+		showConfirmButton: true,
+		confirmButtonText: "Yes, uninstall it!",
+		closeOnConfirm: true,
+		showLoaderOnConfirm: false,
+		allowOutsideClick: true,
+		html: true
+	}, function(isConfirm) {
+		if (isConfirm) {
+			application = basename(application);
+			my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=remove&arg2='+application,'Uninstall Plugin',600,900,true,"postUninstallPlugin()");
+		} else {
+			enableSearch();
+		}
+	});
 }
 
 function postUninstallPlugin() {
