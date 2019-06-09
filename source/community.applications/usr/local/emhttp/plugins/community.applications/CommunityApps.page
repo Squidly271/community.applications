@@ -215,6 +215,7 @@ $(function(){
 	});
 	$(".sortIcons").click(function() {
 		enableSortIcon(this);
+		data.currentpage = 1;
 		changeSortOrder();
 		$("#sortIconArea").toggle("slow");
 	});
