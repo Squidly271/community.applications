@@ -70,7 +70,7 @@ $(function(){
 	);
 
 	$("#title").append('<div id="Category" class="categoryLine ca_italic"></div>');
-	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-numeric-asc ca_staticTips' title='Sort By Downloads' data-sort='downloadsUp'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i><i class='sortIcons fa fa-sort-amount-asc ca_staticTips' title='Sort By Trend' data-sort='trendUp'></i><i class='sortIcons fa fa-calendar ca_staticTips' title='Sort By Date Added' data-sort='firstSeenDown'></i></span><i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' aria-hidden='true'></i>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
+	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i></i><i class='sortIcons fa fa-calendar ca_staticTips' title='Sort By Date Added' data-sort='firstSeenDown'></i></span><i id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon' aria-hidden='true'></i>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
 
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
@@ -83,7 +83,7 @@ $(function(){
 		templates_content.addEventListener("touchstart", startTouch, false);
 		templates_content.addEventListener("touchmove", moveTouch, false);
 		 
-		// Swipe Up / Down / Left / Right
+		// Left / Right
 		var initialX = null;
 		var initialY = null;
 		 
@@ -515,17 +515,9 @@ function getSortOrder() {
 					sortOrder.sortBy = ["sortBy","downloads"];
 					sortOrder.sortDir = ["sortDir","Down"];
 					break;
-				case 'downloadsUp':
-					sortOrder.sortBy = ["sortBy","downloads"];
-					sortOrder.sortDir = ["sortDir","Up"];
-					break;
 				case 'trendDown':
 					sortOrder.sortBy = ["sortBy","trending"];
 					sortOrder.sortDir = ["sortDir","Down"];
-					break;
-				case 'trendUp':
-					sortOrder.sortBy = ["sortBy","trending"];
-					sortOrder.sortDir = ["sortDir","Up"];
 					break;
 				case 'firstSeenDown':
 					sortOrder.sortBy = ["sortBy","FirstSeen"];
@@ -1190,7 +1182,7 @@ function getCategories() {
 }
 </script>
 
-> <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to display the results<br><br>
+> <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to sort the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <span class='ca_bold'>Install or Edit</span> an application<br>
 > <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' style='font-size:2rem;'></i> - Clicking these icons will take you to an application's GUI or settings<br>
 > <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> - Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>
