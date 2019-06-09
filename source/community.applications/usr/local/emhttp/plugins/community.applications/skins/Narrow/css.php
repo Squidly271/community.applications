@@ -212,6 +212,8 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_center {margin:auto;text-align:center;}
 .ca_NoAppsFound {font-size:3rem;margin:auto;text-align:center;}
 .ca_NoAppsFound::after{content:"No Matching Applications Found"}
+.ca_NoDockerAppsFound {font-size:3rem;margin:auto;text-align:center;}
+.ca_NoDockerAppsFound::after{content:"No Matching Applications Found On Docker Hub"}
 .ca_templatesDisplay {display:flex;flex-wrap:wrap;justify-content:center;overflow-x:hidden;}
 #warningNotAccepted {display:none;}
 .menuItems {position:absolute; left:0px;width:14rem;height:auto;}

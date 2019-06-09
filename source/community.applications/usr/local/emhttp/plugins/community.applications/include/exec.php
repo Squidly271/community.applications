@@ -317,7 +317,7 @@ case 'search_dockerhub':
 	$num_pages = $pageresults['num_pages'];
 
 	if ($pageresults['num_results'] == 0) {
-		$o['display'] = "<div class='ca_center'>No matching content found on dockerhub</div>";
+		$o['display'] = "<div class='ca_NoDockerAppsFound'></div>";
 		$o['script'] = "$('#dockerSearch').hide();";
 		postReturn($o);
 		@unlink($communityPaths['dockerSerchResults']);
@@ -848,8 +848,11 @@ case 'get_categories':
 			}
 		}
 		$templates = readJsonFile($communityPaths['community-templates-info']);
-		if ( searchArray($templates,"Private",true) ) {
-			$cat .= "<li class='categoryMenu caMenuItem' data-category='PRIVATE'>Private Apps</li>";
+		foreach ($templates as $template) {
+			if ($template['Private'] == true && ! $template['Blacklist']) {
+				$cat .= "<li class='categoryMenu caMenuItem' data-category='PRIVATE'>Private Apps</li>";
+				break;
+			}
 		}
 	}
 	postReturn(["categories"=>$cat]);

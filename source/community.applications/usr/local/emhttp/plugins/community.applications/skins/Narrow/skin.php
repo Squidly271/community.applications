@@ -271,6 +271,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$displayHeader .= "<span class='specialCategory'><div class='ca_center'>This display is informational <span class='ca_italic'>ONLY</span>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</div><br>";
 		$displayHeader .= "<div class='ca_center'>$specialCategoryComment</div></span>";
 	}
+	
+	if ( ! $count ) {
+		$displayHeader .= "<div class='ca_NoAppsFound'></div>";
+	}
 	return "$displayHeader$ct";
 }
 
