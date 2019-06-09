@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.05.24">
-<!ENTITY md5       "e929677127fc068cf8cbc9851efd4e10">
+<!ENTITY version   "2019.06.09">
+<!ENTITY md5       "fc1b90f6bb01393259652a0f696b9b8b">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,19 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.06.09
+- Added: Private Apps (if present) will have their own category displayed
+- Changed: Scroll to top when changing categories
+- Changed: Remove JQuery Mobile.  Switch to smaller library for mobile enhancements
+- Changed: CA's Cookie warning &amp; docker not enabled warning will now display in top banner
+- Changed: Don't blank display when showing spinner
+- Fixed: Simplify code when showing spinner to prevent race conditions
+- Fixed: After going to a plugin's settings page, return to Apps tab when hitting Done
+- Fixed: Beta warning displays when hovering for consistentcy with rest of UI
+- Fixed: Ability to pin apps with same repository, but different templates (CSGO, CSSource)
+- Added: If user customizes unRaid's themes and changes the name, then CA will use it's Black theme as a default fall-back
+- Added: Optional ability for plugin authors to prioritize the plugin's update available banner over unRaid's OS update available
+
 ###2019.05.24
 - Fixed: Docker search API changed
 - Changed: Populate Autocomplete categories from category list
