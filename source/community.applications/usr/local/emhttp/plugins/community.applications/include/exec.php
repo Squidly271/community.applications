@@ -687,9 +687,7 @@ case 'statistics':
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 	pluginDupe($templates);
 	$invalidXML = readJsonFile($communityPaths['invalidXML_txt']);
-	$sortOrder['sortBy'] = "RepoName";
-	$sortOrder['sortDir'] = "Up";
-	usort($templates,"mySort");
+
 	foreach ($templates as $template) {
 		if ( $template['Deprecated'] ) {
 			$statistics['totalDeprecated']++;
