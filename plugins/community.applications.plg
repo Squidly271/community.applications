@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.06.09a">
-<!ENTITY md5       "a43d8b4229dd458af25b854051592559">
+<!ENTITY version   "2019.06.09b">
+<!ENTITY md5       "dbc0d3c203c446966e1c229d3be07eb9">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,18 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.06.09b
+- Changed: Don't display a blank screen if last private app was deleted
+- Removed: Easter Egg
+- Changed: When changing sort order, go back to page 1
+- Changed: Minor CSS Changes
+- Changed Simplify Sort Options
+  - Remove Sort By Downloads Ascending
+  - Remove Sort By Trends Ascending
+    (Does anyone ever look for the least popular apps?)
+  - Add in Sort By Date Added to CA
+- Removed some extraneous code
+  
 ###2019.06.09a
 - Fixed: Don't allow dockerHub searches if docker is not enabled
 
