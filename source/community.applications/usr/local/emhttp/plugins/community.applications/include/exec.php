@@ -955,6 +955,8 @@ function DownloadApplicationFeed() {
 				$subBranch['Path'] = $communityPaths['templates-community']."/".$i.".xml";
 				$subBranch['Displayable'] = false;
 				$subBranch['ID'] = $i;
+				$subBranch['Overview'] = $o['OriginalOverview'] ?: $o['Overview'];
+				$subBranch['Description'] = $o['OriginalDescription'] ?: $o['Description'];
 				$replaceKeys = array_diff(array_keys($branch),array("Tag","TagDescription"));
 				foreach ($replaceKeys as $key) {
 					$subBranch[$key] = $branch[$key];

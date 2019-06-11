@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.06.09b">
-<!ENTITY md5       "dbc0d3c203c446966e1c229d3be07eb9">
+<!ENTITY version   "2019.06.11">
+<!ENTITY md5       "397d7c447984a511e49a4ba45bff5aa2">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.06.11
+- Fixed: Applications with branches were not getting the description on the template the authors intended
+
 ###2019.06.09b
 - Changed: Don't display a blank screen if last private app was deleted
 - Removed: Easter Egg

@@ -522,7 +522,7 @@ function getPopupDescription($appNumber) {
 	}
 	$templateDescription .= $template['stars'] ? "<tr><td nowrap>DockerHub Stars:</td><td><span class='dockerHubStar'></span> ".$template['stars']."</td></tr>" : "";
 
-	if ( $template['FirstSeen'] > 1 ) {
+	if ( $template['FirstSeen'] > 1 && $template['Name'] != "Community Applications" ) {
 		$templateDescription .= "<tr><td>Added to CA:</td><td>".date("M d, Y",$template['FirstSeen'])."</td></tr>";
 	}
 
