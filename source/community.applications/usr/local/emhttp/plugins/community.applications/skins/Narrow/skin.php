@@ -105,20 +105,20 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['DonateText'] = "Donate To Author";
 		}
 		$template['display_Private'] = ( $template['Private'] == "true" ) ? "<span class='ca_tooltip ca_private' title='Private (dockerHub Conversion)'></span>" : "";
-		$template['display_DonateLink'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink' href='".$template['DonateLink']."' target='_blank' title='".$template['DonateText']."'>Donate To Author</a>" : "";
-		$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate' href='".$template['DonateLink']."' target='_blank' title='".$template['DonateText']."'>Donate</a>" : "";
+		$template['display_DonateLink'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>Donate To Author</a>" : "";
+		$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>Donate</a>" : "";
 
-		$template['display_Project'] = $template['Project'] ? "<a class='ca_tooltip projectLink' target='_blank' title='Click to go the the Project Home Page' href='".$template['Project']."'></a>" : "";
+		$template['display_Project'] = $template['Project'] ? "<a class='ca_tooltip projectLink' target='_blank' title='Click to go the the Project Home Page' href='{$template['Project']}'></a>" : "";
 		$template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons' target='_blank' href='{$template['Project']}' title='Go to the project page'></a>" : "";
-		$template['display_Support'] = $template['Support'] ? "<a class='ca_tooltip supportLink' href='".$template['Support']."' target='_blank' title='Click to go to the support thread'></a>" : "";
+		$template['display_Support'] = $template['Support'] ? "<a class='ca_tooltip supportLink' href='{$template['Support']}' target='_blank' title='Click to go to the support thread'></a>" : "";
 		$template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons' href='{$template['Support']}' target='_blank' title='Support Thread'></a>" : "";
 
 		$template['display_webPage'] = $template['WebPageURL'] ? "<a class='ca_tooltip webLink' title='Click to go to {$template['SortAuthor']}&#39;s web page' href='".$template['WebPageURL']."' target='_blank'></a>" : "";
 
-		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</span></strong><font color='purple'>".$template['ModeratorComment']."</font>" : "";
-		$tempLogo = $template['Logo'] ? "<img src='".$template['Logo']."' height=2.0rem;>" : "";
+		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</span></strong><font color='purple'>{$template['ModeratorComment']}</font>" : "";
+		$tempLogo = $template['Logo'] ? "<img src='{$template['Logo']}' height=2.0rem;>" : "";
 		$template['display_Repository'] = "<span class='ca_repository'>$RepoName $tempLogo</span>";
-		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star dockerHubStar' aria-hidden='true'></i> <strong>".$template['stars']."</strong>" : "";
+		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star dockerHubStar' aria-hidden='true'></i> <strong>{$template['stars']}</strong>" : "";
 		$template['display_Downloads'] = $template['downloads'] ? "<div class='ca_center'>".number_format($template['downloads'])."</div>" : "<div class='ca_center'>Not Available</div>";
 
 		if ( $pinnedApps["{$template['Repository']}&{$template['SortName']}"] ) {
@@ -134,14 +134,14 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		}
 		if ( $template['Uninstall'] && $template['Name'] != "Community Applications" ) {
 			$template['display_Uninstall'] = "<a class='ca_tooltip ca_fa-delete' title='Uninstall Application' ";
-			$template['display_Uninstall'] .= ( $template['Plugin'] ) ? "onclick='uninstallApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>" : "onclick='uninstallDocker(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'>";
+			$template['display_Uninstall'] .= ( $template['Plugin'] ) ? "onclick='uninstallApp(&quot;{$template['MyPath']}&quot;,&quot;{$template['Name']}&quot;);'>" : "onclick='uninstallDocker(&quot;{$template['MyPath']}&quot;,&quot;{$template['Name']}&quot;);'>";
 			$template['display_Uninstall'] .= "</a>";
 		} else {
 			if ( $template['Private'] == "true" ) {
 				$template['display_Uninstall'] = "<a class='ca_tooltip  ca_fa-delete' title='Remove Private Application' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['SortAuthor']}&quot;);'></a>";
 			}
 		}
-		$template['display_removable'] = $template['Removable'] && ! $selected ? "<a class='ca_tooltip ca_fa-delete' title='Remove Application From List' onclick='removeApp(&quot;".$template['MyPath']."&quot;,&quot;".$template['Name']."&quot;);'></a>" : "";
+		$template['display_removable'] = $template['Removable'] && ! $selected ? "<a class='ca_tooltip ca_fa-delete' title='Remove Application From List' onclick='removeApp(&quot;{$template['MyPath']}&quot;,&quot;{$template['Name']}&quot;);'></a>" : "";
 		if ( $template['display_Uninstall'] && $template['display_removable'] ) {
 			unset($template['display_Uninstall']); # prevent previously installed private apps from having 2 x's in previous apps section
 		}
@@ -168,7 +168,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons' title='Click to go to the plugin settings' href='/Apps/$pluginSettings'></a>" : "";
 				} else {
 					$buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
-					$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='Click to install this plugin' onclick=installPlugin('".$template['PluginURL']."');></a>";
+					$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='Click to install this plugin' onclick=installPlugin('{$template['PluginURL']}');></a>";
 				}
 			} else {
 				if ( $communitySettings['dockerRunning'] ) {
@@ -223,12 +223,12 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$template['display_author'] = "<a class='ca_tooltip ca_author' onclick='doSearch(false,this.innerText);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
 		$displayIcon = $template['Icon'];
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
-		$template['display_iconSmall'] = "<a onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='$displayIcon'></a>";
+		$template['display_iconSmall'] = "<a onclick='showDesc({$template['ID']},&#39;{$name}&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='$displayIcon'></a>";
 		$template['display_iconSelectable'] = "<img class='$iconClass' src='$displayIcon'>";
 		$template['display_infoIcon'] = "<a class='ca_appPopup ca_tooltip appIcons ca_fa-info' title='Click for more information' data-appNumber='$ID' data-appPath='{$template['Path']}' data-appName='{$template['Name']}' style='cursor:pointer'></a>";
 		if ( isset($ID) ) {
 			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appName='{$template['Name']}' data-appNumber='$ID' data-appPath='{$template['Path']}'>".$template['display_iconSelectable']."</a>";
-			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
+			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc({$template['ID']},&#39;".$name."&#39;);'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
 			$template['display_iconOnly'] = "<img class='$iconClass' src='".$displayIcon."'></img>";
 		} else {
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
@@ -238,11 +238,11 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		if ( $template['IconFA'] ) {
 			$displayIcon = $template['IconFA'] ?: $template['Icon'];
 			$displayIconClass = startsWith($displayIcon,"icon-") ? $displayIcon : "fa fa-$displayIcon";
-			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><div class='ca_center'><i class='ca_appPopup $displayIconClass $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></div></a>";
+			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc({$template['ID']},&#39;{$name}&#39;);'><div class='ca_center'><i class='ca_appPopup $displayIconClass $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></div></a>";
 			$template['display_iconSelectable'] = "<div class='ca_center'><i class='$displayIconClass $iconClass'></i></div>";
 			if ( isset($ID) ) {
 				$template['display_iconClickable'] = "<a class='ca_appPopup' data-appName='{$template['Name']}' data-appNumber='$ID' data-appPath='{$template['Path']}' style='cursor:pointer' >".$template['display_iconSelectable']."</a>";
-				$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc(".$template['ID'].",&#39;".$name."&#39;);'><div class='ca_center'><i class='fa fa-$displayIcon ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></div></a>";
+				$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc({$template['ID']},&#39;{$name}&#39;);'><div class='ca_center'><i class='fa fa-$displayIcon ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></div></a>";
 				$template['display_iconOnly'] = "<div class='ca_center'><i class='fa fa-$displayIcon $iconClass'></i></div>";
 			} else {
 				$template['display_iconClickable'] = $template['display_iconSelectable'];

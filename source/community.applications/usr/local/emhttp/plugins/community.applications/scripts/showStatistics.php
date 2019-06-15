@@ -12,6 +12,23 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Helpers.php");
 ?>
 <body bgcolor='white'>
 <link type="text/css" rel="stylesheet" href='<?autov("/plugins/community.applications/skins/Narrow/css.php")?>'>
+<style>
+p {margin-left:2rem;margin-right:2rem;}
+body {margin-left:1.5rem;margin-right:1.5rem;margin-top:1.5rem;font-family:clear-sans;font-size:0.9rem;}
+hr { margin-top:1rem;margin-bottom:1rem; }
+div.spinner{margin:48px auto;text-align:center;}
+div.spinner.fixed{position:fixed;top:50%;left:50%;margin-top:-16px;margin-left:-64px}
+div.spinner .unraid_mark{height:64px}
+div.spinner .unraid_mark_2,div .unraid_mark_4{animation:mark_2 1.5s ease infinite}
+div.spinner .unraid_mark_3{animation:mark_3 1.5s ease infinite}
+div.spinner .unraid_mark_6,div .unraid_mark_8{animation:mark_6 1.5s ease infinite}
+div.spinner .unraid_mark_7{animation:mark_7 1.5s ease infinite}
+@keyframes mark_2{50% {transform:translateY(-40px)} 100% {transform:translateY(0px)}}
+@keyframes mark_3{50% {transform:translateY(-62px)} 100% {transform:translateY(0px)}}
+@keyframes mark_6{50% {transform:translateY(40px)} 100% {transform:translateY(0px)}}
+@keyframes mark_7{50% {transform:translateY(62px)} 100% {transform: translateY(0px)}}
+</style>
+<div class='spinner fixed' id='spinner'><?readfile("/usr/local/emhttp/plugins/dynamix/images/animated-logo.svg")?></div>
 <?
 $repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
 
@@ -110,4 +127,8 @@ switch ($_GET['arg1']) {
 		echo "<tt>$moderation";
 		break;
 }
+?>
+<script>
+	document.getElementById("spinner").style.display = "none";
+</script>	
 ?>
