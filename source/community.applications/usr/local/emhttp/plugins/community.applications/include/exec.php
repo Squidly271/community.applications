@@ -1108,7 +1108,7 @@ function appOfDay($file) {
 			usort($file,"mySort");
 			foreach ($file as $template) {
 				if ( ! is_array($template['trends']) ) continue;
-				if ( count($template['trends']) < 2 ) continue;
+				if ( count($template['trends']) < 3 ) continue;
 				if ( $template['trending'] && ($template['downloads'] > 100000) ) {
 					if ( checkRandomApp($template) ) {
 						$appOfDay[] = $template['ID'];
