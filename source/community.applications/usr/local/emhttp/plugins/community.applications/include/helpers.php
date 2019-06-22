@@ -25,11 +25,7 @@ function checkPluginUpdate($filename) {
 
 	if ( $installedVersion < $upgradeVersion ) {
 		$unRaid = plugin("unRAID","/tmp/plugins/$filename");
-		if ( $unRaid === false || version_compare($communitySettings['unRaidVersion'],$unRaid,">=") ) {
-			return true;
-		} else {
-			return false;
-		}
+		return ( $unRaid === false || version_compare($communitySettings['unRaidVersion'],$unRaid,">=") ) ? true : false;
 	}
 	return false;
 }
@@ -70,6 +66,9 @@ function getPostArray($setting) {
 	return $_POST[$setting];
 }
 function getSortOrder($sortArray) {
+	if ( ! is_array($sortArray) ) {
+		return array();
+	}
 	foreach ($sortArray as $sort) {
 		$sortOrder[$sort[0]] = $sort[1];
 	}
@@ -158,9 +157,9 @@ function fixTemplates($template) {
 	$template['Deprecated'] = filter_var($template['Deprecated'],FILTER_VALIDATE_BOOLEAN);
 	$template['Blacklist'] = filter_var($template['Blacklist'],FILTER_VALIDATE_BOOLEAN);
 
-	if ( $template['DeprecatedMaxVer'] && version_compare($communitySettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") ) {
+	if ( $template['DeprecatedMaxVer'] && version_compare($communitySettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") )
 		$template['Deprecated'] = true;
-	}
+
 	$o['Author']        = getAuthor($o);
 	$o['DockerHubName'] = strtolower($o['Name']);
 	$o['RepoName']      = $o['Repo'];
@@ -180,9 +179,9 @@ function fixTemplates($template) {
 ###############################################
 function makeXML($template) {
 	# ensure its a v2 template if the Config entries exist
-	if ( $template['Config'] && ! $template['@attributes'] ) {
+	if ( $template['Config'] && ! $template['@attributes'] )
 		$template['@attributes'] = array("version"=>2);
-	}
+
 	fixAttributes($template,"Network");
 	fixAttributes($template,"Config");
 
@@ -198,9 +197,9 @@ function fixAttributes(&$template,$attribute) {
 	if ( ! is_array($template[$attribute]) ) return;
 	if ( $template[$attribute]['@attributes'] ) {
 		$template[$attribute][0]['@attributes'] = $template[$attribute]['@attributes'];
-		if ( $template[$attribute]['value']) {
+		if ( $template[$attribute]['value'])
 			$template[$attribute][0]['value'] = $template[$attribute]['value'];
-		}
+
 		unset($template[$attribute]['@attributes']);
 		unset($template[$attribute]['value']);
 	}
@@ -247,18 +246,18 @@ function readXmlFile($xmlfile) {
 # configure the config attributes to same format as appfeed
 # handle the case where there is only a single <Config> entry
 
-	if ( $o['Config']['@attributes'] ) {
+	if ( $o['Config']['@attributes'] )
 		$o['Config'] = array('@attributes'=>$o['Config']['@attributes'],'value'=>$o['Config']['value']);
-	}
+
 	if ( $o['Plugin'] ) {
 		$o['Author']     = $o['PluginAuthor'];
 		$o['Repository'] = $o['PluginURL'];
 		$o['SortAuthor'] = $o['Author'];
 		$o['SortName']   = $o['Name'];
 		$statistics['plugin']++;
-	} else {
+	} else
 		$statistics['docker']++;
-	}
+
 	return $o;
 }
 
@@ -272,12 +271,12 @@ function moderateTemplates() {
 
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 
-	if ( ! $templates ) { return; }
+	if ( ! $templates ) return;
 	foreach ($templates as $template) {
 		$template['Compatible'] = versionCheck($template);
-		if ( $template["DeprecatedMaxVer"] && version_compare($communitySettings['unRaidVersion'],$template["DeprecatedMaxVer"],">") ) {
+		if ( $template["DeprecatedMaxVer"] && version_compare($communitySettings['unRaidVersion'],$template["DeprecatedMaxVer"],">") )
 			$template['Deprecated'] = true;
-		}
+
 		$template['ModeratorComment'] = $template['CaComment'] ?: $template['ModeratorComment'];
 		$o[] = $template;
 	}
@@ -322,11 +321,13 @@ function pluginDupe($templates) {
 	global $communityPaths;
 
 	$pluginList = array();
- 	foreach ($templates as $template) {
-		if ( $template['Plugin'] ) $pluginList[basename($template['Repository'])]++;
+	foreach ($templates as $template) {
+		if ( $template['Plugin'] )
+			$pluginList[basename($template['Repository'])]++;
 	}
- 	foreach (array_keys($pluginList) as $plugin) {
-		if ( $pluginList[$plugin] > 1 ) $dupeList[$plugin]++;
+	foreach (array_keys($pluginList) as $plugin) {
+		if ( $pluginList[$plugin] > 1 )
+			$dupeList[$plugin]++;
 	}
 	writeJsonFile($communityPaths['pluginDupes'],$dupeList);
 }
@@ -406,9 +407,9 @@ function getAuthor($template) {
 	if ( !is_string($template['Repository'])) return false;
 	if ( $template['Author'] ) return strip_tags($template['Author']);
 	$repoEntry = explode("/",$template['Repository']);
-	if (count($repoEntry) < 2) {
+	if (count($repoEntry) < 2)
 		$repoEntry[] = "";
-	}
+
 	return strip_tags(explode(":",$repoEntry[count($repoEntry)-2])[0]);
 }
 
@@ -502,9 +503,9 @@ function formatTags($leadTemplate,$tabMode="_self") {
 	$file = readJsonFile($communityPaths['community-templates-info']);
 	$template = $file[$leadTemplate];
 	$childTemplates = $file[$leadTemplate]['BranchID'];
-	if ( ! is_array($childTemplates) ) {
+	if ( ! is_array($childTemplates) )
 		$o =  "Something really went wrong here";
-	} else {
+	else {
 		$defaultTag = $template['BranchDefault'] ? $template['BranchDefault'] : "latest";
 		$o = "<table>";
 		$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='/Apps/AddContainer?xmlTemplate=default:".$template['Path']."' target='$tabMode'>Default</a></td><td>Install Using The Template's Default Tag (<font color='purple'>:$defaultTag</font>)</td></tr>";
@@ -520,11 +521,10 @@ function formatTags($leadTemplate,$tabMode="_self") {
 # handles the POST return #
 ###########################
 function postReturn($retArray) {
-	if (is_array($retArray)) {
+	if (is_array($retArray))
 		echo json_encode($retArray);
-	} else {
+	else
 		echo $retArray;
-	}
 }
 
 ####################################
@@ -533,7 +533,7 @@ function postReturn($retArray) {
 # eventually deprecate this function as it won't be needed -> fuck the user if they haven't already converted the file.
 function convertPinnedAppsToV2() {
 	global $communityPaths;
-	
+
 	$pinnedApps = readJsonFile($communityPaths['pinned']);
 	$file = readJsonFile($communityPaths['community-templates-info']);
 	$startIndex = 0;

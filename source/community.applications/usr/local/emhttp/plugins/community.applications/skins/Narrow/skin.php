@@ -34,22 +34,21 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$info = getRunningContainers();
 	$skin = readJsonFile($communityPaths['defaultSkin']);
 
-	if ( ! $selectedApps ) {
+	if ( ! $selectedApps )
 		$selectedApps = array();
-	}
 
-	if ( ! $communitySettings['dockerRunning'] && ! $communitySettings['NoInstalls']) {
+	if ( ! $communitySettings['dockerRunning'] && ! $communitySettings['NoInstalls'])
 		$displayHeader = "<script>addWarning('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed');var dockerNotEnabled = true;</script>";
-	}
-	if ( is_file($communityPaths['pinned']) ) {
+
+	if ( is_file($communityPaths['pinned']) )
 		convertPinnedAppsToV2();
-	}
+
 	$pinnedApps = readJsonFile($communityPaths['pinnedV2']);
 	$iconSize = $communitySettings['iconSize'];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
-	if ( filter_var($startup,FILTER_VALIDATE_BOOLEAN) ) {
+	if ( filter_var($startup,FILTER_VALIDATE_BOOLEAN) )
 		$sortOrder['sortBy'] = "noSort";
-	}
+
 	if ( $sortOrder['sortBy'] != "noSort" ) {
 		if ( $sortOrder['sortBy'] == "Name" ) $sortOrder['sortBy'] = "SortName";
 		usort($file,"mySort");
@@ -64,27 +63,24 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$displayedTemplates = array();
 	foreach ($file as $template) {
-		if ( $template['Blacklist'] && ! $template['NoInstall'] ) {
-			continue;
-		}
+		if ( $template['Blacklist'] && ! $template['NoInstall'] ) continue;
+
 		$startingAppCounter++;
-		if ( $startingAppCounter < $startingApp ) {
-			continue;
-		}
+		if ( $startingAppCounter < $startingApp ) continue;
 		$displayedTemplates[] = $template;
 	}
 
 	$ct .= $skin[$viewMode]['header'];
 	$iconClass = "displayIcon";
-		
+
 	$displayTemplate = $skin[$viewMode]['template'];
 	$currentServer = file_get_contents($communityPaths['currentServer']);
 
 	# Create entries for skins.  Note that MANY entries are not used in the current skins
 	foreach ($displayedTemplates as $template) {
-		if ( $currentServer == "Primary Server" && $template['IconHTTPS']) {
+		if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
 			$template['Icon'] = $template['IconHTTPS'];
-		}
+
 		$name = $template['SortName'];
 		$appName = str_replace(" ","",$template['SortName']);
 		$ID = $template['ID'];
@@ -101,9 +97,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$template['Category'] = categoryList($template['Category']);
 
 		$RepoName = ( $template['Private'] == "true" ) ? $template['RepoName']."<font color=red> (Private)</font>" : $template['RepoName'];
-		if ( ! $template['DonateText'] ) {
+		if ( ! $template['DonateText'] )
 			$template['DonateText'] = "Donate To Author";
-		}
+
 		$template['display_Private'] = ( $template['Private'] == "true" ) ? "<span class='ca_tooltip ca_private' title='Private (dockerHub Conversion)'></span>" : "";
 		$template['display_DonateLink'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>Donate To Author</a>" : "";
 		$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>Donate</a>" : "";
@@ -129,36 +125,34 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$pinnedTitle = "Click to pin this application";
 		}
 		$template['display_pinButton'] = "<span class='ca_tooltip $pinned' title='$pinnedTitle' onclick='pinApp(this,&quot;{$template['Repository']}&quot;,&quot;{$template['SortName']}&quot;);'></span>";
-		if ($template['Blacklist']) {
+		if ($template['Blacklist'])
 			unset($template['display_pinButton']);
-		}
+
 		if ( $template['Uninstall'] && $template['Name'] != "Community Applications" ) {
 			$template['display_Uninstall'] = "<a class='ca_tooltip ca_fa-delete' title='Uninstall Application' ";
 			$template['display_Uninstall'] .= ( $template['Plugin'] ) ? "onclick='uninstallApp(&quot;{$template['MyPath']}&quot;,&quot;{$template['Name']}&quot;);'>" : "onclick='uninstallDocker(&quot;{$template['MyPath']}&quot;,&quot;{$template['Name']}&quot;);'>";
 			$template['display_Uninstall'] .= "</a>";
 		} else {
-			if ( $template['Private'] == "true" ) {
+			if ( $template['Private'] == "true" )
 				$template['display_Uninstall'] = "<a class='ca_tooltip  ca_fa-delete' title='Remove Private Application' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['SortAuthor']}&quot;);'></a>";
-			}
 		}
 		$template['display_removable'] = $template['Removable'] && ! $selected ? "<a class='ca_tooltip ca_fa-delete' title='Remove Application From List' onclick='removeApp(&quot;{$template['MyPath']}&quot;,&quot;{$template['Name']}&quot;);'></a>" : "";
-		if ( $template['display_Uninstall'] && $template['display_removable'] ) {
+		if ( $template['display_Uninstall'] && $template['display_removable'] )
 			unset($template['display_Uninstall']); # prevent previously installed private apps from having 2 x's in previous apps section
-		}
 
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
 		$UpdatedClassType = $template['BrandNewApp'] ? "ca_dateAdded" : "ca_dateUpdated";
 		$template['display_dateUpdated'] = ($template['Date'] && $template['NewApp'] ) ? "<span class='$UpdatedClassType'><span class='ca_dateUpdatedDate'>{$template['display_humanDate']}</span></span>" : "";
 		$template['display_multi_install'] = ($template['Removable']) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-type='$appType' $checked>" : "";
-		if (! $communitySettings['dockerRunning'] && ! $template['Plugin']) {
+		if (! $communitySettings['dockerRunning'] && ! $template['Plugin'])
 			unset($template['display_multi_install']);
-		}
-		if ( $template['Plugin'] ) {
+
+		if ( $template['Plugin'] )
 			$template['UpdateAvailable'] = checkPluginUpdate($template['PluginURL']);
-		}
-		if ( $template['UpdateAvailable'] ) {
+
+		if ( $template['UpdateAvailable'] )
 			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</span></div></font>" : "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a href='Docker'>Here</a> to install</span></font></div>";
-		}
+
 		if ( ! $template['NoInstall'] && ! $communitySettings['NoInstalls'] ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
 			if ( $template['Plugin'] ) {
 				$pluginName = basename($template['PluginURL']);
@@ -176,30 +170,28 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 						$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click to reinstall the application using default values' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'></a>";
 						$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip ca_fa-install appIcons' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'></a>" : $template['display_dockerDefaultIcon'];
 						$template['display_dockerEditIcon']    = "<a class='ca_tooltip appIcons ca_fa-edit' title='Click to edit the application values' href='/Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='_self'></a>";
-						if ( $info[$name]['url'] && $info[$name]['running'] ) {
+						if ( $info[$name]['url'] && $info[$name]['running'] )
 							$template['dockerWebIcon'] = "<a class='ca_tooltip appIcons ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'></a>";
-						}
 					} else {
-						if ( $template['MyPath'] ) {
+						if ( $template['MyPath'] )
 							$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click to reinstall' href='/Apps/UpdateContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='_self'></a>";
-							} else {
+						else {
 							$template['display_dockerInstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click to install' href='Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'></a>";
 							$template['display_dockerInstallIcon'] = $template['BranchID'] ? "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'></a>" : $template['display_dockerInstallIcon'];
 						}
 					}
 				}
 			}
-		} else {
+		} else
 			$specialCategoryComment = $template['NoInstall'];
-		}
+
 		$warningColor = "warning-white";
 		if ( $template['Beta'] ) {
 			$template['display_compatible'] .= "This application has been marked as being <span class='ca_italic'>Beta</span>.";
-			if (! $template['Blacklist'] && ! $template['Deprecated'] ) {
+			if (! $template['Blacklist'] && ! $template['Deprecated'] )
 				$template['display_compatible'] .= "&nbsp;&nbsp;This does NOT neccessarily mean that there will be issues.<br>";
-			} else {
+			else
 				$template['display_compatible'] .= "<br>";
-			}
 		}
 		if ( $template['Deprecated'] ) {
 			$template['display_compatible'] .= "This application / template has been deprecated.<br>";
@@ -215,9 +207,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$warningColor = "warning-red";
 		}
 
-		if ( $template['ModeratorComment'] || $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] || $template['Beta']) {
+		if ( $template['ModeratorComment'] || $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] || $template['Beta'])
 			$template['display_warning-text'] = trim("{$template['ModeratorComment']}<br>{$template['display_compatible']}");
-		}
+
 		$template['display_faWarning'] = $template['display_warning-text'] ? "<span class='ca_tooltip-warning ca_fa-warning appIcons $warningColor' title='".htmlspecialchars($template['display_warning-text'],ENT_COMPAT | ENT_QUOTES)."'></span>" : "";
 
 		$template['display_author'] = "<a class='ca_tooltip ca_author' onclick='doSearch(false,this.innerText);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
@@ -254,15 +246,13 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$template['display_dockerName'] = "<span class='ca_applicationName'>{$template['Name']}</span>";
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
-		if ( ( $template['Beta'] == "true" ) ) {
+		if ( $template['Beta'] == "true" )
 			$template['display_dockerBeta'] .= "<span class='ca_tooltip displayBeta' title='Beta Container &#13;See support forum for potential issues'>(Beta)</span>";
-		}
+
 # Entries created.  Now display it
 		$ct .= vsprintf($displayTemplate,toNumericArray($template));
 		$count++;
-		if ( $count == $communitySettings['maxPerPage'] ) {
-			break;
-		}
+		if ( $count == $communitySettings['maxPerPage'] ) break;
 	}
 	$ct .= $skin[$viewMode]['footer'];
 	$ct .= getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
@@ -271,61 +261,57 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$displayHeader .= "<span class='specialCategory'><div class='ca_center'>This display is informational <span class='ca_italic'>ONLY</span>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</div><br>";
 		$displayHeader .= "<div class='ca_center'>$specialCategoryComment</div></span>";
 	}
-	
-	if ( ! $count ) {
+
+	if ( ! $count )
 		$displayHeader .= "<div class='ca_NoAppsFound'></div>";
-	}
+
 	return "$displayHeader$ct";
 }
 
 function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = true) {
 	global $communitySettings;
 
-	if ( $communitySettings['maxPerPage'] < 0 ) { return; }
+	if ( $communitySettings['maxPerPage'] < 0 ) return;
 	$swipeScript = "<script>";
 	$my_function = $dockerSearch ? "dockerSearch" : "changePage";
-	if ( $dockerSearch ) {
+	if ( $dockerSearch )
 		$communitySettings['maxPerPage'] = 25;
-	}
 	$totalPages = ceil($totalApps / $communitySettings['maxPerPage']);
 
-	if ($totalPages == 1) {
-		return;
-	}
+	if ($totalPages == 1) return;
+
 	$startApp = ($pageNumber - 1) * $communitySettings['maxPerPage'] + 1;
 	$endApp = $pageNumber * $communitySettings['maxPerPage'];
-	if ( $endApp > $totalApps ) {
+	if ( $endApp > $totalApps )
 		$endApp = $totalApps;
-	}
+
 	$o = "<div class='ca_center'>";
-	if ( ! $dockerSearch && $displayCount) {
+	if ( ! $dockerSearch && $displayCount)
 		$o .= "<span class='pageNavigation'>Displaying $startApp - $endApp (of $totalApps)</span><br>";
-	}
 
 	$o .= "<div class='pageNavigation'>";
 	$previousPage = $pageNumber - 1;
 	$o .= ( $pageNumber == 1 ) ? "<span class='pageLeft pageNumber pageNavNoClick'></span>" : "<span class='pageLeft ca_tooltip pageNumber' onclick='{$my_function}(&quot;$previousPage&quot;)'></span>";
 	$swipeScript .= "data.prevpage = $previousPage;";
 	$startingPage = $pageNumber - 5;
-	if ($startingPage < 3 ) {
+	if ($startingPage < 3 )
 		$startingPage = 1;
-	} else {
+	else
 		$o .= "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;1&quot;);'>1</a><span class='pageNumber pageDots'></span>";
-	}
+
 	$endingPage = $pageNumber + 5;
-	if ( $endingPage > $totalPages ) {
+	if ( $endingPage > $totalPages )
 		$endingPage = $totalPages;
-	}
-	for ($i = $startingPage; $i <= $endingPage; $i++) {
+
+	for ($i = $startingPage; $i <= $endingPage; $i++)
 		$o .= ( $i == $pageNumber ) ? "<span class='pageNumber pageSelected'>$i</span>" : "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;$i&quot;);'>$i</a>";
-	}
+
 	if ( $endingPage != $totalPages) {
-		if ( ($totalPages - $pageNumber ) > 6){
+		if ( ($totalPages - $pageNumber ) > 6)
 			$o .= "<span class='pageNumber pageDots'></span>";
-		}
-		if ( ($totalPages - $pageNumber ) >5 ) {
+
+		if ( ($totalPages - $pageNumber ) >5 )
 			$o .= "<a class='ca_tooltip pageNumber' onclick='{$my_function}(&quot;$totalPages&quot;);'>$totalPages</a>";
-		}
 	}
 	$nextPage = $pageNumber + 1;
 	$o .= ( $pageNumber < $totalPages ) ? "<span class='ca_tooltip pageNumber pageRight' onclick='{$my_function}(&quot;$nextPage&quot;);'></span>" : "<span class='pageRight pageNumber pageNavNoClick'></span>";
@@ -388,9 +374,9 @@ function displaySearchResults($pageNumber) {
 ######################################
 function getPopupDescription($appNumber) {
 	global $communitySettings, $communityPaths;
-	
+
 	require_once("webGui/include/Markdown.php");
-	
+
 	$unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 	$communitySettings = parse_plugin_cfg("community.applications");
 	$csrf_token = $unRaidVars['csrf_token'];
@@ -407,9 +393,8 @@ function getPopupDescription($appNumber) {
 		$info = array();
 		$dockerRunning = array();
 	}
-	if ( ! is_file($communityPaths['warningAccepted']) ) {
+	if ( ! is_file($communityPaths['warningAccepted']) )
 		$communitySettings['NoInstalls'] = true;
-	}
 
 	# $appNumber is actually the path to the template.  It's pretty much always going to be the same even if the database is out of sync.
 	$displayed = readJsonFile($communityPaths['community-templates-displayed']);
@@ -437,19 +422,17 @@ function getPopupDescription($appNumber) {
 	}
 	$currentServer = file_get_contents($communityPaths['currentServer']);
 
-		# Create entries for skins.  Note that MANY entries are not used in the current skins
-	if ( $currentServer == "Primary Server" && $template['IconHTTPS']) {
+	# Create entries for skins.  Note that MANY entries are not used in the current skins
+	if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
 		$template['Icon'] = $template['IconHTTPS'];
-	}
 
 	$ID = $template['ID'];
 
 	$donatelink = $template['DonateLink'];
 	if ( $donatelink ) {
 		$donatetext = $template['DonateText'];
-		if ( ! $donatetext ) {
+		if ( ! $donatetext )
 			$donatetext = $template['Plugin'] ? "Donate To Author" : "Donate To Maintainer";
-		}
 	}
 
 	if ( ! $template['Plugin'] ) {
@@ -462,9 +445,8 @@ function getPopupDescription($appNumber) {
 				break;
 			}
 		}
-	} else {
+	} else
 		$pluginName = basename($template['PluginURL']);
-	}
 
 	if ( $template['trending'] ) {
 		$allApps = readJsonFile($communityPaths['community-templates-info']);
@@ -484,9 +466,9 @@ function getPopupDescription($appNumber) {
 		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
 		$templateDescription .= "<i class='$templateIcon popupIcon ca_center' id='icon'></i>";
-	} else {
+	} else
 		$templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
-	}
+
 	$templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
 	$templateDescription .= "<table style='font-size:0.9rem;width:450px;'>";
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
@@ -507,24 +489,22 @@ function getPopupDescription($appNumber) {
 	$templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
 	if ( $template['Category'] ) {
 		$templateDescription .= "<tr><td>Categories:</td><td>".$template['Category'];
-		if ( $template['Beta'] ) {
+		if ( $template['Beta'] )
 			$templateDescription .= " (Beta)";
-		}
+
 		$templateDescription .= "</td></tr>";
 	}
 	if ( ! $template['Plugin'] ) {
-		if ( strtolower($template['Base']) == "unknown" || ! $template['Base']) {
+		if ( strtolower($template['Base']) == "unknown" || ! $template['Base'])
 			$template['Base'] = $template['BaseImage'];
-		}
-		if ( $template['Base'] ) {
+
+		if ( $template['Base'] )
 			$templateDescription .= "<tr><td nowrap>Base OS:</td><td>".$template['Base']."</td></tr>";
-		}
 	}
 	$templateDescription .= $template['stars'] ? "<tr><td nowrap>DockerHub Stars:</td><td><span class='dockerHubStar'></span> ".$template['stars']."</td></tr>" : "";
 
-	if ( $template['FirstSeen'] > 1 && $template['Name'] != "Community Applications" ) {
+	if ( $template['FirstSeen'] > 1 && $template['Name'] != "Community Applications" )
 		$templateDescription .= "<tr><td>Added to CA:</td><td>".date("M d, Y",$template['FirstSeen'])."</td></tr>";
-	}
 
 	# In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 	if ( $template['Date'] && $template['Plugin'] ) {
@@ -532,15 +512,15 @@ function getPopupDescription($appNumber) {
 		$templateDescription .= "<tr><td nowrap>Date Updated:</td><td>$niceDate<br></td></tr>";
 	}
 	$unraidVersion = parse_ini_file($communityPaths['unRaidVersion']);
-	if ( version_compare($unRaidVersion['version'],$template['MinVer'],">") ) {
+	if ( version_compare($unRaidVersion['version'],$template['MinVer'],">") )
 		$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>Minimum OS:</td><td>unRaid v".$template['MinVer']."</td></tr>" : "";
-	}
+
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>Max OS:</td><td>unRaid v".$template['MaxVer']."</td></tr>" : "";
 	$downloads = getDownloads($template['downloads']);
-	if ($downloads) {
+	if ($downloads)
 		$templateDescription .= "<tr><td>Total&nbsp;Downloads:</td><td>$downloads</td></tr>";
-	}
+
 	$templateDescription .= $template['Licence'] ? "<tr><td>Licence:</td><td>".$template['Licence']."</td></tr>" : "";
 	if ( $template['trending'] ) {
 		$templateDescription .= "<tr><td>Monthly Trend:</td><td>Ranked #$trendRank";
@@ -562,20 +542,20 @@ function getPopupDescription($appNumber) {
 	$templateDescription .= "</table></div>";
 
 	$templateDescription .= "<div class='ca_center'><span class='popUpDeprecated'>";
-	if ($template['Blacklist']) {
+	if ($template['Blacklist'])
 		$templateDescription .= "This application / template has been blacklisted<br>";
-	}
-	if ($template['Deprecated']) {
+
+	if ($template['Deprecated'])
 		$templateDescription .= "This application / template has been deprecated<br>";
-	}
-	if ( !$template['Compatible'] ) {
+
+	if ( !$template['Compatible'] )
 		$templateDescription .= "This application is not compatible with your version of unRaid<br>";
-	}
+
 	$templateDescription .= "</span></div><hr>";
 
-	if ( ! $Displayed ) {
+	if ( ! $Displayed )
 		$templateDescription .= "<div><span class='ca_fa-warning warning-yellow'></span>&nbsp; <font size='1'>Another browser tab or device has updated the displayed templates.  Some actions are not available</font></div>";
-	}
+
 	if ( $Displayed && ! $template['NoInstall'] && ! $communitySettings['NoInstalls']) {
 		if ( ! $template['Plugin'] ) {
 			if ( $communitySettings['dockerRunning'] ) {
@@ -586,9 +566,9 @@ function getPopupDescription($appNumber) {
 						$installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank'>&nbsp;&nbsp;WebUI</a>";
 					}
 				} else {
-					if ( $template['MyPath'] ) {
+					if ( $template['MyPath'] )
 						$installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall</a>";
-					} else {
+					else {
 						$install = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Install</a>";
 						$installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' onclick='$(&quot;#branch&quot;).show(500);'>&nbsp;&nbsp;Install</a>" : $install;
 					}
@@ -597,9 +577,8 @@ function getPopupDescription($appNumber) {
 		} else {
 			if ( file_exists("/var/log/plugins/$pluginName") ) {
 				$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
-				if ( $pluginSettings ) {
+				if ( $pluginSettings )
 					$installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-pluginSettings' href='/Apps/$pluginSettings' target='$tabMode'>&nbsp;&nbsp;Settings</a>";
-				}
 			} else {
 				$buttonTitle = $template['MyPath'] ? "Reinstall" : "Install";
 				$installLine .= "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install pluginInstall' onclick=installPlugin('".$template['PluginURL']."');>&nbsp;&nbsp;$buttonTitle</a>";
@@ -625,21 +604,19 @@ function getPopupDescription($appNumber) {
 	$templateDescription .= $template['ModeratorComment'] ? "<br><br><span class='ca_bold'><font color='red'>Moderator Comments:</font></span> ".$template['ModeratorComment'] : "";
 	$templateDescription .= "</p><br><div class='ca_center'>";
 
-	if ( $donatelink ) {
+	if ( $donatelink )
 		$templateDescription .= "<span style='float:right;text-align:right;'><font size=0.75rem;>$donatetext</font>&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>Donate</a></span><br><br>";
-	}
+
 	$templateDescription .= "</div>";
 	if ($template['Plugin']) {
 		$dupeList = readJsonFile($communityPaths['pluginDupes']);
 		if ( $dupeList[basename($template['Repository'])] == 1 ){
 			$allTemplates = readJsonFile($communityPaths['community-templates-info']);
 			foreach ($allTemplates as $testTemplate) {
-				if ($testTemplate['Repository'] == $template['Repository']) {
-					continue;
-				}
-				if ($testTemplate['Plugin'] && (basename($testTemplate['Repository']) == basename($template['Repository']))) {
+				if ($testTemplate['Repository'] == $template['Repository']) continue;
+
+				if ($testTemplate['Plugin'] && (basename($testTemplate['Repository']) == basename($template['Repository'])))
 					$duplicated .= $testTemplate['Author']." - ".$testTemplate['Name'];
-				}
 			}
 			$templateDescription .= "<br>This plugin has a duplicated name from another plugin $duplicated.  This will impact your ability to install both plugins simultaneously<br>";
 		}
@@ -654,18 +631,17 @@ function getPopupDescription($appNumber) {
 	$changeLogMessage .= " keep up to date on change logs</font></div><br>";
 
 	if ( trim($template['Changes']) ) {
-		if ( $appNumber != "ca" && $appNumber != "ca_update" ) {
+		if ( $appNumber != "ca" && $appNumber != "ca_update" )
 			$templateDescription .= "</div><hr>";
-		}
+
 		if ( $template['Plugin'] ) {
 			if ( file_exists("/var/log/plugins/$pluginName") ) {
 				$appInformation = "Currently Installed Version: ".plugin("version","/var/log/plugins/$pluginName");
 				if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$communityPaths['pluginTempDownload']) ) {
 					copy($communityPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 					$appInformation .= " - <span class='ca_bold'>Install the update <a href='/Apps/Plugins' target='_parent'>HERE</a></span>";
-				} else {
+				} else
 					$appInformation .= " - <font color='green'>Latest Version</font>";
-				}
 			}
 			$appInformation .= Markdown($template['Changes']);
 		} else {
@@ -684,9 +660,8 @@ function getPopupDescription($appNumber) {
 	}
 
 	if ( is_array($template['trends']) ) {
-		if ( count($template['trends']) < count($template['downloadtrend']) ) {
+		if ( count($template['trends']) < count($template['downloadtrend']) )
 			array_shift($template['downloadtrend']);
-		}
 
 		$chartLabel = $template['trendsDate'];
 		if ( is_array($template['downloadtrend']) ) {
@@ -705,22 +680,6 @@ function getPopupDescription($appNumber) {
 	@unlink($communityPaths['pluginTempDownload']);
 	return array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ############################################################################
 # Function to convert a template's associative tags to static numeric tags #

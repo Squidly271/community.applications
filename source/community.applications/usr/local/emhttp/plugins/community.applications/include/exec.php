@@ -30,9 +30,8 @@ require_once($communityPaths['defaultSkinPHP']);
 $communitySettings['maxPerPage']    = isMobile() ? 12 : 24;
 $communitySettings['unRaidVersion'] = $unRaidSettings['version'];
 $communitySettings['timeNew']       = "-10 years";
-if ( ! is_file($communityPaths['warningAccepted']) ) {
+if ( ! is_file($communityPaths['warningAccepted']) )
 	$communitySettings['NoInstalls'] = true;
-}
 
 $DockerClient = new DockerClient();
 $DockerTemplates = new DockerTemplates();
@@ -127,12 +126,12 @@ case 'get_content':
 						$startupType = "Updated"; break;
 					case "trending":
 						$startupType = "Top Performing"; break;
-					case "random": 
+					case "random":
 						$startupType = "Random"; break;
 					case "upandcoming":
 						$startupType = "Trending"; break;
 				}
-						
+
 				$o['display'] =  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>An error occurred.  Could not find any $startupType Apps</span></font><br><br>";
 				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
 				postReturn($o);
@@ -150,9 +149,7 @@ case 'get_content':
 			if ( $template['Blacklist'] ) {
 				$display[] = $template;
 				continue;
-			} else {
-				continue;
-			}
+			} else continue;
 		}
 		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) continue;
 		if ( $displayDeprecated && ! $template['Deprecated'] ) continue;
@@ -166,9 +163,8 @@ case 'get_content':
 
 		$name = $template['Name'];
 
-		if ( $template['Plugin'] && file_exists("/var/log/plugins/".basename($template['PluginURL'])) ) {
+		if ( $template['Plugin'] && file_exists("/var/log/plugins/".basename($template['PluginURL'])) )
 			$template['MyPath'] = $template['PluginURL'];
-		}
 
 		if ( ($newApp) && ($template['Date'] < $newAppTime) ) continue;
 		$template['NewApp'] = $newApp;
@@ -202,9 +198,8 @@ case 'force_update':
 
 	@unlink($communityPaths['lastUpdated']);
 	$latestUpdate = download_json($communityPaths['application-feed-last-updated'],$communityPaths['lastUpdated']);
-	if ( ! $latestUpdate['last_updated_timestamp'] ) {
+	if ( ! $latestUpdate['last_updated_timestamp'] )
 		$latestUpdate = download_json($communityPaths['application-feed-last-updatedBackup'],$communityPaths['lastUpdated']);
-	}
 
 	if ( ! $latestUpdate['last_updated_timestamp'] ) {
 		$latestUpdate['last_updated_timestamp'] = INF;
@@ -213,12 +208,11 @@ case 'force_update':
 	}
 
 	if ( $latestUpdate['last_updated_timestamp'] > $lastUpdatedOld['last_updated_timestamp'] ) {
-		if ( $latestUpdate['last_updated_timestamp'] != INF ) {
+		if ( $latestUpdate['last_updated_timestamp'] != INF )
 			copy($communityPaths['lastUpdated'],$communityPaths['lastUpdated-old']);
-		}
-		if ( ! $badDownload ) {
+
+		if ( ! $badDownload )
 			@unlink($communityPaths['community-templates-info']);
-		}
 	}
 
 	if (!file_exists($communityPaths['community-templates-info'])) {
@@ -233,15 +227,15 @@ case 'force_update':
 			$o['data'] =  "<div class='ca_center'><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <span class='ca_italic'><span class='ca_bold'>requires</span></span> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <span class='ca_bold'>208.67.222.222 and 208.67.220.220</span> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://www.githubstatus.com/' target='_blank'>HERE</a>";
 			$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
 			$downloaded = @file_get_contents($tempFile);
-			if (strlen($downloaded) > 100) {
+			if (strlen($downloaded) > 100)
 				$o['data'] .= "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Please try again later)</font>";
-			}
+
 			$o['data'] .=  "<div class='ca_center'>Last JSON error Recorded: ";
 			$jsonDecode = json_decode($downloaded,true);
 			$o['data'] .= "JSON Error: ".jsonError(json_last_error());
-			if ( $publicServiceAnnouncement ) {
+			if ( $publicServiceAnnouncement )
 				$o['data'] .= "<br><font size='3' color='purple'>$publicServiceAnnouncement</font>";
-			}
+
 			$o['data'] .= "</div>";
 			@unlink($communityPaths['appFeedDownloadError']);
 			@unlink($communityPaths['community-templates-info']);
@@ -263,11 +257,11 @@ case 'display_content':
 	$startup = getPost("startup",false);
 	$selectedApps = json_decode(getPost("selected",false),true);
 
-	if ( file_exists($communityPaths['community-templates-displayed']) ) {
+	if ( file_exists($communityPaths['community-templates-displayed']) )
 		$o['display'] = display_apps($pageNumber,$selectedApps,$startup);
-	} else {
+	else
 		$o['display'] = "";
-	}
+
 	postReturn($o);
 	break;
 
@@ -333,7 +327,6 @@ case 'search_dockerhub':
 		$o['Name'] = $details[1];
 		$o['Description'] = $result['description'];
 		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
-
 		$o['Automated'] = $result['is_automated'];
 		$o['Stars'] = $result['star_count'];
 		$o['Official'] = $result['is_official'];
@@ -341,9 +334,9 @@ case 'search_dockerhub':
 		if ( $o['Official'] ) {
 			$o['DockerHub'] = "https://hub.docker.com/_/".$result['name']."/";
 			$o['Name'] = $o['Author'];
-		} else {
+		} else
 			$o['DockerHub'] = "https://hub.docker.com/r/".$result['name']."/";
-		}
+
 		$o['ID'] = $i;
 		$searchName = str_replace("docker-","",$o['Name']);
 		$searchName = str_replace("-docker","",$searchName);
@@ -374,11 +367,8 @@ case 'previous_apps':
 	$installed = getPost("installed","");
 	$dockerUpdateStatus = readJsonFile($communityPaths['dockerUpdateStatus']);
 	$moderation = readJsonFile($communityPaths['moderation']);
-	if ( $communitySettings['dockerRunning'] ) {
-		$info = $DockerClient->getDockerContainers();
-	} else {
-		$info = array();
-	}
+	$info = $communitySettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
+
 	$file = readJsonFile($communityPaths['community-templates-info']);
 
 # $info contains all installed containers
@@ -392,9 +382,8 @@ if ( $communitySettings['dockerRunning'] ) {
 		foreach ($info as $installedDocker) {
 			$installedImage = $installedDocker['Image'];
 			$installedName = $installedDocker['Name'];
-			if ( startsWith($installedImage,"library/") ) { # official images are in DockerClient as library/mysql eg but template just shows mysql
+			if ( startsWith($installedImage,"library/") ) # official images are in DockerClient as library/mysql eg but template just shows mysql
 				$installedImage = str_replace("library/","",$installedImage);
-			}
 
 			foreach ($file as $template) {
 				if ( $installedName == $template['Name'] ) {
@@ -406,9 +395,8 @@ if ( $communitySettings['dockerRunning'] ) {
 							$template['UpdateAvailable'] = true;
 							$template['FullRepo'] = $installedImage;
 						}
-						if ($template['Blacklist'] ) {
-							continue;
-						}
+						if ($template['Blacklist'] ) continue;
+
 						$displayed[] = $template;
 						break;
 					}
@@ -423,9 +411,9 @@ if ( $communitySettings['dockerRunning'] ) {
 			$o['MyPath'] = $xmlfile;
 			$o['UnknownCompatible'] = true;
 
-			if ( is_array($moderation[$o['Repository']]) ) {
+			if ( is_array($moderation[$o['Repository']]) )
 				$o = array_merge($o, $moderation[$o['Repository']]);
-			}
+
 			$flag = false;
 			$containerID = false;
 			foreach ($file as $templateDocker) {
@@ -466,13 +454,12 @@ if ( $communitySettings['dockerRunning'] ) {
 				if ( $runningflag ) {
 					$o['Uninstall'] = true;
 					$o['ID'] = $containerID;
-					if ( $o['Blacklist'] ) {
-						continue;
-					}
+					if ( $o['Blacklist'] ) 	continue;
+
 					# handle a PR from LT where it is possible for an identical template (xml) to be present twice, with different filenames.
 					# Without this, an app could appear to be shown in installed apps twice
 					$fat32Fix[$searchResult]++;
-					if ($fat32Fix[$searchResult] > 1) {continue;}
+					if ($fat32Fix[$searchResult] > 1) continue;
 					$displayed[] = $o;
 				}
 			}
@@ -481,7 +468,7 @@ if ( $communitySettings['dockerRunning'] ) {
 # now get the old not installed docker apps
 		foreach ($all_files as $xmlfile) {
 			$o = readXmlFile($xmlfile);
-			if ( ! $o ) { continue; }
+			if ( ! $o ) continue;
 			$o['Description'] = fixDescription($o['Description']);
 			$o['Overview'] = fixDescription($o['Overview']);
 			$o['MyPath'] = $xmlfile;
@@ -514,12 +501,10 @@ if ( $communitySettings['dockerRunning'] ) {
 						break;
 					}
 				}
-				if ( $moderation[$o['Repository']]['Blacklist'] ) {
-					continue;
-				}
-				if ( ! $o['Blacklist'] ) {
+				if ( $moderation[$o['Repository']]['Blacklist'] ) continue;
+
+				if ( ! $o['Blacklist'] )
 					$displayed[] = $o;
-				}
 			}
 		}
 	}
@@ -527,15 +512,13 @@ if ( $communitySettings['dockerRunning'] ) {
 # Now work on plugins
 	if ( $installed == "true" ) {
 		foreach ($file as $template) {
-			if ( ! $template['Plugin'] ) {
-				continue;
-			}
+			if ( ! $template['Plugin'] ) continue;
+
 			$filename = pathinfo($template['Repository'],PATHINFO_BASENAME);
 
 			if ( checkInstalledPlugin($template) ) {
-				if ( $template['Blacklist'] ) {
-					continue;
-				}
+				if ( $template['Blacklist'] ) continue;
+
 				$template['MyPath'] = "/var/log/plugins/$filename";
 				$template['Uninstall'] = true;
 				$displayed[] = $template;
@@ -548,13 +531,11 @@ if ( $communitySettings['dockerRunning'] ) {
 			foreach ($file as $template) {
 				if ( basename($oldplug) == basename($template['Repository']) ) {
 					if ( ! file_exists("/boot/config/plugins/".basename($oldplug)) ) {
-						if ( $template['Blacklist'] || ( ($communitySettings['hideIncompatible'] == "true") && (! $template['Compatible']) ) ) {
-							continue;
-						}
+						if ( $template['Blacklist'] || ( ($communitySettings['hideIncompatible'] == "true") && (! $template['Compatible']) ) ) continue;
+
 						if ( strtolower(trim($template['PluginURL'])) != strtolower(trim(plugin("pluginURL","$oldplug"))) ) {
-							if ( strtolower(trim($template['PluginURL'])) != strtolower(trim(str_replace("raw.github.com","raw.githubusercontent.com",plugin("pluginURL",$oldplug)))) ) {
+							if ( strtolower(trim($template['PluginURL'])) != strtolower(trim(str_replace("raw.github.com","raw.githubusercontent.com",plugin("pluginURL",$oldplug)))) )
 								continue;
-							}
 						}
 						$template['Removable'] = true;
 						$template['MyPath'] = $oldplug;
@@ -576,9 +557,9 @@ if ( $communitySettings['dockerRunning'] ) {
 ####################################################################################
 case 'remove_application':
 	$application = getPost("application","");
-	if ( pathinfo($application,PATHINFO_EXTENSION) == "xml" || pathinfo($application,PATHINFO_EXTENSION) == "plg" ) {
+	if ( pathinfo($application,PATHINFO_EXTENSION) == "xml" || pathinfo($application,PATHINFO_EXTENSION) == "plg" )
 		@unlink($application);
-	}
+
 	postReturn(['status'=>"ok"]);
 	break;
 
@@ -591,9 +572,9 @@ case 'updatePLGstatus':
 	$superCategories = array_keys($displayed);
 	foreach ($superCategories as $category) {
 		foreach ($displayed[$category] as $template) {
-			if ( strpos($template['PluginURL'],$filename) ) {
+			if ( strpos($template['PluginURL'],$filename) )
 				$template['UpdateAvailable'] = checkPluginUpdate($filename);
-			}
+
 			$newDisplayed[$category][] = $template;
 		}
 	}
@@ -615,9 +596,9 @@ case 'uninstall_docker':
 	$dockerInfo = $DockerClient->getDockerContainers();
 	$container = searchArray($dockerInfo,"Name",$containerName);
 
-	if ( $dockerRunning[$container]['Running'] ) {
+	if ( $dockerRunning[$container]['Running'] )
 		myStopContainer($dockerRunning[$container]['Id']);
-	}
+
 	$DockerClient->removeContainer($containerName,$dockerRunning[$container]['Id']);
 	$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
 
@@ -643,7 +624,7 @@ case "pinnedApps":
 	$file = readJsonFile($communityPaths['community-templates-info']);
 
 	foreach ($pinnedApps as $pinned) {
-		$startIndex = 0;	
+		$startIndex = 0;
 		$search = explode("&",$pinned);
 		file_put_contents("/tmp/blah",print_r($search,true),FILE_APPEND);
 		for ($i=0;$i<10;$i++) {
@@ -689,39 +670,34 @@ case 'statistics':
 	$invalidXML = readJsonFile($communityPaths['invalidXML_txt']);
 
 	foreach ($templates as $template) {
-		if ( $template['Deprecated'] ) {
-			$statistics['totalDeprecated']++;
-		}
-		if ( ! $template['Compatible'] ) {
-			$statistics['totalIncompatible']++;
-		}
-		if ( $template['Blacklist'] ) {
-			$statistics['blacklist']++;
-		}
+		if ( $template['Deprecated'] ) $statistics['totalDeprecated']++;
+
+		if ( ! $template['Compatible'] ) $statistics['totalIncompatible']++;
+
+		if ( $template['Blacklist'] ) $statistics['blacklist']++;
+
 		if ( $template['Private'] && ! $template['Blacklist']) {
-			if ( ! ($communitySettings['hideDeprecated'] == 'true' && $template['Deprecated']) ) {
+			if ( ! ($communitySettings['hideDeprecated'] == 'true' && $template['Deprecated']) )
 				$statistics['private']++;
-			}
 		}
-		if ( ! $template['PluginURL'] && ! $template['Repository'] ) {
+		if ( ! $template['PluginURL'] && ! $template['Repository'] )
 			$statistics['invalidXML']++;
-		} else {
-			if ( $template['PluginURL'] ) {
+		else {
+			if ( $template['PluginURL'] )
 				$statistics['plugin']++;
-			} else {
+			else
 				$statistics['docker']++;
-			}
 		}
 	}
 	$statistics['totalApplications'] = $statistics['plugin']+$statistics['docker'];
-	if ( $statistics['fixedTemplates'] ) {
+	if ( $statistics['fixedTemplates'] )
 		writeJsonFile($communityPaths['fixedTemplates_txt'],$statistics['fixedTemplates']);
-	} else {
+	else
 		@unlink($communityPaths['fixedTemplates_txt']);
-	}
-	if ( is_file($communityPaths['lastUpdated-old']) ) {
+
+	if ( is_file($communityPaths['lastUpdated-old']) )
 		$appFeedTime = readJsonFile($communityPaths['lastUpdated-old']);
-	}
+
 	$updateTime = date("F d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
 	$defaultArray = Array('caFixed' => 0,'totalApplications' => 0, 'repository' => 0, 'docker' => 0, 'plugin' => 0, 'invalidXML' => 0, 'blacklist' => 0, 'totalIncompatible' =>0, 'totalDeprecated' => 0, 'totalModeration' => 0, 'private' => 0, 'NoSupport' => 0);
 	$statistics = array_merge($defaultArray,$statistics);
@@ -735,14 +711,14 @@ case 'statistics':
 	$totalFlash = exec("du -h -s /boot/config/plugins/community.applications/");
 	$memCA = explode("\t",$totalCA);
 	$memTmp = explode("\t",$totalTmp);
-	if ( ! $memIcon[0] ) { $memIcon[0] = "0K";}
+	if ( ! $memIcon[0] ) $memIcon[0] = "0K";
 	$memFlash = explode("\t",$totalFlash);
 
 	$currentServer = @file_get_contents($communityPaths['currentServer']);
-	if ( $currentServer != "Primary Server" ) {
+	if ( $currentServer != "Primary Server" )
 		$currentServer = "<i class='fa fa-exclamation-triangle ca_serverWarning' aria-hidden='true'></i> $currentServer";
-	}
-  $statistics['invalidXML'] = count($invalidXML);
+
+	$statistics['invalidXML'] = count($invalidXML);
 	$statistics['repositories'] = count($repositories);
 	$o = <<<EOF
 		<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>
@@ -784,15 +760,13 @@ case 'removePrivateApp':
 	$displayed = readJsonFile($communityPaths['community-templates-displayed']);
 	foreach ( $displayed as &$displayType ) {
 		foreach ( $displayType as &$display ) {
-			if ( $display['Path'] == $path ) {
+			if ( $display['Path'] == $path )
 				$display['Blacklist'] = true;
-			}
 		}
 	}
 	foreach ( $templates as &$template ) {
-		if ( $template['Path'] == $path ) {
+		if ( $template['Path'] == $path )
 			$template['Blacklist'] = true;
-		}
 	}
 	writeJsonFile($communityPaths['community-templates-info'],$templates);
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayed);
@@ -825,7 +799,7 @@ case 'caChangeLog':
 	$o .= "<div class='ca_center'><font size='4rem'>Community Applications Changelog</font></div><br><br>";
 	postReturn(["changelog"=>$o.Markdown(plugin("changes","/var/log/plugins/community.applications.plg"))]);
 	break;
-	
+
 ###############################
 # Populates the category list #
 ###############################
@@ -855,7 +829,7 @@ case 'get_categories':
 	}
 	postReturn(["categories"=>$cat]);
 	break;
-	
+
 ##############################
 # Get the html for the popup #
 ##############################
@@ -864,7 +838,7 @@ case 'getPopupDescription':
 	postReturn(getPopupDescription($appNumber));
 	break;
 
-}	
+}
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
 function DownloadApplicationFeed() {
@@ -913,9 +887,8 @@ function DownloadApplicationFeed() {
 		$o['SortAuthor']    = $o['Author'];
 		$o['SortName']      = $o['Name'];
 		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
-		if ( $o['IconHTTPS'] ) {
+		if ( $o['IconHTTPS'] )
 			$o['IconHTTPS'] = $communityPaths['iconHTTPSbase'] .$o['IconHTTPS'];
-		}
 
 		if ( $o['PluginURL'] ) {
 			$o['Author']        = $o['PluginAuthor'];
@@ -926,9 +899,8 @@ function DownloadApplicationFeed() {
 
 		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
 		$o = fixTemplates($o);
-		if ( ! $o ) {
-			continue;
-		}
+		if ( ! $o ) continue;
+
 		if ( is_array($o['trends']) && count($o['trends']) > 1 ) {
 			$o['trendDelta'] = end($o['trends']) - prev($o['trends']);
 			$o['trendAverage'] = array_sum($o['trends'])/count($o['trends']);
@@ -981,16 +953,16 @@ function DownloadApplicationFeed() {
 		}
 		$templateXML = makeXML($o);
 		@mkdir(dirname($o['Path']),0777,true);
-		if ( file_exists($o['Path']) ) {
+		if ( file_exists($o['Path']) )
 			$o['Path'] .= "(1).xml";
-		}
+
 		file_put_contents($o['Path'],$templateXML);
 	}
-	if ( $invalidXML ) {
+	if ( $invalidXML )
 		writeJsonFile($communityPaths['invalidXML_txt'],$invalidXML);
-	} else {
+	else
 		@unlink($communityPaths['invalidXML_txt']);
-	}
+
 	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
 	writeJsonFile($communityPaths['categoryList'],$ApplicationFeed['categories']);
 	return true;
@@ -1002,29 +974,24 @@ function getConvertedTemplates() {
 # Start by removing any pre-existing private (converted templates)
 	$templates = readJsonFile($communityPaths['community-templates-info']);
 
-	if ( empty($templates) ) {
-		return false;
-	}
+	if ( empty($templates) ) return false;
+
 	foreach ($templates as $template) {
-		if ( ! $template['Private'] ) {
+		if ( ! $template['Private'] )
 			$myTemplates[] = $template;
-		}
 	}
 	$appCount = count($myTemplates);
 	$moderation = readJsonFile($communityPaths['moderation']);
 	$i = $appCount;
 	unset($Repos);
 
-	if ( ! is_dir($communityPaths['convertedTemplates']) ) {
-		return;
-	}
+	if ( ! is_dir($communityPaths['convertedTemplates']) ) return;
 
 	$privateTemplates = glob($communityPaths['convertedTemplates']."*/*.xml");
 	foreach ($privateTemplates as $template) {
 		$o = readXmlFile($template);
-		if ( ! $o['Repository'] ) {
-			continue;
-		}
+		if ( ! $o['Repository'] ) continue;
+
 		$o['Private']      = true;
 		$o['RepoName']     = basename(pathinfo($template,PATHINFO_DIRNAME))." Repository";
 		$o['ID']           = $i;
@@ -1064,9 +1031,8 @@ function appOfDay($file) {
 						break;
 					}
 				}
-				if ( $flag ) {
+				if ( $flag )
 					unset($app);
-				}
 			}
 			if ( ! $app ) {
 				shuffle($file);
@@ -1129,7 +1095,7 @@ function appOfDay($file) {
 					}
 				}
 			}
-			break;			
+			break;
 	}
 	return $appOfDay ?: array();
 }

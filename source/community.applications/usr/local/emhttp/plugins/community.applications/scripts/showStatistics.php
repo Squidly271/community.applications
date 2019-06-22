@@ -131,4 +131,3 @@ switch ($_GET['arg1']) {
 <script>
 	document.getElementById("spinner").style.display = "none";
 </script>	
-?>
