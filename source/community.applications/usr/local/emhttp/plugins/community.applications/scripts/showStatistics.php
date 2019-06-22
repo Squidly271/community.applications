@@ -109,6 +109,7 @@ switch ($_GET['arg1']) {
 
 		break;
 	case 'Moderation':
+		echo "<br><div class='ca_center'><strong>If any of these entries are incorrect, then contact the author / moderators of CA to discuss</strong></div><br><br>";
 		$moderation = file_get_contents($communityPaths['moderation']);
 		foreach ($repositories as $repo) {
 			if ($repo['RepoComment']) {
