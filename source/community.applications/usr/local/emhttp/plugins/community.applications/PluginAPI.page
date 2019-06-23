@@ -56,12 +56,12 @@ function ca_pluginUpdate_evaluateBoolean(str) {
 function caPluginUpdateCheck(plugin,options=[],callback) {
 	ca_PluginUpdatePLG = plugin;
 	pluginFilename = plugin.substr(0, plugin.lastIndexOf("."));
-	console.time("checkPlugin");
+	console.time("checkPlugin "+plugin);
 	console.log("checkPlugin  "+plugin);
 	$.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'checkPlugin',options:{plugin:plugin}},function(caAPIresult) {
-		console.groupCollapsed("Result checkPlugin");
+		console.groupCollapsed("Result checkPlugin "+plugin);
 		console.log(caAPIresult);
-		console.timeEnd("checkPlugin");
+		console.timeEnd("checkPlugin "+plugin);
 		console.groupEnd();
 		var result = JSON.parse(caAPIresult);
 

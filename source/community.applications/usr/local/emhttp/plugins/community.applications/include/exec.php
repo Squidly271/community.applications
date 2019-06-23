@@ -670,7 +670,7 @@ case 'statistics':
 	$invalidXML = readJsonFile($communityPaths['invalidXML_txt']);
 
 	foreach ($templates as $template) {
-		if ( $template['Deprecated'] ) $statistics['totalDeprecated']++;
+		if ( $template['Deprecated'] && ! $template['Blacklist'] ) $statistics['totalDeprecated']++;
 
 		if ( ! $template['Compatible'] ) $statistics['totalIncompatible']++;
 
@@ -733,7 +733,7 @@ case 'statistics':
 		<tr><td class='ca_table'><a data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>Number Of Private Docker Applications</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>
 		<tr><td class='ca_table'><a onclick='showModeration("Invalid","All Invalid Templates Found");' style='cursor:pointer'>Number Of Invalid Templates</a></td><td class='ca_stat'>{$statistics['invalidXML']}</td></tr>
 		<tr><td class='ca_table'><a onclick='showModeration("Fixed","Template Errors");' style='cursor:pointer'>Number Of Template Errors</a></td><td class='ca_stat'>{$statistics['caFixed']}+</td></tr>
-		<tr><td class='ca_table'><a data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Blacklisted Apps</a></td><td class='ca_stat'>{$statistics['blacklist']}</td></tr>
+		<tr><td class='ca_table'><a data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Blacklisted Apps</a></td><td class='ca_stat'>{$statistics['blacklist']}</td></tr>
 		<tr><td class='ca_table'><a data-category='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Incompatible Applications</a></td><td class='ca_stat'>{$statistics['totalIncompatible']}</td></tr>
 		<tr><td class='ca_table'><a data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></td><td class='ca_stat'>{$statistics['totalDeprecated']}</td></tr>
 		<tr><td class='ca_table'><a onclick='showModeration("Moderation","All Moderation Entries");' style='cursor:pointer'>Number Of Moderation Entries</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>
