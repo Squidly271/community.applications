@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.06.29
+- Changed: Better logging from Update API
+- Added: Current sort selected on the title bar
+- Changed: Modifications to requirements for a Top Performing App
+
 ###2019.06.11
 - Fixed: Applications with branches were not getting the description on the template the authors intended
 
