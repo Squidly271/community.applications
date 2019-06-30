@@ -474,11 +474,6 @@ function getPopupDescription($appNumber) {
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
 	$templateDescription .= "<tr><td style='width:25%;'>Author:</td><td>$author</a></td></tr>";
 	if ( ! $template['Plugin'] ) {
-		$repository = explode(":",$template['Repository']);
-		$official =  ( count(explode("/",$repository[0])) == 1 ) ? "_" : "r";
-		if ( ! $template['Registry'] ) {
-			$template['Registry'] = "https://hub.docker.com/$official/{$repository[0]}";
-		}
 		$templateDescription .= "<tr><td>DockerHub:</td><td><a class='popUpLink' href='{$template['Registry']}' target='_blank'>{$template['Repository']}</a></td></tr>";
 	}
 	$templateDescription .= "<tr><td>Repository:</td><td>";
