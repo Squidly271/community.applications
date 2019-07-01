@@ -25,6 +25,7 @@ $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 if ( is_file($communityPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
+$date = (date("n/d"));
 ?>
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/$plugin/styles/awesomplete.css")?>'>
@@ -75,6 +76,11 @@ $(function(){
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
+	if ( "<?=$date?>" == "5/29" ) addWarning("Happy Birthday CA!",false);
+	if ( "<?=$date?>" == "12/24" ) addWarning("Happy Holidays from Andrew, Tracey, and family",false);
+	if ( "<?=$date?>" == "12/25" ) addWarning("Happy Holidays from Andrew, Tracey, and family",false);
+	if ( "<?=$date?>" == "1/01" ) addWarning("Happy New Years!",false);
+	
 	if ( ! cookiesEnabled() ) {
 		addWarning("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.");
 	}
@@ -1125,10 +1131,13 @@ function scrollToTop() {
 	$('html,body').animate({scrollTop:0},500);
 }
 
-function addWarning(text) {
+function addWarning(text,warning=true) {
 	var z_index = $(".upgrade_notice").css("z-index"); 
 	$(".ca_element_notice").css("z-index",z_index+1); // Warnings take precendence over unRaid's OS warnings
-	ca_WarningItems.push("<i class='fa fa-warning'></i>  "+text);
+	if ( warning ) {
+		text = "<i class='fa fa-warning'></i> "+text;
+	}
+	ca_WarningItems.push(text);
 	showWarnings();
 	if ( ! warningInterval && ca_WarningItems.length > 0) {
 		warningInterval = setInterval(function() {
