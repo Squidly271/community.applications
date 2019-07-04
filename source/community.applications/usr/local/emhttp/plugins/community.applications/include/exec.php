@@ -897,7 +897,12 @@ function DownloadApplicationFeed() {
 		$o['Blacklist'] = $o['CABlacklist'] ? true : $o['Blacklist'];
 		$o['MinVer'] = max(array($o['MinVer'],$o['UpdateMinVer']));
 
-		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']).".xml";
+		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']);
+		if ( file_exists($o['Path'].".xml") ) {
+			$o['Path'] .= "(1)";
+		}
+		$o['Path'] .= ".xml";
+		
 		$o = fixTemplates($o);
 		if ( ! $o ) continue;
 
@@ -953,8 +958,6 @@ function DownloadApplicationFeed() {
 		}
 		$templateXML = makeXML($o);
 		@mkdir(dirname($o['Path']),0777,true);
-		if ( file_exists($o['Path']) )
-			$o['Path'] .= "(1).xml";
 
 		file_put_contents($o['Path'],$templateXML);
 	}
