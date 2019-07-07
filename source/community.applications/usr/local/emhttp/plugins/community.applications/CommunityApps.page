@@ -54,6 +54,7 @@ var ca_WarningItems = [];
 var currentWarning = 0;
 var warningInterval;
 var dockerNotEnabled;
+var postCount = 0;
 
 $(function(){
 	caPluginUpdateCheck("community.applications.plg",{
@@ -209,6 +210,21 @@ $(function(){
 		$(this).addClass("selectedMenu");
 		$(this).next().show();
 	});
+	
+	$(".sectionMenu").on("click",function() {
+		var section = $(this).attr("data-category");
+		switch (section) {
+			case "installed_apps":
+				previousApps(true);
+				break;
+			case "previous_apps":
+				previousApps(false);
+				break;
+			case "pinned_apps":
+				pinnedApps();
+				break;
+		}
+	});
 		
 	$(".initDockerSearch").click(function()     { initDockerSearch(); });
 	$(".multi_installButton").click(function()  { installMulti(); });
@@ -235,9 +251,9 @@ $(function(){
 <?if ( ! $unRaid66 ):?>
 	$("html").css("font-size","10px");
 <?endif;?>
-
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
+		swalBackground("white");
 		swal({
 			title: 'Disclaimer',
 			text: 'All applications listed here are <span class="ca_bold">3rd party</span> additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here. <br><span class="ca_italic"><font color="green">Every attempt is made to ensure that only safe and compatible applications are present</font></span><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>',
@@ -404,7 +420,12 @@ function changePage(pageNumber) {
 	});
 }
 
+function swalBackground(color) {
+	$(".sweet-alert").css("background-color",color);
+}
+
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
+	swalBackground("white");
 	if ( !outsideClick ) outsideClick = false;
 	if ( !showCancel )   showCancel = false;
 	if ( !showConfirm )  showConfirm = false;
@@ -423,8 +444,29 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	});
 }
 
+function mySpinner() {
+	$("div.spinner").show();
+	swalBackground("transparent");
+	swal({
+		title: "",
+		text: "",
+		allowOutsideClick: false,
+		showConfirmButton: false,
+		showCancelButton: false,
+		animation: false,
+		html: true
+	});	
+	swalBackground("transparent"); // Occasional race condition where swal is not initialized at time the initial background change happens
+
+}
+function myCloseSpinner() {
+	swal.close();
+	$("div.spinner").hide();
+}
+
 function myCloseAlert() {
 	swal.close();
+	$(".sweet-alert").css("background-color","transparent");
 	enableSearch();
 }
 
@@ -661,7 +703,7 @@ function showModeration(script,title) {
 	showDesc_openBox("/plugins/<?=$plugin?>/scripts/showStatistics.php?arg1="+script,title,550,900,true,false);
 }
 
-function previousApps(button,installed) {
+function previousApps(installed) {
 	hideSortIcons();
 	clearCategory();
 	setPageOne();
@@ -685,6 +727,7 @@ function previousApps(button,installed) {
 
 function removeApp(application, humanName) {
 	disableSearch();
+	swalBackground("white");
 	swal({
 		title: "Delete Template?",
 		text: "Are you sure you want to delete <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font> from the list of previously installed applications?<br><font size='0'>"+application+"</font>",
@@ -698,7 +741,7 @@ function removeApp(application, humanName) {
 		if (isConfirm) {
 			post({action:'remove_application',application:application}, function(result) {
 				enableSearch();
-				previousApps("OldApps",false);
+				previousApps(false);
 			});
 		} else {
 			enableSearch();
@@ -708,6 +751,7 @@ function removeApp(application, humanName) {
 
 function uninstallApp(application,humanName) {
 	disableSearch();
+	swalBackground("white");
 	swal({
 		title: "Uninstall Application?",
 		text: "Are you sure you want to uninstall <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>?",
@@ -730,7 +774,7 @@ function uninstallApp(application,humanName) {
 }
 
 function postUninstallPlugin() {
-	previousApps("InstalledApps",true);
+	previousApps(true);
 	enableSearch();
 }
 
@@ -741,6 +785,7 @@ function basename(path) {
 function deletePrivateApp(path,name,author) {
 	var displayPath = path.replace("/boot/config/plugins/","...");
 	disableSearch();
+	swalBackground("white");	
 	swal({
 		title: "Remove Private Application?",
 		text: "Are you sure you want to remove the private application <span class='ca_italic'><font color='red'><span class='ca_bold'>"+name+"</span></font> by <font color='red'><span class='ca_bold'>"+author+"</span></font>?<br><font size='0'>("+displayPath+")",
@@ -756,7 +801,7 @@ function deletePrivateApp(path,name,author) {
 		if ( isConfirm ) {
 			swal("Removing "+name,"","info");
 			getSelectedApps();
-			post({action:'removePrivateApp',path:path},function(result) {
+			post({action:'removePrivateApp',path:path,noSpinner:true},function(result) {
 				getCategories();
 				myCloseAlert();
 				refreshDisplay();
@@ -770,6 +815,7 @@ function deletePrivateApp(path,name,author) {
 
 function uninstallDocker(application,humanName) {
 	disableSearch();
+	swalBackground("white");	
 	swal({
 		title: "Uninstall Application?",
 		text: "Are you sure you want to uninstall <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>?",
@@ -784,9 +830,9 @@ function uninstallDocker(application,humanName) {
 	}, function( isConfirm ) {
 		if ( isConfirm ) {
 			myAlert("","Uninstalling "+humanName);
-			post({action:'uninstall_docker',application:application},function(result) {
+			post({action:'uninstall_docker',application:application,noSpinner:true},function(result) {
 				enableSearch();
-				previousApps("InstalledApps",true);
+				previousApps(true);
 			});
 		} else {
 			enableSearch();
@@ -841,7 +887,7 @@ function clearCategory() {
 	$("#Category").html("");
 }
 
-function pinnedApps(button) {
+function pinnedApps() {
 	setPageOne();
 	hideSortIcons();
 	data.docker = "";
@@ -856,8 +902,9 @@ function pinnedApps(button) {
 }
 
 function displayTags(leadTemplate) {
-	post({action:'displayTags',leadTemplate:leadTemplate},function(result) {
+	post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true},function(result) {
 		disableSearch();
+		swalBackground("white");
 		swal({
 			title: "Choose A Branch To Install",
 			text: result.tags,
@@ -972,6 +1019,7 @@ function installMulti() {
 	} else {
 		var buttonText = "Yes, install it";
 	}
+	swalBackground("white");
 	swal({
 		title: "Install "+makePlural("Application",dockerCount+pluginCount)+"?",
 		text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?  <span class='ca_italic'>Docker applications will be installed utilizing the most recently saved template with no user input on your part</span><font color='red'>"+cookieWarning+"</font>",
@@ -1040,6 +1088,8 @@ function saveState() {
 }
 
 function restoreState() {
+  swalBackground("transparent");
+
 	console.log("Restore State");
 	$("#Category").html($.cookie("categoryText"));
 	if ( $.cookie("installMulti") == "true" ) {
@@ -1128,7 +1178,7 @@ function caChangeLog() {
 }
 
 function scrollToTop() {
-	$('html,body').animate({scrollTop:0},500);
+	$('html,body').animate({scrollTop:0},0);
 }
 
 function addWarning(text,warning=true) {
@@ -1161,10 +1211,15 @@ function post(options,callback) {
 		callback = options;
 	} else {
 		console.time(options.action);
-		console.log("Post: "+JSON.stringify(options));
+		var msg = postCount > 0 ? "Embedded Post: " : "Post: ";
+		console.log(msg+JSON.stringify(options));
 	}
-	$("div.spinner").show();
-	
+
+	if ( postCount == 0 && ! options.noSpinner ) {
+		mySpinner();
+	}
+	postCount++;
+	console.log("Post Count: "+postCount);
 	if ( typeof callback === "function" ) {
 		$.post(URL,options,function(retval){
 			try {
@@ -1188,11 +1243,19 @@ function post(options,callback) {
 					alert("Could not execute Script "+e);
 				}
 			}
-			$("div.spinner").hide();
+			postCount--;
+			if (postCount < 0) postCount = 0;
+			if ( postCount == 0 && ! options.noSpinner) {
+				myCloseSpinner();
+			}
 		});
 	} else {
 		$.post(URL,options);
-		$("div.spinner").hide();
+		postCount--;
+		if ( postCount < 0 ) postCount = 0;
+		if ( postCount == 0 && ! noSpinner) {
+			myCloseSpinner();
+		}
 	}
 }
 
@@ -1216,9 +1279,9 @@ function getCategories() {
 <div class='menuItems'>
 <div class='menuHeader'>MENU</div>
 <ul class='caMenu'>
-	<li class='caMenuItem' onclick='previousApps(this.id,true);' data-category='installed_apps'>Installed Apps</li>
-	<li class='caMenuItem' onclick='previousApps(this.id,false);' data-category='previous_apps'>Previous Apps</li>
-	<li class='caMenuItem' onclick='pinnedApps(this.id);' data-category='pinned_apps'>Pinned Apps</li>
+	<li class='caMenuItem sectionMenu' data-category='installed_apps'>Installed Apps</li>
+	<li class='caMenuItem sectionMenu' data-category='previous_apps'>Previous Apps</li>
+	<li class='caMenuItem sectionMenu' data-category='pinned_apps'>Pinned Apps</li>
 </ul>
 <div class='menuHeader'>CATEGORIES</div>
 <ul class='caMenu'>
@@ -1253,7 +1316,7 @@ function getCategories() {
 <div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
 <strong><font size='3'></strong></font>
 <div class='dockerSearch' style='display:none'><div class='ca_center'><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></div></div>
-<div id='templates_content'><div class='ca_templatesDisplay'></div></div>
+<div id='templates_content'><div class='ca_templatesDisplay'>Updating Content</div></div>
 <div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
 </div>
 </div>
