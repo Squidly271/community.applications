@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.06.29">
-<!ENTITY md5       "b435e797e032a64b20499aa9fee8b2b7">
+<!ENTITY version   "2019.07.07">
+<!ENTITY md5       "b32fd417458c27bb938a6a1ebaf4347a">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.07.07
+- Fixed: Very rapid clicks between sections / categories could result in the wrong apps being displayed
+- Fixed: Edge case of maintainer / author having multiple identically named apps would not properly distinguish between the two
+- Changed: Always display repository tags within pop up
+
 ###2019.06.29
 - Changed: Better logging from Update API
 - Added: Current sort selected on the title bar
