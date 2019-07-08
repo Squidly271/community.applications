@@ -75,7 +75,7 @@ a.ca_author {text-decoration:none;color:inherit;}
 a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_descriptionArea {margin:1rem;width:auto;height:4rem;position:relative;margin-top:-11rem;}
 .ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
-.ca_topRightArea {display:block;position:relative;margin-right:3rem;z-index:9999;float:right;}
+.ca_topRightArea {display:block;position:relative;margin-top:.5rem;margin-right:3rem;z-index:9999;float:right;}
 img.displayIcon {height:6.4rem;width:6.4rem;}
 i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
 .ca_bottomLine {display:block;position:relative;padding-top:9.5rem;margin-left:1.5rem;}
