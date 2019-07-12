@@ -1253,7 +1253,7 @@ function post(options,callback) {
 		$.post(URL,options);
 		postCount--;
 		if ( postCount < 0 ) postCount = 0;
-		if ( postCount == 0 && ! noSpinner) {
+		if ( postCount == 0) {
 			myCloseSpinner();
 		}
 	}
