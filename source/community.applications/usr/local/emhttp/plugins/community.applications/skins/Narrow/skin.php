@@ -507,7 +507,10 @@ function getPopupDescription($appNumber) {
 	# In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 	if ( $template['Date'] && $template['Plugin'] ) {
 		$niceDate = date("F j, Y",$template['Date']);
-		$templateDescription .= "<tr><td nowrap>Date Updated:</td><td>$niceDate<br></td></tr>";
+		$templateDescription .= "<tr><td nowrap>Date Updated:</td><td>$niceDate</td></tr>";
+	}
+	if ( $template['Plugin'] ) {
+		$templateDescription .= "<tr><td nowrap>Current Version:</td><td>{$template['pluginVersion']}</td></tr>";
 	}
 	$unraidVersion = parse_ini_file($communityPaths['unRaidVersion']);
 	if ( version_compare($unRaidVersion['version'],$template['MinVer'],">") )
