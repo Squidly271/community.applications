@@ -83,8 +83,6 @@ $(function(){
 	if ( "<?=$date?>" == "12/24" ) addWarning("Happy Holidays from Andrew, Tracey, and family",false);
 	if ( "<?=$date?>" == "12/25" ) addWarning("Happy Holidays from Andrew, Tracey, and family",false);
 	if ( "<?=$date?>" == "1/01" ) addWarning("Happy New Years!",false);
-	
-
 
 	if ( isTouch ) {
 		templates_content.addEventListener("touchstart", startTouch, false);
@@ -290,10 +288,11 @@ function disableSort() {
 function hideSortIcons() {
 	$("#sortIconArea").hide("slow");
 }
+
 function updateContent(button) {
 	hideSortIcons();
 	clearSearchBox();
-	$("#Category").html("");
+	clearCategory();
 	$(".caMenuItem").each(function() {
 		$(this).removeClass("selectedMenu");
 	});
@@ -845,7 +844,7 @@ function appStore() {
 	data.prevpage = 0;
 	initializeAppStore();
 	updateContent();
-	$("#Category").html("");
+	clearCategory();
 	data.docker = "";
 }
 
@@ -1123,9 +1122,9 @@ function restoreState() {
 	});
 	populateAutoComplete();
 	getCategories();
-	if ( $("#Category").text() == "Category: None Selected" ) {
+/* 	if ( $("#Category").text() == "Category: None Selected" ) {
 		updateContent();
-	}
+	} */
 }
 
 function disableSearch() {
