@@ -55,6 +55,8 @@ var currentWarning = 0;
 var warningInterval;
 var dockerNotEnabled;
 var postCount = 0;
+var cookieWarning = false;
+var dockerWarningAdded = false;
 
 $(function(){
 	caPluginUpdateCheck("community.applications.plg",{
@@ -82,9 +84,7 @@ $(function(){
 	if ( "<?=$date?>" == "12/25" ) addWarning("Happy Holidays from Andrew, Tracey, and family",false);
 	if ( "<?=$date?>" == "1/01" ) addWarning("Happy New Years!",false);
 	
-	if ( ! cookiesEnabled() ) {
-		addWarning("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.");
-	}
+
 
 	if ( isTouch ) {
 		templates_content.addEventListener("touchstart", startTouch, false);
@@ -1194,28 +1194,42 @@ function addWarning(text,warning=true) {
 			showWarnings()
 		},10000);
 	}
-	return arrayEntry - 1;
+	return (arrayEntry - 1);
+}
+
+function removeWarning(entry) {
+	ca_WarningItems[entry] = false;
+	ca_WarningItems = ca_WarningItems.filter(function(value,index,arr) {
+		return value;
+	});
 }
 
 function showWarnings() {
-	if ( ca_WarningItems.length == 0 ) {
+	var allWarnings = Object.values(ca_WarningItems);
+	if ( allWarnings.length == 0 ) {
 		$(".ca_plugin_notice,.ca_element_notice").hide();
 		return;
 	}
-
-	for ( ;; ) {
-		if ( currentWarning >= ca_WarningItems.length ) {
-			currentWarning = 0;
-		}
-		if ( ca_WarningItems[currentWarning] ) {
-			break;
-		}
-		currentWarning++;
+	if ( currentWarning >= allWarnings.length ) {
+		currentWarning = 0;
 	}
 	$(".upgrade_notice").hide();
 	$(".ca_plugin_notice,.ca_element_notice").show();
 	$(".ca_plugin_notice").html(ca_WarningItems[currentWarning]);
   currentWarning++;
+}
+
+function addDockerWarning(enableDisable) {
+	if (enableDisable) {
+		if ( dockerWarningAdded === false) {
+			dockerWarningAdded = addWarning('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed');
+		}
+	} else {
+		if ( dockerWarningAdded !== false ) {
+			removeWarning(dockerWarningAdded);
+			dockerWarningAdded = false;
+		}
+	}
 }
 
 function post(options,callback) {
@@ -1267,6 +1281,19 @@ function post(options,callback) {
 		if ( postCount < 0 ) postCount = 0;
 		if ( postCount == 0) {
 			myCloseSpinner();
+		}
+	}
+	if ( ! cookiesEnabled() ) {
+		if ( cookieWarning === false) {
+			cookieWarning = addWarning("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.");
+			console.log("cookie warning:"+cookieWarning);
+			console.log("warning added");
+		}
+	} else {
+		if ( cookieWarning !== false ) {
+			removeWarning(cookieWarning);
+			cookieWarning = false;
+			console.log("warning removed");
 		}
 	}
 }

@@ -37,8 +37,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	if ( ! $selectedApps )
 		$selectedApps = array();
 
-	if ( ! $communitySettings['dockerRunning'] && ! $communitySettings['NoInstalls'])
-		$displayHeader = "<script>addWarning('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed');var dockerNotEnabled = true;</script>";
+	$dockerNotEnabled = (! $communitySettings['dockerRunning'] && ! $communitySettings['NoInstalls']) ? "true" : "false";
+		$displayHeader = "<script>addDockerWarning($dockerNotEnabled);var dockerNotEnabled = $dockerNotEnabled;</script>";
 
 	if ( is_file($communityPaths['pinned']) )
 		convertPinnedAppsToV2();
