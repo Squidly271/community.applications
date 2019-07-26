@@ -57,6 +57,7 @@ var dockerNotEnabled;
 var postCount = 0;
 var cookieWarning = false;
 var dockerWarningAdded = false;
+var restoreStateMenu = false;
 
 $(function(){
 	caPluginUpdateCheck("community.applications.plg",{
@@ -273,8 +274,9 @@ $(function(){
 		});
 	} else {
 		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") ) {
+			refreshDisplay();	
 			restoreState();
-			refreshDisplay();
+
 		} else {
 			updateContent();
 		}
@@ -1098,15 +1100,8 @@ function restoreState() {
 	}
 	data = JSON.parse($.cookie("data"));
 	dockerSearchFlag = $.cookie("dockerSearchFlag");
-	var selectedMenu = $.cookie("selectedMenu");
-	if ( selectedMenu && ! data.searchFlag) {
-		var menuItem = $.find(".caMenuItem[data-category='"+selectedMenu+"']");
-		$(".caMenuItem").each(function(){
-			$(this).removeClass("selectedMenu");
-		});
-		$(menuItem).addClass("selectedMenu");
-		$(menuItem).parent().show();
-	}
+	restoreStateMenu = $.cookie("selectedMenu");
+
 	enableIcon("#sortIcon",$.cookie("sortIcon"));
 	$(".sortIcons").each(function() {
 		$(this).removeClass("enabledIcon");
@@ -1122,9 +1117,6 @@ function restoreState() {
 	});
 	populateAutoComplete();
 	getCategories();
-/* 	if ( $("#Category").text() == "Category: None Selected" ) {
-		updateContent();
-	} */
 }
 
 function disableSearch() {
@@ -1300,6 +1292,18 @@ function post(options,callback) {
 function getCategories() {
 	post({action:'get_categories'},function(result) {
 		$("#category_list").html(result.categories);
+		if ( restoreStateMenu ) {
+			console.log(restoreStateMenu);
+			if ( restoreStateMenu && ! data.searchFlag) {
+				var menuItem = $.find(".caMenuItem[data-category='"+restoreStateMenu+"']");
+				$(".caMenuItem").each(function(){
+					$(this).removeClass("selectedMenu");
+				});
+				$(menuItem).addClass("selectedMenu");
+				$(menuItem).parent().show();
+				$(menuItem).next().show();
+			}
+		}
 	});
 }
 </script>
