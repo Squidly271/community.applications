@@ -1187,18 +1187,30 @@ function addWarning(text,warning=true) {
 	if ( warning ) {
 		text = "<i class='fa fa-warning'></i> "+text;
 	}
-	ca_WarningItems.push(text);
+	var arrayEntry = ca_WarningItems.push(text);
 	showWarnings();
 	if ( ! warningInterval && ca_WarningItems.length > 0) {
 		warningInterval = setInterval(function() {
 			showWarnings()
 		},10000);
 	}
+	return arrayEntry - 1;
 }
 
 function showWarnings() {
- 	if ( currentWarning >= ca_WarningItems.length ) {
-		currentWarning = 0;
+	if ( ca_WarningItems.length == 0 ) {
+		$(".ca_plugin_notice,.ca_element_notice").hide();
+		return;
+	}
+
+	for ( ;; ) {
+		if ( currentWarning >= ca_WarningItems.length ) {
+			currentWarning = 0;
+		}
+		if ( ca_WarningItems[currentWarning] ) {
+			break;
+		}
+		currentWarning++;
 	}
 	$(".upgrade_notice").hide();
 	$(".ca_plugin_notice,.ca_element_notice").show();
@@ -1269,11 +1281,12 @@ function getCategories() {
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to sort the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> - These icons respectively will <span class='ca_bold'>Install or Edit</span> an application<br>
 > <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' style='font-size:2rem;'></i> - Clicking these icons will take you to an application's GUI or settings<br>
+> <span class='ca_fa-support' style='font-size:2rem;'></span> This will take you to the appropriate support thread for an application<br>
+> <span class='ca_fa-project' style='font-size:2rem;'></span> This will take you to the project page for an application<br>
 > <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> - Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>
 > <span class='unpinned'> </span><span class='pinned'></span> Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br>
-> <i class='fa fa-info-circle' aria-hidden='true' style='font-size:2rem;'></i> Clicking this will display more information about the application<br>
+> <i class='fa fa-info-circle' aria-hidden='true' style='font-size:2rem;'></i> Clicking this will display more information about the application.  NOTE: You can also click on the application's icon to display more information.<br>
 > <i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:2rem;'></i> Clicking this will display any warnings or extra comments about the application<br>
-> <br>Note that any and all statistics relating to an individual application (eg: Download counts) are only updated every 30 days<br>
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>
 <div class='menuItems'>

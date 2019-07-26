@@ -907,7 +907,7 @@ function DownloadApplicationFeed() {
 		if ( ! $o ) continue;
 
 		if ( is_array($o['trends']) && count($o['trends']) > 1 ) {
-			$o['trendDelta'] = end($o['trends']) - prev($o['trends']);
+			$o['trendDelta'] = end($o['trends']) - $o['trends'][0];
 			$o['trendAverage'] = array_sum($o['trends'])/count($o['trends']);
 		}
 
