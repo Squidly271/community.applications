@@ -1302,6 +1302,7 @@ function getCategories() {
 				$(menuItem).addClass("selectedMenu");
 				$(menuItem).parent().show();
 				$(menuItem).next().show();
+				restoreStateMenu = false;
 			}
 		}
 	});
