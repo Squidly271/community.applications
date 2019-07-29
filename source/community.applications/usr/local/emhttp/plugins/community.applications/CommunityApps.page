@@ -525,6 +525,7 @@ function doSearch(button,newSearch) {
 		updateDisplay(result.display);
 		data.section = "AppStore";
 		$(".selectedMenu").removeClass("selectedMenu");
+		$(".subCategory").hide();
 	});
 }
 
