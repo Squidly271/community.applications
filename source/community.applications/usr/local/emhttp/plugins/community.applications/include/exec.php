@@ -245,7 +245,8 @@ case 'force_update':
 	}
 	getConvertedTemplates();
 	moderateTemplates();
-	postReturn(['status'=>"ok"]);
+	$currentServer = file_get_contents($communityPaths['currentServer']);
+	postReturn(['status'=>"ok",'script'=>"feedWarning('$currentServer');"]);
 	break;
 
 ####################################################################################

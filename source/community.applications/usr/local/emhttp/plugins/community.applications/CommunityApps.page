@@ -57,6 +57,7 @@ var dockerNotEnabled;
 var postCount = 0;
 var cookieWarning = false;
 var dockerWarningAdded = false;
+var backupServerWarning = false;
 var restoreStateMenu = false;
 
 $(function(){
@@ -1315,6 +1316,18 @@ function getCategories() {
 		}
 	});
 }
+
+function feedWarning(currentServer) {
+	if ( currentServer != "Primary Server" && backupServerWarning === false) {
+		backupServerWarning = addWarning("Backup Server Active.  Some icons may not appear, and plugin installations may be affected");
+	} else {
+		if ( backupServerWarning !== false ) {
+			removeWarning(backupServerWarning);
+			backupServerWarning = false;
+		}
+	}
+}
+
 </script>
 
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> - This chooses how to sort the results<br><br>
