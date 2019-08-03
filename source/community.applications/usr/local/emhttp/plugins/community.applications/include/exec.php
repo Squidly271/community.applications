@@ -855,12 +855,6 @@ function DownloadApplicationFeed() {
 	if ( ! is_array($ApplicationFeed['applist']) ) {
 		$currentFeed = "Backup Server";
 		$ApplicationFeed = download_json($communityPaths['application-feedBackup'],$downloadURL);
-		if ( ! is_array($ApplicationFeed['applist']) ) {
-			if ( is_file($communityPaths['appFeedBackupUSB']) ) {
-				$currentFeed = "USB Backup File";
-				$ApplicationFeed = readJsonFile($communityPaths['appFeedBackupUSB']);
-			}
-		}
 	}
 	@unlink($downloadURL);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
