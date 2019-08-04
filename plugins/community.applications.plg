@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.07.11">
-<!ENTITY md5       "397d2aa6960ff932263202f3066e3833">
+<!ENTITY version   "2019.08.04">
+<!ENTITY md5       "e1062743bfd5f1553d5f2b9882b3a55b">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,16 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.08.04
+- Added: Alert if browser configuration disallowed a dockerHub conversion to take place (ground work for next CA rev)
+- Added: Show current version of plugin on it's popup
+- Changed: Popups now always show minimum version of a plugin
+- Banner warnings now are live and added / removed with every navigation within CA if circumstances change (docker enabled / disabled, cookies enabled / disabled etc)
+- Added: Prep work for next rev of PluginAPI
+- Fixed: Regression error where installing an app from within a category would highlight the category again after installation
+- Removed: Support for a USB stored backup appfeed
+- Added: Banner warning if CA running on backup server
+
 ###2019.07.11
 - Fixed: Spinner wouldn't disappear when pinning / unpinning app
 
