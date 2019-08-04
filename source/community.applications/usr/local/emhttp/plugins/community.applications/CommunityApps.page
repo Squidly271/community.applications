@@ -81,10 +81,11 @@ $(function(){
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
-	if ( "<?=$date?>" == "5/29" ) addWarning("Happy Birthday CA!",false);
+	if ( "<?=$date?>" == "5/29" ) addWarning("Happy Birthday CA! <i class='fa fa-birthday-cake'></i>",false);
 	if ( "<?=$date?>" == "12/24" ) addWarning("Happy Holidays from Andrew, Tracey, and family",false);
 	if ( "<?=$date?>" == "12/25" ) addWarning("Happy Holidays from Andrew, Tracey, and family",false);
 	if ( "<?=$date?>" == "1/01" ) addWarning("Happy New Years!",false);
+	if ( "<?=$date?>" == "12/31" ) addWarning("Happy New Years Eve <i class='fa fa-beer'></i> Please Enjoy Responsibly",false);
 
 	if ( isTouch ) {
 		templates_content.addEventListener("touchstart", startTouch, false);
@@ -1202,6 +1203,7 @@ function removeWarning(entry) {
 	ca_WarningItems = ca_WarningItems.filter(function(value,index,arr) {
 		return value;
 	});
+	showWarnings();
 }
 
 function showWarnings() {
