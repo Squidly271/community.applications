@@ -1208,6 +1208,8 @@ function showWarnings() {
 	var allWarnings = Object.values(ca_WarningItems);
 	if ( allWarnings.length == 0 ) {
 		$(".ca_plugin_notice,.ca_element_notice").hide();
+		clearInterval(warningInterval);
+		warningInterval = false;
 		return;
 	}
 	if ( currentWarning >= allWarnings.length ) {
