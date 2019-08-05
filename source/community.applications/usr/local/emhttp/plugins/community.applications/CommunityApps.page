@@ -61,6 +61,8 @@ var backupServerWarning = false;
 var restoreStateMenu = false;
 
 $(function(){
+	addWarning("test 1");
+	addWarning("test 2");
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
 			name:"Community Applications",
@@ -1197,7 +1199,7 @@ function addWarning(text,warning=true,noDismiss=false) {
 	}
 	ca_WarningItems[arrayEntry] = text;
 	showWarnings();
-	if ( ! warningInterval && ca_WarningItems.length > 0) {
+	if ( ! warningInterval ) {
 		warningInterval = setInterval(function() {
 			showWarnings()
 		},10000);
@@ -1211,19 +1213,24 @@ function dismissWarning(entry,cookieText) {
 }
 
 function removeWarning(entry) {
-	delete(ca_WarningItems[entry]);
+	ca_WarningItems[entry] = false;
+	showWarnings();
+}
+
+function cleanArray(array) {
 	var newArray = [];
-	ca_WarningItems.filter(function(value,index,arr) {
+	array.filter(function(value,index,arr) {
 		if ( value ) {
 			newArray[index] = value;
 		}
 	});	
-	ca_WarningItems = newArray;
-	showWarnings();
+	return newArray;
 }
 
 function showWarnings() {
-	var allWarnings = Object.values(ca_WarningItems);
+	console.log("length");
+	console.log(ca_WarningItems.length);
+	var allWarnings = cleanArray(Object.values(ca_WarningItems));
 	if ( allWarnings.length == 0 ) {
 		$(".ca_plugin_notice,.ca_element_notice").hide();
 		clearInterval(warningInterval);
