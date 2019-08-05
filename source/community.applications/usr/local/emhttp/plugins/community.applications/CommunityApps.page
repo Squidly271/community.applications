@@ -61,7 +61,6 @@ var backupServerWarning = false;
 var restoreStateMenu = false;
 
 $(function(){
-	addWarning("CommunityApplicationsworksbestwhencookiesareeiuyiuyiuyiuyoiuynabledinyourbrowserCertainfeaturesmaynotbeavailable");
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
 			name:"Community Applications",
@@ -1209,14 +1208,17 @@ function addWarning(text,warning=true,noDismiss=false) {
 function dismissWarning(entry,cookieText) {
 	$.cookie(cookieText,"true");
 	removeWarning(entry);
-	showWarnings();
 }
 
 function removeWarning(entry) {
-	ca_WarningItems[entry] = false;
-	ca_WarningItems = ca_WarningItems.filter(function(value,index,arr) {
-		return value;
+	delete(ca_WarningItems[entry]);
+	var newArray = [];
+	ca_WarningItems.filter(function(value,index,arr) {
+		if ( value ) {
+			newArray[index] = value;
+		}
 	});	
+	ca_WarningItems = newArray;
 	showWarnings();
 }
 
@@ -1233,7 +1235,7 @@ function showWarnings() {
 	}
 	$(".upgrade_notice").hide();
 	$(".ca_plugin_notice,.ca_element_notice").show();
-	$(".ca_plugin_notice").html(ca_WarningItems[currentWarning]);
+	$(".ca_plugin_notice").html(allWarnings[currentWarning]);
   currentWarning++;
 }
 
