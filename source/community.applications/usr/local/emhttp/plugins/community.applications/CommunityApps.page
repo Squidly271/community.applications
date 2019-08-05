@@ -64,7 +64,7 @@ $(function(){
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
 			name:"Community Applications",
-			debug:true,
+			debug:false,
 			priority:true
 		},function(result) {
 			var result = JSON.parse(result);
