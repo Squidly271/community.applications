@@ -61,6 +61,7 @@ var backupServerWarning = false;
 var restoreStateMenu = false;
 
 $(function(){
+	addWarning("CommunityApplicationsworksbestwhencookiesareeiuyiuyiuyiuyoiuynabledinyourbrowserCertainfeaturesmaynotbeavailable");
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
 			name:"Community Applications",
@@ -1182,27 +1183,40 @@ function scrollToTop() {
 	$('html,body').animate({scrollTop:0},0);
 }
 
-function addWarning(text,warning=true) {
+function addWarning(text,warning=true,noDismiss=false) {
+	var cookieText = text.replace(/[^a-z0-9]/gi,'');
+	if ( $.cookie(cookieText) == "true" ) { return false; }
+	
 	var z_index = $(".upgrade_notice").css("z-index"); 
 	$(".ca_element_notice").css("z-index",z_index+1); // Warnings take precendence over unRaid's OS warnings
 	if ( warning ) {
 		text = "<i class='fa fa-warning'></i> "+text;
 	}
-	var arrayEntry = ca_WarningItems.push(text);
+	var arrayEntry = ca_WarningItems.push("placeholder") - 1;
+	if ( ! noDismiss ) {
+		text = text + "<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='dismissWarning("+arrayEntry+",&quot;"+cookieText+"&quot;)'></i>";
+	}
+	ca_WarningItems[arrayEntry] = text;
 	showWarnings();
 	if ( ! warningInterval && ca_WarningItems.length > 0) {
 		warningInterval = setInterval(function() {
 			showWarnings()
 		},10000);
 	}
-	return (arrayEntry - 1);
+	return arrayEntry;
+}
+
+function dismissWarning(entry,cookieText) {
+	$.cookie(cookieText,"true");
+	removeWarning(entry);
+	showWarnings();
 }
 
 function removeWarning(entry) {
 	ca_WarningItems[entry] = false;
 	ca_WarningItems = ca_WarningItems.filter(function(value,index,arr) {
 		return value;
-	});
+	});	
 	showWarnings();
 }
 
