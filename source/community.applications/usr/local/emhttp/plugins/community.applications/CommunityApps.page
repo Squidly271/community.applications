@@ -1198,8 +1198,8 @@ function addWarning(text,warning=true,noDismiss=false) {
 		text = text + "<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='dismissWarning("+arrayEntry+",&quot;"+cookieText+"&quot;)'></i>";
 	}
 	ca_WarningItems[arrayEntry] = text;
-	showWarnings();
 	if ( ! warningInterval ) {
+		showWarnings();
 		warningInterval = setInterval(function() {
 			showWarnings()
 		},10000);
@@ -1217,20 +1217,18 @@ function removeWarning(entry) {
 	showWarnings();
 }
 
-function cleanArray(array) {
+function filterArray(array) {
 	var newArray = [];
 	array.filter(function(value,index,arr) {
 		if ( value ) {
-			newArray[index] = value;
+			newArray.push(value);
 		}
 	});	
 	return newArray;
 }
 
 function showWarnings() {
-	console.log("length");
-	console.log(ca_WarningItems.length);
-	var allWarnings = cleanArray(Object.values(ca_WarningItems));
+	var allWarnings = filterArray(Object.values(ca_WarningItems));
 	if ( allWarnings.length == 0 ) {
 		$(".ca_plugin_notice,.ca_element_notice").hide();
 		clearInterval(warningInterval);
@@ -1244,6 +1242,7 @@ function showWarnings() {
 	$(".ca_plugin_notice,.ca_element_notice").show();
 	$(".ca_plugin_notice").html(allWarnings[currentWarning]);
   currentWarning++;
+
 }
 
 function addDockerWarning(enableDisable) {
