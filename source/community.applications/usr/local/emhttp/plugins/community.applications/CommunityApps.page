@@ -61,19 +61,14 @@ var backupServerWarning = false;
 var restoreStateMenu = false;
 
 $(function(){
-	addWarning("test 1");
-	addWarning("test 2");
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
 			name:"Community Applications",
-			debug:false,
+			debug:true,
 			priority:true
 		},function(result) {
 			var result = JSON.parse(result);
 			$("#caInstalledVersion").html(result.installedVersion);
-			if ( result.updateAvailable ) {
-				ca_WarningItems.push(result.HTML);
-			}
 		}
 	);
 
@@ -83,11 +78,11 @@ $(function(){
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
-	if ( "<?=$date?>" == "5/29" ) addWarning("Happy Birthday CA! <i class='fa fa-birthday-cake'></i>",false);
-	if ( "<?=$date?>" == "12/24" ) addWarning("Happy Holidays from Andrew, Tracey, and family",false);
-	if ( "<?=$date?>" == "12/25" ) addWarning("Happy Holidays from Andrew, Tracey, and family",false);
-	if ( "<?=$date?>" == "1/01" ) addWarning("Happy New Years!",false);
-	if ( "<?=$date?>" == "12/31" ) addWarning("Happy New Years Eve <i class='fa fa-beer'></i> Please Enjoy Responsibly",false);
+	if ( "<?=$date?>" == "5/29" ) addBannerWarning("Happy Birthday CA! <i class='fa fa-birthday-cake'></i>",false);
+	if ( "<?=$date?>" == "12/24" ) addBannerWarning("Happy Holidays from Andrew, Tracey, and family",false);
+	if ( "<?=$date?>" == "12/25" ) addBannerWarning("Happy Holidays from Andrew, Tracey, and family",false);
+	if ( "<?=$date?>" == "1/01" ) addBannerWarning("Happy New Years!",false);
+	if ( "<?=$date?>" == "12/31" ) addBannerWarning("Happy New Years Eve <i class='fa fa-beer'></i> Please Enjoy Responsibly",false);
 
 	if ( isTouch ) {
 		templates_content.addEventListener("touchstart", startTouch, false);
@@ -272,7 +267,7 @@ $(function(){
 					location.reload();
 				});
 			} else {
-				addWarning("Installations of apps disabled.  You must accept the warning to be able to install applications.  Click <a onclick='window.location.reload();' style='cursor:pointer;'>HERE</a>");
+				addBannerWarning("Installations of apps disabled.  You must accept the warning to be able to install applications.  Click <a onclick='window.location.reload();' style='cursor:pointer;'>HERE</a>");
 				updateContent();
 			}
 		});
@@ -1184,7 +1179,7 @@ function scrollToTop() {
 	$('html,body').animate({scrollTop:0},0);
 }
 
-function addWarning(text,warning=true,noDismiss=false) {
+function addBannerWarning(text,warning=true,noDismiss=false) {
 	var cookieText = text.replace(/[^a-z0-9]/gi,'');
 	if ( $.cookie(cookieText) == "true" ) { return false; }
 	
@@ -1195,7 +1190,7 @@ function addWarning(text,warning=true,noDismiss=false) {
 	}
 	var arrayEntry = ca_WarningItems.push("placeholder") - 1;
 	if ( ! noDismiss ) {
-		text = text + "<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='dismissWarning("+arrayEntry+",&quot;"+cookieText+"&quot;)'></i>";
+		text = text + "<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='dismissBannerWarning("+arrayEntry+",&quot;"+cookieText+"&quot;)'></i>";
 	}
 	ca_WarningItems[arrayEntry] = text;
 	if ( ! warningInterval ) {
@@ -1207,12 +1202,12 @@ function addWarning(text,warning=true,noDismiss=false) {
 	return arrayEntry;
 }
 
-function dismissWarning(entry,cookieText) {
+function dismissBannerWarning(entry,cookieText) {
 	$.cookie(cookieText,"true");
-	removeWarning(entry);
+	removeBannerWarning(entry);
 }
 
-function removeWarning(entry) {
+function removeBannerWarning(entry) {
 	ca_WarningItems[entry] = false;
 	showWarnings();
 }
@@ -1248,11 +1243,11 @@ function showWarnings() {
 function addDockerWarning(enableDisable) {
 	if (enableDisable) {
 		if ( dockerWarningAdded === false) {
-			dockerWarningAdded = addWarning('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed');
+			dockerWarningAdded = addBannerWarning('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed');
 		}
 	} else {
 		if ( dockerWarningAdded !== false ) {
-			removeWarning(dockerWarningAdded);
+			removeBannerWarning(dockerWarningAdded);
 			dockerWarningAdded = false;
 		}
 	}
@@ -1311,13 +1306,13 @@ function post(options,callback) {
 	}
 	if ( ! cookiesEnabled() ) {
 		if ( cookieWarning === false) {
-			cookieWarning = addWarning("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.");
+			cookieWarning = addBannerWarning("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.");
 			console.log("cookie warning:"+cookieWarning);
 			console.log("warning added");
 		}
 	} else {
 		if ( cookieWarning !== false ) {
-			removeWarning(cookieWarning);
+			removeBannerWarning(cookieWarning);
 			cookieWarning = false;
 			console.log("warning removed");
 		}
@@ -1345,10 +1340,10 @@ function getCategories() {
 
 function feedWarning(currentServer) {
 	if ( currentServer != "Primary Server" && backupServerWarning === false) {
-		backupServerWarning = addWarning("Backup Server Active.  Some icons may not appear, and plugin installations may be affected");
+		backupServerWarning = addBannerWarning("Backup Server Active.  Some icons may not appear, and plugin installations may be affected");
 	} else {
 		if ( backupServerWarning !== false ) {
-			removeWarning(backupServerWarning);
+			removeBannerWarning(backupServerWarning);
 			backupServerWarning = false;
 		}
 	}
