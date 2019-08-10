@@ -502,7 +502,7 @@ function getPopupDescription($appNumber) {
 	$templateDescription .= $template['stars'] ? "<tr><td nowrap>DockerHub Stars:</td><td><span class='dockerHubStar'></span> ".$template['stars']."</td></tr>" : "";
 
 	if ( $template['FirstSeen'] > 1 && $template['Name'] != "Community Applications" )
-		$templateDescription .= "<tr><td>Added to CA:</td><td>".date("M d, Y",$template['FirstSeen'])."</td></tr>";
+		$templateDescription .= "<tr><td>Added to CA:</td><td>".date("F j, Y",$template['FirstSeen'])."</td></tr>";
 
 	# In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
 	if ( $template['Date'] && $template['Plugin'] ) {
