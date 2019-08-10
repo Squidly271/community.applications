@@ -22,7 +22,7 @@
 - Changed: Popups now always show minimum version of a plugin
 - Banner warnings now are live and added / removed with every navigation within CA if circumstances change (docker enabled / disabled, cookies enabled / disabled etc)
 - Added: Prep work for next rev of PluginAPI
-- Fixed: Regression error where installing an app from within a category would highlight the category again after installation
+- Fixed: Regression error where installing an app from within a category would not highlight the category again after installation
 - Removed: Support for a USB stored backup appfeed
 - Added: Banner warning if CA running on backup server
 
