@@ -50,7 +50,6 @@ data.prevpage = 0;
 data.currentpage = 1;
 data.searchFlag = false;
 var dockerSearchFlag = false;
-var currentWarning = 0;
 var warningInterval;
 var dockerNotEnabled;
 var postCount = 0;
@@ -1178,66 +1177,7 @@ function scrollToTop() {
 	$('html,body').animate({scrollTop:0},0);
 }
 
-function addBannerWarning(text,warning=true,noDismiss=false) {
-	var cookieText = text.replace(/[^a-z0-9]/gi,'');
-	if ( $.cookie(cookieText) == "true" ) { return false; }
-	
-	var z_index = $(".upgrade_notice").css("z-index"); 
-	$(".ca_element_notice").css("z-index",z_index+1); // Warnings take precendence over unRaid's OS warnings
-	if ( warning ) {
-		text = "<i class='fa fa-warning'></i> "+text;
-	}
-	var arrayEntry = ca_WarningItems.push("placeholder") - 1;
-	if ( ! noDismiss ) {
-		text = text + "<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='dismissBannerWarning("+arrayEntry+",&quot;"+cookieText+"&quot;)'></i>";
-	}
-	ca_WarningItems[arrayEntry] = text;
-	if ( ! warningInterval ) {
-		showWarnings();
-		warningInterval = setInterval(function() {
-			showWarnings()
-		},10000);
-	}
-	return arrayEntry;
-}
 
-function dismissBannerWarning(entry,cookieText) {
-	$.cookie(cookieText,"true");
-	removeBannerWarning(entry);
-}
-
-function removeBannerWarning(entry) {
-	ca_WarningItems[entry] = false;
-	showWarnings();
-}
-
-function filterArray(array) {
-	var newArray = [];
-	array.filter(function(value,index,arr) {
-		if ( value ) {
-			newArray.push(value);
-		}
-	});	
-	return newArray;
-}
-
-function showWarnings() {
-	var allWarnings = filterArray(Object.values(ca_WarningItems));
-	if ( allWarnings.length == 0 ) {
-		$(".ca_plugin_notice,.ca_element_notice").hide();
-		clearInterval(warningInterval);
-		warningInterval = false;
-		return;
-	}
-	if ( currentWarning >= allWarnings.length ) {
-		currentWarning = 0;
-	}
-	$(".upgrade_notice").hide();
-	$(".ca_plugin_notice,.ca_element_notice").show();
-	$(".ca_plugin_notice").html(allWarnings[currentWarning]);
-  currentWarning++;
-
-}
 
 function addDockerWarning(enableDisable) {
 	if (enableDisable) {
