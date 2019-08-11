@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.08.05">
-<!ENTITY md5       "4ff203f8b40dad15158d767464976f9b">
+<!ENTITY version   "2019.08.11">
+<!ENTITY md5       "95b7c21c7b5619ef9625db2aa4844f4b">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.08.11
+- Compatibility fix for future versions of unRaid
+
 ###2019.08.05
 - Added: Further functions to plugin API
 
