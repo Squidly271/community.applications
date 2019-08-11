@@ -20,6 +20,7 @@ Link='nav-user'
 <script>
 var ca_PluginUpdatePLG;
 var ca_PluginUpdateElement;
+var ca_WarningItems = [];
 
 $(function() {
 	$(".upgrade_notice").after("<div class='ca_plugin_notice ca_element_notice'></div>");
