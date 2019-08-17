@@ -49,7 +49,7 @@ data.nextpage = 0;
 data.prevpage = 0;
 data.currentpage = 1;
 data.searchFlag = false;
-data.searchActive = false;
+data.searchActive = false; // Sets whether changepage re-sorts the displayed templates.
 var dockerSearchFlag = false;
 var warningInterval;
 var dockerNotEnabled;
@@ -398,6 +398,7 @@ function showSpecialCategory(button) {
 function changeCategory(button,subSwitch) {
 	var description = $(button).text();
 	var category = $(button).attr("data-category");
+	data.searchActive = false;
 	clearSearchBox();
 	hideSortIcons();
 	clearCategory();
@@ -408,7 +409,7 @@ function changeCategory(button,subSwitch) {
 function changePage(pageNumber) {
 	var sortOrder = getSortOrder();
 	if ( data.searchActive ) {
-		sortOrder.sortBy = ["sortBy","noSort"];
+		sortOrder = [["sortBy","noSort"]];
 	}
 	var selected = data.selected;
 	data.currentpage = pageNumber;
@@ -517,8 +518,7 @@ function doSearch(button,newSearch) {
 		return;
 	}
 	data.searchActive = true;
-	var sortOrder = getSortOrder(); // get the current sort order, then unset the icon as while sort may be a-z under searches, we only kinda want it that way
-	enableIcon(".sortIcons",false);
+	var sortOrder = getSortOrder();
 	if ( "<?=$cfg['dockerSearch']?>" == "yes" && ! dockerNotEnabled) {
 		$('.dockerSearch').show();
 	}
