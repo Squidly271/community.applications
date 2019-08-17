@@ -173,17 +173,36 @@ case 'get_content':
 		if ( $displayPrivates && ! $template['Private'] ) continue;
 
 		if ($filter) {
-			if ( filterMatch($filter,array($template['Name'],$template['Author'],$template['Description'],$template['RepoName'],$template['Category'])) ) {
+			if ( filterMatch($filter,array($template['Name'])) ) {
+				highlight($filter,$template['Name']);
+				$searchResults['app'][] = $template;
+			} else if ( filterMatch($filter,array($template['Author'],$template['Description'],$template['RepoName'],$template['Category'])) ) {
 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
 				$template['Name'] = highlight($filter, $template['Name']);
 				$template['CardDescription'] = highlight($filter,$template['CardDescription']);
+				$searchResults['other'][] = $template;
 			} else continue;
 		}
 
 		$display[] = $template;
 	}
-	$displayApplications['community'] = $display;
+	if ( $filter ) {
+		if ( is_array($searchResults['app']) )
+			usort($searchResults['app'],"mySort");
+		else
+			$searchResults['app'] = array();
+		
+		if ( is_array($searchResults['other']) )
+			usort($searchResults['other'],"mySort");
+		else
+			$searchResults['other'] = array();
+	
+		$displayApplications['community'] = array_merge($searchResults['app'],$searchResults['other']);
+		$sortOrder['sortBy'] = "noSort";
+	} else {
+		$displayApplications['community'] = $display;
+	}
 
 	writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
 	$o['display'] = display_apps();

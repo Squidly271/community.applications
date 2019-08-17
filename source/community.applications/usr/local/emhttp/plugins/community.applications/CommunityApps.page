@@ -516,7 +516,6 @@ function doSearch(button,newSearch) {
 	if ( "<?=$cfg['dockerSearch']?>" == "yes" && ! dockerNotEnabled) {
 		$('.dockerSearch').show();
 	}
-
 	post({action:'get_content',filter:filter,sortOrder:sortOrder},function(result) {
 		enableButtons();
 		updateDisplay(result.display);
