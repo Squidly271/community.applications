@@ -175,30 +175,32 @@ case 'get_content':
 		if ($filter) {
 			if ( filterMatch($filter,array($template['Name'])) ) {
 				highlight($filter,$template['Name']);
-				$searchResults['app'][] = $template;
+				$template['Description'] = highlight($filter, $template['Description']);
+				$template['Author'] = highlight($filter, $template['Author']);
+				$template['CardDescription'] = highlight($filter,$template['CardDescription']);
+				$searchResults['nameHit'][] = $template;
 			} else if ( filterMatch($filter,array($template['Author'],$template['Description'],$template['RepoName'],$template['Category'])) ) {
 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
-				$template['Name'] = highlight($filter, $template['Name']);
 				$template['CardDescription'] = highlight($filter,$template['CardDescription']);
-				$searchResults['other'][] = $template;
+				$searchResults['anyHit'][] = $template;
 			} else continue;
 		}
 
 		$display[] = $template;
 	}
 	if ( $filter ) {
-		if ( is_array($searchResults['app']) )
-			usort($searchResults['app'],"mySort");
+		if ( is_array($searchResults['nameHit']) )
+			usort($searchResults['nameHit'],"mySort");
 		else
-			$searchResults['app'] = array();
+			$searchResults['nameHit'] = array();
 		
-		if ( is_array($searchResults['other']) )
-			usort($searchResults['other'],"mySort");
+		if ( is_array($searchResults['anyHit']) )
+			usort($searchResults['anyHit'],"mySort");
 		else
-			$searchResults['other'] = array();
+			$searchResults['anyHit'] = array();
 	
-		$displayApplications['community'] = array_merge($searchResults['app'],$searchResults['other']);
+	$displayApplications['community'] = array_merge($searchResults['nameHit'],$searchResults['anyHit']);
 		$sortOrder['sortBy'] = "noSort";
 	} else {
 		$displayApplications['community'] = $display;

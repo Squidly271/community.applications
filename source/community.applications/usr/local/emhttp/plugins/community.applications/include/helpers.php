@@ -301,7 +301,7 @@ function validURL($URL) {
 #######################################################
 # Function used to determine if a search term matches #
 #######################################################
-function filterMatch($filter,$searchArray) {
+function filterMatch($filter,$searchArray,$exact=true) {
 	$filterwords = explode(" ",$filter);
 	foreach ( $filterwords as $testfilter) {
 		foreach ($searchArray as $search) {
@@ -311,7 +311,7 @@ function filterMatch($filter,$searchArray) {
 			}
 		}
 	}
-	return ($foundword == count($filterwords));
+	return $exact ? ($foundword == count($filterwords)) : ($foundword > 0);
 }
 
 ##########################################################

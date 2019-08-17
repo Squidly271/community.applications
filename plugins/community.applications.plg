@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.08.11b">
-<!ENTITY md5       "1fa9aa3b6d348a5b897b4e1d75afd2fa">
+<!ENTITY version   "2019.08.17">
+<!ENTITY md5       "14b10a5bac48df04c661bb57cd60c210">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.08.17
+- Prioritize search results for matches on app name first
+
 ###2019.08.11
 - Compatibility fix for future versions of unRaid
 
