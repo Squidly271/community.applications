@@ -49,6 +49,7 @@ data.nextpage = 0;
 data.prevpage = 0;
 data.currentpage = 1;
 data.searchFlag = false;
+data.searchActive = false;
 var dockerSearchFlag = false;
 var warningInterval;
 var dockerNotEnabled;
@@ -406,6 +407,9 @@ function changeCategory(button,subSwitch) {
 
 function changePage(pageNumber) {
 	var sortOrder = getSortOrder();
+	if ( data.searchActive ) {
+		sortOrder.sortBy = ["sortBy","noSort"];
+	}
 	var selected = data.selected;
 	data.currentpage = pageNumber;
 
@@ -512,7 +516,9 @@ function doSearch(button,newSearch) {
 		data.searchFlag = false;
 		return;
 	}
-	var sortOrder = getSortOrder();
+	data.searchActive = true;
+	var sortOrder = getSortOrder(); // get the current sort order, then unset the icon as while sort may be a-z under searches, we only kinda want it that way
+	enableIcon(".sortIcons",false);
 	if ( "<?=$cfg['dockerSearch']?>" == "yes" && ! dockerNotEnabled) {
 		$('.dockerSearch').show();
 	}
@@ -538,7 +544,7 @@ function changeSortOrder(button,buttonClass,previousApps) {
 	var selected = data.selected;
 	var sortOrder = getSortOrder();
 	var startup = false;
-
+	data.searchActive = false;
 	$(".startupButton").each(function(){
 		if ($(this).hasClass("selectedMenu")) {
 			startup = "true";
@@ -578,6 +584,9 @@ function getSortOrder() {
 			}
 		}
 	});
+	if ( ! sortOrder.sortBy ) {
+		sortOrder.sortBy = ["sortBy","noSort"];
+	}
 	return [sortOrder.sortBy,sortOrder.sortDir];
 }
 
@@ -601,6 +610,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		}
 		if ( (category == "New") || (category == "All") ) { category = ""; }
 
+		data.searchActive = false;
 		var sortOrder = getSortOrder();
 
 		post({action:'get_content',category:category,newApp:newApp,sortOrder:sortOrder,startupDisplay:startupDisplay},function(result) {
