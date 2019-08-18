@@ -9,9 +9,9 @@
 header("Content-type: text/css; charset: UTF-8");
 
 $dynamix = @parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
-if ( ! $dynamix['display']['theme'] ) {
+if ( ! $dynamix['display']['theme'] )
 	$dynamix = @parse_ini_file("/usr/local/emhttp/plugins/dynamix/default.cfg",true);
-}
+
 $theme = $dynamix['display']['theme'] ?: "black";
 
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
