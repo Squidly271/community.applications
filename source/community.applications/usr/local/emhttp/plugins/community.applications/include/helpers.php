@@ -342,7 +342,7 @@ function checkInstalledPlugin($template) {
 	if ( ! file_exists("/var/log/plugins/$pluginName") ) return false;
 	$dupeList = readJsonFile($communityPaths['pluginDupes']);
 	if ( ! $dupeList[$pluginName] ) return true;
-	return strtolower(trim(plugin("pluginURL","/var/log/plugins/$pluginName"))) != strtolower(trim($template['PluginURL']));
+	return strtolower(trim(plugin("pluginURL","/var/log/plugins/$pluginName"))) == strtolower(trim($template['PluginURL']));
 }
 
 ###########################################################

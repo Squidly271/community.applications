@@ -83,7 +83,7 @@ $(function(){
 	if ( "<?=$date?>" == "1/01" ) addBannerWarning("Happy New Years!",false);
 	if ( "<?=$date?>" == "12/31" ) addBannerWarning("Happy New Years Eve <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> Please Enjoy Responsibly",false);
 
-	if ( isTouch ) {
+	if ( isTouch() ) {
 		templates_content.addEventListener("touchstart", startTouch, false);
 		templates_content.addEventListener("touchmove", moveTouch, false);
 		 
