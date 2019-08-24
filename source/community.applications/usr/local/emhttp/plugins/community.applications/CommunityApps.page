@@ -86,31 +86,31 @@ $(function(){
 	if ( isTouch() ) {
 		templates_content.addEventListener("touchstart", startTouch, false);
 		templates_content.addEventListener("touchmove", moveTouch, false);
-		 
+
 		// Left / Right
 		var initialX = null;
 		var initialY = null;
-		 
+
 		function startTouch(e) {
 			initialX = e.touches[0].clientX;
 			initialY = e.touches[0].clientY;
 		};
-		 
+
 		function moveTouch(e) {
 			if (initialX === null) {
 				return;
 			}
-		 
+
 			if (initialY === null) {
 				return;
 			}
-		 
+
 			var currentX = e.touches[0].clientX;
 			var currentY = e.touches[0].clientY;
-		 
+
 			var diffX = initialX - currentX;
 			var diffY = initialY - currentY;
-		 
+
 			if (Math.abs(diffX) > Math.abs(diffY)) {
 				// sliding horizontally
 				if (diffX > 0) {
@@ -135,14 +135,14 @@ $(function(){
 							}
 						}
 					}
-				}  
+				}
 			}
-		 
+
 			initialX = null;
 			initialY = null;
-			 
+
 			e.preventDefault();
-		};		
+		};
 	}
 
 	$('.ca_toolsView').tooltipster({
@@ -158,7 +158,7 @@ $(function(){
 			}
 		}
 	});
-	
+
 	$('.ca_staticTips').tooltipster({
 		contentAsHTML:true,
 		delay:[1000,1],
@@ -175,7 +175,7 @@ $(function(){
 			doSearch();
 		}
 	});
-	
+
 	$('.caChangeLog').on("click",function() {disableSort();scrollToTop();caChangeLog();});
 	$('.mainArea').on("click",'.ca_multiselect',function() {enableMultiInstall();});
 	$('.mainArea').on("click",".ca_appPopup",function() {
@@ -207,7 +207,7 @@ $(function(){
 		$(this).addClass("selectedMenu");
 		$(this).next().show();
 	});
-	
+
 	$(".sectionMenu").on("click",function() {
 		var section = $(this).attr("data-category");
 		switch (section) {
@@ -222,7 +222,7 @@ $(function(){
 				break;
 		}
 	});
-		
+
 	$(".initDockerSearch").click(function()     { initDockerSearch(); });
 	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
@@ -273,7 +273,7 @@ $(function(){
 	} else {
 		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") ) {
 			restoreState();
-			refreshDisplay();	
+			refreshDisplay();
 		} else {
 			updateContent();
 		}
@@ -457,7 +457,7 @@ function mySpinner() {
 		showCancelButton: false,
 		animation: false,
 		html: true
-	});	
+	});
 	swalBackground("transparent"); // Occasional race condition where swal is not initialized at time the initial background change happens
 
 }
@@ -804,7 +804,7 @@ function basename(path) {
 function deletePrivateApp(path,name,author) {
 	var displayPath = path.replace("/boot/config/plugins/","...");
 	disableSearch();
-	swalBackground("white");	
+	swalBackground("white");
 	swal({
 		title: "Remove Private Application?",
 		text: "Are you sure you want to remove the private application <span class='ca_italic'><font color='red'><span class='ca_bold'>"+name+"</span></font> by <font color='red'><span class='ca_bold'>"+author+"</span></font>?<br><font size='0'>("+displayPath+")",
@@ -834,7 +834,7 @@ function deletePrivateApp(path,name,author) {
 
 function uninstallDocker(application,humanName) {
 	disableSearch();
-	swalBackground("white");	
+	swalBackground("white");
 	swal({
 		title: "Uninstall Application?",
 		text: "Are you sure you want to uninstall <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>?",
@@ -1107,7 +1107,7 @@ function saveState() {
 }
 
 function restoreState() {
-  swalBackground("transparent");
+	swalBackground("transparent");
 
 	console.log("Restore State");
 	$("#Category").html($.cookie("ca_categoryText"));

@@ -194,12 +194,12 @@ case 'get_content':
 			usort($searchResults['nameHit'],"mySort");
 		else
 			$searchResults['nameHit'] = array();
-		
+
 		if ( is_array($searchResults['anyHit']) )
 			usort($searchResults['anyHit'],"mySort");
 		else
 			$searchResults['anyHit'] = array();
-	
+
 		$displayApplications['community'] = array_merge($searchResults['nameHit'],$searchResults['anyHit']);
 		$sortOrder['sortBy'] = "noSort";
 	} else {
@@ -919,7 +919,7 @@ function DownloadApplicationFeed() {
 			$o['Path'] .= "(1)";
 		}
 		$o['Path'] .= ".xml";
-		
+
 		$o = fixTemplates($o);
 		if ( ! $o ) continue;
 
