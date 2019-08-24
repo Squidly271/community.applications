@@ -60,6 +60,14 @@ Enable additional search results from dockerHub?
 
 > This setting enables CA to retrieve additional search results from dockerHub.  Note that docker must be enabled for this to be operational
 
+Remove program files when uninstalling?
+: <select name='deleteImage' size='1'>
+	<?=mk_option($cfg['deleteImage'],"yes","Yes (Recommended)")?>
+	<?=mk_option($cfg['deleteImage'],"no","No")?>
+	</select>
+	
+> This setting will not remove the program files from the docker.img when uninstalling an application for faster reinstallation.  Generally recommended to leave this set to yes
+
 &nbsp;
 : <input type="submit" name="#apply" value="Apply" id='Apply'><input type="button" id="DONE" value="Done" onclick="done()">
 

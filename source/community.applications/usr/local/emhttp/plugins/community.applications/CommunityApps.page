@@ -272,9 +272,8 @@ $(function(){
 		});
 	} else {
 		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") ) {
-			refreshDisplay();	
 			restoreState();
-
+			refreshDisplay();	
 		} else {
 			updateContent();
 		}
@@ -299,22 +298,22 @@ function updateContent(button) {
 	$(".subCategory").each(function() {
 		$(this).hide();
 	});
-	startupScreen = $.cookie("startupButton") ? $.cookie("startupButton") : "onlynew";
+	startupScreen = $.cookie("ca_startupButton") ? $.cookie("ca_startupButton") : "onlynew";
 	$(".caMenuItem[data-category='"+startupScreen+"']").addClass("selectedMenu")
 
 	var appFeedModeMsg = button ? "" : "Retrieving the latest application Lists";
 
 	startupScreen = button ? $(button).data("category") : startupScreen;
-	$.cookie("startupButton",startupScreen,{expires:365});
-	$.cookie("selectedMenu",startupScreen,{expires:365});
+	$.cookie("ca_startupButton",startupScreen,{expires:365});
+	$.cookie("ca_selectedMenu",startupScreen,{expires:365});
 	disableSearch();
 	if ( appFeedModeMsg ) {
 		myAlert("Updating Content",appFeedModeMsg,true,"40");
 	}
 	post({action:'force_update'}, function(result) {
-		if ( $.cookie("plugininstallpending" || ! appFeedModeMsg ) ) {
-			var plugins = $.cookie("plugininstallpending");
-			$.removeCookie("plugininstallpending");
+		if ( $.cookie("ca_plugininstallpending" || ! appFeedModeMsg ) ) {
+			var plugins = $.cookie("ca_plugininstallpending");
+			$.removeCookie("ca_plugininstallpending");
 			myCloseAlert();
 			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
 		} else {
@@ -372,7 +371,7 @@ function setToolTip() {
 
 // Wait for the showDesc modal to close before opening another to install plugin
 function checkForPluginInstallRequested() {
-	var pluginURL = $.cookie("installPluginURL");
+	var pluginURL = $.cookie("ca_installPluginURL");
 	if ( pluginURL ) {
 		pluginInstallIntervalTimer = setInterval(modalPluginInstall,100);
 	}
@@ -381,8 +380,8 @@ function checkForPluginInstallRequested() {
 function modalPluginInstall() {
 	if ( ! $("#sb-container").is(":visible") ) {
 		clearInterval(pluginInstallIntervalTimer);
-		var pluginURL = $.cookie("installPluginURL");
-		$.removeCookie("installPluginURL");
+		var pluginURL = $.cookie("ca_installPluginURL");
+		$.removeCookie("ca_installPluginURL");
 		installPlugin(pluginURL);
 	}
 }
@@ -544,7 +543,12 @@ function changeSortOrder(button,buttonClass,previousApps) {
 	var selected = data.selected;
 	var sortOrder = getSortOrder();
 	var startup = false;
-	data.searchActive = false;
+	if ( button || buttonClass || previousApps) {
+		data.searchActive = false;
+	}
+	if ( data.searchActive ) {
+		sortOrder = [["sortBy","noSort"]];
+	}
 	$(".startupButton").each(function(){
 		if ($(this).hasClass("selectedMenu")) {
 			startup = "true";
@@ -1050,7 +1054,7 @@ function installMulti() {
 		if ( isConfirm ) {
 			myCloseAlert();
 			if ( docker.length && plugin.length ) {
-				$.cookie("plugininstallpending",plugin);
+				$.cookie("ca_plugininstallpending",plugin);
 			}
 			if ( docker.length ) {
 				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
@@ -1083,20 +1087,20 @@ function handle_HTTP_icons() {
 function saveState() {
 	if ( ! dockerSearchFlag ) {
 		console.log("Save State");
-		$.cookie("categoryText",$("#Category").html());
-		$.cookie("data",JSON.stringify(data));
-		$.cookie("dockerSearchFlag",dockerSearchFlag);
-		$.cookie("installMulti",$(".multi_installDiv").is(":visible"));
+		$.cookie("ca_categoryText",$("#Category").html());
+		$.cookie("ca_data",JSON.stringify(data));
+		$.cookie("ca_dockerSearchFlag",dockerSearchFlag);
+		$.cookie("ca_installMulti",$(".multi_installDiv").is(":visible"));
 		var selectedMenu = $(".selectedMenu").data("category");
 		if ( ! selectedMenu ) {
 			selectedMenu = "";
 		}
-		$.cookie("selectedMenu",selectedMenu);
-		$.cookie("sortIcon",isIconEnabled("#sortIcon"));
+		$.cookie("ca_selectedMenu",selectedMenu);
+		$.cookie("ca_sortIcon",isIconEnabled("#sortIcon"));
 
 		$(".sortIcons").each(function() {
 			if ( isIconEnabled(this) ) {
-				$.cookie("sortButton",$(this).data("sort"));
+				$.cookie("ca_sortButton",$(this).data("sort"));
 			}
 		});
 	}
@@ -1106,21 +1110,21 @@ function restoreState() {
   swalBackground("transparent");
 
 	console.log("Restore State");
-	$("#Category").html($.cookie("categoryText"));
-	if ( $.cookie("installMulti") == "true" ) {
+	$("#Category").html($.cookie("ca_categoryText"));
+	if ( $.cookie("ca_installMulti") == "true" ) {
 		$(".multi_installDiv").show();
 	} else {
 		$(".multi_installDiv").hide();
 	}
-	data = JSON.parse($.cookie("data"));
-	dockerSearchFlag = $.cookie("dockerSearchFlag");
-	restoreStateMenu = $.cookie("selectedMenu");
+	data = JSON.parse($.cookie("ca_data"));
+	dockerSearchFlag = $.cookie("ca_dockerSearchFlag");
+	restoreStateMenu = $.cookie("ca_selectedMenu");
 
-	enableIcon("#sortIcon",$.cookie("sortIcon"));
+	enableIcon("#sortIcon",$.cookie("ca_sortIcon"));
 	$(".sortIcons").each(function() {
 		$(this).removeClass("enabledIcon");
 	});
-	var selectedSort = $.cookie("sortButton");
+	var selectedSort = $.cookie("ca_sortButton");
 	var sortIcon = $.find(".sortIcons[data-sort='"+selectedSort+"']");
 	$(sortIcon).addClass("enabledIcon");
 	var classList = $(sortIcon).attr('class').split(/\s+/);

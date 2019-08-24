@@ -622,7 +622,8 @@ case 'uninstall_docker':
 		myStopContainer($dockerRunning[$container]['Id']);
 
 	$DockerClient->removeContainer($containerName,$dockerRunning[$container]['Id']);
-	$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
+	if ( $communitySettings['deleteImage'] !== "no" )
+		$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
 
 	postReturn(['status'=>"Uninstalled"]);
 	break;

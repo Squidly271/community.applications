@@ -523,7 +523,7 @@ function getPopupDescription($appNumber) {
 
 	$templateDescription .= $template['Licence'] ? "<tr><td>Licence:</td><td>".$template['Licence']."</td></tr>" : "";
 	if ( $template['trending'] ) {
-		$templateDescription .= "<tr><td>Monthly Trend:</td><td>Ranked #$trendRank";
+		$templateDescription .= "<tr><td>30 Day Trend:</td><td>Ranked #$trendRank";
 		if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 			$templateDescription .= ".  Trending ";
 			$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";

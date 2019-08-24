@@ -42,7 +42,7 @@ div.spinner .unraid_mark_7{animation:mark_7 1.5s ease infinite}
 </style>
 <script>
 $(function() {
-	$.removeCookie("installPluginURL",{path:"/"});
+	$.removeCookie("ca_installPluginURL",{path:"/"});
 
 	setTimeout(function() {
 		$(".spinner").show();
@@ -209,7 +209,7 @@ $(function() {
 });
 
 function installPlugin(pluginURL) {
-	$.cookie("installPluginURL",pluginURL,{path:"/"});
+	$.cookie("ca_installPluginURL",pluginURL,{path:"/"});
 	window.parent.Shadowbox.close();
 }
 
