@@ -84,6 +84,9 @@ $(function() {
 			if (descData.trendLabel.length > 6) {
 				var fontSize = 11;
 			}
+			if (descData.trendLabel.length > 8) {
+				var fontSize = 8;
+			}
 			
 			var ctx = document.getElementById("trendChart").getContext('2d');
 			let chart = new Chart(ctx, {
