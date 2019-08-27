@@ -560,17 +560,17 @@ function getPopupDescription($appNumber) {
 		if ( ! $template['Plugin'] ) {
 			if ( $communitySettings['dockerRunning'] ) {
 				if ( $selected ) {
-					$installLine .= $communitySettings['defaultReinstall'] == "true" ? "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall (default)</a>" : "";
-					$installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-edit' href='/Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'>&nbsp;&nbsp;Edit</a>";
+					$installLine .= $communitySettings['defaultReinstall'] == "true" ? "<a class='appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall (default)</a>" : "";
+					$installLine .= "<a class='appIconsPopUp ca_fa-edit' href='/Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'>&nbsp;&nbsp;Edit</a>";
 					if ( $info[$name]['url'] && $info[$name]['running'] ) {
-						$installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank'>&nbsp;&nbsp;WebUI</a>";
+						$installLine .= "<a class='appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank'>&nbsp;&nbsp;WebUI</a>";
 					}
 				} else {
 					if ( $template['MyPath'] )
-						$installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall</a>";
+						$installLine .= "<a class='appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall</a>";
 					else {
-						$install = "<a class='ca_apptooltip appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Install</a>";
-						$installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install' onclick='$(&quot;#branch&quot;).show(500);'>&nbsp;&nbsp;Install</a>" : $install;
+						$install = "<a class='appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Install</a>";
+						$installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='appIconsPopUp ca_fa-install' onclick='$(&quot;#branch&quot;).show(500);'>&nbsp;&nbsp;Install</a>" : $install;
 					}
 				}
 			}
@@ -578,10 +578,10 @@ function getPopupDescription($appNumber) {
 			if ( file_exists("/var/log/plugins/$pluginName") ) {
 				$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 				if ( $pluginSettings )
-					$installLine .= "<a class='ca_apptooltip appIconsPopUp ca_fa-pluginSettings' href='/Apps/$pluginSettings' target='$tabMode'>&nbsp;&nbsp;Settings</a>";
+					$installLine .= "<a class='appIconsPopUp ca_fa-pluginSettings' href='/Apps/$pluginSettings' target='$tabMode'>&nbsp;&nbsp;Settings</a>";
 			} else {
 				$buttonTitle = $template['MyPath'] ? "Reinstall" : "Install";
-				$installLine .= "<a style='cursor:pointer' class='ca_apptooltip appIconsPopUp ca_fa-install pluginInstall' onclick=installPlugin('".$template['PluginURL']."');>&nbsp;&nbsp;$buttonTitle</a>";
+				$installLine .= "<a style='cursor:pointer' class='appIconsPopUp ca_fa-install pluginInstall' onclick=installPlugin('".$template['PluginURL']."');>&nbsp;&nbsp;$buttonTitle</a>";
 			}
 		}
 	}
@@ -592,7 +592,7 @@ function getPopupDescription($appNumber) {
 		$installLine .= "</span>";
 	}
 	if ( $installLine ) {
-		$templateDescription .= "<font size:0.9rem;>$installLine</font><br>";
+		$templateDescription .= "$installLine<br>";
 		if ($template['BranchID']) {
 			$templateDescription .= "<span id='branch' style='display:none;'>";
 			$templateDescription .= formatTags($template['ID'],"_parent");
