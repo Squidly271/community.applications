@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.08.31a
+- Don't display any menu item in the case of an application feed download error
+
 ###2019.08.31
 - Prevent a particular error display under an extremely unlikely set of circumstances
 
