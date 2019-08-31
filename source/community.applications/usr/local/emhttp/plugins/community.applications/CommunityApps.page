@@ -1334,7 +1334,7 @@ function feedWarning(currentServer) {
 	<li class='categoryMenu caMenuItem' data-category='All'>All Apps</li>
 </ul>
 <div class='menuHeader'>OTHER</div>
-<ul class='caMenu'>
+<ul class='caMenu caRelated'>
 	<li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'>Settings</a></li>
 	<li class='caMenuItem' onclick='disableSort();scrollToTop();showStatistics();'>Statistics</li>
 	<li class='caMenuItem' onclick='disableSort();scrollToTop();showCredits();'>Credits</li>

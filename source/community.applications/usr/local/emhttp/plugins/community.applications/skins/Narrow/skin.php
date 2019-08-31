@@ -74,7 +74,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$iconClass = "displayIcon";
 
 	$displayTemplate = $skin[$viewMode]['template'];
-	$currentServer = file_get_contents($communityPaths['currentServer']);
+	$currentServer = @file_get_contents($communityPaths['currentServer']);
 
 	# Create entries for skins.  Note that MANY entries are not used in the current skins
 	foreach ($displayedTemplates as $template) {
