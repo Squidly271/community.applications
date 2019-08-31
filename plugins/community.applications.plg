@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.08.27">
-<!ENTITY md5       "4a37fb0973491b1f8c33a84a6ff25267">
+<!ENTITY version   "2019.08.31">
+<!ENTITY md5       "5a6dcb9b9b5096b0b40f24e925028a59">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.08.31
+- Prevent a particular error display under an extremely unlikely set of circumstances
+
 ###2019.08.27
 - Some cleanup of code
 - Rename cookies to not potentially interfere with other plugins / unRaid itself

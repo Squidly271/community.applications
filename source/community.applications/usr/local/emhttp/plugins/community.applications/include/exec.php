@@ -867,8 +867,7 @@ case 'getPopupDescription':
 function DownloadApplicationFeed() {
 	global $communityPaths, $communitySettings, $statistics;
 
-	exec("rm -rf '{$communityPaths['templates-community']}'");
-	exec("rm -rf '{$communityPaths['HTTPicons']}'");
+	exec("rm -rf '{$communityPaths['tempFiles']}'");
 	@mkdir($communityPaths['templates-community'],0777,true);
 
 	$currentFeed = "Primary Server";
