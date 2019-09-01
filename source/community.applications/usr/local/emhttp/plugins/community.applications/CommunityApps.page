@@ -60,11 +60,11 @@ var backupServerWarning = false;
 var restoreStateMenu = false;
 
 $(function(){
-	if ( typeof caPlugcaPluginUpdateCheck === "function" ) {
+	if ( typeof caPluginUpdateCheck === "function" ) {
 			caPluginUpdateCheck("community.applications.plg",{
 				noDismiss:true,
 				name:"Community Applications",
-				debug:false,
+				debug:true,
 				priority:true
 			},function(result) {
 				var result = JSON.parse(result);
