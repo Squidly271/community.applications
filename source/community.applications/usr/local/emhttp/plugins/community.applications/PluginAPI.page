@@ -8,10 +8,14 @@ Link='nav-user'
 #                    All Rights Reserved                      #
 #                                                             #
 ###############################################################
+
+$unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
+$pluginAPIincl = file_exists("/usr/local/emhttp/plugins/dynamix.plugin.manager/PluginHelpers.page");
 ?>
 
+<? if ( ! $pluginAPIincl ) : ?>
 <style>
-.ca_plugin_notice{position:fixed;top:1px;left:0;}
+/* Additional CSS for when user supplies element */
 .ca_element_notice{padding-right:20px;width:100%;height:40px;line-height:40px;color:#e68a00;background:#feefb3;border-bottom:#e68a00 1px solid;text-align:center;font-size:1.4rem;z-index:900;display:none;}
 .ca_PluginUpdateDismiss{float:right;margin-right:20px;cursor:pointer;}
 .ca_pluginUpdateInfo{cursor:pointer;}
@@ -20,96 +24,64 @@ a.bannerInfo {cursor:pointer;text-decoration:none;}
 .bannerInfo::before {content:"\f05a";font-family:fontAwesome;color:#e68a00;}
 </style>
 <script>
-var ca_PluginUpdatePLG;
-var ca_PluginUpdateElement;
-var ca_WarningItems = [];
-var currentWarning = 0;
 
-$(function() {
-	$(".upgrade_notice").after("<div class='ca_plugin_notice ca_element_notice'></div>");
-});
+function ca_hidePluginUpdate(plugin,version,element) {
+	$.cookie(plugin,version);
+	$(element).hide();
+}
 
-if ( typeof caPluginUpdateCheck !== "function" ) {
-	function ca_PluginUpdate_openBox(cmd,title,height,width,load,func) {
-		// open shadowbox window (run in foreground)
-		var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
-		var options = load ? {modal:true,onClose:function(){ eval(func); }} : {modal:true};
-		Shadowbox.open({content:run, player:'iframe', title:title, height:height, width:width, options:options});
-	}
+function ca_pluginUpdateInstall(plugin) {
+	openBox("/plugins/dynamix.plugin.manager/scripts/plugin&arg1=update&arg2="+plugin,"Installing Update",600,900,true,"window.location.reload()");
+}
 
-	function ca_hidePluginUpdate(version) {
-		$.cookie(ca_PluginUpdatePLG,version);
-		$(ca_PluginUpdateElement).hide();
-	}
+function ca_pluginUpdateShowInfo(cmd,title,height,width,load,func,id) {
+	// open shadowbox window (run in foreground)
+	var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
+	var options = load ? (func ? {modal:true,onClose:function(){setTimeout(func+'('+'"'+(id||'')+'")',0);}} : {modal:false,onClose:function(){location=location;}}) : {modal:false};
+	Shadowbox.open({content:run, player:'iframe', title:title, height:Math.min(height,screen.availHeight), width:Math.min(width,screen.availWidth), options:options});
+}
 
-	function ca_pluginUpdateInstall(plugin) {
-		ca_PluginUpdate_openBox("/plugins/community.applications/scripts/installPluginUpdate.sh&arg1="+plugin,"Installing Update",600,900,true,"window.location.reload()");
-	}
+function caPluginUpdateCheck(plugin,options=[],callback) {
+	var pluginFilename = plugin.substr(0, plugin.lastIndexOf("."));
+	console.time("checkPlugin "+plugin);
+	console.log("checkPlugin  "+plugin);
+	$.post("/plugins/dynamix.plugin.manager/scripts/PluginAPI.php",{action:'checkPlugin',options:{plugin:plugin}},function(caAPIresult) {
+		console.groupCollapsed("Result checkPlugin "+plugin);
+		console.log(caAPIresult);
+		console.timeEnd("checkPlugin "+plugin);
+		console.groupEnd();
+		var result = JSON.parse(caAPIresult);
 
-	function ca_pluginUpdateShowInfo(cmd,title,height,width,load,func,id) {
-		// open shadowbox window (run in foreground)
-		var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
-		var options = load ? (func ? {modal:true,onClose:function(){setTimeout(func+'('+'"'+(id||'')+'")',0);}} : {modal:false,onClose:function(){location=location;}}) : {modal:false};
-		Shadowbox.open({content:run, player:'iframe', title:title, height:Math.min(height,screen.availHeight), width:Math.min(width,screen.availWidth), options:options});
-	}
-
-	function ca_pluginUpdate_evaluateBoolean(str) {
-		regex=/^\s*(true|1|on)\s*$/i
-		return regex.test(str);
-	}
-
-	function caPluginUpdateCheck(plugin,options=[],callback) {
-		ca_PluginUpdatePLG = plugin;
-		pluginFilename = plugin.substr(0, plugin.lastIndexOf("."));
-		console.time("checkPlugin "+plugin);
-		console.log("checkPlugin  "+plugin);
-		$.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'checkPlugin',options:{plugin:plugin}},function(caAPIresult) {
-			console.groupCollapsed("Result checkPlugin "+plugin);
-			console.log(caAPIresult);
-			console.timeEnd("checkPlugin "+plugin);
-			console.groupEnd();
-			var result = JSON.parse(caAPIresult);
-
-			if ( options.debug == true ) result.updateAvailable = true;
-			var name = options.name ? options.name : "this plugin ("+plugin+")";
-			if ( ! options.element ) {
+		if ( options.debug == true ) result.updateAvailable = true;
+		var name = options.name ? options.name : "this plugin ("+plugin+")";
+		if ( ! options.element && ! options.dontShow ) {
+			if ( result.updateAvailable ) {
+				var HTML = "An upgrade to "+name+" is available.  Click <a class='ca_PluginUpdateInstall' onclick='ca_pluginUpdateInstall(&quot;"+plugin+"&quot;);'>here</a> to install version "+result.version+" <a class='bannerInfo fa fa-info-circle' onclick=ca_pluginUpdateShowInfo('/plugins/dynamix.plugin.manager/include/ShowChanges.php?file=%2Ftmp%2Fplugins%2F"+pluginFilename+".txt','Release&nbsp;Notes',600,900); return false;'></a>";
+				addBannerWarning(HTML,false,options.noDismiss);
+			}
+		} else {
+			if ( $.cookie(plugin) != result.version ) {
 				if ( result.updateAvailable ) {
-					var HTML = "An upgrade to "+name+" is available.  Click <a class='ca_PluginUpdateInstall' onclick='ca_pluginUpdateInstall(&quot;"+plugin+"&quot;);'>here</a> to install version "+result.version+" <a class='bannerInfo fa fa-info-circle' onclick=ca_pluginUpdateShowInfo('/plugins/dynamix.plugin.manager/include/ShowChanges.php?file=%2Ftmp%2Fplugins%2F"+pluginFilename+".txt','Release&nbsp;Notes',600,900); return false;'></a>";
-					addBannerWarning(HTML,false,ca_pluginUpdate_evaluateBoolean(options.noDismiss));
-				}
-			} else {
-				if ( $.cookie(plugin) != result.version ) {
-					if ( result.updateAvailable ) {
-						var HTML = "An upgrade to "+name+" is available.  Click <a class='ca_PluginUpdateInstall' onclick='ca_pluginUpdateInstall(&quot;"+plugin+"&quot;);'>here</a> to install version "+result.version+" <i class='ca_pluginUpdateInfo fa fa-info-circle' onclick=ca_pluginUpdateShowInfo('/plugins/dynamix.plugin.manager/include/ShowChanges.php?file=%2Ftmp%2Fplugins%2F"+pluginFilename+".txt','Release&nbsp;Notes',600,900); return false;'></i>";
-						if ( ! ca_pluginUpdate_evaluateBoolean(options.noDismiss) ) {
-							HTML = HTML.concat("<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='ca_hidePluginUpdate(&quot;"+result.version+"&quot;);'></i>");
-						}
-						result.HTML = HTML;
-						ca_PluginUpdateElement = options.element ? options.element : ".ca_plugin_notice";
+					var HTML = "An upgrade to "+name+" is available.  Click <a class='ca_PluginUpdateInstall' onclick='ca_pluginUpdateInstall(&quot;"+plugin+"&quot;);'>here</a> to install version "+result.version+" <i class='ca_pluginUpdateInfo fa fa-info-circle' onclick=ca_pluginUpdateShowInfo('/plugins/dynamix.plugin.manager/include/ShowChanges.php?file=%2Ftmp%2Fplugins%2F"+pluginFilename+".txt','Release&nbsp;Notes',600,900); return false;'></i>";
+					if ( ! options.noDismiss ) {
+						HTML = HTML.concat("<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='ca_hidePluginUpdate(&quot;"+plugin+"&quot;,&quot;"+result.version+"&quot;,&quot;"+options.element+"&quot;);'></i>");
+					}
+					result.HTML = HTML;
 
-						if ( ! ca_pluginUpdate_evaluateBoolean(options.dontShow) ) {
-							if ( ! options.element ) {
-								$(".ca_element_notice").html(HTML);
-								if (options.priority) {
-									var z_index = $(".upgrade_notice").css("z-index");
-									$(".ca_element_notice").css("z-index",z_index+1);
-								}
-							} else {
-								$(ca_PluginUpdateElement).html(HTML);
-							}
-							$(ca_PluginUpdateElement).addClass("ca_element_notice").show();
-						}
+					if ( ! options.dontShow ) {
+						$(options.element).html(HTML);
+						$(options.element).addClass("ca_element_notice").show();
 					}
 				}
 			}
-			if ( typeof options === "function" ) {
-				callback = options;
-			}
-			if ( typeof callback === "function" ) {
-				callback(JSON.stringify(result));
-			}
-		});
-	}
+		}
+		if ( typeof options === "function" ) {
+			callback = options;
+		}
+		if ( typeof callback === "function" ) {
+			callback(JSON.stringify(result));
+		}
+	});
 }
 
 if ( typeof addBannerWarning !== "function" ) {
@@ -174,3 +146,4 @@ if ( typeof addBannerWarning !== "function" ) {
 	}
 }
 </script>
+<?endif;?>

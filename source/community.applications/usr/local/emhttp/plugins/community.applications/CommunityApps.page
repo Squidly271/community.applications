@@ -25,7 +25,7 @@ $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 if ( is_file($communityPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
-$date = (date("n/d"));
+$date = date("n/d");
 ?>
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/$plugin/styles/awesomplete.css")?>'>
@@ -63,7 +63,7 @@ $(function(){
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
 			name:"Community Applications",
-			debug:false,
+			debug:true,
 			priority:true
 		},function(result) {
 			var result = JSON.parse(result);
