@@ -25,7 +25,7 @@ $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 if ( is_file($communityPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
-$date = date("n/d");
+$date = (date("n/d"));
 ?>
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/$plugin/styles/awesomplete.css")?>'>
@@ -60,18 +60,16 @@ var backupServerWarning = false;
 var restoreStateMenu = false;
 
 $(function(){
-	if ( typeof caPluginUpdateCheck === "function" ) {
-			caPluginUpdateCheck("community.applications.plg",{
-				noDismiss:true,
-				name:"Community Applications",
-				debug:false,
-				priority:true
-			},function(result) {
-				var result = JSON.parse(result);
-				$("#caInstalledVersion").html(result.installedVersion);
-			}
-		);
-	}
+	caPluginUpdateCheck("community.applications.plg",{
+			noDismiss:true,
+			name:"Community Applications",
+			debug:false,
+			priority:true
+		},function(result) {
+			var result = JSON.parse(result);
+			$("#caInstalledVersion").html(result.installedVersion);
+		}
+	);
 
 	$("#title").append('<div id="Category" class="categoryLine ca_italic"></div>');
 	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name Ascending' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name Descending' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i><i class='sortIcons fa fa-calendar ca_staticTips' title='Sort By Date Added' data-sort='firstSeenDown'></i></span><span id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon'> <span class='fa-sort-alpha-asc'></span></span>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
