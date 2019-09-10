@@ -24,6 +24,7 @@ var ca_PluginUpdatePLG;
 var ca_PluginUpdateElement;
 var ca_WarningItems = [];
 var currentWarning = 0;
+warningInterval = false;
 
 $(function() {
 	$(".upgrade_notice").after("<div class='ca_plugin_notice ca_element_notice'></div>");
