@@ -1294,13 +1294,16 @@ function getCategories() {
 }
 
 function feedWarning(currentServer) {
-	if ( currentServer != "Primary Server" && backupServerWarning === false) {
-		backupServerWarning = addBannerWarning("Backup Server Active.  Some icons may not appear, and plugin installations may be affected");
-	} else {
-		if ( backupServerWarning !== false ) {
+	if ( currentServer != "Primary Server" ) {
+		if ( !backupServerWarning ) {
+			backupServerWarning = addBannerWarning("Backup Server Active.  Some icons may not appear, and plugin installations may be affected");
+		} else {
 			removeBannerWarning(backupServerWarning);
 			backupServerWarning = false;
 		}
+	} else if ( backupServerWarning ) {
+		removeBannerWarning(backupServerWarning);
+		backupServerWarning = false;
 	}
 }
 
