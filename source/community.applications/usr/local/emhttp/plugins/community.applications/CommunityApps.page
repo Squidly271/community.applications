@@ -21,6 +21,7 @@ if ( ! is_file($communityPaths['warningAccepted']) ) {
 }
 $unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
+$unRaid68 = version_compare($unRaidSettings['version'],"6.7.9",">");
 
 if ( is_file($communityPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
@@ -1256,6 +1257,7 @@ function post(options,callback) {
 			myCloseSpinner();
 		}
 	}
+<? if ( ! $unRaid68 ):?>	// unRaid68 requires cookies, so no point in checking for them
 	if ( ! cookiesEnabled() ) {
 		if ( cookieWarning === false) {
 			cookieWarning = addBannerWarning("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.");
@@ -1269,6 +1271,7 @@ function post(options,callback) {
 			console.log("warning removed");
 		}
 	}
+<?endif;?>
 }
 
 function getCategories() {

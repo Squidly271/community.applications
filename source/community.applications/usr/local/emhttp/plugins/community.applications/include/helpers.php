@@ -50,11 +50,31 @@ function readJsonFile($filename) {
 function writeJsonFile($filename,$jsonArray) {
 	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 }
-function download_url($url, $path = "", $bg = false, $timeout=45){
+
+function download_url($url, $path = "", $bg = false, $timeout = 45) {
+	$ch = curl_init();
+	curl_setopt($ch,CURLOPT_URL,$url);
+	curl_setopt($ch,CURLOPT_FRESH_CONNECT,true);
+	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,15);
+	curl_setopt($ch,CURLOPT_TIMEOUT,$timeout);
+	curl_setopt($ch,CURLOPT_ENCODING,"");
+	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+	$out = curl_exec($ch);
+	if ( ! $path )
+		return $out;
+	else {
+		file_put_contents($path,$out);
+		return $out ? true : false;
+	}
+}
+	
+
+/* function download_url($url, $path = "", $bg = false, $timeout=45){
 	if ( ! strpos($url,"?") ) $url .= "?".time();
 	exec("curl --compressed --connect-timeout 15 --max-time $timeout --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
 	return ($exit_code === 0 ) ? implode("\n", $out) : false;
-}
+} */
 function download_json($url,$path) {
 	download_url($url,$path);
 	return readJsonFile($path);
