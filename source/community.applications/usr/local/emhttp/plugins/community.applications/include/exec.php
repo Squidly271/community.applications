@@ -253,7 +253,7 @@ case 'force_update':
 
 			$o['data'] .=  "<div class='ca_center'>Last JSON error Recorded: ";
 			$jsonDecode = json_decode($downloaded,true);
-			$o['data'] .= "JSON Error: ".jsonError(json_last_error());
+			$o['data'] .= "JSON Error: ".json_last_error_msg();
 			if ( $publicServiceAnnouncement )
 				$o['data'] .= "<br><font size='3' color='purple'>$publicServiceAnnouncement</font>";
 
