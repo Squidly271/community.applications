@@ -61,11 +61,12 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	curl_setopt($ch,CURLOPT_ENCODING,"");
 	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 	$out = curl_exec($ch);
+	curl_close($ch);
 	if ( ! $path )
 		return $out;
 	else {
 		file_put_contents($path,$out);
-		return $out ? true : false;
+		return $out ?: false;
 	}
 }
 	
