@@ -12,7 +12,7 @@
 #                                                          #
 ############################################################
 function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
-	global $caPaths, $communitySettings;
+	global $caPaths, $caSettings;
 
 	$file = readJsonFile($caPaths['community-templates-displayed']);
 	$communityApplications = is_array($file['community']) ? $file['community'] : array();
@@ -27,7 +27,7 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 #my_display_apps(), getPageNavigation(), displaySearchResults() must accept all parameters
 #note that many template entries in my_display_apps() are not actually used in the skin, but are present for future possible use.
 function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false) {
-	global $caPaths, $communitySettings, $plugin, $displayDeprecated, $sortOrder;
+	global $caPaths, $caSettings, $plugin, $displayDeprecated, $sortOrder;
 
 	$viewMode = "detail";
 
@@ -37,14 +37,14 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	if ( ! $selectedApps )
 		$selectedApps = array();
 
-	$dockerNotEnabled = (! $communitySettings['dockerRunning'] && ! $communitySettings['NoInstalls']) ? "true" : "false";
+	$dockerNotEnabled = (! $caSettings['dockerRunning'] && ! $caSettings['NoInstalls']) ? "true" : "false";
 		$displayHeader = "<script>addDockerWarning($dockerNotEnabled);var dockerNotEnabled = $dockerNotEnabled;</script>";
 
 	if ( is_file($caPaths['pinned']) )
 		convertPinnedAppsToV2();
 
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
-	$iconSize = $communitySettings['iconSize'];
+	$iconSize = $caSettings['iconSize'];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
 	if ( filter_var($startup,FILTER_VALIDATE_BOOLEAN) )
 		$sortOrder['sortBy'] = "noSort";
@@ -58,7 +58,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$columnNumber = 0;
 	$appCount = 0;
-	$startingApp = ($pageNumber -1) * $communitySettings['maxPerPage'] + 1;
+	$startingApp = ($pageNumber -1) * $caSettings['maxPerPage'] + 1;
 	$startingAppCounter = 0;
 
 	$displayedTemplates = array();
@@ -144,7 +144,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$UpdatedClassType = $template['BrandNewApp'] ? "ca_dateAdded" : "ca_dateUpdated";
 		$template['display_dateUpdated'] = ($template['Date'] && $template['NewApp'] ) ? "<span class='$UpdatedClassType'><span class='ca_dateUpdatedDate'>{$template['display_humanDate']}</span></span>" : "";
 		$template['display_multi_install'] = ($template['Removable']) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-type='$appType' $checked>" : "";
-		if (! $communitySettings['dockerRunning'] && ! $template['Plugin'])
+		if (! $caSettings['dockerRunning'] && ! $template['Plugin'])
 			unset($template['display_multi_install']);
 
 		if ( $template['Plugin'] )
@@ -153,7 +153,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		if ( $template['UpdateAvailable'] )
 			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</span></div></font>" : "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a href='Docker'>Here</a> to install</span></font></div>";
 
-		if ( ! $template['NoInstall'] && ! $communitySettings['NoInstalls'] ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
+		if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls'] ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
 			if ( $template['Plugin'] ) {
 				$pluginName = basename($template['PluginURL']);
 				if ( checkInstalledPlugin($template) ) {
@@ -165,7 +165,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='Click to install this plugin' onclick=installPlugin('{$template['PluginURL']}');></a>";
 				}
 			} else {
-				if ( $communitySettings['dockerRunning'] ) {
+				if ( $caSettings['dockerRunning'] ) {
 					if ( $selected ) {
 						$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click to reinstall the application using default values' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='_self'></a>";
 						$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip ca_fa-install appIcons' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'></a>" : $template['display_dockerDefaultIcon'];
@@ -252,7 +252,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 # Entries created.  Now display it
 		$ct .= vsprintf($displayTemplate,toNumericArray($template));
 		$count++;
-		if ( $count == $communitySettings['maxPerPage'] ) break;
+		if ( $count == $caSettings['maxPerPage'] ) break;
 	}
 	$ct .= $skin[$viewMode]['footer'];
 	$ct .= getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
@@ -269,19 +269,19 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 }
 
 function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = true) {
-	global $communitySettings;
+	global $caSettings;
 
-	if ( $communitySettings['maxPerPage'] < 0 ) return;
+	if ( $caSettings['maxPerPage'] < 0 ) return;
 	$swipeScript = "<script>";
 	$my_function = $dockerSearch ? "dockerSearch" : "changePage";
 	if ( $dockerSearch )
-		$communitySettings['maxPerPage'] = 25;
-	$totalPages = ceil($totalApps / $communitySettings['maxPerPage']);
+		$caSettings['maxPerPage'] = 25;
+	$totalPages = ceil($totalApps / $caSettings['maxPerPage']);
 
 	if ($totalPages == 1) return;
 
-	$startApp = ($pageNumber - 1) * $communitySettings['maxPerPage'] + 1;
-	$endApp = $pageNumber * $communitySettings['maxPerPage'];
+	$startApp = ($pageNumber - 1) * $caSettings['maxPerPage'] + 1;
+	$endApp = $pageNumber * $caSettings['maxPerPage'];
 	if ( $endApp > $totalApps )
 		$endApp = $totalApps;
 
@@ -337,7 +337,7 @@ function dockerNavigate($num_pages, $pageNumber) {
 #                                                            #
 ##############################################################
 function displaySearchResults($pageNumber) {
-	global $caPaths, $communitySettings, $plugin;
+	global $caPaths, $caSettings, $plugin;
 
 	$tempFile = readJsonFile($caPaths['dockerSearchResults']);
 	$num_pages = $tempFile['num_pages'];
@@ -373,28 +373,28 @@ function displaySearchResults($pageNumber) {
 # Generate the display for the popup #
 ######################################
 function getPopupDescription($appNumber) {
-	global $communitySettings, $caPaths;
+	global $caSettings, $caPaths;
 
 	require_once("webGui/include/Markdown.php");
 
 	$unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
-	$communitySettings = parse_plugin_cfg("community.applications");
+	$caSettings = parse_plugin_cfg("community.applications");
 	$csrf_token = $unRaidVars['csrf_token'];
 	$tabMode = '_parent';
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
-		$communitySettings['dockerRunning'] = "true";
+		$caSettings['dockerRunning'] = "true";
 		$DockerTemplates = new DockerTemplates();
 		$DockerClient = new DockerClient();
 		$info = $DockerTemplates->getAllInfo();
 		$dockerRunning = $DockerClient->getDockerContainers();
 	} else {
-		unset($communitySettings['dockerRunning']);
+		unset($caSettings['dockerRunning']);
 		$info = array();
 		$dockerRunning = array();
 	}
 	if ( ! is_file($caPaths['warningAccepted']) )
-		$communitySettings['NoInstalls'] = true;
+		$caSettings['NoInstalls'] = true;
 
 	# $appNumber is actually the path to the template.  It's pretty much always going to be the same even if the database is out of sync.
 	$displayed = readJsonFile($caPaths['community-templates-displayed']);
@@ -556,11 +556,11 @@ function getPopupDescription($appNumber) {
 	if ( ! $Displayed )
 		$templateDescription .= "<div><span class='ca_fa-warning warning-yellow'></span>&nbsp; <font size='1'>Another browser tab or device has updated the displayed templates.  Some actions are not available</font></div>";
 
-	if ( $Displayed && ! $template['NoInstall'] && ! $communitySettings['NoInstalls']) {
+	if ( $Displayed && ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
 		if ( ! $template['Plugin'] ) {
-			if ( $communitySettings['dockerRunning'] ) {
+			if ( $caSettings['dockerRunning'] ) {
 				if ( $selected ) {
-					$installLine .= $communitySettings['defaultReinstall'] == "true" ? "<a class='appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall (default)</a>" : "";
+					$installLine .= $caSettings['defaultReinstall'] == "true" ? "<a class='appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall (default)</a>" : "";
 					$installLine .= "<a class='appIconsPopUp ca_fa-edit' href='/Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'>&nbsp;&nbsp;Edit</a>";
 					if ( $info[$name]['url'] && $info[$name]['running'] ) {
 						$installLine .= "<a class='appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank'>&nbsp;&nbsp;WebUI</a>";
@@ -686,7 +686,7 @@ function getPopupDescription($appNumber) {
 # (Because the associate tag order can change depending upon the template) #
 ############################################################################
 function toNumericArray($template) {
-	global $communitySettings;
+	global $caSettings;
 
 	return array(
 		$template['Repository'],              # 1
@@ -757,7 +757,7 @@ function toNumericArray($template) {
 		str_replace("-"," ",$template['display_dockerName']),      #66
 		$template['Path'],                    #67
 		$template['display_pluginInstallIcon'],#68
-		$communitySettings['defaultReinstall'] == "true" ? $template['display_dockerDefaultIcon'] : "",#69
+		$caSettings['defaultReinstall'] == "true" ? $template['display_dockerDefaultIcon'] : "",#69
 		$template['display_dockerEditIcon'],  #70
 		$template['display_dockerReinstallIcon'], #71
 		$template['display_dockerInstallIcon'], #72

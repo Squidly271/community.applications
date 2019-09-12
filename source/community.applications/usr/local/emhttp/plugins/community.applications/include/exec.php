@@ -19,29 +19,29 @@ $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 # Set up any default settings (when not explicitely set by the settings module #
 ################################################################################
 
-$communitySettings = parse_plugin_cfg("community.applications");
-$communitySettings['skin'] = "Narrow";
-$caPaths['defaultSkin'] = "/usr/local/emhttp/plugins/community.applications/skins/{$communitySettings['skin']}/skin.json";
+$caSettings = parse_plugin_cfg("community.applications");
+$caSettings['skin'] = "Narrow";
+$caPaths['defaultSkin'] = "/usr/local/emhttp/plugins/community.applications/skins/{$caSettings['skin']}/skin.json";
 $skinSettings = readJsonFile($caPaths['defaultSkin']);
 $caPaths['defaultSkinPHP'] = $skinSettings['detail']['php'];
 
 require_once($caPaths['defaultSkinPHP']);
 
-$communitySettings['maxPerPage']    = isMobile() ? 12 : 24;
-$communitySettings['unRaidVersion'] = $unRaidSettings['version'];
-$communitySettings['timeNew']       = "-10 years";
+$caSettings['maxPerPage']    = isMobile() ? 12 : 24;
+$caSettings['unRaidVersion'] = $unRaidSettings['version'];
+$caSettings['timeNew']       = "-10 years";
 if ( ! is_file($caPaths['warningAccepted']) )
-	$communitySettings['NoInstalls'] = true;
+	$caSettings['NoInstalls'] = true;
 
 $DockerClient = new DockerClient();
 $DockerTemplates = new DockerTemplates();
 
 if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
-	$communitySettings['dockerRunning'] = true;
+	$caSettings['dockerRunning'] = true;
 	$dockerRunning = $DockerClient->getDockerContainers();
 } else {
-	$communitySettings['dockerSearch'] = "no";
-	unset($communitySettings['dockerRunning']);
+	$caSettings['dockerSearch'] = "no";
+	unset($caSettings['dockerRunning']);
 	$dockerRunning = array();
 }
 
@@ -68,7 +68,7 @@ case 'get_content':
 	$category    = "/".getPost("category",false)."/i";
 	$newApp      = filter_var(getPost("newApp",false),FILTER_VALIDATE_BOOLEAN);
 	$sortOrder   = getSortOrder(getPostArray("sortOrder"));
-	$communitySettings['startup'] = getPost("startupDisplay",false);
+	$caSettings['startup'] = getPost("startupDisplay",false);
 
 	switch ($category) {
 		case "/PRIVATE/i":
@@ -90,7 +90,7 @@ case 'get_content':
 			$noInstallComment = "<span class='ca_bold'>While highly not recommended to do</span>, incompatible applications can be installed by enabling Display Incompatible Applications within CA's General Settings<br><br>";
 			break;
 	}
-	$newAppTime = strtotime($communitySettings['timeNew']);
+	$newAppTime = strtotime($caSettings['timeNew']);
 
 	if ( file_exists($caPaths['addConverted']) ) {
 		@unlink($caPaths['addConverted']);
@@ -106,9 +106,9 @@ case 'get_content':
 			$appsOfDay = appOfDay($file);
 
 			$displayApplications['community'] = array();
-			for ($i=0;$i<$communitySettings['maxPerPage'];$i++) {
+			for ($i=0;$i<$caSettings['maxPerPage'];$i++) {
 				if ( ! $appsOfDay[$i]) continue;
-				$file[$appsOfDay[$i]]['NewApp'] = ($communitySettings['startup'] != "random");
+				$file[$appsOfDay[$i]]['NewApp'] = ($caSettings['startup'] != "random");
 				$displayApplications['community'][] = $file[$appsOfDay[$i]];
 			}
 			if ( $displayApplications['community'] ) {
@@ -119,7 +119,7 @@ case 'get_content':
 				postReturn($o);
 				break;
 			} else {
-				switch ($communitySettings['startup']) {
+				switch ($caSettings['startup']) {
 					case "onlynew":
 						$startupType = "New"; break;
 					case "new":
@@ -151,10 +151,10 @@ case 'get_content':
 				continue;
 			} else continue;
 		}
-		if ( ($communitySettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) continue;
+		if ( ($caSettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) continue;
 		if ( $displayDeprecated && ! $template['Deprecated'] ) continue;
 		if ( ! $template['Displayable'] ) continue;
-		if ( $communitySettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) continue;
+		if ( $caSettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) continue;
 		if ( $template['Blacklist'] ) continue;
 		if ( ! $template['Compatible'] && $displayIncompatible ) {
 			$display[] = $template;
@@ -389,14 +389,14 @@ case 'previous_apps':
 	$installed = getPost("installed","");
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	$moderation = readJsonFile($caPaths['moderation']);
-	$info = $communitySettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
+	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
 
 	$file = readJsonFile($caPaths['community-templates-info']);
 
 # $info contains all installed containers
 # now correlate that to a template;
 # this section handles containers that have not been renamed from the appfeed
-if ( $communitySettings['dockerRunning'] ) {
+if ( $caSettings['dockerRunning'] ) {
 	$all_files = glob("{$caPaths['dockerManTemplates']}/*.xml");
 	$all_files = $all_files ?: array();
 
@@ -553,7 +553,7 @@ if ( $communitySettings['dockerRunning'] ) {
 			foreach ($file as $template) {
 				if ( basename($oldplug) == basename($template['Repository']) ) {
 					if ( ! file_exists("/boot/config/plugins/".basename($oldplug)) ) {
-						if ( $template['Blacklist'] || ( ($communitySettings['hideIncompatible'] == "true") && (! $template['Compatible']) ) ) continue;
+						if ( $template['Blacklist'] || ( ($caSettings['hideIncompatible'] == "true") && (! $template['Compatible']) ) ) continue;
 
 						if ( strtolower(trim($template['PluginURL'])) != strtolower(trim(plugin("pluginURL","$oldplug"))) ) {
 							if ( strtolower(trim($template['PluginURL'])) != strtolower(trim(str_replace("raw.github.com","raw.githubusercontent.com",plugin("pluginURL",$oldplug)))) )
@@ -622,7 +622,7 @@ case 'uninstall_docker':
 		myStopContainer($dockerRunning[$container]['Id']);
 
 	$DockerClient->removeContainer($containerName,$dockerRunning[$container]['Id']);
-	if ( $communitySettings['deleteImage'] !== "no" )
+	if ( $caSettings['deleteImage'] !== "no" )
 		$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
 
 	postReturn(['status'=>"Uninstalled"]);
@@ -700,7 +700,7 @@ case 'statistics':
 		if ( $template['Blacklist'] ) $statistics['blacklist']++;
 
 		if ( $template['Private'] && ! $template['Blacklist']) {
-			if ( ! ($communitySettings['hideDeprecated'] == 'true' && $template['Deprecated']) )
+			if ( ! ($caSettings['hideDeprecated'] == 'true' && $template['Deprecated']) )
 				$statistics['private']++;
 		}
 		if ( ! $template['PluginURL'] && ! $template['Repository'] )
@@ -804,7 +804,7 @@ case 'populateAutoComplete':
 	$templates = readJsonFile($caPaths['community-templates-info']);
 	$autoComplete = array_map(function($x){return str_replace(":","",$x['Cat']);},readJsonFile($caPaths['categoryList']));
 	foreach ($templates as $template) {
-		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $communitySettings['hideDeprecated'] == "true") && ($template['Compatible'] || $communitySettings['hideIncompatible'] != "true") ) {
+		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $caSettings['hideDeprecated'] == "true") && ($template['Compatible'] || $caSettings['hideIncompatible'] != "true") ) {
 			$autoComplete[strtolower($template['Name'])] = $template['Name'];
 			$autoComplete[strtolower($template['Author'])] = $template['Author'];
 			$autoComplete[$template['Repo']] = $template['Repo'];
@@ -865,7 +865,7 @@ case 'getPopupDescription':
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
 function DownloadApplicationFeed() {
-	global $caPaths, $communitySettings, $statistics;
+	global $caPaths, $caSettings, $statistics;
 
 	exec("rm -rf '{$caPaths['tempFiles']}'");
 	@mkdir($caPaths['templates-community'],0777,true);
@@ -988,7 +988,7 @@ function DownloadApplicationFeed() {
 }
 
 function getConvertedTemplates() {
-	global $caPaths, $communitySettings, $statistics;
+	global $caPaths, $caSettings, $statistics;
 
 # Start by removing any pre-existing private (converted templates)
 	$templates = readJsonFile($caPaths['community-templates-info']);
@@ -1028,14 +1028,13 @@ function getConvertedTemplates() {
 	return true;
 }
 
-
 #############################
 # Selects an app of the day #
 #############################
 function appOfDay($file) {
-	global $caPaths,$communitySettings,$sortOrder;
+	global $caPaths,$caSettings,$sortOrder;
 
-	switch ($communitySettings['startup']) {
+	switch ($caSettings['startup']) {
 		case "random":
 			$oldAppDay = @filemtime($caPaths['appOfTheDay']);
 			$oldAppDay = $oldAppDay ?: 1;
@@ -1078,7 +1077,7 @@ function appOfDay($file) {
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
 			foreach ($file as $template) {
-				if ( ! $template['Compatible'] == "true" && $communitySettings['hideIncompatible'] == "true" ) continue;
+				if ( ! $template['Compatible'] == "true" && $caSettings['hideIncompatible'] == "true" ) continue;
 				if ( $template['FirstSeen'] > 1538357652 ) {
 					if ( checkRandomApp($template) ) {
 						$appOfDay[] = $template['ID'];
@@ -1123,14 +1122,14 @@ function appOfDay($file) {
 # Checks selected app for eligibility as app of day #
 #####################################################
 function checkRandomApp($test) {
-	global $communitySettings;
+	global $caSettings;
 
 	if ( $test['Name'] == "Community Applications" )  return false;
 	if ( $test['BranchName'] )                        return false;
 	if ( ! $test['Displayable'] )                     return false;
 	if ( ! $test['Compatible'] )                      return false;
 	if ( $test['Blacklist'] )                         return false;
-	if ( $test['Deprecated'] && ( $communitySettings['hideDeprecated'] == "true" ) ) return false;
+	if ( $test['Deprecated'] && ( $caSettings['hideDeprecated'] == "true" ) ) return false;
 
 	return true;
 }

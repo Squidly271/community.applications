@@ -10,7 +10,7 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Helpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
-$communitySettings = parse_plugin_cfg("community.applications");
+$caSettings = parse_plugin_cfg("community.applications");
 $csrf_token = $unRaidVars['csrf_token'];
 $appNumber =  urldecode($_GET['appPath']);
 $appName = urldecode($_GET['appName']);
