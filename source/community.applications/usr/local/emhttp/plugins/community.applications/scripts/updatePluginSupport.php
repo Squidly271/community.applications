@@ -12,7 +12,7 @@ require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 
 $plugins = glob("/boot/config/plugins/*.plg");
-$templates = readJsonFile($communityPaths['community-templates-info']);
+$templates = readJsonFile($caPaths['community-templates-info']);
 if ( ! $templates ) {
 	echo "You must enter the apps tab before using this script\n";
 	return;

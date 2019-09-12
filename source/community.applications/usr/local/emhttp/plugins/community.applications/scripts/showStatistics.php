@@ -30,7 +30,7 @@ div.spinner .unraid_mark_7{animation:mark_7 1.5s ease infinite}
 </style>
 <div class='spinner fixed' id='spinner'><?readfile("/usr/local/emhttp/plugins/dynamix/images/animated-logo.svg")?></div>
 <?
-$repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
+$repositories = download_json($caPaths['community-templates-url'],$caPaths['Repositories']);
 
 switch ($_GET['arg1']) {
 	case 'Repository':
@@ -45,7 +45,7 @@ switch ($_GET['arg1']) {
 		echo "</table></tt>";
 		break;
 	case 'Invalid':
-		$moderation = @file_get_contents($communityPaths['invalidXML_txt']);
+		$moderation = @file_get_contents($caPaths['invalidXML_txt']);
 		if ( ! $moderation ) {
 			echo "<br><br><div class='ca_center'><span class='ca_bold'>No invalid templates found</span></div>";
 			return;
@@ -55,7 +55,7 @@ switch ($_GET['arg1']) {
 		echo "<tt>These templates are invalid and the application they are referring to is unknown<br><br>$moderation";
 		break;
 	case 'Fixed':
-		$moderation = @file_get_contents($communityPaths['fixedTemplates_txt']);
+		$moderation = @file_get_contents($caPaths['fixedTemplates_txt']);
  		$json = json_decode($moderation,true);
 		ksort($json,SORT_NATURAL | SORT_FLAG_CASE);
 		if ( ! $moderation ) {
@@ -74,9 +74,9 @@ switch ($_GET['arg1']) {
 			}
 		}	
 
-		$dupeList = readJsonFile($communityPaths['pluginDupes']);
+		$dupeList = readJsonFile($caPaths['pluginDupes']);
 		if ($dupeList) {
-			$templates = readJsonFile($communityPaths['community-templates-info']);
+			$templates = readJsonFile($caPaths['community-templates-info']);
 			echo "<br><br><span class='ca_bold'></tt>The following plugins have duplicated filenames and are not able to be installed simultaneously:</span><br><br>";
 			foreach (array_keys($dupeList) as $dupe) {
 				echo "<span class='ca_bold'>$dupe</span><br>";
@@ -88,7 +88,7 @@ switch ($_GET['arg1']) {
 				echo "<br>";
 			}
 		}
-		$templates = readJsonFile($communityPaths['community-templates-info']);
+		$templates = readJsonFile($caPaths['community-templates-info']);
 		foreach ($templates as $template) {
 			$count = 0;
 			foreach ($templates as $searchTemplates) {
@@ -110,7 +110,7 @@ switch ($_GET['arg1']) {
 		break;
 	case 'Moderation':
 		echo "<br><div class='ca_center'><strong>If any of these entries are incorrect, then contact the author / moderators of CA to discuss</strong></div><br><br>";
-		$moderation = file_get_contents($communityPaths['moderation']);
+		$moderation = file_get_contents($caPaths['moderation']);
 		foreach ($repositories as $repo) {
 			if ($repo['RepoComment']) {
 				$repoComment .= "<tr><td>{$repo['name']}</td><td>{$repo['RepoComment']}</td></tr>";

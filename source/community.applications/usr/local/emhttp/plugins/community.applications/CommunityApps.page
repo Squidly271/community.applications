@@ -16,14 +16,14 @@ require_once("/usr/local/emhttp/plugins/$plugin/include/paths.php");
 require_once("/usr/local/emhttp/plugins/$plugin/include/helpers.php");
 
 $cfg = parse_plugin_cfg($plugin);
-if ( ! is_file($communityPaths['warningAccepted']) ) {
+if ( ! is_file($caPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
-$unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
+$unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 $unRaid68 = version_compare($unRaidSettings['version'],"6.7.9",">");
 
-if ( is_file($communityPaths['addConverted']) ) {
+if ( is_file($caPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
 $date = (date("n/d"));
@@ -293,14 +293,11 @@ function updateContent(button) {
 	hideSortIcons();
 	clearSearchBox();
 	clearCategory();
-	$(".caMenuItem").each(function() {
-		$(this).removeClass("selectedMenu");
-	});
-	$(".subCategory").each(function() {
-		$(this).hide();
-	});
+	$(".caMenuItem").removeClass("selectedMenu");
+	$(".subCategory").hide();
+
 	startupScreen = $.cookie("ca_startupButton") ? $.cookie("ca_startupButton") : "onlynew";
-	$(".caMenuItem[data-category='"+startupScreen+"']").addClass("selectedMenu")
+	$(".caMenuItem[data-category='"+startupScreen+"']").addClass("selectedMenu");
 
 	var appFeedModeMsg = button ? "" : "Retrieving the latest application Lists";
 
@@ -600,11 +597,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 	var initialize;
 
 	enableSearch();
-	if ( init == true ) {
-		enableIcon("#sortIcon",false);
-	} else {
-		enableIcon("#sortIcon",true);
-	}
+	enableIcon("#sortIcon", ! init);
 
 	if ( category != "NONE" ) {
 		if ( category == "INITIALIZE" ) {
@@ -661,7 +654,7 @@ function initDockerSearch() {
 	data.selected_category = "";
 	$(".selectedMenu").removeClass("selectedMenu");
 	hideSortIcons();
-	$(".subCategory").hide(300);
+	$(".subCategory").hide();
 }
 
 function dockerSearch(pageNumber) {
@@ -688,7 +681,7 @@ function dockerConvert(dockerID) {
 function openWindow(newURL) {
 	var popUp = window.open(newURL,"_self");
 	if ( !popUp || popUp.closed || typeof popUp == "undefined" ) {
-		alert("CA requires popups to be enabled under certain circumstances.  You must white list your server within your browser to allow popups");
+		addBannerWarning("CA requires popups to be enabled under certain circumstances.  You must white list your server within your browser to allow popups");
 	}
 }
 

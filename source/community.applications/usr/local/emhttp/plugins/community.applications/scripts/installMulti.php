@@ -14,7 +14,7 @@ function startsWith($haystack, $needle) {
 
 # Modify the system file to avoid a harmless error from being displayed under normal circumstances
 # Not needed under unRaid 6.6.3+
-$unRaidVersion = parse_ini_file($communityPaths['unRaidVersion']);
+$unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
 
 if ( version_compare($unRaidVersion['version'],"6.6.2",">=") ) {
 	$exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";

@@ -12,9 +12,9 @@
 #                                                          #
 ############################################################
 function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
-	global $communityPaths, $communitySettings;
+	global $caPaths, $communitySettings;
 
-	$file = readJsonFile($communityPaths['community-templates-displayed']);
+	$file = readJsonFile($caPaths['community-templates-displayed']);
 	$communityApplications = is_array($file['community']) ? $file['community'] : array();
 	$totalApplications = count($communityApplications);
 
@@ -27,12 +27,12 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 #my_display_apps(), getPageNavigation(), displaySearchResults() must accept all parameters
 #note that many template entries in my_display_apps() are not actually used in the skin, but are present for future possible use.
 function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false) {
-	global $communityPaths, $communitySettings, $plugin, $displayDeprecated, $sortOrder;
+	global $caPaths, $communitySettings, $plugin, $displayDeprecated, $sortOrder;
 
 	$viewMode = "detail";
 
 	$info = getRunningContainers();
-	$skin = readJsonFile($communityPaths['defaultSkin']);
+	$skin = readJsonFile($caPaths['defaultSkin']);
 
 	if ( ! $selectedApps )
 		$selectedApps = array();
@@ -40,10 +40,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$dockerNotEnabled = (! $communitySettings['dockerRunning'] && ! $communitySettings['NoInstalls']) ? "true" : "false";
 		$displayHeader = "<script>addDockerWarning($dockerNotEnabled);var dockerNotEnabled = $dockerNotEnabled;</script>";
 
-	if ( is_file($communityPaths['pinned']) )
+	if ( is_file($caPaths['pinned']) )
 		convertPinnedAppsToV2();
 
-	$pinnedApps = readJsonFile($communityPaths['pinnedV2']);
+	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 	$iconSize = $communitySettings['iconSize'];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
 	if ( filter_var($startup,FILTER_VALIDATE_BOOLEAN) )
@@ -74,7 +74,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$iconClass = "displayIcon";
 
 	$displayTemplate = $skin[$viewMode]['template'];
-	$currentServer = @file_get_contents($communityPaths['currentServer']);
+	$currentServer = @file_get_contents($caPaths['currentServer']);
 
 	# Create entries for skins.  Note that MANY entries are not used in the current skins
 	foreach ($displayedTemplates as $template) {
@@ -337,13 +337,13 @@ function dockerNavigate($num_pages, $pageNumber) {
 #                                                            #
 ##############################################################
 function displaySearchResults($pageNumber) {
-	global $communityPaths, $communitySettings, $plugin;
+	global $caPaths, $communitySettings, $plugin;
 
-	$tempFile = readJsonFile($communityPaths['dockerSearchResults']);
+	$tempFile = readJsonFile($caPaths['dockerSearchResults']);
 	$num_pages = $tempFile['num_pages'];
 	$file = $tempFile['results'];
-	$templates = readJsonFile($communityPaths['community-templates-info']);
-	$skin = readJsonFile($communityPaths['defaultSkin']);
+	$templates = readJsonFile($caPaths['community-templates-info']);
+	$skin = readJsonFile($caPaths['defaultSkin']);
 	$viewMode = "detail";
 	$displayTemplate = $skin[$viewMode]['template'];
 
@@ -373,7 +373,7 @@ function displaySearchResults($pageNumber) {
 # Generate the display for the popup #
 ######################################
 function getPopupDescription($appNumber) {
-	global $communitySettings, $communityPaths;
+	global $communitySettings, $caPaths;
 
 	require_once("webGui/include/Markdown.php");
 
@@ -393,11 +393,11 @@ function getPopupDescription($appNumber) {
 		$info = array();
 		$dockerRunning = array();
 	}
-	if ( ! is_file($communityPaths['warningAccepted']) )
+	if ( ! is_file($caPaths['warningAccepted']) )
 		$communitySettings['NoInstalls'] = true;
 
 	# $appNumber is actually the path to the template.  It's pretty much always going to be the same even if the database is out of sync.
-	$displayed = readJsonFile($communityPaths['community-templates-displayed']);
+	$displayed = readJsonFile($caPaths['community-templates-displayed']);
 	foreach ($displayed as $file) {
 		$index = searchArray($file,"Path",$appNumber);
 		if ( $index === false ) {
@@ -410,7 +410,7 @@ function getPopupDescription($appNumber) {
 	}
 	# handle case where the app being asked to display isn't on the most recent displayed list (ie: multiple browser tabs open)
 	if ( ! $template ) {
-		$file = readJsonFile($communityPaths['community-templates-info']);
+		$file = readJsonFile($caPaths['community-templates-info']);
 		$index = searchArray($file,"Path",$appNumber);
 
 		if ( $index === false ) {
@@ -420,7 +420,7 @@ function getPopupDescription($appNumber) {
 		$template = $file[$index];
 		$Displayed = false;
 	}
-	$currentServer = file_get_contents($communityPaths['currentServer']);
+	$currentServer = file_get_contents($caPaths['currentServer']);
 
 	# Create entries for skins.  Note that MANY entries are not used in the current skins
 	if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
@@ -449,7 +449,7 @@ function getPopupDescription($appNumber) {
 		$pluginName = basename($template['PluginURL']);
 
 	if ( $template['trending'] ) {
-		$allApps = readJsonFile($communityPaths['community-templates-info']);
+		$allApps = readJsonFile($caPaths['community-templates-info']);
 
 		$allTrends = array_unique(array_column($allApps,"trending"));
 		rsort($allTrends);
@@ -512,7 +512,7 @@ function getPopupDescription($appNumber) {
 	if ( $template['Plugin'] ) {
 		$templateDescription .= "<tr><td nowrap>Current Version:</td><td>{$template['pluginVersion']}</td></tr>";
 	}
-	$unraidVersion = parse_ini_file($communityPaths['unRaidVersion']);
+	$unraidVersion = parse_ini_file($caPaths['unRaidVersion']);
 	$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>Minimum OS:</td><td>unRaid v".$template['MinVer']."</td></tr>" : "";
 
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
@@ -609,9 +609,9 @@ function getPopupDescription($appNumber) {
 
 	$templateDescription .= "</div>";
 	if ($template['Plugin']) {
-		$dupeList = readJsonFile($communityPaths['pluginDupes']);
+		$dupeList = readJsonFile($caPaths['pluginDupes']);
 		if ( $dupeList[basename($template['Repository'])] == 1 ){
-			$allTemplates = readJsonFile($communityPaths['community-templates-info']);
+			$allTemplates = readJsonFile($caPaths['community-templates-info']);
 			foreach ($allTemplates as $testTemplate) {
 				if ($testTemplate['Repository'] == $template['Repository']) continue;
 
@@ -623,8 +623,8 @@ function getPopupDescription($appNumber) {
 	}
 
 	if ( $template['Plugin'] ) {
-		download_url($template['PluginURL'],$communityPaths['pluginTempDownload']);
-		$template['Changes'] = @plugin("changes",$communityPaths['pluginTempDownload']);
+		download_url($template['PluginURL'],$caPaths['pluginTempDownload']);
+		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
 	}
 	$changeLogMessage = "<div class='ca_center'><font size='0'>Note: not all ";
 	$changeLogMessage .= $template['PluginURL'] ? "authors" : "maintainers";
@@ -637,8 +637,8 @@ function getPopupDescription($appNumber) {
 		if ( $template['Plugin'] ) {
 			if ( file_exists("/var/log/plugins/$pluginName") ) {
 				$appInformation = "Currently Installed Version: ".plugin("version","/var/log/plugins/$pluginName");
-				if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$communityPaths['pluginTempDownload']) ) {
-					copy($communityPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
+				if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$caPaths['pluginTempDownload']) ) {
+					copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 					$appInformation .= " - <span class='ca_bold'>Install the update <a href='/Apps/Plugins' target='_parent'>HERE</a></span>";
 				} else
 					$appInformation .= " - <font color='green'>Latest Version</font>";
@@ -677,7 +677,7 @@ function getPopupDescription($appNumber) {
 		$down = is_array($down) ? $down : array();
 	}
 
-	@unlink($communityPaths['pluginTempDownload']);
+	@unlink($caPaths['pluginTempDownload']);
 	return array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel);
 }
 

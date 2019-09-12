@@ -34,9 +34,9 @@ function checkPluginUpdate($filename) {
 # returns a random file name (/tmp/community.applications/tempFiles/34234234.tmp) #
 ###################################################################################
 function randomFile() {
-	global $communityPaths;
+	global $caPaths;
 
-	return tempnam($communityPaths['tempFiles'],"CA-Temp-");
+	return tempnam($caPaths['tempFiles'],"CA-Temp-");
 }
 
 ##################################################################
@@ -288,9 +288,9 @@ function readXmlFile($xmlfile) {
 # If appfeed is updated, this is done when creating the templates #
 ###################################################################
 function moderateTemplates() {
-	global $communityPaths,$communitySettings;
+	global $caPaths,$communitySettings;
 
-	$templates = readJsonFile($communityPaths['community-templates-info']);
+	$templates = readJsonFile($caPaths['community-templates-info']);
 
 	if ( ! $templates ) return;
 	foreach ($templates as $template) {
@@ -301,7 +301,7 @@ function moderateTemplates() {
 		$template['ModeratorComment'] = $template['CaComment'] ?: $template['ModeratorComment'];
 		$o[] = $template;
 	}
-	writeJsonFile($communityPaths['community-templates-info'],$o);
+	writeJsonFile($caPaths['community-templates-info'],$o);
 	pluginDupe($o);
 }
 
@@ -332,7 +332,7 @@ function filterMatch($filter,$searchArray,$exact=true) {
 # Used to figure out which plugins have duplicated names #
 ##########################################################
 function pluginDupe($templates) {
-	global $communityPaths;
+	global $caPaths;
 
 	$pluginList = array();
 	foreach ($templates as $template) {
@@ -343,18 +343,18 @@ function pluginDupe($templates) {
 		if ( $pluginList[$plugin] > 1 )
 			$dupeList[$plugin]++;
 	}
-	writeJsonFile($communityPaths['pluginDupes'],$dupeList);
+	writeJsonFile($caPaths['pluginDupes'],$dupeList);
 }
 
 ###################################
 # Checks if a plugin is installed #
 ###################################
 function checkInstalledPlugin($template) {
-	global $communityPaths;
+	global $caPaths;
 
 	$pluginName = basename($template['PluginURL']);
 	if ( ! file_exists("/var/log/plugins/$pluginName") ) return false;
-	$dupeList = readJsonFile($communityPaths['pluginDupes']);
+	$dupeList = readJsonFile($caPaths['pluginDupes']);
 	if ( ! $dupeList[$pluginName] ) return true;
 	return strtolower(trim(plugin("pluginURL","/var/log/plugins/$pluginName"))) == strtolower(trim($template['PluginURL']));
 }
@@ -474,9 +474,9 @@ function fixDescription($Description) {
 # displays the branch tags #
 ############################
 function formatTags($leadTemplate,$tabMode="_self") {
-	global $communityPaths;
+	global $caPaths;
 
-	$file = readJsonFile($communityPaths['community-templates-info']);
+	$file = readJsonFile($caPaths['community-templates-info']);
 	$template = $file[$leadTemplate];
 	$childTemplates = $file[$leadTemplate]['BranchID'];
 	if ( ! is_array($childTemplates) )
@@ -510,10 +510,10 @@ function postReturn($retArray) {
 ####################################
 # eventually deprecate this function as it won't be needed -> fuck the user if they haven't already converted the file.
 function convertPinnedAppsToV2() {
-	global $communityPaths;
+	global $caPaths;
 
-	$pinnedApps = readJsonFile($communityPaths['pinned']);
-	$file = readJsonFile($communityPaths['community-templates-info']);
+	$pinnedApps = readJsonFile($caPaths['pinned']);
+	$file = readJsonFile($caPaths['community-templates-info']);
 	$startIndex = 0;
 	foreach ($pinnedApps as $pinned) {
 		for ($i=0;$i<10;$i++) {
@@ -529,7 +529,7 @@ function convertPinnedAppsToV2() {
 			}
 		}
 	}
-	writeJsonFile($communityPaths['pinnedV2'],$pinnedV2);
-	@unlink($communityPaths['pinned']);
+	writeJsonFile($caPaths['pinnedV2'],$pinnedV2);
+	@unlink($caPaths['pinned']);
 }
 ?>

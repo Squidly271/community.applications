@@ -35,7 +35,7 @@ if ( $changes ) {
 
 $update = false;
 if ( strcmp($version,$installedVersion) > 0 ) {
-	$unraid = parse_ini_file($communityPaths['unRaidVersion']);
+	$unraid = parse_ini_file($caPaths['unRaidVersion']);
 	$update = (version_compare($min,$unraid['version'],">")) ? false : true;
 }
 

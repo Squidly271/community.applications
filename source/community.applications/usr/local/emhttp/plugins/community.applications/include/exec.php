@@ -13,7 +13,7 @@ require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
 
-$unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
+$unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 
 ################################################################################
 # Set up any default settings (when not explicitely set by the settings module #
@@ -21,16 +21,16 @@ $unRaidSettings = parse_ini_file($communityPaths['unRaidVersion']);
 
 $communitySettings = parse_plugin_cfg("community.applications");
 $communitySettings['skin'] = "Narrow";
-$communityPaths['defaultSkin'] = "/usr/local/emhttp/plugins/community.applications/skins/{$communitySettings['skin']}/skin.json";
-$skinSettings = readJsonFile($communityPaths['defaultSkin']);
-$communityPaths['defaultSkinPHP'] = $skinSettings['detail']['php'];
+$caPaths['defaultSkin'] = "/usr/local/emhttp/plugins/community.applications/skins/{$communitySettings['skin']}/skin.json";
+$skinSettings = readJsonFile($caPaths['defaultSkin']);
+$caPaths['defaultSkinPHP'] = $skinSettings['detail']['php'];
 
-require_once($communityPaths['defaultSkinPHP']);
+require_once($caPaths['defaultSkinPHP']);
 
 $communitySettings['maxPerPage']    = isMobile() ? 12 : 24;
 $communitySettings['unRaidVersion'] = $unRaidSettings['version'];
 $communitySettings['timeNew']       = "-10 years";
-if ( ! is_file($communityPaths['warningAccepted']) )
+if ( ! is_file($caPaths['warningAccepted']) )
 	$communitySettings['NoInstalls'] = true;
 
 $DockerClient = new DockerClient();
@@ -45,11 +45,11 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 	$dockerRunning = array();
 }
 
-@mkdir($communityPaths['tempFiles'],0777,true);
+@mkdir($caPaths['tempFiles'],0777,true);
 
-if ( !is_dir($communityPaths['templates-community']) ) {
-	@mkdir($communityPaths['templates-community'],0777,true);
-	@unlink($communityPaths['community-templates-info']);
+if ( !is_dir($caPaths['templates-community']) ) {
+	@mkdir($caPaths['templates-community'],0777,true);
+	@unlink($caPaths['community-templates-info']);
 }
 
 ############################################
@@ -92,12 +92,12 @@ case 'get_content':
 	}
 	$newAppTime = strtotime($communitySettings['timeNew']);
 
-	if ( file_exists($communityPaths['addConverted']) ) {
-		@unlink($communityPaths['addConverted']);
+	if ( file_exists($caPaths['addConverted']) ) {
+		@unlink($caPaths['addConverted']);
 		getConvertedTemplates();
 	}
 
-	$file = readJsonFile($communityPaths['community-templates-info']);
+	$file = readJsonFile($caPaths['community-templates-info']);
 	if ( empty($file)) break;
 
 	if ( $category === "/NONE/i" ) {
@@ -112,7 +112,7 @@ case 'get_content':
 				$displayApplications['community'][] = $file[$appsOfDay[$i]];
 			}
 			if ( $displayApplications['community'] ) {
-				writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
+				writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
 				$sortOrder['sortBy'] = "noSort";
 				$o['display'] = my_display_apps($displayApplications['community'],"1");
 				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
@@ -206,7 +206,7 @@ case 'get_content':
 		$displayApplications['community'] = $display;
 	}
 
-	writeJsonFile($communityPaths['community-templates-displayed'],$displayApplications);
+	writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
 	$o['display'] = display_apps();
 	postReturn($o);
 	break;
@@ -215,58 +215,58 @@ case 'get_content':
 # force_update -> forces an update of the applications #
 ########################################################
 case 'force_update':
-	$lastUpdatedOld = readJsonFile($communityPaths['lastUpdated-old']);
+	$lastUpdatedOld = readJsonFile($caPaths['lastUpdated-old']);
 
-	@unlink($communityPaths['lastUpdated']);
-	$latestUpdate = download_json($communityPaths['application-feed-last-updated'],$communityPaths['lastUpdated']);
+	@unlink($caPaths['lastUpdated']);
+	$latestUpdate = download_json($caPaths['application-feed-last-updated'],$caPaths['lastUpdated']);
 	if ( ! $latestUpdate['last_updated_timestamp'] )
-		$latestUpdate = download_json($communityPaths['application-feed-last-updatedBackup'],$communityPaths['lastUpdated']);
+		$latestUpdate = download_json($caPaths['application-feed-last-updatedBackup'],$caPaths['lastUpdated']);
 
 	if ( ! $latestUpdate['last_updated_timestamp'] ) {
 		$latestUpdate['last_updated_timestamp'] = INF;
 		$badDownload = true;
-		@unlink($communityPaths['lastUpdated']);
+		@unlink($caPaths['lastUpdated']);
 	}
 
 	if ( $latestUpdate['last_updated_timestamp'] > $lastUpdatedOld['last_updated_timestamp'] ) {
 		if ( $latestUpdate['last_updated_timestamp'] != INF )
-			copy($communityPaths['lastUpdated'],$communityPaths['lastUpdated-old']);
+			copy($caPaths['lastUpdated'],$caPaths['lastUpdated-old']);
 
 		if ( ! $badDownload )
-			@unlink($communityPaths['community-templates-info']);
+			@unlink($caPaths['community-templates-info']);
 	}
 
-	if (!file_exists($communityPaths['community-templates-info'])) {
+	if (!file_exists($caPaths['community-templates-info'])) {
 		$updatedSyncFlag = true;
 		DownloadApplicationFeed();
-		if (!file_exists($communityPaths['community-templates-info'])) {
+		if (!file_exists($caPaths['community-templates-info'])) {
 			$tmpfile = randomFile();
-			download_url($communityPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
+			download_url($caPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
 			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
 			@unlink($tmpfile);
 			$o['script'] = "$('.startupButton,.caMenu,.menuHeader').hide();$('.caRelated').show();";
 			$o['data'] =  "<div class='ca_center'><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <span class='ca_italic'><span class='ca_bold'>requires</span></span> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <span class='ca_bold'>208.67.222.222 and 208.67.220.220</span> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://www.githubstatus.com/' target='_blank'>HERE</a>";
-			$tempFile = @file_get_contents($communityPaths['appFeedDownloadError']);
+			$tempFile = @file_get_contents($caPaths['appFeedDownloadError']);
 			$downloaded = @file_get_contents($tempFile);
 			if (strlen($downloaded) > 100)
 				$o['data'] .= "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Please try again later)</font>";
 
 			$o['data'] .=  "<div class='ca_center'>Last JSON error Recorded: ";
 			$jsonDecode = json_decode($downloaded,true);
-			$o['data'] .= "JSON Error: ".json_last_error_msg();
+			$o['data'] .= json_last_error_msg();
 			if ( $publicServiceAnnouncement )
 				$o['data'] .= "<br><font size='3' color='purple'>$publicServiceAnnouncement</font>";
 
 			$o['data'] .= "</div>";
-			@unlink($communityPaths['appFeedDownloadError']);
-			@unlink($communityPaths['community-templates-info']);
+			@unlink($caPaths['appFeedDownloadError']);
+			@unlink($caPaths['community-templates-info']);
 			postReturn($o);
 			break;
 		}
 	}
 	getConvertedTemplates();
 	moderateTemplates();
-	$currentServer = file_get_contents($communityPaths['currentServer']);
+	$currentServer = file_get_contents($caPaths['currentServer']);
 	postReturn(['status'=>"ok",'script'=>"feedWarning('$currentServer');"]);
 	break;
 
@@ -279,7 +279,7 @@ case 'display_content':
 	$startup = getPost("startup",false);
 	$selectedApps = json_decode(getPost("selected",false),true);
 
-	if ( file_exists($communityPaths['community-templates-displayed']) )
+	if ( file_exists($caPaths['community-templates-displayed']) )
 		$o['display'] = display_apps($pageNumber,$selectedApps,$startup);
 	else
 		$o['display'] = "";
@@ -293,10 +293,10 @@ case 'display_content':
 case 'convert_docker':
 	$dockerID = getPost("ID","");
 
-	$file = readJsonFile($communityPaths['dockerSearchResults']);
+	$file = readJsonFile($caPaths['dockerSearchResults']);
 	$docker = $file['results'][$dockerID];
 	$docker['Description'] = str_replace("&", "&amp;", $docker['Description']);
-	@unlink($communityPaths['Dockerfile']);
+	@unlink($caPaths['Dockerfile']);
 
 	$dockerfile['Name'] = $docker['Name'];
 	$dockerfile['Support'] = $docker['DockerHub'];
@@ -310,11 +310,11 @@ case 'convert_docker':
 	$dockerfile['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
 	$dockerXML = makeXML($dockerfile);
 
-	$xmlFile = $communityPaths['convertedTemplates']."DockerHub/";
+	$xmlFile = $caPaths['convertedTemplates']."DockerHub/";
 	@mkdir($xmlFile,0777,true);
 	$xmlFile .= str_replace("/","-",$docker['Repository']).".xml";
 	file_put_contents($xmlFile,$dockerXML);
-	file_put_contents($communityPaths['addConverted'],"Dante");
+	file_put_contents($caPaths['addConverted'],"Dante");
 	postReturn(['xml'=>$xmlFile]);
 	break;
 
@@ -326,7 +326,7 @@ case 'search_dockerhub':
 	$pageNumber = getPost("page","1");
 	$sortOrder  = getSortOrder(getPostArray('sortOrder'));
 
-	$communityTemplates = readJsonFile($communityPaths['community-templates-info']);
+	$communityTemplates = readJsonFile($caPaths['community-templates-info']);
 	$filter = str_replace(" ","%20",$filter);
 	$jsonPage = shell_exec("curl -s -X GET 'https://registry.hub.docker.com/v1/search?q=$filter&page=$pageNumber'");
 	$pageresults = json_decode($jsonPage,true);
@@ -336,7 +336,7 @@ case 'search_dockerhub':
 		$o['display'] = "<div class='ca_NoDockerAppsFound'></div>";
 		$o['script'] = "$('#dockerSearch').hide();";
 		postReturn($o);
-		@unlink($communityPaths['dockerSerchResults']);
+		@unlink($caPaths['dockerSerchResults']);
 		break;
 	}
 
@@ -370,7 +370,7 @@ case 'search_dockerhub':
 	$dockerFile['page_number'] = $pageNumber;
 	$dockerFile['results'] = $dockerResults;
 
-	writeJsonFile($communityPaths['dockerSearchResults'],$dockerFile);
+	writeJsonFile($caPaths['dockerSearchResults'],$dockerFile);
 	postReturn(['display'=>displaySearchResults($pageNumber)]);
 	break;
 
@@ -378,7 +378,7 @@ case 'search_dockerhub':
 # dismiss_warning - dismisses the warning from appearing at startup #
 #####################################################################
 case 'dismiss_warning':
-	file_put_contents($communityPaths['warningAccepted'],"warning dismissed");
+	file_put_contents($caPaths['warningAccepted'],"warning dismissed");
 	postReturn(['status'=>"warning dismissed"]);
 	break;
 
@@ -387,17 +387,17 @@ case 'dismiss_warning':
 ###############################################################
 case 'previous_apps':
 	$installed = getPost("installed","");
-	$dockerUpdateStatus = readJsonFile($communityPaths['dockerUpdateStatus']);
-	$moderation = readJsonFile($communityPaths['moderation']);
+	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
+	$moderation = readJsonFile($caPaths['moderation']);
 	$info = $communitySettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
 
-	$file = readJsonFile($communityPaths['community-templates-info']);
+	$file = readJsonFile($caPaths['community-templates-info']);
 
 # $info contains all installed containers
 # now correlate that to a template;
 # this section handles containers that have not been renamed from the appfeed
 if ( $communitySettings['dockerRunning'] ) {
-	$all_files = glob("{$communityPaths['dockerManTemplates']}/*.xml");
+	$all_files = glob("{$caPaths['dockerManTemplates']}/*.xml");
 	$all_files = $all_files ?: array();
 
 	if ( $installed == "true" ) {
@@ -570,7 +570,7 @@ if ( $communitySettings['dockerRunning'] ) {
 		}
 	}
 	$displayedApplications['community'] = $displayed;
-	writeJsonFile($communityPaths['community-templates-displayed'],$displayedApplications);
+	writeJsonFile($caPaths['community-templates-displayed'],$displayedApplications);
 	postReturn(['status'=>"ok"]);
 	break;
 
@@ -590,7 +590,7 @@ case 'remove_application':
 ###################################################################################
 case 'updatePLGstatus':
 	$filename = getPost("filename","");
-	$displayed = readJsonFile($communityPaths['community-templates-displayed']);
+	$displayed = readJsonFile($caPaths['community-templates-displayed']);
 	$superCategories = array_keys($displayed);
 	foreach ($superCategories as $category) {
 		foreach ($displayed[$category] as $template) {
@@ -600,7 +600,7 @@ case 'updatePLGstatus':
 			$newDisplayed[$category][] = $template;
 		}
 	}
-	writeJsonFile($communityPaths['community-templates-displayed'],$newDisplayed);
+	writeJsonFile($caPaths['community-templates-displayed'],$newDisplayed);
 	postReturn(['status'=>"ok"]);
 	break;
 
@@ -634,17 +634,17 @@ case 'uninstall_docker':
 case "pinApp":
 	$repository = getPost("repository","oops");
 	$name = getPost("name","oops");
-	$pinnedApps = readJsonFile($communityPaths['pinnedV2']);
+	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 	$pinnedApps["$repository&$name"] = $pinnedApps["$repository&$name"] ? false : "$repository&$name";
-	writeJsonFile($communityPaths['pinnedV2'],$pinnedApps);
+	writeJsonFile($caPaths['pinnedV2'],$pinnedApps);
 	break;
 
 ####################################
 # Displays the pinned applications #
 ####################################
 case "pinnedApps":
-	$pinnedApps = readJsonFile($communityPaths['pinnedV2']);
-	$file = readJsonFile($communityPaths['community-templates-info']);
+	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
+	$file = readJsonFile($caPaths['community-templates-info']);
 
 	foreach ($pinnedApps as $pinned) {
 		$startIndex = 0;
@@ -668,7 +668,7 @@ case "pinnedApps":
 	}
 	$displayedApplications['community'] = $displayed;
 	$displayedApplications['pinnedFlag']  = true;
-	writeJsonFile($communityPaths['community-templates-displayed'],$displayedApplications);
+	writeJsonFile($caPaths['community-templates-displayed'],$displayedApplications);
 	postReturn(["status"=>"ok"]);
 	break;
 
@@ -684,13 +684,13 @@ case 'displayTags':
 # Displays The Statistics For The Appfeed #
 ###########################################
 case 'statistics':
-	$statistics = download_json($communityPaths['statisticsURL'],$communityPaths['statistics']);
-	download_json($communityPaths['moderationURL'],$communityPaths['moderation']);
-	$statistics['totalModeration'] = count(readJsonFile($communityPaths['moderation']));
-	$repositories = download_json($communityPaths['community-templates-url'],$communityPaths['Repositories']);
-	$templates = readJsonFile($communityPaths['community-templates-info']);
+	$statistics = download_json($caPaths['statisticsURL'],$caPaths['statistics']);
+	download_json($caPaths['moderationURL'],$caPaths['moderation']);
+	$statistics['totalModeration'] = count(readJsonFile($caPaths['moderation']));
+	$repositories = download_json($caPaths['community-templates-url'],$caPaths['Repositories']);
+	$templates = readJsonFile($caPaths['community-templates-info']);
 	pluginDupe($templates);
-	$invalidXML = readJsonFile($communityPaths['invalidXML_txt']);
+	$invalidXML = readJsonFile($caPaths['invalidXML_txt']);
 
 	foreach ($templates as $template) {
 		if ( $template['Deprecated'] && ! $template['Blacklist'] ) $statistics['totalDeprecated']++;
@@ -714,12 +714,12 @@ case 'statistics':
 	}
 	$statistics['totalApplications'] = $statistics['plugin']+$statistics['docker'];
 	if ( $statistics['fixedTemplates'] )
-		writeJsonFile($communityPaths['fixedTemplates_txt'],$statistics['fixedTemplates']);
+		writeJsonFile($caPaths['fixedTemplates_txt'],$statistics['fixedTemplates']);
 	else
-		@unlink($communityPaths['fixedTemplates_txt']);
+		@unlink($caPaths['fixedTemplates_txt']);
 
-	if ( is_file($communityPaths['lastUpdated-old']) )
-		$appFeedTime = readJsonFile($communityPaths['lastUpdated-old']);
+	if ( is_file($caPaths['lastUpdated-old']) )
+		$appFeedTime = readJsonFile($caPaths['lastUpdated-old']);
 
 	$updateTime = date("F d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
 	$defaultArray = Array('caFixed' => 0,'totalApplications' => 0, 'repository' => 0, 'docker' => 0, 'plugin' => 0, 'invalidXML' => 0, 'blacklist' => 0, 'totalIncompatible' =>0, 'totalDeprecated' => 0, 'totalModeration' => 0, 'private' => 0, 'NoSupport' => 0);
@@ -737,7 +737,7 @@ case 'statistics':
 	if ( ! $memIcon[0] ) $memIcon[0] = "0K";
 	$memFlash = explode("\t",$totalFlash);
 
-	$currentServer = @file_get_contents($communityPaths['currentServer']);
+	$currentServer = @file_get_contents($caPaths['currentServer']);
 	if ( $currentServer != "Primary Server" )
 		$currentServer = "<i class='fa fa-exclamation-triangle ca_serverWarning' aria-hidden='true'></i> $currentServer";
 
@@ -761,7 +761,7 @@ case 'statistics':
 		<tr><td class='ca_table'><a data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></td><td class='ca_stat'>{$statistics['totalDeprecated']}</td></tr>
 		<tr><td class='ca_table'><a onclick='showModeration("Moderation","All Moderation Entries");' style='cursor:pointer'>Number Of Moderation Entries</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>
 		<tr><td class='ca_table'>Memory Usage (CA / DataFiles / Flash)</td><td class='ca_stat'>{$memCA[0]} / {$memTmp[0]} / {$memFlash[0]}</td></tr>
-		<tr><td class='ca_table'><a href='{$communityPaths['application-feed']}' target='_blank'>Primary Server</a> / <a href='{$communityPaths['application-feedBackup']}' target='_blank'> Backup Server</a></td></tr>
+		<tr><td class='ca_table'><a href='{$caPaths['application-feed']}' target='_blank'>Primary Server</a> / <a href='{$caPaths['application-feedBackup']}' target='_blank'> Backup Server</a></td></tr>
 		</table>
 		<div class='ca_center'><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></div>
 		<div class='ca_center'>Ensuring only safe applications are present is a full time job</div><br>
@@ -779,8 +779,8 @@ case 'removePrivateApp':
 		postReturn(["error"=>"Something went wrong-> not an xml file: $path"]);
 		break;
 	}
-	$templates = readJsonFile($communityPaths['community-templates-info']);
-	$displayed = readJsonFile($communityPaths['community-templates-displayed']);
+	$templates = readJsonFile($caPaths['community-templates-info']);
+	$displayed = readJsonFile($caPaths['community-templates-displayed']);
 	foreach ( $displayed as &$displayType ) {
 		foreach ( $displayType as &$display ) {
 			if ( $display['Path'] == $path )
@@ -791,8 +791,8 @@ case 'removePrivateApp':
 		if ( $template['Path'] == $path )
 			$template['Blacklist'] = true;
 	}
-	writeJsonFile($communityPaths['community-templates-info'],$templates);
-	writeJsonFile($communityPaths['community-templates-displayed'],$displayed);
+	writeJsonFile($caPaths['community-templates-info'],$templates);
+	writeJsonFile($caPaths['community-templates-displayed'],$displayed);
 	@unlink($path);
 	postReturn(["status"=>"ok"]);
 	break;
@@ -801,8 +801,8 @@ case 'removePrivateApp':
 # Creates the entries for autocomplete on searches #
 ####################################################
 case 'populateAutoComplete':
-	$templates = readJsonFile($communityPaths['community-templates-info']);
-	$autoComplete = array_map(function($x){return str_replace(":","",$x['Cat']);},readJsonFile($communityPaths['categoryList']));
+	$templates = readJsonFile($caPaths['community-templates-info']);
+	$autoComplete = array_map(function($x){return str_replace(":","",$x['Cat']);},readJsonFile($caPaths['categoryList']));
 	foreach ($templates as $template) {
 		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $communitySettings['hideDeprecated'] == "true") && ($template['Compatible'] || $communitySettings['hideIncompatible'] != "true") ) {
 			$autoComplete[strtolower($template['Name'])] = $template['Name'];
@@ -827,7 +827,7 @@ case 'caChangeLog':
 # Populates the category list #
 ###############################
 case 'get_categories':
-	$categories = readJsonFile($communityPaths['categoryList']);
+	$categories = readJsonFile($caPaths['categoryList']);
 	if ( ! is_array($categories) ) {
 		$cat = "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
 		break;
@@ -842,7 +842,7 @@ case 'get_categories':
 				$cat .= "</ul>";
 			}
 		}
-		$templates = readJsonFile($communityPaths['community-templates-info']);
+		$templates = readJsonFile($caPaths['community-templates-info']);
 		foreach ($templates as $template) {
 			if ($template['Private'] == true && ! $template['Blacklist']) {
 				$cat .= "<li class='categoryMenu caMenuItem' data-category='PRIVATE'>Private Apps</li>";
@@ -865,28 +865,28 @@ case 'getPopupDescription':
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
 function DownloadApplicationFeed() {
-	global $communityPaths, $communitySettings, $statistics;
+	global $caPaths, $communitySettings, $statistics;
 
-	exec("rm -rf '{$communityPaths['tempFiles']}'");
-	@mkdir($communityPaths['templates-community'],0777,true);
+	exec("rm -rf '{$caPaths['tempFiles']}'");
+	@mkdir($caPaths['templates-community'],0777,true);
 
 	$currentFeed = "Primary Server";
 	$downloadURL = randomFile();
-	$ApplicationFeed = download_json($communityPaths['application-feed'],$downloadURL);
+	$ApplicationFeed = download_json($caPaths['application-feed'],$downloadURL);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
 		$currentFeed = "Backup Server";
-		$ApplicationFeed = download_json($communityPaths['application-feedBackup'],$downloadURL);
+		$ApplicationFeed = download_json($caPaths['application-feedBackup'],$downloadURL);
 	}
 	@unlink($downloadURL);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
-		@unlink($communityPaths['currentServer']);
-		file_put_contents($communityPaths['appFeedDownloadError'],$downloadURL);
+		@unlink($caPaths['currentServer']);
+		file_put_contents($caPaths['appFeedDownloadError'],$downloadURL);
 		return false;
 	}
-	file_put_contents($communityPaths['currentServer'],$currentFeed);
+	file_put_contents($caPaths['currentServer'],$currentFeed);
 	$i = 0;
 	$lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];
-	writeJsonFile($communityPaths['lastUpdated-old'],$lastUpdated);
+	writeJsonFile($caPaths['lastUpdated-old'],$lastUpdated);
 	$myTemplates = array();
 
 	foreach ($ApplicationFeed['applist'] as $o) {
@@ -904,7 +904,7 @@ function DownloadApplicationFeed() {
 		$o['SortName']      = $o['Name'];
 		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
 		if ( $o['IconHTTPS'] )
-			$o['IconHTTPS'] = $communityPaths['iconHTTPSbase'] .$o['IconHTTPS'];
+			$o['IconHTTPS'] = $caPaths['iconHTTPSbase'] .$o['IconHTTPS'];
 
 		if ( $o['PluginURL'] ) {
 			$o['Author']        = $o['PluginAuthor'];
@@ -913,7 +913,7 @@ function DownloadApplicationFeed() {
 		$o['Blacklist'] = $o['CABlacklist'] ? true : $o['Blacklist'];
 		$o['MinVer'] = max(array($o['MinVer'],$o['UpdateMinVer']));
 
-		$o['Path']          = $communityPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']);
+		$o['Path']          = $caPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']);
 		if ( file_exists($o['Path'].".xml") ) {
 			$o['Path'] .= "(1)";
 		}
@@ -945,7 +945,7 @@ function DownloadApplicationFeed() {
 				$subBranch['Repository'] = $masterRepository[0].":".$branch['Tag']; #This takes place before any xml elements are overwritten by additional entries in the branch, so you can actually change the repo the app draws from
 				$subBranch['BranchName'] = $branch['Tag'];
 				$subBranch['BranchDescription'] = $branch['TagDescription'] ? $branch['TagDescription'] : $branch['Tag'];
-				$subBranch['Path'] = $communityPaths['templates-community']."/".$i.".xml";
+				$subBranch['Path'] = $caPaths['templates-community']."/".$i.".xml";
 				$subBranch['Displayable'] = false;
 				$subBranch['ID'] = $i;
 				$subBranch['Overview'] = $o['OriginalOverview'] ?: $o['Overview'];
@@ -978,20 +978,20 @@ function DownloadApplicationFeed() {
 		file_put_contents($o['Path'],$templateXML);
 	}
 	if ( $invalidXML )
-		writeJsonFile($communityPaths['invalidXML_txt'],$invalidXML);
+		writeJsonFile($caPaths['invalidXML_txt'],$invalidXML);
 	else
-		@unlink($communityPaths['invalidXML_txt']);
+		@unlink($caPaths['invalidXML_txt']);
 
-	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
-	writeJsonFile($communityPaths['categoryList'],$ApplicationFeed['categories']);
+	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
+	writeJsonFile($caPaths['categoryList'],$ApplicationFeed['categories']);
 	return true;
 }
 
 function getConvertedTemplates() {
-	global $communityPaths, $communitySettings, $statistics;
+	global $caPaths, $communitySettings, $statistics;
 
 # Start by removing any pre-existing private (converted templates)
-	$templates = readJsonFile($communityPaths['community-templates-info']);
+	$templates = readJsonFile($caPaths['community-templates-info']);
 
 	if ( empty($templates) ) return false;
 
@@ -1000,13 +1000,13 @@ function getConvertedTemplates() {
 			$myTemplates[] = $template;
 	}
 	$appCount = count($myTemplates);
-	$moderation = readJsonFile($communityPaths['moderation']);
+	$moderation = readJsonFile($caPaths['moderation']);
 	$i = $appCount;
 	unset($Repos);
 
-	if ( ! is_dir($communityPaths['convertedTemplates']) ) return;
+	if ( ! is_dir($caPaths['convertedTemplates']) ) return;
 
-	$privateTemplates = glob($communityPaths['convertedTemplates']."*/*.xml");
+	$privateTemplates = glob($caPaths['convertedTemplates']."*/*.xml");
 	foreach ($privateTemplates as $template) {
 		$o = readXmlFile($template);
 		if ( ! $o['Repository'] ) continue;
@@ -1024,7 +1024,7 @@ function getConvertedTemplates() {
 		$myTemplates[$i]  = $o;
 		$i = ++$i;
 	}
-	writeJsonFile($communityPaths['community-templates-info'],$myTemplates);
+	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
 	return true;
 }
 
@@ -1033,16 +1033,16 @@ function getConvertedTemplates() {
 # Selects an app of the day #
 #############################
 function appOfDay($file) {
-	global $communityPaths,$communitySettings,$sortOrder;
+	global $caPaths,$communitySettings,$sortOrder;
 
 	switch ($communitySettings['startup']) {
 		case "random":
-			$oldAppDay = @filemtime($communityPaths['appOfTheDay']);
+			$oldAppDay = @filemtime($caPaths['appOfTheDay']);
 			$oldAppDay = $oldAppDay ?: 1;
 			$oldAppDay = intval($oldAppDay / 86400);
 			$currentDay = intval(time() / 86400);
 			if ( $oldAppDay == $currentDay ) {
-				$appOfDay = readJsonFile($communityPaths['appOfTheDay']);
+				$appOfDay = readJsonFile($caPaths['appOfTheDay']);
 				$flag = false;
 				foreach ($appOfDay as $testApp) {
 					if ( ! checkRandomApp($file[$testApp]) ) {
@@ -1061,7 +1061,7 @@ function appOfDay($file) {
 					if (count($appOfDay) == 25) break;
 				}
 			}
-			writeJsonFile($communityPaths['appOfTheDay'],$appOfDay);
+			writeJsonFile($caPaths['appOfTheDay'],$appOfDay);
 			break;
 		case "new":
 			$sortOrder['sortBy'] = "Date";
