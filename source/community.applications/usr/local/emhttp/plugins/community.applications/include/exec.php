@@ -208,6 +208,9 @@ case 'get_content':
 
 	writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
 	$o['display'] = display_apps();
+	if ( count($displayApplications['community']) < 2 )
+		$o['script'] = "disableSort();";
+		
 	postReturn($o);
 	break;
 
@@ -279,10 +282,10 @@ case 'display_content':
 	$startup = getPost("startup",false);
 	$selectedApps = json_decode(getPost("selected",false),true);
 
-	if ( file_exists($caPaths['community-templates-displayed']) )
-		$o['display'] = display_apps($pageNumber,$selectedApps,$startup);
-	else
-		$o['display'] = "";
+	$o['display'] = file_exists($caPaths['community-templates-displayed']) ? display_apps($pageNumber,$selectedApps,$startup) : "";
+	$displayedApps = readJsonFile($caPaths['community-templates-displayed']);
+	if ( ! is_array($displayedApps['community']) || count($displayedApps['community']) < 2)
+		$o['script'] = "disableSort();";
 
 	postReturn($o);
 	break;

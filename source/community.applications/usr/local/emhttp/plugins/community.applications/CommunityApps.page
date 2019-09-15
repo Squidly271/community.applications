@@ -29,7 +29,6 @@ if ( is_file($caPaths['addConverted']) ) {
 $date = (date("n/d"));
 ?>
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
-<link type='text/css' rel='stylesheet' href='<?=autov("/plugins/$plugin/styles/awesomplete.css")?>'>
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
 <script>
 var URL = "/plugins/<?=$plugin?>/include/exec.php";
