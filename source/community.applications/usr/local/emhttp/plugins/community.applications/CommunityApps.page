@@ -299,17 +299,13 @@ function updateContent(button) {
 	startupScreen = $.cookie("ca_startupButton") ? $.cookie("ca_startupButton") : "onlynew";
 	$(".caMenuItem[data-category='"+startupScreen+"']").addClass("selectedMenu");
 
-	var appFeedModeMsg = button ? "" : "Retrieving the latest application Lists";
-
 	startupScreen = button ? $(button).data("category") : startupScreen;
 	$.cookie("ca_startupButton",startupScreen,{expires:365});
 	$.cookie("ca_selectedMenu",startupScreen,{expires:365});
 	disableSearch();
-	if ( appFeedModeMsg ) {
-		myAlert("Updating Content",appFeedModeMsg,true,"40");
-	}
+
 	post({action:'force_update'}, function(result) {
-		if ( $.cookie("ca_plugininstallpending" || ! appFeedModeMsg ) ) {
+		if ( $.cookie("ca_plugininstallpending" || ! button ) ) {
 			var plugins = $.cookie("ca_plugininstallpending");
 			$.removeCookie("ca_plugininstallpending");
 			myCloseAlert();

@@ -44,13 +44,11 @@ function randomFile() {
 ##################################################################
 function readJsonFile($filename) {
 	$json = json_decode(@file_get_contents($filename),true);
-	if ( ! is_array($json) ) $json = array();
-	return $json;
+	return is_array($json) ? $json : array();
 }
 function writeJsonFile($filename,$jsonArray) {
 	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 }
-
 function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	$ch = curl_init();
 	curl_setopt($ch,CURLOPT_URL,$url);
@@ -60,25 +58,16 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	curl_setopt($ch,CURLOPT_TIMEOUT,$timeout);
 	curl_setopt($ch,CURLOPT_ENCODING,"");
 	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 	$out = curl_exec($ch);
 	curl_close($ch);
-	if ( ! $path )
-		return $out;
-	else {
+	if ( $path )
 		file_put_contents($path,$out);
-		return $out ?: false;
-	}
-}
-	
 
-/* function download_url($url, $path = "", $bg = false, $timeout=45){
-	if ( ! strpos($url,"?") ) $url .= "?".time();
-	exec("curl --compressed --connect-timeout 15 --max-time $timeout --silent --insecure --location --fail ".($path ? " -o '$path' " : "")." $url ".($bg ? ">/dev/null 2>&1 &" : "2>/dev/null"), $out, $exit_code );
-	return ($exit_code === 0 ) ? implode("\n", $out) : false;
-} */
+	return $out ?: false;
+}
 function download_json($url,$path) {
-	download_url($url,$path);
-	return readJsonFile($path);
+	return json_decode(download_url($url,$path),true);
 }
 function getPost($setting,$default) {
 	return isset($_POST[$setting]) ? urldecode(($_POST[$setting])) : $default;
@@ -87,9 +76,9 @@ function getPostArray($setting) {
 	return $_POST[$setting];
 }
 function getSortOrder($sortArray) {
-	if ( ! is_array($sortArray) ) {
+	if ( ! is_array($sortArray) )
 		return array();
-	}
+	
 	foreach ($sortArray as $sort) {
 		$sortOrder[$sort[0]] = $sort[1];
 	}
@@ -464,10 +453,8 @@ function fixDescription($Description) {
 		$Description = str_replace("&gt;",">",$Description);
 		$Description = strip_tags($Description);
 		$Description = trim($Description);
-	} else {
-		return "";
 	}
-	return $Description;
+	return is_string($Description) ? $Description : "";
 }
 
 ############################
