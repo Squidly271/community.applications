@@ -51,7 +51,6 @@ data.currentpage = 1;
 data.searchFlag = false;
 data.searchActive = false; // Sets whether changepage re-sorts the displayed templates.
 var dockerSearchFlag = false;
-var warningInterval;
 var dockerNotEnabled;
 var postCount = 0;
 var cookieWarning = false;
@@ -1349,7 +1348,7 @@ function feedWarning(currentServer) {
 <div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
 <strong><font size='3'></strong></font>
 <div class='dockerSearch' style='display:none'><div class='ca_center'><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></div></div>
-<div id='templates_content'><div class='ca_templatesDisplay'>Updating Content</div></div>
+<div id='templates_content'><div class='ca_templatesDisplay'><font size='6'>Updating Content</font></div></div>
 <div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
 </div>
 </div>
