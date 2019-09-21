@@ -313,6 +313,7 @@ function updateContent(button) {
 			if ( result.data ) {
 				updateDisplay(result.data);
 			} else {
+				data.searchActive = true;
 				getContent(true,'INITIALIZE',"","",startupScreen);
 			}
 		}

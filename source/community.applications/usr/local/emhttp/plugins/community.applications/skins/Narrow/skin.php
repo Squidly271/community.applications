@@ -625,6 +625,10 @@ function getPopupDescription($appNumber) {
 	if ( $template['Plugin'] ) {
 		download_url($template['PluginURL'],$caPaths['pluginTempDownload']);
 		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
+	} else {
+		download_url($template['TemplateURL'],$caPaths['pluginTempDownload']);
+		$xml = readXmlFile($caPaths['pluginTempDownload']);
+		$template['Changes'] = $xml['Changes'];
 	}
 	$changeLogMessage = "<div class='ca_center'><font size='0'>Note: not all ";
 	$changeLogMessage .= $template['PluginURL'] ? "authors" : "maintainers";
