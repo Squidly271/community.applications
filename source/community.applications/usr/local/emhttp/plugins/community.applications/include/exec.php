@@ -11,7 +11,6 @@ require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
-require_once("/usr/local/emhttp/plugins/community.applications/include/xmlHelpers.php");
 
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 
