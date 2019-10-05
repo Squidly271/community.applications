@@ -34,6 +34,7 @@ $caPaths['moderation']                          = $caPaths['tempFiles']."/modera
 $caPaths['unRaidVersion']                       = "/etc/unraid-version";
 $caPaths['logos']                               = $caPaths['tempFiles']."/logos.json";
 $caPaths['unRaidVars']                          = "/var/local/emhttp/var.ini";
+$caPaths['docker_cfg']                          = "/boot/config/docker.cfg";
 $caPaths['dockerUpdateStatus']                  = "/var/lib/docker/unraid-update-status.json";
 $caPaths['pinned']                              = "{$caPaths['flashDrive']}/pinned_apps.json"; # stored on flash instead of docker.img so it will work without docker running
 $caPaths['pinnedV2']                            = "{$caPaths['flashDrive']}/pinned_appsV2.json";

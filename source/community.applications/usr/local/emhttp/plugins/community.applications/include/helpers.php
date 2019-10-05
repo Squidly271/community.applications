@@ -98,8 +98,7 @@ function startsWith($haystack, $needle) {
 ###################################################################
 function first_str_replace($haystack, $needle, $replace) {
 	$pos = strpos($haystack, $needle);
-	if ($pos !== false) return substr_replace($haystack, $replace, $pos, strlen($needle));
-	return $haystack;
+	return ($pos !== false) ? substr_replace($haystack, $replace, $pos, strlen($needle)) : $haystack;
 }
 
 #######################
@@ -215,9 +214,8 @@ function fixAttributes(&$template,$attribute) {
 	}
 
 	if ( $template[$attribute] ) {
-		foreach ($template[$attribute] as $tempArray) {
+		foreach ($template[$attribute] as $tempArray)
 			$tempArray2[] = $tempArray['value'] ? array('@attributes'=>$tempArray['@attributes'],'@value'=>$tempArray['value']) : array('@attributes'=>$tempArray['@attributes']);
-		}
 		$template[$attribute] = $tempArray2;
 	}
 }

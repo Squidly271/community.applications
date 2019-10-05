@@ -377,7 +377,8 @@ function getPopupDescription($appNumber) {
 
 	require_once("webGui/include/Markdown.php");
 
-	$unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
+	$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
+	$dockerVars = parse_ini_file($caPaths['docker_cfg']);
 	$caSettings = parse_plugin_cfg("community.applications");
 	$csrf_token = $unRaidVars['csrf_token'];
 	$tabMode = '_parent';
@@ -485,6 +486,7 @@ function getPopupDescription($appNumber) {
 	}
 	$templateDescription .= "</td></tr>";
 	$templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
+	$templateDescription .= ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes" ) ? "<tr><td></td><td><a class='popUpLink' href='{$template['TemplateURL']}' target='_blank'>Application Template</a></td></tr>" : "";
 	if ( $template['Category'] ) {
 		$templateDescription .= "<tr><td>Categories:</td><td>".$template['Category'];
 		if ( $template['Beta'] )
