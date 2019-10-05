@@ -669,11 +669,11 @@ function dockerConvert(dockerID) {
 	post({action:'convert_docker',ID:dockerID},function(result) {
 		myCloseAlert();
 		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + $.trim(result.xml);
-		openWindow(templateURL);
+		openNewWindow(templateURL);
 	});
 }
 
-function openWindow(newURL) {
+function openNewWindow(newURL) {
 	var popUp = window.open(newURL,"_self");
 	if ( !popUp || popUp.closed || typeof popUp == "undefined" ) {
 		addBannerWarning("CA requires popups to be enabled under certain circumstances.  You must white list your server within your browser to allow popups");
@@ -1363,7 +1363,7 @@ function feedWarning(currentServer) {
 				<td colspan='3'><div class='ca_center'><font size='5'>Community Applications</font></div></td>
 			</tr>
 			<tr>
-				<td class='ca_credit'><img src='https://github.com/Squidly271/plugin-repository/raw/master/Chode_300.gif' style='width:5rem;height:4.8rem;'></td>
+				<td class='ca_credit'><img src='https://github.com/Squidly271/community.applications/raw/master/webImages/Webp.net-resizeimage%20(1).png' style='width:5rem;height:4.8rem;'></td>
 				<td class='ca_credit'><font size='4.0rem;'><span class='ca_italic ca_bold'>Andrew Zawadzki</span></font></strong></td>
 				<td><font size='4.0rem;'><span class='ca_italic ca_bold'>Main Development</span></font></td>
 			</tr>
