@@ -82,68 +82,6 @@ $(function(){
 	if ( "<?=$date?>" == "1/01" ) addBannerWarning("Happy New Years!",false);
 	if ( "<?=$date?>" == "12/31" ) addBannerWarning("Happy New Years Eve <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> Please Enjoy Responsibly",false);
 
-	if ( isTouch() ) {
-		templates_content.addEventListener("touchstart", startTouch, false);
-		templates_content.addEventListener("touchmove", moveTouch, false);
-
-		// Left / Right
-		var initialX = null;
-		var initialY = null;
-
-		function startTouch(e) {
-			initialX = e.touches[0].clientX;
-			initialY = e.touches[0].clientY;
-		};
-
-		function moveTouch(e) {
-			if (initialX === null) {
-				return;
-			}
-
-			if (initialY === null) {
-				return;
-			}
-
-			var currentX = e.touches[0].clientX;
-			var currentY = e.touches[0].clientY;
-
-			var diffX = initialX - currentX;
-			var diffY = initialY - currentY;
-
-			if (Math.abs(diffX) > Math.abs(diffY)) {
-				// sliding horizontally
-				if (diffX > 0) {
-					// swiped left
-					if ( $(".pageNavigation").length ) {
-						if ( data.nextpage > 1 ) {
-							if ( dockerSearchFlag ) {
-								dockerSearch(data.nextpage);
-							} else {
-								changePage(data.nextpage);
-							}
-						}
-					}
-				} else {
-					// swiped right
-					if ( $(".pageNavigation").length ) {
-						if ( data.prevpage > 0 ) {
-							if ( dockerSearchFlag ) {
-								dockerSearch(data.prevpage);
-							} else {
-								changePage(data.prevpage);
-							}
-						}
-					}
-				}
-			}
-
-			initialX = null;
-			initialY = null;
-
-			e.preventDefault();
-		};
-	}
-
 	$('.ca_toolsView').tooltipster({
 		trigger: 'hover',
 		delay: [1000,0],
@@ -1141,15 +1079,6 @@ function evaluateBoolean(str) {
 
 function cookiesEnabled() {
 	return evaluateBoolean(navigator.cookieEnabled);
-}
-
-function isTouch() {
-<?if ( $cfg['mobileAllowed'] == "true" ):?>
-	try{ document.createEvent("TouchEvent"); return true; }
-	catch(e){ return false; }
-<?else:?>
-	return false;
-<?endif;?>
 }
 
 function showCredits() {

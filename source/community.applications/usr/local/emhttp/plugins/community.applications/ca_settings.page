@@ -18,16 +18,6 @@ $cfg = parse_plugin_cfg($plugin);
 <form markdown="1" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="<?=$plugin?>/<?=$plugin?>.cfg">
 
-
-Disable mobile UI enhancements:
-: <select name='mobileAllowed' size='1'>
-	<?=mk_option($cfg['mobileAllowed'],"true", "No (default)")?>
-	<?=mk_option($cfg['mobileAllowed'],"false", "Yes")?>
-	</select>
-
-> If you have problems with swiping to change pages, then disable the mobile UI enhancements
-
-
 Hide Deprecated Applications:
 : <select name='hideDeprecated' size='1'>
 	<?=mk_option($cfg['hideDeprecated'], "true", "Yes (default)")?>
