@@ -77,8 +77,8 @@ $(function(){
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
 	if ( "<?=$date?>" == "5/29" )  addBannerWarning("Happy Birthday CA! <i style='float:initial;cursor:initial;' class='fa fa-birthday-cake'></i>",false);
-	if ( "<?=$date?>" == "12/24" ) addBannerWarning("Happy Holidays from Andrew, Tracey, and family",false);
-	if ( "<?=$date?>" == "12/25" ) addBannerWarning("Happy Holidays from Andrew, Tracey, and family",false);
+	if ( "<?=$date?>" == "12/24" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> Happy Holidays from Andrew, Tracey, and family <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
+	if ( "<?=$date?>" == "11/13" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> Happy Holidays from Andrew, Tracey, and family <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
 	if ( "<?=$date?>" == "1/01" )  addBannerWarning("Happy New Years!",false);
 	if ( "<?=$date?>" == "12/31" ) addBannerWarning("Happy New Years Eve <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> Please Enjoy Responsibly",false);
 
