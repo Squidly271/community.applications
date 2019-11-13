@@ -390,7 +390,6 @@ case 'dismiss_warning':
 case 'previous_apps':
 	$installed = getPost("installed","");
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
-	$moderation = readJsonFile($caPaths['moderation']);
 	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
 
 	$file = readJsonFile($caPaths['community-templates-info']);
@@ -429,14 +428,11 @@ if ( $caSettings['dockerRunning'] ) {
 		}
 # handle renamed containers
 		foreach ($all_files as $xmlfile) {
-			$o = readXmlFile($xmlfile,$moderation);
+			$o = readXmlFile($xmlfile);
 			$o['Description'] = fixDescription($o['Description']);
 			$o['Overview'] = fixDescription($o['Overview']);
 			$o['MyPath'] = $xmlfile;
 			$o['UnknownCompatible'] = true;
-
-			if ( is_array($moderation[$o['Repository']]) )
-				$o = array_merge($o, $moderation[$o['Repository']]);
 
 			$flag = false;
 			$containerID = false;
@@ -525,7 +521,6 @@ if ( $caSettings['dockerRunning'] ) {
 						break;
 					}
 				}
-				if ( $moderation[$o['Repository']]['Blacklist'] ) continue;
 
 				if ( ! $o['Blacklist'] )
 					$displayed[] = $o;
@@ -959,7 +954,7 @@ function DownloadApplicationFeed() {
 				unset($subBranch['Branch']);
 				$myTemplates[$i] = $subBranch;
 				$o['BranchID'][] = $i;
-				file_put_contents($subBranch['Path'],makeXML($subBranch));
+//				file_put_contents($subBranch['Path'],makeXML($subBranch));
 			}
 		}
 		unset($o['Branch']);
@@ -974,10 +969,10 @@ function DownloadApplicationFeed() {
 			$o['Description'] = $o['OriginalDescription'];
 			unset($o['OriginalDescription']);
 		}
-		$templateXML = makeXML($o);
-		@mkdir(dirname($o['Path']),0777,true);
+//		$templateXML = makeXML($o);
+//		@mkdir(dirname($o['Path']),0777,true);
 
-		file_put_contents($o['Path'],$templateXML);
+//		file_put_contents($o['Path'],$templateXML);
 	}
 	if ( $invalidXML )
 		writeJsonFile($caPaths['invalidXML_txt'],$invalidXML);
@@ -1002,7 +997,6 @@ function getConvertedTemplates() {
 			$myTemplates[] = $template;
 	}
 	$appCount = count($myTemplates);
-	$moderation = readJsonFile($caPaths['moderation']);
 	$i = $appCount;
 	unset($Repos);
 
