@@ -32,7 +32,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$viewMode = "detail";
 
 	$info = getRunningContainers();
-	$skin = readJsonFile($caPaths['defaultSkin']);
 
 	if ( ! $selectedApps )
 		$selectedApps = array();
@@ -44,7 +43,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		convertPinnedAppsToV2();
 
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
-	$iconSize = $caSettings['iconSize'];
+
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
 	if ( filter_var($startup,FILTER_VALIDATE_BOOLEAN) )
 		$sortOrder['sortBy'] = "noSort";
@@ -70,13 +69,13 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$displayedTemplates[] = $template;
 	}
 
-	$ct .= $skin[$viewMode]['header'];
+	$ct .= "<div class='ca_templatesDisplay'>";
+
 	$iconClass = "displayIcon";
 
-	$displayTemplate = $skin[$viewMode]['template'];
 	$currentServer = @file_get_contents($caPaths['currentServer']);
 
-	# Create entries for skins.  Note that MANY entries are not used in the current skins
+	# Create entries for skins.  Note that MANY entries are not used in the current skin
 	foreach ($displayedTemplates as $template) {
 		if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
 			$template['Icon'] = $template['IconHTTPS'];
@@ -104,18 +103,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$template['display_DonateLink'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>Donate To Author</a>" : "";
 		$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>Donate</a>" : "";
 
-		$template['display_Project'] = $template['Project'] ? "<a class='ca_tooltip projectLink' target='_blank' title='Click to go the the Project Home Page' href='{$template['Project']}'></a>" : "";
 		$template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons' target='_blank' href='{$template['Project']}' title='Go to the project page'></a>" : "";
-		$template['display_Support'] = $template['Support'] ? "<a class='ca_tooltip supportLink' href='{$template['Support']}' target='_blank' title='Click to go to the support thread'></a>" : "";
 		$template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons' href='{$template['Support']}' target='_blank' title='Support Thread'></a>" : "";
 
-		$template['display_webPage'] = $template['WebPageURL'] ? "<a class='ca_tooltip webLink' title='Click to go to {$template['SortAuthor']}&#39;s web page' href='".$template['WebPageURL']."' target='_blank'></a>" : "";
-
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</span></strong><font color='purple'>{$template['ModeratorComment']}</font>" : "";
-		$tempLogo = $template['Logo'] ? "<img src='{$template['Logo']}' height=2.0rem;>" : "";
-		$template['display_Repository'] = "<span class='ca_repository'>$RepoName $tempLogo</span>";
-		$template['display_Stars'] = $template['stars'] ? "<i class='fa fa-star dockerHubStar' aria-hidden='true'></i> <strong>{$template['stars']}</strong>" : "";
-		$template['display_Downloads'] = $template['downloads'] ? "<div class='ca_center'>".number_format($template['downloads'])."</div>" : "<div class='ca_center'>Not Available</div>";
 
 		if ( $pinnedApps["{$template['Repository']}&{$template['SortName']}"] ) {
 			$pinned = "pinned";
@@ -250,11 +241,12 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['display_dockerBeta'] .= "<span class='ca_tooltip displayBeta' title='Beta Container &#13;See support forum for potential issues'>(Beta)</span>";
 
 # Entries created.  Now display it
-		$ct .= vsprintf($displayTemplate,toNumericArray($template));
+		$ct .= displayCard($template);
 		$count++;
 		if ( $count == $caSettings['maxPerPage'] ) break;
 	}
-	$ct .= $skin[$viewMode]['footer'];
+	$ct .= "</div>";
+
 	$ct .= getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
 
 	if ( $specialCategoryComment ) {
@@ -343,16 +335,13 @@ function displaySearchResults($pageNumber) {
 	$num_pages = $tempFile['num_pages'];
 	$file = $tempFile['results'];
 	$templates = readJsonFile($caPaths['community-templates-info']);
-	$skin = readJsonFile($caPaths['defaultSkin']);
 	$viewMode = "detail";
-	$displayTemplate = $skin[$viewMode]['template'];
 
 	$ct = dockerNavigate($num_pages,$pageNumber)."<br>";
-	$ct .= $skin[$viewMode]['header'];
+	$ct .= "<div class='ca_templatesDisplay'>";
 
 	$columnNumber = 0;
 	foreach ($file as $result) {
-		$result['display_Repository'] = $result['Repository'];
 		$result['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
 		$result['display_dockerName'] = "<a class='ca_tooltip ca_applicationName' style='cursor:pointer;' onclick='mySearch(this.innerText);' title='Search for similar containers'>{$result['Name']}</a>";
 		$result['display_author'] = "<a class='ca_tooltip ca_author' onclick='mySearch(this.innerText);' title='Search For Containers From {$result['Author']}'>{$result['Author']}</a>";
@@ -361,10 +350,10 @@ function displaySearchResults($pageNumber) {
 		$result['Description'] = $result['Description'] ?: "No description present";
 		$result['display_faProject'] = "<a class='ca_tooltip ca_fa-project appIcons' title='Go to dockerHub page' target='_blank' href='{$result['DockerHub']}'></a>";
 		$result['display_dockerInstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click To Install' onclick='dockerConvert(&#39;".$result['ID']."&#39;);'></a>";
-		$ct .= vsprintf($displayTemplate,toNumericArray($result));
+		$ct .= displayCard($result);
 		$count++;
 	}
-	$ct .= $skin[$viewMode]['footer'];
+	$ct .= "</div>";
 
 	return $ct.dockerNavigate($num_pages,$pageNumber);
 }
@@ -687,98 +676,55 @@ function getPopupDescription($appNumber) {
 	return array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel);
 }
 
-############################################################################
-# Function to convert a template's associative tags to static numeric tags #
-# (Because the associate tag order can change depending upon the template) #
-############################################################################
-function toNumericArray($template) {
-	global $caSettings;
+###########################
+# Generate the app's card #
+###########################
+function displayCard($template) {
+	global $ca_settings;
 
-	return array(
-		$template['Repository'],              # 1
-		$template['Author'],                  # 2
-		$template['Name'],                    # 3
-		$template['DockerHubName'],           # 4
-		$template['Beta'],                    # 5
-		$template['Changes'],                 # 6
-		$template['Date'],                    # 7
-		$template['RepoName'],                # 8
-		$template['Project'],                 # 9
-		$template['ID'],                      #10
-		$template['Base'],                    #11
-		$template['BaseImage'],               #12
-		$template['SortAuthor'],              #13
-		$template['SortName'],                #14
-		$template['Licence'],                 #15
-		$template['Plugin'],                  #16
-		$template['PluginURL'],               #17
-		$template['PluginAuthor'],            #18
-		$template['MinVer'],                  #19
-		$template['MaxVer'],                  #20
-		$template['Category'],                #21
-		$template['Description'],             #22
-		$template['Overview'],                #23
-		$template['Downloads'],               #24
-		$template['Stars'],                   #25
-		$template['Announcement'],            #26
-		$template['Support'],                 #27
-		$template['IconWeb'],                 #28
-		$template['DonateText'],              #29
-		$template['DonateImg'],               #30 - Deprecated Tag Do Not Use
-		$template['DonateLink'],              #31
-		$template['PopUpDescription'],        #32 - No longer implemented
-		$template['ModeratorComment'],        #33
-		$template['Compatible'],              #34
-		$template['display_DonateLink'],      #35
-		$template['display_Project'],         #36
-		$template['display_Support'],         #37
-		$template['display_UpdateAvailable'], #38
-		$template['display_ModeratorComment'],#39
-		$template['display_Repository'],      #40
-		$template['display_Stars'],           #41
-		$template['display_Downloads'],       #42
-		$template['display_pinButton'],       #43
-		$template['display_Uninstall'],       #44
-		$template['display_removable'],       #45
-		$template['display_newIcon'],         #46 # Do not use -> no longer implemented
-		$template['display_changes'],         #47 # Do not use -> no longer implemented
-		$template['display_webPage'],         #48
-		$template['display_humanDate'],       #49
-		$template['display_pluginSettings'],  #50 # do not use -> no longer implemented
-		$template['display_pluginInstall'],   #51 # do not use -> no longer implemented
-		$template['display_dockerDefault'],   #52 # do not use -> no longer implemented
-		$template['display_dockerEdit'],      #53 # do not use -> no longer implemented
-		$template['display_dockerReinstall'], #54 # do not use -> no longer implemented
-		$template['display_dockerInstall'],   #55 # do not use -> no longer implemented
-		$template['display_dockerDisable'],   #56 # do not use -> no longer implemented
-		$template['display_compatible'],      #57
-		$template['display_compatibleShort'], #58
-		$template['display_author'],          #59
-		$template['display_iconSmall'],       #60
-		$template['display_iconSelectable'],  #61
-		$template['display_popupDesc'],       #62  # Do not use -> no longer implemented
-		$template['display_updateAvail'],     #63  *** NO LONGER USED - USE #38 instead
-		$template['display_dateUpdated'],     #64
-		$template['display_iconClickable'],   #65
-		str_replace("-"," ",$template['display_dockerName']),      #66
-		$template['Path'],                    #67
-		$template['display_pluginInstallIcon'],#68
-		$caSettings['defaultReinstall'] == "true" ? $template['display_dockerDefaultIcon'] : "",#69
-		$template['display_dockerEditIcon'],  #70
-		$template['display_dockerReinstallIcon'], #71
-		$template['display_dockerInstallIcon'], #72
-		$template['display_pluginSettingsIcon'], #73
-		$template['dockerWebIcon'],            #74
-		$template['display_multi_install'],     #75
-		$template['display_DonateImage'],      #76
-		$template['display_dockerBeta'],        #77
-"<span class='ca_applicationName'>".str_replace("-"," ",$template['display_dockerName'])."</span>{$template['display_Private']}<br><span class='ca_author'>{$template['display_author']}</span><br><span class='ca_categories'>{$template['Category']}</span>",  #78
-		$template['display_faSupport'],  #79
-		$template['display_faProject'],     #80
-		$template['display_iconOnly'],   #81
-		$template['display_infoIcon'],  #82
-		$template['display_faWarning'], #83
-		$template['CardDescription']	#84
-	);
+	$appName = str_replace("-"," ",$template['display_dockerName']);
+	$dockerReinstall = $ca_Settings['defaultReinstall'] == "true" ? $template['display_dockerDefaultIcon'] : "";
+
+	$card = "
+		<div class='ca_holder'>
+			<div class='ca_iconArea'>
+				<div class='ca_topRightArea'>
+					{$template['display_multi_install']}{$template['display_Uninstall']}
+				</div>
+				<div class='ca_icon'>
+					{$template['display_iconClickable']}
+				</div>
+				<div class='ca_infoArea'>
+					<div class='ca_applicationInfo'>
+						<span class='ca_applicationName'>
+							$appName
+						</span>
+						{$template['display_Private']}
+						<br>
+						<span class='ca_author'>
+							{$template['display_author']}
+						</span>
+						<br>
+						<span class='ca_categories'>
+							{$template['Category']}
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class='ca_hr'></div>
+			<div class='ca_bottomLine'>
+				{$template['display_pluginInstallIcon']} {$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']} {$template['display_faSupport']} {$template['display_faProject']} {$template['display_pinButton']} {$template['display_faWarning']} &nbsp;&nbsp; {$template['display_removable']}
+				<span class='ca_bottomRight'>
+					{$template['display_DonateImage']}
+				</span>
+			</div>
+			<div class='ca_descriptionArea'>
+				{$template['CardDescription']}
+			</div>
+		</div>
+		";
+
+	return $card;
 }
+
 ?>

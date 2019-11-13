@@ -9,6 +9,7 @@
 require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php"); # must be first include due to paths defined
 require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
+require_once("/usr/local/emhttp/plugins/community.applications/skins/Narrow/skin.php");
 require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
 require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 
@@ -19,12 +20,6 @@ $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 ################################################################################
 
 $caSettings = parse_plugin_cfg("community.applications");
-$caSettings['skin'] = "Narrow";
-$caPaths['defaultSkin'] = "/usr/local/emhttp/plugins/community.applications/skins/{$caSettings['skin']}/skin.json";
-$skinSettings = readJsonFile($caPaths['defaultSkin']);
-$caPaths['defaultSkinPHP'] = $skinSettings['detail']['php'];
-
-require_once($caPaths['defaultSkinPHP']);
 
 $caSettings['maxPerPage']    = isMobile() ? 12 : 24;
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
@@ -209,7 +204,7 @@ case 'get_content':
 	$o['display'] = display_apps();
 	if ( count($displayApplications['community']) < 2 )
 		$o['script'] = "disableSort();";
-		
+
 	postReturn($o);
 	break;
 

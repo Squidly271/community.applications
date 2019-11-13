@@ -78,7 +78,7 @@ function getPostArray($setting) {
 function getSortOrder($sortArray) {
 	if ( ! is_array($sortArray) )
 		return array();
-	
+
 	foreach ($sortArray as $sort) {
 		$sortOrder[$sort[0]] = $sort[1];
 	}

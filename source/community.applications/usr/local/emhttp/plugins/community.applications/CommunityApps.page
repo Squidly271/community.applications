@@ -122,19 +122,19 @@ $(function(){
 		appname = stripTags(appname);
 		showDesc_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,"checkForPluginInstallRequested()");
 	});
-	
+
 	$('.mainArea').on("click",".unpinned,.pinned",function() {
 		var repository = $(this).data("repository");
 		var name = $(this).data("name");
 		pinApp(this,repository,name);
 	});
-	
+
 	$('.mainArea').on("click",".xmlInstall",function() {
 		var type = $(this).data("type");
 		var xml = $(this).data("xml");
 		xmlInstall(type,xml);
 	});
-	
+
 	$('.menuItems').on("click",'.categoryMenu',function() {
 		scrollToTop();
 		changeCategory(this,false);
