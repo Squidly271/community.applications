@@ -674,7 +674,7 @@ case "pinnedApps":
 ################################################
 case 'displayTags':
 	$leadTemplate = getPost("leadTemplate","oops");
-	postReturn(['tags'=>formatTags($leadTemplate,"_self")]);
+	postReturn(['tags'=>formatTags($leadTemplate)]);
 	break;
 
 ###########################################
@@ -858,6 +858,36 @@ case 'getPopupDescription':
 	postReturn(getPopupDescription($appNumber));
 	break;
 
+case 'createXML':
+	$xmlFile = getPost("xml","");
+	if ( ! $xmlFile ) {
+		postReturn(["error"=>"CreateXML: XML file was missing"]);
+		break;
+	}
+	$templates = readJsonFile($caPaths['community-templates-info']);
+	if ( ! $templates ) {
+		postReturn(["error"=>"Create XML: templates file missing or empty"]);
+		break;
+	}
+	if ( !startsWith($xmlFile,"/boot/") ) {
+		$index = searchArray($templates,"Path",$xmlFile);
+		if ( $index === false ) {
+			postReturn(["error"=>"Create XML: couldn't find template with path of $xmlFile"]);
+			break;
+		}
+		$xml = makeXML($templates[$index]);
+		@mkdir(dirname($xmlFile));
+		file_put_contents($xmlFile,$xml);
+	}
+	postReturn(["status"=>"ok"]);
+	break;
+
+###############################################
+# Return an error if the action doesn't exist #
+###############################################
+default:
+	postReturn(["error"=>"Unknown post action {$_POST['action']}"]);
+	break;
 }
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 

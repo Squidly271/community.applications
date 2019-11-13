@@ -458,7 +458,7 @@ function fixDescription($Description) {
 ############################
 # displays the branch tags #
 ############################
-function formatTags($leadTemplate,$tabMode="_self") {
+function formatTags($leadTemplate) {
 	global $caPaths;
 
 	$file = readJsonFile($caPaths['community-templates-info']);
@@ -469,9 +469,9 @@ function formatTags($leadTemplate,$tabMode="_self") {
 	else {
 		$defaultTag = $template['BranchDefault'] ? $template['BranchDefault'] : "latest";
 		$o = "<table>";
-		$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='/Apps/AddContainer?xmlTemplate=default:".$template['Path']."' target='$tabMode'>Default</a></td><td>Install Using The Template's Default Tag (<font color='purple'>:$defaultTag</font>)</td></tr>";
+		$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='#' onclick='xmlInstall(&quot;default&quot;,&quot;".$template['Path']."&quot;);'>Default</a></td><td>Install Using The Template's Default Tag (<font color='purple'>:$defaultTag</font>)</td></tr>";
 		foreach ($childTemplates as $child) {
-			$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='/Apps/AddContainer?xmlTemplate=default:".$file[$child]['Path']."' target='$tabMode'>".$file[$child]['BranchName']."</a></td><td>".$file[$child]['BranchDescription']."</td></tr>";
+			$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='#' onclick='xmlInstall(&quot;default&quot;,&quot;".$file[$child]['Path']."&quot;);'>".$file[$child]['BranchName']."</a></td><td>".$file[$child]['BranchDescription']."</td></tr>";
 		}
 		$o .= "</table>";
 	}

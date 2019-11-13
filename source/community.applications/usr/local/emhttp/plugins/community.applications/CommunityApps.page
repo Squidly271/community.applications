@@ -76,10 +76,10 @@ $(function(){
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
-	if ( "<?=$date?>" == "5/29" ) addBannerWarning("Happy Birthday CA! <i style='float:initial;cursor:initial;' class='fa fa-birthday-cake'></i>",false);
+	if ( "<?=$date?>" == "5/29" )  addBannerWarning("Happy Birthday CA! <i style='float:initial;cursor:initial;' class='fa fa-birthday-cake'></i>",false);
 	if ( "<?=$date?>" == "12/24" ) addBannerWarning("Happy Holidays from Andrew, Tracey, and family",false);
 	if ( "<?=$date?>" == "12/25" ) addBannerWarning("Happy Holidays from Andrew, Tracey, and family",false);
-	if ( "<?=$date?>" == "1/01" ) addBannerWarning("Happy New Years!",false);
+	if ( "<?=$date?>" == "1/01" )  addBannerWarning("Happy New Years!",false);
 	if ( "<?=$date?>" == "12/31" ) addBannerWarning("Happy New Years Eve <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> Please Enjoy Responsibly",false);
 
 	$('.ca_toolsView').tooltipster({
@@ -122,8 +122,20 @@ $(function(){
 		appname = stripTags(appname);
 		showDesc_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,"checkForPluginInstallRequested()");
 	});
+	
+	$('.mainArea').on("click",".unpinned,.pinned",function() {
+		var repository = $(this).data("repository");
+		var name = $(this).data("name");
+		pinApp(this,repository,name);
+	});
+	
+	$('.mainArea').on("click",".xmlInstall",function() {
+		var type = $(this).data("type");
+		var xml = $(this).data("xml");
+		xmlInstall(type,xml);
+	});
+	
 	$('.menuItems').on("click",'.categoryMenu',function() {
-		var selectedCategory = $(this).attr("data-category");
 		scrollToTop();
 		changeCategory(this,false);
 	});
@@ -864,6 +876,14 @@ function displayTags(leadTemplate) {
 				enableSearch();
 			}
 		});
+	});
+}
+
+function xmlInstall(type,xml) {
+	post({action:'createXML',xml:xml},function(result){
+		if ( result.status == "ok" ) {
+			openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
+		}
 	});
 }
 

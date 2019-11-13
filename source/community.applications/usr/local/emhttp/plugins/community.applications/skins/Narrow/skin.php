@@ -124,7 +124,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$pinned = "unpinned";
 			$pinnedTitle = "Click to pin this application";
 		}
-		$template['display_pinButton'] = "<span class='ca_tooltip $pinned' title='$pinnedTitle' onclick='pinApp(this,&quot;{$template['Repository']}&quot;,&quot;{$template['SortName']}&quot;);'></span>";
+		$template['display_pinButton'] = "<span class='ca_tooltip $pinned' title='$pinnedTitle' data-repository='{$template['Repository']}' data-name='{$template['SortName']}'></span>";
 		if ($template['Blacklist'])
 			unset($template['display_pinButton']);
 
@@ -167,16 +167,16 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			} else {
 				if ( $caSettings['dockerRunning'] ) {
 					if ( $selected ) {
-						$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click to reinstall the application using default values' data-type='default' data-xml='".addslashes($template['Path'])."'></a>";
+						$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='Click to reinstall the application using default values' data-type='default' data-xml='".addslashes($template['Path'])."'></a>";
 						$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip ca_fa-install appIcons' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'></a>" : $template['display_dockerDefaultIcon'];
-						$template['display_dockerEditIcon']    = "<a class='ca_tooltip appIcons ca_fa-edit' title='Click to edit the application values' data-type='edit' data-xml='".addslashes($info[$name]['template'])."'></a>";
+						$template['display_dockerEditIcon']    = "<a class='ca_tooltip appIcons ca_fa-edit xmlInstall' title='Click to edit the application values' data-type='edit' data-xml='".addslashes($info[$name]['template'])."'></a>";
 						if ( $info[$name]['url'] && $info[$name]['running'] )
 							$template['dockerWebIcon'] = "<a class='ca_tooltip appIcons ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'></a>";
 					} else {
 						if ( $template['MyPath'] )
-							$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click to reinstall' data-type='user' data-xml='".addslashes($template['MyPath'])."'></a>";
+							$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='Click to reinstall' data-type='user' data-xml='".addslashes($template['MyPath'])."'></a>";
 						else {
-							$template['display_dockerInstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons' title='Click to install' data-type='default' data-xml='".addslashes($template['Path'])."'></a>";
+							$template['display_dockerInstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='Click to install' data-type='default' data-xml='".addslashes($template['Path'])."'></a>";
 							$template['display_dockerInstallIcon'] = $template['BranchID'] ? "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'></a>" : $template['display_dockerInstallIcon'];
 						}
 					}
@@ -562,16 +562,16 @@ function getPopupDescription($appNumber) {
 		if ( ! $template['Plugin'] ) {
 			if ( $caSettings['dockerRunning'] ) {
 				if ( $selected ) {
-					$installLine .= $caSettings['defaultReinstall'] == "true" ? "<a class='appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall (default)</a>" : "";
-					$installLine .= "<a class='appIconsPopUp ca_fa-edit' href='/Apps/UpdateContainer?xmlTemplate=edit:".addslashes($info[$name]['template'])."' target='$tabMode'>&nbsp;&nbsp;Edit</a>";
+					$installLine .= $caSettings['defaultReinstall'] == "true" ? "<a class='appIconsPopUp ca_fa-install xmlInstall' onclick='xmlInstall(&quot;default&quot;,&quot;".addslashes($template['Path'])."&quot;);'>&nbsp;&nbsp;Reinstall (default)</a>" : "";
+					$installLine .= "<a class='appIconsPopUp ca_fa-edit' onclick='xmlInstall(&quot;edit&quot;,&quot;".addslashes($info[$name]['template'])."&quot;);'>&nbsp;&nbsp;Edit</a>";
 					if ( $info[$name]['url'] && $info[$name]['running'] ) {
 						$installLine .= "<a class='appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank'>&nbsp;&nbsp;WebUI</a>";
 					}
 				} else {
 					if ( $template['MyPath'] )
-						$installLine .= "<a class='appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=user:".addslashes($template['MyPath'])."' target='$tabMode'>&nbsp;&nbsp;Reinstall</a>";
+						$installLine .= "<a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;user&quot;,&quot;".addslashes($template['MyPath'])."&quot;);'>&nbsp;&nbsp;Reinstall</a>";
 					else {
-						$install = "<a class='appIconsPopUp ca_fa-install' href='/Apps/AddContainer?xmlTemplate=default:".addslashes($template['Path'])."' target='$tabMode'>&nbsp;&nbsp;Install</a>";
+						$install = "<a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;default&quot;,&quot;".addslashes($template['Path'])."&quot;);'>&nbsp;&nbsp;Install</a>";
 						$installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='appIconsPopUp ca_fa-install' onclick='$(&quot;#branch&quot;).show(500);'>&nbsp;&nbsp;Install</a>" : $install;
 					}
 				}
@@ -597,7 +597,7 @@ function getPopupDescription($appNumber) {
 		$templateDescription .= "$installLine<br>";
 		if ($template['BranchID']) {
 			$templateDescription .= "<span id='branch' style='display:none;'>";
-			$templateDescription .= formatTags($template['ID'],"_parent");
+			$templateDescription .= formatTags($template['ID'],"popup");
 			$templateDescription .= "</span>";
 		}
 		$templateDescription .= "<hr>";

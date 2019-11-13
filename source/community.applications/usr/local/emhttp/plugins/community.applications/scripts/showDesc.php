@@ -41,13 +41,14 @@ div.spinner .unraid_mark_7{animation:mark_7 1.5s ease infinite}
 @keyframes mark_7{50% {transform:translateY(62px)} 100% {transform: translateY(0px)}}
 </style>
 <script>
+var csrf_token = "<?=$csrf_token?>";
 $(function() {
 	$.removeCookie("ca_installPluginURL",{path:"/"});
 
 	setTimeout(function() {
 		$(".spinner").show();
 	},250);
-	$.post("/plugins/community.applications/include/exec.php",{action:'getPopupDescription',appName:'<?=$appName?>',appPath:'<?=$appNumber?>',csrf_token:'<?=$csrf_token?>'},function(result) {
+	$.post("/plugins/community.applications/include/exec.php",{action:'getPopupDescription',appName:'<?=$appName?>',appPath:'<?=$appNumber?>',csrf_token:csrf_token},function(result) {
 		try {
 			var descData = JSON.parse(result);
 		} catch(e) {
@@ -211,6 +212,7 @@ $(function() {
 	});
 });
 
+
 function installPlugin(pluginURL) {
 	$.cookie("ca_installPluginURL",pluginURL,{path:"/"});
 	window.parent.Shadowbox.close();
@@ -237,6 +239,29 @@ function showGraphs() {
 		}
 	});
 }
+
+function openNewModalWindow(newURL) {
+	var popUp = window.open(newURL,"_parent");
+	if ( !popUp || popUp.closed || typeof popUp == "undefined" ) {
+		alert("CA requires popups to be enabled under certain circumstances.  You must white list your server within your browser to allow popups");
+	}
+}
+
+function xmlInstall(type,xml) {
+	$.post("/plugins/community.applications/include/exec.php",{action:'createXML',xml:xml,csrf_token:csrf_token},function(data) {
+		try {
+			var result = JSON.parse(data);
+		} catch(e) {
+			var result = new Object();
+			result = data;
+		}
+		console.log(result);
+		if ( result.status == "ok" ) {
+			openNewModalWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
+		}
+	});
+}
+
 </script>
 <html>
 <body>
