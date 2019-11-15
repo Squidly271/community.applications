@@ -134,6 +134,8 @@ $(function(){
 		var xml = $(this).data("xml");
 		xmlInstall(type,xml);
 	});
+	
+
 
 	$('.menuItems').on("click",'.categoryMenu',function() {
 		scrollToTop();
@@ -205,7 +207,6 @@ $(function(){
 			text: 'All applications listed here are <span class="ca_bold">3rd party</span> additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here. <br><span class="ca_italic"><font color="green">Every attempt is made to ensure that only safe and compatible applications are present</font></span><font size=0><br>Note: if your flash drive is corrupted you may also see this message and it will need to be fixed first</font>',
 			html: true,
 			type: 'error',
-			footer: "test",
 			showCancelButton: true,
 			showConfirmButton: true,
 			confirmButtonText: 'I Understand'
@@ -411,7 +412,7 @@ function myCloseSpinner() {
 
 function myCloseAlert() {
 	swal.close();
-	$(".sweet-alert").css("background-color","transparent");
+	swalBackground("transparent");
 	enableSearch();
 }
 
@@ -570,7 +571,6 @@ function getContent(init,category,description,newApp,startupDisplay) {
 function populateAutoComplete() {
 	post({action:'populateAutoComplete'},function(result) {
 		var test = JSON.stringify(result.autocomplete);
-		var test2 = JSON.parse(test);
 		searchBoxAwesomplete.list = test.replace(/\"/g,"");
 		searchBoxAwesomplete.maxItems = 20;
 		Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch)
@@ -1018,18 +1018,15 @@ function installMulti() {
 
 function updateDisplay(data) {
 	$("#templates_content").html(data);
-	handle_HTTP_icons();
 	setToolTip();
 	enableSearch();
+	$('img').on("error",function() {
+		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+	});
 	saveState();
 	myCloseAlert();
 }
 
-function handle_HTTP_icons() {
-	$('img').on("error",function() {
-		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
-	});
-}
 
 function saveState() {
 	if ( ! dockerSearchFlag ) {
@@ -1067,14 +1064,21 @@ function restoreState() {
 	dockerSearchFlag = $.cookie("ca_dockerSearchFlag");
 	restoreStateMenu = $.cookie("ca_selectedMenu");
 
-	enableIcon("#sortIcon",$.cookie("ca_sortIcon"));
+	var ca_sortIcon = $.cookie("ca_sortIcon");
+	enableIcon("#sortIcon",ca_sortIcon);
 	$(".sortIcons").each(function() {
 		$(this).removeClass("enabledIcon");
 	});
-	var selectedSort = $.cookie("ca_sortButton");
-	var sortIcon = $.find(".sortIcons[data-sort='"+selectedSort+"']");
-	$(sortIcon).addClass("enabledIcon");
-	var classList = $(sortIcon).attr('class').split(/\s+/);
+	if ( ! ca_sortIcon || ca_sortIcon == "false" ) {
+		var selectedSort = "noSort";
+		var sortIcon = "";
+	} else {
+		var selectedSort = $.cookie("ca_sortButton");
+		var sortIcon = $.find(".sortIcons[data-sort='"+selectedSort+"']");
+		$(sortIcon).addClass("enabledIcon");
+		var classList = $(sortIcon).attr('class').split(/\s+/);
+	}
+
 	$.each(classList, function(index, item) {
 		if ( item.startsWith("fa-") ) {
 			$("#sortIcon").html("&nbsp;<span class="+item+"></span>");

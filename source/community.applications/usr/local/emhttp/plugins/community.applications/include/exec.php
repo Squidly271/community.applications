@@ -733,8 +733,8 @@ case 'statistics':
 	if ( $currentServer != "Primary Server" )
 		$currentServer = "<i class='fa fa-exclamation-triangle ca_serverWarning' aria-hidden='true'></i> $currentServer";
 
-	$statistics['invalidXML'] = count($invalidXML);
-	$statistics['repositories'] = count($repositories);
+	$statistics['invalidXML'] = @count($invalidXML) ?: "unknown";
+	$statistics['repositories'] = @count($repositories) ?: "unknown";
 	$o = <<<EOF
 		<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>
 		<table style='margin-top:1rem;'>
