@@ -216,7 +216,7 @@ $(function(){
 					location.reload();
 				});
 			} else {
-				addBannerWarning("Installations of apps disabled.  You must accept the warning to be able to install applications.  Click <a onclick='window.location.reload();' style='cursor:pointer;'>HERE</a>");
+				addBannerWarning("Installations of apps disabled.  You must accept the warning to be able to install applications.  Click <a onclick='window.location.reload();' style='cursor:pointer;'>HERE</a>",true,true);
 				updateContent();
 			}
 		});
