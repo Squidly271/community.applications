@@ -1221,7 +1221,7 @@ function getCategories() {
 		$("#category_list").html(result.categories);
 		if ( restoreStateMenu ) {
 			console.log(restoreStateMenu);
-			if ( restoreStateMenu && ! data.searchFlag) {
+			if ( restoreStateMenu && ! evaluateBoolean(data.searchFlag) ) {
 				var menuItem = $.find(".caMenuItem[data-category='"+restoreStateMenu+"']");
 				$(".caMenuItem").each(function(){
 					$(this).removeClass("selectedMenu");
