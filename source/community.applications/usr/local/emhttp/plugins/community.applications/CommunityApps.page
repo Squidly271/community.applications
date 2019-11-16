@@ -1170,6 +1170,7 @@ function post(options,callback) {
 				}
 			} catch(e) {
 				alert("Error from POST call "+options.action+".  "+stripTags(retval));
+				myCloseAlert();
 				var result = retval;
 			}
 			console.groupCollapsed("Result "+options.action);
