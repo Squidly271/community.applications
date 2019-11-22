@@ -532,8 +532,13 @@ function getSortOrder() {
 			}
 		}
 	});
-	if ( ! sortOrder.sortBy ) {
+	if ( ! sortOrder.sortBy && ! isIconEnabled("#sortIcon")) {
 		sortOrder.sortBy = ["sortBy","noSort"];
+	} else {
+		sortOrder.sortBy = ["sortBy","Name"];
+		sortOrder.sortDir = ["sortDir","Up"];
+		var sortIcon = $.find(".sortIcons[data-sort='nameUp']");
+		$(sortIcon).addClass("enabledIcon");
 	}
 	return [sortOrder.sortBy,sortOrder.sortDir];
 }
