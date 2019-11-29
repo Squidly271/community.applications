@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.11.15">
-<!ENTITY md5       "5149f12124b1db1143ee5402749e03fc">
+<!ENTITY version   "2019.11.28">
+<!ENTITY md5       "a88708b29cc578821f02607ddf180870">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.11.28
+Maintenance release
+- Prep work for future updates
+- Fixed: Installations from a startup page followed by visiting installed / previous / pinned, sort orders would be wrong
+- Fixed: Menu wasn't being properly highlighted again after installations
+- Fixed: In unlikely circumstance of a fatal error in CA, the browser tab could get locked up.
+
 ###2019.11.15
 - Fixed: After installing an app from the startup screen, the sort order would change
 - Changed: Vastly simpler skinning
