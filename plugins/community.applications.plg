@@ -14,7 +14,6 @@
 
 <CHANGES>
 ###2019.11.28
-Maintenance release
 - Prep work for future updates
 - Fixed: Installations from a startup page followed by visiting installed / previous / pinned, sort orders would be wrong
 - Fixed: Menu wasn't being properly highlighted again after installations
