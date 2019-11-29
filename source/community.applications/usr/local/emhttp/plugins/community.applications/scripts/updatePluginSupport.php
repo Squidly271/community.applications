@@ -44,7 +44,7 @@ foreach ($plugins as $plugin) {
 			$dom->formatOutput = true;
 			$dom->loadXML($xml->asXML());
 			file_put_contents($plugin, $dom->saveXML()); 
-			echo "<b>".plugin("name",$plugin)."</b> --> ".$templates[$pluginEntry]['Support']."\n";
+			echo "<b>".plugin("name",$plugin)."</b> --> <a href='{$templates[$pluginEntry]['Support']}' target='_blank'>{$templates[$pluginEntry]['Support']}</a>\n";
 		}
 	}
 }
