@@ -12,8 +12,8 @@ Tag="users"
 ###############################################################
 $plugin = "community.applications";
 
-require_once("/usr/local/emhttp/plugins/$plugin/include/paths.php");
-require_once("/usr/local/emhttp/plugins/$plugin/include/helpers.php");
+require_once "/usr/local/emhttp/plugins/$plugin/include/paths.php";
+require_once "/usr/local/emhttp/plugins/$plugin/include/helpers.php";
 
 $cfg = parse_plugin_cfg($plugin);
 if ( ! is_file($caPaths['warningAccepted']) ) {

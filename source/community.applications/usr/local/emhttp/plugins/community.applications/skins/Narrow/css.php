@@ -242,7 +242,7 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 }
 /* Pointer */
 .awesomplete > ul:before {content: "";position: absolute;top: -.43em;left: 1em;width: 0; height: 0;padding: .4em;background: white;border: inherit;border-right: 0;border-bottom: 0;-webkit-transform: rotate(45deg);transform: rotate(45deg);}
-.awesomplete > ul > li {position: relative;padding: .2em .5em;cursor: pointer;}
+.awesomplete > ul > li {position: relative;padding: .2em .5em;cursor: pointer; font-size:<?=(1.5*$multiplier)?>rem;}
 .awesomplete > ul > li:hover {background: hsl(200, 40%, 80%);color: black;}
 .awesomplete > ul > li[aria-selected="true"] {background: hsl(205, 40%, 40%);color: white;}
 .awesomplete mark {background: hsl(65, 100%, 50%);}
