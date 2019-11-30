@@ -6,9 +6,9 @@
 #                                                             #
 ###############################################################
 
-require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
-require_once "/usr/local/emhttp/plugins/community.applications/include/helpers.php";
-require_once "/usr/local/emhttp/plugins/dynamix/include/Helpers.php";
+require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
+require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
+require_once("/usr/local/emhttp/plugins/dynamix/include/Helpers.php");
 ?>
 <body bgcolor='white'>
 <link type="text/css" rel="stylesheet" href='<?autov("/plugins/community.applications/skins/Narrow/css.php")?>'>

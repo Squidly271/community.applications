@@ -6,12 +6,12 @@
 #                                                             #
 ###############################################################
 
-require_once "/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php"; # must be first include due to paths defined
-require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
-require_once "/usr/local/emhttp/plugins/community.applications/include/helpers.php";
-require_once "/usr/local/emhttp/plugins/community.applications/skins/Narrow/skin.php";
-require_once "/usr/local/emhttp/plugins/dynamix/include/Wrappers.php";
-require_once "/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
+require_once("/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php"); # must be first include due to paths defined
+require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
+require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
+require_once("/usr/local/emhttp/plugins/community.applications/skins/Narrow/skin.php");
+require_once("/usr/local/emhttp/plugins/dynamix/include/Wrappers.php");
+require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 
@@ -23,7 +23,7 @@ $caSettings = parse_plugin_cfg("community.applications");
 
 $caSettings['maxPerPage']    = isMobile() ? 12 : 24;
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
-
+$caSettings['timeNew']       = "-10 years";
 if ( ! is_file($caPaths['warningAccepted']) )
 	$caSettings['NoInstalls'] = true;
 
@@ -84,7 +84,7 @@ case 'get_content':
 			$noInstallComment = "<span class='ca_bold'>While highly not recommended to do</span>, incompatible applications can be installed by enabling Display Incompatible Applications within CA's General Settings<br><br>";
 			break;
 	}
-	$newAppTime = strtotime("-10 years");
+	$newAppTime = strtotime($caSettings['timeNew']);
 
 	if ( file_exists($caPaths['addConverted']) ) {
 		@unlink($caPaths['addConverted']);

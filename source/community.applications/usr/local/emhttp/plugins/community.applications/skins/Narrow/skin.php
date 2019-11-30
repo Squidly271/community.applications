@@ -364,7 +364,7 @@ function displaySearchResults($pageNumber) {
 function getPopupDescription($appNumber) {
 	global $caSettings, $caPaths;
 
-	require_once "webGui/include/Markdown.php";
+	require_once("webGui/include/Markdown.php");
 
 	$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
 	$dockerVars = parse_ini_file($caPaths['docker_cfg']);

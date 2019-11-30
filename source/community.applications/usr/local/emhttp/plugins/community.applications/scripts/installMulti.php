@@ -6,7 +6,7 @@
 #                                                             #
 ###############################################################
 
-require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
+require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 
 function startsWith($haystack, $needle) {
 	return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;

@@ -12,18 +12,16 @@ Tag="users"
 ###############################################################
 $plugin = "community.applications";
 
-require_once "/usr/local/emhttp/plugins/$plugin/include/paths.php";
-require_once "/usr/local/emhttp/plugins/$plugin/include/helpers.php";
-
-$SESSION_NAME = session_name();
+require_once("/usr/local/emhttp/plugins/$plugin/include/paths.php");
+require_once("/usr/local/emhttp/plugins/$plugin/include/helpers.php");
 
 $cfg = parse_plugin_cfg($plugin);
 if ( ! is_file($caPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
-$unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">") ?: 0; // Needs to be 0 as the pre-processor evaluates false instead as null
-$unRaid68 = version_compare($unRaidSettings['version'],"6.7.9",">") ?: 0;
+$unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
+$unRaid68 = version_compare($unRaidSettings['version'],"6.7.9",">");
 
 if ( is_file($caPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
@@ -137,8 +135,6 @@ $(function(){
 		xmlInstall(type,xml);
 	});
 	
-
-
 	$('.menuItems').on("click",'.categoryMenu',function() {
 		scrollToTop();
 		changeCategory(this,false);
@@ -188,6 +184,7 @@ $(function(){
 	$(".sortIcons").click(function() {
 		enableSortIcon(this);
 		data.currentpage = 1;
+		data.searchActive = false;
 		changeSortOrder();
 		$("#sortIconArea").toggle("slow");
 		var classList = $(this).attr('class').split(/\s+/);
@@ -534,13 +531,15 @@ function getSortOrder() {
 			}
 		}
 	});
-	if ( ! sortOrder.sortBy && ! isIconEnabled("#sortIcon")) {
-		sortOrder.sortBy = ["sortBy","noSort"];
-	} else {
-		sortOrder.sortBy = ["sortBy","Name"];
-		sortOrder.sortDir = ["sortDir","Up"];
-		var sortIcon = $.find(".sortIcons[data-sort='nameUp']");
-		$(sortIcon).addClass("enabledIcon");
+	if ( ! sortOrder.sortBy ) {
+		if ( ! isIconEnabled("#sortIcon")) {
+			sortOrder.sortBy = ["sortBy","noSort"];
+		} else {
+			sortOrder.sortBy = ["sortBy","Name"];
+			sortOrder.sortDir = ["sortDir","Up"];
+			var sortIcon = $.find(".sortIcons[data-sort='nameUp']");
+			$(sortIcon).addClass("enabledIcon");
+		}
 	}
 	return [sortOrder.sortBy,sortOrder.sortDir];
 }
@@ -1176,14 +1175,9 @@ function post(options,callback) {
 					alert(result.error);
 				}
 			} catch(e) {
-				if ( ! $.cookie("<?=$SESSION_NAME?>") && <?=$unRaid68?> ) {
-					alert("You have been logged out");
-					window.parent.location.reload();
-				} else {
-					alert("Error from POST call "+options.action+".  "+stripTags(retval));
-					myCloseAlert();
-					var result = retval;
-				}
+				alert("Error from POST call "+options.action+".  "+stripTags(retval));
+				myCloseAlert();
+				var result = retval;
 			}
 			console.groupCollapsed("Result "+options.action);
 			console.timeEnd(options.action);

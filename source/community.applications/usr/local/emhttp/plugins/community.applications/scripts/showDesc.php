@@ -6,8 +6,8 @@
 #                                                             #
 ###############################################################
 
-require_once "/usr/local/emhttp/plugins/dynamix/include/Helpers.php";
-require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
+require_once("/usr/local/emhttp/plugins/dynamix/include/Helpers.php");
+require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
 
 $unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
 $caSettings = parse_plugin_cfg("community.applications");

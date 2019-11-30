@@ -7,9 +7,9 @@
 #                                                             #
 ###############################################################
 
-require_once "/usr/local/emhttp/plugins/community.applications/include/helpers.php";
-require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
-require_once "/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
+require_once("/usr/local/emhttp/plugins/community.applications/include/helpers.php");
+require_once("/usr/local/emhttp/plugins/community.applications/include/paths.php");
+require_once("/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php");
 
 $plugins = glob("/boot/config/plugins/*.plg");
 $templates = readJsonFile($caPaths['community-templates-info']);
@@ -44,7 +44,7 @@ foreach ($plugins as $plugin) {
 			$dom->formatOutput = true;
 			$dom->loadXML($xml->asXML());
 			file_put_contents($plugin, $dom->saveXML()); 
-			echo "<b>".plugin("name",$plugin)."</b> --> <a href='{$templates[$pluginEntry]['Support']}' target='_blank'>{$templates[$pluginEntry]['Support']}</a>\n";
+			echo "<b>".plugin("name",$plugin)."</b> --> ".$templates[$pluginEntry]['Support']."\n";
 		}
 	}
 }
