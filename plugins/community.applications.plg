@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.11.28">
-<!ENTITY md5       "a88708b29cc578821f02607ddf180870">
+<!ENTITY version   "2019.12.05">
+<!ENTITY md5       "f06b0d0811b9dc5d7c01d21f89c57a72">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.12.05
+- Fixed regression error: Sorting not functional
+- Always show App's graphs
+- Plugin Support URL that appears in the install window now a link
+
 ###2019.11.28
 - Prep work for future updates
 - Fixed: Installations from a startup page followed by visiting installed / previous / pinned, sort orders would be wrong

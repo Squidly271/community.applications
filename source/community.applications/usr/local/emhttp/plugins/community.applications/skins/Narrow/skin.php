@@ -518,16 +518,8 @@ function getPopupDescription($appNumber) {
 		if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 			$templateDescription .= ".  Trending ";
 			$templateDescription .= (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>";
-			$templateDescription .= " <span>&nbsp;&nbsp;<a class='graphLink' href='#' onclick='showGraphs();'>Show Graphs</a></span></td></tr>";
 		}
 		$templateDescription .= "<tr><td></td><td>(As of ".date("M d, Y - h:i a",$template['LastUpdateScan']).")</td></tr>";
-		if (is_array($template['trends']) && (count($template['trends']) > 1) ){
-			$templateDescription .= "<tr><td colspan='2'><canvas id='trendChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
-			if ( $template['downloadtrend'] ) {
-				$templateDescription .= "<tr><td colspan='2'><canvas id='downloadChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
-				$templateDescription .= "<tr><td colspan='2'><canvas id='totalDownloadChart' class='caChart' height=1 width=3 style='display:none;'></canvas></td></tr>";
-			}
-		}
 		$template['description'] .= "</td></tr>";
 	}
 	$templateDescription .= "</table></div>";
@@ -612,7 +604,13 @@ function getPopupDescription($appNumber) {
 			$templateDescription .= "<br>This plugin has a duplicated name from another plugin $duplicated.  This will impact your ability to install both plugins simultaneously<br>";
 		}
 	}
-
+	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
+		if ( $template['downloadtrend'] ) {
+			$templateDescription .= "<div><canvas id='downloadChart' class='caChart' height=1 width=3></canvas></div>";
+			$templateDescription .= "<div><canvas id='totalDownloadChart' class='caChart' height=1 width=3></canvas></div>";
+			$templateDescription .= "<div><canvas id='trendChart' class='caChart' height=1 width=3></canvas></div>";
+		}
+	}
 	if ( $template['Plugin'] ) {
 		download_url($template['PluginURL'],$caPaths['pluginTempDownload']);
 		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
@@ -627,7 +625,7 @@ function getPopupDescription($appNumber) {
 
 	if ( trim($template['Changes']) ) {
 		if ( $appNumber != "ca" && $appNumber != "ca_update" )
-			$templateDescription .= "</div><hr>";
+			$templateDescription .= "</div>";
 
 		if ( $template['Plugin'] ) {
 			if ( file_exists("/var/log/plugins/$pluginName") ) {
@@ -645,7 +643,7 @@ function getPopupDescription($appNumber) {
 			$appInformation = str_replace("[","<",$appInformation);
 			$appInformation = str_replace("]",">",$appInformation);
 		}
-		$templateDescription .= "<div class='ca_center'><font size='4'><span class='ca_bold'>Change Log</span></div></font><br>$changeLogMessage$appInformation";
+		$templateDescription .= "<div class='ca_center'><br><font size='4'><span class='ca_bold'>Change Log</span></div></font><br>$changeLogMessage$appInformation";
 	}
 
 	if (is_array($template['trendsDate']) ) {
