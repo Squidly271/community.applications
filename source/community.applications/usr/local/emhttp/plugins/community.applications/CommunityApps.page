@@ -431,7 +431,7 @@ function doSearch(button,newSearch) {
 	}
 	data.docker = "";
 	data.section = "AppStore";
-	filter = filter.replace(/[^a-z0-9]/gi,' ')
+	filter = filter.replace(/[^a-z0-9-]/gi,' ')
 	filter = $.trim(filter);
 	$('#searchBox').val(filter);
 	$(".multi_installDiv").hide();
@@ -579,8 +579,8 @@ function populateAutoComplete() {
 		var test = JSON.stringify(result.autocomplete);
 		searchBoxAwesomplete.list = test.replace(/\"/g,"");
 		searchBoxAwesomplete.maxItems = 20;
-		Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch);
-		Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch);
+		Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch)
+		Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch)
 	});
 }
 
@@ -729,7 +729,7 @@ function uninstallApp(application,humanName) {
 		html: true
 	}, function(isConfirm) {
 		if (isConfirm) {
-			application = application.basename();
+			application = basename(application);
 			my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=remove&arg2='+application,'Uninstall Plugin',600,900,true,"postUninstallPlugin()");
 		} else {
 			enableSearch();
@@ -742,8 +742,8 @@ function postUninstallPlugin() {
 	enableSearch();
 }
 
-String.prototype.basename = function() {
-	return this.split('/').reverse()[0];
+function basename(path) {
+	return path.split('/').reverse()[0];
 }
 
 function deletePrivateApp(path,name,author) {
@@ -992,17 +992,9 @@ function installMulti() {
 		var buttonText = "Yes, install it";
 	}
 	swalBackground("white");
-	console.log(dockerCount);
-	var text = "Are you sure you want to install ";
-	text = text.concat(dockerCount ? dockerCount+" docker "+makePlural("application",dockerCount) : "");
-	text = text.concat(dockerCount && pluginCount ? " and " : "");
-	text = text.concat(pluginCount ? pluginCount+makePlural(" plugin",pluginCount) : "");
-	text = text.concat("?");
-	text = text.concat(dockerCount ? "<br><span class='ca_italic'>Docker applications will be installed utilizing the most recently saved template with no user input on your part</span>" : "");
-	text = text.concat(cookieWarning ? "<br><font color='red'>"+cookieWarning+"</font>" : "");
 	swal({
 		title: "Install "+makePlural("Application",dockerCount+pluginCount)+"?",
-		text: text,
+		text: "Are you sure you want to install "+dockerCount+" docker "+makePlural("application",dockerCount)+" and "+pluginCount+" "+makePlural("plugin",pluginCount)+"?  <span class='ca_italic'>Docker applications will be installed utilizing the most recently saved template with no user input on your part</span><font color='red'>"+cookieWarning+"</font>",
 		type: "info",
 		showCancelButton: true,
 		showConfirmButton: true,

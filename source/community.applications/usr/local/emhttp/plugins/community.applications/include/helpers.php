@@ -306,7 +306,7 @@ function filterMatch($filter,$searchArray,$exact=true) {
 	$filterwords = explode(" ",$filter);
 	foreach ( $filterwords as $testfilter) {
 		foreach ($searchArray as $search) {
-			if ( preg_match("#$testfilter#i",str_replace(" ","",$search)) ) {
+			if ( @preg_match("#$testfilter#i",str_replace(" ","",$search)) ) {
 				$foundword++;
 				break;
 			}
