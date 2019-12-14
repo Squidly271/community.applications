@@ -145,15 +145,15 @@ case 'get_content':
 				continue;
 			} else continue;
 		}
+		if ( ! $template['Compatible'] && $displayIncompatible ) {
+			$display[] = $template;
+			continue;
+		}
 		if ( ($caSettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) continue;
 		if ( $displayDeprecated && ! $template['Deprecated'] ) continue;
 		if ( ! $template['Displayable'] ) continue;
 		if ( $caSettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) continue;
 		if ( $template['Blacklist'] ) continue;
-		if ( ! $template['Compatible'] && $displayIncompatible ) {
-			$display[] = $template;
-			continue;
-		}
 
 		$name = $template['Name'];
 
