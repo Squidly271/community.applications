@@ -606,9 +606,9 @@ function getPopupDescription($appNumber) {
 	}
 	if (is_array($template['trends']) && (count($template['trends']) > 1) ){
 		if ( $template['downloadtrend'] ) {
+			$templateDescription .= "<div><canvas id='trendChart' class='caChart' height=1 width=3></canvas></div>";
 			$templateDescription .= "<div><canvas id='downloadChart' class='caChart' height=1 width=3></canvas></div>";
 			$templateDescription .= "<div><canvas id='totalDownloadChart' class='caChart' height=1 width=3></canvas></div>";
-			$templateDescription .= "<div><canvas id='trendChart' class='caChart' height=1 width=3></canvas></div>";
 		}
 	}
 	if ( $template['Plugin'] ) {
