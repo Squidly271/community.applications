@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.12.05">
-<!ENTITY md5       "f06b0d0811b9dc5d7c01d21f89c57a72">
+<!ENTITY version   "2019.12.21">
+<!ENTITY md5       "217b7543a8f3674f2e7ff4ef505d7206">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.12.21
+- Fixed regression error: Popup error if couldn't download feed
+- Fixed: Minor calculation errors on statistics
+- Changed: Allow dashes in search terms
+- OCD change regarding confirmation text when installing multiple previous apps
+
 ###2019.12.05
 - Fixed regression error: Sorting not functional
 - Always show App's graphs

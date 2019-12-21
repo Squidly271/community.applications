@@ -20,6 +20,7 @@ $caPaths['application-feed']                    = "https://raw.githubusercontent
 $caPaths['application-feed-last-updated']       = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/applicationFeed-lastUpdated.json";
 $caPaths['application-feedBackup']              = "https://s3.amazonaws.com/dnld.lime-technology.com/appfeed/master/applicationFeed.json";
 $caPaths['application-feed-last-updatedBackup'] = "https://s3.amazonaws.com/dnld.lime-technology.com/appfeed/master/applicationFeed-lastUpdated.json";
+$caPaths['appFeedDownloadError']                = $caPaths['tempFiles']."/downloaderror.txt";
 $caPaths['categoryList']                        = $caPaths['tempFiles']."/categoryList.json";
 $caPaths['currentServer']                       = $caPaths['tempFiles']."/currentServer.txt";
 $caPaths['lastUpdated']                         = $caPaths['tempFiles']."/lastUpdated.json";

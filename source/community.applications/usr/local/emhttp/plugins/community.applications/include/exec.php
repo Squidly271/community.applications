@@ -149,6 +149,10 @@ case 'get_content':
 			$display[] = $template;
 			continue;
 		}
+		if ( $template['Deprecated'] && $displayDeprecated && ! $template['Blacklist']) {
+			$display[] = $template;
+			continue;
+		}
 		if ( ($caSettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) continue;
 		if ( $displayDeprecated && ! $template['Deprecated'] ) continue;
 		if ( ! $template['Displayable'] ) continue;

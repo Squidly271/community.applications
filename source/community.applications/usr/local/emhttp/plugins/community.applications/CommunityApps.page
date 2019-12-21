@@ -76,7 +76,7 @@ $(function(){
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
-	if ( "<?=$date?>" == "5/29" )  addBannerWarning("Happy Birthday CA! <i style='float:initial;cursor:initial;' class='fa fa-birthday-cake'></i>",false);
+	if ( "<?=$date?>" == "5/28" )  addBannerWarning("Happy Birthday CA! <i style='float:initial;cursor:initial;' class='fa fa-birthday-cake'></i>",false);
 	if ( "<?=$date?>" == "12/24" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> Happy Holidays from Andrew, Tracey, and family <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
 	if ( "<?=$date?>" == "12/25" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> Happy Holidays from Andrew, Tracey, and family <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
 	if ( "<?=$date?>" == "1/01" )  addBannerWarning("Happy New Years!",false);
