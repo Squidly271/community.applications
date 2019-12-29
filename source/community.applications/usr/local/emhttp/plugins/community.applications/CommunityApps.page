@@ -76,7 +76,6 @@ $(function(){
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
-	if ( "<?=$date?>" == "5/28" )  addBannerWarning("Happy Birthday CA! <i style='float:initial;cursor:initial;' class='fa fa-birthday-cake'></i>",false);
 	if ( "<?=$date?>" == "12/24" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> Happy Holidays from Andrew, Tracey, and family <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
 	if ( "<?=$date?>" == "12/25" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> Happy Holidays from Andrew, Tracey, and family <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
 	if ( "<?=$date?>" == "1/01" )  addBannerWarning("Happy New Years!",false);
@@ -576,8 +575,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 
 function populateAutoComplete() {
 	post({action:'populateAutoComplete'},function(result) {
-		var test = JSON.stringify(result.autocomplete);
-		searchBoxAwesomplete.list = test.replace(/\"/g,"");
+		searchBoxAwesomplete.list = result.autocomplete;
 		searchBoxAwesomplete.maxItems = 20;
 		Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch);
 		Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch);
