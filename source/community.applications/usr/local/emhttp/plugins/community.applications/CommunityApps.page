@@ -27,11 +27,6 @@ if ( is_file($caPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
 $date = (date("n/d"));
-$dynamix = @parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
-if ( ! $dynamix['display']['theme'] )
-	$dynamix = @parse_ini_file("/usr/local/emhttp/plugins/dynamix/default.cfg",true);
-
-$theme = $dynamix['display']['theme'] ?: "black";
 ?>
 
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
