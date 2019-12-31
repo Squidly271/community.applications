@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.12.31">
-<!ENTITY md5       "a6413a5bcd6ec1ffcfe051b3eec110cd">
+<!ENTITY version   "2019.12.31a">
+<!ENTITY md5       "3428371328cf743abbec04b2fccf0fc2">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.12.31a
+- Fixed: If startup disclaimer not accepted, do not allow dockerHub installs
+
 ###2019.12.31
 - Fixed: On occasion strange characters would appear in autocomplete entries
 - Added: Support 3rd Party Themes
