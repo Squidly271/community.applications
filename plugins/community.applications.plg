@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2019.12.21">
-<!ENTITY md5       "217b7543a8f3674f2e7ff4ef505d7206">
+<!ENTITY version   "2019.12.31">
+<!ENTITY md5       "a6413a5bcd6ec1ffcfe051b3eec110cd">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2019.12.31
+- Fixed: On occasion strange characters would appear in autocomplete entries
+- Added: Support 3rd Party Themes
+
 ###2019.12.21
 - Fixed regression error: Popup error if couldn't download feed
 - Fixed: Minor calculation errors on statistics
