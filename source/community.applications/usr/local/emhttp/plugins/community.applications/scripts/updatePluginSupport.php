@@ -2,7 +2,7 @@
 <?PHP
 ###############################################################
 #                                                             #
-# Community Applications copyright 2015-2019, Andrew Zawadzki #
+# Community Applications copyright 2015-2020, Andrew Zawadzki #
 #                    All Rights Reserved                      #
 #                                                             #
 ###############################################################
