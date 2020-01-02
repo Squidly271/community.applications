@@ -27,10 +27,12 @@ if ( is_file($caPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
 $date = (date("n/d"));
-?>
 
+?>
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
+<? if ( is_file("/usr/local/emhttp/plugins/dynamix/styles/community.applications-$theme.css") ):?>
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/dynamix/styles/community.applications-$theme.css")?>'>
+<? endif; ?>
 
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
 <script>
@@ -81,8 +83,8 @@ $(function(){
 
 	if ( "<?=$date?>" == "12/24" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> Happy Holidays from Andrew, Tracey, and family <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
 	if ( "<?=$date?>" == "12/25" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> Happy Holidays from Andrew, Tracey, and family <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
-	if ( "<?=$date?>" == "1/01" )  addBannerWarning("Happy New Years!",false);
-	if ( "<?=$date?>" == "12/31" ) addBannerWarning("Happy New Years Eve <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> Please Enjoy Responsibly",false);
+	if ( "<?=$date?>" == "1/01" )  addBannerWarning("Happy New Year!",false);
+	if ( "<?=$date?>" == "12/31" ) addBannerWarning("Happy New Year! <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> Please Enjoy Responsibly",false);
 
 	$('.ca_toolsView').tooltipster({
 		trigger: 'hover',
