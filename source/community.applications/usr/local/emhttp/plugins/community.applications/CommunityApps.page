@@ -1186,9 +1186,9 @@ function post(options,callback) {
 					alert(result.error);
 				}
 			} catch(e) {
-				alert("Error from POST call "+options.action+".  "+stripTags(retval));
 				myCloseAlert();
-				var result = retval;
+				$("#templates_content").html("Something really wrong went on during "+options.action+"<br>Post the ENTIRE contents of this message in the Community Applications Support Thread<br><br>"+stripTags(retval));
+				throw new Error("Something went badly wrong!");
 			}
 			console.groupCollapsed("Result "+options.action);
 			console.timeEnd(options.action);
