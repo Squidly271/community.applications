@@ -167,7 +167,8 @@ a.ca_fa-delete{text-decoration:none;}
 .specialCategory {font-size:1.5rem;}
 .ca_table { padding:.5rem 2rem .5rem 0; font-size:1.5rem;}
 .ca_stat {color:coral; font-size:1.5rem;}
-.ca_credit { padding:.5rem 0 1rem 0; font-size:1.5rem;line-height:2rem;}
+.ca_credit { padding:.5rem 0 1rem 0; font-size:1.5rem;line-height:2rem; font-style:italic;}
+.ca_creditheader { font-size:2rem; padding-top:1rem;}
 .ca_dateUpdated {font-weight:bold;text-align:center;}
 .ca_dateUpdated::before {content:"Date Updated: ";}
 .ca_dateAdded {font-weight:bold;text-align:center;}
