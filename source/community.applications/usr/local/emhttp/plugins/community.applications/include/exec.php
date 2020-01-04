@@ -806,7 +806,7 @@ case 'populateAutoComplete':
 			$autoComplete[$template['Repo']] = $template['Repo'];
 		}
 	}
-	postReturn(['autocomplete'=>array_values($autoComplete)]);
+	postReturn(['autocomplete'=>array_filter(array_values($autoComplete))]);
 	break;
 
 ##########################
