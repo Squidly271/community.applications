@@ -96,8 +96,13 @@ $(function() {
 					datasets: [{
 						label: "Trend Per Month",
 						data: descData.trendData,
-						backgroundColor: '#c0c0c0',
-						borderColor: '#FF8C2F'
+	//					backgroundColor: '#c0c0c0',
+						borderColor: '#FF8C2F',
+						trendlineLinear: {
+							style: "rgb(255 ,66 ,255)",
+              lineStyle: "dotted",
+              width: 2
+            }
 					}],
 					labels: descData.trendLabel
 				},
@@ -137,8 +142,13 @@ $(function() {
 					datasets: [{
 						label: "Downloads Per Month",
 						data: descData.downloadtrend,
-						backgroundColor: '#c0c0c0',
-						borderColor: '#FF8C2F'
+//						backgroundColor: '#c0c0c0',
+						borderColor: '#FF8C2F',
+						trendlineLinear: {
+							style: "rgb(255 ,66 ,255)",
+              lineStyle: "dotted",
+              width: 2
+            }
 					}],
 					labels: descData.downloadLabel
 				},
