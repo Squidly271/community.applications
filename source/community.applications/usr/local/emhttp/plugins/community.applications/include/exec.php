@@ -761,6 +761,7 @@ case 'statistics':
 		</table>
 		<div class='ca_center'><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></div>
 		<div class='ca_center'>Ensuring only safe applications are present is a full time job</div><br>
+		<div class='ca_center'><a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>Application Policy</a></div>
 EOF;
 	postReturn(['statistics'=>$o]);
 	break;
