@@ -161,6 +161,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 						$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='Click to reinstall the application using default values' data-type='default' data-xml='".addslashes($template['Path'])."'></a>";
 						$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip ca_fa-install appIcons' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'></a>" : $template['display_dockerDefaultIcon'];
 						$template['display_dockerEditIcon']    = "<a class='ca_tooltip appIcons ca_fa-edit xmlInstall' title='Click to edit the application values' data-type='edit' data-xml='".addslashes($info[$name]['template'])."'></a>";
+						$template['display_dockerReinstallIcon'] = $caSettings['defaultReinstall'] == "true" ? "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='Click to reinstall' data-type='default' data-xml='".addslashes($template['MyPath'])."'></a>" : "";
 						if ( $info[$name]['url'] && $info[$name]['running'] )
 							$template['dockerWebIcon'] = "<a class='ca_tooltip appIcons ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'></a>";
 					} else {
