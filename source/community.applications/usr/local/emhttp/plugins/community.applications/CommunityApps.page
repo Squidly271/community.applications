@@ -968,6 +968,13 @@ function clearMultiInstall() {
 	enableMultiInstall();
 }
 
+function installSort(a,b) {
+	if (a[0] === b[0]) {
+		return 0;
+	} else {
+		return (a[0] < b[0]) ? -1 : 1;
+	}
+}
 function installMulti() {
 	var docker = new Array();
 	var pluginArray = new Array();
@@ -978,13 +985,15 @@ function installMulti() {
 	var cookieWarning = "";
 
 	$.each(selected.plugin,function(i,el) {
-		pluginArray.push(el);
+		pluginArray.push([el.basename().replace(".plg",""),el]);
 		pluginCount += 1;
 	});
-	pluginArray.reverse(); // Handles the special case where UD+ is checked off before UD
+// Sort them so that the install in the same order as if the system was booting.
+// NOTE: The sort drops the .plg from the order so that UD+ winds up installing after UD.  This differs from the boot sequence.
+	pluginArray.sort(installSort); 
 	if (pluginCount) {
 		pluginArray.forEach( function(value) {
-			plugin += value + "*";
+			plugin += value[1] + "*";
 		});
 	}
 	
@@ -1003,7 +1012,6 @@ function installMulti() {
 		var buttonText = "Yes, install it";
 	}
 	swalBackground("white");
-	console.log(dockerCount);
 	var text = "Are you sure you want to install ";
 	text = text.concat(dockerCount ? dockerCount+" docker "+makePlural("application",dockerCount) : "");
 	text = text.concat(dockerCount && pluginCount ? " and " : "");
