@@ -970,6 +970,7 @@ function clearMultiInstall() {
 
 function installMulti() {
 	var docker = new Array();
+	var pluginArray = new Array();
 	var plugin = "";
 	var pluginCount = 0;
 	var dockerCount = 0;
@@ -977,9 +978,16 @@ function installMulti() {
 	var cookieWarning = "";
 
 	$.each(selected.plugin,function(i,el) {
-		plugin += el + "*";
+		pluginArray.push(el);
 		pluginCount += 1;
 	});
+	pluginArray.reverse(); // Handles the special case where UD+ is checked off before UD
+	if (pluginCount) {
+		pluginArray.forEach( function(value) {
+			plugin += value + "*";
+		});
+	}
+	
 	$.each(selected.docker,function(i,el) {
 		docker.push(el);
 		dockerCount += 1;
