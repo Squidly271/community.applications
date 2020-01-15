@@ -1133,6 +1133,7 @@ function appOfDay($file) {
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
 			foreach ($file as $template) {
+				if ( count($template['trends'] ) < 3 ) continue;
 				if ( startsWith($template['Repository'],"ich777/steamcmd") ) continue; // because a ton of apps all use the same repo`
 				if ( $template['trending'] && ($template['downloads'] > 10000) ) {
 					if ( checkRandomApp($template) ) {

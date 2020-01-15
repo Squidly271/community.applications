@@ -505,7 +505,7 @@ function getPopupDescription($appNumber) {
 		$templateDescription .= "<tr><td nowrap>Current Version:</td><td>{$template['pluginVersion']}</td></tr>";
 	}
 	$unraidVersion = parse_ini_file($caPaths['unRaidVersion']);
-	$templateDescription .= ($template['MinVer'] != "6.0")&&($template['MinVer'] != "6.1") ? "<tr><td nowrap>Minimum OS:</td><td>unRaid v".$template['MinVer']."</td></tr>" : "";
+	$templateDescription .= ( $template['MinVer'] > "6.4.0" ) ? "<tr><td nowrap>Minimum OS:</td><td>unRaid v".$template['MinVer']."</td></tr>" : "";
 
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
 	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>Max OS:</td><td>unRaid v".$template['MaxVer']."</td></tr>" : "";
