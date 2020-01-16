@@ -670,7 +670,7 @@ function showModeration(script,title) {
 	showDesc_openBox("/plugins/<?=$plugin?>/scripts/showStatistics.php?arg1="+script,title,550,900,true,false);
 }
 
-function previousApps(installed) {
+function previousApps(installed,dontClear=false) {
 	hideSortIcons();
 	clearCategory();
 	setPageOne();
@@ -685,7 +685,9 @@ function previousApps(installed) {
 			$(".multi_installDiv").hide();
 		} else {
 			$(".multi_installDiv").show();
-			clearMultiInstall();
+			if ( ! dontClear ) {
+				clearMultiInstall();
+			}
 		}
 		changeSortOrder(null,null,"true");
 		saveState();
@@ -708,7 +710,7 @@ function removeApp(application, humanName) {
 		if (isConfirm) {
 			post({action:'remove_application',application:application}, function(result) {
 				enableSearch();
-				previousApps(false);
+				previousApps(false,true);
 			});
 		} else {
 			enableSearch();
