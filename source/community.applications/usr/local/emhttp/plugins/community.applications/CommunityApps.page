@@ -708,6 +708,8 @@ function removeApp(application, humanName) {
 		html: true
 	}, function(isConfirm) {
 		if (isConfirm) {
+			$('input[type="checkbox"][data-name="'+humanName+'"]').prop("checked",false); // remove the checkbox from it
+			enableMultiInstall(); // update the count
 			post({action:'remove_application',application:application}, function(result) {
 				enableSearch();
 				previousApps(false,true);
@@ -950,12 +952,12 @@ function uniqueArrayElements(sourceArray) {
 
 function enableMultiInstall() {
 	var selected = getSelectedApps();
-	if ( $.isEmptyObject(selected.docker) && $.isEmptyObject(selected.plugin) ) {
+	var count = selected.plugin.length + selected.docker.length;
+	if ( count == 0 ) {
 		$(".multi_install,.multi_installClear").attr("disabled",true);
 		$(".multi_installButton").val("Install Selected Applications");
 	} else {
 		$(".multi_install,.multi_installClear").attr("disabled",false);
-		var count = selected.plugin.length + selected.docker.length;
 		$(".multi_installButton").val("Install "+(selected.plugin.length+selected.docker.length)+" Selected "+makePlural("Application",count));
 	}
 	getSelectedApps();
