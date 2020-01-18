@@ -186,14 +186,14 @@ if ( typeof addRebootNotice !== "function" ) {
 		$rebootNotice = json_decode(@file_get_contents("/tmp/reboot_notifications"),true) ?: array();
 		foreach ($rebootNotice as $notice):
 ?>
-			addBannerWarning("<?=$notice?>");
+			addBannerWarning("<?=$notice?>",true,true);
 <?
 		endforeach;
 ?>
 	});
 	
 	function addRebootNotice(message="You must reboot for changes to take effect") {
-		addBannerWarning(message);
+		addBannerWarning(message,true,true);
 		$.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'addRebootNotice',message:message});
 	}
 }
