@@ -105,6 +105,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 		$template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons' target='_blank' href='{$template['Project']}' title='Go to the project page'></a>" : "";
 		$template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons' href='{$template['Support']}' target='_blank' title='Support Thread'></a>" : "";
+		$template['display_faThumbsUp'] = $template['Recommended'] ? "<span class='ca_thumbsup appIcons'></span>" : "";
 
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</span></strong><font color='purple'>{$template['ModeratorComment']}</font>" : "";
 
@@ -463,6 +464,7 @@ function getPopupDescription($appNumber) {
 	$templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
 	$templateDescription .= "<table style='font-size:0.9rem;width:450px;'>";
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
+	$author .= $template['Recommended'] ? "&nbsp;&nbsp;<span class='ca_thumbsup' style='cursor:default;'></span>" : "";
 	$templateDescription .= "<tr><td style='width:25%;'>Author:</td><td>$author</a></td></tr>";
 	if ( ! $template['Plugin'] ) {
 		$templateDescription .= "<tr><td>DockerHub:</td><td><a class='popUpLink' href='{$template['Registry']}' target='_blank'>{$template['Repository']}</a></td></tr>";
@@ -571,7 +573,7 @@ function getPopupDescription($appNumber) {
 	}
 	if ( $template['Support'] || $template['Project'] ) {
 		$installLine .= "<span style='float:right;'>";
-		$installLine .= $template['Support'] ? "<a class='appIconsPopUp ca_fa-support' href='".$template['Support']."' target='_blank'>&nbsp;&nbsp;Support</strong></a>&nbsp;&nbsp;" : "";
+		$installLine .= $template['Support'] ? "<a class='appIconsPopUp ca_fa-support' href='".$template['Support']."' target='_blank'>&nbsp;&nbsp;Support</strong></a>" : "";
 		$installLine .= $template['Project'] ? "<a class='appIconsPopUp ca_fa-project' href='".$template['Project']."' target='_blank'>&nbsp;&nbsp;Project</strong></a>" : "";
 		$installLine .= "</span>";
 	}
@@ -712,7 +714,7 @@ function displayCard($template) {
 			</div>
 			<div class='ca_hr'></div>
 			<div class='ca_bottomLine'>
-				{$template['display_pluginInstallIcon']} {$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']} {$template['display_faSupport']} {$template['display_faProject']} {$template['display_pinButton']} {$template['display_faWarning']} &nbsp;&nbsp; {$template['display_removable']}
+				{$template['display_pluginInstallIcon']} {$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']} {$template['display_faSupport']} {$template['display_faThumbsUp']} {$template['display_faProject']} {$template['display_pinButton']} {$template['display_faWarning']} &nbsp;&nbsp; {$template['display_removable']}
 				<span class='ca_bottomRight'>
 					{$template['display_DonateImage']}
 				</span>

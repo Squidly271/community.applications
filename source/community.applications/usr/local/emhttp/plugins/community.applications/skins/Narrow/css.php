@@ -147,6 +147,7 @@ a.ca_fa-delete{text-decoration:none;}
 .ca_fa-update::before {content:"\f021";font-family:fontAwesome;}
 .ca_fa-info::before {content:"\f05a";font-family:fontAwesome;}
 .ca_fa-warning::before {content:"\f071";font-family:fontAwesome;}
+.ca_thumbsup::before {content:"\f164";font-family:fontAwesome;color:#1fa67a;cursor:default !important;}
 .trendingUp::before {content:"\f062";font-family:fontAwesome;}
 .trendingDown::before {content:"\f063";font-family:fontAwesome;}
 .ca_private::after {content:"\f069";font-family:fontAwesome;}
