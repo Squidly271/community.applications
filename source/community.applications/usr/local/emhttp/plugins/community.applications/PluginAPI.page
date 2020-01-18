@@ -9,6 +9,7 @@ Link='nav-user'
 #                                                             #
 ###############################################################
 ?>
+
 <? if ( ! file_exists("/usr/local/emhttp/plugins/dynamix.plugin.manager/PluginHelpers.page") ) : ?>
 <style>
 .ca_plugin_notice{position:fixed;top:1px;left:0;}
@@ -176,3 +177,25 @@ if ( typeof addBannerWarning !== "function" ) {
 }
 </script>
 <? endif; ?>
+
+<script>
+if ( typeof addRebootNotice !== "function" ) {
+// add any pre-existing reboot notices	
+	$(function() {
+<?
+		$rebootNotice = json_decode(@file_get_contents("/tmp/reboot_notifications"),true) ?: array();
+		foreach ($rebootNotice as $notice):
+?>
+			addBannerWarning("<?=$notice?>");
+<?
+		endforeach;
+?>
+	});
+	
+	function addRebootNotice(message="You must reboot for changes to take effect") {
+		addBannerWarning(message);
+		console.log("here");
+		$.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'addRebootNotice',message:message});
+	}
+}
+</script>
