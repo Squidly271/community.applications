@@ -194,7 +194,6 @@ if ( typeof addRebootNotice !== "function" ) {
 	
 	function addRebootNotice(message="You must reboot for changes to take effect") {
 		addBannerWarning(message);
-		console.log("here");
 		$.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'addRebootNotice',message:message});
 	}
 }

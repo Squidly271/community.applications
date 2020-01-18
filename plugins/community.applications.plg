@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.01.11a">
-<!ENTITY md5       "8111952394991668d8169928ffc3b9be">
+<!ENTITY version   "2020.01.18">
+<!ENTITY md5       "a57f6eac097183c4a6a45d5a57c028fd">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,15 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2020.01.18
+- PluginAPI: Add in further functions for plugin developers
+- Changed: Deleting a template from previous apps will no longer deselect anything else already selected
+- Added: Recommended apps
+- Changed: Re-enable cookies not enabled warnings when running 6.8+
+- Changed: Rename Top Performing to To New Installs
+- Changed: Adjust criteria on trending apps
+- Changed: Don't display minimim OS required for an app if it's less than CA's own minimum requirements
+
 ###2020.01.11a
 - Changed: Install multiple plugins in same order as during a boot with the exception of UD / UD+
 

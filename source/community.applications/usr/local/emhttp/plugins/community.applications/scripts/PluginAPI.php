@@ -49,7 +49,7 @@ switch ($_POST['action']) {
 		if (!message) break;
 		
 		$existing = json_decode(@file_get_contents("/tmp/reboot_notifications"),true) ?: array();
-		$existing[] = $message;
+		$existing[] = htmlspecialchars($message);
 		file_put_contents("/tmp/reboot_notifications",json_encode(array_unique($existing),JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 		break;
 }
