@@ -708,7 +708,7 @@ function removeApp(application, humanName) {
 		html: true
 	}, function(isConfirm) {
 		if (isConfirm) {
-			$('input[type="checkbox"][data-name="'+humanName+'"]').prop("checked",false); // remove the checkbox from it
+			$('input[type="checkbox"][data-humanName="'+humanName+'"]').prop("checked",false);			// remove the checkbox from the app
 			enableMultiInstall(); // update the count
 			post({action:'remove_application',application:application}, function(result) {
 				enableSearch();
