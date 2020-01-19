@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.01.18a">
-<!ENTITY md5       "5c5d0fb5e5c30f8589b1428a6dd02ebe">
+<!ENTITY version   "2020.01.19">
+<!ENTITY md5       "7c6413dcacf45b49797e8471173d4de5">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2020.01.19
+- Refinements to PluginAPI
+
 ###2020.01.18
 - PluginAPI: Add in further functions for plugin developers
 - Changed: Deleting a template from previous apps will no longer deselect anything else already selected

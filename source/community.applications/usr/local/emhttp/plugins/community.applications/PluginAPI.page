@@ -183,10 +183,13 @@ if ( typeof addRebootNotice !== "function" ) {
 // add any pre-existing reboot notices	
 	$(function() {
 <?
-		$rebootNotice = json_decode(@file_get_contents("/tmp/reboot_notifications"),true) ?: array();
+		$rebootNotice = @file("/tmp/reboot_notifications") ?: array();
 		foreach ($rebootNotice as $notice):
 ?>
-			addBannerWarning("<?=$notice?>",true,true);
+			var rebootMessage = "<?=trim($notice)?>";
+			if ( rebootMessage ) {
+				addBannerWarning(rebootMessage,true,true);
+			}
 <?
 		endforeach;
 ?>

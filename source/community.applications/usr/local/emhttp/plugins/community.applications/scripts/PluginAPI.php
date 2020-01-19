@@ -46,11 +46,12 @@ switch ($_POST['action']) {
 		
 	case 'addRebootNotice':
 		$message = getPost("message",null);
-		if (!message) break;
+		if (!trim($message)) break;
 		
-		$existing = json_decode(@file_get_contents("/tmp/reboot_notifications"),true) ?: array();
-		$existing[] = htmlspecialchars($message);
-		file_put_contents("/tmp/reboot_notifications",json_encode(array_unique($existing),JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+		$existing = @file("/tmp/reboot_notifications",FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: array();
+		$existing[] = htmlspecialchars(trim($message));
+		
+		file_put_contents("/tmp/reboot_notifications",implode("\n",array_unique($existing)));
 		break;
 }
 
