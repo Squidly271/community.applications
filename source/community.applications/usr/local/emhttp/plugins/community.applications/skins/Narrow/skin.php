@@ -453,6 +453,16 @@ function getPopupDescription($appNumber) {
 	$template['Description'] = trim($template['Description']);
 	$template['ModeratorComment'] .= $template['CAComment'];
 
+	if ( $template['Plugin'] ) {
+		download_url($template['PluginURL'],$caPaths['pluginTempDownload']);
+		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
+		$template['pluginVersion'] = @plugin("version",$caPaths['pluginTempDownload']) ?: $template['pluginVersion'];
+	} else {
+		download_url($template['TemplateURL'],$caPaths['pluginTempDownload']);
+		$xml = readXmlFile($caPaths['pluginTempDownload']);
+		$template['Changes'] = $xml['Changes'];
+	}
+
 	$templateDescription .= "<div style='width:60px;height:60px;display:inline-block;position:absolute;'>";
 	if ( $template['IconFA'] ) {
 		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
@@ -614,14 +624,7 @@ function getPopupDescription($appNumber) {
 			$templateDescription .= "<div><canvas id='totalDownloadChart' class='caChart' height=1 width=3></canvas></div>";
 		}
 	}
-	if ( $template['Plugin'] ) {
-		download_url($template['PluginURL'],$caPaths['pluginTempDownload']);
-		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
-	} else {
-		download_url($template['TemplateURL'],$caPaths['pluginTempDownload']);
-		$xml = readXmlFile($caPaths['pluginTempDownload']);
-		$template['Changes'] = $xml['Changes'];
-	}
+
 	$changeLogMessage = "<div class='ca_center'><font size='0'>Note: not all ";
 	$changeLogMessage .= $template['PluginURL'] ? "authors" : "maintainers";
 	$changeLogMessage .= " keep up to date on change logs</font></div><br>";
