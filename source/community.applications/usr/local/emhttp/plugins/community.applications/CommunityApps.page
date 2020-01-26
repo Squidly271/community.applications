@@ -411,6 +411,7 @@ function mySpinner() {
 function myCloseSpinner() {
 	swal.close();
 	$("div.spinner").hide();
+	swalBackground("white");
 }
 
 function myCloseAlert() {
