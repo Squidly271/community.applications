@@ -204,7 +204,6 @@ $(function(){
 <?endif;?>
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
-		swalBackground("white");
 		swal({
 			title: 'Disclaimer',
 			text: 'All applications listed here are <span class="ca_bold">3rd party</span> additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here. <br><span class="ca_italic"><font color="green">Every attempt is made to ensure that only safe and compatible applications are present</font></span><br><br><center><a href="https://forums.unraid.net/topic/87144-ca-application-policies/" target="_blank">Application Policy</a>',
@@ -374,7 +373,6 @@ function swalBackground(color) {
 }
 
 function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
-	swalBackground("white");
 	if ( !outsideClick ) outsideClick = false;
 	if ( !showCancel )   showCancel = false;
 	if ( !showConfirm )  showConfirm = false;
@@ -410,8 +408,7 @@ function mySpinner() {
 }
 function myCloseSpinner() {
 	swal.close();
-	$("div.spinner").hide();
-	$(".sweet-alert").hide();
+	$("div.spinner, .sweet-alert").hide();
 	swalBackground("white");
 }
 
@@ -698,7 +695,6 @@ function previousApps(installed,dontClear=false) {
 
 function removeApp(application, humanName) {
 	disableSearch();
-	swalBackground("white");
 	swal({
 		title: "Delete Template?",
 		text: "Are you sure you want to delete <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font> from the list of previously installed applications?<br><font size='0'>"+application+"</font>",
@@ -724,7 +720,6 @@ function removeApp(application, humanName) {
 
 function uninstallApp(application,humanName) {
 	disableSearch();
-	swalBackground("white");
 	swal({
 		title: "Uninstall Application?",
 		text: "Are you sure you want to uninstall <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>?",
@@ -758,7 +753,6 @@ String.prototype.basename = function() {
 function deletePrivateApp(path,name,author) {
 	var displayPath = path.replace("/boot/config/plugins/","...");
 	disableSearch();
-	swalBackground("white");
 	swal({
 		title: "Remove Private Application?",
 		text: "Are you sure you want to remove the private application <span class='ca_italic'><font color='red'><span class='ca_bold'>"+name+"</span></font> by <font color='red'><span class='ca_bold'>"+author+"</span></font>?<br><font size='0'>("+displayPath+")",
@@ -788,7 +782,6 @@ function deletePrivateApp(path,name,author) {
 
 function uninstallDocker(application,humanName) {
 	disableSearch();
-	swalBackground("white");
 	swal({
 		title: "Uninstall Application?",
 		text: "Are you sure you want to uninstall <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>?",
@@ -877,7 +870,6 @@ function pinnedApps() {
 function displayTags(leadTemplate) {
 	post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true},function(result) {
 		disableSearch();
-		swalBackground("white");
 		swal({
 			title: "Choose A Branch To Install",
 			text: result.tags,
@@ -1017,7 +1009,6 @@ function installMulti() {
 	} else {
 		var buttonText = "Yes, install it";
 	}
-	swalBackground("white");
 	var text = "Are you sure you want to install ";
 	text = text.concat(dockerCount ? dockerCount+" docker "+makePlural("application",dockerCount) : "");
 	text = text.concat(dockerCount && pluginCount ? " and " : "");
