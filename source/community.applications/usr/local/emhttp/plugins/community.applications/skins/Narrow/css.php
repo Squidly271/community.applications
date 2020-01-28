@@ -59,7 +59,6 @@ switch ($theme) {
 }
 ?>
 body.stop-scrolling{height:100%;overflow:auto}  // disable SweetAlert killing the scroll bar ( stops the wiggle )
-.sweet-alert {background-color:transparent;}
 .sweet-overlay{background-color:rgba(0, 0, 0, 0);} // don't dim if spinner is displayed
 .ca_iconArea {width:100%;height:8rem;margin:1rem;}
 .ca_icon {width:8rem;height:9rem;display:inline-block;padding-top:0.5rem;padding-left:1rem;}
