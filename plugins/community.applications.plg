@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.01.19">
-<!ENTITY md5       "7c6413dcacf45b49797e8471173d4de5">
+<!ENTITY version   "2020.01.28">
+<!ENTITY md5       "22f6adaf1e25db534a028052d9579e91">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2020.01.28
+- Fixed Regression Error: When uninstalling a docker application, the wrong app (or no app) could get uninstalled
+- Fixed: When using dynamix buttons plugin from the apps tab the popup confirmation would be corrupted
+- Fixed: When displaying a plugin popup, always display the plugin's current version instead of the version the appfeed thinks is the current version
+
 ###2020.01.19
 - Refinements to PluginAPI
 
