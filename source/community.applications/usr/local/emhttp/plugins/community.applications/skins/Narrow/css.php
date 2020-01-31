@@ -27,6 +27,7 @@ switch ($theme) {
 		$templateBackground = "#191818";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
+		$watermarkColor = "#2b2b2b"; $opacity = "50%";
 		break;
 	case 'white':
 		$donateBackground = "#1c1b1b";
@@ -34,6 +35,7 @@ switch ($theme) {
 		$templateBackground = "#f5f5f5";
 		$hrColor = "lightgrey";
 		$borderColor = "lightgrey";
+		$watermarkColor = "lightgrey"; $opacity = "80%";
 		break;
 	case 'azure':
 		$donateBackground = "#606e7f";
@@ -41,6 +43,7 @@ switch ($theme) {
 		$templateBackground = "#e2e0e2";
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
+		$watermarkColor = "#606e7f"; $opacity = "20%";
 		break;
 	case 'gray':
 		$donateBackground = "#606e7f";
@@ -48,6 +51,7 @@ switch ($theme) {
 		$templateBackground = "#1b1d1b";
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
+		$watermarkColor = "#606e7f"; $opacity = "10%";
 		break;
 	default:
 		$donateBackground = "#f2f2f2";
@@ -55,11 +59,16 @@ switch ($theme) {
 		$templateBackground = "#191818";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
+		$watermarkColor = "#2b2b2b"; $opacity = "50%";
 		break;
 }
 ?>
 body.stop-scrolling{height:100%;overflow:auto}  // disable SweetAlert killing the scroll bar ( stops the wiggle )
 .sweet-overlay{background-color:rgba(0, 0, 0, 0);} // don't dim if spinner is displayed
+.pluginWatermark {position:relative;}
+.pluginWatermark:before{position:absolute;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;left:18.5rem;opacity:<?=$opacity?>}
+.dockerWatermark {position:relative;}
+.dockerWatermark:before{position:absolute;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;left:17.5rem;top:-1rem;opacity:<?=$opacity?>}
 .ca_iconArea {width:100%;height:8rem;margin:1rem;}
 .ca_icon {width:8rem;height:9rem;display:inline-block;padding-top:0.5rem;padding-left:1rem;}
 .ca_infoArea {height:10rem;margin:1rem;display:inline-block;position:absolute;width:auto;}

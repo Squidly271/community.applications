@@ -688,6 +688,7 @@ function displayCard($template) {
 
 	$appName = str_replace("-"," ",$template['display_dockerName']);
 	$dockerReinstall = $ca_Settings['defaultReinstall'] == "true" ? $template['display_dockerDefaultIcon'] : "";
+	$watermark = $template['Plugin'] ? "<span class='pluginWatermark'></span>" : "<span class='dockerWatermark'></span>";
 
 	$card = "
 		<div class='ca_holder'>
@@ -699,6 +700,7 @@ function displayCard($template) {
 					{$template['display_iconClickable']}
 				</div>
 				<div class='ca_infoArea'>
+						$watermark
 					<div class='ca_applicationInfo'>
 						<span class='ca_applicationName'>
 							$appName
