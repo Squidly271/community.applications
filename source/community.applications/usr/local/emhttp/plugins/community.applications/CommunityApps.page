@@ -29,6 +29,9 @@ if ( is_file($caPaths['addConverted']) ) {
 $date = (date("n/d"));
 
 ?>
+<style>
+.sweet-overlay{background-color:rgba(0, 0, 0, 0) !important;} // don't dim if spinner is displayed
+</style>
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
 <? if ( is_file("/usr/local/emhttp/plugins/dynamix/styles/community.applications-$theme.css") ):?>
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/dynamix/styles/community.applications-$theme.css")?>'>

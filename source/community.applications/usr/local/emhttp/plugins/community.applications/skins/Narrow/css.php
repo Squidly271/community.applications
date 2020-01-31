@@ -27,7 +27,7 @@ switch ($theme) {
 		$templateBackground = "#191818";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
-		$watermarkColor = "#2b2b2b"; $opacity = "50%";
+		$watermarkColor = "#2b2b2b"; $opacity = "40%";
 		break;
 	case 'white':
 		$donateBackground = "#1c1b1b";
@@ -59,16 +59,11 @@ switch ($theme) {
 		$templateBackground = "#191818";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
-		$watermarkColor = "#2b2b2b"; $opacity = "50%";
+		$watermarkColor = "#2b2b2b"; $opacity = "40%";
 		break;
 }
 ?>
 body.stop-scrolling{height:100%;overflow:auto}  // disable SweetAlert killing the scroll bar ( stops the wiggle )
-.sweet-overlay{background-color:rgba(0, 0, 0, 0);} // don't dim if spinner is displayed
-.pluginWatermark {position:relative;}
-.pluginWatermark:before{position:absolute;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;left:18.5rem;opacity:<?=$opacity?>}
-.dockerWatermark {position:relative;}
-.dockerWatermark:before{position:absolute;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;left:17.5rem;top:-1rem;opacity:<?=$opacity?>}
 .ca_iconArea {width:100%;height:8rem;margin:1rem;}
 .ca_icon {width:8rem;height:9rem;display:inline-block;padding-top:0.5rem;padding-left:1rem;}
 .ca_infoArea {height:10rem;margin:1rem;display:inline-block;position:absolute;width:auto;}
@@ -82,8 +77,16 @@ a.ca_author {text-decoration:none;color:inherit;}
 .ca_categoryLink {color:<?=$linkColor?>;font-weight:normal;}
 a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_descriptionArea {margin:1rem;width:auto;height:4rem;position:relative;margin-top:-11rem;}
-.ca_holder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
-.ca_topRightArea {display:block;position:relative;margin-top:.5rem;margin-right:3rem;z-index:9999;float:right;}
+
+.ca_holderDocker {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
+.ca_holderPlugin {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
+
+// set a watermark as the background - Don't use a docker watermark if less than 6.7
+.ca_holderPlugin::before{position:absolute;float:right;margin-left:30rem;margin-top:1rem;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>}
+<?if ( $unRaid67 ):?>
+.ca_holderDocker::before{position:absolute;float:right;margin-left:30rem;margin-top:1rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>}
+<?endif;?>
+.ca_topRightArea {display:block;position:relative;margin-top:.5rem;margin-right:2rem;z-index:9999;float:right;}
 img.displayIcon {height:6.4rem;width:6.4rem;}
 i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
 .ca_bottomLine {display:block;position:relative;padding-top:9.5rem;margin-left:1.5rem;}
