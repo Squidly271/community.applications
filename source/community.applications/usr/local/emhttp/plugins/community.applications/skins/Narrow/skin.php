@@ -472,7 +472,7 @@ function getPopupDescription($appNumber) {
 		$templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
 
 	$templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
-	$templateDescription .= "<table style='font-size:0.9rem;width:450px;'>";
+	$templateDescription .= $template['Plugin'] ? "<table class='popupTableAreaPlugin'>" : "<table class='popupTableAreaDocker'>";
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
 	$author .= $template['Recommended'] ? "&nbsp;&nbsp;<span class='ca_thumbsup' style='cursor:default;'></span>" : "";
 	$templateDescription .= "<tr><td style='width:25%;'>Author:</td><td>$author</a></td></tr>";
