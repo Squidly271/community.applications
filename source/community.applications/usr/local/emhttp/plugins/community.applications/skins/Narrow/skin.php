@@ -106,6 +106,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons' target='_blank' href='{$template['Project']}' title='Go to the project page'></a>" : "";
 		$template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons' href='{$template['Support']}' target='_blank' title='Support Thread'></a>" : "";
 		$template['display_faThumbsUp'] = $template['Recommended'] ? "<span class='ca_thumbsup appIcons'></span>" : "";
+		if ( ! $template['Compatible'] ) unset($template['display_faThumbsUp']);
 
 		$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</span></strong><font color='purple'>{$template['ModeratorComment']}</font>" : "";
 
