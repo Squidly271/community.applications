@@ -29,9 +29,7 @@ if ( is_file($caPaths['addConverted']) ) {
 $date = (date("n/d"));
 
 ?>
-<style>
-.sweet-overlay{background-color:rgba(0, 0, 0, 0) !important;} // don't dim if spinner is displayed
-</style>
+
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
 <? if ( is_file("/usr/local/emhttp/plugins/dynamix/styles/community.applications-$theme.css") ):?>
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/dynamix/styles/community.applications-$theme.css")?>'>
@@ -1291,6 +1289,7 @@ function feedWarning(currentServer) {
 > <span class='unpinned'> </span><span class='pinned'></span> Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br>
 > <i class='fa fa-info-circle' aria-hidden='true' style='font-size:2rem;'></i> Clicking this will display more information about the application.  NOTE: You can also click on the application's icon to display more information.<br>
 > <i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:2rem;'></i> Clicking this will display any warnings or extra comments about the application<br>
+> <input type='checkbox' checked> On the previous apps section, you can select  multiple applications to install simultaneously<br>
 > <span class='ca_thumbsup' style='margin-left:0px; font-size:2rem;'></span> This is a recommended application based upon support requests and answers in the unRaid forum<br>
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > <center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif"></a></center>

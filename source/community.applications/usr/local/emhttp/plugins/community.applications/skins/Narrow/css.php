@@ -63,7 +63,8 @@ switch ($theme) {
 		break;
 }
 ?>
-body.stop-scrolling{height:100%;overflow:auto}  // disable SweetAlert killing the scroll bar ( stops the wiggle )
+body.stop-scrolling{height:100%;overflow:auto}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
+.sweet-overlay{background-color:rgba(0, 0, 0, 0) !important;} /* don't dim if spinner is displayed */
 .ca_iconArea {width:100%;height:8rem;margin:1rem;}
 .ca_icon {width:8rem;height:9rem;display:inline-block;padding-top:0.5rem;padding-left:1rem;}
 .ca_infoArea {height:10rem;margin:1rem;display:inline-block;position:absolute;width:auto;}
@@ -81,10 +82,9 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_holderDocker {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderPlugin {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 
-// set a watermark as the background - Don't use a docker watermark if less than 6.7
-.ca_holderPlugin::before{position:absolute;float:right;margin-left:30rem;margin-top:1rem;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>}
+.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>}
 <?if ( $unRaid67 ):?>
-.ca_holderDocker::before{position:absolute;float:right;margin-left:30rem;margin-top:1rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>}
+.ca_holderDocker::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>}
 <?endif;?>
 .ca_topRightArea {display:block;position:relative;margin-top:.5rem;margin-right:2rem;z-index:9999;float:right;}
 img.displayIcon {height:6.4rem;width:6.4rem;}
@@ -114,7 +114,7 @@ table tbody td {line-height:1.4rem;}
 .ca_highlight {color:#0e5d08;font-weight:bold;}
 .ca_description {color:#505E6F;}
 a.ca_appPopup {text-decoration:none;cursor:pointer;}
-input[type=checkbox] {width:2rem;height:2rem;}
+input[type=checkbox] {width:2rem;height:2rem;margin-right:1rem;margin-top:-.5rem;margin-left:0rem;}
 .enabledIcon {cursor:pointer;color:<?=$unRaid66color?>;}
 .disabledIcon {color:#040404;font-size:2.5rem;}
 .pinned {font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;color:<?=$unRaid66color?>;padding:.3rem;}
@@ -141,17 +141,17 @@ a.appIcons {text-decoration:none;}
 .newApp {color:red;font-size:1.5rem;cursor:pointer;}
 .ca_fa-support::before {content:"\f059";font-family:fontAwesome;}
 <?if ($unRaid67):?>
-.ca_fa-delete {color:#882626;font-size:1.5rem;position:relative;cursor:pointer;}
+.ca_fa-delete {color:#882626;font-size:1.5rem;cursor:pointer;}
 .ca_fa-delete::before {content:"\e92f";font-family:Unraid;}
 .ca_fa-project::before {content:"\e953";font-family:Unraid;}
 .dockerHubStar::before{content:"\e95a";font-family:UnRaid;}
 <?else:?>
-.ca_fa-delete {color:#882626;font-size:2rem;position:relative;cursor:pointer;}
+.ca_fa-delete {color:#882626;font-size:2rem;cursor:pointer;}
 .ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
 .ca_fa-project::before {content:"\f08e";font-family:fontAwesome;}
 .dockerHubStar:before {content:"\f005";font-family:fontAwesome;}
 <?endif;?>
-a.ca_fa-delete{text-decoration:none;}
+a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .ca_fa-install::before {content:"\f019";font-family:fontAwesome;}
 .ca_fa-edit::before {content:"\f044";font-family:fontAwesome;}
 .ca_fa-globe::before {content:"\f0ac";font-family:fontAwesome;}
@@ -167,7 +167,7 @@ a.ca_fa-delete{text-decoration:none;}
 .warning-yellow {color:#FF8C2F;}
 .ca_fa-pluginSettings::before {content:"\f013";font-family:fontAwesome;}
 .ca_donate {position:relative;margin-left:18rem;}
-.ca_multiselect {cursor:pointer;}
+.ca_multiselect {cursor:pointer;padding-right:5rem;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;}
 .pageDots{color:grey;cursor:default;}
 .pageDots::after {content:"...";}

@@ -693,16 +693,13 @@ function displayCard($template) {
 	$card = "
 		<div class='$holder'>
 			<div class='ca_iconArea'>
-				<div class='ca_topRightArea'>
-					{$template['display_multi_install']}{$template['display_Uninstall']}
-				</div>
 				<div class='ca_icon'>
 					{$template['display_iconClickable']}
 				</div>
 				<div class='ca_infoArea'>
 					<div class='ca_applicationInfo'>
 						<span class='ca_applicationName'>
-							$appName
+							$appName   {$template['display_faWarning']}
 						</span>
 						{$template['display_Private']}
 						<br>
@@ -718,7 +715,7 @@ function displayCard($template) {
 			</div>
 			<div class='ca_hr'></div>
 			<div class='ca_bottomLine'>
-				{$template['display_pluginInstallIcon']} {$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']} {$template['display_faSupport']} {$template['display_faThumbsUp']} {$template['display_faProject']} {$template['display_pinButton']} {$template['display_faWarning']} &nbsp;&nbsp; {$template['display_removable']}
+				{$template['display_multi_install']}{$template['display_pluginInstallIcon']} {$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']} {$template['display_faSupport']} {$template['display_faThumbsUp']} {$template['display_faProject']} {$template['display_pinButton']} &nbsp;&nbsp; {$template['display_removable']} {$template['display_Uninstall']}
 				<span class='ca_bottomRight'>
 					{$template['display_DonateImage']}
 				</span>
