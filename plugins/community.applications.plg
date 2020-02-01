@@ -15,6 +15,7 @@
 <CHANGES>
 ###2020.02.01
 NOTE: This is the last version of CA that I will verify compatibility with 6.4.x thru 6.6.x
+
 - Changed: Help text refinements
 - Added: Clearly identify via a watermark whether the application is a plugin or docker container
 - Fixed: If a fatal error happens within CA, close the spinner to avoid locking up the browser tab
