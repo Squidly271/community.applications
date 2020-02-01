@@ -515,6 +515,7 @@ function getPopupDescription($appNumber) {
 		$templateDescription .= "<tr><td nowrap>Date Updated:</td><td>$niceDate</td></tr>";
 	}
 	if ( $template['Plugin'] ) {
+		$template['pluginVersion'] = $template['pluginVersion'] ?: "Unknown";
 		$templateDescription .= "<tr><td nowrap>Current Version:</td><td>{$template['pluginVersion']}</td></tr>";
 	}
 	$unraidVersion = parse_ini_file($caPaths['unRaidVersion']);

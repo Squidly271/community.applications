@@ -1201,6 +1201,7 @@ function post(options,callback) {
 				}
 			} catch(e) {
 				myCloseAlert();
+				myCloseSpinner();
 				$("#templates_content").html("Something really wrong went on during "+options.action+"<br>Post the ENTIRE contents of this message in the Community Applications Support Thread<br><br>"+stripTags(retval));
 				throw new Error("Something went badly wrong!");
 			}
