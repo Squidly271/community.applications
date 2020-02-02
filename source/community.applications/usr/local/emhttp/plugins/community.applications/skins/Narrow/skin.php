@@ -492,8 +492,6 @@ function getPopupDescription($appNumber) {
 	$templateDescription .= ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes"  && $template['TemplateURL']) ? "<tr><td></td><td><a class='popUpLink' href='{$template['TemplateURL']}' target='_blank'>Application Template</a></td></tr>" : "";
 	if ( $template['Category'] ) {
 		$templateDescription .= "<tr><td>Categories:</td><td>".$template['Category'];
-		if ( $template['Beta'] )
-			$templateDescription .= " (Beta)";
 
 		$templateDescription .= "</td></tr>";
 	}
@@ -540,15 +538,19 @@ function getPopupDescription($appNumber) {
 	$templateDescription .= "</table></div>";
 
 	$templateDescription .= "<div class='ca_center'><span class='popUpDeprecated'>";
+
 	if ($template['Blacklist'])
 		$templateDescription .= "This application / template has been blacklisted<br>";
+	else {
+		if ($template['Beta'])
+			$templateDescription .= "This application is marked as being BETA.  This does NOT necessarily mean you will have any trouble<br>";
+			
+		if ($template['Deprecated'])
+			$templateDescription .= "This application / template has been deprecated<br>";
 
-	if ($template['Deprecated'])
-		$templateDescription .= "This application / template has been deprecated<br>";
-
-	if ( !$template['Compatible'] )
-		$templateDescription .= "This application is not compatible with your version of unRaid<br>";
-
+		if ( !$template['Compatible'] )
+			$templateDescription .= "This application is not compatible with your version of unRaid<br>";
+	}
 	$templateDescription .= "</span></div><hr>";
 
 	if ( ! $Displayed )
