@@ -1202,6 +1202,7 @@ function post(options,callback) {
 				myCloseAlert();
 				myCloseSpinner();
 				if ( retval.indexOf("<?=$var['NAME']?>/Login") >= 0 ) {
+					$("#templates_content").html("<h4>Logged Out... Reloading Page</h4>");
 					window.location.reload();
 				} else {
 					$("#templates_content").html("Something really wrong went on during "+options.action+"<br>Post the ENTIRE contents of this message in the Community Applications Support Thread<br><br>"+stripTags(retval));
