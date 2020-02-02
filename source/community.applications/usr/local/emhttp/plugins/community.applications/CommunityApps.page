@@ -27,7 +27,6 @@ if ( is_file($caPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
 $date = (date("n/d"));
-
 ?>
 
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
@@ -1202,7 +1201,11 @@ function post(options,callback) {
 			} catch(e) {
 				myCloseAlert();
 				myCloseSpinner();
-				$("#templates_content").html("Something really wrong went on during "+options.action+"<br>Post the ENTIRE contents of this message in the Community Applications Support Thread<br><br>"+stripTags(retval));
+				if ( retval.indexOf("<?=$var['NAME']?>/Login") >= 0 ) {
+					window.location.reload();
+				} else {
+					$("#templates_content").html("Something really wrong went on during "+options.action+"<br>Post the ENTIRE contents of this message in the Community Applications Support Thread<br><br>"+stripTags(retval));
+				}
 				throw new Error("Something went badly wrong!");
 			}
 			console.groupCollapsed("Result "+options.action);
