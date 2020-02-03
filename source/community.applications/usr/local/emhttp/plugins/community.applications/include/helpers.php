@@ -61,8 +61,10 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 	$out = curl_exec($ch);
 	curl_close($ch);
-	if ( $path )
+	if ( $path && $out)
 		file_put_contents($path,$out);
+	else
+		@unlink($path);
 
 	return $out ?: false;
 }
