@@ -27,6 +27,7 @@ if ( is_file($caPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
 $date = (date("n/d"));
+
 ?>
 
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
@@ -1201,12 +1202,7 @@ function post(options,callback) {
 			} catch(e) {
 				myCloseAlert();
 				myCloseSpinner();
-				if ( retval.indexOf("<?=$var['NAME']?>/Login") >= 0 ) {
-					$("#templates_content").html("<h4>Logged Out... Reloading Page</h4>");
-					window.location.reload();
-				} else {
-					$("#templates_content").html("Something really wrong went on during "+options.action+"<br>Post the ENTIRE contents of this message in the Community Applications Support Thread<br><br>"+stripTags(retval));
-				}
+				$("#templates_content").html("Something really wrong went on during "+options.action+"<br>Post the ENTIRE contents of this message in the Community Applications Support Thread<br><br>"+stripTags(retval));
 				throw new Error("Something went badly wrong!");
 			}
 			console.groupCollapsed("Result "+options.action);
@@ -1218,9 +1214,7 @@ function post(options,callback) {
 				try {
 					eval(result.script);
 				} catch(e) {
-					console.log("Could not execute script "+e);
 					alert("Could not execute Script "+e);
-					throw new Error("Could not execute script");
 				}
 			}
 			postCount--;

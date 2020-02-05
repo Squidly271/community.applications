@@ -100,11 +100,11 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['DonateText'] = "Donate To Author";
 
 		$template['display_Private'] = ( $template['Private'] == "true" ) ? "<span class='ca_tooltip ca_private' title='Private (dockerHub Conversion)'></span>" : "";
-		$template['display_DonateLink'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>Donate To Author</a>" : "";
-		$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>Donate</a>" : "";
+		$template['display_DonateLink'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink' rel='noreferrer' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>Donate To Author</a>" : "";
+		$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate' rel='noreferrer' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>Donate</a>" : "";
 
-		$template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons' target='_blank' href='{$template['Project']}' title='Go to the project page'></a>" : "";
-		$template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons' href='{$template['Support']}' target='_blank' title='Support Thread'></a>" : "";
+		$template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons' rel='noreferrer' target='_blank' href='{$template['Project']}' title='Go to the project page'></a>" : "";
+		$template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons' rel='noreferrer' href='{$template['Support']}' target='_blank' title='Support Thread'></a>" : "";
 		$template['display_faThumbsUp'] = $template['Recommended'] ? "<span class='ca_thumbsup appIcons'></span>" : "";
 		if ( ! $template['Compatible'] ) unset($template['display_faThumbsUp']);
 
@@ -351,7 +351,7 @@ function displaySearchResults($pageNumber) {
 		$result['Category'] = "Docker Hub Search";
 		$result['display_iconClickable'] = "<i class='displayIcon fa fa-docker'></i>";
 		$result['Description'] = $result['Description'] ?: "No description present";
-		$result['display_faProject'] = "<a class='ca_tooltip ca_fa-project appIcons' title='Go to dockerHub page' target='_blank' href='{$result['DockerHub']}'></a>";
+		$result['display_faProject'] = "<a class='ca_tooltip ca_fa-project appIcons' title='Go to dockerHub page' target='_blank' rel='noreferrer' href='{$result['DockerHub']}'></a>";
 		$result['display_dockerInstallIcon'] = $caSettings['NoInstalls'] ? "" : "<a class='ca_tooltip ca_fa-install appIcons' title='Click To Install' onclick='dockerConvert(&#39;".$result['ID']."&#39;);'></a>";
 		$ct .= displayCard($result);
 		$count++;
@@ -478,20 +478,22 @@ function getPopupDescription($appNumber) {
 	$author .= $template['Recommended'] ? "&nbsp;&nbsp;<span class='ca_thumbsup' style='cursor:default;'></span>" : "";
 	$templateDescription .= "<tr><td style='width:25%;'>Author:</td><td>$author</a></td></tr>";
 	if ( ! $template['Plugin'] ) {
-		$templateDescription .= "<tr><td>DockerHub:</td><td><a class='popUpLink' href='{$template['Registry']}' target='_blank'>{$template['Repository']}</a></td></tr>";
+		$templateDescription .= "<tr><td>DockerHub:</td><td><a class='popUpLink' rel='noreferrer' href='{$template['Registry']}' target='_blank'>{$template['Repository']}</a></td></tr>";
 	}
 	$templateDescription .= "<tr><td>Repository:</td><td>";
 	$repoSearch = explode("'",$template['RepoName']);
 	$templateDescription .= "{$template['RepoName']}</a>";
 	if ( $template['Profile'] ) {
 		$profileDescription = $template['Plugin'] ? "Author" : "Maintainer";
-		$templateDescription .= "<span>&nbsp;&nbsp;<a class='popUpLink' href='{$template['Profile']}' target='_blank'>$profileDescription Profile</a></span>";
+		$templateDescription .= "<span>&nbsp;&nbsp;<a class='popUpLink' rel='noreferrer' href='{$template['Profile']}' target='_blank'>$profileDescription Profile</a></span>";
 	}
 	$templateDescription .= "</td></tr>";
 	$templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
-	$templateDescription .= ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes"  && $template['TemplateURL']) ? "<tr><td></td><td><a class='popUpLink' href='{$template['TemplateURL']}' target='_blank'>Application Template</a></td></tr>" : "";
+	$templateDescription .= ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes"  && $template['TemplateURL']) ? "<tr><td></td><td><a class='popUpLink' rel='noreferrer' href='{$template['TemplateURL']}' target='_blank'>Application Template</a></td></tr>" : "";
 	if ( $template['Category'] ) {
 		$templateDescription .= "<tr><td>Categories:</td><td>".$template['Category'];
+		if ( $template['Beta'] )
+			$templateDescription .= " (Beta)";
 
 		$templateDescription .= "</td></tr>";
 	}
@@ -538,19 +540,15 @@ function getPopupDescription($appNumber) {
 	$templateDescription .= "</table></div>";
 
 	$templateDescription .= "<div class='ca_center'><span class='popUpDeprecated'>";
-
 	if ($template['Blacklist'])
 		$templateDescription .= "This application / template has been blacklisted<br>";
-	else {
-		if ($template['Beta'])
-			$templateDescription .= "This application is marked as being BETA.  This does NOT necessarily mean you will have any trouble<br>";
-			
-		if ($template['Deprecated'])
-			$templateDescription .= "This application / template has been deprecated<br>";
 
-		if ( !$template['Compatible'] )
-			$templateDescription .= "This application is not compatible with your version of unRaid<br>";
-	}
+	if ($template['Deprecated'])
+		$templateDescription .= "This application / template has been deprecated<br>";
+
+	if ( !$template['Compatible'] )
+		$templateDescription .= "This application is not compatible with your version of unRaid<br>";
+
 	$templateDescription .= "</span></div><hr>";
 
 	if ( ! $Displayed )
@@ -587,8 +585,8 @@ function getPopupDescription($appNumber) {
 	}
 	if ( $template['Support'] || $template['Project'] ) {
 		$installLine .= "<span style='float:right;'>";
-		$installLine .= $template['Support'] ? "<a class='appIconsPopUp ca_fa-support' href='".$template['Support']."' target='_blank'>&nbsp;&nbsp;Support</strong></a>" : "";
-		$installLine .= $template['Project'] ? "<a class='appIconsPopUp ca_fa-project' href='".$template['Project']."' target='_blank'>&nbsp;&nbsp;Project</strong></a>" : "";
+		$installLine .= $template['Support'] ? "<a class='appIconsPopUp ca_fa-support' rel='noreferrer' href='".$template['Support']."' target='_blank'>&nbsp;&nbsp;Support</strong></a>" : "";
+		$installLine .= $template['Project'] ? "<a class='appIconsPopUp ca_fa-project' rel='noreferrer' href='".$template['Project']."' target='_blank'>&nbsp;&nbsp;Project</strong></a>" : "";
 		$installLine .= "</span>";
 	}
 	if ( $installLine ) {
@@ -605,7 +603,7 @@ function getPopupDescription($appNumber) {
 	$templateDescription .= "</p><br><div class='ca_center'>";
 
 	if ( $donatelink )
-		$templateDescription .= "<span style='float:right;text-align:right;'><font size=0.75rem;>$donatetext</font>&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>Donate</a></span><br><br>";
+		$templateDescription .= "<span style='float:right;text-align:right;'><font size=0.75rem;>$donatetext</font>&nbsp;&nbsp;<a class='popup-donate donateLink' rel='noreferrer' href='$donatelink' target='_blank'>Donate</a></span><br><br>";
 
 	$templateDescription .= "</div>";
 	if ($template['Plugin']) {
