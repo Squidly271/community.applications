@@ -64,5 +64,5 @@ Remove program files when uninstalling?
 <center>For support for this plugin, visit here: <a href="https://forums.unraid.net/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 
 </form>
-<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' target='_blank'><img src="https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png" height=40px;></a></center>
+<center><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' rel='noreferrer' target='_blank'><img src="https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png" height=40px;></a></center>
 

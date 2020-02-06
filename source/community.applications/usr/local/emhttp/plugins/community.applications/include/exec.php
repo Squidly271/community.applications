@@ -757,7 +757,7 @@ case 'statistics':
 		<tr><td class='ca_table'><a data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></td><td class='ca_stat'>{$statistics['totalDeprecated']}</td></tr>
 		<tr><td class='ca_table'><a onclick='showModeration("Moderation","All Moderation Entries");' style='cursor:pointer'>Number Of Moderation Entries</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>
 		<tr><td class='ca_table'>Memory Usage (CA / DataFiles / Flash)</td><td class='ca_stat'>{$memCA[0]} / {$memTmp[0]} / {$memFlash[0]}</td></tr>
-		<tr><td class='ca_table'><a href='{$caPaths['application-feed']}' target='_blank'>Primary Server</a> / <a href='{$caPaths['application-feedBackup']}' rel='noreferrer' target='_blank'> Backup Server</a></td></tr>
+		<tr><td class='ca_table'><a href='{$caPaths['application-feed']}' rel='noreferrer' target='_blank'>Primary Server</a> / <a href='{$caPaths['application-feedBackup']}' rel='noreferrer' target='_blank'> Backup Server</a></td></tr>
 		</table>
 		<div class='ca_center'><a href='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7M7CBCVU732XG' rel='noreferrer' target='_blank'><img style='height:2.5rem;' src='https://github.com/Squidly271/community.applications/raw/master/webImages/donate-button.png'></a></div>
 		<div class='ca_center'>Ensuring only safe applications are present is a full time job</div><br>
