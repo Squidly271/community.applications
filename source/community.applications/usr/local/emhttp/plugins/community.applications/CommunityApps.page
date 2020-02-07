@@ -1178,6 +1178,10 @@ function addDockerWarning(enableDisable) {
 	}
 }
 
+String.prototype.escapeHTML = function() {
+	return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 function post(options,callback) {
 	if ( typeof options === "function" ) {
 		callback = options;
@@ -1202,7 +1206,7 @@ function post(options,callback) {
 			} catch(e) {
 				myCloseAlert();
 				myCloseSpinner();
-				$("#templates_content").html("Something really wrong went on during "+options.action+"<br>Post the ENTIRE contents of this message in the Community Applications Support Thread<br><br>"+stripTags(retval));
+				$("#templates_content").html("Something really wrong went on during "+options.action+"<br>Post the ENTIRE contents of this message in the Community Applications Support Thread<br><br>"+retval.escapeHTML());
 				throw new Error("Something went badly wrong!");
 			}
 			console.groupCollapsed("Result "+options.action);
