@@ -645,7 +645,6 @@ case "pinnedApps":
 	foreach ($pinnedApps as $pinned) {
 		$startIndex = 0;
 		$search = explode("&",$pinned);
-		file_put_contents("/tmp/blah",print_r($search,true),FILE_APPEND);
 		for ($i=0;$i<10;$i++) {
 			$index = searchArray($file,"Repository",$search[0],$startIndex);
 			if ( $index !== false ) {
@@ -654,6 +653,10 @@ case "pinnedApps":
 					continue;
 				}
 				if ($file[$index]['SortName'] !== $search[1]) {
+					$startIndex = $index +1;
+					continue;
+				}
+				if (!$file[$index]['Compatible'] && $caSettings['hideIncompatible'] == "true") {
 					$startIndex = $index +1;
 					continue;
 				}
@@ -1156,7 +1159,7 @@ function checkRandomApp($test) {
 	if ( $test['Name'] == "Community Applications" )  return false;
 	if ( $test['BranchName'] )                        return false;
 	if ( ! $test['Displayable'] )                     return false;
-	if ( ! $test['Compatible'] )                      return false;
+	if ( ! $test['Compatible'] && $caSettings['hideIncompatible'] == "true" ) return false;
 	if ( $test['Blacklist'] )                         return false;
 	if ( $test['Deprecated'] && ( $caSettings['hideDeprecated'] == "true" ) ) return false;
 

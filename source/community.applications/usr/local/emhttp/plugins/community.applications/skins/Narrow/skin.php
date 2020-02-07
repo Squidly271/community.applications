@@ -209,16 +209,16 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$template['display_author'] = "<a class='ca_tooltip ca_author' onclick='doSearch(false,this.innerText);' title='Search for more applications from {$template['SortAuthor']}'>".$template['Author']."</a>";
 		$displayIcon = $template['Icon'];
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
-		$template['display_iconSmall'] = "<a onclick='showDesc({$template['ID']},&#39;{$name}&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='$displayIcon'></a>";
-		$template['display_iconSelectable'] = "<img class='$iconClass' src='$displayIcon'>";
+		$template['display_iconSmall'] = "<a onclick='showDesc({$template['ID']},&#39;{$name}&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' referrerpolicy='no-referrer' src='$displayIcon'></a>";
+		$template['display_iconSelectable'] = "<img class='$iconClass' referrerpolicy='no-referrer' src='$displayIcon'>";
 		$template['display_infoIcon'] = "<a class='ca_appPopup ca_tooltip appIcons ca_fa-info' title='Click for more information' data-appNumber='$ID' data-appPath='{$template['Path']}' data-appName='{$template['Name']}' style='cursor:pointer'></a>";
 		if ( isset($ID) ) {
 			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appName='{$template['Name']}' data-appNumber='$ID' data-appPath='{$template['Path']}'>".$template['display_iconSelectable']."</a>";
-			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc({$template['ID']},&#39;".$name."&#39;);'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
-			$template['display_iconOnly'] = "<img class='$iconClass' src='".$displayIcon."'></img>";
+			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc({$template['ID']},&#39;".$name."&#39;);'><img class='ca_appPopup $iconClass' rel='noreferrer' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
+			$template['display_iconOnly'] = "<img class='$iconClass' referrerpolicy='no-referrer' src='".$displayIcon."'></img>";
 		} else {
 			$template['display_iconClickable'] = $template['display_iconSelectable'];
-			$template['display_iconSmall'] = "<img src='".$displayIcon."' class='$iconClass'>";
+			$template['display_iconSmall'] = "<img referrerpolicy='no-referrer' src='".$displayIcon."' class='$iconClass'>";
 			$template['display_iconOnly'] = $template['display_iconSmall'];
 		}
 		if ( $template['IconFA'] ) {
@@ -470,7 +470,7 @@ function getPopupDescription($appNumber) {
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
 		$templateDescription .= "<i class='$templateIcon popupIcon ca_center' id='icon'></i>";
 	} else
-		$templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
+		$templateDescription .= "<img class='popupIcon' id='icon' rel='noreferrer' src='{$template['Icon']}'>";
 
 	$templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
 	$templateDescription .= $template['Plugin'] ? "<table class='popupTableAreaPlugin'>" : "<table class='popupTableAreaDocker'>";
