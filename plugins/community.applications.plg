@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.02.05a">
-<!ENTITY md5       "1046fe2861adef065c265a524179b2b6">
+<!ENTITY version   "2020.02.06">
+<!ENTITY md5       "71191f8133fa1334f6d5d355c375cce3">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,8 +13,14 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2020.02.06
+- Fixed: Incompatible apps wouldn't appear on a startup screen even if CA's settings was set to allow incompatible apps
+- Fixed: If an app was pinned that later became incompatible, the pinned apps screen would still show it even if CA's settings disallowed incompatible apps (default)
+- Further security enhancements 
+
 ###2020.02.05
 Security Update
+
 All users are highly encouraged to upgrade to this version
 
 ###2020.02.01
