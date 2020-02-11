@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.02.06">
-<!ENTITY md5       "962f53b422e8e94bb0c4ee6357f5f5aa">
+<!ENTITY version   "2020.02.11">
+<!ENTITY md5       "99509ff87f7158902dc7590228914074">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2020.02.11
+- Silence PHP error that should be impossible to appear in the first place
+- Minor CSS changes for next release of OS
+
 ###2020.02.06
 - Fixed: Incompatible apps wouldn't appear on a startup screen even if CA's settings was set to allow incompatible apps
 - Fixed: If an app was pinned that later became incompatible, the pinned apps screen would still show it even if CA's settings disallowed incompatible apps (default)

@@ -267,7 +267,7 @@ case 'force_update':
 	}
 	getConvertedTemplates();
 	moderateTemplates();
-	$currentServer = file_get_contents($caPaths['currentServer']);
+	$currentServer = @file_get_contents($caPaths['currentServer']);
 	postReturn(['status'=>"ok",'script'=>"feedWarning('$currentServer');"]);
 	break;
 
