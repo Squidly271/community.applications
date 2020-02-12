@@ -820,7 +820,7 @@ case 'caChangeLog':
 	require_once("webGui/include/Markdown.php");
 	$o = "<div style='margin:auto;width:500px;'>";
 	$o .= "<div class='ca_center'><font size='4rem'>Community Applications Changelog</font></div><br><br>";
-	postReturn(["changelog"=>$o.Markdown(plugin("changes","/var/log/plugins/community.applications.plg"))]);
+	postReturn(["changelog"=>$o.Markdown(plugin("changes","/var/log/plugins/community.applications.plg"))."<br><br>"]);
 	break;
 
 ###############################
