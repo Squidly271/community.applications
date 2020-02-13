@@ -45,20 +45,13 @@ switch ($_POST['action']) {
 		break;
 		
 	case 'addRebootNotice':
-		$message = htmlspecialchars(trim($_POST['message']));
-		if (!$message) break;
+		$message = getPost("message",null);
+		if (!trim($message)) break;
 		
 		$existing = @file("/tmp/reboot_notifications",FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: array();
-		$existing[] = $message;
+		$existing[] = htmlspecialchars(trim($message));
 		
 		file_put_contents("/tmp/reboot_notifications",implode("\n",array_unique($existing)));
-		break;
-	
-	case 'removeRebootNotice':
-		$message = htmlspecialchars(trim($_POST['message']));
-		$existing = file_get_contents("/tmp/reboot_notifications");
-		$newReboots = str_replace($message,"",$existing);
-		file_put_contents("/tmp/reboot_notifications",$newReboots);
 		break;
 }
 
