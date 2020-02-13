@@ -195,9 +195,19 @@ if ( typeof addRebootNotice !== "function" ) {
 ?>
 	});
 	
-	function addRebootNotice(message="You must reboot for changes to take effect") {
-		addBannerWarning(message,true,true);
-		$.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'addRebootNotice',message:message});
-	}
+function addRebootNotice(message="You must reboot for changes to take effect") {
+  addBannerWarning("<i class='fa fa-warning' style='float:initial;'></i> "+message,false,true);
+  $.post("/plugins/dynamix.plugin.manager/scripts/PluginAPI.php",{action:'addRebootNotice',message:message});
+}
+
+function removeRebootNotice(message="You must reboot for changes to take effect") {
+  var bannerIndex = bannerWarnings.indexOf("<i class='fa fa-warning' style='float:initial;'></i> "+message);
+  if ( bannerIndex < 0 ) {
+    return;
+  }
+  console.log("banner index: "+bannerIndex);
+  removeBannerWarning(bannerIndex);
+  $.post("/plugins/dynamix.plugin.manager/scripts/PluginAPI.php",{action:'removeRebootNotice',message:message});
+}
 }
 </script>
