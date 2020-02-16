@@ -46,6 +46,7 @@ $caPaths['pluginSettings']                      = "{$caPaths['flashDrive']}/comm
 $caPaths['fixedTemplates_txt']                  = $caPaths['tempFiles']."/caFixed.txt";
 $caPaths['invalidXML_txt']                      = $caPaths['tempFiles']."/invalidxml.txt";
 $caPaths['warningAccepted']                     = "{$caPaths['flashDrive']}/accepted";
+$caPaths['pluginWarning']                       = "{$caPaths['flashDrive']}/plugins_accepted";
 $caPaths['pluginDupes']                         = $caPaths['tempFiles']."/pluginDupes.json";
 $caPaths['pluginTempDownload']                  = $caPaths['tempFiles']."/pluginTempFile.plg";
 $caPaths['dockerManTemplates']                  = $dockerManPaths['templates-user'];

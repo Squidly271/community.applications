@@ -382,6 +382,11 @@ case 'dismiss_warning':
 	file_put_contents($caPaths['warningAccepted'],"warning dismissed");
 	postReturn(['status'=>"warning dismissed"]);
 	break;
+	
+case 'dismiss_plugin_warning':
+	file_put_contents($caPaths['pluginWarning'],"disclaimer ok");
+	postReturn(['status'=>"disclaimed"]);
+	break;
 
 ###############################################################
 # Displays the list of installed or previously installed apps #

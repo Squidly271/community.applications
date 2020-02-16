@@ -19,6 +19,10 @@ $cfg = parse_plugin_cfg($plugin);
 if ( ! is_file($caPaths['warningAccepted']) ) {
 	$firstRun = "true";
 }
+if ( ! is_file($caPaths['pluginWarning']) ) {
+	$pluginWarning = "false";
+}
+
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 $unRaid68 = version_compare($unRaidSettings['version'],"6.7.9",">");
@@ -224,6 +228,22 @@ $(function(){
 			} else {
 				addBannerWarning("Installations of apps disabled.  You must accept the warning to be able to install applications.  Click <a onclick='window.location.reload();' style='cursor:pointer;'>HERE</a>",true,true);
 				updateContent();
+			}
+		});
+	} else if ( "<?=$pluginWarning?>" == "false" ) {
+		swal({
+			title: 'Plugins',
+			text: 'Community Applications contains both docker containers <em>and</em> <b>plugin</b> applications.  Plugins are designed for OS enhancements, and run with <font color="green">full privileges</font> on your system and are clearly identified within CA.<br><br><center><a href="https://forums.unraid.net/topic/87144-ca-application-policies-notes/?tab=comments#comment-817555" target="_blank">Plugin Note</a></center>',
+			type: 'warning',
+			html: true,
+			showCancelButton: false,
+			showConfirmButton: true,
+			confirmButtonText: "OK"
+		}, function (isConfirm) {
+			if (isConfirm) {
+				post({action:'dismiss_plugin_warning'},function(result) {
+					location.reload();
+				});
 			}
 		});
 	} else {
