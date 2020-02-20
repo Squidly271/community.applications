@@ -117,6 +117,10 @@ function mySort($a, $b) {
 	$return1 = ($sortOrder['sortDir'] == "Down") ? -1 : 1;
 	$return2 = ($sortOrder['sortDir'] == "Down") ? 1 : -1;
 
+	if ( ! is_numeric($c) ) {
+		$c = strtolower($c);
+		$d = strtolower($d);
+	}
 	if ($c > $d) return $return1;
 	else if ($c < $d) return $return2;
 	else return 0;
@@ -128,7 +132,6 @@ function recommendedSort($a,$b) {
 	return 0;
 }
 	
-
 ###############################################
 # Search array for a particular key and value #
 # returns the index number of the array       #
