@@ -188,13 +188,17 @@ case 'get_content':
 		$display[] = $template;
 	}
 	if ( $filter ) {
-		if ( is_array($searchResults['nameHit']) )
+		if ( is_array($searchResults['nameHit']) ) {
 			usort($searchResults['nameHit'],"mySort");
+			usort($searchResults['nameHit'],"recommendedSort");
+		}
 		else
 			$searchResults['nameHit'] = array();
 
-		if ( is_array($searchResults['anyHit']) )
+		if ( is_array($searchResults['anyHit']) ) {
 			usort($searchResults['anyHit'],"mySort");
+			usort($searchResults['anyHit'],"recommendedSort");	
+		}
 		else
 			$searchResults['anyHit'] = array();
 

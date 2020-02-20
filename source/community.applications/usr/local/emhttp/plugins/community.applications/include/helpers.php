@@ -122,6 +122,13 @@ function mySort($a, $b) {
 	else return 0;
 }
 
+function recommendedSort($a,$b) {
+	if ( $a['Recommended'] ) return -1;
+	if ( $b['Recommended'] ) return 1;
+	return 0;
+}
+	
+
 ###############################################
 # Search array for a particular key and value #
 # returns the index number of the array       #
