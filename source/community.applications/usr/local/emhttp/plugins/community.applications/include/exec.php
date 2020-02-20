@@ -197,7 +197,6 @@ case 'get_content':
 
 		if ( is_array($searchResults['anyHit']) ) {
 			usort($searchResults['anyHit'],"mySort");
-			usort($searchResults['anyHit'],"recommendedSort");	
 		}
 		else
 			$searchResults['anyHit'] = array();
