@@ -28,7 +28,7 @@ switch ($theme) {
 		$templateBackground = "#191818";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
-		$watermarkColor = "#2b2b2b"; $opacity = "40%";
+		$watermarkColor = "#2b2b2b"; $opacity = "40%";$safariOpacity="0.4";
 		break;
 	case 'white':
 		$donateBackground = "#1c1b1b";
@@ -36,7 +36,7 @@ switch ($theme) {
 		$templateBackground = "#f5f5f5";
 		$hrColor = "lightgrey";
 		$borderColor = "lightgrey";
-		$watermarkColor = "lightgrey"; $opacity = "80%";
+		$watermarkColor = "lightgrey"; $opacity = "80%";$safariOpacity="0.8";
 		break;
 	case 'azure':
 		$donateBackground = "#606e7f";
@@ -44,7 +44,7 @@ switch ($theme) {
 		$templateBackground = "#e2e0e2";
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
-		$watermarkColor = "#606e7f"; $opacity = "20%";
+		$watermarkColor = "#606e7f"; $opacity = "20%";$safariOpacity="0.2";
 		break;
 	case 'gray':
 		$donateBackground = "#606e7f";
@@ -52,7 +52,7 @@ switch ($theme) {
 		$templateBackground = "#1b1d1b";
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
-		$watermarkColor = "#606e7f"; $opacity = "10%";
+		$watermarkColor = "#606e7f"; $opacity = "10%";$safariOpacity="0.1";
 		break;
 	default:
 		$donateBackground = "#f2f2f2";
@@ -60,7 +60,7 @@ switch ($theme) {
 		$templateBackground = "#191818";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
-		$watermarkColor = "#2b2b2b"; $opacity = "40%";
+		$watermarkColor = "#2b2b2b"; $opacity = "40%";$safariOpacity="0.4";
 		break;
 }
 ?>
@@ -69,12 +69,12 @@ body.stop-scrolling{height:100%;overflow:auto}  /* disable SweetAlert killing th
 .popupTableAreaPlugin{font-size:0.9rem;width:450px;}
 .popupTableAreaDocker{font-size:0.9rem;width:450px;}
 <?if ( ! $unRaid69 ):?>
-.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'fontAwesome';content:'\f12e';font-size:10rem;color:#2b2b2b;opacity:10%;z-index:-1;}
+.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'fontAwesome';content:'\f12e';font-size:10rem;color:#2b2b2b;opacity:10%;-webkit-opacity:0.1;z-index:-1;}
 <?else:?>
-.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e982';font-size:10rem;color:#2b2b2b;opacity:10%;z-index:-1;}
+.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e982';font-size:10rem;color:#2b2b2b;opacity:15%;-webkit-opacity:0.1;z-index:-1;}
 <?endif;?>
 <?if ( $unRaid67 ):?>
-.popupTableAreaDocker::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e90b';font-size:10rem;color:#2b2b2b;opacity:10%;z-index:-1;}
+.popupTableAreaDocker::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e90b';font-size:10rem;color:#2b2b2b;opacity:10%;-webkit-opacity:0.1;z-index:-1;}
 <?endif;?>
 .ca_iconArea {width:100%;height:8rem;margin:1rem;}
 .ca_icon {width:8rem;height:9rem;display:inline-block;padding-top:0.5rem;padding-left:1rem;}
@@ -94,13 +94,13 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_holderPlugin {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 
 <?if (! $unRaid69 ):?>
-.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>}
+.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>;-webkit-opacity:<?=$safariOpacity?>;}
 <?else:?>
-.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'Unraid';content:'\e982';font-size:8rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>}
+.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'Unraid';content:'\e982';font-size:8rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>-webkit-opacity:<?=$safariOpacity?>;}
 <?endif;?>
 
 <?if ( $unRaid67 ):?>
-.ca_holderDocker::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>}
+.ca_holderDocker::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>;-webkit-opacity:<?=$safariOpacity?>;}
 <?endif;?>
 .ca_topRightArea {display:block;position:relative;margin-top:.5rem;margin-right:2rem;z-index:9999;float:right;}
 img.displayIcon {height:6.4rem;width:6.4rem;}
