@@ -407,10 +407,9 @@ case 'previous_apps':
 if ( $caSettings['dockerRunning'] ) {
 	$all_files = glob("{$caPaths['dockerManTemplates']}/*.xml");
 	$all_files = $all_files ?: array();
-
+file_put_contents("/tmp/blah",print_r($info,true));
 	if ( $installed == "true" ) {
 		foreach ($info as $installedDocker) {
-			$installedImage = $installedDocker['Image'];
 			$installedName = $installedDocker['Name'];
 			if ( startsWith($installedImage,"library/") ) # official images are in DockerClient as library/mysql eg but template just shows mysql
 				$installedImage = str_replace("library/","",$installedImage);
@@ -445,7 +444,7 @@ if ( $caSettings['dockerRunning'] ) {
 			$containerID = false;
 			foreach ($file as $templateDocker) {
 # use startsWith to eliminate any version tags (:latest)
-				if ( startsWith($templateDocker['Repository'], $o['Repository']) ) {
+				if ( startsWith($templateDocker['Repository'], $testRepo) ) {
 					if ( $templateDocker['Name'] == $o['Name'] ) {
 						$flag = true;
 						$containerID = $template['ID'];
@@ -462,6 +461,9 @@ if ( $caSettings['dockerRunning'] ) {
 						if ( $installedName == $o['Name'] ) {
 							$runningflag = true;
 							$searchResult = searchArray($file,'Repository',$o['Repository']);
+							if ( ! $searchResult ) {
+								$searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
+							}
 							if ( $searchResult !== false ) {
 								$tempPath = $o['MyPath'];
 								$containerID = $file[$searchResult]['ID'];
@@ -474,7 +476,7 @@ if ( $caSettings['dockerRunning'] ) {
 									$o['FullRepo'] = $installedImage;
 								}
 							}
-							break;;
+							break;
 						}
 					}
 				}
@@ -515,9 +517,10 @@ if ( $caSettings['dockerRunning'] ) {
 				}
 			}
 			if ( ! $flag ) {
+				$testRepo = explode(":",$o['Repository'])[0];
 # now associate the template back to a template in the appfeed
 				foreach ($file as $appTemplate) {
-					if ($appTemplate['Repository'] == $o['Repository']) {
+					if (startsWith($appTemplate['Repository'],$testRepo)) {
 						$tempPath = $o['MyPath'];
 						$tempName = $o['Name'];
 						$o = $appTemplate;

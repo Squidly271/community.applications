@@ -183,9 +183,14 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		} else
 			$specialCategoryComment = $template['NoInstall'];
 
-		if ( $template['Beta'] )
-			$template['display_beta'] = "<img class='beta_image' src='https://github.com/Squidly271/community.applications/raw/master/webImages/beta.png'></img>";
-		
+		$warningColor = "warning-white";
+		if ( $template['Beta'] ) {
+			$template['display_compatible'] .= "This application has been marked as being <span class='ca_italic'>Beta</span>.";
+			if (! $template['Blacklist'] && ! $template['Deprecated'] )
+				$template['display_compatible'] .= "&nbsp;&nbsp;This does NOT neccessarily mean that there will be issues.<br>";
+			else
+				$template['display_compatible'] .= "<br>";
+		}
 		if ( $template['Deprecated'] ) {
 			$template['display_compatible'] .= "This application / template has been deprecated.<br>";
 			$warningColor = "warning-yellow";
@@ -200,8 +205,11 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$warningColor = "warning-red";
 		}
 
-		if ( $template['ModeratorComment'] || $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] )
-			$template['display_warning-text'] = trim("{$template['ModeratorComment']}<br>{$template['display_compatible']}");
+		if ( $template['ModeratorComment'] )
+			$template['display_warning-text'] = $template['ModeratorComment'];
+		if ( $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] || $template['Beta'])
+			$template['display_warning-text'] .= $template['display_warning-text'] ? "<br>" : "";
+			$template['display_warning-text'] .= "{$template['display_compatible']}";
 
 		$template['display_faWarning'] = $template['display_warning-text'] ? "<span class='ca_tooltip-warning ca_fa-warning appIcons $warningColor' title='".htmlspecialchars($template['display_warning-text'],ENT_COMPAT | ENT_QUOTES)."'></span>" : "";
 
@@ -724,7 +732,7 @@ function displayCard($template) {
 			<div class='ca_bottomLine'>
 				{$template['display_multi_install']}{$template['display_pluginInstallIcon']} {$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']} {$template['display_faSupport']} {$template['display_faThumbsUp']} {$template['display_faProject']} {$template['display_pinButton']} &nbsp;&nbsp; {$template['display_removable']} {$template['display_Uninstall']}
 				<span class='ca_bottomRight'>
-					{$template['display_beta']}{$template['display_DonateImage']}
+					{$template['display_DonateImage']}
 				</span>
 			</div>
 			<div class='ca_descriptionArea'>
