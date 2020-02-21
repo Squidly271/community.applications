@@ -240,8 +240,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$template['display_iconOnly'] = $template['display_iconSmall'];
 			}
 		}
-
-		$template['display_dockerName'] = "<span class='ca_applicationName'>{$template['Name']}</span>";
+		
+		$template['display_dockerName'] = "<span class='ca_applicationName'>";
+		$template['display_dockerName'] .= $template['Name_highlighted'] ?: $template['Name'];
+		$template['display_dockerName'] .= "</span>";
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
 		if ( $template['Beta'] == "true" )

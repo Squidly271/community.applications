@@ -172,7 +172,7 @@ case 'get_content':
 
 		if ($filter) {
 			if ( filterMatch($filter,array($template['Name'])) ) {
-				highlight($filter,$template['Name']);
+				$template['Name_highlighted'] = highlight($filter,$template['Name']);
 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
 				$template['CardDescription'] = highlight($filter,$template['CardDescription']);
