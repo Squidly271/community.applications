@@ -126,13 +126,13 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 		if ( $template['Uninstall'] && $template['Name'] != "Community Applications" ) {
 			$template['display_Uninstall'] = "<a class='ca_tooltip ca_fa-delete' title='Uninstall Application' ";
-			$template['display_Uninstall'] .= ( $template['Plugin'] ) ? "onclick='uninstallApp(&quot;{$template['MyPath']}&quot;,&quot;{$template['Name']}&quot;);'>" : "onclick='uninstallDocker(&quot;{$info[$name]['template']}&quot;,&quot;{$template['Name']}&quot;);'>";
+			$template['display_Uninstall'] .= ( $template['Plugin'] ) ? "onclick='uninstallApp(&quot;{$template['InstallPath']}&quot;,&quot;{$template['Name']}&quot;);'>" : "onclick='uninstallDocker(&quot;{$info[$name]['template']}&quot;,&quot;{$template['Name']}&quot;);'>";
 			$template['display_Uninstall'] .= "</a>";
 		} else {
 			if ( $template['Private'] == "true" )
 				$template['display_Uninstall'] = "<a class='ca_tooltip  ca_fa-delete' title='Remove Private Application' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['SortAuthor']}&quot;);'></a>";
 		}
-		$template['display_removable'] = $template['Removable'] && ! $selected ? "<a class='ca_tooltip ca_fa-delete' title='Remove Application From List' onclick='removeApp(&quot;{$template['MyPath']}&quot;,&quot;{$template['Name']}&quot;);'></a>" : "";
+		$template['display_removable'] = $template['Removable'] && ! $selected ? "<a class='ca_tooltip ca_fa-delete' title='Remove Application From List' onclick='removeApp(&quot;{$template['InstallPath']}&quot;,&quot;{$template['Name']}&quot;);'></a>" : "";
 		if ( $template['display_Uninstall'] && $template['display_removable'] )
 			unset($template['display_Uninstall']); # prevent previously installed private apps from having 2 x's in previous apps section
 
@@ -147,7 +147,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['UpdateAvailable'] = checkPluginUpdate($template['PluginURL']);
 
 		if ( $template['UpdateAvailable'] )
-			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['MyPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</span></div></font>" : "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a href='Docker'>Here</a> to install</span></font></div>";
+			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['InstallPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</span></div></font>" : "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a href='Docker'>Here</a> to install</span></font></div>";
 
 		if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls'] ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
 			if ( $template['Plugin'] ) {
@@ -157,22 +157,22 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					$tmpVar = $pluginSettings ? "" : " disabled ";
 					$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons' title='Click to go to the plugin settings' href='/Apps/$pluginSettings'></a>" : "";
 				} else {
-					$buttonTitle = $template['MyPath'] ? "Reinstall Plugin" : "Install Plugin";
+					$buttonTitle = $template['InstallPath'] ? "Reinstall Plugin" : "Install Plugin";
 					$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='Click to install this plugin' onclick=installPlugin('{$template['PluginURL']}');></a>";
 				}
 			} else {
 				if ( $caSettings['dockerRunning'] ) {
 					if ( $selected ) {
-						$template['MyPath'] = $template['MyPath'] ?: $template['Path'];
+						$template['InstallPath'] = $template['InstallPath'] ?: $template['Path'];
 						$template['display_dockerDefaultIcon'] = "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='Click to reinstall the application using default values' data-type='default' data-xml='".addslashes($template['Path'])."'></a>";
 						$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip ca_fa-install appIcons' type='button' style='margin:0px' title='Click to reinstall the application using default values' onclick='displayTags(&quot;$ID&quot;);'></a>" : $template['display_dockerDefaultIcon'];
 						$template['display_dockerEditIcon']    = "<a class='ca_tooltip appIcons ca_fa-edit xmlInstall' title='Click to edit the application values' data-type='edit' data-xml='".addslashes($info[$name]['template'])."'></a>";
-						$template['display_dockerReinstallIcon'] = $caSettings['defaultReinstall'] == "true" ? "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='Click to reinstall' data-type='default' data-xml='".addslashes($template['MyPath'])."'></a>" : "";
+						$template['display_dockerReinstallIcon'] = $caSettings['defaultReinstall'] == "true" ? "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='Click to reinstall' data-type='default' data-xml='".addslashes($template['InstallPath'])."'></a>" : "";
 						if ( $info[$name]['url'] && $info[$name]['running'] )
 							$template['dockerWebIcon'] = "<a class='ca_tooltip appIcons ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='Click To Go To The App&#39;s UI'></a>";
 					} else {
-						if ( $template['MyPath'] )
-							$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='Click to reinstall' data-type='user' data-xml='".addslashes($template['MyPath'])."'></a>";
+						if ( $template['InstallPath'] )
+							$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='Click to reinstall' data-type='user' data-xml='".addslashes($template['InstallPath'])."'></a>";
 						else {
 							$template['display_dockerInstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='Click to install' data-type='default' data-xml='".addslashes($template['Path'])."'></a>";
 							$template['display_dockerInstallIcon'] = $template['BranchID'] ? "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='Click to install the application' onclick='displayTags(&quot;$ID&quot;);'></a>" : $template['display_dockerInstallIcon'];
@@ -577,8 +577,8 @@ function getPopupDescription($appNumber) {
 						$installLine .= "<a class='appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank'>&nbsp;&nbsp;WebUI</a>";
 					}
 				} else {
-					if ( $template['MyPath'] )
-						$installLine .= "<a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;user&quot;,&quot;".addslashes($template['MyPath'])."&quot;);'>&nbsp;&nbsp;Reinstall</a>";
+					if ( $template['InstallPath'] )
+						$installLine .= "<a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;user&quot;,&quot;".addslashes($template['InstallPath'])."&quot;);'>&nbsp;&nbsp;Reinstall</a>";
 					else {
 						$install = "<a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;default&quot;,&quot;".addslashes($template['Path'])."&quot;);'>&nbsp;&nbsp;Install</a>";
 						$installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='appIconsPopUp ca_fa-install' onclick='$(&quot;#branch&quot;).show(500);'>&nbsp;&nbsp;Install</a>" : $install;
@@ -591,7 +591,7 @@ function getPopupDescription($appNumber) {
 				if ( $pluginSettings )
 					$installLine .= "<a class='appIconsPopUp ca_fa-pluginSettings' href='/Apps/$pluginSettings' target='$tabMode'>&nbsp;&nbsp;Settings</a>";
 			} else {
-				$buttonTitle = $template['MyPath'] ? "Reinstall" : "Install";
+				$buttonTitle = $template['InstallPath'] ? "Reinstall" : "Install";
 				$installLine .= "<a style='cursor:pointer' class='appIconsPopUp ca_fa-install pluginInstall' onclick=installPlugin('".$template['PluginURL']."');>&nbsp;&nbsp;$buttonTitle</a>";
 			}
 		}

@@ -133,8 +133,8 @@ case 'get_content':
 			}
 		}
 	}
-	$display             = array();
-	$official            = array();
+	$display  = array();
+	$official = array();
 
 	foreach ($file as $template) {
 		$template['NoInstall'] = $noInstallComment;
@@ -162,7 +162,7 @@ case 'get_content':
 		$name = $template['Name'];
 
 		if ( $template['Plugin'] && file_exists("/var/log/plugins/".basename($template['PluginURL'])) )
-			$template['MyPath'] = $template['PluginURL'];
+			$template['InstallPath'] = $template['PluginURL'];
 
 		if ( ($newApp) && ($template['Date'] < $newAppTime) ) continue;
 		$template['NewApp'] = $newApp;
@@ -407,7 +407,6 @@ case 'previous_apps':
 if ( $caSettings['dockerRunning'] ) {
 	$all_files = glob("{$caPaths['dockerManTemplates']}/*.xml");
 	$all_files = $all_files ?: array();
-file_put_contents("/tmp/blah",print_r($info,true));
 	if ( $installed == "true" ) {
 		foreach ($info as $installedDocker) {
 			$installedName = $installedDocker['Name'];
@@ -419,7 +418,7 @@ file_put_contents("/tmp/blah",print_r($info,true));
 					$template['testrepo'] = $installedImage;
 					if ( startsWith($installedImage,$template['Repository']) ) {
 						$template['Uninstall'] = true;
-						$template['MyPath'] = $template['Path'];
+						$template['InstallPath'] = $template['Path'];
 						if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
 							$template['UpdateAvailable'] = true;
 							$template['FullRepo'] = $installedImage;
@@ -437,7 +436,7 @@ file_put_contents("/tmp/blah",print_r($info,true));
 			$o = readXmlFile($xmlfile);
 			$o['Description'] = fixDescription($o['Description']);
 			$o['Overview'] = fixDescription($o['Overview']);
-			$o['MyPath'] = $xmlfile;
+			$o['InstallPath'] = $xmlfile;
 			$o['UnknownCompatible'] = true;
 
 			$flag = false;
@@ -465,11 +464,11 @@ file_put_contents("/tmp/blah",print_r($info,true));
 								$searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
 							}
 							if ( $searchResult !== false ) {
-								$tempPath = $o['MyPath'];
+								$tempPath = $o['InstallPath'];
 								$containerID = $file[$searchResult]['ID'];
 								$o = $file[$searchResult];
 								$o['Name'] = $installedName;
-								$o['MyPath'] = $tempPath;
+								$o['InstallPath'] = $tempPath;
 								$o['SortName'] = $installedName;
 								if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
 									$o['UpdateAvailable'] = true;
@@ -500,7 +499,7 @@ file_put_contents("/tmp/blah",print_r($info,true));
 			if ( ! $o ) continue;
 			$o['Description'] = fixDescription($o['Description']);
 			$o['Overview'] = fixDescription($o['Overview']);
-			$o['MyPath'] = $xmlfile;
+			$o['InstallPath'] = $xmlfile;
 			$o['UnknownCompatible'] = true;
 			$o['Removable'] = true;
 # is the container running?
@@ -521,11 +520,11 @@ file_put_contents("/tmp/blah",print_r($info,true));
 # now associate the template back to a template in the appfeed
 				foreach ($file as $appTemplate) {
 					if (startsWith($appTemplate['Repository'],$testRepo)) {
-						$tempPath = $o['MyPath'];
+						$tempPath = $o['InstallPath'];
 						$tempName = $o['Name'];
 						$o = $appTemplate;
 						$o['Removable'] = true;
-						$o['MyPath'] = $tempPath;
+						$o['InstallPath'] = $tempPath;
 						$o['Name'] = $tempName;
 						$o['SortName'] = $o['Name'];
 						break;
@@ -548,7 +547,7 @@ file_put_contents("/tmp/blah",print_r($info,true));
 			if ( checkInstalledPlugin($template) ) {
 				if ( $template['Blacklist'] ) continue;
 
-				$template['MyPath'] = "/var/log/plugins/$filename";
+				$template['InstallPath'] = "/var/log/plugins/$filename";
 				$template['Uninstall'] = true;
 				$displayed[] = $template;
 			}
@@ -567,7 +566,7 @@ file_put_contents("/tmp/blah",print_r($info,true));
 								continue;
 						}
 						$template['Removable'] = true;
-						$template['MyPath'] = $oldplug;
+						$template['InstallPath'] = $oldplug;
 
 						$displayed[] = $template;
 						break;
