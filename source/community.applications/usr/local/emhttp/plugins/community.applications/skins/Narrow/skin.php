@@ -86,6 +86,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$template['ModeratorComment'] .= $template['CAComment'];
 		$selected = $info[$name]['template'];
 		$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : "{$template['Repository']}:latest";
+		if ( ! strpos($tmpRepo,"/") )
+			$tmpRepo = "library/$tmpRepo";
+		
 		$selected = $selected ? ($tmpRepo == $info[$name]['repository']) : false;
 		$selected = $template['Uninstall'] ? true : $selected;
 
