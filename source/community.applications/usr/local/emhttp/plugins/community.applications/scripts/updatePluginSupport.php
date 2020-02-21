@@ -3,7 +3,7 @@
 ###############################################################
 #                                                             #
 # Community Applications copyright 2015-2020, Andrew Zawadzki #
-#                    All Rights Reserved                      #
+#          Licenced under the terms of GNU GPLv2              #
 #                                                             #
 ###############################################################
 
