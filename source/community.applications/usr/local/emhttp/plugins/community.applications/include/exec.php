@@ -285,7 +285,7 @@ case 'display_content':
 
 	$o['display'] = file_exists($caPaths['community-templates-displayed']) ? display_apps($pageNumber,$selectedApps,$startup) : "";
 	$displayedApps = readJsonFile($caPaths['community-templates-displayed']);
-	if ( ! is_array($displayedApps['community']) || count($displayedApps['community']) < 2)
+	if ( ! is_array($displayedApps['community']) || count($displayedApps['community']) < 1)
 		$o['script'] = "disableSort();";
 
 	postReturn($o);
