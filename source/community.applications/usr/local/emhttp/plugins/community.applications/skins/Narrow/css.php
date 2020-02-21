@@ -54,7 +54,8 @@ switch ($theme) {
 		$border = "#606e7f";
 		$watermarkColor = "#606e7f"; $opacity = "10%";$safariOpacity="0.1";
 		break;
-	default:
+// Use settings for black as a fallback
+	default:  
 		$donateBackground = "#f2f2f2";
 		$donateText = "#1c1b1b";
 		$templateBackground = "#191818";
@@ -71,7 +72,7 @@ body.stop-scrolling{height:100%;overflow:auto}  /* disable SweetAlert killing th
 <?if ( ! $unRaid69 ):?>
 .popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'fontAwesome';content:'\f12e';font-size:10rem;color:#2b2b2b;opacity:10%;-webkit-opacity:0.1;z-index:-1;}
 <?else:?>
-.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e982';font-size:10rem;color:#2b2b2b;opacity:15%;-webkit-opacity:0.1;z-index:-1;}
+.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e982';font-size:10rem;color:#2b2b2b;opacity:10%;-webkit-opacity:0.1;z-index:-1;}
 <?endif;?>
 <?if ( $unRaid67 ):?>
 .popupTableAreaDocker::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e90b';font-size:10rem;color:#2b2b2b;opacity:10%;-webkit-opacity:0.1;z-index:-1;}
@@ -102,6 +103,7 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 <?if ( $unRaid67 ):?>
 .ca_holderDocker::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>;-webkit-opacity:<?=$safariOpacity?>;}
 <?endif;?>
+img.beta_image {height:2.5rem;z-index:-1;}
 .ca_topRightArea {display:block;position:relative;margin-top:.5rem;margin-right:2rem;z-index:9999;float:right;}
 img.displayIcon {height:6.4rem;width:6.4rem;}
 i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}

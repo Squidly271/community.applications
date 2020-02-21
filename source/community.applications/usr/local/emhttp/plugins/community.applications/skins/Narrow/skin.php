@@ -183,14 +183,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		} else
 			$specialCategoryComment = $template['NoInstall'];
 
-		$warningColor = "warning-white";
-		if ( $template['Beta'] ) {
-			$template['display_compatible'] .= "This application has been marked as being <span class='ca_italic'>Beta</span>.";
-			if (! $template['Blacklist'] && ! $template['Deprecated'] )
-				$template['display_compatible'] .= "&nbsp;&nbsp;This does NOT neccessarily mean that there will be issues.<br>";
-			else
-				$template['display_compatible'] .= "<br>";
-		}
+		if ( $template['Beta'] )
+			$template['display_beta'] = "<img class='beta_image' src='https://github.com/Squidly271/community.applications/raw/master/webImages/beta.png'></img>";
+		
 		if ( $template['Deprecated'] ) {
 			$template['display_compatible'] .= "This application / template has been deprecated.<br>";
 			$warningColor = "warning-yellow";
@@ -205,7 +200,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$warningColor = "warning-red";
 		}
 
-		if ( $template['ModeratorComment'] || $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] || $template['Beta'])
+		if ( $template['ModeratorComment'] || $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] )
 			$template['display_warning-text'] = trim("{$template['ModeratorComment']}<br>{$template['display_compatible']}");
 
 		$template['display_faWarning'] = $template['display_warning-text'] ? "<span class='ca_tooltip-warning ca_fa-warning appIcons $warningColor' title='".htmlspecialchars($template['display_warning-text'],ENT_COMPAT | ENT_QUOTES)."'></span>" : "";
@@ -244,6 +239,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$template['display_dockerName'] = "<span class='ca_applicationName'>";
 		$template['display_dockerName'] .= $template['Name_highlighted'] ?: $template['Name'];
 		$template['display_dockerName'] .= "</span>";
+		
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? "Uncategorized" : $template['Category'];
 
 		if ( $template['Beta'] == "true" )
@@ -481,6 +477,8 @@ function getPopupDescription($appNumber) {
 	} else
 		$templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
 
+	if ( $template['Beta'] )
+		$templateDescription .= "<img src='https://github.com/Squidly271/community.applications/raw/master/webImages/beta.png' style='height:2.5rem;z-index:-2;'></img>";
 	$templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
 	$templateDescription .= $template['Plugin'] ? "<table class='popupTableAreaPlugin'>" : "<table class='popupTableAreaDocker'>";
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
@@ -501,8 +499,6 @@ function getPopupDescription($appNumber) {
 	$templateDescription .= ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes"  && $template['TemplateURL']) ? "<tr><td></td><td><a class='popUpLink' href='{$template['TemplateURL']}' target='_blank'>Application Template</a></td></tr>" : "";
 	if ( $template['Category'] ) {
 		$templateDescription .= "<tr><td>Categories:</td><td>".$template['Category'];
-		if ( $template['Beta'] )
-			$templateDescription .= " (Beta)";
 
 		$templateDescription .= "</td></tr>";
 	}
@@ -728,7 +724,7 @@ function displayCard($template) {
 			<div class='ca_bottomLine'>
 				{$template['display_multi_install']}{$template['display_pluginInstallIcon']} {$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']} {$template['display_faSupport']} {$template['display_faThumbsUp']} {$template['display_faProject']} {$template['display_pinButton']} &nbsp;&nbsp; {$template['display_removable']} {$template['display_Uninstall']}
 				<span class='ca_bottomRight'>
-					{$template['display_DonateImage']}
+					{$template['display_beta']}{$template['display_DonateImage']}
 				</span>
 			</div>
 			<div class='ca_descriptionArea'>
