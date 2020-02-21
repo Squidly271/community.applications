@@ -433,6 +433,9 @@ function getPopupDescription($appNumber) {
 	}
 
 	if ( ! $template['Plugin'] ) {
+		if ( ! strpos($template['Repository'],"/") ) {
+			$template['Repository'] = "library/{$template['Repository']}";
+		}
 		foreach ($dockerRunning as $testDocker) {
 			$templateRepo = explode(":",$template['Repository']);
 			$testRepo = explode(":",$testDocker['Image']);
