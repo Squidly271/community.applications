@@ -128,7 +128,6 @@ table tbody td {line-height:1.4rem;}
 .ca_template {color:#606E7F;border-radius:0px 0px 2rem 2rem;display:inline-block;text-align:left;overflow:auto;height:27rem;width:36rem;padding-left:.5rem;padding-right:.5rem; background-color:#DDDADF;}
 .ca_icon_wide {display:inline-block;float:left;width:9.5rem;margin-left:2.5rem;}
 .ca_wide_info {display: inline-block;float:left;text-align:left;margin-left:1rem;margin-top:1.5rem;width:20rem;}
-.ca_repository {color:black;}
 .ca_highlight {color:#0e5d08;font-weight:bold;}
 .ca_description {color:#505E6F;}
 a.ca_appPopup {text-decoration:none;cursor:pointer;}
