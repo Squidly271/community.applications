@@ -70,12 +70,12 @@ body.stop-scrolling{height:100%;overflow:auto}  /* disable SweetAlert killing th
 .popupTableAreaPlugin{font-size:0.9rem;width:450px;}
 .popupTableAreaDocker{font-size:0.9rem;width:450px;}
 <?if ( ! $unRaid69 ):?>
-.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'fontAwesome';content:'\f12e';font-size:10rem;color:#2b2b2b;opacity:10%;-webkit-opacity:0.1;z-index:-1;}
+.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'fontAwesome';content:'\f12e';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
 <?else:?>
-.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e982';font-size:10rem;color:#2b2b2b;opacity:10%;-webkit-opacity:0.1;z-index:-1;}
+.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e982';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
 <?endif;?>
 <?if ( $unRaid67 ):?>
-.popupTableAreaDocker::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e90b';font-size:10rem;color:#2b2b2b;opacity:10%;-webkit-opacity:0.1;z-index:-1;}
+.popupTableAreaDocker::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e90b';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
 <?endif;?>
 .ca_iconArea {width:100%;height:8rem;margin:1rem;}
 .ca_icon {width:8rem;height:9rem;display:inline-block;padding-top:0.5rem;padding-left:1rem;}

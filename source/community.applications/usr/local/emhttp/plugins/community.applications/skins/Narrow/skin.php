@@ -486,7 +486,7 @@ function getPopupDescription($appNumber) {
 		$templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
 
 	if ( $template['Beta'] )
-		$templateDescription .= "<img src='https://github.com/Squidly271/community.applications/raw/master/webImages/beta.png' style='height:2.5rem;z-index:-2;'></img>";
+		$templateDescription .= "<br><br><img src='https://github.com/Squidly271/community.applications/raw/master/webImages/beta.png' style='height:2.5rem;z-index:-2;margin-left:1.25rem;'></img>";
 	$templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
 	$templateDescription .= $template['Plugin'] ? "<table class='popupTableAreaPlugin'>" : "<table class='popupTableAreaDocker'>";
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
