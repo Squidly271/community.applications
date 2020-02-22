@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.02.13">
-<!ENTITY md5       "739ba4ddc8f55d08efe5c6fbf93ad632">
+<!ENTITY version   "2020.02.22">
+<!ENTITY md5       "841e292e9d063329ae6068ab45b2145a">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,18 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2020.02.22
+- Fixed: If a browser tab was opened to CA and another tab rebooted the server, a blank error would appear on the original tab
+- Fixed: If installing an app from a search result that only had one hit, 'no matching apps' would appear following installation
+- Fixed: Popups on Safari and Edge wouldn't have the watermark displayed as a watermark
+- Fixed: Apps that were tagged differently than the default would appear in the Installed Apps list twice
+- Changed: More clearly identify Beta apps within the popup
+- Changed: Highlight hits on the app's name during searches
+- Fixed: Official docker containers would never be able to load the webUI from within CA
+- Changed: Recommended appears first during any search results (hits on name first, then 2nd section with hits on description etc)
+- Added: All users must acknowledge that CA also contains plugins within the apps
+- Changed: Watermarks when running the next release of unRaid
+
 ###2020.02.13
 - Fixed: Reinstall default from searches
 
