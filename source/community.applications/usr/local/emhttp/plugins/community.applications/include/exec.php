@@ -421,7 +421,6 @@ if ( $caSettings['dockerRunning'] ) {
 						$template['InstallPath'] = $template['Path'];
 						if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
 							$template['UpdateAvailable'] = true;
-							$template['FullRepo'] = $installedImage;
 						}
 						if ($template['Blacklist'] ) continue;
 
@@ -472,7 +471,6 @@ if ( $caSettings['dockerRunning'] ) {
 								$o['SortName'] = $installedName;
 								if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
 									$o['UpdateAvailable'] = true;
-									$o['FullRepo'] = $installedImage;
 								}
 							}
 							break;
