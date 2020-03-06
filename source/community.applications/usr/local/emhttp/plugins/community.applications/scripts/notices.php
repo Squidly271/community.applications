@@ -4,9 +4,19 @@ require_once "/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerCli
 require_once "/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 
 
-$paths['notices'] = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/CA_notices.json";
+$paths['notices_remote'] = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/CA_notices.json";
+$paths['notices'] = "/tmp/community.applications/CA_notices.json";
 $debugging = true;
-$DockerClient = new DockerClient();
+
+$local = true;  //  ONLY SET TO TRUE FOR LOCAL DEBUGGING  MUST BE FALSE FOR RELEASES!!!!!!
+$paths['local'] = "/tmp/GitHub/Community-Applications-Moderators/CA_notices.json";
+
+if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
+	$dockerRunning = true;
+	$DockerClient = new DockerClient();
+} else {
+	$dockerRunning = false;
+}
 
 function debug($message) {
 	global $debugging;
@@ -60,14 +70,28 @@ function conditionsMet($value) {
 }
 		
 
-############## MAIN ##############3
+############## MAIN ##############
 
-$notices = download_json($paths['notices']);
+if ( $local ) {
+	$notices = readJsonFile($paths['local']);
+	copy($paths['local'],$paths['notices']);
+} else {
+	if ( is_file($paths['notices']) && ( time() - filemtime($paths['notices']) < 86400 ) ) {
+		$notices = readJsonFile($paths['notices']);
+	} else {
+		$notices = download_json($paths['notices_remote'],$paths['notices']);
+	}
+}
+
+if ( $local && ! is_array($notices) ) {
+	debug("Not a valid local json file");
+	return;
+}
+
 if ( ! is_array($notices) ) $notices = array();
 
-debug(print_r($notices,true));
-
 foreach ( $notices as $app => $notice ) {
+	debug("Searching for $app");
 	$found = false;
 
 	if ( startsWith($app,"https://") || strtolower(pathinfo($app,PATHINFO_EXTENSION)) == "plg")  {
@@ -75,7 +99,7 @@ foreach ( $notices as $app => $notice ) {
 	} else {
 		$plugin = false;
 	}
-	if ( ! $plugin ) {
+	if ( ! $plugin && $dockerRunning) {
 		$info = $DockerClient->getDockerContainers();
 		$search = explode(":",$app);
 		if ( ! $search[1] ) {
@@ -104,7 +128,7 @@ foreach ( $notices as $app => $notice ) {
 		}
 	}
 	if ( $found ) {
-		debug("Found $app   Looking for conditions\n");
+		debug("   Found  Looking for conditions\n");
 		$conditionsMet = true;
 		if ( $notice['Conditions']['unraid'] ) {
 			$unraid = parse_ini_file("/etc/unraid-version");
@@ -114,9 +138,12 @@ foreach ( $notices as $app => $notice ) {
 				debug("Testing unraid version $unraidVersion {$condition[0]} {$condition[1]}");
 				conditionsMet(version_compare($unraidVersion,$condition[1],$condition[0]));
 			}
-
 		}
+	} else {
+		debug("  Not Found");
+		continue;
 	}
+	
 	if ( $plugin && $notice['Conditions']['plugin'] ) {
 		$pluginVersion = @plugin("version","/var/log/plugins/".basename($app));
 		if ( ! $pluginVersion ) {
@@ -130,6 +157,9 @@ foreach ( $notices as $app => $notice ) {
 // do some operator substitutions
 			switch($condition[0]) {
 				case "=":
+					$condition[0] = "==";
+					break;
+				case "eq":
 					$condition[0] = "==";
 					break;
 				case "=<":

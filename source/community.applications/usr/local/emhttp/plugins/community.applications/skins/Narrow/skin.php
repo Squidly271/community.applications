@@ -185,11 +185,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 		$warningColor = "warning-white";
 		if ( $template['Beta'] ) {
-			$template['display_compatible'] .= "This application has been marked as being <span class='ca_italic'>Beta</span>.";
-			if (! $template['Blacklist'] && ! $template['Deprecated'] )
-				$template['display_compatible'] .= "&nbsp;&nbsp;This does NOT neccessarily mean that there will be issues.<br>";
-			else
-				$template['display_compatible'] .= "<br>";
+			$template['display_compatible'] .= "This application has been marked as being <span class='ca_italic'>Beta</span>.<br>";
 		}
 		if ( $template['Deprecated'] ) {
 			$template['display_compatible'] .= "This application / template has been deprecated.<br>";
