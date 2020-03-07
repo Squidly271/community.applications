@@ -1,15 +1,26 @@
-#!/usr/bin/php
 <?PHP
 require_once "/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php";
 require_once "/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 
 
-$paths['notices_remote'] = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/CA_notices.json";
-$paths['notices'] = "/tmp/community.applications/CA_notices.json";
-$debugging = true;
+$paths['notices_remote'] = "https://raw.githubusercontent.com/Squidly271/CA_notifications/master/CA_notices.json";
+$paths['CA_root']        = "/tmp/ca_notices";
+$paths['notices']        = "{$paths['CA_root']}/CA_notices.json";
+$paths['bannerNotices']  = "{$paths['CA_root']}/notices";
+$paths['local']          = "/tmp/GitHub/CA_notifications/CA_notices.json";  // only used when run from the command line for debugging
+$paths['dismiss']        = "/boot/config/plugins/community.applications/notifications_dismissed.json";
 
-$local = true;  //  ONLY SET TO TRUE FOR LOCAL DEBUGGING  MUST BE FALSE FOR RELEASES!!!!!!
-$paths['local'] = "/tmp/GitHub/Community-Applications-Moderators/CA_notices.json";
+@mkdir($paths['CA_root'],0777,true);
+
+$local = false;  // ONLY SET TO TRUE FOR DEBUGGING.  MUST BE FALSE FOR RELEASES
+
+$action = $_POST['action'];
+// check if started from command prompt or gui
+if ( ! $action ){
+	$debugging = true;
+	$sendNotification = true;
+	$action = 'scan';
+}
 
 if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 	$dockerRunning = true;
@@ -71,157 +82,186 @@ function conditionsMet($value) {
 		
 
 ############## MAIN ##############
-
-if ( $local ) {
-	$notices = readJsonFile($paths['local']);
-	copy($paths['local'],$paths['notices']);
-} else {
-	if ( is_file($paths['notices']) && ( time() - filemtime($paths['notices']) < 86400 ) ) {
-		$notices = readJsonFile($paths['notices']);
-	} else {
-		$notices = download_json($paths['notices_remote'],$paths['notices']);
-	}
-}
-
-if ( $local && ! is_array($notices) ) {
-	debug("Not a valid local json file");
-	return;
-}
-
-if ( ! is_array($notices) ) $notices = array();
-
-foreach ( $notices as $app => $notice ) {
-	debug("Searching for $app");
-	$found = false;
-
-	if ( startsWith($app,"https://") || strtolower(pathinfo($app,PATHINFO_EXTENSION)) == "plg")  {
-		$plugin = true;
-	} else {
-		$plugin = false;
-	}
-	if ( ! $plugin && $dockerRunning) {
-		$info = $DockerClient->getDockerContainers();
-		$search = explode(":",$app);
-		if ( ! $search[1] ) {
-			$app .= ":latest";
-		}
-		foreach($info as $container) {
-			if ( $search[1] == "*" ) {
-				if ( explode(":",$container['Image'])[0] == $search[0]) 
-					$found = true;
-					break;
-			}
-			if ($container['Image'] == $app) {
-				$found = true;
-				break;
+switch ($action) {
+	case 'scan':
+		if ( $local ) {
+			$notices = readJsonFile($paths['local']);
+			copy($paths['local'],$paths['notices']);
+		} else {
+			if ( is_file($paths['notices']) && ( time() - filemtime($paths['notices']) < 86400 ) ) {
+				// Only send one notification per day
+				$notices = readJsonFile($paths['notices']);
+				$sendNotification = false;
+			} else {
+				exec("logger downloading new notifications");
+				$notices = download_json($paths['notices_remote'],$paths['notices']);
 			}
 		}
-	} else {
-		if ( is_file("/var/log/plugins/".basename($app)) ) {
-			if ( startswith($app,"https:") ) {
-				if ( plugin("pluginURL","/var/log/plugins/".basename($app)) == $app) {
-					$found = true;
+
+		if ( $local && ! is_array($notices) ) {
+			debug("Not a valid local json file");
+			return;
+		}
+
+		if ( ! is_array($notices) ) $notices = array();
+		$dismissed = readJsonFile($paths['dismiss']);
+		foreach ( $notices as $app => $notice ) {
+			if ( in_array($notice['ID'],$dismissed) ) {
+				continue;
+			}
+			debug("Searching for $app");
+			$found = false;
+
+			if ( startsWith($app,"https://") || strtolower(pathinfo($app,PATHINFO_EXTENSION)) == "plg")  {
+				$plugin = true;
+			} else {
+				$plugin = false;
+			}
+			if ( ! $plugin && $dockerRunning) {
+				$info = $DockerClient->getDockerContainers();
+				$search = explode(":",$app);
+				if ( ! $search[1] ) {
+					$app .= ":latest";
+				}
+				foreach($info as $container) {
+					if ( $search[1] == "*" ) {
+						if ( explode(":",$container['Image'])[0] == $search[0]) 
+							$found = true;
+							break;
+					}
+					if ($container['Image'] == $app) {
+						$found = true;
+						break;
+					}
 				}
 			} else {
-				$found = true;
+				if ( is_file("/var/log/plugins/".basename($app)) ) {
+					if ( startswith($app,"https:") ) {
+						if ( plugin("pluginURL","/var/log/plugins/".basename($app)) == $app) {
+							$found = true;
+						}
+					} else {
+						$found = true;
+					}
+				}
 			}
-		}
-	}
-	if ( $found ) {
-		debug("   Found  Looking for conditions\n");
-		$conditionsMet = true;
-		if ( $notice['Conditions']['unraid'] ) {
-			$unraid = parse_ini_file("/etc/unraid-version");
-			$unraidVersion = $unraid['version'];
-			foreach ($notice['Conditions']['unraid'] as $condition) {
-				if ( ! $conditionsMet ) break;
-				debug("Testing unraid version $unraidVersion {$condition[0]} {$condition[1]}");
-				conditionsMet(version_compare($unraidVersion,$condition[1],$condition[0]));
+			if ( $found ) {
+				debug("   Found  Looking for conditions\n");
+				$conditionsMet = true;
+				if ( $notice['Conditions']['unraid'] ) {
+					$unraid = parse_ini_file("/etc/unraid-version");
+					$unraidVersion = $unraid['version'];
+					foreach ($notice['Conditions']['unraid'] as $condition) {
+						if ( ! $conditionsMet ) break;
+						debug("Testing unraid version $unraidVersion {$condition[0]} {$condition[1]}");
+						conditionsMet(version_compare($unraidVersion,$condition[1],$condition[0]));
+					}
+				}
+			} else {
+				debug("  Not Found");
+				continue;
 			}
-		}
-	} else {
-		debug("  Not Found");
-		continue;
-	}
-	
-	if ( $plugin && $notice['Conditions']['plugin'] ) {
-		$pluginVersion = @plugin("version","/var/log/plugins/".basename($app));
-		if ( ! $pluginVersion ) {
-			debug("Unable to determine plugin version.  Carrying on");
-			continue;
-		}
-		foreach ($notice['Conditions']['plugin'] as $condition) {
-			if ( ! $conditionsMet ) break;
-			debug("Testing plugin version $pluginVersion {$condition[0]} {$condition[1]}");
-			$cmp = strcmp($pluginVersion,$condition[1]);
-// do some operator substitutions
-			switch($condition[0]) {
-				case "=":
-					$condition[0] = "==";
-					break;
-				case "eq":
-					$condition[0] = "==";
-					break;
-				case "=<":
-					$condition[0] = "<=";
-					break;
-				case "le":
-					$condition[0] = "<=";
-					break;
-				case ">=":
-					$condition[0] = ">=";
-					break;
-				case "gt":
-					$condition[0] = ">=";
-					break;
-				case "ne":
-					$condition[0] = "!";
-					break;
-				case "<>":
-					$condition[0] = "!";
-					break;
+			
+			if ( $plugin && $notice['Conditions']['plugin'] ) {
+				$pluginVersion = @plugin("version","/var/log/plugins/".basename($app));
+				if ( ! $pluginVersion ) {
+					debug("Unable to determine plugin version.  Carrying on");
+					continue;
+				}
+				foreach ($notice['Conditions']['plugin'] as $condition) {
+					if ( ! $conditionsMet ) break;
+					debug("Testing plugin version $pluginVersion {$condition[0]} {$condition[1]}");
+					$cmp = strcmp($pluginVersion,$condition[1]);
+		// do some operator substitutions
+					switch($condition[0]) {
+						case "=":
+							$condition[0] = "==";
+							break;
+						case "eq":
+							$condition[0] = "==";
+							break;
+						case "=<":
+							$condition[0] = "<=";
+							break;
+						case "le":
+							$condition[0] = "<=";
+							break;
+						case "lt":
+							$condition[0] = "<";
+							break;
+						case ">=":
+							$condition[0] = ">=";
+							break;
+						case "ge":
+							$condition[0] = ">=";
+							break;
+						case "gt":
+							$condition[0] = ">";
+						case "ne":
+							$condition[0] = "!";
+							break;
+						case "<>":
+							$condition[0] = "!";
+							break;
+						case "!=":
+							$condition[0] = "!";
+							break;
+					}
+
+					switch ($condition[0]) {
+						case "<":
+							conditionsMet($cmp < 0);
+							break;
+						case ">":
+							conditionsMet($cmp > 0);
+							break;
+						case "==":
+							conditionsMet($cmp == 0);
+							break;
+						case "<=":
+							conditionsMet($cmp < 1);
+							break;
+						case "=>":
+							conditionsMet($cmp > -1);
+							break;
+						case "!":
+							conditionsMet($cmp != 0);
+							break;
+					}
+				}
 			}
 
-			switch ($condition[0]) {
-				case "<":
-					conditionsMet($cmp < 0);
-					break;
-				case ">":
-					conditionsMet($cmp > 0);
-					break;
-				case "==":
-					conditionsMet($cmp == 0);
-					break;
-				case "<=":
-					conditionsMet($cmp < 1);
-					break;
-				case "=>":
-					conditionsMet($cmp > -1);
-					break;
-				case "!":
-					conditionsMet($cmp != 0);
-					break;
+			if ( $notice['Conditions']['code'] && $conditionsMet) {
+				debug("Executing {$notice['Conditions']['code']}");
+				conditionsMet(eval($notice['Conditions']['code']));
 			}
+
+			if ($conditionsMet) {
+				debug("Conditions Met.  Send the notification!\n");
+				if ( $sendNotification ) {
+					$command = "/usr/local/emhttp/plugins/dynamix/scripts/notify -b -e 'Community Applications Background Scanning' -s 'Attention Required' -d ".escapeshellarg($notice['email']."  Login to your server for more detail")." -i 'alert'";
+					exec($command);
+				}
+				$notice['App'] = $app;
+				$unRaidNotifications[] = $notice;
+			} else {
+				debug("Conditions not met.  Do nothing!\n");
+			}
+			debug("\n");
+			
+
+				
+			
+			
+			
 		}
-	}
-
-	if ( $notice['Conditions']['code'] && $conditionsMet) {
-		debug("Executing {$notice['Conditions']['code']}");
-		conditionsMet(eval($notice['Conditions']['code']));
-	}
-
-	if ($conditionsMet) {
-		debug("Conditions Met.  Send the notification!\n");
-	} else {
-		debug("Conditions not met.  Do nothing!\n");
-	}
-	debug("\n");
-	
-
-		
-	
-	
-	
+		echo json_encode($unRaidNotifications,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+		break;
+	case 'dismiss':
+	file_put_contents("/tmp/blah",print_r($_POST,true));
+		$notifications = readJsonFile($paths['dismiss']);
+		$notifications[] = $_POST['ID'];
+		writeJsonFile($paths['dismiss'],$notifications);
+		break;
 }
-
 ?>
