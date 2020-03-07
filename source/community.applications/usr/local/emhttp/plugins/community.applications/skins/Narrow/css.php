@@ -28,7 +28,7 @@ switch ($theme) {
 		$templateBackground = "#191818";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
-		$watermarkColor = "#2b2b2b"; $opacity = "40%";$safariOpacity="0.4";
+		$watermarkColor = "rgba(43, 43, 43, 0.4)";
 		break;
 	case 'white':
 		$donateBackground = "#1c1b1b";
@@ -36,7 +36,7 @@ switch ($theme) {
 		$templateBackground = "#f5f5f5";
 		$hrColor = "lightgrey";
 		$borderColor = "lightgrey";
-		$watermarkColor = "lightgrey"; $opacity = "80%";$safariOpacity="0.8";
+		$watermarkColor = "rgba(211, 211, 211, 0.8)";
 		break;
 	case 'azure':
 		$donateBackground = "#606e7f";
@@ -44,7 +44,7 @@ switch ($theme) {
 		$templateBackground = "#e2e0e2";
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
-		$watermarkColor = "#606e7f"; $opacity = "20%";$safariOpacity="0.2";
+		$watermarkColor = "rgba(96, 110, 127, 0.1)";
 		break;
 	case 'gray':
 		$donateBackground = "#606e7f";
@@ -52,7 +52,7 @@ switch ($theme) {
 		$templateBackground = "#1b1d1b";
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
-		$watermarkColor = "#606e7f"; $opacity = "10%";$safariOpacity="0.1";
+		$watermarkColor = "rgba(96, 110, 127, 0.1)";
 		break;
 // Use settings for black as a fallback
 	default:  
@@ -61,7 +61,7 @@ switch ($theme) {
 		$templateBackground = "#191818";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
-		$watermarkColor = "#2b2b2b"; $opacity = "40%";$safariOpacity="0.4";
+		$watermarkColor = "rgba(43, 43, 43, 0.4)";
 		break;
 }
 ?>
@@ -95,13 +95,13 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_holderPlugin {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 
 <?if (! $unRaid69 ):?>
-.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>;-webkit-opacity:<?=$safariOpacity?>;}
+.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;}
 <?else:?>
-.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'Unraid';content:'\e982';font-size:8rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>-webkit-opacity:<?=$safariOpacity?>;}
+.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'Unraid';content:'\e982';font-size:8rem;color:<?=$watermarkColor?>;}
 <?endif;?>
 
 <?if ( $unRaid67 ):?>
-.ca_holderDocker::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;opacity:<?=$opacity?>;-webkit-opacity:<?=$safariOpacity?>;}
+.ca_holderDocker::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;}
 <?endif;?>
 img.beta_image {height:2.5rem;z-index:-1;}
 .ca_topRightArea {display:block;position:relative;margin-top:.5rem;margin-right:2rem;z-index:9999;float:right;}
