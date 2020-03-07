@@ -1,7 +1,7 @@
 <?PHP
 require_once "/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php";
 require_once "/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
-
+require_once "/usr/local/emhttp/plugins/dynamix/include/Wrappers.php";
 
 $paths['notices_remote'] = "https://raw.githubusercontent.com/Squidly271/CA_notifications/master/CA_notices.json";
 $paths['CA_root']        = "/tmp/ca_notices";
@@ -9,6 +9,12 @@ $paths['notices']        = "{$paths['CA_root']}/CA_notices.json";
 $paths['bannerNotices']  = "{$paths['CA_root']}/notices";
 $paths['local']          = "/tmp/GitHub/CA_notifications/CA_notices.json";  // only used when run from the command line for debugging
 $paths['dismiss']        = "/boot/config/plugins/community.applications/notifications_dismissed.json";
+
+$cfg = parse_plugin_cfg("community.applications");
+
+if ( $cfg['notifications'] == "no" ) {
+	exit();
+}
 
 @mkdir($paths['CA_root'],0777,true);
 
