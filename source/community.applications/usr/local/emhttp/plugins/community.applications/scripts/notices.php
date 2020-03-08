@@ -1,4 +1,11 @@
 <?PHP
+###############################################################
+#                                                             #
+# Community Applications copyright 2015-2020, Andrew Zawadzki #
+#          Licenced under the terms of GNU GPLv2              #
+#                                                             #
+###############################################################
+
 require_once "/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php";
 require_once "/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 require_once "/usr/local/emhttp/plugins/dynamix/include/Wrappers.php";
@@ -254,17 +261,11 @@ switch ($action) {
 				debug("Conditions not met.  Do nothing!\n");
 			}
 			debug("\n");
-			
-
-				
-			
-			
-			
 		}
 		echo json_encode($unRaidNotifications,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 		break;
+
 	case 'dismiss':
-	file_put_contents("/tmp/blah",print_r($_POST,true));
 		$notifications = readJsonFile($paths['dismiss']);
 		$notifications[] = $_POST['ID'];
 		writeJsonFile($paths['dismiss'],$notifications);
