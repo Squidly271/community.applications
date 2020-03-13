@@ -1,4 +1,11 @@
 <?PHP
+###############################################################
+#                                                             #
+# Community Applications copyright 2015-2020, Andrew Zawadzki #
+#          Licenced under the terms of GNU GPLv2              #
+#                                                             #
+###############################################################
+
 require_once "/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php";
 require_once "/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 require_once "/usr/local/emhttp/plugins/dynamix/include/Wrappers.php";

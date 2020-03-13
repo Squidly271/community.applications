@@ -44,8 +44,6 @@ $date = (date("n/d"));
 
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
 <script>
-var URL = "/plugins/<?=$plugin?>/include/exec.php";
-var last = $('input[name$="tabs"]').length;
 var searchBoxInput;
 var searchBoxAwesomplete;
 var pluginInstallIntervalTimer;
@@ -1206,6 +1204,8 @@ String.prototype.escapeHTML = function() {
 }
 
 function post(options,callback) {
+	var URL = "/plugins/<?=$plugin?>/include/exec.php";
+
 	if ( typeof options === "function" ) {
 		callback = options;
 	} else {

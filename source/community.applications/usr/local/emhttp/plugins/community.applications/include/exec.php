@@ -884,7 +884,13 @@ case 'createXML':
 			postReturn(["error"=>"Create XML: couldn't find template with path of $xmlFile"]);
 			break;
 		}
-		$xml = makeXML($templates[$index]);
+		$template = $templates[$index];
+		if ( $template['OriginalOverview'] ) 
+			$template['Overview'] = $template['OriginalOverview'];
+		if ( $template['OriginalDescription'] )
+			$template['Description'] = $template['OriginalDescription'];
+		
+		$xml = makeXML($template);
 		@mkdir(dirname($xmlFile));
 		file_put_contents($xmlFile,$xml);
 	}
