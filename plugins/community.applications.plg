@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.03.07">
-<!ENTITY md5       "b57af88023855e9af58ec12f5765a47d">
+<!ENTITY version   "2020.03.14">
+<!ENTITY md5       "4caeadddef3e2a58bb8ffd0da15e0600">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2020.03.14
+- Fixed: A sanitized overview when being displayed when installing a docker application
+- Fixed: Minor CSS fixes for unRaid 6.9+
+- Added: Background scanning for must see notifications
+
 ###2020.03.07
 - CSS Fixes for 6.8.3 and Gray / Azure themes
 
@@ -1424,6 +1429,11 @@ THIS IS A REQUIRED UPDATE
   }
   exec("rm -rf /usr/local/emhttp/plugins/community.applications");
   @unlink("/etc/cron.daily/updateApplications.sh");
+	
+	echo "Setting up cron for background notifications\n";
+	$cron = rand(0,59)." * * * * php /usr/local/emhttp/plugins/community.applications/scripts/notices.php > /dev/null 2>&1";
+	file_put_contents("/boot/config/plugins/community.applications/notification_scan.cron","\n# CRON for CA background scanning of applications\n$cron\n\n");
+	exec("/usr/local/sbin/update_cron");
 ?>
 ]]>
 </INLINE>
@@ -1438,6 +1448,7 @@ if [[ -d /usr/local/emhttp/plugins/repo.update ]]; then rm -rf /usr/local/emhttp
 if [[ -n $(ls /boot/config/plugins/repo.update*.plg 2>/dev/null) ]]; then rm /boot/config/plugins/repo.update*.plg; fi
 
 if [[ -e /tmp/community.applications/tempFiles/templates.json ]]; then rm /tmp/community.applications/tempFiles/templates.json; fi
+/usr/local/sbin/update_cron
 </INLINE>
 </FILE>
 

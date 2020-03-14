@@ -44,10 +44,10 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 
 function debug($message) {
 	global $debugging;
-	
+
 	if ($debugging) echo $message;
 }
-	
+
 
 function readJsonFile($filename) {
 	$json = json_decode(@file_get_contents($filename),true);
@@ -84,7 +84,7 @@ function startsWith($haystack, $needle) {
 
 function conditionsMet($value) {
 	global $conditionsMet;
-	
+
 	if ($value) {
 		debug("  Passed\n");
 	} else {
@@ -92,7 +92,7 @@ function conditionsMet($value) {
 		debug("  Failed\n");
 	}
 }
-		
+
 
 ############## MAIN ##############
 switch ($action) {
@@ -101,12 +101,12 @@ switch ($action) {
 			$notices = readJsonFile($paths['local']);
 			copy($paths['local'],$paths['notices']);
 		} else {
-			if ( is_file($paths['notices']) && ( time() - filemtime($paths['notices']) < 86400 ) ) {
-				// Only send one notification per day
+			if ( is_file($paths['notices']) && ( time() - filemtime($paths['notices']) < 604800 ) ) {
+				// Only send one notification per week
 				$notices = readJsonFile($paths['notices']);
 				$sendNotification = false;
 			} else {
-				exec("logger downloading new notifications");
+//				exec("logger downloading new notifications");
 				$notices = download_json($paths['notices_remote'],$paths['notices']);
 			}
 		}
@@ -138,7 +138,7 @@ switch ($action) {
 				}
 				foreach($info as $container) {
 					if ( $search[1] == "*" ) {
-						if ( explode(":",$container['Image'])[0] == $search[0]) 
+						if ( explode(":",$container['Image'])[0] == $search[0])
 							$found = true;
 							break;
 					}
@@ -174,7 +174,7 @@ switch ($action) {
 				debug("  Not Found");
 				continue;
 			}
-			
+
 			if ( $plugin && $notice['Conditions']['plugin'] ) {
 				$pluginVersion = @plugin("version","/var/log/plugins/".basename($app));
 				if ( ! $pluginVersion ) {
@@ -252,7 +252,7 @@ switch ($action) {
 			if ($conditionsMet) {
 				debug("Conditions Met.  Send the notification!\n");
 				if ( $sendNotification ) {
-					$command = "/usr/local/emhttp/plugins/dynamix/scripts/notify -b -e 'Community Applications Background Scanning' -s 'Attention Required' -d ".escapeshellarg($notice['email']."  Login to your server for more detail")." -i 'alert'";
+					$command = "/usr/local/emhttp/plugins/dynamix/scripts/notify -b -e 'Community Applications Background Scanning' -s 'Attention Required' -d ".escapeshellarg($notice['email']."  Login to your server for more detail.  To not receive this notification again, dismiss the banner when logged into your server")." -i 'alert'";
 					exec($command);
 				}
 				$notice['App'] = $app;
@@ -261,12 +261,6 @@ switch ($action) {
 				debug("Conditions not met.  Do nothing!\n");
 			}
 			debug("\n");
-			
-
-				
-			
-			
-			
 		}
 		echo json_encode($unRaidNotifications,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 		break;
