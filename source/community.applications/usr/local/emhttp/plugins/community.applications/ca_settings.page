@@ -61,10 +61,13 @@ Remove program files when uninstalling?
 Allow CA to send any emergency notifications?
 : <select name='notifications' size='1'>
 	<?=mk_option($cfg['notifications'],"yes","Yes (Recommended)")?>
-	<?=mk_option($cfg['notifications'],"no","No")?>
+	<?=mk_option($cfg['notifications'],"no","No (Default)")?>
 	</select>
 	
-> This setting allows CA to periodically scan your system (for known malware within applications etc) and alert you to their presence
+> This setting allows CA to periodically scan your system and alert you to the presence of:<br>
+>  1. Known malware and security vulnerabilities within applications<br>
+>  2. Critical security vulnerabilities within Unraid OS<br>
+>  3. Any installed applications which may seriously hinder the operation of your server
 
 &nbsp;
 : <input type="submit" name="#apply" value="Apply" id='Apply'><input type="button" id="DONE" value="Done" onclick="done()">

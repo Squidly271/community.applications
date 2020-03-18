@@ -252,7 +252,7 @@ switch ($action) {
 			if ($conditionsMet) {
 				debug("Conditions Met.  Send the notification!\n");
 				if ( $sendNotification ) {
-					$command = "/usr/local/emhttp/plugins/dynamix/scripts/notify -b -e 'Community Applications Background Scanning' -s 'Attention Required' -d ".escapeshellarg($notice['email']."  Login to your server for more detail.  To not receive this notification again, dismiss the banner when logged into your server")." -i 'alert'";
+					$command = "/usr/local/emhttp/plugins/dynamix/scripts/notify -b -e 'Community Applications Background Scanning' -s 'Attention Required' -d ".escapeshellarg($notice['email']."  Login to your server for more detail.  To not receive this notification again, dismiss the banner when logged into your server")." -i 'warning'";
 					exec($command);
 				}
 				$notice['App'] = $app;
@@ -265,7 +265,6 @@ switch ($action) {
 		echo json_encode($unRaidNotifications,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 		break;
 	case 'dismiss':
-	file_put_contents("/tmp/blah",print_r($_POST,true));
 		$notifications = readJsonFile($paths['dismiss']);
 		$notifications[] = $_POST['ID'];
 		writeJsonFile($paths['dismiss'],$notifications);
