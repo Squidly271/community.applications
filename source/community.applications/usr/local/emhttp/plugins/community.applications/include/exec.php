@@ -6,6 +6,19 @@
 #                                                             #
 ###############################################################
 
+$unRaidSettings = parse_ini_file("/etc/unraid-version");
+
+### Translations section has to be first so that nothing else winds up caching the file(s)
+
+$translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
+if ( $translations ) {
+	$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
+	$_SERVER['REQUEST_URI'] = "apps";
+	require_once("/usr/local/emhttp/plugins/dynamix/include/Translations.php");
+	$my_translations = $language;
+	exec("rm -r /usr/local/emhttp/languages/*/*.dot");
+}
+
 require_once "/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php"; # must be first include due to paths defined
 require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
 require_once "/usr/local/emhttp/plugins/community.applications/include/helpers.php";
@@ -13,7 +26,8 @@ require_once "/usr/local/emhttp/plugins/community.applications/skins/Narrow/skin
 require_once "/usr/local/emhttp/plugins/dynamix/include/Wrappers.php";
 require_once "/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 
-$unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
+# Merge the translation files together
+$language = array_merge($language,$my_translations);
 
 ################################################################################
 # Set up any default settings (when not explicitely set by the settings module #

@@ -24,14 +24,22 @@ if ( ! is_file($caPaths['pluginWarning']) ) {
 }
 
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
-$unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
-$unRaid68 = version_compare($unRaidSettings['version'],"6.7.9",">");
-$unRaid69 = version_compare($unRaidSettings['version'],"6.8.2",">");
+$unRaid66 =       version_compare($unRaidSettings['version'],"6.5.3",">");
+$unRaid68 =       version_compare($unRaidSettings['version'],"6.7.9",">");
+$unRaid69 =       version_compare($unRaidSettings['version'],"6.8.2",">");
 
 if ( is_file($caPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
 $date = (date("n/d"));
+
+$translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
+$pluginTranslations = array();
+if ( $translations ) {
+	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI']))."-1.txt";
+$pluginTranslations = @parse_ini_file($translationFile);
+}
+print_r($pluginTranslations);
 ?>
 <? if ( ! $unRaid69 ):?>
 <meta name="referrer" content="same-origin">
@@ -44,6 +52,11 @@ $date = (date("n/d"));
 
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
 <script>
+var translationArray = new Array;
+<?foreach ($pluginTranslations as $english => $translation):?>
+  translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
+<?endforeach;?>
+
 var searchBoxInput;
 var searchBoxAwesomplete;
 var pluginInstallIntervalTimer;
@@ -82,15 +95,15 @@ $(function(){
 	);
 
 	$("#title").append('<div id="Category" class="categoryLine ca_italic"></div>');
-	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name Ascending' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name Descending' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i><i class='sortIcons fa fa-calendar ca_staticTips' title='Sort By Date Added' data-sort='firstSeenDown'></i></span><span id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon'> <span class='fa-sort-alpha-asc'></span></span>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='Search' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
+	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='Sort By Name Ascending' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='Sort By Name Descending' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='Sort By Downloads' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='Sort By Trend' data-sort='trendDown'></i><i class='sortIcons fa fa-calendar ca_staticTips' title='Sort By Date Added' data-sort='firstSeenDown'></i></span><span id='sortIcon' class='fa fa-sort ca_toolsView disabledIcon'> <span class='fa-sort-alpha-asc'></span></span>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='"+translate('Search')+"' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
 
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
 
-	if ( "<?=$date?>" == "12/24" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> Happy Holidays from Andrew, Tracey, and family <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
-	if ( "<?=$date?>" == "12/25" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> Happy Holidays from Andrew, Tracey, and family <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
-	if ( "<?=$date?>" == "1/01" )  addBannerWarning("Happy New Year!",false);
-	if ( "<?=$date?>" == "12/31" ) addBannerWarning("Happy New Year! <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> Please Enjoy Responsibly",false);
+	if ( "<?=$date?>" == "12/24" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> "+translate("Happy Holidays from Andrew, Tracey, and family")+" <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
+	if ( "<?=$date?>" == "12/25" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> "+translate("Happy Holidays from Andrew, Tracey, and family")+" <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
+	if ( "<?=$date?>" == "1/01" )  addBannerWarning(translate("Happy New Year!"),false);
+	if ( "<?=$date?>" == "12/31" ) addBannerWarning(translate("Happy New Year!")+" <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> "+translate("Please Enjoy Responsibly"),false);
 
 	$('.ca_toolsView').tooltipster({
 		trigger: 'hover',
@@ -99,9 +112,9 @@ $(function(){
 		triggerClose: {mouseleave:true},
 		functionBefore: function(instance,helper){
 			if ( isIconEnabled("#sortIcon") ) {
-				instance.content("Sorting options");
+				instance.content(translate("Sorting options"));
 			} else {
-				instance.content("Sorting options unavailable");
+				instance.content(translate("Sorting options unavailable"));
 			}
 		}
 	});
@@ -211,32 +224,33 @@ $(function(){
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
 		swal({
-			title: 'Disclaimer',
-			text: 'All applications listed here are <span class="ca_bold">3rd party</span> additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here. <br><span class="ca_italic"><font color="green">Every attempt is made to ensure that only safe and compatible applications are present</font></span><br><br><center><a href="https://forums.unraid.net/topic/87144-ca-application-policies/" target="_blank">Application Policy</a>',
+			title: translate("Disclaimer"),
+			text: translate('All applications listed here are 3rd party additions to unRaid  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here')+' <br><span class="ca_italic"><font color="green">'+translate('Every attempt is made to ensure that only safe and compatible applications are present')+'</font></span><br><br><center><a href="https://forums.unraid.net/topic/87144-ca-application-policies/" target="_blank">'+translate('Application Policy')+'</a>',
 			html: true,
 			type: 'warning',
 			showCancelButton: true,
 			showConfirmButton: true,
-			confirmButtonText: 'I Understand'
+			cancelButtonText: translate('Cancel'),
+			confirmButtonText: translate('I Understand')
 		}, function (isConfirm) {
 			if ( isConfirm ) {
 				post({action:'dismiss_warning'},function(result) {
 					location.reload();
 				});
 			} else {
-				addBannerWarning("Installations of apps disabled.  You must accept the warning to be able to install applications.  Click <a onclick='window.location.reload();' style='cursor:pointer;'>HERE</a>",true,true);
+				addBannerWarning(translate("Installations of apps disabled.  You must accept the warning to be able to install applications.")+"  "+translate("Click")+" <a onclick='window.location.reload();' style='cursor:pointer;'>"+translate("HERE")+"</a>",true,true);
 				updateContent();
 			}
 		});
 	} else if ( "<?=$pluginWarning?>" == "false" ) {
 		swal({
-			title: 'Plugins',
-			text: 'Community Applications contains both docker containers <em>and</em> <b>plugin</b> applications.  Plugins are designed for OS enhancements, and run with <font color="green">full privileges</font> on your system and are clearly identified within CA.<br><br><center><a href="https://forums.unraid.net/topic/87144-ca-application-policies-notes/?tab=comments#comment-817555" target="_blank">Plugin Note</a></center>',
+			title: translate('Plugins'),
+			text: translate('Community Applications contains both docker containers and plugin applications.  Plugins are designed for OS enhancements, and run with full privileges on your system and are clearly identified within CA.')+'<br><br><center><a href="https://forums.unraid.net/topic/87144-ca-application-policies-notes/?tab=comments#comment-817555" target="_blank">'+translate('Plugin Note')+'</a></center>',
 			type: 'warning',
 			html: true,
 			showCancelButton: false,
 			showConfirmButton: true,
-			confirmButtonText: "OK"
+			confirmButtonText: translate("I Understand")
 		}, function (isConfirm) {
 			if (isConfirm) {
 				post({action:'dismiss_plugin_warning'},function(result) {
@@ -282,7 +296,7 @@ function updateContent(button) {
 			var plugins = $.cookie("ca_plugininstallpending");
 			$.removeCookie("ca_plugininstallpending");
 			myCloseAlert();
-			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,'Install Plugin Applications',600,900,true);
+			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,translate('Install Plugin Applications'),600,900,true);
 		} else {
 			if ( result.data ) {
 				updateDisplay(result.data);
@@ -449,10 +463,10 @@ function doSearch(button,newSearch) {
 	}
 	var filter = $('#searchBox').val();
 	if ( button && ! filter) {
-		$("#searchBox").attr("placeholder","Please enter search term");
+		$("#searchBox").attr("placeholder",translate("Please enter search term"));
 		return;
 	} else {
-		$("#searchBox").attr("placeholder","Search");
+		$("#searchBox").attr("placeholder",translate("Search"));
 	}
 	data.docker = "";
 	data.section = "AppStore";
@@ -476,7 +490,7 @@ function doSearch(button,newSearch) {
 
 	scrollToTop();
 	if (filter) {
-		$("#Category").html("Search for "+filter);
+		$("#Category").html(translate("Search for")+" "+filter);
 		enableIcon("#sortIcon",true);
 		data.searchFlag = true;
 	} else {
@@ -638,7 +652,7 @@ function dockerSearch(pageNumber) {
 	data.docker = "searching docker";
 	enableIcon("#sortIcon",false);
 	$(".dockerSearch,.multi_installDiv").hide();
-	$("#Category").html("DockerHub Search for "+filter+" <span id='pageNumber'></span>");
+	$("#Category").html(translate("DockerHub Search for")+" "+filter+" <span id='pageNumber'></span>");
 	var sortOrder = getSortOrder();
 	post({action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(result) {
 		updateDisplay(result.display);
@@ -648,7 +662,7 @@ function dockerSearch(pageNumber) {
 function dockerConvert(dockerID) {
 	post({action:'convert_docker',ID:dockerID},function(result) {
 		myCloseAlert();
-		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + $.trim(result.xml);
+		templateURL = "/Docker/Apps/AddContainer?xmlTemplate=default:" + $.trim(result.xml);
 		openNewWindow(templateURL);
 	});
 }
@@ -656,7 +670,7 @@ function dockerConvert(dockerID) {
 function openNewWindow(newURL) {
 	var popUp = window.open(newURL,"_self");
 	if ( !popUp || popUp.closed || typeof popUp == "undefined" ) {
-		addBannerWarning("Popup Blocked.  CA requires popups to be enabled under certain circumstances.  You must white list your server within your browser to allow popups",true,true);
+		addBannerWarning(translate("Popup Blocked.  CA requires popups to be enabled under certain circumstances.  You must white list your server within your browser to allow popups"),true,true);
 	}
 }
 
@@ -669,7 +683,7 @@ function clearSearchBox() {
 
 function installPlugin(pluginURL) {
 	disableSearch();
-	my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,'Install Plugin',600,900,true,"refreshDisplay()");
+	my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,translate('Install Plugin'),600,900,true,"refreshDisplay()");
 }
 
 function my_openBox(cmd,title,height,width,load,func) {
@@ -718,8 +732,8 @@ function previousApps(installed,dontClear=false) {
 function removeApp(application, humanName) {
 	disableSearch();
 	swal({
-		title: "Delete Template?",
-		text: "Are you sure you want to delete <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font> from the list of previously installed applications?<br><font size='0'>"+application+"</font>",
+		title: translate("Delete Template?"),
+		text: "Are you sure you want to delete "+humanName+" from the list of previously installed applications?<br><font size='0'>"+application+"</font>",
 		type: "warning",
 		confirmButtonText: "Yes, delete it!",
 		showCancelButton: true,
@@ -911,7 +925,7 @@ function displayTags(leadTemplate) {
 function xmlInstall(type,xml) {
 	post({action:'createXML',xml:xml},function(result){
 		if ( result.status == "ok" ) {
-			openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
+			openNewWindow("/Docker/Apps/AddContainer?xmlTemplate="+type+":"+xml);
 		}
 	});
 }
@@ -1313,8 +1327,27 @@ function feedWarning(currentServer) {
 	}
 }
 
+function translate(string) {
+  <?if ( ! $translations ): ?>
+		return string;
+	<?else:?>
+		var searchString = string.replace(/[?\{\}|&~!\[\]()/:*^."']/g,"");
+		var translated;
+		translationArray.map(function(data) {
+			if (data.english == searchString) {
+				translated = data.translation;
+			}
+		});
+		if ( ! translated )
+			translated = string;
+
+		return translated;
+	<?endif;?>
+}
+
 </script>
 
+<? if ( ! $translations): ?>
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This chooses how to sort the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;These icons respectively will <span class='ca_bold'>Install or Edit</span> an application<br>
 > <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;Clicking these icons will take you to an application's GUI or settings<br>
@@ -1329,5 +1362,24 @@ function feedWarning(currentServer) {
 > <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
 > 
 > To view the policies Community Applications has, click <a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>HERE</a>
+<?else:?>
+
+:plug1
+> <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This chooses how to sort the results<br><br>
+> <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;These icons respectively will <span class='ca_bold'>Install or Edit</span> an application<br>
+> <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;Clicking these icons will take you to an application's GUI or settings<br>
+> <span class='ca_fa-support' style='font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will take you to the appropriate support thread for an application<br>
+> <span class='ca_fa-project' style='font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will take you to the project page for an application<br>
+> <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>
+> <span class='unpinned'> </span><span class='pinned'></span> &nbsp;&nbsp;Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br>
+> <i class='fa fa-info-circle' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this will display more information about the application.  NOTE: You can also click on the application's icon to display more information.<br>
+> <i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this will display any warnings or extra comments about the application<br>
+> <input type='checkbox' checked> &nbsp;&nbsp;&nbsp;On the previous apps section, you can select  multiple applications to install simultaneously<br>
+> <span class='ca_thumbsup' style='margin-left:0px; font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a recommended application based upon support requests and answers in the unRaid forum<br>
+> <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
+> 
+> To view the policies Community Applications has, click <a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>HERE</a>
+:end
+<?endif;?>
 
 <?include "/usr/local/emhttp/plugins/$plugin/skins/Narrow/skin.html"?>
