@@ -34,12 +34,11 @@ if ( is_file($caPaths['addConverted']) ) {
 $date = (date("n/d"));
 
 $translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
-$pluginTranslations = array();
 if ( $translations ) {
 	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI']))."-1.txt";
 $pluginTranslations = @parse_ini_file($translationFile);
 }
-print_r($pluginTranslations);
+$pluginTranslations = $pluginTranslations ?: array();
 ?>
 <? if ( ! $unRaid69 ):?>
 <meta name="referrer" content="same-origin">
