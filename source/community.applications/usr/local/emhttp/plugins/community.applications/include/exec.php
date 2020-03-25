@@ -14,10 +14,13 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 $translations = version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
 if ( $translations ) {
-	$_SERVER['REQUEST_URI'] = "apps";
+	$_SERVER['REQUEST_URI'] = "docker/apps";
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
 	$my_translations = $language;
-	exec("rm -r $docroot/languages/*/*.dot");
+	
+############ 
+# THIS LINE MUST BE REMOVED PRIOR TO RELEASE
+	exec("rm -r $docroot/languages/*/*.dot");  
 }
 
 require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php"; # must be first include due to paths defined

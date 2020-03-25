@@ -1,0 +1,83 @@
+# Translation Credit.  Will appear in CA's credits   Say something like Translated to Dutch by xxxx  
+translationCredit=
+Cancel=no fucking way
+# My PSAs / banners
+Happy New Year=
+Happy Holidays from Andrew, Tracey, and family=
+Please Enjoy Responsibly=
+Popup Blocked  CA requires popups to be enabled under certain circumstances  You must white list your server within your browser to allow popups=
+Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed=
+Community Applications works best when cookies are enabled in your browser  Certain features may not be available=
+Backup Server Active  Some icons may not appear, and plugin installations may be affected=
+# Sorting Options
+Sorting options=
+Sorting options unavailable=
+# Initial disclaimer translations
+Disclaimer=
+All applications listed here are 3rd party additions to unRaid  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here=
+Every attempt is made to ensure that only safe and compatible applications are present=
+Application Policy=
+I Understand=
+Installations of apps disabled  You must accept the warning to be able to install applications=
+Click=
+HERE=
+# Plugin Disclaimer
+Plugins=
+Community Applications contains both docker containers and plugin applications  Plugins are designed for OS enhancements, and run with full privileges on your system and are clearly identified within CA=
+Plugin Note=
+# Multi Install
+Install Plugin Applications=
+# Searches
+Search=
+Please enter search term=
+Search for=
+DockerHub Search for=
+# Install Plugin title of openbox
+Install Plugin=
+# Remove App from previously installed
+Delete Template=
+Are you sure you want to delete %s from the list of previously installed applications=
+Yes, delete it=
+# Uninstall  popup
+Uninstall Application=
+Are you sure you want to uninstall %s=
+Yes uninstall it=
+Uninstalling %s=
+# Remove Private Application
+Remove Private Application=
+Are you sure you want to remove the private application %s by %s="Are you sure you want to remove the private application %1$s by %2$s?"
+Yes, remove it=
+Removing %s=
+# App Pinning
+Click to pin this application=
+Click to unpin this application=
+# Branch installations
+Choose A Branch To Install=
+# Multiple application installs
+
+# no apps selected
+Install Selected Applications=
+# one app selected
+Install %s Selected Application=
+Yes, install it=
+# more than 1 app selected
+Install %s Selected Applications=
+
+# Multi-install popup
+Yes, install them=
+Cookies not enabled  Plugins must be separately installed from docker applications=
+Are you sure you want to install %s docker and %s plugin applications="Are you sure you want to install %1$s docker and %2$s plugin application(s)?"
+Docker applications will be installed utilizing the most recently saved template with no user input on your part=
+Install Application=
+Install Applications=
+
+# error messages
+
+No data was returned  It is probable that another browser session has rebooted your server  Reloading this browser tab will probably fix this error=
+# the %s here refers to a function being called
+Something really wrong went on during %s=
+Post the ENTIRE contents of this message in the Community Applications Support Thread=
+Unknown error happened  Please post a screenshot in the support thread of the Statistics screen=
+
+
+

@@ -146,9 +146,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		if ( $template['Plugin'] )
 			$template['UpdateAvailable'] = checkPluginUpdate($template['PluginURL']);
 
-		if ( $template['UpdateAvailable'] )
-			$template['display_UpdateAvailable'] = $template['Plugin'] ? "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a onclick='installPLGupdate(&quot;".basename($template['InstallPath'])."&quot;,&quot;".$template['Name']."&quot;);' style='cursor:pointer'>Here</a> to Install</span></div></font>" : "<br><div class='ca_center'><font color='red'><span class='ca_bold'>Update Available.  Click <a href='Docker'>Here</a> to install</span></font></div>";
-
 		if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls'] ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
 			if ( $template['Plugin'] ) {
 				$pluginName = basename($template['PluginURL']);

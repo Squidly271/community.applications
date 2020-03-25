@@ -36,9 +36,10 @@ $date = (date("n/d"));
 $translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
 if ( $translations ) {
 	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI']))."-1.txt";
-$pluginTranslations = @parse_ini_file($translationFile);
+  $pluginTranslations = @parse_ini_file($translationFile,false,INI_SCANNER_RAW);
 }
 $pluginTranslations = $pluginTranslations ?: array();
+print_r($pluginTranslations);
 ?>
 <? if ( ! $unRaid69 ):?>
 <meta name="referrer" content="same-origin">
@@ -420,6 +421,7 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 		allowOutsideClick: outsideClick,
 		showConfirmButton: showConfirm,
 		showCancelButton: showCancel,
+		cancelButtonText: translate("Cancel"),
 		type: alertType,
 		animation: false,
 		html: true
@@ -661,7 +663,7 @@ function dockerSearch(pageNumber) {
 function dockerConvert(dockerID) {
 	post({action:'convert_docker',ID:dockerID},function(result) {
 		myCloseAlert();
-		templateURL = "/Docker/Apps/AddContainer?xmlTemplate=default:" + $.trim(result.xml);
+		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + $.trim(result.xml);
 		openNewWindow(templateURL);
 	});
 }
@@ -732,9 +734,10 @@ function removeApp(application, humanName) {
 	disableSearch();
 	swal({
 		title: translate("Delete Template?"),
-		text: "Are you sure you want to delete "+humanName+" from the list of previously installed applications?<br><font size='0'>"+application+"</font>",
+		text: sprintf(translate("Are you sure you want to delete %s from the list of previously installed applications?"),"<font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>")+"<br><font size='0'>"+application+"</font>",
 		type: "warning",
-		confirmButtonText: "Yes, delete it!",
+		confirmButtonText: translate("Yes, delete it!"),
+		cancelButtonText: translate("Cancel"),
 		showCancelButton: true,
 		showConfirmButton: true,
 		allowOutsideClick: true,
@@ -756,12 +759,13 @@ function removeApp(application, humanName) {
 function uninstallApp(application,humanName) {
 	disableSearch();
 	swal({
-		title: "Uninstall Application?",
-		text: "Are you sure you want to uninstall <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>?",
+		title: translate("Uninstall Application?"),
+		text: sprintf(translate("Are you sure you want to uninstall %s?"),"<font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>"),
 		type: "warning",
 		showCancelButton: true,
 		showConfirmButton: true,
-		confirmButtonText: "Yes, uninstall it!",
+		cancelButtonText: translate("Cancel"),
+		confirmButtonText: translate("Yes, uninstall it!"),
 		closeOnConfirm: true,
 		showLoaderOnConfirm: false,
 		allowOutsideClick: true,
@@ -789,19 +793,20 @@ function deletePrivateApp(path,name,author) {
 	var displayPath = path.replace("/boot/config/plugins/","...");
 	disableSearch();
 	swal({
-		title: "Remove Private Application?",
-		text: "Are you sure you want to remove the private application <span class='ca_italic'><font color='red'><span class='ca_bold'>"+name+"</span></font> by <font color='red'><span class='ca_bold'>"+author+"</span></font>?<br><font size='0'>("+displayPath+")",
+		title: translate("Remove Private Application?"),
+		text: sprintf(translate("Are you sure you want to remove the private application %s by %s?"),"<span class='ca_italic'><font color='red'><span class='ca_bold'>"+name+"</span></font>","<font color='red'><span class='ca_bold'>"+author+"</span></font>")+"<br><font size='0'>("+displayPath+")",
 		type: "warning",
 			showCancelButton: true,
 			showConfirmButton: true,
-			confirmButtonText: "Yes, remove it!",
+			cancelButtonText: translate("Cancel"),
+			confirmButtonText: translate("Yes, remove it!"),
 			closeOnConfirm: false,
 			showLoaderOnConfirm: true,
 			allowOutsideClick: true,
 			html: true
 	}, function(isConfirm) {
 		if ( isConfirm ) {
-			swal("Removing "+name,"","info");
+			swal(sprintf(translate("Removing %s"),name),"","info");
 			getSelectedApps();
 			post({action:'removePrivateApp',path:path,noSpinner:true},function(result) {
 				getCategories();
@@ -818,19 +823,20 @@ function deletePrivateApp(path,name,author) {
 function uninstallDocker(application,humanName) {
 	disableSearch();
 	swal({
-		title: "Uninstall Application?",
-		text: "Are you sure you want to uninstall <font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>?",
+		title: translate("Uninstall Application?"),
+		text: sprintf(translate("Are you sure you want to uninstall %s?"),"<font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>"),
 		type: "warning",
 		showCancelButton: true,
 		showConfirmButton: true,
-		confirmButtonText: "Yes, uninstall it!",
+		cancelButtonText: translate("Cancel"),
+		confirmButtonText: translate("Yes, uninstall it!"),
 		closeOnConfirm: false,
 		showLoaderOnConfirm: true,
 		allowOutsideClick: true,
 		html: true
 	}, function( isConfirm ) {
 		if ( isConfirm ) {
-			myAlert("","Uninstalling "+humanName);
+			myAlert("",sprintf(translate("Uninstalling %s"),humanName));
 			post({action:'uninstall_docker',application:application,noSpinner:true},function(result) {
 				enableSearch();
 				previousApps(true);
@@ -856,15 +862,6 @@ function initializeAppStore() {
 	$(".multi_installDiv").hide();
 }
 
-function installPLGupdate(filename,plgName) {
-	data.plgfilename = filename;
-	if ( filename == "community.applications.plg" ) {
-		openBox('/plugins/<?=$plugin?>/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true);
-	} else {
-		my_openBox('/plugins/<?=$plugin?>/scripts/updatePLG.sh&arg1='+filename,'Update '+plgName,600,900,true,"checkPLGupdate()");
-	}
-}
-
 function checkPLGupdate() {
 	var filename = data.plgfilename;
 	post({action:'updatePLGstatus',filename:filename},function(result) {
@@ -875,7 +872,7 @@ function checkPLGupdate() {
 
 function pinApp(button,repository,name) {
 	$(button).toggleClass("pinned unpinned");
-	var pinned = ( $(button).hasClass("unpinned") ) ? "Click to pin this application" : "Click to unpin this application";
+	var pinned = ( $(button).hasClass("unpinned") ) ? translate("Click to pin this application") : translate("Click to unpin this application");
 	$(button).tooltipster('content',pinned);
 	post({action:'pinApp',repository:repository,name:name});
 }
@@ -906,12 +903,13 @@ function displayTags(leadTemplate) {
 	post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true},function(result) {
 		disableSearch();
 		swal({
-			title: "Choose A Branch To Install",
+			title: translate("Choose A Branch To Install"),
 			text: result.tags,
 			html: true,
 			type: "warning",
 			showCancelButton: true,
 			showConfirmButton: false,
+			cancelButtonText: translate("Cancel"),
 			allowOutsideClick: true
 		}, function(isConfirm) {
 			if ( ! isConfirm ) {
@@ -924,7 +922,7 @@ function displayTags(leadTemplate) {
 function xmlInstall(type,xml) {
 	post({action:'createXML',xml:xml},function(result){
 		if ( result.status == "ok" ) {
-			openNewWindow("/Docker/Apps/AddContainer?xmlTemplate="+type+":"+xml);
+			openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
 		}
 	});
 }
@@ -984,10 +982,11 @@ function enableMultiInstall() {
 	var count = selected.plugin.length + selected.docker.length;
 	if ( count == 0 ) {
 		$(".multi_install,.multi_installClear").attr("disabled",true);
-		$(".multi_installButton").val("Install Selected Applications");
+		$(".multi_installButton").val(translate("Install Selected Applications"));
 	} else {
 		$(".multi_install,.multi_installClear").attr("disabled",false);
-		$(".multi_installButton").val("Install "+(selected.plugin.length+selected.docker.length)+" Selected "+makePlural("Application",count));
+		var buttonText = (count == 1) ? sprintf(translate("Install %s Selected Application"),count) : sprintf(translate("Install %s Selected Applications"),count);
+		$(".multi_installButton").val(buttonText);
 	}
 	getSelectedApps();
 }
@@ -1037,25 +1036,22 @@ function installMulti() {
 	disableSearch();
 	if ( ! cookiesEnabled() && dockerCount && pluginCount ) {
 		pluginCount = 0;
-		cookieWarning = "<br>Cookies not enabled.  Plugins must be separately installed from docker applications";
+		cookieWarning = "<br>"+translate("Cookies not enabled.  Plugins must be separately installed from docker applications");
 	}
 	if ( (dockerCount + pluginCount) > 1 ) {
-		var buttonText = "Yes, install them";
+		var buttonText = translate("Yes, install them");
 	} else {
-		var buttonText = "Yes, install it";
+		var buttonText = translate("Yes, install it");
 	}
-	var text = "Are you sure you want to install ";
-	text = text.concat(dockerCount ? dockerCount+" docker "+makePlural("application",dockerCount) : "");
-	text = text.concat(dockerCount && pluginCount ? " and " : "");
-	text = text.concat(pluginCount ? pluginCount+makePlural(" plugin",pluginCount) : "");
-	text = text.concat("?");
-	text = text.concat(dockerCount ? "<br><span class='ca_italic'>Docker applications will be installed utilizing the most recently saved template with no user input on your part</span>" : "");
+	var text = sprintf(translate("Are you sure you want to install %s docker and %s plugin application(s)?"),dockerCount,pluginCount);
+	text = text.concat(dockerCount ? "<br><span class='ca_italic'>"+translate("Docker applications will be installed utilizing the most recently saved template with no user input on your part")+"</span>" : "");
 	text = text.concat(cookieWarning ? "<br><font color='red'>"+cookieWarning+"</font>" : "");
 	swal({
-		title: "Install "+makePlural("Application",dockerCount+pluginCount)+"?",
+		title: dockerCount+pluginCount > 1 ? translate("Install Applications?") : translate("Install Application?"),
 		text: text,
 		type: "info",
 		showCancelButton: true,
+		cancelButtonText: translate("Cancel"),
 		showConfirmButton: true,
 		confirmButtonText: buttonText,
 		closeOnConfirm: false,
@@ -1070,9 +1066,9 @@ function installMulti() {
 			}
 			if ( docker.length ) {
 				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
-				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,'Install Docker '+makePlural("Application",dockerCount),600,1100,true);
+				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,translate('Install '+makePlural("Application",dockerCount)),600,1100,true);
 			} else {
-				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugin,'Install Plugin '+makePlural("Application",pluginCount),600,900,true);
+				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugin,translate('Install '+makePlural("Application",pluginCount)),600,900,true);
 				enableSearch();
 			}
 		} else {
@@ -1202,7 +1198,7 @@ function scrollToTop() {
 function addDockerWarning(enableDisable) {
 	if (enableDisable) {
 		if ( dockerWarningAdded === false) {
-			dockerWarningAdded = addBannerWarning('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed');
+			dockerWarningAdded = addBannerWarning(translate('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed'));
 		}
 	} else {
 		if ( dockerWarningAdded !== false ) {
@@ -1243,9 +1239,9 @@ function post(options,callback) {
 				myCloseAlert();
 				myCloseSpinner();
 				if ( ! $.trim(retval) ) {
-					retval = "No data was returned.  It is probable that another browser session has rebooted your server.  Reloading this browser tab will probably fix this error";
+					retval = translate("No data was returned.  It is probable that another browser session has rebooted your server.  Reloading this browser tab will probably fix this error");
 				}
-				$("#templates_content").html("Something really wrong went on during "+options.action+"<br>Post the ENTIRE contents of this message in the Community Applications Support Thread<br><br>"+retval.escapeHTML());
+				$("#templates_content").html(sprintf(translate("Something really wrong went on during %s"),options.action)+"<br>"+translate("Post the ENTIRE contents of this message in the Community Applications Support Thread")+"<br><br>"+retval.escapeHTML());
 				throw new Error("Something went badly wrong!");
 			}
 			console.groupCollapsed("Result "+options.action);
@@ -1276,7 +1272,7 @@ function post(options,callback) {
 	}
 	if ( ! cookiesEnabled() ) {
 		if ( cookieWarning === false) {
-			cookieWarning = addBannerWarning("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.");
+			cookieWarning = addBannerWarning(translate("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available."));
 			console.log("cookie warning:"+cookieWarning);
 			console.log("warning added");
 		}
@@ -1311,10 +1307,10 @@ function getCategories() {
 function feedWarning(currentServer) {
 	if ( currentServer != "Primary Server" ) {
 		if ( currentServer == "" ) {
-			addBannerWarning("Unknown error happened.  Please post a screenshot in the support thread of the Statistics screen");
+			addBannerWarning(translate("Unknown error happened.  Please post a screenshot in the support thread of the Statistics screen"));
 		} else {
 				if ( !backupServerWarning ) {
-				backupServerWarning = addBannerWarning("Backup Server Active.  Some icons may not appear, and plugin installations may be affected",true,true);
+				backupServerWarning = addBannerWarning(translate("Backup Server Active.  Some icons may not appear, and plugin installations may be affected"),true,true);
 			} else {
 				removeBannerWarning(backupServerWarning);
 				backupServerWarning = false;
