@@ -1,33 +1,33 @@
 <div class='menuItems'>
-<div class='menuHeader'>MENU</div>
+<div class='menuHeader'><?tr("MENU");?></div>
 <ul class='caMenu'>
-	<li class='caMenuItem sectionMenu' data-category='installed_apps'>Installed Apps</li>
-	<li class='caMenuItem sectionMenu' data-category='previous_apps'>Previous Apps</li>
-	<li class='caMenuItem sectionMenu' data-category='pinned_apps'>Pinned Apps</li>
+	<li class='caMenuItem sectionMenu' data-category='installed_apps'><?tr("Installed Apps");?></li>
+	<li class='caMenuItem sectionMenu' data-category='previous_apps'><?tr("Previous Apps");?></li>
+	<li class='caMenuItem sectionMenu' data-category='pinned_apps'><?tr("Pinned Apps");?></li>
 </ul>
-<div class='menuHeader'>CATEGORIES</div>
+<div class='menuHeader'><?tr("CATEGORIES");?></div>
 <ul class='caMenu'>
-	<li class='startupButton caMenuItem' data-category='onlynew'>New Apps</li>
-	<li class='startupButton caMenuItem' data-category='new'>Updated Apps</li>
-	<li class='startupButton caMenuItem' data-category='random'>Random Apps</li>
-	<li class='startupButton caMenuItem' data-category='topperforming'>Top New Installs</li>
-	<li class='startupButton caMenuItem' data-category='trending'>Trending Apps</li>
+	<li class='startupButton caMenuItem' data-category='onlynew'><?tr("New Apps");?></li>
+	<li class='startupButton caMenuItem' data-category='new'><?tr("Updated Apps");?></li>
+	<li class='startupButton caMenuItem' data-category='random'><?tr("Random Apps");?></li>
+	<li class='startupButton caMenuItem' data-category='topperforming'><?tr("Top New Installs");?></li>
+	<li class='startupButton caMenuItem' data-category='trending'><?tr("Trending Apps");?></li>
 </ul>
 <ul class='caMenu'>
 	<span id='category_list'></span>
-	<li class='categoryMenu caMenuItem' data-category='All'>All Apps</li>
+	<li class='categoryMenu caMenuItem' data-category='All'><?tr("All Apps");?></li>
 </ul>
-<div class='menuHeader'>OTHER</div>
+<div class='menuHeader'><?tr("OTHER");?></div>
 <ul class='caMenu caRelated'>
-	<li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'>Settings</a></li>
-	<li class='caMenuItem' onclick='disableSort();scrollToTop();showStatistics();'>Statistics</li>
-	<li class='caMenuItem' onclick='disableSort();scrollToTop();showCredits();'>Credits</li>
-	<li class='caMenuItem'><a class='caMenuItem' href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank' style='text-decoration:none;color:inherit;'>Support</a></li>
+	<li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'><?tr("Settings");?></a></li>
+	<li class='caMenuItem' onclick='disableSort();scrollToTop();showStatistics();'><?tr("Statistics");?></li>
+	<li class='caMenuItem' onclick='disableSort();scrollToTop();showCredits();'><?tr("Credits");?></li>
+	<li class='caMenuItem'><a class='caMenuItem' href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank' style='text-decoration:none;color:inherit;'><?tr("Support");?></a></li>
 	</ul>
-<div class='menuHeader'>VERSION</div>
+<div class='menuHeader'><?tr("VERSION");?></div>
 <ul class='nonselectMenu'>
 	<li><span id='caInstalledVersion'></span></li>
-	<li class='caMenuItem caChangeLog'>Change Log</li>
+	<li class='caMenuItem caChangeLog'><?tr("Change Log");?></li>
 </ul>
  <br><br><br>
 </div>
@@ -35,11 +35,11 @@
 </span><br>
 <div class='mainArea'>
 <div class='spinner fixed'></div>
-<div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
+<div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
 <strong><font size='3'></strong></font>
-<div class='dockerSearch' style='display:none'><div class='ca_center'><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'>Click Here To Get More Results From DockerHub</a></div></div>
-<div id='templates_content'><div class='ca_templatesDisplay'><font size='6'>Updating Content</font></div></div>
-<div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='Install Selected Applications' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
+<div class='dockerSearch' style='display:none'><div class='ca_center'><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'><?tr("Click Here To Get More Results From DockerHub");?></a></div></div>
+<div id='templates_content'><div class='ca_templatesDisplay'><font size='6'><?tr("Updating Content");?></font></div></div>
+<div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' disabled><input type='button' class='multi_installClear' value='Clear Selected' disabled></div></div>
 </div>
 </div>
 <span id='debugging'></span>
@@ -47,24 +47,21 @@
 	<div style='overflow:scroll;overflow-x:hidden; overflow-y:auto;margin:auto;width:600px;padding-bottom:50px;'>
 		<div class='ca_center'><i class='fa fa-users' style='font-size:5rem;margin-top:2rem;'></i></div>
 		<div class='ca_center'><font size='5'>Community Applications</font></div>
-		<div class='ca_center ca_creditheader'>Development</div>
+		<div class='ca_center ca_creditheader'><?tr("Development");?></div>
 		<div class='ca_center ca_credit'>Andrew Zawadzki</div>
-		<div class='ca_center ca_creditheader'>Additional Contributions</div>
+		<div class='ca_center ca_creditheader'><?tr("Additional Contributions");?></div>
 		<div class='ca_center ca_credit'>bonienl, eschultz</div>
-		<div class='ca_center ca_creditheader'>GUI Layout Design</div>
+		<div class='ca_center ca_creditheader'><?tr("GUI Layout Design");?></div>
 		<div class='ca_center ca_credit'>Mex</div>
-		<div class='ca_center ca_creditheader'>Application Feed</div>
+		<div class='ca_center ca_creditheader'><?tr("Application Feed");?></div>
 		<div class='ca_center ca_credit'>Andrew Zawadzki, Kode, Limetech</div>
-		<div class='ca_center ca_creditheader'>Additional Testing</div>
+		<div class='ca_center ca_creditheader'><?tr("Additional Testing");?></div>
 		<div class='ca_center ca_credit'>CHBMB, SpaceInvaderOne, Sparklyballs, wgstarks, DJoss, Zer0Nin3r, Mex, prostuff1, bonienl, ljm42, kizer, trurl</div>
-		<div class='ca_center ca_creditheader'>Moderation</div>
+		<div class='ca_center ca_creditheader'><?tr("Moderation");?></div>
 		<div class='ca_center ca_credit'>dockerPolice, pluginCop</div>
-		<div class='ca_center ca_creditheader'>Additional Libraries</div>
-		<div class='ca_center'><font size='0'>(Licenced under MIT Licence)</font></div>
-		<div class='ca_center ca_credit'>Awesomeplete (Lea Verou), Chart.js (various), chartjs-plugin-trendline (Marcus Alsterfjord), XML2Array/Array2XML (Miles Johnson)</div>
-		<div class='ca_center'><font size='0'>(Licenced under BSD-3 Licence)</font></div>
-		<div class='ca_center ca_credit'>sprintf.js (Alexandru Mărășteanu)</div>
+		<div class='ca_center ca_creditheader'><?tr("Additional Libraries");?></div>
+		<div class='ca_center ca_credit'>Awesomeplete (Lea Verou), Chart.js (various), chartjs-plugin-trendline (Marcus Alsterfjord), XML2Array/Array2XML (Miles Johnson), sprintf.js (Alexandru Mărășteanu)</div>
 		<br>		
-		<div class='ca_center ca_italic'><font size='1rem;'>Copyright &copy; 2015-2020 Andrew Zawadzki</font></div>
+		<div class='ca_center ca_italic'><font size='1rem;'><?tr("Copyright");?> &copy; 2015-2020 Andrew Zawadzki</font></div>
 	</div>
 </span>

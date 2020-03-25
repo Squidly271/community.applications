@@ -1,6 +1,6 @@
 # Translation Credit.  Will appear in CA's credits   Say something like Translated to Dutch by xxxx  
 translationCredit=
-Cancel=no fucking way
+Cancel=
 # My PSAs / banners
 Happy New Year=
 Happy Holidays from Andrew, Tracey, and family=
@@ -30,8 +30,9 @@ Install Plugin Applications=
 # Searches
 Search=
 Please enter search term=
-Search for=
-DockerHub Search for=
+Search for %s=
+DockerHub Search for %s="
+Click Here To Get More Results From DockerHub=
 # Install Plugin title of openbox
 Install Plugin=
 # Remove App from previously installed
@@ -54,6 +55,7 @@ Click to unpin this application=
 # Branch installations
 Choose A Branch To Install=
 # Multiple application installs
+
 
 # no apps selected
 Install Selected Applications=
@@ -79,5 +81,33 @@ Something really wrong went on during %s=
 Post the ENTIRE contents of this message in the Community Applications Support Thread=
 Unknown error happened  Please post a screenshot in the support thread of the Statistics screen=
 
+# CA Sections try and not exceed the length of these strings if at all possible
+MENU=
+Installed Apps=
+Previous Apps=
+Previous Apps=
+CATEGORIES=
+New Apps=
+Updated Apps=
+Random Apps=
+Top New Installs=
+Trending Apps=
+All Apps=
+OTHER=
+Settings=
+Statistics=
+Credits=
+Support=
+VERSION=
+Change Log=
+# Credits
+Development=
+Additional Contributions=
+GUI Layout Design=
+Application Feed=
+Additional Testing=
+Moderation=
+Additional Libraries=
+Copyright=
 
 
