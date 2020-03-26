@@ -12,7 +12,7 @@ $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-$translations = version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
+$translations = version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
 if ( $translations ) {
 	$_SERVER['REQUEST_URI'] = "docker/apps";
 	require_once("$docroot/plugins/dynamix/include/Translations.php");

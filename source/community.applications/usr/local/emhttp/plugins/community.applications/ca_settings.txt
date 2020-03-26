@@ -1,0 +1,16 @@
+Hide Deprecated Applications=
+This setting hides deprecated applications from the list of available apps  Deprecated apps will still however display within the installed and previous apps sections=
+Hide Incompatible Applications=
+This setting will hide applications that are listed as being incompatible with your version of unRaid=
+Enable Reinstall Default=
+This option enables another button on the cards and popups which will allow you to reinstall an installed application using its default template values  This option can be confusing at times, and is only generally used if you wish to install and have an application running twice simultaneously=
+Enable additional search results from dockerHub=
+This setting enables CA to retrieve additional search results from dockerHub  Note that docker must be enabled for this to be operational=
+Remove program files when uninstalling=
+This setting will not remove the program files from the docker image when uninstalling an application for faster reinstallation  Generally recommended to leave this set to yes=
+Allow CA to send any emergency notifications=
+This setting allows CA to periodically scan your system and alert you to the presence of=
+1 Known malware and security vulnerabilities within applications=
+2 Critical security vulnerabilities within Unraid OS=
+3 Any installed applications which may seriously hinder the operation of your server=
+Support Thread=

@@ -10,68 +10,130 @@ Icon="community.applications.png"
 #                                                             #
 ###############################################################
 
+
 $plugin = "community.applications";
 $cfg = parse_plugin_cfg($plugin);
+
+$translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
+
+exec("rm -f /usr/local/emhttp/languages/*/*.dot");
+if ( $translations ) {
+	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI'])).".txt";
+	$genericFile     = "$docroot/languages/{$_SESSION['locale']}/translations.txt";
+	$pluginTranslations = @parse_language($translationFile);
+	$genericTranslations = @parse_language($genericFile);
+	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
+	if ( empty($pluginTranslations) ) 
+		$translations = false;
+}
+function parse_language($file) {
+  return array_filter(parse_ini_string(preg_replace(['/"/m','/^(null|yes|no|true|false|on|off|none)=/mi','/^([^>].*)=([^"\'`].*)$/m','/^:((help|plug)\d*)$/m','/^:end$/m'],['\'','$1.=','$1="$2"',"_$1_=\"",'"'],str_replace("=\n","=''\n",file_get_contents($file)))),'strlen');
+}
+
+
+function tr($string,$ret=false) {
+	global $translations, $pluginTranslations;
+	
+	if ($translations) {
+		$searchString = str_replace(["?","{","}","|","&","~","!","[","]","(",")","/",":","*","^",".",'"',"'"],"",$string);
+		$searchString = preg_replace('/^(null|yes|no|true|false|on|off|none)$/i','$1.',$searchString);
+		if ( $pluginTranslations[$searchString] ) 
+			$string = $pluginTranslations[$searchString];
+	}
+	if ( $ret )
+		return $string;
+	else
+		echo $string;
+}
+	
 
 ?>
 
 <form markdown="1" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="<?=$plugin?>/<?=$plugin?>.cfg">
 
-Hide Deprecated Applications:
+<?tr("Hide Deprecated Applications:");?>
 : <select name='hideDeprecated' size='1'>
-	<?=mk_option($cfg['hideDeprecated'], "true", "Yes (default)")?>
-	<?=mk_option($cfg['hideDeprecated'], "false", "No")?>
+	<?=mk_option($cfg['hideDeprecated'], "true", tr("Yes",true))?>
+	<?=mk_option($cfg['hideDeprecated'], "false", tr("No",true))?>
 	</select>
 
-> This setting hides deprecated applications from the list of available apps.  Deprecated apps will still however display within the <em>installed</em> and <em>previous</em> apps sections.
+> <?tr("This setting hides deprecated applications from the list of available apps.  Deprecated apps will still however display within the installed and previous apps sections.");?>
 
-Hide Incompatible Applications:
+<?tr("Hide Incompatible Applications:");?>
 : <select name='hideIncompatible' size='1'>
-	<?=mk_option($cfg['hideIncompatible'], "true", "Yes (default)")?>
-	<?=mk_option($cfg['hideIncompatible'], "false", "No")?>
+	<?=mk_option($cfg['hideIncompatible'], "true", tr("Yes",true))?>
+	<?=mk_option($cfg['hideIncompatible'], "false", tr("No",true))?>
 	</select>
 
-> This setting will hide applications that are listed as being incompatible with your version of unRaid
+> <?tr("This setting will hide applications that are listed as being incompatible with your version of unRaid");?>
 
-Enable Reinstall Default:
+<?tr("Enable Reinstall Default:");?>
 : <select name='defaultReinstall' size='1'>
-	<?=mk_option($cfg['defaultReinstall'],'false','No (default)')?>
-	<?=mk_option($cfg['defaultReinstall'],'true',"Yes")?>
+	<?=mk_option($cfg['defaultReinstall'],'false',tr("No",true))?>
+	<?=mk_option($cfg['defaultReinstall'],'true',tr("Yes",true))?>
 	</select>
 
-> This option enables another button on the cards and popups which will allow you to reinstall an installed application using it's default template values.  This option can be confusing at times, and is only generally used if you wish to install and have an application running twice simultaneously
+> <?tr("This option enables another button on the cards and popups which will allow you to reinstall an installed application using it's default template values.  This option can be confusing at times, and is only generally used if you wish to install and have an application running twice simultaneously");?>
 
-Enable additional search results from dockerHub?
+<?tr("Enable additional search results from dockerHub:");?>
 : <select name="dockerSearch" size="1">
-	<?=mk_option($cfg['dockerSearch'], "no", "No (Default)")?>
-	<?=mk_option($cfg['dockerSearch'], "yes", "Yes")?>
+	<?=mk_option($cfg['dockerSearch'], "no", tr("No",true))?>
+	<?=mk_option($cfg['dockerSearch'], "yes", tr("Yes",true))?>
 	</select>
 
-> This setting enables CA to retrieve additional search results from dockerHub.  Note that docker must be enabled for this to be operational
+> <?tr("This setting enables CA to retrieve additional search results from dockerHub.  Note that docker must be enabled for this to be operational");?>
 
-Remove program files when uninstalling?
+<?tr("Remove program files when uninstalling:");?>
 : <select name='deleteImage' size='1'>
-	<?=mk_option($cfg['deleteImage'],"yes","Yes (Recommended)")?>
-	<?=mk_option($cfg['deleteImage'],"no","No")?>
+	<?=mk_option($cfg['deleteImage'],"yes",tr("Yes",true))?>
+	<?=mk_option($cfg['deleteImage'],"no",tr("No",true))?>
 	</select>
 	
-> This setting will not remove the program files from the docker.img when uninstalling an application for faster reinstallation.  Generally recommended to leave this set to yes
+> <?tr("This setting will not remove the program files from the docker image when uninstalling an application for faster reinstallation.  Generally recommended to leave this set to yes");?>
 
-Allow CA to send any emergency notifications?
+<?tr("Allow CA to send any emergency notifications:");?>
 : <select name='notifications' size='1'>
-	<?=mk_option($cfg['notifications'],"yes","Yes (Recommended)")?>
-	<?=mk_option($cfg['notifications'],"no","No (Default)")?>
+	<?=mk_option($cfg['notifications'],"yes",tr("Yes",true))?>
+	<?=mk_option($cfg['notifications'],"no",tr("No",true))?>
 	</select>
 	
-> This setting allows CA to periodically scan your system and alert you to the presence of:<br>
->  1. Known malware and security vulnerabilities within applications<br>
->  2. Critical security vulnerabilities within Unraid OS<br>
->  3. Any installed applications which may seriously hinder the operation of your server
+> <?tr("This setting allows CA to periodically scan your system and alert you to the presence of:");?><br>
+> <?tr("1. Known malware and security vulnerabilities within applications");?><br>
+> <?tr("2. Critical security vulnerabilities within Unraid OS");?><br>
+> <?tr("3. Any installed applications which may seriously hinder the operation of your server");?>
 
 &nbsp;
-: <input type="submit" name="#apply" value="Apply" id='Apply'><input type="button" id="DONE" value="Done" onclick="done()">
+: <input type="submit" name="#apply" value="<?tr("Apply");?>" id='Apply'><input type="button" id="DONE" value="<?tr("Done");?>" onclick="done()">
 
-<center>For support for this plugin, visit here: <a href="https://forums.unraid.net/topic/38582-plug-in-community-applications/" target="_blank">HERE</a></center>
+<center><a href="https://forums.unraid.net/topic/38582-plug-in-community-applications/" target="_blank"><?tr("Support Thread");?></a></center>
 
 </form>
+<script>
+var translationArray = new Array;
+<? 
+	if ($translations) {
+		foreach ($pluginTranslations as $english => $translation):?>
+			translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
+		<?endforeach;
+	}
+?>
+	
+function tr(string) {
+  <?if ( ! $translations ): ?>
+		return string;
+	<?else:?>
+		var searchString = string.replace(/[?\{\}|&~!\[\]()/:*^."']/g,"");
+		var translated;
+		translationArray.map(function(data) {
+			if ( data.english == searchString) {
+				translated = data.translation;
+			}
+		});
+		if ( ! translated )
+			translated = string;
+
+		return translated;
+	<?endif;?>
+}
+</script>

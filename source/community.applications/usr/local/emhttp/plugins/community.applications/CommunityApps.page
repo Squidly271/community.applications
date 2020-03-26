@@ -36,7 +36,7 @@ $date = (date("n/d"));
 $translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
 
 if ( $translations ) {
-	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI'])).".txt";
+	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI']))."-1.txt";
 	if ( ! is_file($translationFile) )
 		$translations = false;
 	else
