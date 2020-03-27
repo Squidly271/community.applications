@@ -528,6 +528,19 @@ function convertPinnedAppsToV2() {
 	@unlink($caPaths['pinned']);
 }
 
+####################################
+# Translation backwards compatible #
+####################################
+if ( ! function_exists("tr") ) {
+	function tr($string) {
+		global $translations;
+
+		if ( ! $translations)
+			return $string;
+		else
+			return _($string);
+	}
+}
 
  /**
  * @copyright Copyright 2006-2012, Miles Johnson - http://milesj.me

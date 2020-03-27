@@ -22,8 +22,8 @@ if ( $translations ) {
 	$genericFile     = "$docroot/languages/{$_SESSION['locale']}/translations.txt";
 	$pluginTranslations = @parse_language($translationFile);
 	$genericTranslations = @parse_language($genericFile);
-	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-	if ( empty($pluginTranslations) ) 
+	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
+	if ( empty($language) ) 
 		$translations = false;
 }
 function parse_language($file) {
@@ -32,14 +32,10 @@ function parse_language($file) {
 
 
 function tr($string,$ret=false) {
-	global $translations, $pluginTranslations;
-	
-	if ($translations) {
-		$searchString = str_replace(["?","{","}","|","&","~","!","[","]","(",")","/",":","*","^",".",'"',"'"],"",$string);
-		$searchString = preg_replace('/^(null|yes|no|true|false|on|off|none)$/i','$1.',$searchString);
-		if ( $pluginTranslations[$searchString] ) 
-			$string = $pluginTranslations[$searchString];
-	}
+	global $translations;
+
+	if ( $translations)
+		$string = _($string);
 	if ( $ret )
 		return $string;
 	else
@@ -113,7 +109,7 @@ function tr($string,$ret=false) {
 var translationArray = new Array;
 <? 
 	if ($translations) {
-		foreach ($pluginTranslations as $english => $translation):?>
+		foreach ($language as $english => $translation):?>
 			translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
 		<?endforeach;
 	}
@@ -124,6 +120,7 @@ function tr(string) {
 		return string;
 	<?else:?>
 		var searchString = string.replace(/[?\{\}|&~!\[\]()/:*^."']/g,"");
+		searchString = searchString.replace(
 		var translated;
 		translationArray.map(function(data) {
 			if ( data.english == searchString) {

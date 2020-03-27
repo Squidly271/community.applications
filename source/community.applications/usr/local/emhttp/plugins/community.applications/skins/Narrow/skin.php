@@ -137,8 +137,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			unset($template['display_Uninstall']); # prevent previously installed private apps from having 2 x's in previous apps section
 
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
-		$UpdatedClassType = $template['BrandNewApp'] ? "ca_dateAdded" : "ca_dateUpdated";
-		$template['display_dateUpdated'] = ($template['Date'] && $template['NewApp'] ) ? "<span class='$UpdatedClassType'><span class='ca_dateUpdatedDate'>{$template['display_humanDate']}</span></span>" : "";
 		$template['display_multi_install'] = ($template['Removable']) ? "<input class='ca_multiselect ca_tooltip' title='Check-off to select multiple reinstalls' type='checkbox' data-name='$previousAppName' data-humanName='{$template['Name']}' data-type='$appType' $checked>" : "";
 		if (! $caSettings['dockerRunning'] && ! $template['Plugin'])
 			unset($template['display_multi_install']);
@@ -256,7 +254,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$ct .= getPageNavigation($pageNumber,count($file),false,false)."<br><br><br>";
 
 	if ( $specialCategoryComment ) {
-		$displayHeader .= "<span class='specialCategory'><div class='ca_center'>This display is informational <span class='ca_italic'>ONLY</span>. Installations, edits, etc are not possible on this screen, and you must navigate to the appropriate settings and section / category</div><br>";
+		$displayHeader .= "<span class='specialCategory'><div class='ca_center'>".tr("This display is informational ONLY.")."</div><br>";
 		$displayHeader .= "<div class='ca_center'>$specialCategoryComment</div></span>";
 	}
 

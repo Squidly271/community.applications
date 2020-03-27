@@ -7,14 +7,40 @@
 ###############################################################
 
 header("Content-type: text/css; charset: UTF-8");
-
-$dynamix = @parse_ini_file("/boot/config/plugins/dynamix/dynamix.cfg",true);
-if ( ! $dynamix['display']['theme'] )
-	$dynamix = @parse_ini_file("/usr/local/emhttp/plugins/dynamix/default.cfg",true);
-
-$theme = $dynamix['display']['theme'] ?: "black";
-
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
+
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
+require_once "$docroot/plugins/dynamix/include/Wrappers.php";
+$translations = version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
+$dynamix = parse_plugin_cfg("dynamix");
+if ( $translations )
+	require_once("$docroot/plugins/dynamix/include/Translations.php");
+
+if ( $translations ) {
+	$pluginTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
+	$genericTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/translations.txt");
+	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
+
+	if ( empty($pluginTranslations) ) 
+		$translations = false;
+}
+function parse_language($file) {
+  return array_filter(parse_ini_string(preg_replace(['/"/m','/^(null|yes|no|true|false|on|off|none)=/mi','/^([^>].*)=([^"\'`].*)$/m','/^:((help|plug)\d*)$/m','/^:end$/m'],['\'','$1.=','$1="$2"',"_$1_=\"",'"'],str_replace("=\n","=''\n",file_get_contents($file)))),'strlen');
+}
+
+function tr($string,$ret=false) {
+	global $translations;
+
+	if ( $translations)
+		$string =  _($string);
+	if ( $ret )
+		return $string;
+	else
+		echo $string;
+}
+
+$theme = $dynamix['theme'];
+
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 $unRaid67 = version_compare($unRaidSettings['version'],"6.7.0-rc4",">");
 $unRaid69 = version_compare($unRaidSettings['version'],"6.8.2",">");
@@ -146,10 +172,6 @@ a.appIcons {text-decoration:none;}
 .myReadmore {text-align:center;}
 .myReadmoreButton {color:blue;}
 .supportLink {color:inherit;padding-left:.5rem;padding-right:.5rem;}
-.projectLink {font-weight:bold;color:<?=$linkColor?>;padding-left:.5rem;padding-right:.5rem;}
-.projectLink::after {content:"Project Home Page"}
-.webLink {font-weight:bold;color:<?=$linkColor?>;padding-left:.5rem;padding-right:.5rem;}
-.webLink::after {content:"Web Page"}
 .donateLink {font-size:1.2rem;}
 .dockerHubStar {font-size:1rem;}
 .dockerDisabled {display:none;}
@@ -199,10 +221,6 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .ca_stat {color:coral; font-size:1.5rem;}
 .ca_credit { padding:.5rem 0 1rem 0; font-size:1.5rem;line-height:2rem; font-style:italic;}
 .ca_creditheader { font-size:2rem; padding-top:1rem;}
-.ca_dateUpdated {font-weight:bold;text-align:center;}
-.ca_dateUpdated::before {content:"Date Updated: ";}
-.ca_dateAdded {font-weight:bold;text-align:center;}
-.ca_dateAdded::before {content:"Dated Added: ";}
 .ca_dateUpdatedDate {font-weight:normal;}
 #cookieWarning {display:none;}
 .notice.shift {margin-top:0px;}
@@ -210,7 +228,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .searchSubmit{height:3.4rem;}
 .startupMessage{font-size:2.5rem;}
 .startupMessage2{font-size:1rem;}
-.donate {background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
+.donate {background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
 a.donate {text-decoration:none;font-style:italic;color:<?=$donateText?>;}
 .popup-donate {background:black;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
 a.popup-donate {text-decoration:none;font-style:italic;color:white;}
@@ -245,9 +263,9 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_bold {font-weight:bold;}
 .ca_center {margin:auto;text-align:center;}
 .ca_NoAppsFound {font-size:3rem;margin:auto;text-align:center;}
-.ca_NoAppsFound::after{content:"No Matching Applications Found"}
+.ca_NoAppsFound::after{content:"<?tr("No Matching Applications Found")?>"}
 .ca_NoDockerAppsFound {font-size:3rem;margin:auto;text-align:center;}
-.ca_NoDockerAppsFound::after{content:"No Matching Applications Found On Docker Hub"}
+.ca_NoDockerAppsFound::after{content:"<?tr("No Matching Applications Found On Docker Hub");?>"}
 .ca_templatesDisplay {display:flex;flex-wrap:wrap;justify-content:center;overflow-x:hidden;}
 #warningNotAccepted {display:none;}
 .menuItems {position:absolute; left:0px;width:14rem;height:auto;}

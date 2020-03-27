@@ -12,9 +12,9 @@ $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-$translations = version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
+$translations = version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
 if ( $translations ) {
-	$_SERVER['REQUEST_URI'] = "docker/apps";
+	$_SERVER['REQUEST_URI'] = "docker/apps-1";
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
 	$my_translations = $language;
 	
@@ -92,16 +92,16 @@ case 'get_content':
 		case "/DEPRECATED/i":
 			$category = false;
 			$displayDeprecated = true;
-			$noInstallComment = "Deprecated Applications are able to still be installed if you have previously had them installed. New installations of these applications are blocked unless you enable Display Deprecated Applications within CA's General Settings<br><br>";
+			$noInstallComment = tr("Deprecated Applications are able to still be installed if you have previously had them installed. New installations of these applications are blocked unless you enable Display Deprecated Applications within CA's General Settings")."<br><br>";
 			break;
 		case "/BLACKLIST/i":
 			$category = false;
 			$displayBlacklisted = true;
-			$noInstallComment = "The following applications are blacklisted.  CA will never allow you to install or reinstall these applications<br><br>";
+			$noInstallComment = tr("The following applications are blacklisted.  CA will never allow you to install or reinstall these applications")."<br><br>";
 			break;
 		case "/INCOMPATIBLE/i":
 			$displayIncompatible = true;
-			$noInstallComment = "<span class='ca_bold'>While highly not recommended to do</span>, incompatible applications can be installed by enabling Display Incompatible Applications within CA's General Settings<br><br>";
+			$noInstallComment = tr("While highly not recommended to do, incompatible applications can be installed by enabling Display Incompatible Applications within CA's General Settings")."<br><br>";
 			break;
 	}
 	$newAppTime = strtotime($caSettings['timeNew']);
@@ -146,7 +146,7 @@ case 'get_content':
 						$startupType = "Trending"; break;
 				}
 
-				$o['display'] =  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>An error occurred.  Could not find any $startupType Apps</span></font><br><br>";
+				$o['display'] =  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>".sprintf(tr("An error occurred.  Could not find any %s Apps"),$startupType)."</span></font><br><br>";
 				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
 				postReturn($o);
 				break;
@@ -269,7 +269,7 @@ case 'force_update':
 			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
 			@unlink($tmpfile);
 			$o['script'] = "$('.startupButton,.caMenu,.menuHeader').hide();$('.caRelated').show();";
-			$o['data'] =  "<div class='ca_center'><font size='4'><strong>Download of appfeed failed.</strong></font><font size='3'><br><br>Community Applications <span class='ca_italic'><span class='ca_bold'>requires</span></span> your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <span class='ca_bold'>208.67.222.222 and 208.67.220.220</span> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://www.githubstatus.com/' target='_blank'>HERE</a>";
+			$o['data'] =  "<div class='ca_center'><font size='4'><strong>".tr("Download of appfeed failed.")."</strong></font><font size='3'><br><br>Community Applications requires your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <span class='ca_bold'>208.67.222.222 and 208.67.220.220</span> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://www.githubstatus.com/' target='_blank'>HERE</a>";
 			$tempFile = @file_get_contents($caPaths['appFeedDownloadError']);
 			$downloaded = @file_get_contents($tempFile);
 			if (strlen($downloaded) > 100)
@@ -756,42 +756,32 @@ case 'statistics':
 		if ( ! $stat ) $stat = "0";
 	}
 
-	$totalCA = exec("du -h -s /usr/local/emhttp/plugins/community.applications/");
-	$totalTmp = exec("du -h -s /tmp/community.applications/");
-	$totalFlash = exec("du -h -s /boot/config/plugins/community.applications/");
-	$memCA = explode("\t",$totalCA);
-	$memTmp = explode("\t",$totalTmp);
-	if ( ! $memIcon[0] ) $memIcon[0] = "0K";
-	$memFlash = explode("\t",$totalFlash);
-
 	$currentServer = @file_get_contents($caPaths['currentServer']);
 	if ( $currentServer != "Primary Server" )
 		$currentServer = "<i class='fa fa-exclamation-triangle ca_serverWarning' aria-hidden='true'></i> $currentServer";
 
-	$statistics['invalidXML'] = @count($invalidXML) ?: "unknown";
-	$statistics['repositories'] = @count($repositories) ?: "unknown";
-	$o = <<<EOF
-		<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>
-		<table style='margin-top:1rem;'>
-		<tr style='height:6rem;'><td colspan='2'><div class='ca_center'><i class='fa fa-users' style='font-size:6rem;'></i></td></tr>
-		<tr><td colspan='2'><div class='ca_center'><font size='5rem;'>Community Applications</font></div></td></tr>
-		<tr><td class='ca_table'>Last Change To Application Feed</td><td class='ca_stat'>$updateTime<br>$currentServer active</td></tr>
-		<tr><td class='ca_table'>Number Of Docker Applications</td><td class='ca_stat'>{$statistics['docker']}</td></tr>
-		<tr><td class='ca_table'>Number Of Plugin Applications</td><td class='ca_stat'>{$statistics['plugin']}</td></tr>
-		<tr><td class='ca_table'>Number Of Templates</td><td class='ca_stat'>{$statistics['totalApplications']}</td></tr>
-		<tr><td class='ca_table'><a onclick='showModeration("Repository","Repository List");' style='cursor:pointer;'>Number Of Repositories</a></td><td class='ca_stat'>{$statistics['repositories']}</td></tr>
-		<tr><td class='ca_table'><a data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>Number Of Private Docker Applications</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>
-		<tr><td class='ca_table'><a onclick='showModeration("Invalid","All Invalid Templates Found");' style='cursor:pointer'>Number Of Invalid Templates</a></td><td class='ca_stat'>{$statistics['invalidXML']}</td></tr>
-		<tr><td class='ca_table'><a onclick='showModeration("Fixed","Template Errors");' style='cursor:pointer'>Number Of Template Errors</a></td><td class='ca_stat'>{$statistics['caFixed']}+</td></tr>
-		<tr><td class='ca_table'><a data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Blacklisted Apps</a></td><td class='ca_stat'>{$statistics['blacklist']}</td></tr>
-		<tr><td class='ca_table'><a data-category='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Incompatible Applications</a></td><td class='ca_stat'>{$statistics['totalIncompatible']}</td></tr>
-		<tr><td class='ca_table'><a data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>Number Of Deprecated Applications</a></td><td class='ca_stat'>{$statistics['totalDeprecated']}</td></tr>
-		<tr><td class='ca_table'><a onclick='showModeration("Moderation","All Moderation Entries");' style='cursor:pointer'>Number Of Moderation Entries</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>
-		<tr><td class='ca_table'>Memory Usage (CA / DataFiles / Flash)</td><td class='ca_stat'>{$memCA[0]} / {$memTmp[0]} / {$memFlash[0]}</td></tr>
-		<tr><td class='ca_table'><a href='{$caPaths['application-feed']}' target='_blank'>Primary Server</a> / <a href='{$caPaths['application-feedBackup']}' target='_blank'> Backup Server</a></td></tr>
-		</table>
-		<div class='ca_center'><a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>Application Policy</a></div>
-EOF;
+	$statistics['invalidXML'] = @count($invalidXML) ?: tr("unknown");
+	$statistics['repositories'] = @count($repositories) ?: tr("unknown");
+	$o =  "<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>";
+	$o .= "<table style='margin-top:1rem;'>";
+	$o .= "<tr style='height:6rem;'><td colspan='2'><div class='ca_center'><i class='fa fa-users' style='font-size:6rem;'></i></td></tr>";
+	$o .= "<tr><td colspan='2'><div class='ca_center'><font size='5rem;'>Community Applications</font></div></td></tr>";
+	$o .= "<tr><td class='ca_table'>".tr("Last Change To Application Feed")."</td><td class='ca_stat'>$updateTime<br>$currentServer active</td></tr>";
+	$o .= "<tr><td class='ca_table'>".tr("Number Of Docker Applications")."</td><td class='ca_stat'>{$statistics['docker']}</td></tr>";
+	$o .= "<tr><td class='ca_table'>".tr("Number Of Plugin Applications")."</td><td class='ca_stat'>{$statistics['plugin']}</td></tr>";
+	$o .= "<tr><td class='ca_table'>".tr("Number Of Templates")."</td><td class='ca_stat'>{$statistics['totalApplications']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;".tr("Repository List")."&quot;);' style='cursor:pointer;'>".tr("Number Of Repositories")."</a></td><td class='ca_stat'>{$statistics['repositories']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>".tr("Number Of Private Docker Applications")."</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Invalid&quot;,&quot;".tr("All Invalid Templates Found")."&quot;);' style='cursor:pointer'>".tr("Number Of Invalid Templates")."</a></td><td class='ca_stat'>{$statistics['invalidXML']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Fixed&quot;,&quot;".tr("Template Errors")."&quot;);' style='cursor:pointer'>".tr("Number Of Template Errors")."</a></td><td class='ca_stat'>{$statistics['caFixed']}+</td></tr>";
+	$o .= "<tr><td class='ca_table'><a data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Blacklisted Apps")."</a></td><td class='ca_stat'>{$statistics['blacklist']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a data-category='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Incompatible Applications")."</a></td><td class='ca_stat'>{$statistics['totalIncompatible']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Deprecated Applications")."</a></td><td class='ca_stat'>{$statistics['totalDeprecated']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a onclick=showModeration('Moderation','".tr("All Moderation Entries")."'); style='cursor:pointer'>".tr("Number Of Moderation Entries")."</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>";
+	$o .= "<tr><td class='ca_table'><a href='{$caPaths['application-feed']}' target='_blank'>".tr("Primary Server")."</a> / <a href='{$caPaths['application-feedBackup']}' target='_blank'> ".tr("Backup Server")."</a></td></tr>";
+	$o .= "</table>";
+	$o .= "<div class='ca_center'><a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>".tr("Application Policy")."</a></div>";
+
 	postReturn(['statistics'=>$o]);
 	break;
 
@@ -845,7 +835,7 @@ case 'populateAutoComplete':
 case 'caChangeLog':
 	require_once("webGui/include/Markdown.php");
 	$o = "<div style='margin:auto;width:500px;'>";
-	$o .= "<div class='ca_center'><font size='4rem'>Community Applications Changelog</font></div><br><br>";
+	$o .= "<div class='ca_center'><font size='4rem'>".tr("Community Applications Changelog")."</font></div><br><br>";
 	postReturn(["changelog"=>$o.Markdown(plugin("changes","/var/log/plugins/community.applications.plg"))."<br><br>"]);
 	break;
 
@@ -859,11 +849,11 @@ case 'get_categories':
 		break;
 	} else {
 		foreach ($categories as $category) {
-			$cat .= "<li class='categoryMenu caMenuItem' data-category='{$category['Cat']}'>{$category['Des']}</li>";
+			$cat .= "<li class='categoryMenu caMenuItem' data-category='{$category['Cat']}'>".tr("{$category['Des']}")."</li>";
 			if (is_array($category['Sub'])) {
 				$cat .= "<ul class='subCategory'>";
 				foreach($category['Sub'] as $subcategory) {
-					$cat .= "<li class='categoryMenu caMenuItem' data-category='{$subcategory['Cat']}'>{$subcategory['Des']}</li>";
+					$cat .= "<li class='categoryMenu caMenuItem' data-category='{$subcategory['Cat']}'>".tr("{$subcategory['Des']}")."</li>";
 				}
 				$cat .= "</ul>";
 			}
@@ -871,7 +861,7 @@ case 'get_categories':
 		$templates = readJsonFile($caPaths['community-templates-info']);
 		foreach ($templates as $template) {
 			if ($template['Private'] == true && ! $template['Blacklist']) {
-				$cat .= "<li class='categoryMenu caMenuItem' data-category='PRIVATE'>Private Apps</li>";
+				$cat .= "<li class='categoryMenu caMenuItem' data-category='PRIVATE'>".tr("Private Apps")."</li>";
 				break;
 			}
 		}

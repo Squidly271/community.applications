@@ -32,28 +32,36 @@ if ( is_file($caPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
 $date = (date("n/d"));
-
 $translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
 
+exec("rm -f /usr/local/emhttp/languages/*/*.dot");
 if ( $translations ) {
 	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI']))."-1.txt";
-	if ( ! is_file($translationFile) )
+	$genericFile     = "$docroot/languages/{$_SESSION['locale']}/translations.txt";
+	$pluginTranslations = @parse_language($translationFile);
+	$genericTranslations = @parse_language($genericFile);
+	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
+	$language = $pluginTranslations;
+	if ( empty($pluginTranslations) ) 
 		$translations = false;
-	else
-		$pluginTranslations = @parse_ini_file($translationFile,false,INI_SCANNER_RAW);
+}
+function parse_language($file) {
+  return array_filter(parse_ini_string(preg_replace(['/"/m','/^(null|yes|no|true|false|on|off|none)=/mi','/^([^>].*)=([^"\'`].*)$/m','/^:((help|plug)\d*)$/m','/^:end$/m'],['\'','$1.=','$1="$2"',"_$1_=\"",'"'],str_replace("=\n","=''\n",file_get_contents($file)))),'strlen');
 }
 
-function tr($string) {
-	global $translations, $pluginTranslations;
-	
-	if ($translations) {
-		$searchString = str_replace(["?","{","}","|","&","~","!","[","]","(",")","/",":","*","^",".",'"',"'"],"",$string);
-		if ( $pluginTranslations[$searchString] ) 
-			$string = $pluginTranslations[$searchString];
-	}
-	echo $string;
+
+function tr($string,$ret=false) {
+	global $translations;
+
+	if ( $translations)
+		$string =  _($string);
+	if ( $ret )
+		return $string;
+	else
+		echo $string;
 }
 	
+
 ?>
 <? if ( ! $unRaid69 ):?>
 <meta name="referrer" content="same-origin">
@@ -75,7 +83,7 @@ function tr($string) {
 var translationArray = new Array;
 <? 
 	if ($translations) {
-		foreach ($pluginTranslations as $english => $translation):?>
+		foreach ($language as $english => $translation):?>
 			translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
 		<?endforeach;
 	}
