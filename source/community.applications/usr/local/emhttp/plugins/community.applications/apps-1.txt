@@ -1,15 +1,15 @@
 # Translation Credit.  Will appear in CA's credits   Say something like Translated to Dutch by xxxx  
-translationCredit=bonienl (dutch)
+translationCredit=bonienl (Dansk)
 Cancel=
 
 # My PSAs / banners
-Happy New Year=
+Happy New Year=whatever
 Happy Holidays from Andrew, Tracey, and family=
 Please Enjoy Responsibly=
 Popup Blocked  CA requires popups to be enabled under certain circumstances  You must white list your server within your browser to allow popups=
 Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed=
-Community Applications works best when cookies are enabled in your browser  Certain features may not be available=
-Backup Server Active  Some icons may not appear, and plugin installations may be affected=
+Community Applications works best when cookies are enabled in your browser Certain features may not be available=
+Backup Server Active Some icons may not appear, and plugin installations may be affected=
 
 # Sorting Options
 Sorting options=
@@ -91,15 +91,15 @@ Install Applications=
 No data was returned  It is probable that another browser session has rebooted your server  Reloading this browser tab will probably fix this error=
 An error occurred.  Could not find any %s Apps=
 Download of appfeed failed=
-
-
 # the %s here refers to a function being called
 Something really wrong went on during %s=
+Something really went wrong here=
 Post the ENTIRE contents of this message in the Community Applications Support Thread=
 Unknown error happened  Please post a screenshot in the support thread of the Statistics screen=
-
+Something really wrong happened Reloading the Apps tab will probably fix the problem=
+This plugin has a duplicated name from another plugin %s This will impact your ability to install both plugins simultaneously=
 # CA Sections try and not exceed the length of these strings if at all possible
-MENU=eat me
+MENU=
 Installed Apps=
 Previous Apps=
 Previous Apps=
@@ -114,7 +114,7 @@ OTHER=
 Settings=
 Statistics=
 Credits=
-Support=
+Support=fdklsj
 VERSION=
 Change Log=
 # Credits
@@ -159,11 +159,11 @@ Backup Server=
 # Misc
 Community Applications Changelog=
 
-# Categories try not to be excessively long
+# Categories try not to be excessively long This is displayed on the left of CA screen
 
 Backup=
 Cloud=
-Downloaders=
+Downloaders=dick
 Game Servers=
 Home Automation=
 Media Applications=
@@ -191,4 +191,103 @@ Utilities=
 Plugins=
 Private Apps=
 
-# App Related
+# Categories displayed within a popup or on the card
+GameServers=
+HomeAutomation=
+MediaApp=
+MediaAppBooks="MediaApp:Books"
+MediaAppMusic="MediaApp:Music whatever"
+MediaAppPhotos="MediaApp:Photos"
+MediaAppVideo="MediaApp:Video"
+MediaAppOther="MediaApp:Other"
+MediaServer=
+MediaServerBooks="MediaServer:Books"
+MediaServerMusic="MediaServer:Music"
+MediaServerPhotos="MediaServer:Photos"
+MediaServerVideo="MediaServer:Video"
+MediaServerOther="MediaServer:Other"
+Network=
+NetworkDNS="Network:DNS"
+NetworkFTP="Network:FTP"
+NetworkManagement="Network:Management"
+NetworkProxy="Network:Proxy"
+NetworkVOIP="Network:VOIP"
+NetworkVPN="Network:VPN"
+NetworkWeb="Network:Web"
+NetworkOther="Network:Other"
+Tools=
+ToolsSystem="Tools:System"
+ToolsThemes="Tools:Themes"
+ToolUtilities="Tools:Utilities"
+Plugins=
+
+
+
+
+
+
+
+and %s more=hi %s there
+
+
+
+
+# App Popup Related
+Donate To Author=
+Donate To Maintainer=
+Author=Author
+Maintainer=
+DockerHub=
+Application Template=
+Base OS=
+DockerHub Stars=
+Added to CA=
+Date Updated=
+Current Version=
+Minimum OS=
+Max OS=
+Total Downloads=
+Licence=
+30 Day Trend=
+Ranked #%s=
+# as in Trending up or down arrow
+Trending %s=
+# as in As of some date
+As of %s="(As of %s)"
+This application template has been blacklisted="This application / template has been blacklisted"
+This application template has been deprecated="This application / template has been deprecated"
+This application is not compatible with your version of unRaid=
+Another browser tab or device has updated the displayed templates Some actions are not available="Another browser tab or device has updated the displayed templates.  Some actions are not available"
+Reinstall default="Reinstall (default)"
+WebUI=
+Reinstall=
+Install=
+Project=
+Install Using The Templates Default Tag='Install Using The Template&#39;s Default Tag'
+Moderator Comments="Moderator Comments:"
+#the following if using a space you MUST use nbsp  but keep it down to one word if at all possible
+Note not all authors keep up to date on change logs=
+Note not all maintainers keep up to date on change logs=
+Donate=
+Currently Installed Version="Currently Installed Version:"
+Install The Update=
+# as in you have the latest version already installed
+Latest Version=
+
+# Graphs
+Trend Per Month=
+Downloads Per Month=
+Total Downloads=
+# Short form Months
+Jan=
+Feb=
+Mar=
+Apr=
+May=
+Jun=
+Jul=
+Aug=
+Sep=
+Oct=
+Nov=
+Dec=

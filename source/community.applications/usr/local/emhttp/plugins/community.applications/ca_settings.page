@@ -14,7 +14,7 @@ Icon="community.applications.png"
 $plugin = "community.applications";
 $cfg = parse_plugin_cfg($plugin);
 
-$translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
+$translations =   version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
 
 exec("rm -f /usr/local/emhttp/languages/*/*.dot");
 if ( $translations ) {

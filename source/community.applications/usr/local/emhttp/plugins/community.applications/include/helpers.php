@@ -414,13 +414,15 @@ function getRunningContainers() {
 function categoryList($cat,$popUp = false) {
 	$cat = str_replace(array(":,",": "," "),",",$cat);
 	$cat = rtrim($cat,":");
-	$all_categories = explode(",",$cat);
+	$all_cat = explode(",",$cat);
+	foreach ($all_cat as $trcat)
+		$all_categories[] = tr($trcat);
 
 	$categoryList = $popUp ? $all_categories : array_slice($all_categories,0,4);
 
 	if ( count($all_categories) > count($categoryList) ) {
 		$excess = count($all_categories) - count($categoryList);
-		$categoryList[] = " and $excess more";
+		$categoryList[] = " ".sprintf(tr("and %s more"),$excess);
 	}
 	return rtrim(implode(", ",$categoryList),", ");
 }
@@ -475,11 +477,11 @@ function formatTags($leadTemplate) {
 	$template = $file[$leadTemplate];
 	$childTemplates = $file[$leadTemplate]['BranchID'];
 	if ( ! is_array($childTemplates) )
-		$o =  "Something really went wrong here";
+		$o =  tr("Something really went wrong here");
 	else {
 		$defaultTag = $template['BranchDefault'] ? $template['BranchDefault'] : "latest";
 		$o = "<table>";
-		$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='#' onclick='xmlInstall(&quot;default&quot;,&quot;".$template['Path']."&quot;);'>Default</a></td><td>Install Using The Template's Default Tag (<font color='purple'>:$defaultTag</font>)</td></tr>";
+		$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='#' onclick='xmlInstall(&quot;default&quot;,&quot;".$template['Path']."&quot;);'>Default</a></td><td>".tr("Install Using The Template's Default Tag")." (<font color='purple'>:$defaultTag</font>)</td></tr>";
 		foreach ($childTemplates as $child) {
 			$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='#' onclick='xmlInstall(&quot;default&quot;,&quot;".$file[$child]['Path']."&quot;);'>".$file[$child]['BranchName']."</a></td><td>".$file[$child]['BranchDescription']."</td></tr>";
 		}
@@ -533,15 +535,16 @@ function convertPinnedAppsToV2() {
 ####################################
 if ( ! function_exists("tr") ) {
 	function tr($string) {
-		global $translations;
-
-		if ( ! $translations)
-			return $string;
-		else
+		if ( function_exists("_") )
 			return _($string);
+		return $string;
 	}
 }
-
+if ( ! function_exists("my_lang") ) {
+	function my_lang($string) {
+		return $string;
+	}
+}
  /**
  * @copyright Copyright 2006-2012, Miles Johnson - http://milesj.me
  * @license   http://opensource.org/licenses/mit-license.php - Licensed under the MIT License

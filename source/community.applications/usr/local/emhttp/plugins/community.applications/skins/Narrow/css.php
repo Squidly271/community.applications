@@ -11,7 +11,7 @@ $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
-$translations = version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
+$translations = version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
 $dynamix = parse_plugin_cfg("dynamix");
 if ( $translations )
 	require_once("$docroot/plugins/dynamix/include/Translations.php");

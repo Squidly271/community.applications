@@ -12,7 +12,7 @@ $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-$translations = version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
+$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 if ( $translations ) {
 	$_SERVER['REQUEST_URI'] = "docker/apps-1";
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
@@ -35,6 +35,7 @@ if ( $translations ) {
 	$language = array_merge($language,$my_translations);
 }
 
+file_put_contents("/tmp/blah",print_r($language,true));
 ################################################################################
 # Set up any default settings (when not explicitely set by the settings module #
 ################################################################################

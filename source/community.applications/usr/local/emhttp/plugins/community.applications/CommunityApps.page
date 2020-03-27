@@ -34,7 +34,6 @@ if ( is_file($caPaths['addConverted']) ) {
 $date = (date("n/d"));
 $translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
 
-exec("rm -f /usr/local/emhttp/languages/*/*.dot");
 if ( $translations ) {
 	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI']))."-1.txt";
 	$genericFile     = "$docroot/languages/{$_SESSION['locale']}/translations.txt";
@@ -135,7 +134,7 @@ $(function(){
 
 	if ( "<?=$date?>" == "12/24" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> "+tr("Happy Holidays from Andrew, Tracey, and family")+" <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
 	if ( "<?=$date?>" == "12/25" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> "+tr("Happy Holidays from Andrew, Tracey, and family")+" <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
-	if ( "<?=$date?>" == "1/01" )  addBannerWarning(tr("Happy New Year!"),false);
+	if ( "<?=$date?>" == "1/01" )  addBannerWarning(tr("Happy  New  Year!"),false);
 	if ( "<?=$date?>" == "12/31" ) addBannerWarning(tr("Happy New Year!")+" <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> "+tr("Please Enjoy Responsibly"),false);
 
 	$('.ca_toolsView').tooltipster({
@@ -1356,21 +1355,16 @@ function feedWarning(currentServer) {
 }
 
 function tr(string) {
-  <?if ( ! $translations ): ?>
-		return string;
-	<?else:?>
+  <?if ( $translations ): ?>
 		var searchString = string.replace(/[?\{\}|&~!\[\]()/:*^."']/g,"");
-		var translated;
+		searchString = searchString.replace(/  +/g, ' ');
 		translationArray.map(function(data) {
 			if (data.english == searchString) {
-				translated = data.translation;
+				string = data.translation;
 			}
 		});
-		if ( ! translated )
-			translated = string;
-
-		return translated;
 	<?endif;?>
+	return string;
 }
 
 </script>

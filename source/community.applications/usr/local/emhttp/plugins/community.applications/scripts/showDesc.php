@@ -6,6 +6,8 @@
 #                                                             #
 ###############################################################
 
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
+require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 require_once "/usr/local/emhttp/plugins/dynamix/include/Helpers.php";
 require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
 
@@ -15,7 +17,47 @@ $csrf_token = $unRaidVars['csrf_token'];
 $appNumber =  urldecode($_GET['appPath']);
 $appName = urldecode($_GET['appName']);
 $appName = str_replace("'","",$appName);
+$unRaidSettings = parse_ini_file("/etc/unraid-version");
 
+
+$translations = version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
+$dynamix = parse_plugin_cfg("dynamix");
+if ( $translations )
+	require_once("$docroot/plugins/dynamix/include/Translations.php");
+
+if ( $translations ) {
+	$pluginTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
+	$genericTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/translations.txt");
+	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
+
+	if ( empty($pluginTranslations) ) 
+		$translations = false;
+}
+function parse_language($file) {
+  return array_filter(parse_ini_string(preg_replace(['/"/m','/^(null|yes|no|true|false|on|off|none)=/mi','/^([^>].*)=([^"\'`].*)$/m','/^:((help|plug)\d*)$/m','/^:end$/m'],['\'','$1.=','$1="$2"',"_$1_=\"",'"'],str_replace("=\n","=''\n",file_get_contents($file)))),'strlen');
+}
+if ( $translations ) {
+	$translationFile = "$docroot/languages/{$_SESSION['locale']}/apps-1.txt";
+	$genericFile     = "$docroot/languages/{$_SESSION['locale']}/translations.txt";
+	$pluginTranslations = @parse_language($translationFile);
+	$genericTranslations = @parse_language($genericFile);
+	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
+	$language = $pluginTranslations;
+	if ( empty($pluginTranslations) ) 
+		$translations = false;
+}
+
+
+function tr($string,$ret=false) {
+	global $translations;
+
+	if ( $translations)
+		$string =  _($string);
+	if ( $ret )
+		return $string;
+	else
+		echo $string;
+}
 ?>
 <script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
@@ -41,6 +83,14 @@ div.spinner .unraid_mark_7{animation:mark_7 1.5s ease infinite}
 @keyframes mark_7{50% {transform:translateY(62px)} 100% {transform: translateY(0px)}}
 </style>
 <script>
+var translationArray = new Array;
+<? 
+	if ($translations) {
+		foreach ($language as $english => $translation):?>
+			translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
+		<?endforeach;
+	}
+?>
 var csrf_token = "<?=$csrf_token?>";
 $(function() {
 	$.removeCookie("ca_installPluginURL",{path:"/"});
@@ -109,7 +159,7 @@ $(function() {
 				options: {
 					title: {
 						display: true,
-						text: "Trend Per Month",
+						text: tr("Trend Per Month"),
 						fontSize: 16
 					},
 					legend: {
@@ -155,7 +205,7 @@ $(function() {
 				options: {
 					title: {
 						display: true,
-						text: "Downloads Per Month",
+						text: tr("Downloads Per Month"),
 						fontSize: 16
 					},
 					legend: {
@@ -195,7 +245,7 @@ $(function() {
 				options: {
 					title: {
 						display: true,
-						text: "Total Downloads",
+						text: tr("Total Downloads"),
 						fontSize: 16
 					},
 					legend: {
@@ -236,19 +286,6 @@ function evaluateBoolean(str) {
 	regex=/^\s*(true|1|on)\s*$/i
 	return regex.test(str);
 }
-function makePlural(string,count) {
-	return ( (count > 1) || (count == 0) ) ? string + "s" : string;
-}
-
-function showGraphs() {
-	$(".caChart").toggle("slow",function() {
-		if ( $(".caChart").is(":visible") ) {
-			$(".graphLink").html("Hide Graphs");
-		} else {
-			$(".graphLink").html("Show Graphs");
-		}
-	});
-}
 
 function openNewModalWindow(newURL) {
 	var popUp = window.open(newURL,"_parent");
@@ -270,6 +307,19 @@ function xmlInstall(type,xml) {
 			openNewModalWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
 		}
 	});
+}
+
+function tr(string) {
+  <?if ( $translations ): ?>
+		var searchString = string.replace(/[?\{\}|&~!\[\]()/:*^."']/g,"");
+		searchString = searchString.replace(/  +/g, ' ');
+		translationArray.map(function(data) {
+			if (data.english == searchString) {
+				string = data.translation;
+			}
+		});
+	<?endif;?>
+	return string;
 }
 
 </script>
