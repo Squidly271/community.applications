@@ -35,7 +35,6 @@ if ( $translations ) {
 	$language = array_merge($language,$my_translations);
 }
 
-file_put_contents("/tmp/blah",print_r($language,true));
 ################################################################################
 # Set up any default settings (when not explicitely set by the settings module #
 ################################################################################
@@ -749,7 +748,7 @@ case 'statistics':
 	if ( is_file($caPaths['lastUpdated-old']) )
 		$appFeedTime = readJsonFile($caPaths['lastUpdated-old']);
 
-	$updateTime = date("F d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
+	$updateTime = my_lang(date("F",$appFeedTime['last_updated_timestamp'])).date(" d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
 	$defaultArray = Array('caFixed' => 0,'totalApplications' => 0, 'repository' => 0, 'docker' => 0, 'plugin' => 0, 'invalidXML' => 0, 'blacklist' => 0, 'totalIncompatible' =>0, 'totalDeprecated' => 0, 'totalModeration' => 0, 'private' => 0, 'NoSupport' => 0);
 	$statistics = array_merge($defaultArray,$statistics);
 
@@ -778,7 +777,7 @@ case 'statistics':
 	$o .= "<tr><td class='ca_table'><a data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Blacklisted Apps")."</a></td><td class='ca_stat'>{$statistics['blacklist']}</td></tr>";
 	$o .= "<tr><td class='ca_table'><a data-category='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Incompatible Applications")."</a></td><td class='ca_stat'>{$statistics['totalIncompatible']}</td></tr>";
 	$o .= "<tr><td class='ca_table'><a data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Deprecated Applications")."</a></td><td class='ca_stat'>{$statistics['totalDeprecated']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a onclick=showModeration('Moderation','".tr("All Moderation Entries")."'); style='cursor:pointer'>".tr("Number Of Moderation Entries")."</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>";
+	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Moderation&quot;,&quot;".tr("All Moderation Entries")."&quot;);' style='cursor:pointer'>".tr("Number Of Moderation Entries")."</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>";
 	$o .= "<tr><td class='ca_table'><a href='{$caPaths['application-feed']}' target='_blank'>".tr("Primary Server")."</a> / <a href='{$caPaths['application-feedBackup']}' target='_blank'> ".tr("Backup Server")."</a></td></tr>";
 	$o .= "</table>";
 	$o .= "<div class='ca_center'><a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>".tr("Application Policy")."</a></div>";
@@ -1010,7 +1009,6 @@ function DownloadApplicationFeed() {
 				unset($subBranch['Branch']);
 				$myTemplates[$i] = $subBranch;
 				$o['BranchID'][] = $i;
-//				file_put_contents($subBranch['Path'],makeXML($subBranch));
 			}
 		}
 		unset($o['Branch']);
@@ -1025,10 +1023,6 @@ function DownloadApplicationFeed() {
 			$o['Description'] = $o['OriginalDescription'];
 			unset($o['OriginalDescription']);
 		}
-//		$templateXML = makeXML($o);
-//		@mkdir(dirname($o['Path']),0777,true);
-
-//		file_put_contents($o['Path'],$templateXML);
 	}
 	if ( $invalidXML )
 		writeJsonFile($caPaths['invalidXML_txt'],$invalidXML);

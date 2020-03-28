@@ -1,4 +1,4 @@
-Hide Deprecated Applications=fuck
+Hide Deprecated Applications=
 This setting hides deprecated applications from the list of available apps  Deprecated apps will still however display within the installed and previous apps sections=
 Hide Incompatible Applications=
 This setting will hide applications that are listed as being incompatible with your version of unRaid=

@@ -377,6 +377,7 @@ function isMobile() {
 # Returns the author from the Repository entry #
 ################################################
 function getAuthor($template) {
+	if ( $template['PluginURL'] ) return $template['PluginAuthor'];
 	if ( !is_string($template['Repository'])) return false;
 	if ( $template['Author'] ) return strip_tags($template['Author']);
 	$repoEntry = explode("/",$template['Repository']);

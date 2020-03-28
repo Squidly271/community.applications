@@ -208,7 +208,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .ca_fa-pluginSettings::before {content:"\f013";font-family:fontAwesome;}
 .ca_donate {position:relative;margin-left:18rem;}
 .ca_multiselect {cursor:pointer;padding-right:5rem;}
-.pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;}
+.pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;text-decoration:none !important;}
 .pageDots{color:grey;cursor:default;}
 .pageDots::after {content:"...";}
 .pageNavigation {font-size:1.5rem;}

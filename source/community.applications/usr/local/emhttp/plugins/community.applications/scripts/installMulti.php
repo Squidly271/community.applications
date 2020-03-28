@@ -5,8 +5,42 @@
 #          Licenced under the terms of GNU GPLv2              #
 #                                                             #
 ###############################################################
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
+require_once "$docroot/plugins/community.applications/include/paths.php";
+require_once "$docroot/plugins/dynamix/include/Wrappers.php";
+
+$unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
+$translations = version_compare($unRaidVersion['version'],"6.9.0-beta0",">");
+
+$dynamix = parse_plugin_cfg("dynamix");
+
+if ( $translations ) {
+	require_once "$docroot/plugins/dynamix/include/Translations.php";
+	$pluginTranslations =  parse_language("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
+	$genericTranslations = parse_language("$docroot/languages/{$dynamix['locale']}/translations.txt");
+	$dockerTranslations =  parse_language("$docroot/languages/{$dynamix['locale']}/docker.txt");
+	
+	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($dockerTranslations) ? $dockerTranslations: [],is_array($pluginTranslations) ? $pluginTranslations : [] );
+
+	if ( empty($pluginTranslations) ) 
+		$translations = false;
+}
+
+function parse_language($file) {
+  return array_filter(parse_ini_string(preg_replace(['/"/m','/^(null|yes|no|true|false|on|off|none)=/mi','/^([^>].*)=([^"\'`].*)$/m','/^:((help|plug)\d*)$/m','/^:end$/m'],['\'','$1.=','$1="$2"',"_$1_=\"",'"'],str_replace("=\n","=''\n",file_get_contents($file)))),'strlen');
+}
+
+function tr($string,$ret=true) {
+	global $translations;
+
+	if ( $translations)
+		$string =  _($string);
+	if ( $ret )
+		return $string;
+	else
+		echo $string;
+}
 
 function startsWith($haystack, $needle) {
 	return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;
@@ -14,7 +48,6 @@ function startsWith($haystack, $needle) {
 
 # Modify the system file to avoid a harmless error from being displayed under normal circumstances
 # Not needed under unRaid 6.6.3+
-$unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
 
 if ( version_compare($unRaidVersion['version'],"6.6.2",">=") ) {
 	$exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";
@@ -36,11 +69,11 @@ echo "<script>$javascript</script>";
 if ( $_GET['docker'] ) {
 	echo "<div id='output'>";
 	$dockers = explode(",",$_GET['docker']);
-	echo "Installing docker applications ".str_replace(",",", ",$_GET['docker'])."<br>";
+	echo sprintf(tr("Installing docker applications %s"),str_replace(",",", ",$_GET['docker']))."<br>";
 	$_GET['updateContainer'] = true;
 	$_GET['ct'] = $dockers;
 	$_GET['communityApplications'] = true;
-	include($exeFile);
+	@include($exeFile); # under new GUI, this line returns a duplicated session_start() error.  
 	echo "</div>";
 ?>
 <script>
@@ -75,24 +108,24 @@ function addLog(logLine) {
 	}
 }
 function addCloseButton() {
-	addLog("<p class='centered'><button class='logLine' type='button' onclick='" + (top.Shadowbox ? "top.Shadowbox" : "window") + ".close()'>Done</button></p>");
+	addLog("<p class='centered'><button class='logLine' type='button' onclick='" + (top.Shadowbox ? "top.Shadowbox" : "window") + ".close()'><?=tr("Done")?></button></p>");
 }
 </script>
 <?
 	foreach ($dockers as $docker) {
-		echo "Starting <span class='ca_bold'>$docker</span><br>";
+		echo sprintf(tr("Starting %s"),"<span class='ca_bold'>$docker</span>")."<br>";
 		unset($output);
 		exec("docker start $docker 2>&1",$output,$retval);
 		if ($retval) {
 			$failFlag = true;
-			echo "<span class='ca_bold'>$docker</span> failed to start.  You should install it by itself to fix the errors<br>";
+			echo sprintf(tr("%s failed to start.  You should install it by itself to fix the errors"),"<span class='ca_bold'>$docker</span>")."<br>";
 			foreach ($output as $line) {
 				echo "<tt>$line</tt><br>";
 			}
 			echo "<br>";
 		}
 	}
-	echo "<br>Setting installed applications to autostart<br>";
+	echo "<br>".tr("Setting installed applications to autostart")."<br>";
 	$autostartFile = @file("/var/lib/docker/unraid-autostart",FILE_IGNORE_NEW_LINES);
 	if ( ! $autostartFile ) {
 		$autostartFile = array();
@@ -107,7 +140,7 @@ function addCloseButton() {
 	file_put_contents("/var/lib/docker/unraid-autostart",$autostartFile);
 
 	if ( $failFlag || !$_GET['plugin']) {
-		echo "<br>Docker Application Installation finished.<br><script>addCloseButton();</script>";
+		echo "<br>".tr("Docker Application Installation finished")."<br><script>addCloseButton();</script>";
 	} else {
 		echo "<script>top.Shadowbox.close();</script>";
 	}

@@ -1,9 +1,9 @@
-# Translation Credit.  Will appear in CA's credits   Say something like Translated to Dutch by xxxx  
-translationCredit=bonienl (Dansk)
+# Translation Credit.  Will appear in CA's credits    
+translationCredit="bonienl (Nederlands)"
 Cancel=
 
 # My PSAs / banners
-Happy New Year=whatever
+Happy New Year=
 Happy Holidays from Andrew, Tracey, and family=
 Please Enjoy Responsibly=
 Popup Blocked  CA requires popups to be enabled under certain circumstances  You must white list your server within your browser to allow popups=
@@ -14,7 +14,11 @@ Backup Server Active Some icons may not appear, and plugin installations may be 
 # Sorting Options
 Sorting options=
 Sorting options unavailable=
-
+Sort By Name Ascending=
+Sort By Name Descending=
+Sort By Downloads=
+Sort By Trend=
+Sort By Date Added=
 # Initial disclaimer translations
 Disclaimer=
 All applications listed here are 3rd party additions to unRaid  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here=
@@ -86,6 +90,8 @@ Are you sure you want to install %s docker and %s plugin applications="Are you s
 Docker applications will be installed utilizing the most recently saved template with no user input on your part=
 Install Application=
 Install Applications=
+Updating Support Links=
+Finished Installing If the DONE button did not appear, then you will need to click the red X in the top right corner=
 
 # error messages
 No data was returned  It is probable that another browser session has rebooted your server  Reloading this browser tab will probably fix this error=
@@ -98,7 +104,8 @@ Post the ENTIRE contents of this message in the Community Applications Support T
 Unknown error happened  Please post a screenshot in the support thread of the Statistics screen=
 Something really wrong happened Reloading the Apps tab will probably fix the problem=
 This plugin has a duplicated name from another plugin %s This will impact your ability to install both plugins simultaneously=
-# CA Sections try and not exceed the length of these strings if at all possible
+
+# CA Sections Keep the length reasonable
 MENU=
 Installed Apps=
 Previous Apps=
@@ -114,9 +121,10 @@ OTHER=
 Settings=
 Statistics=
 Credits=
-Support=fdklsj
+Support=
 VERSION=
 Change Log=
+
 # Credits
 Development=
 Additional Contributions=
@@ -148,13 +156,26 @@ Number Of Deprecated Applications=
 Number Of Moderation Entries=
 Primary Server=
 Backup Server=
+
 # Statistics Popup Titles
 Repository List=
 All Invalid Templates Found=
 Template Errors=
 All Moderation Entries=
-Primary Server=
-Backup Server=
+
+# Statistics Popup
+No invalid templates found=
+These templates are invalid and the application they are referring to is unknown=
+No templates were automatically fixed=
+All of these errors found have been fixed automatically=
+Note that many of these errors can be avoided by following the directions=
+HERE=
+The following plugins have duplicated filenames and are not able to be installed simultaneously=
+The following docker applications refer to the same docker repository but may have subtle changes in the template to warrant this=222
+If any of these entries are incorrect then contact the moderators of CA to discuss=
+Global Repository Comments=
+Applied to all applications=(Applied to all applications)
+Individual Application Moderation=
 
 # Misc
 Community Applications Changelog=
@@ -163,7 +184,7 @@ Community Applications Changelog=
 
 Backup=
 Cloud=
-Downloaders=dick
+Downloaders=
 Game Servers=
 Home Automation=
 Media Applications=
@@ -190,6 +211,7 @@ Themes=
 Utilities=
 Plugins=
 Private Apps=
+Uncategorized=
 
 # Categories displayed within a popup or on the card
 GameServers=
@@ -220,17 +242,9 @@ ToolsSystem="Tools:System"
 ToolsThemes="Tools:Themes"
 ToolUtilities="Tools:Utilities"
 Plugins=
-
-
-
-
-
-
-
-and %s more=hi %s there
-
-
-
+Other=
+OtherUncategorized="Other:Uncategorized"
+and %s more=
 
 # App Popup Related
 Donate To Author=
@@ -265,9 +279,9 @@ Install=
 Project=
 Install Using The Templates Default Tag='Install Using The Template&#39;s Default Tag'
 Moderator Comments="Moderator Comments:"
-#the following if using a space you MUST use nbsp  but keep it down to one word if at all possible
 Note not all authors keep up to date on change logs=
 Note not all maintainers keep up to date on change logs=
+#the following if using a space you MUST use nbsp  but keep it down to one word if at all possible
 Donate=
 Currently Installed Version="Currently Installed Version:"
 Install The Update=
@@ -291,3 +305,39 @@ Sep=
 Oct=
 Nov=
 Dec=
+
+# Multi install script
+Installing docker applications %s=
+Starting %s=
+%s failed to start You should install it by itself to fix the errors=
+Setting installed applications to autostart=
+Docker Application Installation finished=
+
+# Application Cards
+Private dockerHub Conversion=Private (dockerHub Conversion)
+Go to the project page=
+Go to the support thread=
+Uninstall Application=
+Remove Private Application=
+Remove Application From List=
+Check off to select multiple reinstalls=
+Go to the plugin settings=
+Click to reinstall the application using default values=
+Click to edit the application values=
+Click to reinstall=
+Click to install=
+Install plugin=
+Click to go to the WebUI=
+This application has been marked as being Beta=
+This application template has been deprecated=
+This application is not compatible with your version of unRaid=
+This application template has been blacklisted=
+Search for more applications from %s=
+Click for more information=
+
+# Dockerhub searches
+Search For Containers From %s=
+Search for similar containers=
+
+#Page Navigation
+Displaying %s - %s of %s="Displaying %1$s - %2$s (of %3$s)"

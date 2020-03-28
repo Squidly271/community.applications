@@ -10,11 +10,12 @@ Icon="community.applications.png"
 #                                                             #
 ###############################################################
 
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 $plugin = "community.applications";
 $cfg = parse_plugin_cfg($plugin);
 
-$translations =   version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
+$translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
 
 exec("rm -f /usr/local/emhttp/languages/*/*.dot");
 if ( $translations ) {

@@ -5,8 +5,8 @@
 #          Licenced under the terms of GNU GPLv2              #
 #                                                             #
 ###############################################################
-
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
+
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 require_once "/usr/local/emhttp/plugins/dynamix/include/Helpers.php";
 require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
@@ -20,7 +20,7 @@ $appName = str_replace("'","",$appName);
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 
-$translations = version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
+$translations = version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
 $dynamix = parse_plugin_cfg("dynamix");
 if ( $translations )
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
@@ -159,7 +159,7 @@ $(function() {
 				options: {
 					title: {
 						display: true,
-						text: tr("Trend Per Month"),
+						text: "<?tr("Trend Per Month");?>",
 						fontSize: 16
 					},
 					legend: {
@@ -205,7 +205,7 @@ $(function() {
 				options: {
 					title: {
 						display: true,
-						text: tr("Downloads Per Month"),
+						text: "<?tr("Downloads Per Month")?>",
 						fontSize: 16
 					},
 					legend: {
@@ -245,7 +245,7 @@ $(function() {
 				options: {
 					title: {
 						display: true,
-						text: tr("Total Downloads"),
+						text: "<?tr("Total Downloads");?>",
 						fontSize: 16
 					},
 					legend: {
@@ -309,18 +309,6 @@ function xmlInstall(type,xml) {
 	});
 }
 
-function tr(string) {
-  <?if ( $translations ): ?>
-		var searchString = string.replace(/[?\{\}|&~!\[\]()/:*^."']/g,"");
-		searchString = searchString.replace(/  +/g, ' ');
-		translationArray.map(function(data) {
-			if (data.english == searchString) {
-				string = data.translation;
-			}
-		});
-	<?endif;?>
-	return string;
-}
 
 </script>
 <html>
