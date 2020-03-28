@@ -14,7 +14,7 @@ require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 require_once "$docroot/plugins/dynamix/include/Helpers.php";
 
 $unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
-$translations = version_compare($unRaidVersion['version'],"6.9.0-beta0",">");
+$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
 $dynamix = parse_plugin_cfg("dynamix");
 

@@ -10,6 +10,8 @@ Tag="users"
 #          Licenced under the terms of GNU GPLv2              #
 #                                                             #
 ###############################################################
+
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 $plugin = "community.applications";
 
 require_once "/usr/local/emhttp/plugins/$plugin/include/paths.php";
@@ -32,7 +34,7 @@ if ( is_file($caPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
 $date = (date("n/d"));
-$translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
+$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
 if ( $translations ) {
 	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI']))."-1.txt";
@@ -40,7 +42,7 @@ if ( $translations ) {
 	$pluginTranslations = @parse_language($translationFile);
 	$genericTranslations = @parse_language($genericFile);
 	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-	$language = $pluginTranslations;
+	$language = array_merge($pluginTranslations,$language);
 	if ( empty($pluginTranslations) ) 
 		$translations = false;
 }
@@ -72,17 +74,10 @@ function tr($string,$ret=false) {
 
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
 <script>
-
-// CONSIDER REMOVING THIS WARNING DURING A RELEASE.  NOT 100% IF IT WON'T CAUSE PROBLEMS
-<?if ( $translations && empty($pluginTranslations) ):?>
-	addBannerWarning("INVALID TRANSLATION FILE");
-<?endif;?>
-
-
 var translationArray = new Array;
 <? 
 	if ($translations) {
-		foreach ($language as $english => $translation):?>
+		foreach ($pluginTranslations as $english => $translation):?>
 			translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
 		<?endforeach;
 	}
@@ -1368,7 +1363,6 @@ function tr(string) {
 }
 
 </script>
-
 <? if ( ! $translations): ?>
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This chooses how to sort the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;These icons respectively will <span class='ca_bold'>Install or Edit</span> an application<br>
@@ -1380,7 +1374,7 @@ function tr(string) {
 > <i class='fa fa-info-circle' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this will display more information about the application.  NOTE: You can also click on the application's icon to display more information.<br>
 > <i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this will display any warnings or extra comments about the application<br>
 > <input type='checkbox' checked> &nbsp;&nbsp;&nbsp;On the previous apps section, you can select  multiple applications to install simultaneously<br>
-> <span class='ca_thumbsup' style='margin-left:0px; font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a recommended application based upon support requests and answers in the unRaid forum<br>
+> <span class='ca_thumbsup' style='margin-left:0px; font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is the recommended version to install by the application author themselves<br>
 > <center>For support for this plugin, visit <a title='click for help' href='https://lime-technology.com/forums/topic/38582-plug-in-community-applications/' target='_blank'>HERE</a></center>
 > 
 > To view the policies Community Applications has, click <a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>HERE</a>
@@ -1397,11 +1391,10 @@ function tr(string) {
 > <i class='fa fa-info-circle' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this will display more information about the application.  NOTE: You can also click on the application's icon to display more information.<br>
 > <i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this will display any warnings or extra comments about the application<br>
 > <input type='checkbox' checked> &nbsp;&nbsp;&nbsp;On the previous apps section, you can select  multiple applications to install simultaneously<br>
-> <span class='ca_thumbsup' style='margin-left:0px; font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a recommended application based upon support requests and answers in the unRaid forum<br>
+> <span class='ca_thumbsup' style='margin-left:0px; font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is the recommended version to install by the application author themselves<br>
 > <center>For support for this plugin, visit <a title='click for help' href='https://lime-technology.com/forums/topic/38582-plug-in-community-applications/' target='_blank'>HERE</a></center>
 > 
 > To view the policies Community Applications has, click <a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>HERE</a>
 :end
 <?endif;?>
-
 <?include "/usr/local/emhttp/plugins/$plugin/skins/Narrow/skin.html"?>

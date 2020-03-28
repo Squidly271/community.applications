@@ -15,7 +15,7 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 $plugin = "community.applications";
 $cfg = parse_plugin_cfg($plugin);
 
-$translations =   version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
+$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
 exec("rm -f /usr/local/emhttp/languages/*/*.dot");
 if ( $translations ) {

@@ -11,7 +11,7 @@ $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
-$translations = version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
+$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 $dynamix = parse_plugin_cfg("dynamix");
 if ( $translations )
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
@@ -218,7 +218,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .pageLeft::after {content:"\f137";font-family:fontAwesome;font-weight:bold;}
 .specialCategory {font-size:1.5rem;}
 .ca_table { padding:.5rem 2rem .5rem 0; font-size:1.5rem;}
-.ca_stat {color:coral; font-size:1.5rem;}
+.ca_stat {color:coral; font-size:1.5rem;line-height:1.7rem;}
 .ca_credit { padding:.5rem 0 1rem 0; font-size:1.5rem;line-height:2rem; font-style:italic;}
 .ca_creditheader { font-size:2rem; padding-top:1rem;}
 .ca_dateUpdatedDate {font-weight:normal;}

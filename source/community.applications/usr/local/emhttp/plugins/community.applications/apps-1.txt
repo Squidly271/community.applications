@@ -287,6 +287,7 @@ Currently Installed Version="Currently Installed Version:"
 Install The Update=
 # as in you have the latest version already installed
 Latest Version=
+Multi Language Support=
 
 # Graphs
 Trend Per Month=

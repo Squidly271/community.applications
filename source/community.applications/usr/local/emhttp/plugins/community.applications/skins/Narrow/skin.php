@@ -491,9 +491,10 @@ function getPopupDescription($appNumber) {
 	$templateDescription .= ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes"  && $template['TemplateURL']) ? "<tr><td></td><td><a class='popUpLink' href='{$template['TemplateURL']}' target='_blank'>".tr("Application Template")."</a></td></tr>" : "";
 	if ( $template['Category'] ) {
 		$templateDescription .= "<tr><td>".tr("Categories:")."</td><td>".$template['Category'];
-
 		$templateDescription .= "</td></tr>";
 	}
+	if ( filter_var($template['multiLanguage'],FILTER_VALIDATE_BOOLEAN) ) 
+		$templateDescription .= "<tr><td>".tr("Multi Language Support")."</td><td>Yes</td></tr>";
 	if ( ! $template['Plugin'] ) {
 		if ( strtolower($template['Base']) == "unknown" || ! $template['Base'])
 			$template['Base'] = $template['BaseImage'];

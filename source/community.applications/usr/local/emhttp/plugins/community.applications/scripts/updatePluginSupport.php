@@ -8,7 +8,7 @@
 ###############################################################
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
-$translations = version_compare($unRaidSettings['version'],"6.9.0-beta0",">");
+$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 if ( $translations )
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
 
