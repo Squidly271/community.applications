@@ -653,7 +653,7 @@ function getPopupDescription($appNumber) {
 
 	if (is_array($template['trendsDate']) ) {
 		array_walk($template['trendsDate'],function(&$entry) {
-			$entry = tr(date("M",$entry)).date(" j",$entry);
+			$entry = my_lang(date("M",$entry),0).date(" j",$entry);
 		});
 	}
 

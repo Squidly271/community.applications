@@ -293,19 +293,6 @@ Multi Language Support=
 Trend Per Month=
 Downloads Per Month=
 Total Downloads=
-# Short form Months
-Jan=
-Feb=
-Mar=
-Apr=
-May=
-Jun=
-Jul=
-Aug=
-Sep=
-Oct=
-Nov=
-Dec=
 
 # Multi install script
 Installing docker applications %s=
