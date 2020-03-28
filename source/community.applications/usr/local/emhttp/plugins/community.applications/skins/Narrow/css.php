@@ -20,7 +20,6 @@ if ( $translations ) {
 	$pluginTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
 	$genericTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/translations.txt");
 	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-
 	if ( empty($pluginTranslations) ) 
 		$translations = false;
 }
