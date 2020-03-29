@@ -789,7 +789,7 @@ function uninstallApp(application,humanName) {
 		showCancelButton: true,
 		showConfirmButton: true,
 		cancelButtonText: tr("Cancel"),
-		confirmButtonText: tr("Yes, uninstall it!"),
+		confirmButtonText: tr("Yes uninstall it!"),
 		closeOnConfirm: true,
 		showLoaderOnConfirm: false,
 		allowOutsideClick: true,
