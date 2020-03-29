@@ -8,34 +8,30 @@
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
-require_once "/usr/local/emhttp/plugins/dynamix/include/Helpers.php";
-require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
+require_once "$docroot/plugins/dynamix/include/Helpers.php";
+require_once "$docroot/plugins/community.applications/include/paths.php";
 
-$unRaidVars = parse_ini_file("/var/local/emhttp/var.ini");
-$caSettings = parse_plugin_cfg("community.applications");
-$csrf_token = $unRaidVars['csrf_token'];
-$appNumber =  urldecode($_GET['appPath']);
-$appName = urldecode($_GET['appName']);
-$appName = str_replace("'","",$appName);
-$unRaidSettings = parse_ini_file("/etc/unraid-version");
-
+$unRaidVars     = parse_ini_file("/var/local/emhttp/var.ini");
+$caSettings     = parse_plugin_cfg("community.applications");
+$csrf_token     = $unRaidVars['csrf_token'];
+$appNumber      = urldecode($_GET['appPath']);
+$appName        = urldecode($_GET['appName']);
+$appName        = str_replace("'","",$appName);
 
 $translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 $dynamix = parse_plugin_cfg("dynamix");
-if ( $translations )
-	require_once("$docroot/plugins/dynamix/include/Translations.php");
 
 if ( $translations ) {
+	require_once("$docroot/plugins/dynamix/include/Translations.php");
+
 	$pluginTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
 	$genericTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/translations.txt");
 	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
 
-	if ( empty($pluginTranslations) ) 
+	if ( empty($language) ) 
 		$translations = false;
 }
-function parse_language($file) {
-  return array_filter(parse_ini_string(preg_replace(['/"/m','/^(null|yes|no|true|false|on|off|none)=/mi','/^([^>].*)=([^"\'`].*)$/m','/^:((help|plug)\d*)$/m','/^:end$/m'],['\'','$1.=','$1="$2"',"_$1_=\"",'"'],str_replace("=\n","=''\n",file_get_contents($file)))),'strlen');
-}
+
 if ( $translations ) {
 	$translationFile = "$docroot/languages/{$_SESSION['locale']}/apps-1.txt";
 	$genericFile     = "$docroot/languages/{$_SESSION['locale']}/translations.txt";
@@ -43,15 +39,15 @@ if ( $translations ) {
 	$genericTranslations = @parse_language($genericFile);
 	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
 	$language = $pluginTranslations;
-	if ( empty($pluginTranslations) ) 
+	if ( empty($language) ) 
 		$translations = false;
 }
 
-
+function parse_language($file) {
+  return array_filter(parse_ini_string(preg_replace(['/"/m','/^(null|yes|no|true|false|on|off|none)=/mi','/^([^>].*)=([^"\'`].*)$/m','/^:((help|plug)\d*)$/m','/^:end$/m'],['\'','$1.=','$1="$2"',"_$1_=\"",'"'],str_replace("=\n","=''\n",file_get_contents($file)))),'strlen');
+}
 function tr($string,$ret=false) {
-	global $translations;
-
-	if ( $translations)
+	if ( function_exists("_") )
 		$string =  _($string);
 	if ( $ret )
 		return $string;
@@ -313,6 +309,6 @@ function xmlInstall(type,xml) {
 </script>
 <html>
 <body>
-<span id='popUpContent'><div class='spinner fixed' style='display:none;'><?readfile("/usr/local/emhttp/plugins/dynamix/images/animated-logo.svg")?></div></span>
+<span id='popUpContent'><div class='spinner fixed' style='display:none;'><?readfile("$docroot/plugins/dynamix/images/animated-logo.svg")?></div></span>
 </body>
 </html>

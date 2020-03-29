@@ -17,10 +17,6 @@ if ( $translations ) {
 	$_SERVER['REQUEST_URI'] = "docker/apps-1";
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
 	$my_translations = $language;
-	
-############ 
-# THIS LINE MUST BE REMOVED PRIOR TO RELEASE
-	exec("rm -r $docroot/languages/*/*.dot");  
 }
 
 require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php"; # must be first include due to paths defined

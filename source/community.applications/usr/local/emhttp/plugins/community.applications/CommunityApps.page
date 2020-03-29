@@ -14,8 +14,8 @@ Tag="users"
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 $plugin = "community.applications";
 
-require_once "/usr/local/emhttp/plugins/$plugin/include/paths.php";
-require_once "/usr/local/emhttp/plugins/$plugin/include/helpers.php";
+require_once "$docroot/plugins/$plugin/include/paths.php";
+require_once "$docroot/plugins/$plugin/include/helpers.php";
 
 $cfg = parse_plugin_cfg($plugin);
 if ( ! is_file($caPaths['warningAccepted']) ) {
@@ -43,7 +43,7 @@ if ( $translations ) {
 	$genericTranslations = @parse_language($genericFile);
 	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
 	$language = array_merge($pluginTranslations,$language);
-	if ( empty($pluginTranslations) ) 
+	if ( empty($language) ) 
 		$translations = false;
 }
 function parse_language($file) {
@@ -52,9 +52,7 @@ function parse_language($file) {
 
 
 function tr($string,$ret=false) {
-	global $translations;
-
-	if ( $translations)
+	if ( function_exists("_") )
 		$string =  _($string);
 	if ( $ret )
 		return $string;
@@ -68,7 +66,7 @@ function tr($string,$ret=false) {
 <meta name="referrer" content="same-origin">
 <?endif;?>
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
-<? if ( is_file("/usr/local/emhttp/plugins/dynamix/styles/community.applications-$theme.css") ):?>
+<? if ( is_file("$docroot/plugins/dynamix/styles/community.applications-$theme.css") ):?>
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/dynamix/styles/community.applications-$theme.css")?>'>
 <? endif; ?>
 
@@ -82,7 +80,6 @@ var translationArray = new Array;
 		<?endforeach;
 	}
 ?>
-	
 
 var searchBoxInput;
 var searchBoxAwesomplete;
@@ -1363,6 +1360,8 @@ function tr(string) {
 }
 
 </script>
+<span id='debugging'></span>
+
 <? if ( ! $translations): ?>
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This chooses how to sort the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;These icons respectively will <span class='ca_bold'>Install or Edit</span> an application<br>

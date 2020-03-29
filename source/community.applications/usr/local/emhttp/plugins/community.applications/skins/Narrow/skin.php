@@ -494,7 +494,7 @@ function getPopupDescription($appNumber) {
 		$templateDescription .= "</td></tr>";
 	}
 	if ( filter_var($template['multiLanguage'],FILTER_VALIDATE_BOOLEAN) ) 
-		$templateDescription .= "<tr><td>".tr("Multi Language Support")."</td><td>Yes</td></tr>";
+		$templateDescription .= "<tr><td>".tr("Multi Language Support")."</td><td>".tr("Yes")."</td></tr>";
 	if ( ! $template['Plugin'] ) {
 		if ( strtolower($template['Base']) == "unknown" || ! $template['Base'])
 			$template['Base'] = $template['BaseImage'];

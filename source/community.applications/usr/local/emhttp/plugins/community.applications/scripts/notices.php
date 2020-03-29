@@ -5,10 +5,11 @@
 #          Licenced under the terms of GNU GPLv2              #
 #                                                             #
 ###############################################################
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-require_once "/usr/local/emhttp/plugins/dynamix.docker.manager/include/DockerClient.php";
-require_once "/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
-require_once "/usr/local/emhttp/plugins/dynamix/include/Wrappers.php";
+require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
+require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
+require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 
 $paths['notices_remote'] = "https://raw.githubusercontent.com/Squidly271/CA_notifications/master/CA_notices.json";
 $paths['CA_root']        = "/tmp/ca_notices";

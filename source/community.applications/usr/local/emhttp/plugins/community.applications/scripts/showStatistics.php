@@ -13,31 +13,30 @@ require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 require_once "$docroot/plugins/dynamix/include/Helpers.php";
 
-$unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
 $translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
 $dynamix = parse_plugin_cfg("dynamix");
 
 if ( $translations ) {
-	exec("rf -r /usr/local/emhttp/languages/*/*.dot");
 	require_once "$docroot/plugins/dynamix/include/Translations.php";
-	$pluginTranslations =  parse_language("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
-	$genericTranslations = parse_language("$docroot/languages/{$dynamix['locale']}/translations.txt");
+	$pluginTranslations =  @parse_language("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
+	$genericTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/translations.txt");
 	
 	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
 
-	if ( empty($pluginTranslations) ) 
+	if ( empty($language) ) 
 		$translations = false;
 }
+
+require_once "$docroot/plugins/community.applications/include/helpers.php";
+
 
 function parse_language($file) {
   return array_filter(parse_ini_string(preg_replace(['/"/m','/^(null|yes|no|true|false|on|off|none)=/mi','/^([^>].*)=([^"\'`].*)$/m','/^:((help|plug)\d*)$/m','/^:end$/m'],['\'','$1.=','$1="$2"',"_$1_=\"",'"'],str_replace("=\n","=''\n",file_get_contents($file)))),'strlen');
 }
 
 function tr($string,$ret=true) {
-	global $translations;
-
-	if ( $translations)
+	if ( function_exists("_") )
 		$string =  _($string);
 	if ( $ret )
 		return $string;
@@ -46,8 +45,6 @@ function tr($string,$ret=true) {
 }
 
 
-require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
-require_once "/usr/local/emhttp/plugins/community.applications/include/helpers.php";
 
 ?>
 <body bgcolor='white'>

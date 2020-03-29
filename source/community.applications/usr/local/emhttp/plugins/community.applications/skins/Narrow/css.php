@@ -7,20 +7,22 @@
 ###############################################################
 
 header("Content-type: text/css; charset: UTF-8");
-$unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
-require_once "$docroot/plugins/dynamix/include/Wrappers.php";
+
 $translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
+
+require_once "$docroot/plugins/dynamix/include/Wrappers.php";
+
 $dynamix = parse_plugin_cfg("dynamix");
-if ( $translations )
-	require_once("$docroot/plugins/dynamix/include/Translations.php");
 
 if ( $translations ) {
+	require_once("$docroot/plugins/dynamix/include/Translations.php");
+
 	$pluginTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
 	$genericTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/translations.txt");
 	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-	if ( empty($pluginTranslations) ) 
+	if ( empty($language) ) 
 		$translations = false;
 }
 function parse_language($file) {
@@ -28,9 +30,7 @@ function parse_language($file) {
 }
 
 function tr($string,$ret=false) {
-	global $translations;
-
-	if ( $translations)
+	if ( function_exists("_") )
 		$string =  _($string);
 	if ( $ret )
 		return $string;
@@ -39,6 +39,8 @@ function tr($string,$ret=false) {
 }
 
 $theme = $dynamix['theme'];
+
+$unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 $unRaid67 = version_compare($unRaidSettings['version'],"6.7.0-rc4",">");

@@ -5,10 +5,11 @@
 #          Licenced under the terms of GNU GPLv2              #
 #                                                             #
 ###############################################################
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
-require_once "/usr/local/emhttp/plugins/community.applications/include/helpers.php";
-require_once "/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
+require_once "$docroot/plugins/community.applications/include/paths.php";
+require_once "$docroot/plugins/community.applications/include/helpers.php";
+require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 
 switch ($_POST['action']) {
 	case 'checkPlugin':

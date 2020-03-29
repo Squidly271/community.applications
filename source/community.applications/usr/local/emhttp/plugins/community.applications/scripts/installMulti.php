@@ -11,7 +11,7 @@ require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 
 $unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
-$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
+$translations  = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
 $dynamix = parse_plugin_cfg("dynamix");
 
@@ -23,7 +23,7 @@ if ( $translations ) {
 	
 	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($dockerTranslations) ? $dockerTranslations: [],is_array($pluginTranslations) ? $pluginTranslations : [] );
 
-	if ( empty($pluginTranslations) ) 
+	if ( empty($language) ) 
 		$translations = false;
 }
 
@@ -32,9 +32,7 @@ function parse_language($file) {
 }
 
 function tr($string,$ret=true) {
-	global $translations;
-
-	if ( $translations)
+	if ( function_exists("_") )
 		$string =  _($string);
 	if ( $ret )
 		return $string;

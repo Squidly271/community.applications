@@ -6,19 +6,18 @@
 #          Licenced under the terms of GNU GPLv2              #
 #                                                             #
 ###############################################################
+
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
-$unRaidSettings = parse_ini_file("/etc/unraid-version");
+
 $translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
+
 if ( $translations )
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
 
-require_once "/usr/local/emhttp/plugins/community.applications/include/helpers.php";
-require_once "/usr/local/emhttp/plugins/community.applications/include/paths.php";
-require_once "/usr/local/emhttp/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
+require_once "$docroot/plugins/community.applications/include/helpers.php";
+require_once "$docroot/plugins/community.applications/include/paths.php";
+require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
-
-
-
 
 $dynamix = parse_plugin_cfg("dynamix");
 
@@ -26,7 +25,7 @@ if ( $translations ) {
 	$pluginTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
 	$genericTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/translations.txt");
 	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-	if ( empty($pluginTranslations) ) 
+	if ( empty($language) ) 
 		$translations = false;
 }
 function parse_language($file) {
