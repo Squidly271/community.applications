@@ -1360,7 +1360,6 @@ function tr(string) {
 }
 
 </script>
-<span id='debugging'></span>
 
 <? if ( ! $translations): ?>
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This chooses how to sort the results<br><br>
