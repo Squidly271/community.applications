@@ -46,10 +46,10 @@ if ( $translations ) {
 	if ( empty($language) ) 
 		$translations = false;
 }
+
 function parse_language($file) {
   return array_filter(parse_ini_string(preg_replace(['/"/m','/^(null|yes|no|true|false|on|off|none)=/mi','/^([^>].*)=([^"\'`].*)$/m','/^:((help|plug)\d*)$/m','/^:end$/m'],['\'','$1.=','$1="$2"',"_$1_=\"",'"'],str_replace("=\n","=''\n",file_get_contents($file)))),'strlen');
 }
-
 
 function tr($string,$ret=false) {
 	if ( function_exists("_") )
