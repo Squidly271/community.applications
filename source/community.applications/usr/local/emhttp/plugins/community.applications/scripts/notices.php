@@ -21,10 +21,11 @@ $paths['dismiss']        = "/boot/config/plugins/community.applications/notifica
 $cfg = parse_plugin_cfg("community.applications");
 
 if ( $cfg['notifications'] == "no" ) {
+	echo json_encode([]);
 	exit();
 }
 
-@mkdir($paths['CA_root'],0777,true);
+exec("mkdir -p {$paths['CA_root']}");
 
 $local = false;  // ONLY SET TO TRUE FOR DEBUGGING.  MUST BE FALSE FOR RELEASES
 
@@ -263,7 +264,7 @@ switch ($action) {
 			}
 			debug("\n");
 		}
-		echo json_encode($unRaidNotifications,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+		echo json_encode($unRaidNotifications ?: [],JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 		break;
 	case 'dismiss':
 		$notifications = readJsonFile($paths['dismiss']);
