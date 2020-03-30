@@ -29,12 +29,35 @@ $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 $unRaid66 =       version_compare($unRaidSettings['version'],"6.5.3",">");
 $unRaid68 =       version_compare($unRaidSettings['version'],"6.7.9",">");
 $unRaid69 =       version_compare($unRaidSettings['version'],"6.8.2",">");
+$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
+
+$unRaid69B2      = version_compare($unRaidSettings['version'],"6.9.0-beta2",">=");
+if ( $unRaid69B2 ) {
+  switch ($theme) {
+		case 'black': 
+			$swalBackground = "#1c1b1b";
+			break;
+		case 'azure': 
+			$swalBackground = "#e4e2e4";
+			break;
+		case 'gray':
+			$swalBackground = "#1b1d1b";
+			break;
+		case 'white':
+			$swalBackground = "#f2f2f2";
+			break;
+		default:
+			$swalBackground = "#1c1b1b";
+			break;
+	}
+}	else {
+	$swalBackground = "white";
+}
 
 if ( is_file($caPaths['addConverted']) ) {
 	$dockerConvertFlag = "true";
 }
 $date = (date("n/d"));
-$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
 if ( $translations ) {
 	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI']))."-1.txt";
@@ -470,7 +493,7 @@ function mySpinner() {
 function myCloseSpinner() {
 	swal.close();
 	$("div.spinner, .sweet-alert").hide();
-	swalBackground("white");
+	swalBackground("<?=$swalBackground?>");
 }
 
 function myCloseAlert() {
