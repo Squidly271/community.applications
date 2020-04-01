@@ -19,8 +19,8 @@ $dynamix = parse_plugin_cfg("dynamix");
 
 if ( $translations ) {
 	require_once "$docroot/plugins/dynamix/include/Translations.php";
-	$pluginTranslations =  @parse_language("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
-	$genericTranslations = @parse_language("$docroot/languages/{$dynamix['locale']}/translations.txt");
+	$pluginTranslations =  @parse_lang_file("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
+	$genericTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/translations.txt");
 	
 	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
 
@@ -29,11 +29,6 @@ if ( $translations ) {
 }
 
 require_once "$docroot/plugins/community.applications/include/helpers.php";
-
-
-function parse_language($file) {
-  return array_filter(parse_ini_string(preg_replace(['/"/m','/^(null|yes|no|true|false|on|off|none)=/mi','/^([^>].*)=([^"\'`].*)$/m','/^:((help|plug)\d*)$/m','/^:end$/m'],['\'','$1.=','$1="$2"',"_$1_=\"",'"'],str_replace("=\n","=''\n",file_get_contents($file)))),'strlen');
-}
 
 function tr($string,$ret=true) {
 	if ( function_exists("_") )
