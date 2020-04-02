@@ -28,8 +28,10 @@ require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php"
 
 # Merge the translation files together
 if ( $translations ) {
-	$language = array_merge($language,$my_translations);
+	$language = array_merge(is_array($language) ? $language : [],is_array($my_translations) ? $my_translations : []);
 }
+
+
 
 ################################################################################
 # Set up any default settings (when not explicitely set by the settings module #

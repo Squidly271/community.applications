@@ -17,9 +17,9 @@ $dynamix = parse_plugin_cfg("dynamix");
 
 if ( $translations ) {
 	require_once "$docroot/plugins/dynamix/include/Translations.php";
-	$pluginTranslations =  parse_language("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
-	$genericTranslations = parse_language("$docroot/languages/{$dynamix['locale']}/translations.txt");
-	$dockerTranslations =  parse_language("$docroot/languages/{$dynamix['locale']}/docker.txt");
+	$pluginTranslations =  parse_lang_file("$docroot/languages/{$dynamix['locale']}/apps-1.txt");
+	$genericTranslations = parse_lang_file("$docroot/languages/{$dynamix['locale']}/translations.txt");
+	$dockerTranslations =  parse_lang_file("$docroot/languages/{$dynamix['locale']}/docker.txt");
 	
 	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($dockerTranslations) ? $dockerTranslations: [],is_array($pluginTranslations) ? $pluginTranslations : [] );
 

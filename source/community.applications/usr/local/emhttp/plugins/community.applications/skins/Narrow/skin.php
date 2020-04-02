@@ -481,7 +481,7 @@ function getPopupDescription($appNumber) {
 	}
 	$templateDescription .= "<tr><td>".tr("Repository:")."</td><td>";
 	$repoSearch = explode("'",$template['RepoName']);
-	$templateDescription .= "{$template['RepoName']}</a>";
+	$templateDescription .= str_ireplace("Repository","",$template['RepoName']).tr("Repository");
 	if ( $template['Profile'] ) {
 		$profileDescription = $template['Plugin'] ? tr("Author") : tr("Maintainer");
 		$templateDescription .= "<span>&nbsp;&nbsp;<a class='popUpLink' href='{$template['Profile']}' target='_blank'>$profileDescription Profile</a></span>";

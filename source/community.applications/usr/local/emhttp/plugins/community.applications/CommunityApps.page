@@ -80,7 +80,6 @@ function tr($string,$ret=false) {
 	else
 		echo $string;
 }
-	
 
 ?>
 <? if ( ! $unRaid69 ):?>
