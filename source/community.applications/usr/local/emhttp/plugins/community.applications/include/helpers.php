@@ -59,6 +59,13 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	curl_setopt($ch,CURLOPT_ENCODING,"");
 	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	
+	if ( is_file("/boot/config/plugins/community.applications/proxy.cfg") ) {
+		$proxyCFG = parse_ini_file("/boot/config/plugins/community.applications/proxy.cfg");
+		curl_setopt($ch, CURLOPT_PROXYPORT,intval($proxyCFG['port']));
+		curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL,intval($proxyCFG['tunnel']));
+		curl_setopt($ch, CURLOPT_PROXY,$proxyCFG['proxy']);
+	}
 	$out = curl_exec($ch);
 	curl_close($ch);
 	if ( $path )
