@@ -31,7 +31,7 @@ $unRaid68 =       version_compare($unRaidSettings['version'],"6.7.9",">");
 $unRaid69 =       version_compare($unRaidSettings['version'],"6.8.2",">");
 $translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
-$unRaid69B2      = version_compare($unRaidSettings['version'],"6.9.0-beta2",">=");
+$unRaid69B2      = version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
 if ( $unRaid69B2 ) {
   switch ($theme) {
 		case 'black': 

@@ -489,7 +489,7 @@ function formatTags($leadTemplate) {
 	else {
 		$defaultTag = $template['BranchDefault'] ? $template['BranchDefault'] : "latest";
 		$o = "<table>";
-		$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='#' onclick='xmlInstall(&quot;default&quot;,&quot;".$template['Path']."&quot;);'>Default</a></td><td>".tr("Install Using The Template's Default Tag")." (<font color='purple'>:$defaultTag</font>)</td></tr>";
+		$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='#' onclick='xmlInstall(&quot;default&quot;,&quot;".$template['Path']."&quot;);'>Default</a></td><td>".tr("Install Using The Template's Default Tag")." (<span class='ca_bold'>:$defaultTag</span>)</td></tr>";
 		foreach ($childTemplates as $child) {
 			$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href='#' onclick='xmlInstall(&quot;default&quot;,&quot;".$file[$child]['Path']."&quot;);'>".$file[$child]['BranchName']."</a></td><td>".$file[$child]['BranchDescription']."</td></tr>";
 		}
