@@ -17,7 +17,7 @@ $cfg = parse_plugin_cfg($plugin);
 
 function tr($string,$ret=false) {
 	if ( function_exists("_") )
-		$string =  _($string);
+		$string = _($string);
 	if ( $ret )
 		return $string;
 	else
@@ -87,32 +87,3 @@ function tr($string,$ret=false) {
 <center><a href="https://forums.unraid.net/topic/38582-plug-in-community-applications/" target="_blank"><?tr("Support Thread");?></a></center>
 
 </form>
-<script>
-var translationArray = new Array;
-<? 
-	if ($translations) {
-		foreach ($language as $english => $translation):?>
-			translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
-		<?endforeach;
-	}
-?>
-	
-function tr(string) {
-  <?if ( ! $translations ): ?>
-		return string;
-	<?else:?>
-		var searchString = string.replace(/[?\{\}|&~!\[\]()/:*^."']/g,"");
-		searchString = searchString.replace(
-		var translated;
-		translationArray.map(function(data) {
-			if ( data.english == searchString) {
-				translated = data.translation;
-			}
-		});
-		if ( ! translated )
-			translated = string;
-
-		return translated;
-	<?endif;?>
-}
-</script>

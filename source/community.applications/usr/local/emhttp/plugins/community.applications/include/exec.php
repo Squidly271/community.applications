@@ -262,12 +262,8 @@ case 'force_update':
 		$updatedSyncFlag = true;
 		DownloadApplicationFeed();
 		if (!file_exists($caPaths['community-templates-info'])) {
-			$tmpfile = randomFile();
-			download_url($caPaths['PublicServiceAnnouncement'],$tmpfile,false,10);
-			$publicServiceAnnouncement = trim(@file_get_contents($tmpfile));
-			@unlink($tmpfile);
 			$o['script'] = "$('.startupButton,.caMenu,.menuHeader').hide();$('.caRelated').show();";
-			$o['data'] =  "<div class='ca_center'><font size='4'><strong>".tr("Download of appfeed failed.")."</strong></font><font size='3'><br><br>Community Applications requires your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of <span class='ca_bold'>208.67.222.222 and 208.67.220.220</span> and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  You can check the server status by clicking <a href='https://www.githubstatus.com/' target='_blank'>HERE</a>";
+			$o['data'] =  "<div class='ca_center'><font size='4'><span class='ca_bold'>".tr("Download of appfeed failed.")."</span></font><font size='3'><br><br>Community Applications requires your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of 208.67.222.222 and 208.67.220.220 and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.";
 			$tempFile = @file_get_contents($caPaths['appFeedDownloadError']);
 			$downloaded = @file_get_contents($tempFile);
 			if (strlen($downloaded) > 100)
@@ -276,8 +272,6 @@ case 'force_update':
 			$o['data'] .=  "<div class='ca_center'>Last JSON error Recorded: ";
 			$jsonDecode = json_decode($downloaded,true);
 			$o['data'] .= json_last_error_msg();
-			if ( $publicServiceAnnouncement )
-				$o['data'] .= "<br><font size='3' color='purple'>$publicServiceAnnouncement</font>";
 
 			$o['data'] .= "</div>";
 			@unlink($caPaths['appFeedDownloadError']);

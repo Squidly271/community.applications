@@ -13,8 +13,10 @@ Link='nav-user'
 <?
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 $unRaid68 = version_compare($unRaidSettings['version'],"6.7.9",">");
+$caCFG = parse_plugin_cfg("community.applications");
 ?>
 
+<? if ( "{$caCFG['notifications']}" == "yes" ) :?>
 <script>
 var CA_BANNER_NOTICES = [];
 $(function() {
@@ -66,3 +68,4 @@ function ca_DismissNotice(index) {
 	});
 }
 </script>
+<?endif;?>
