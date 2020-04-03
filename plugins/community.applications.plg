@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.03.18">
-<!ENTITY md5       "350f661425365e3a3e85e6a896757d82">
+<!ENTITY version   "2020.04.03">
+<!ENTITY md5       "13bd7ee9306f09de615d477685a25c18">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2020.04.03
+- Added: Multilanguage support
+- Changed: Adjusted CSS for unRaid 6.9-beta2+
+- Fixed: Under certain circumstances, autocomplete on searches wouldn't populate
+- Fixed: Prevent browser console error if notifications are not enabled
+- Added: Support internet proxies
+
 ###2020.03.18
 - Lower notification from alert to warning
 - Switch from opt-out to opt-in for notifications.  ***Highly advised to opt-in***
