@@ -1139,6 +1139,7 @@ function saveState() {
 		$.cookie("ca_categoryText",$("#Category").html());
 		$.cookie("ca_data",JSON.stringify(data));
 		$.cookie("ca_dockerSearchFlag",dockerSearchFlag);
+		$.cookie("ca_searchActive",data.searchActive);
 		$.cookie("ca_installMulti",$(".multi_installDiv").is(":visible"));
 		var selectedMenu = $(".selectedMenu").data("category");
 		if ( ! selectedMenu ) {
@@ -1167,6 +1168,7 @@ function restoreState() {
 	}
 	data = JSON.parse($.cookie("ca_data"));
 	dockerSearchFlag = $.cookie("ca_dockerSearchFlag");
+	data.searchActive = $.cookie("ca_searchActive");
 	restoreStateMenu = $.cookie("ca_selectedMenu");
 
 	var ca_sortIcon = $.cookie("ca_sortIcon");
