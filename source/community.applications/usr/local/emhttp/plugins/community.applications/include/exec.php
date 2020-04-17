@@ -891,12 +891,54 @@ case 'createXML':
 			$template['Overview'] = $template['OriginalOverview'];
 		if ( $template['OriginalDescription'] )
 			$template['Description'] = $template['OriginalDescription'];
+
+// Handle paths directly referencing disks / poola that aren't present in the user's system, and replace the path with the first disk present
+		$unRaidDisks = parse_ini_file($caPaths['disksINI'],true);
+
+		$disksPresent = array_keys(array_filter($unRaidDisks, function($k) {
+			return ($k['status'] !== "DISK_NP" && $k['name'] !== "parity" && $k['name'] !== "parity2");
+		}));
+		$disksPresent[] = "disks";
+		$disksPresent[] = "user";
+		$disksPresent[] = "user0";
+		if ( @is_array($template['Data']['Volume']) ) {
+			$testarray = $template['Data']['Volume'];
+			if ( ! is_array($testarray[0]) ) $testarray = array($testarray);
+			foreach ($testarray as &$volume) {
+				$diskReferenced = array_values(array_filter(explode("/",$volume['HostDir'])));
+				if ( $diskReferenced[0] == "mnt" && $diskReferenced[1] && ! in_array($diskReferenced[1],$disksPresent) ) {
+					$volume['HostDir'] = str_replace("/mnt/{$diskReferenced[1]}/","/mnt/{$disksPresent[0]}/",$volume['HostDir']);
+				}
+			}
+			$template['Data']['Volume'] = $testarray;
+		}
 		
+		if ( $template['Config'] ) {
+			$testarray = $template['Config'] ?: array();
+			if (!$testarray[0]) $testarray = array($testarray);
+			
+			foreach ($testarray as &$config) {
+				if ( is_array($config['@attributes']) ) {
+					if ( $config['@attributes']['Type'] == "Path" ) {
+						$defaultReferenced = array_values(array_filter(explode("/",$config['@attributes']['Default'])));
+
+						if ( $defaultReferenced[0] == "mnt" && $defaultReferenced[1] && ! in_array($defaultReferenced[1],$disksPresent) ) 
+							$config['@attributes']['Default'] = str_replace("/mnt/{$defaultReferenced[1]}/","/mnt/{$disksPresent[0]}/",$config['@attributes']['Default']);
+
+						$valueReferenced = array_values(array_filter(explode("/",$config['value'])));
+						if ( $valueReferenced[0] == "mnt" && $valueReferenced[1] && ! in_array($valueReferenced[1],$disksPresent) )
+							$config['value'] = str_replace("/mnt/{$valueReferenced[1]}/","/mnt/{$disksPresent[0]}/",$config['value']);
+			
+					}
+				}
+			}
+			$template['Config'] = $testarray;
+		}
 		$xml = makeXML($template);
 		@mkdir(dirname($xmlFile));
 		file_put_contents($xmlFile,$xml);
 	}
-	postReturn(["status"=>"ok"]);
+	postReturn(["status"=>"ok","cache"=>$cacheVolume]);
 	break;
 
 ###############################################
