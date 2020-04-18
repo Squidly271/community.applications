@@ -896,12 +896,12 @@ case 'createXML':
 		$unRaidDisks = parse_ini_file($caPaths['disksINI'],true);
 
 		$disksPresent = array_keys(array_filter($unRaidDisks, function($k) {
-			return ($k['status'] !== "DISK_NP" && $k['name'] !== "parity" && $k['name'] !== "parity2");
+			return ($k['status'] !== "DISK_NP" && ! preg_match("/(parity|parity2|disks|diskP|diskQ)/",$k['name']));
 		}));
 
 		$unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
 		$cachePools = array_filter($unRaidDisks, function($k) {
-			return ! preg_match("/disk\d(\d|$)|(parity|parity2|disks|flash)/",$k['name']);
+			return ! preg_match("/disk\d(\d|$)|(parity|parity2|disks|flash|diskP|diskQ)/",$k['name']);
 		});
 		$cachePools = array_keys(array_filter($cachePools, function($k) {
 			return $k['status'] !== "DISK_NP";
@@ -910,14 +910,13 @@ case 'createXML':
 		if ( in_array("cache",$cachePools) )
 			array_unshift($cachePools,"cache"); // This will be a duplicate, but it doesn't matter as we only reference item0
 		
-		$disksPresent = empty($cachePools) ? $disksPresent : $cachePools;
-		$disksPresent[] = "disks";
+		$disksPresent = array_merge($cachePools,$disksPresent,array("disks"));
 		
 		// check to see if user shares enabled
 		$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
-		if ( $unRaidVars['shareUser'] != "-" ) 
+		if ( $unRaidVars['shareUser'] == "e" ) 
 			$disksPresent[] = "user";
-		
+		file_put_contents("/tmp/blah",print_r($disksPresent,true));
 		if ( @is_array($template['Data']['Volume']) ) {
 			$testarray = $template['Data']['Volume'];
 			if ( ! is_array($testarray[0]) ) $testarray = array($testarray);
