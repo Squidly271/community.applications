@@ -898,9 +898,26 @@ case 'createXML':
 		$disksPresent = array_keys(array_filter($unRaidDisks, function($k) {
 			return ($k['status'] !== "DISK_NP" && $k['name'] !== "parity" && $k['name'] !== "parity2");
 		}));
+
+		$unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
+		$cachePools = array_filter($unRaidDisks, function($k) {
+			return ! preg_match("/disk\d(\d|$)|(parity|parity2|disks|flash)/",$k['name']);
+		});
+		$cachePools = array_keys(array_filter($cachePools, function($k) {
+			return $k['status'] !== "DISK_NP";
+		}));
+		// always prefer the default cache pool
+		if ( in_array("cache",$cachePools) )
+			array_unshift($cachePools,"cache"); // This will be a duplicate, but it doesn't matter as we only reference item0
+		
+		$disksPresent = empty($cachePools) ? $disksPresent : $cachePools;
 		$disksPresent[] = "disks";
-		$disksPresent[] = "user";
-		$disksPresent[] = "user0";
+		
+		// check to see if user shares enabled
+		$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
+		if ( $unRaidVars['shareUser'] != "-" ) 
+			$disksPresent[] = "user";
+		
 		if ( @is_array($template['Data']['Volume']) ) {
 			$testarray = $template['Data']['Volume'];
 			if ( ! is_array($testarray[0]) ) $testarray = array($testarray);
