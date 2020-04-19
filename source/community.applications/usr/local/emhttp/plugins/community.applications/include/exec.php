@@ -906,10 +906,12 @@ case 'createXML':
 		$cachePools = array_keys(array_filter($cachePools, function($k) {
 			return $k['status'] !== "DISK_NP";
 		}));
+		
 		// always prefer the default cache pool
 		if ( in_array("cache",$cachePools) )
 			array_unshift($cachePools,"cache"); // This will be a duplicate, but it doesn't matter as we only reference item0
 		
+		// Prefer cache pools over disks
 		$disksPresent = array_merge($cachePools,$disksPresent,array("disks"));
 		
 		// check to see if user shares enabled
