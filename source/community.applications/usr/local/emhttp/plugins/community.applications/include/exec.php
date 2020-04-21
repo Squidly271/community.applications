@@ -299,7 +299,8 @@ case 'display_content':
 	$displayedApps = readJsonFile($caPaths['community-templates-displayed']);
 	if ( ! is_array($displayedApps['community']) || count($displayedApps['community']) < 1)
 		$o['script'] = "disableSort();";
-
+	$currentServer = @file_get_contents($caPaths['currentServer']);
+	$o['script'] .= "feedWarning('$currentServer');";
 	postReturn($o);
 	break;
 
