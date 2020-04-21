@@ -148,7 +148,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				if ( checkInstalledPlugin($template) ) {
 					$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 					$tmpVar = $pluginSettings ? "" : " disabled ";
-					$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons' title='".tr("Go to the plugin settings")."' href='/Plugins/Apps/$pluginSettings'></a>" : "";
+					$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons' title='".tr("Go to the plugin settings")."' href='/Apps/$pluginSettings'></a>" : "";
 				} else {
 					$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='".tr("Install plugin")."' onclick=installPlugin('{$template['PluginURL']}');></a>";
 				}
@@ -573,7 +573,7 @@ function getPopupDescription($appNumber) {
 			if ( file_exists("/var/log/plugins/$pluginName") ) {
 				$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 				if ( $pluginSettings )
-					$installLine .= "<a class='appIconsPopUp ca_fa-pluginSettings' href='/Plugins/Apps/$pluginSettings' target='$tabMode'>&nbsp;&nbsp;".tr("Settings")."</a>";
+					$installLine .= "<a class='appIconsPopUp ca_fa-pluginSettings' href='/Apps/$pluginSettings' target='$tabMode'>&nbsp;&nbsp;".tr("Settings")."</a>";
 			} else {
 				$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
 				$installLine .= "<a style='cursor:pointer' class='appIconsPopUp ca_fa-install pluginInstall' onclick=installPlugin('".$template['PluginURL']."');>&nbsp;&nbsp;$buttonTitle</a>";
@@ -637,7 +637,7 @@ function getPopupDescription($appNumber) {
 				$appInformation = tr("Currently Installed Version:")." ".plugin("version","/var/log/plugins/$pluginName");
 				if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$caPaths['pluginTempDownload']) ) {
 					copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
-					$appInformation .= " - <span class='ca_bold'><a href='/Plugins/Apps/Plugins' target='_parent'>".tr("Install The Update")."</a></span>";
+					$appInformation .= " - <span class='ca_bold'><a href='/Apps/Plugins' target='_parent'>".tr("Install The Update")."</a></span>";
 				} else
 					$appInformation .= " - <font color='green'>".tr("Latest Version")."</font>";
 			}
