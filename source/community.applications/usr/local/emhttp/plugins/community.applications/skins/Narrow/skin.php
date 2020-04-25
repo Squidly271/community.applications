@@ -175,10 +175,11 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		} else
 			$specialCategoryComment = $template['NoInstall'];
 
+		if ( $template['Beta'] )
+			$template['display_beta'] = "<span class='ca_display_beta'></span>";
+
 		$warningColor = "warning-white";
-		if ( $template['Beta'] ) {
-			$template['display_compatible'] .= tr("This application has been marked as being Beta")."<br>";
-		}
+
 		if ( $template['Deprecated'] ) {
 			$template['display_compatible'] .= tr("This application template has been deprecated")."<br>";
 			$warningColor = "warning-yellow";
@@ -194,7 +195,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 		if ( $template['ModeratorComment'] )
 			$template['display_warning-text'] = $template['ModeratorComment'];
-		if ( $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] || $template['Beta'])
+		if ( $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] )
 			$template['display_warning-text'] .= $template['display_warning-text'] ? "<br>" : "";
 			$template['display_warning-text'] .= "{$template['display_compatible']}";
 
@@ -469,8 +470,7 @@ function getPopupDescription($appNumber) {
 	} else
 		$templateDescription .= "<img class='popupIcon' id='icon' src='{$template['Icon']}'>";
 
-	if ( $template['Beta'] )
-		$templateDescription .= "<br><br><img src='https://github.com/Squidly271/community.applications/raw/master/webImages/beta.png' style='height:2.5rem;z-index:-2;margin-left:1.25rem;'></img>";
+
 	$templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
 	$templateDescription .= $template['Plugin'] ? "<table class='popupTableAreaPlugin'>" : "<table class='popupTableAreaDocker'>";
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
@@ -534,6 +534,8 @@ function getPopupDescription($appNumber) {
 		$templateDescription .= "<tr><td></td><td>".sprintf(tr("(As of %s)"),my_lang(date("F",$template['LastUpdateScan'])).date(" j, Y  g:i a",$template['LastUpdateScan']),0)."</td></tr>";
 		$template['description'] .= "</td></tr>";
 	}
+	if ( $template['Beta'] )
+		$templateDescription .= "<tr><td></td><td style='color:#FF8C2F;font-size:1.5rem;'>(BETA)</td></tr>";
 	$templateDescription .= "</table></div>";
 
 	$templateDescription .= "<div class='ca_center'><span class='popUpDeprecated'>";
@@ -698,7 +700,7 @@ function displayCard($template) {
 				<div class='ca_infoArea'>
 					<div class='ca_applicationInfo'>
 						<span class='ca_applicationName'>
-							$appName   {$template['display_faWarning']}
+							$appName   {$template['display_faWarning']}{$template['display_beta']}
 						</span>
 						{$template['display_Private']}
 						<br>
