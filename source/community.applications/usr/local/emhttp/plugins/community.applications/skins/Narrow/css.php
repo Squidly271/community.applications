@@ -85,6 +85,7 @@ switch ($theme) {
 		break;
 }
 ?>
+div.tooltipster-content a{color:<?=$unRaid66color?>;}
 body.stop-scrolling{height:100%;overflow:auto}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
 .sweet-overlay{background-color:rgba(0, 0, 0, 0) !important;} /* don't dim if spinner is displayed */
 .popupTableAreaPlugin{font-size:0.9rem;width:450px;}

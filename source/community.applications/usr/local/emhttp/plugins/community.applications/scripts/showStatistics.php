@@ -88,11 +88,11 @@ switch ($_GET['arg1']) {
 		break;
 	case 'Fixed':
 		$moderation = @file_get_contents($caPaths['fixedTemplates_txt']);
- 		$json = json_decode($moderation,true);
-		ksort($json,SORT_NATURAL | SORT_FLAG_CASE);
 		if ( ! $moderation ) {
 			echo "<br><br><div class='ca_center'><span class='ca_bold'>".tr("No templates were automatically fixed")."</span></div>";
 		} else {
+			$json = json_decode($moderation,true);
+			ksort($json,SORT_NATURAL | SORT_FLAG_CASE);
 			echo tr("All of these errors found have been fixed automatically")."<br><br>".tr("Note that many of these errors can be avoided by following the directions")." <a href='https://forums.unraid.net/topic/57181-real-docker-faq/#comment-566084' target='_blank'>".tr("HERE")."</a><br><br>";
 			foreach (array_keys($json) as $repository) {
 				echo "<br><b><span style='font-size:20px;'>$repository</span></b><br>";
