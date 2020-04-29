@@ -30,7 +30,6 @@ $unRaid66 =       version_compare($unRaidSettings['version'],"6.5.3",">");
 $unRaid68 =       version_compare($unRaidSettings['version'],"6.7.9",">");
 $unRaid69 =       version_compare($unRaidSettings['version'],"6.8.2",">");
 $translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
-
 $unRaid69B2      = version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
 if ( $unRaid69B2 ) {
   switch ($theme) {
@@ -68,8 +67,7 @@ if ( $translations ) {
 	$genericTranslations = @parse_lang_file($genericFile);
 	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
 	$language = array_merge($pluginTranslations,$language);
-	if ( empty($language) ) 
-		$translations = false;
+
 }
 
 function tr($string,$ret=false) {
@@ -260,6 +258,9 @@ $(function(){
 				$("#sortIcon").html("&nbsp;<span class="+item+"></span>");
 			}
 		});
+	});
+	$('.mainArea').on("click",".ca_fa-switchto",function() {
+		switchLanguage($(this).data("language"));
 	});
 
 <?if ( ! $unRaid66 ):?>
@@ -1379,6 +1380,12 @@ function tr(string) {
 		});
 	<?endif;?>
 	return string;
+}
+
+function switchLanguage(language) {
+	post({action:'switchLanguage',language:language},function(result) {
+		window.location.reload();
+	});
 }
 
 </script>

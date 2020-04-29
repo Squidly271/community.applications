@@ -12,8 +12,8 @@ $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
-if ( $translations ) {
+$translationsAllowed = is_file("$docroot/plugins/dynamix/include/Translations.php");
+if ( $translationsAllowed ) {
 	$_SERVER['REQUEST_URI'] = "docker/apps-1";
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
 	$my_translations = $language;
@@ -27,7 +27,7 @@ require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 
 # Merge the translation files together
-if ( $translations ) {
+if ( $translationsAllowed ) {
 	$language = array_merge(is_array($language) ? $language : [],is_array($my_translations) ? $my_translations : []);
 }
 
@@ -814,9 +814,14 @@ case 'populateAutoComplete':
 	$autoComplete = array_map(function($x){return str_replace(":","",$x['Cat']);},readJsonFile($caPaths['categoryList']));
 	foreach ($templates as $template) {
 		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $caSettings['hideDeprecated'] == "true") && ($template['Compatible'] || $caSettings['hideIncompatible'] != "true") ) {
+			if ( $template['Language'] && $template['LanguageLocal'] ) {
+				$autoComplete[$template['Language']] = $template['Language'];
+				$autoComplete[$template['LanguageLocal']] = $template['LanguageLocal'];
+			} else {
+				$autoComplete[$template['Repo']] = $template['Repo'];
+			}	
 			$autoComplete[strtolower($template['Name'])] = $template['Name'];
 			$autoComplete[strtolower($template['Author'])] = $template['Author'];
-			$autoComplete[$template['Repo']] = $template['Repo'];
 		}
 	}
 	postReturn(['autocomplete'=>array_filter(array_filter(array_values($autoComplete)))]);
@@ -919,7 +924,6 @@ case 'createXML':
 		$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
 		if ( $unRaidVars['shareUser'] == "e" ) 
 			$disksPresent[] = "user";
-		file_put_contents("/tmp/blah",print_r($disksPresent,true));
 		if ( @is_array($template['Data']['Volume']) ) {
 			$testarray = $template['Data']['Volume'];
 			if ( ! is_array($testarray[0]) ) $testarray = array($testarray);
@@ -959,7 +963,20 @@ case 'createXML':
 	}
 	postReturn(["status"=>"ok","cache"=>$cacheVolume]);
 	break;
-
+########################
+# Switch to a language #
+########################
+case 'switchLanguage':
+	$language = getPost("language","");
+	if ( $language == "en_US" )
+		$language = "";
+	
+	$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
+	$dynamixSettings['display']['locale'] = $language;
+	write_ini_file($caPaths['dynamixSettings'],$dynamixSettings);
+	postReturn(["status"=> "ok"]);
+	break;
+	
 ###############################################
 # Return an error if the action doesn't exist #
 ###############################################
@@ -970,7 +987,7 @@ default:
 #  DownloadApplicationFeed MUST BE CALLED prior to DownloadCommunityTemplates in order for private repositories to be merged correctly.
 
 function DownloadApplicationFeed() {
-	global $caPaths, $caSettings, $statistics;
+	global $caPaths, $caSettings, $statistics, $translationsAllowed;
 
 	exec("rm -rf '{$caPaths['tempFiles']}'");
 	@mkdir($caPaths['templates-community'],0777,true);
@@ -995,10 +1012,20 @@ function DownloadApplicationFeed() {
 	$myTemplates = array();
 
 	foreach ($ApplicationFeed['applist'] as $o) {
-		if ( (! $o['Repository']) && (! $o['Plugin']) ){
+		if ( (! $o['Repository']) && (! $o['Plugin']) && (!$o['Language'])){
 			$invalidXML[] = $o;
 			continue;
 		}
+		if ( ! $translationsAllowed && $o['Language'] ) {
+			$invalidXML[] = $o;
+			continue;
+		}
+		if ( $o['Language'] ) {
+			$o['Category'] = "Language:";
+			$o['Compatible'] = true;
+			$o['Description'] = str_replace("\n","<br>",trim($o['Description']));
+		}
+
 		# Move the appropriate stuff over into a CA data file
 		$o['ID']            = $i;
 		$o['Displayable']   = true;

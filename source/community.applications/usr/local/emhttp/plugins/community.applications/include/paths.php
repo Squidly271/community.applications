@@ -52,4 +52,5 @@ $caPaths['pluginTempDownload']                  = $caPaths['tempFiles']."/plugin
 $caPaths['dockerManTemplates']                  = $dockerManPaths['templates-user'];
 $caPaths['iconHTTPSbase']                       = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/https-images/";
 $caPaths['disksINI']                            = "/var/local/emhttp/disks.ini";
+$caPaths['dynamixSettings']                     = "/boot/config/plugins/dynamix/dynamix.cfg";
 ?>

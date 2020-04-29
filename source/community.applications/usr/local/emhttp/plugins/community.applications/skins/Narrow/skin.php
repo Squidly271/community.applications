@@ -32,6 +32,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$viewMode = "detail";
 
 	$info = getRunningContainers();
+	
 
 	if ( ! $selectedApps )
 		$selectedApps = array();
@@ -238,6 +239,26 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? tr("Uncategorized") : $template['Category'];
 
+// Language Specific
+		if ( $template['Language'] ) {
+			if ( ! $currentLanguage ) {
+				$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
+				$currentLanguage = $dynamixSettings['display']['locale'] ?: "en_US";
+				$installedLanguages = array_diff(scandir("/usr/local/emhttp/languages"),array(".",".."));
+				$installedLanguages = array_filter($installedLanguages,function($v) {
+					return is_dir("/usr/local/emhttp/languages/$v");
+				});
+				$installedLanguages[] = "en_US";
+			}
+			$countryCode = str_replace(".lang.zip","",basename($template['LanguageURL']));
+			if ( in_array($countryCode,$installedLanguages) ) {
+				unset($template['display_dockerInstallIcon']);
+				if ( $currentLanguage != $countryCode )
+					$template['display_language_switch'] = "<a class='ca_tooltip appIcons ca_fa-switchto' title='".tr("Switch to this language")."' data-language='$countryCode'></a>";
+			}
+			
+		}
+	
 # Entries created.  Now display it
 		$ct .= displayCard($template);
 		$count++;
@@ -472,11 +493,13 @@ function getPopupDescription($appNumber) {
 
 
 	$templateDescription .= "</div><div style='display:inline-block;margin-left:105px;'>";
-	$templateDescription .= $template['Plugin'] ? "<table class='popupTableAreaPlugin'>" : "<table class='popupTableAreaDocker'>";
+	$tableClass = $template['Plugin'] ? "<table class='popupTableAreaPlugin'>" : "<table class='popupTableAreaDocker'>";
+	$tableClass = $template['Language'] ? "<table class='popupTableAreaLanguage']>" : $tableClass;
+	$templateDescription .= $tableClass;
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
 	$author .= $template['Recommended'] ? "&nbsp;&nbsp;<span class='ca_thumbsup' style='cursor:default;'></span>" : "";
 	$templateDescription .= "<tr><td style='width:25%;'>".tr("Author:")."</td><td>$author</a></td></tr>";
-	if ( ! $template['Plugin'] ) {
+	if ( ! $template['Plugin'] && ! $template['Language']) {
 		$templateDescription .= "<tr><td>".tr("DockerHub:")."</td><td><a class='popUpLink' href='{$template['Registry']}' target='_blank'>{$template['Repository']}</a></td></tr>";
 	}
 	$templateDescription .= "<tr><td>".tr("Repository:")."</td><td>";
@@ -492,6 +515,9 @@ function getPopupDescription($appNumber) {
 	if ( $template['Category'] ) {
 		$templateDescription .= "<tr><td>".tr("Categories:")."</td><td>".$template['Category'];
 		$templateDescription .= "</td></tr>";
+	}
+	if ( $template['LanguageURL'] ) {
+		$templateDescription .= "<tr><td>".tr("Country Code:")."</td><td>".str_replace(".lang.zip","",basename($template['LanguageURL']))."</td></tr>";
 	}
 	if ( filter_var($template['multiLanguage'],FILTER_VALIDATE_BOOLEAN) ) 
 		$templateDescription .= "<tr><td>".tr("Multi Language Support")."</td><td>".tr("Yes")."</td></tr>";
@@ -532,7 +558,7 @@ function getPopupDescription($appNumber) {
 			$templateDescription .= "  ".sprintf(tr("Trending %s"), (end($template['trends']) > $template['trends'][count($template['trends'])-2]) ? " <span class='trendingUp'></span>" : " <span class='trendingDown'></span>");
 		}
 		$templateDescription .= "<tr><td></td><td>".sprintf(tr("(As of %s)"),my_lang(date("F",$template['LastUpdateScan'])).date(" j, Y  g:i a",$template['LastUpdateScan']),0)."</td></tr>";
-		$template['description'] .= "</td></tr>";
+		$templateDescription .= "</td></tr>";
 	}
 	if ( $template['Beta'] )
 		$templateDescription .= "<tr><td></td><td style='color:#FF8C2F;font-size:1.5rem;'>(BETA)</td></tr>";
@@ -597,7 +623,8 @@ function getPopupDescription($appNumber) {
 		}
 		$templateDescription .= "<hr>";
 	}
-	$templateDescription .= strip_tags($template['Description']);
+	
+	$templateDescription .= $template['Language'] ? $template['Description'] : strip_tags($template['Description']);
 	$templateDescription .= $template['ModeratorComment'] ? "<br><br><span class='ca_bold'><font color='red'>".tr("Moderator Comments:")."</font></span> ".$template['ModeratorComment'] : "";
 	$templateDescription .= "</p><br><div class='ca_center'>";
 
@@ -643,6 +670,8 @@ function getPopupDescription($appNumber) {
 				} else
 					$appInformation .= " - <font color='green'>".tr("Latest Version")."</font>";
 			}
+			$appInformation .= Markdown($template['Changes']);
+		} elseif ($template['LanguageURL']) {
 			$appInformation .= Markdown($template['Changes']);
 		} else {
 			$appInformation = $template['Changes'];
@@ -690,6 +719,11 @@ function displayCard($template) {
 	$appName = str_replace("-"," ",$template['display_dockerName']);
 	$dockerReinstall = $ca_Settings['defaultReinstall'] == "true" ? $template['display_dockerDefaultIcon'] : "";
 	$holder = $template['Plugin'] ? "ca_holderPlugin" : "ca_holderDocker";
+	$holder = $template['Language'] ? "ca_holderLanguage" : $holder;
+	if ($template['Language']) {
+		$language = "{$template['Language']} - {$template['LanguageLocal']}";
+		$template['Category'] = false;
+	}
 
 	$card = "
 		<div class='$holder'>
@@ -709,14 +743,14 @@ function displayCard($template) {
 						</span>
 						<br>
 						<span class='ca_categories'>
-							{$template['Category']}
+							{$template['Category']}$language
 						</span>
 					</div>
 				</div>
 			</div>
 			<div class='ca_hr'></div>
 			<div class='ca_bottomLine'>
-				{$template['display_multi_install']}{$template['display_pluginInstallIcon']} {$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']} {$template['display_faSupport']} {$template['display_faThumbsUp']} {$template['display_faProject']} {$template['display_pinButton']} &nbsp;&nbsp; {$template['display_removable']} {$template['display_Uninstall']}
+				{$template['display_multi_install']}{$template['display_language_switch']}{$template['display_pluginInstallIcon']} {$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']} {$template['display_faSupport']} {$template['display_faThumbsUp']} {$template['display_faProject']} {$template['display_pinButton']} &nbsp;&nbsp; {$template['display_removable']} {$template['display_Uninstall']}
 				<span class='ca_bottomRight'>
 					{$template['display_DonateImage']}
 				</span>

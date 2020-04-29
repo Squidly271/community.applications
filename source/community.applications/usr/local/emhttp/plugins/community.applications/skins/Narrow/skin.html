@@ -16,6 +16,9 @@
 <ul class='caMenu'>
 	<span id='category_list'></span>
 	<li class='categoryMenu caMenuItem' data-category='All'><?tr("All Apps");?></li>
+	<? if ( $translations ):?>
+	<li class='categoryMenu caMenuItem' data-category='Language:'><?tr("Languages");?></li>
+	<? endif; ?>
 </ul>
 <div class='menuHeader'><?tr("OTHER");?></div>
 <ul class='caMenu caRelated'>

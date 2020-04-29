@@ -90,8 +90,12 @@ body.stop-scrolling{height:100%;overflow:auto}  /* disable SweetAlert killing th
 .sweet-overlay{background-color:rgba(0, 0, 0, 0) !important;} /* don't dim if spinner is displayed */
 .popupTableAreaPlugin{font-size:0.9rem;width:450px;}
 .popupTableAreaDocker{font-size:0.9rem;width:450px;}
+.popupTableAreaLanguage{font-size:0.9rem;width:450px;}
+.popupTableAreaLanguage::before{position:absolute;margin-left:20rem;font-family:'fontAwesome';content:'\f1ab';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
+
 <?if ( ! $unRaid69 ):?>
 .popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'fontAwesome';content:'\f12e';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
+
 <?else:?>
 .popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e982';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
 <?endif;?>
@@ -116,6 +120,7 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 
 .ca_holderDocker {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderPlugin {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
+.ca_holderLanguage {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 
 <?if (! $unRaid69 ):?>
 .ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;}
@@ -126,6 +131,8 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 <?if ( $unRaid67 ):?>
 .ca_holderDocker::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;}
 <?endif;?>
+.ca_holderLanguage::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'fontAwesome';content:'\f1ab';font-size:9rem;color:<?=$watermarkColor?>;}
+
 .ca_topRightArea {display:block;position:relative;margin-top:.5rem;margin-right:2rem;z-index:9999;float:right;}
 img.displayIcon {height:6.4rem;width:6.4rem;}
 i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
@@ -193,6 +200,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .ca_fa-update::before {content:"\f021";font-family:fontAwesome;}
 .ca_fa-info::before {content:"\f05a";font-family:fontAwesome;}
 .ca_fa-warning::before {content:"\f071";font-family:fontAwesome;}
+.ca_fa-switchto::before {content:"\f021";font-family:fontAwesome;}
 .ca_thumbsup::before {content:"\f164";font-family:fontAwesome;color:#1fa67a;}
 .ca_thumbsup {cursor:default !important;}
 .trendingUp::before {content:"\f062";font-family:fontAwesome;}
