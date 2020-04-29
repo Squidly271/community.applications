@@ -815,8 +815,8 @@ case 'populateAutoComplete':
 	foreach ($templates as $template) {
 		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $caSettings['hideDeprecated'] == "true") && ($template['Compatible'] || $caSettings['hideIncompatible'] != "true") ) {
 			if ( $template['Language'] && $template['LanguageLocal'] ) {
-				$autoComplete[$template['Language']] = $template['Language'];
-				$autoComplete[$template['LanguageLocal']] = $template['LanguageLocal'];
+				$autoComplete[strtolower($template['Language'])] = $template['Language'];
+				$autoComplete[strtolower($template['LanguageLocal'])] = $template['LanguageLocal'];
 			} else {
 				$autoComplete[$template['Repo']] = $template['Repo'];
 			}	
@@ -970,6 +970,7 @@ case 'switchLanguage':
 	$language = getPost("language","");
 	if ( $language == "en_US" )
 		$language = "";
+	exec("logger switch language");
 	
 	$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
 	$dynamixSettings['display']['locale'] = $language;

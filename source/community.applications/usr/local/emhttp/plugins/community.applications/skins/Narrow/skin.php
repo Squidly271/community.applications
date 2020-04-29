@@ -256,7 +256,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				if ( $currentLanguage != $countryCode )
 					$template['display_language_switch'] = "<a class='ca_tooltip appIcons ca_fa-switchto' title='".tr("Switch to this language")."' data-language='$countryCode'></a>";
 			}
-			
 		}
 	
 # Entries created.  Now display it
@@ -473,6 +472,8 @@ function getPopupDescription($appNumber) {
 	$template['Description'] = trim($template['Description']);
 	$template['ModeratorComment'] .= $template['CAComment'];
 
+
+
 	if ( $template['Plugin'] ) {
 		download_url($template['PluginURL'],$caPaths['pluginTempDownload']);
 		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
@@ -578,42 +579,62 @@ function getPopupDescription($appNumber) {
 
 	if ( ! $Displayed )
 		$templateDescription .= "<div><span class='ca_fa-warning warning-yellow'></span>&nbsp; <font size='1'>".tr("Another browser tab or device has updated the displayed templates.  Some actions are not available")."</font></div>";
-
-	if ( $Displayed && ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
-		if ( ! $template['Plugin'] ) {
-			if ( $caSettings['dockerRunning'] ) {
-				if ( $selected ) {
-					$installLine .= $caSettings['defaultReinstall'] == "true" ? "<a class='appIconsPopUp ca_fa-install xmlInstall' onclick='xmlInstall(&quot;default&quot;,&quot;".addslashes($template['Path'])."&quot;);'>&nbsp;&nbsp;".tr("Reinstall (default)")."</a>" : "";
-					$installLine .= "<a class='appIconsPopUp ca_fa-edit' onclick='xmlInstall(&quot;edit&quot;,&quot;".addslashes($info[$name]['template'])."&quot;);'>&nbsp;&nbsp;".tr("Edit")."</a>";
-					if ( $info[$name]['url'] && $info[$name]['running'] ) {
-						$installLine .= "<a class='appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank'>&nbsp;&nbsp;".tr("WebUI")."</a>";
-					}
-				} else {
-					if ( $template['InstallPath'] )
-						$installLine .= "<a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;user&quot;,&quot;".addslashes($template['InstallPath'])."&quot;);'>&nbsp;&nbsp;".tr("Reinstall")."</a>";
-					else {
-						$install = "<a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;default&quot;,&quot;".addslashes($template['Path'])."&quot;);'>&nbsp;&nbsp;".tr("Install")."</a>";
-						$installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='appIconsPopUp ca_fa-install' onclick='$(&quot;#branch&quot;).show(500);'>&nbsp;&nbsp;".tr("Install")."</a>" : $install;
+	
+	if ( ! $template['Language'] ) {
+		if ( $Displayed && ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
+			if ( ! $template['Plugin'] ) {
+				if ( $caSettings['dockerRunning'] ) {
+					if ( $selected ) {
+						$installLine .= $caSettings['defaultReinstall'] == "true" ? "<a class='appIconsPopUp ca_fa-install xmlInstall' onclick='xmlInstall(&quot;default&quot;,&quot;".addslashes($template['Path'])."&quot;);'>&nbsp;&nbsp;".tr("Reinstall (default)")."</a>" : "";
+						$installLine .= "<a class='appIconsPopUp ca_fa-edit' onclick='xmlInstall(&quot;edit&quot;,&quot;".addslashes($info[$name]['template'])."&quot;);'>&nbsp;&nbsp;".tr("Edit")."</a>";
+						if ( $info[$name]['url'] && $info[$name]['running'] ) {
+							$installLine .= "<a class='appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank'>&nbsp;&nbsp;".tr("WebUI")."</a>";
+						}
+					} else {
+						if ( $template['InstallPath'] )
+							$installLine .= "<a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;user&quot;,&quot;".addslashes($template['InstallPath'])."&quot;);'>&nbsp;&nbsp;".tr("Reinstall")."</a>";
+						else {
+							$install = "<a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;default&quot;,&quot;".addslashes($template['Path'])."&quot;);'>&nbsp;&nbsp;".tr("Install")."</a>";
+							$installLine .= $template['BranchID'] ? "<a style='cursor:pointer' class='appIconsPopUp ca_fa-install' onclick='$(&quot;#branch&quot;).show(500);'>&nbsp;&nbsp;".tr("Install")."</a>" : $install;
+						}
 					}
 				}
-			}
-		} else {
-			if ( file_exists("/var/log/plugins/$pluginName") ) {
-				$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
-				if ( $pluginSettings )
-					$installLine .= "<a class='appIconsPopUp ca_fa-pluginSettings' href='/Apps/$pluginSettings' target='$tabMode'>&nbsp;&nbsp;".tr("Settings")."</a>";
 			} else {
-				$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
-				$installLine .= "<a style='cursor:pointer' class='appIconsPopUp ca_fa-install pluginInstall' onclick=installPlugin('".$template['PluginURL']."');>&nbsp;&nbsp;$buttonTitle</a>";
+				if ( file_exists("/var/log/plugins/$pluginName") ) {
+					$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
+					if ( $pluginSettings )
+						$installLine .= "<a class='appIconsPopUp ca_fa-pluginSettings' href='/Apps/$pluginSettings' target='$tabMode'>&nbsp;&nbsp;".tr("Settings")."</a>";
+				} else {
+					$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
+					$installLine .= "<a style='cursor:pointer' class='appIconsPopUp ca_fa-install pluginInstall' onclick=installPlugin('".$template['PluginURL']."');>&nbsp;&nbsp;$buttonTitle</a>";
+				}
 			}
 		}
 	}
+	if ( $template['Language'] ) {
+		$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
+		$currentLanguage = $dynamixSettings['display']['locale'] ?: "en_US";
+		$installedLanguages = array_diff(scandir("/usr/local/emhttp/languages"),array(".",".."));
+		$installedLanguages = array_filter($installedLanguages,function($v) {
+			return is_dir("/usr/local/emhttp/languages/$v");
+		});
+		$installedLanguages[] = "en_US";
+
+		$countryCode = str_replace(".lang.zip","",basename($template['LanguageURL']));
+		if ( in_array($countryCode,$installedLanguages) ) {
+			unset($template['display_dockerInstallIcon']);
+			if ( $currentLanguage != $countryCode )
+				$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-switchto' onclick=switchLanguage('$countryCode');> ".tr("Switch to this language")."</a>";
+		}
+	}
+		
 	if ( $template['Support'] || $template['Project'] ) {
 		$installLine .= "<span style='float:right;'>";
 		$installLine .= $template['Support'] ? "<a class='appIconsPopUp ca_fa-support' href='".$template['Support']."' target='_blank'>&nbsp;&nbsp;".tr("Support")."</strong></a>" : "";
 		$installLine .= $template['Project'] ? "<a class='appIconsPopUp ca_fa-project' href='".$template['Project']."' target='_blank'>&nbsp;&nbsp;".tr("Project")."</strong></a>" : "";
 		$installLine .= "</span>";
 	}
+	
 	if ( $installLine ) {
 		$templateDescription .= "$installLine<br>";
 		if ($template['BranchID']) {

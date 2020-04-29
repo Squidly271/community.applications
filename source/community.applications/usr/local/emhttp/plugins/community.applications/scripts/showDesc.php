@@ -292,6 +292,21 @@ function xmlInstall(type,xml) {
 	});
 }
 
+function switchLanguage(language) {
+	$.post("/plugins/community.applications/include/exec.php",{action:'switchLanguage',language:language,csrf_token:csrf_token},function(data) {
+		try {
+			var result = JSON.parse(data);
+		} catch(e) {
+			var result = new Object();
+			result = data;
+		}
+		console.log(data);
+		if ( result.status == "ok" ) {
+			window.parent.location.reload();
+		}
+	});
+}
+
 
 </script>
 <html>
