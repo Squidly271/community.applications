@@ -259,10 +259,18 @@ $(function(){
 			}
 		});
 	});
-	$('.mainArea').on("click",".ca_fa-switchto",function() {
+	$('.mainArea').on("click",".languageSwitch",function() {
 		switchLanguage($(this).data("language"));
 	});
-
+	$('.mainArea').on("click",".languageInstall",function() {
+		installLanguage($(this).data("language_xml"),$(this).data("language"));
+	});
+	$('.mainArea').on("click",".languageRemove",function() {
+		removeLanguage($(this).data("language"));
+	});
+	$('.mainArea').on("click",".languageUpdate",function() {
+		updateLanguage($(this).data("language"));
+	});
 <?if ( ! $unRaid66 ):?>
 	$("html").css("font-size","10px");
 <?endif;?>
@@ -304,7 +312,7 @@ $(function(){
 			}
 		});
 	} else {
-		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") ) {
+		if ( (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") || $.cookie("ca_languageSwitch") ) {
 			restoreState();
 			refreshDisplay();
 		} else {
@@ -409,7 +417,16 @@ function modalPluginInstall() {
 		clearInterval(pluginInstallIntervalTimer);
 		var pluginURL = $.cookie("ca_installPluginURL");
 		$.removeCookie("ca_installPluginURL");
-		installPlugin(pluginURL);
+		if ( pluginURL.toLowerCase().indexOf("http") !== 0 ) { // not a URL, so assume its a country code
+		  updateLanguage(pluginURL);
+		} else {
+			if ( pluginURL.indexOf(".xml") > 1 ) {
+				var language = pluginURL.basename().replace(".xml","");
+				installLanguage(pluginURL,language);
+			} else {
+				installPlugin(pluginURL);
+			}
+		}
 	}
 }
 
@@ -1161,6 +1178,8 @@ function restoreState() {
 	swalBackground("transparent");
 
 	console.log("Restore State");
+	$.removeCookie("ca_languageSwitch",{path:'/'});
+
 	$("#Category").html($.cookie("ca_categoryText"));
 	if ( $.cookie("ca_installMulti") == "true" ) {
 		$(".multi_installDiv").show();
@@ -1384,16 +1403,42 @@ function tr(string) {
 
 function switchLanguage(language) {
 	post({action:'switchLanguage',language:language},function(result) {
+		data.searchActive = true; // so the system doesn't resort
+		saveState();
+		$.cookie("ca_languageSwitch","switched",{expires:365});
 		window.location.reload();
 	});
 }
 
+function installLanguage(languageURL,language) {
+	disableSearch();
+	my_openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,tr('Install Language Pack'),600,900,true,"refreshDisplay();");
+}
+
+function updateLanguage(language) {
+	disableSearch();
+	my_openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,tr('Update Language Pack'),600,900,true,"refreshDisplay();");
+}	
+function removeLanguage(language) {
+	my_openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,tr('Remove Language Pack'),600,900,true,"postRemoveLanguage('"+language+"')");
+}
+
+function postRemoveLanguage(language) {
+	post({action:'postRemoveLanguage',language:language},function(result) {
+		if ( result.switched ) {
+			window.location.reload();
+		} else {
+			refreshDisplay();
+		}
+	});
+}
 </script>
 
 <? if ( ! $translations): ?>
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This chooses how to sort the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;These icons respectively will <span class='ca_bold'>Install or Edit</span> an application<br>
 > <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;Clicking these icons will take you to an application's GUI or settings<br>
+> <i class='fa fa-cloud-download' aria-hidden='true' style='font-size:2rem;'></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will update an application<br>
 > <span class='ca_fa-support' style='font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will take you to the appropriate support thread for an application<br>
 > <span class='ca_fa-project' style='font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will take you to the project page for an application<br>
 > <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>
@@ -1411,6 +1456,8 @@ function switchLanguage(language) {
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This chooses how to sort the results<br><br>
 > <i class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;These icons respectively will <span class='ca_bold'>Install or Edit</span> an application<br>
 > <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;Clicking these icons will take you to an application's GUI or settings<br>
+> <i class='fa fa-cloud-download' aria-hidden='true' style='font-size:2rem;'></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will update an application<br>
+> <span class='ca_fa-switchto' style='font-size:2rem;'></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will immediately switch to the language<br>
 > <span class='ca_fa-support' style='font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will take you to the appropriate support thread for an application<br>
 > <span class='ca_fa-project' style='font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will take you to the project page for an application<br>
 > <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br>

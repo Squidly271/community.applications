@@ -33,7 +33,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$info = getRunningContainers();
 	
-
 	if ( ! $selectedApps )
 		$selectedApps = array();
 
@@ -50,7 +49,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$sortOrder['sortBy'] = "noSort";
 
 	if ( $sortOrder['sortBy'] != "noSort" ) {
-		if ( $sortOrder['sortBy'] == "Name" ) $sortOrder['sortBy'] = "SortName";
+		if ( $sortOrder['sortBy'] == "Name" ) 
+			$sortOrder['sortBy'] = "SortName";
 		usort($file,"mySort");
 	}
 
@@ -63,7 +63,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$displayedTemplates = array();
 	foreach ($file as $template) {
-		if ( $template['Blacklist'] && ! $template['NoInstall'] ) continue;
+		if ( $template['Blacklist'] && ! $template['NoInstall'] )
+			continue;
 
 		$startingAppCounter++;
 		if ( $startingAppCounter < $startingApp ) continue;
@@ -176,8 +177,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		} else
 			$specialCategoryComment = $template['NoInstall'];
 
-		if ( $template['Beta'] )
-			$template['display_beta'] = "<span class='ca_display_beta'></span>";
+		$template['display_beta'] = $template['Beta'] ? "<span class='ca_display_beta'></span>" : "";
 
 		$warningColor = "warning-white";
 
@@ -198,7 +198,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['display_warning-text'] = $template['ModeratorComment'];
 		if ( $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] )
 			$template['display_warning-text'] .= $template['display_warning-text'] ? "<br>" : "";
-			$template['display_warning-text'] .= "{$template['display_compatible']}";
+		
+		$template['display_warning-text'] .= "{$template['display_compatible']}";
 
 		$template['display_faWarning'] = $template['display_warning-text'] ? "<span class='ca_tooltip-warning ca_fa-warning appIcons $warningColor' title='".htmlspecialchars($template['display_warning-text'],ENT_COMPAT | ENT_QUOTES)."'></span>" : "";
 
@@ -250,11 +251,17 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				});
 				$installedLanguages[] = "en_US";
 			}
-			$countryCode = str_replace(".lang.zip","",basename($template['LanguageURL']));
+			$countryCode = $template['LanguageDefault'] ? "en_US" : getCountryCodeFromURL($template['LanguageURL']);;
 			if ( in_array($countryCode,$installedLanguages) ) {
+				$template['display_languageUpdate'] = languageCheck($template) ? "<a class='ca_tooltip appIcons ca_fa-update languageUpdate' title='".tr("Update Language Pack")."' data-language='$countryCode' data-language_xml='{$template['TemplateURL']}'></a>" : "";
 				unset($template['display_dockerInstallIcon']);
 				if ( $currentLanguage != $countryCode )
-					$template['display_language_switch'] = "<a class='ca_tooltip appIcons ca_fa-switchto' title='".tr("Switch to this language")."' data-language='$countryCode'></a>";
+					$template['display_language_switch'] = "<a class='ca_tooltip appIcons ca_fa-switchto languageSwitch' title='".tr("Switch to this language")."' data-language='$countryCode'></a>";
+				if ( $countryCode !== "en_US" )
+					$template['display_Uninstall'] = "<a class='ca_tooltip appIcons ca_fa-delete languageRemove' title='".tr("Remove Language Pack")."' data-language='$countryCode'></a>";
+			} else {
+				unset($template['display_dockerInstallIcon']);
+				$template['display_languageInstallIcon'] = "<a class='ca_tooltip appIcons ca_fa-install languageInstall' title='".tr("Install Language Pack")."' data-language='$countryCode' data-language_xml='{$template['TemplateURL']}'></a>";
 			}
 		}
 	
@@ -333,18 +340,14 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 }
 
 ########################################################################################
-#                                                                                      #
 # function used to display the navigation (page up/down buttons) for dockerHub results #
-#                                                                                      #
 ########################################################################################
 function dockerNavigate($num_pages, $pageNumber) {
 	return getPageNavigation($pageNumber,$num_pages * 25, true);
 }
 
 ##############################################################
-#                                                            #
 # function that actually displays the results from dockerHub #
-#                                                            #
 ##############################################################
 function displaySearchResults($pageNumber) {
 	global $caPaths, $caSettings, $plugin;
@@ -430,7 +433,6 @@ function getPopupDescription($appNumber) {
 	}
 	$currentServer = file_get_contents($caPaths['currentServer']);
 
-	# Create entries for skins.  Note that MANY entries are not used in the current skins
 	if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
 		$template['Icon'] = $template['IconHTTPS'];
 
@@ -471,8 +473,6 @@ function getPopupDescription($appNumber) {
 	$template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 	$template['Description'] = trim($template['Description']);
 	$template['ModeratorComment'] .= $template['CAComment'];
-
-
 
 	if ( $template['Plugin'] ) {
 		download_url($template['PluginURL'],$caPaths['pluginTempDownload']);
@@ -517,8 +517,13 @@ function getPopupDescription($appNumber) {
 		$templateDescription .= "<tr><td>".tr("Categories:")."</td><td>".$template['Category'];
 		$templateDescription .= "</td></tr>";
 	}
-	if ( $template['LanguageURL'] ) {
-		$templateDescription .= "<tr><td>".tr("Country Code:")."</td><td>".str_replace(".lang.zip","",basename($template['LanguageURL']))."</td></tr>";
+	if ( $template['Language'] ) {
+		$templateDescription .= "<tr><td>".tr("Language").":</td><td>{$template['Language']}";
+		if ( $template['LanguageLocal'] )
+			$templateDescription .= " - {$template['LanguageLocal']}";
+		$templateDescription .= "</td></tr>";
+		$countryCode = $template['LanguageDefault'] ? "en_US" : getCountryCodeFromURL($template['LanguageURL']);
+		$templateDescription .= "<tr><td>".tr("Country Code:")."</td><td>$countryCode</td></tr>";
 	}
 	if ( filter_var($template['multiLanguage'],FILTER_VALIDATE_BOOLEAN) ) 
 		$templateDescription .= "<tr><td>".tr("Multi Language Support")."</td><td>".tr("Yes")."</td></tr>";
@@ -543,6 +548,14 @@ function getPopupDescription($appNumber) {
 		$template['pluginVersion'] = $template['pluginVersion'] ?: tr("unknown");
 		$templateDescription .= "<tr><td nowrap>".tr("Current Version:")."</td><td>{$template['pluginVersion']}</td></tr>";
 	}
+	if ($template['Language'] && $template['LanguageURL']) {
+		$templateDescription .= "<tr><td nowrap>".tr("Current Version:")."</td><td>{$template['Version']}</td></tr>";
+		if ( is_file("{$caPaths['installedLanguages']}/dynamix.$countryCode.xml") ) {
+			$installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/language Version /var/log/plugins/dynamix.$countryCode.xml");
+			$templateDescription .= "<tr><td nowrap>".tr("Installed Version:")."</td><td>$installedVersion</td></tr>";
+		}			
+	}		
+		
 	$unraidVersion = parse_ini_file($caPaths['unRaidVersion']);
 	$templateDescription .= ( $template['MinVer'] > "6.4.0" ) ? "<tr><td nowrap>".tr("Minimum OS:")."</td><td>unRaid v".$template['MinVer']."</td></tr>" : "";
 
@@ -619,12 +632,18 @@ function getPopupDescription($appNumber) {
 			return is_dir("/usr/local/emhttp/languages/$v");
 		});
 		$installedLanguages[] = "en_US";
-
-		$countryCode = str_replace(".lang.zip","",basename($template['LanguageURL']));
+					
 		if ( in_array($countryCode,$installedLanguages) ) {
-			unset($template['display_dockerInstallIcon']);
-			if ( $currentLanguage != $countryCode )
+			if ( $currentLanguage != $countryCode ) {
 				$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-switchto' onclick=switchLanguage('$countryCode');> ".tr("Switch to this language")."</a>";
+			} 
+		} else {
+			$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-install languageInstall' onclick=installPlugin('{$template['TemplateURL']}');> ".tr("Install Language Pack")."</a>";
+		}
+		if ( file_exists("/var/log/plugins/dynamix.$countryCode.xml") ) {
+			if ( languageCheck($template) ) {
+				$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-update languageInstall' onclick=installPlugin('$countryCode');> ".tr("Update Language Pack")."</a>";
+			}
 		}
 	}
 		
@@ -692,7 +711,7 @@ function getPopupDescription($appNumber) {
 					$appInformation .= " - <font color='green'>".tr("Latest Version")."</font>";
 			}
 			$appInformation .= Markdown($template['Changes']);
-		} elseif ($template['LanguageURL']) {
+		} elseif ($template['Language']) {
 			$appInformation .= Markdown($template['Changes']);
 		} else {
 			$appInformation = $template['Changes'];
@@ -742,7 +761,8 @@ function displayCard($template) {
 	$holder = $template['Plugin'] ? "ca_holderPlugin" : "ca_holderDocker";
 	$holder = $template['Language'] ? "ca_holderLanguage" : $holder;
 	if ($template['Language']) {
-		$language = "{$template['Language']} - {$template['LanguageLocal']}";
+		$language = "{$template['Language']}";
+		$language .= $template['LanguageLocal'] ? " - {$template['LanguageLocal']}" : "";
 		$template['Category'] = false;
 	}
 
@@ -771,7 +791,7 @@ function displayCard($template) {
 			</div>
 			<div class='ca_hr'></div>
 			<div class='ca_bottomLine'>
-				{$template['display_multi_install']}{$template['display_language_switch']}{$template['display_pluginInstallIcon']} {$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']} {$template['display_faSupport']} {$template['display_faThumbsUp']} {$template['display_faProject']} {$template['display_pinButton']} &nbsp;&nbsp; {$template['display_removable']} {$template['display_Uninstall']}
+				{$template['display_multi_install']}{$template['display_languageUpdate']}{$template['display_languageInstallIcon']}{$template['display_language_switch']}{$template['display_pluginInstallIcon']} {$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']} {$template['display_faSupport']} {$template['display_faThumbsUp']} {$template['display_faProject']} {$template['display_pinButton']} &nbsp;&nbsp; {$template['display_removable']} {$template['display_Uninstall']}
 				<span class='ca_bottomRight'>
 					{$template['display_DonateImage']}
 				</span>

@@ -307,7 +307,6 @@ function switchLanguage(language) {
 	});
 }
 
-
 </script>
 <html>
 <body>

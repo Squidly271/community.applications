@@ -252,12 +252,14 @@ function versionCheck($template) {
 ###############################################
 # Function to read a template XML to an array #
 ###############################################
-function readXmlFile($xmlfile) {
+function readXmlFile($xmlfile,$generic=false) {
 	global $statistics;
 
+	if ( ! is_file($xmlfile) ) return false;
 	$xml = file_get_contents($xmlfile);
 	$o = TypeConverter::xmlToArray($xml,TypeConverter::XML_GROUP);
 	if ( ! $o ) return false;
+	if ( $generic ) return $o;
 
 	# Fix some errors in templates prior to continuing
 
@@ -554,18 +556,18 @@ if ( ! function_exists("my_lang") ) {
 	}
 }
 
+######################
+# Writes an ini file #
+######################
 function write_ini_file($file, $array = []) {
-	// check first argument is string
 	if (!is_string($file)) {
 		throw new \InvalidArgumentException('Function argument 1 must be a string.');
 	}
 
-	// check second argument is array
 	if (!is_array($array)) {
 		throw new \InvalidArgumentException('Function argument 2 must be an array.');
 	}
 
-	// process array
 	$data = array();
 	foreach ($array as $key => $val) {
 		if (is_array($val)) {
@@ -586,11 +588,9 @@ function write_ini_file($file, $array = []) {
 		} else {
 			$data[] = $key.' = '.(is_numeric($val) ? $val : (ctype_upper($val) ? $val : '"'.$val.'"'));
 		}
-		// empty line
 		$data[] = null;
 	}
 
-	// open file pointer, init flock options
 	$fp = fopen($file, 'w');
 	$retries = 0;
 	$max_retries = 100;
@@ -599,7 +599,6 @@ function write_ini_file($file, $array = []) {
 		return false;
 	}
 
-	// loop until get lock, or reach max retries
 	do {
 		if ($retries > 0) {
 			usleep(rand(1, 5000));
@@ -607,19 +606,43 @@ function write_ini_file($file, $array = []) {
 		$retries += 1;
 	} while (!flock($fp, LOCK_EX) && $retries <= $max_retries);
 
-	// couldn't get the lock
 	if ($retries == $max_retries) {
 		return false;
 	}
 
-	// got lock, write data
 	fwrite($fp, implode(PHP_EOL, $data).PHP_EOL);
 
-	// release lock
 	flock($fp, LOCK_UN);
 	fclose($fp);
 
 	return true;
+}
+################################################
+# returns the country code from a language URL #
+################################################
+function getCountryCodeFromURL($url) {
+	return str_replace(".lang.zip","",basename($url));
+}
+
+#############################
+# Check for language update #
+#############################
+function languageCheck($template) {
+	global $caPaths;
+	
+	if ( ! $template['LanguageURL'] ) return false;
+
+	$countryCode = getCountryCodeFromURL($template['LanguageURL']);
+	$installedLanguage = "{$caPaths['installedLanguages']}/dynamix.$countryCode.xml";
+	$dynamixUpdate = "{$caPaths['dynamixUpdates']}/dynamix.$countryCode.xml";
+	if ( ! is_file($installedLanguage) ) return false;
+	
+	$OSupdates = readXmlFile($dynamixUpdate,true);   // Because the OS might check for an update before the feed
+	if ( ! $OSupdates ) $OSupdates['Version'] = "1900.01.01";
+		
+	$xmlFile = readXmlFile($installedLanguage,true);
+
+	return (strcmp($template['Version'],$xmlFile['Version']) > 0) || (strcmp($OSupdates['Version'],$xmlFile['Version']) > 0);
 }
  /**
  * @copyright Copyright 2006-2012, Miles Johnson - http://milesj.me
