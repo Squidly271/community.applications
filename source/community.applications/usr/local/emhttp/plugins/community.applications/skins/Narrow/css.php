@@ -37,7 +37,7 @@ $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 $unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 $unRaid67 = version_compare($unRaidSettings['version'],"6.7.0-rc4",">");
-$unRaid69 = version_compare($unRaidSettings['version'],"6.8.2",">");
+$unRaid69 = version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
 $unRaid66color = "#FF8C2F";
 $linkColor = "#486dba";
 $startupColor = "#FF8C2F";
@@ -91,13 +91,13 @@ body.stop-scrolling{height:100%;overflow:auto}  /* disable SweetAlert killing th
 .popupTableAreaPlugin{font-size:0.9rem;width:450px;}
 .popupTableAreaDocker{font-size:0.9rem;width:450px;}
 .popupTableAreaLanguage{font-size:0.9rem;width:450px;}
-.popupTableAreaLanguage::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e983';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
+.popupTableAreaLanguage::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e987';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
 
 <?if ( ! $unRaid69 ):?>
 .popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'fontAwesome';content:'\f12e';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
 
 <?else:?>
-.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e944';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
+.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e987';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
 <?endif;?>
 <?if ( $unRaid67 ):?>
 .popupTableAreaDocker::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e90b';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
@@ -125,13 +125,13 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 <?if (! $unRaid69 ):?>
 .ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;}
 <?else:?>
-.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'Unraid';content:'\e944';font-size:8rem;color:<?=$watermarkColor?>;}
+.ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'Unraid';content:'\e986';font-size:8rem;color:<?=$watermarkColor?>;}
 <?endif;?>
 
 <?if ( $unRaid67 ):?>
 .ca_holderDocker::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;}
 <?endif;?>
-.ca_holderLanguage::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e983';font-size:9rem;color:<?=$watermarkColor?>;}
+.ca_holderLanguage::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e987';font-size:9rem;color:<?=$watermarkColor?>;}
 
 .ca_topRightArea {display:block;position:relative;margin-top:.5rem;margin-right:2rem;z-index:9999;float:right;}
 img.displayIcon {height:6.4rem;width:6.4rem;}

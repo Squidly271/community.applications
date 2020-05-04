@@ -251,6 +251,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				});
 				$installedLanguages[] = "en_US";
 			}
+			$currentLanguage = is_dir("/usr/local/emhttp/languages/$currentLanguage") ? $currentLanguage : "en_US";
 			$countryCode = $template['LanguageDefault'] ? "en_US" : getCountryCodeFromURL($template['LanguageURL']);;
 			if ( in_array($countryCode,$installedLanguages) ) {
 				$template['display_languageUpdate'] = languageCheck($template) ? "<a class='ca_tooltip appIcons ca_fa-update languageUpdate' title='".tr("Update Language Pack")."' data-language='$countryCode' data-language_xml='{$template['TemplateURL']}'></a>" : "";
@@ -632,7 +633,8 @@ function getPopupDescription($appNumber) {
 			return is_dir("/usr/local/emhttp/languages/$v");
 		});
 		$installedLanguages[] = "en_US";
-					
+		
+		$currentLanguage = (is_dir("/usr/local/emhttp/languages/$currentLanguage") ) ? $currentLanguage : "en_US";
 		if ( in_array($countryCode,$installedLanguages) ) {
 			if ( $currentLanguage != $countryCode ) {
 				$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-switchto' onclick=switchLanguage('$countryCode');> ".tr("Switch to this language")."</a>";

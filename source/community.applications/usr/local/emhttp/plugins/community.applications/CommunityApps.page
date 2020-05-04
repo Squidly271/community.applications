@@ -278,7 +278,7 @@ $(function(){
 	if ( "<?=$firstRun?>" == "true" ) {
 		swal({
 			title: tr("Disclaimer"),
-			text: tr('All applications listed here are 3rd party additions to unRaid  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here')+' <br><span class="ca_italic"><font color="green">'+tr('Every attempt is made to ensure that only safe and compatible applications are present')+'</font></span><br><br><center><a href="https://forums.unraid.net/topic/87144-ca-application-policies/" target="_blank">'+tr('Application Policy')+'</a>',
+			text: tr('All applications listed here are 3rd party additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here')+' <br><span class="ca_italic"><font color="green">'+tr('Every attempt is made to ensure that only safe and compatible applications are present')+'</font></span><br><br><center><a href="https://forums.unraid.net/topic/87144-ca-application-policies/" target="_blank">'+tr('Application Policy')+'</a>',
 			html: true,
 			type: 'warning',
 			showCancelButton: true,
@@ -291,7 +291,7 @@ $(function(){
 					location.reload();
 				});
 			} else {
-				addBannerWarning(tr("Installations of apps disabled.  You must accept the warning to be able to install applications.")+"   <a onclick='window.location.reload();' style='cursor:pointer;'>"+tr("Click Here")+"</a>",true,true);
+				addBannerWarning(tr("Installations of apps disabled.  You must accept the warning to be able to install applications.")+"   <a onclick='window.location.reload();' style='cursor:pointer;'>"+tr("Click here")+"</a>",true,true);
 				updateContent();
 			}
 		});
@@ -407,9 +407,14 @@ function setToolTip() {
 // Wait for the showDesc modal to close before opening another to install plugin
 function checkForPluginInstallRequested() {
 	var pluginURL = $.cookie("ca_installPluginURL");
+	var language = $.cookie("ca_languageSwitch");
 	if ( pluginURL ) {
 		pluginInstallIntervalTimer = setInterval(modalPluginInstall,100);
 	}
+	if ( language ) {
+		switchLanguage(language);
+	}
+		
 }
 
 function modalPluginInstall() {
@@ -1405,7 +1410,7 @@ function switchLanguage(language) {
 	post({action:'switchLanguage',language:language},function(result) {
 		data.searchActive = true; // so the system doesn't resort
 		saveState();
-		$.cookie("ca_languageSwitch","switched",{expires:365});
+		$.cookie("ca_languageSwitch","switched",{expires:365,path:'/'});
 		window.location.reload();
 	});
 }
@@ -1426,6 +1431,8 @@ function removeLanguage(language) {
 function postRemoveLanguage(language) {
 	post({action:'postRemoveLanguage',language:language},function(result) {
 		if ( result.switched ) {
+			saveState();
+			$.cookie("ca_languageSwitch","switched",{expires:365});
 			window.location.reload();
 		} else {
 			refreshDisplay();

@@ -302,7 +302,8 @@ function switchLanguage(language) {
 		}
 		console.log(data);
 		if ( result.status == "ok" ) {
-			window.parent.location.reload();
+			$.cookie("ca_languageSwitch",language,{path:"/"});
+			window.parent.Shadowbox.close();
 		}
 	});
 }
