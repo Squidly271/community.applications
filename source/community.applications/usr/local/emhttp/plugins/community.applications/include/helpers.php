@@ -92,19 +92,37 @@ function getSortOrder($sortArray) {
 	return $sortOrder;
 }
 
-#################################################################
-# Helper function to determine if $haystack begins with $needle #
-#################################################################
+##############################################
+# Determine if $haystack begins with $needle #
+##############################################
 function startsWith($haystack, $needle) {
 	if ( !is_string($haystack) || ! is_string($needle) ) return false;
 	return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;
 }
 
-###################################################################
-# Helper function to only replace the first occurance in a string #
-###################################################################
+#############################################
+# Determine if $string ends with $endstring #
+############################################# 
+function endsWith($string, $endString) { 
+	$len = strlen($endString); 
+	if ($len == 0) { 
+		return true; 
+	} 
+	return (substr($string, -$len) === $endString); 
+} 
+
+###########################################
+# Replace the first occurance in a string #
+###########################################
 function first_str_replace($haystack, $needle, $replace) {
 	$pos = strpos($haystack, $needle);
+	return ($pos !== false) ? substr_replace($haystack, $replace, $pos, strlen($needle)) : $haystack;
+}
+##########################################
+# Replace the last occurance in a string #
+##########################################
+function last_str_replace($haystack, $needle, $replace) {
+	$pos = strrpos($haystack, $needle);
 	return ($pos !== false) ? substr_replace($haystack, $replace, $pos, strlen($needle)) : $haystack;
 }
 
@@ -513,40 +531,16 @@ function postReturn($retArray) {
 }
 
 ####################################
-# Converts the pinned json to a v2 #
-####################################
-# eventually deprecate this function as it won't be needed -> fuck the user if they haven't already converted the file.
-function convertPinnedAppsToV2() {
-	global $caPaths;
-
-	$pinnedApps = readJsonFile($caPaths['pinned']);
-	$file = readJsonFile($caPaths['community-templates-info']);
-	$startIndex = 0;
-	foreach ($pinnedApps as $pinned) {
-		for ($i=0;$i<10;$i++) {
-			$index = searchArray($file,"Repository",$pinned,$startIndex);
-			if ( $index !== false ) {
-				if ( $file[$index]['Blacklist'] ) { #This handles things like duplicated templates
-					$startIndex = $index + 1;
-					continue;
-				}
-				$name = $file[$index]['SortName'];
-				$pinnedV2["$pinned&$name"] = "$pinned&$name";
-				break;
-			}
-		}
-	}
-	writeJsonFile($caPaths['pinnedV2'],$pinnedV2);
-	@unlink($caPaths['pinned']);
-}
-
-####################################
 # Translation backwards compatible #
 ####################################
 if ( ! function_exists("tr") ) {
 	function tr($string) {
-		if ( function_exists("_") )
-			return _($string);
+		if ( function_exists("_") ) {
+			$translated = _($string);
+			if ( startsWith($translated,"&#34;") && endsWith($translated,"&#34;") )
+				$translated = first_str_replace(last_str_replace($translated,"&#34;",""),"&#34;","");
+			return $translated;
+		}
 		return $string;
 	}
 }
@@ -617,6 +611,7 @@ function write_ini_file($file, $array = []) {
 
 	return true;
 }
+
 ################################################
 # returns the country code from a language URL #
 ################################################
@@ -635,10 +630,12 @@ function languageCheck($template) {
 	$countryCode = getCountryCodeFromURL($template['LanguageURL']);
 	$installedLanguage = "{$caPaths['installedLanguages']}/dynamix.$countryCode.xml";
 	$dynamixUpdate = "{$caPaths['dynamixUpdates']}/dynamix.$countryCode.xml";
-	if ( ! is_file($installedLanguage) ) return false;
+	if ( ! is_file($installedLanguage) )
+		return false;
 	
 	$OSupdates = readXmlFile($dynamixUpdate,true);   // Because the OS might check for an update before the feed
-	if ( ! $OSupdates ) $OSupdates['Version'] = "1900.01.01";
+	if ( ! $OSupdates )
+		$OSupdates['Version'] = "1900.01.01";
 		
 	$xmlFile = readXmlFile($installedLanguage,true);
 

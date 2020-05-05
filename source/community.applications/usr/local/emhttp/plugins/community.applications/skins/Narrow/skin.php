@@ -32,15 +32,12 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$viewMode = "detail";
 
 	$info = getRunningContainers();
-	
+
 	if ( ! $selectedApps )
 		$selectedApps = array();
 
 	$dockerNotEnabled = (! $caSettings['dockerRunning'] && ! $caSettings['NoInstalls']) ? "true" : "false";
 		$displayHeader = "<script>addDockerWarning($dockerNotEnabled);var dockerNotEnabled = $dockerNotEnabled;</script>";
-
-	if ( is_file($caPaths['pinned']) )
-		convertPinnedAppsToV2();
 
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 
@@ -49,7 +46,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$sortOrder['sortBy'] = "noSort";
 
 	if ( $sortOrder['sortBy'] != "noSort" ) {
-		if ( $sortOrder['sortBy'] == "Name" ) 
+		if ( $sortOrder['sortBy'] == "Name" )
 			$sortOrder['sortBy'] = "SortName";
 		usort($file,"mySort");
 	}
@@ -90,7 +87,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : "{$template['Repository']}:latest";
 		if ( ! strpos($tmpRepo,"/") )
 			$tmpRepo = "library/$tmpRepo";
-		
+
 		$selected = $selected ? ($tmpRepo == $info[$name]['repository']) : false;
 		$selected = $template['Uninstall'] ? true : $selected;
 
@@ -104,7 +101,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['DonateText'] = tr("Donate To Author");
 
 		$template['display_Private'] = ( $template['Private'] == "true" ) ? "<span class='ca_tooltip ca_private' title='".tr("Private (dockerHub Conversion)")."'></span>" : "";
-		$template['display_DonateLink'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'></a>" : "";
+		$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>".tr("Donate")."</a>" : "";
 
 		$template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons' target='_blank' href='{$template['Project']}' title='".tr("Go to the project page")."'></a>" : "";
 		$template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons' href='{$template['Support']}' target='_blank' title='".tr("Go to the support thread")."'></a>" : "";
@@ -198,7 +195,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['display_warning-text'] = $template['ModeratorComment'];
 		if ( $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] )
 			$template['display_warning-text'] .= $template['display_warning-text'] ? "<br>" : "";
-		
+
 		$template['display_warning-text'] .= "{$template['display_compatible']}";
 
 		$template['display_faWarning'] = $template['display_warning-text'] ? "<span class='ca_tooltip-warning ca_fa-warning appIcons $warningColor' title='".htmlspecialchars($template['display_warning-text'],ENT_COMPAT | ENT_QUOTES)."'></span>" : "";
@@ -233,11 +230,11 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$template['display_iconOnly'] = $template['display_iconSmall'];
 			}
 		}
-		
+
 		$template['display_dockerName'] = "<span class='ca_applicationName'>";
 		$template['display_dockerName'] .= $template['Name_highlighted'] ?: $template['Name'];
 		$template['display_dockerName'] .= "</span>";
-		
+
 		$template['Category'] = ($template['Category'] == "UNCATEGORIZED") ? tr("Uncategorized") : $template['Category'];
 
 // Language Specific
@@ -265,7 +262,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$template['display_languageInstallIcon'] = "<a class='ca_tooltip appIcons ca_fa-install languageInstall' title='".tr("Install Language Pack")."' data-language='$countryCode' data-language_xml='{$template['TemplateURL']}'></a>";
 			}
 		}
-	
+
 # Entries created.  Now display it
 		$ct .= displayCard($template);
 		$count++;
@@ -526,7 +523,7 @@ function getPopupDescription($appNumber) {
 		$countryCode = $template['LanguageDefault'] ? "en_US" : getCountryCodeFromURL($template['LanguageURL']);
 		$templateDescription .= "<tr><td>".tr("Country Code:")."</td><td>$countryCode</td></tr>";
 	}
-	if ( filter_var($template['multiLanguage'],FILTER_VALIDATE_BOOLEAN) ) 
+	if ( filter_var($template['multiLanguage'],FILTER_VALIDATE_BOOLEAN) )
 		$templateDescription .= "<tr><td>".tr("Multi Language Support")."</td><td>".tr("Yes")."</td></tr>";
 	if ( ! $template['Plugin'] ) {
 		if ( strtolower($template['Base']) == "unknown" || ! $template['Base'])
@@ -554,9 +551,9 @@ function getPopupDescription($appNumber) {
 		if ( is_file("{$caPaths['installedLanguages']}/dynamix.$countryCode.xml") ) {
 			$installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/language Version /var/log/plugins/dynamix.$countryCode.xml");
 			$templateDescription .= "<tr><td nowrap>".tr("Installed Version:")."</td><td>$installedVersion</td></tr>";
-		}			
-	}		
-		
+		}
+	}
+
 	$unraidVersion = parse_ini_file($caPaths['unRaidVersion']);
 	$templateDescription .= ( $template['MinVer'] > "6.4.0" ) ? "<tr><td nowrap>".tr("Minimum OS:")."</td><td>unRaid v".$template['MinVer']."</td></tr>" : "";
 
@@ -593,7 +590,7 @@ function getPopupDescription($appNumber) {
 
 	if ( ! $Displayed )
 		$templateDescription .= "<div><span class='ca_fa-warning warning-yellow'></span>&nbsp; <font size='1'>".tr("Another browser tab or device has updated the displayed templates.  Some actions are not available")."</font></div>";
-	
+
 	if ( ! $template['Language'] ) {
 		if ( $Displayed && ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
 			if ( ! $template['Plugin'] ) {
@@ -633,12 +630,12 @@ function getPopupDescription($appNumber) {
 			return is_dir("/usr/local/emhttp/languages/$v");
 		});
 		$installedLanguages[] = "en_US";
-		
+
 		$currentLanguage = (is_dir("/usr/local/emhttp/languages/$currentLanguage") ) ? $currentLanguage : "en_US";
 		if ( in_array($countryCode,$installedLanguages) ) {
 			if ( $currentLanguage != $countryCode ) {
 				$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-switchto' onclick=switchLanguage('$countryCode');> ".tr("Switch to this language")."</a>";
-			} 
+			}
 		} else {
 			$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-install languageInstall' onclick=installPlugin('{$template['TemplateURL']}');> ".tr("Install Language Pack")."</a>";
 		}
@@ -648,14 +645,14 @@ function getPopupDescription($appNumber) {
 			}
 		}
 	}
-		
+
 	if ( $template['Support'] || $template['Project'] ) {
 		$installLine .= "<span style='float:right;'>";
 		$installLine .= $template['Support'] ? "<a class='appIconsPopUp ca_fa-support' href='".$template['Support']."' target='_blank'>&nbsp;&nbsp;".tr("Support")."</strong></a>" : "";
 		$installLine .= $template['Project'] ? "<a class='appIconsPopUp ca_fa-project' href='".$template['Project']."' target='_blank'>&nbsp;&nbsp;".tr("Project")."</strong></a>" : "";
 		$installLine .= "</span>";
 	}
-	
+
 	if ( $installLine ) {
 		$templateDescription .= "$installLine<br>";
 		if ($template['BranchID']) {
@@ -665,7 +662,7 @@ function getPopupDescription($appNumber) {
 		}
 		$templateDescription .= "<hr>";
 	}
-	
+
 	$templateDescription .= $template['Language'] ? $template['Description'] : strip_tags($template['Description']);
 	$templateDescription .= $template['ModeratorComment'] ? "<br><br><span class='ca_bold'><font color='red'>".tr("Moderator Comments:")."</font></span> ".$template['ModeratorComment'] : "";
 	$templateDescription .= "</p><br><div class='ca_center'>";
