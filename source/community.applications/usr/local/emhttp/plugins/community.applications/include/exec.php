@@ -189,11 +189,15 @@ case 'get_content':
 		if ( $displayPrivates && ! $template['Private'] ) continue;
 
 		if ($filter) {
-			if ( filterMatch($filter,array($template['Name'])) ) {
+			if ( filterMatch($filter,array($template['Name'],$template['Language'],$template['LanguageLocal'])) ) {
 				$template['Name_highlighted'] = highlight($filter,$template['Name']);
 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
 				$template['CardDescription'] = highlight($filter,$template['CardDescription']);
+				if ($template['Language']) {
+					$template['Language'] = highlight($filter,$template['Language']);
+					$template['LanguageLocal'] = highlight($filter,$template['LanguageLocal']);
+				}
 				$searchResults['nameHit'][] = $template;
 			} else if ( filterMatch($filter,array($template['Author'],$template['Description'],$template['RepoName'],$template['Category'])) ) {
 				$template['Description'] = highlight($filter, $template['Description']);
@@ -968,23 +972,6 @@ case 'createXML':
 	postReturn(["status"=>"ok","cache"=>$cacheVolume]);
 	break;
 	
-########################
-# Switch to a language #
-########################
-case 'switchLanguage':
-	$language = getPost("language","");
-	if ( $language == "en_US" )
-		$language = "";
-	
-	if ( ! is_dir("/usr/local/emhttp/languages/$language") )  {
-		postReturn(["error"=>"language $language is not installed"]);
-		break;
-	}
-	$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
-	$dynamixSettings['display']['locale'] = $language;
-	write_ini_file($caPaths['dynamixSettings'],$dynamixSettings);
-	postReturn(["status"=> "ok"]);
-	break;
 
 ##########################################################################
 # Check to see if we need to switch the display language after a removal #
@@ -994,8 +981,6 @@ case 'postRemoveLanguage':
 
 	$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
 	if ( $dynamixSettings['display']['locale'] == $language ) {
-		$dynamixSettings['display']['locale'] = "";
-		write_ini_file($caPaths['dynamixSettings'],$dynamixSettings);
 		postReturn(['switched'=>"switched to english"]);
 	} else {
 		postReturn(['status'=>"ok"]);

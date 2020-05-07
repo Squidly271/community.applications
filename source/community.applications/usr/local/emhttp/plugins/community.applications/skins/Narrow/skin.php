@@ -6,11 +6,6 @@
 #                                                             #
 ###############################################################
 
-############################################################
-#                                                          #
-# Routines that actually displays the template containers. #
-#                                                          #
-############################################################
 function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 	global $caPaths, $caSettings;
 
@@ -23,9 +18,6 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 	return $display;
 }
 
-# skin specific PHP
-#my_display_apps(), getPageNavigation(), displaySearchResults() must accept all parameters
-#note that many template entries in my_display_apps() are not actually used in the skin, but are present for future possible use.
 function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false) {
 	global $caPaths, $caSettings, $plugin, $displayDeprecated, $sortOrder;
 
@@ -74,7 +66,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$currentServer = @file_get_contents($caPaths['currentServer']);
 
-	# Create entries for skins.  Note that MANY entries are not used in the current skin
+	# Create entries for skins.  
 	foreach ($displayedTemplates as $template) {
 		if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
 			$template['Icon'] = $template['IconHTTPS'];
@@ -249,7 +241,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$installedLanguages[] = "en_US";
 			}
 			$currentLanguage = is_dir("/usr/local/emhttp/languages/$currentLanguage") ? $currentLanguage : "en_US";
-			$countryCode = $template['LanguageDefault'] ? "en_US" : getCountryCodeFromURL($template['LanguageURL']);;
+			$countryCode = $template['LanguageDefault'] ? "en_US" : $template['LanguagePack'];
 			if ( in_array($countryCode,$installedLanguages) ) {
 				$template['display_languageUpdate'] = languageCheck($template) ? "<a class='ca_tooltip appIcons ca_fa-update languageUpdate' title='".tr("Update Language Pack")."' data-language='$countryCode' data-language_xml='{$template['TemplateURL']}'></a>" : "";
 				unset($template['display_dockerInstallIcon']);
@@ -520,7 +512,7 @@ function getPopupDescription($appNumber) {
 		if ( $template['LanguageLocal'] )
 			$templateDescription .= " - {$template['LanguageLocal']}";
 		$templateDescription .= "</td></tr>";
-		$countryCode = $template['LanguageDefault'] ? "en_US" : getCountryCodeFromURL($template['LanguageURL']);
+		$countryCode = $template['LanguageDefault'] ? "en_US" : $template['LanguagePack'];
 		$templateDescription .= "<tr><td>".tr("Country Code:")."</td><td>$countryCode</td></tr>";
 	}
 	if ( filter_var($template['multiLanguage'],FILTER_VALIDATE_BOOLEAN) )
@@ -534,7 +526,7 @@ function getPopupDescription($appNumber) {
 	}
 	$templateDescription .= $template['stars'] ? "<tr><td nowrap>".tr("DockerHub Stars:")."</td><td><span class='dockerHubStar'></span> ".$template['stars']."</td></tr>" : "";
 
-	if ( $template['FirstSeen'] > 1 && $template['Name'] != "Community Applications" )
+	if ( $template['FirstSeen'] > 1 && $template['Name'] != "Community Applications" && $countryCode != "en_US")
 		$templateDescription .= "<tr><td>".tr("Added to CA:")."</td><td>".my_lang(date("F",$template['FirstSeen']),0).date(" j, Y",$template['FirstSeen'])."</td></tr>";
 
 	# In this day and age with auto-updating apps, NO ONE keeps up to date with the date updated.  Remove from docker containers to avoid confusion
@@ -549,7 +541,7 @@ function getPopupDescription($appNumber) {
 	if ($template['Language'] && $template['LanguageURL']) {
 		$templateDescription .= "<tr><td nowrap>".tr("Current Version:")."</td><td>{$template['Version']}</td></tr>";
 		if ( is_file("{$caPaths['installedLanguages']}/dynamix.$countryCode.xml") ) {
-			$installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/language Version /var/log/plugins/dynamix.$countryCode.xml");
+			$installedVersion = exec("/usr/local/emhttp/plugins/dynamix.plugin.manager/scripts/language Version /var/log/plugins/lang-$countryCode.xml");
 			$templateDescription .= "<tr><td nowrap>".tr("Installed Version:")."</td><td>$installedVersion</td></tr>";
 		}
 	}
@@ -634,12 +626,12 @@ function getPopupDescription($appNumber) {
 		$currentLanguage = (is_dir("/usr/local/emhttp/languages/$currentLanguage") ) ? $currentLanguage : "en_US";
 		if ( in_array($countryCode,$installedLanguages) ) {
 			if ( $currentLanguage != $countryCode ) {
-				$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-switchto' onclick=switchLanguage('$countryCode');> ".tr("Switch to this language")."</a>";
+				$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-switchto' onclick=CAswitchLanguage('$countryCode');> ".tr("Switch to this language")."</a>";
 			}
 		} else {
 			$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-install languageInstall' onclick=installPlugin('{$template['TemplateURL']}');> ".tr("Install Language Pack")."</a>";
 		}
-		if ( file_exists("/var/log/plugins/dynamix.$countryCode.xml") ) {
+		if ( file_exists("/var/log/plugins/lang-$countryCode.xml") ) {
 			if ( languageCheck($template) ) {
 				$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-update languageInstall' onclick=installPlugin('$countryCode');> ".tr("Update Language Pack")."</a>";
 			}
@@ -693,7 +685,7 @@ function getPopupDescription($appNumber) {
 	}
 
 	$changeLogMessage = "Note: not all ";
-	$changeLogMessage .= $template['PluginURL'] ? "authors" : "maintainers";
+	$changeLogMessage .= $template['PluginURL'] || $template['Language'] ? "authors" : "maintainers";
 	$changeLogMessage .= " keep up to date on change logs</font></div><br>";
 	$changeLogMessage = "<div class='ca_center'><font size='0'>".tr($changeLogMessage)."</font></div><br>";
 	if ( trim($template['Changes']) ) {

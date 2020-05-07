@@ -129,7 +129,6 @@ $(function() {
 					datasets: [{
 						label: "Trend Per Month",
 						data: descData.trendData,
-	//					backgroundColor: '#c0c0c0',
 						borderColor: '#FF8C2F',
 						trendlineLinear: {
 							style: "rgb(255 ,66 ,255)",
@@ -175,7 +174,6 @@ $(function() {
 					datasets: [{
 						label: "Downloads Per Month",
 						data: descData.downloadtrend,
-//						backgroundColor: '#c0c0c0',
 						borderColor: '#FF8C2F',
 						trendlineLinear: {
 							style: "rgb(255 ,66 ,255)",
@@ -292,20 +290,9 @@ function xmlInstall(type,xml) {
 	});
 }
 
-function switchLanguage(language) {
-	$.post("/plugins/community.applications/include/exec.php",{action:'switchLanguage',language:language,csrf_token:csrf_token},function(data) {
-		try {
-			var result = JSON.parse(data);
-		} catch(e) {
-			var result = new Object();
-			result = data;
-		}
-		console.log(data);
-		if ( result.status == "ok" ) {
-			$.cookie("ca_languageSwitch",language,{path:"/"});
-			window.parent.Shadowbox.close();
-		}
-	});
+function CAswitchLanguage(language) {
+	$.cookie("ca_languageSwitch",language,{path:"/"});
+	window.parent.Shadowbox.close();
 }
 
 </script>

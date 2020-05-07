@@ -259,7 +259,7 @@ $(function(){
 		});
 	});
 	$('.mainArea').on("click",".languageSwitch",function() {
-		switchLanguage($(this).data("language"));
+		CAswitchLanguage($(this).data("language"));
 	});
 	$('.mainArea').on("click",".languageInstall",function() {
 		installLanguage($(this).data("language_xml"),$(this).data("language"));
@@ -411,7 +411,7 @@ function checkForPluginInstallRequested() {
 		pluginInstallIntervalTimer = setInterval(modalPluginInstall,100);
 	}
 	if ( language ) {
-		switchLanguage(language);
+		CAswitchLanguage(language);
 	}
 
 }
@@ -1288,7 +1288,6 @@ function post(options,callback) {
 	if ( typeof options === "function" ) {
 		callback = options;
 	} else {
-		console.time(options.action);
 		var msg = postCount > 0 ? "Embedded Post: " : "Post: ";
 		console.log(msg+JSON.stringify(options));
 	}
@@ -1315,7 +1314,6 @@ function post(options,callback) {
 				throw new Error("Something went badly wrong!");
 			}
 			console.groupCollapsed("Result "+options.action);
-			console.timeEnd(options.action);
 			console.log(result);
 			console.groupEnd();
 			eval(callback(result));
@@ -1343,14 +1341,11 @@ function post(options,callback) {
 	if ( ! cookiesEnabled() ) {
 		if ( cookieWarning === false) {
 			cookieWarning = addBannerWarning(tr("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available."));
-			console.log("cookie warning:"+cookieWarning);
-			console.log("warning added");
 		}
 	} else {
 		if ( cookieWarning !== false ) {
 			removeBannerWarning(cookieWarning);
 			cookieWarning = false;
-			console.log("warning removed");
 		}
 	}
 }
@@ -1405,13 +1400,11 @@ function tr(string) {
 	return string;
 }
 
-function switchLanguage(language) {
-	post({action:'switchLanguage',language:language},function(result) {
-		data.searchActive = true; // so the system doesn't resort
-		saveState();
-		$.cookie("ca_languageSwitch","switched",{expires:365,path:'/'});
-		window.location.reload();
-	});
+function CAswitchLanguage(language) {
+	data.searchActive = true; // so the system doesn't resort
+	saveState();
+	$.cookie("ca_languageSwitch","switched",{expires:365,path:'/'});
+	switchLanguage(language);
 }
 
 function installLanguage(languageURL,language) {
@@ -1432,6 +1425,7 @@ function postRemoveLanguage(language) {
 		if ( result.switched ) {
 			saveState();
 			$.cookie("ca_languageSwitch","switched",{expires:365});
+			switchLanguage("");
 			window.location.reload();
 		} else {
 			refreshDisplay();
