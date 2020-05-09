@@ -14,7 +14,7 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 $translationsAllowed = is_file("$docroot/plugins/dynamix/include/Translations.php");
 if ( $translationsAllowed ) {
-	$_SERVER['REQUEST_URI'] = "docker/apps-1";
+	$_SERVER['REQUEST_URI'] = "docker/apps";
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
 	$my_translations = $language;
 }
@@ -355,7 +355,7 @@ case 'search_dockerhub':
 	$num_pages = $pageresults['num_pages'];
 
 	if ($pageresults['num_results'] == 0) {
-		$o['display'] = "<div class='ca_NoDockerAppsFound'></div>";
+		$o['display'] = "<div class='ca_NoDockerAppsFound'>".tr("No Matching Applications Found On Docker Hub")."</div>";
 		$o['script'] = "$('#dockerSearch').hide();";
 		postReturn($o);
 		@unlink($caPaths['dockerSerchResults']);

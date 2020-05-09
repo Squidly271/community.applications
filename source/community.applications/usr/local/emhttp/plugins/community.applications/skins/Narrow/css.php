@@ -10,26 +10,13 @@ header("Content-type: text/css; charset: UTF-8");
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 
 $dynamix = parse_plugin_cfg("dynamix");
-$_SESSION['locale'] = $dynamix['locale'];
 
-if ( $translations ) {
-	$_SERVER['REQUEST_URI'] = "apps-1";
-	require_once("$docroot/plugins/dynamix/include/Translations.php");
-}
 
-function tr($string,$ret=false) {
-	if ( function_exists("_") )
-		$string =  _($string);
-	if ( $ret )
-		return $string;
-	else
-		echo $string;
-}
+
 
 $theme = $dynamix['theme'];
 
@@ -267,9 +254,7 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_bold {font-weight:bold;}
 .ca_center {margin:auto;text-align:center;}
 .ca_NoAppsFound {font-size:3rem;margin:auto;text-align:center;}
-.ca_NoAppsFound::after{content:"<?tr("No Matching Applications Found")?>"}
 .ca_NoDockerAppsFound {font-size:3rem;margin:auto;text-align:center;}
-.ca_NoDockerAppsFound::after{content:"<?tr("No Matching Applications Found On Docker Hub");?>"}
 .ca_templatesDisplay {display:flex;flex-wrap:wrap;justify-content:center;overflow-x:hidden;}
 #warningNotAccepted {display:none;}
 .menuItems {position:absolute; left:0px;width:14rem;height:auto;}

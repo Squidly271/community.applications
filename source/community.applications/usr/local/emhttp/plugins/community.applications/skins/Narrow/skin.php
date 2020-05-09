@@ -13,7 +13,7 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 	$communityApplications = is_array($file['community']) ? $file['community'] : array();
 	$totalApplications = count($communityApplications);
 
-	$display = ( $totalApplications ) ? my_display_apps($communityApplications,$pageNumber,$selectedApps,$startup) : "<div class='ca_NoAppsFound'></div>";
+	$display = ( $totalApplications ) ? my_display_apps($communityApplications,$pageNumber,$selectedApps,$startup) : "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div>";
 
 	return $display;
 }
@@ -232,7 +232,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 // Language Specific
 		if ( $template['Language'] ) {
 			if ( ! $currentLanguage ) {
-				$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
+				$dynamixSettings = @parse_ini_file($caPaths['dynamixSettings'],true);
 				$currentLanguage = $dynamixSettings['display']['locale'] ?: "en_US";
 				$installedLanguages = array_diff(scandir("/usr/local/emhttp/languages"),array(".",".."));
 				$installedLanguages = array_filter($installedLanguages,function($v) {
@@ -270,7 +270,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	}
 
 	if ( ! $count )
-		$displayHeader .= "<div class='ca_NoAppsFound'></div>";
+		$displayHeader .= "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div>";
 
 	return "$displayHeader$ct";
 }
