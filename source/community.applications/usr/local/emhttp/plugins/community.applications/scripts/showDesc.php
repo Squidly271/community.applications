@@ -127,7 +127,6 @@ $(function() {
 				type: 'line',
 				data: {
 					datasets: [{
-						label: "Trend Per Month",
 						data: descData.trendData,
 						borderColor: '#FF8C2F',
 						trendlineLinear: {
@@ -139,6 +138,13 @@ $(function() {
 					labels: descData.trendLabel
 				},
 				options: {
+					tooltips: {
+						callbacks: {
+							label: function(tooltipItem,data) {
+								return tooltipItem.yLabel.toLocaleString()+"%";
+							}
+						}
+					},
 					title: {
 						display: true,
 						text: "<?tr("Trend Per Month");?>",
@@ -172,7 +178,6 @@ $(function() {
 				type: 'line',
 				data: {
 					datasets: [{
-						label: "Downloads Per Month",
 						data: descData.downloadtrend,
 						borderColor: '#FF8C2F',
 						trendlineLinear: {
@@ -184,6 +189,13 @@ $(function() {
 					labels: descData.downloadLabel
 				},
 				options: {
+					tooltips: {
+						callbacks: {
+							label: function(tooltipItem,data) {
+								return tooltipItem.yLabel.toLocaleString();
+							}
+						}
+					},
 					title: {
 						display: true,
 						text: "<?tr("Downloads Per Month")?>",
@@ -216,7 +228,6 @@ $(function() {
 				type: 'line',
 				data: {
 					datasets: [{
-						label: "Total Downloads",
 						data: descData.totaldown,
 						backgroundColor: '#c0c0c0',
 						borderColor: '#FF8C2F'
@@ -224,6 +235,13 @@ $(function() {
 					labels: descData.totaldownLabel
 				},
 				options: {
+					tooltips: {
+						callbacks: {
+							label: function(tooltipItem,data) {
+								return tooltipItem.yLabel.toLocaleString();
+							}
+						}
+					},
 					title: {
 						display: true,
 						text: "<?tr("Total Downloads");?>",

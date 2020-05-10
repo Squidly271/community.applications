@@ -703,7 +703,7 @@ function getPopupDescription($appNumber) {
 			}
 			$appInformation .= Markdown($template['Changes']);
 		} elseif ($template['Language']) {
-			$appInformation .= Markdown($template['Changes']);
+			$appInformation .= Markdown(trim($template['Changes']));
 		} else {
 			$appInformation = $template['Changes'];
 			$appInformation = str_replace("\n","<br>",$appInformation);

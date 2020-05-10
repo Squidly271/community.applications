@@ -61,12 +61,21 @@ $date = (date("n/d"));
 if ( $translations ) {
 	require_once "$docroot/plugins/dynamix/include/Translations.php";
 
-	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI'])).".txt";
+	$baseTranslation = "$docroot/languages/{$_SESSION['locale']}/";
+	if ( is_dir($baseTranslation) && $_SESSION['locale'] ) {
+		$translationFile = "$baseTranslation".basename(strtolower($_SERVER['REQUEST_URI'])).".txt";
+		$javascriptFile = "{$baseTranslation}javascript".basename(strtolower($_SERVER['REQUEST_URI'])).".txt";
+
+		if ( ! is_file($javascriptFile) )
+			copy($translationFile,$javascriptFile);
+	}
+	
+/* 	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI'])).".txt";
 	$genericFile     = "$docroot/languages/{$_SESSION['locale']}/translations.txt";
 	$pluginTranslations = @parse_lang_file($translationFile);
 	$genericTranslations = @parse_lang_file($genericFile);
 	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-	$language = array_merge($pluginTranslations,$language);
+	$language = array_merge($pluginTranslations,$language); */
 }
 
 function tr($string,$ret=false) {
@@ -89,14 +98,14 @@ function tr($string,$ret=false) {
 
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
 <script>
-var translationArray = new Array;
+/* var translationArray = new Array;
 <?
 	if ($translations) {
 		foreach ($pluginTranslations as $english => $translation):?>
 			translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
 		<?endforeach;
 	}
-?>
+?> */
 
 var searchBoxInput;
 var searchBoxAwesomplete;
@@ -831,7 +840,7 @@ function uninstallApp(application,humanName) {
 		showCancelButton: true,
 		showConfirmButton: true,
 		cancelButtonText: tr("Cancel"),
-		confirmButtonText: tr("Yes uninstall it!"),
+		confirmButtonText: tr("Yes uninstall it"),
 		closeOnConfirm: true,
 		showLoaderOnConfirm: false,
 		allowOutsideClick: true,
@@ -895,7 +904,7 @@ function uninstallDocker(application,humanName) {
 		showCancelButton: true,
 		showConfirmButton: true,
 		cancelButtonText: tr("Cancel"),
-		confirmButtonText: tr("Yes, uninstall it!"),
+		confirmButtonText: tr("Yes uninstall it"),
 		closeOnConfirm: false,
 		showLoaderOnConfirm: true,
 		allowOutsideClick: true,
@@ -1389,13 +1398,14 @@ function feedWarning(currentServer) {
 
 function tr(string) {
 	<?if ( $translations ): ?>
-		var searchString = string.replace(/[?\{\}|&~!\[\]()/:*^."']/g,"");
+/* 		var searchString = string.replace(/[?\{\}|&~!\[\]()/:*^."']/g,"");
 		searchString = searchString.replace(/  +/g, ' ');
 		translationArray.map(function(data) {
 			if (data.english == searchString) {
 				string = data.translation;
 			}
-		});
+		}); */
+		return _(string);
 	<?endif;?>
 	return string;
 }
