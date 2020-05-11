@@ -984,7 +984,7 @@ case 'switchLanguage':
 		postReturn(["error"=>"language $language is not installed"]);
 		break;
 	}
-	$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
+	$dynamixSettings = @parse_ini_file($caPaths['dynamixSettings'],true);
 	$dynamixSettings['display']['locale'] = $language;
 	write_ini_file($caPaths['dynamixSettings'],$dynamixSettings);
 	postReturn(["status"=> "ok"]);
@@ -996,7 +996,7 @@ case 'switchLanguage':
 case 'postRemoveLanguage':
 	$language = getPost("language","");
 
-	$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
+	$dynamixSettings = @parse_ini_file($caPaths['dynamixSettings'],true);
 	if ( $dynamixSettings['display']['locale'] == $language ) {
 		postReturn(['switched'=>"switched to english"]);
 	} else {
