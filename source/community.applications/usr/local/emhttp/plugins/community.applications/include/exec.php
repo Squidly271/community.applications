@@ -989,20 +989,6 @@ case 'switchLanguage':
 	write_ini_file($caPaths['dynamixSettings'],$dynamixSettings);
 	postReturn(["status"=> "ok"]);
 	break;
-	
-##########################################################################
-# Check to see if we need to switch the display language after a removal #
-##########################################################################
-case 'postRemoveLanguage':
-	$language = getPost("language","");
-
-	$dynamixSettings = @parse_ini_file($caPaths['dynamixSettings'],true);
-	if ( $dynamixSettings['display']['locale'] == $language ) {
-		postReturn(['switched'=>"switched to english"]);
-	} else {
-		postReturn(['status'=>"ok"]);
-	}
-	break;
 
 ###############################################
 # Return an error if the action doesn't exist #

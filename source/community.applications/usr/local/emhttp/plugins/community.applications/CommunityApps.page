@@ -1414,6 +1414,7 @@ function CAswitchLanguage(language) {
 		data.searchActive = true; // so the system doesn't resort
 		saveState();
 		$.cookie("ca_languageSwitch","switched",{expires:365,path:'/'});
+		myCloseSpinner();
 		window.location.reload();
 	});
 }
@@ -1427,21 +1428,9 @@ function updateLanguage(language) {
 	my_openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,tr('Update Language Pack'),600,900,true,"refreshDisplay();");
 }
 function removeLanguage(language) {
-	my_openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,tr('Remove Language Pack'),600,900,true,"postRemoveLanguage('"+language+"')");
+	my_openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,tr('Remove Language Pack'),600,900,true,"refreshDisplay();");
 }
 
-function postRemoveLanguage(language) {
-	post({action:'postRemoveLanguage',language:language},function(result) {
-		if ( result.switched ) {
-			saveState();
-			$.cookie("ca_languageSwitch","switched",{expires:365});
-			CAswitchLanguage("");
-			window.location.reload();
-		} else {
-			refreshDisplay();
-		}
-	});
-}
 </script>
 
 > <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?tr("This chooses how to sort the results");?><br><br>

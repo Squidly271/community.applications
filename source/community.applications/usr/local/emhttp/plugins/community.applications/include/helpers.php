@@ -607,7 +607,8 @@ function write_ini_file($file, $array = []) {
 		}
 	}
 
-	$fp = fopen($file, 'w');
+	file_put_contents($file,implode("\r\n",$data),LOCK_EX);
+/* 	$fp = fopen($file, 'w');
 	$retries = 0;
 	$max_retries = 100;
 
@@ -629,7 +630,7 @@ function write_ini_file($file, $array = []) {
 	fwrite($fp, implode(PHP_EOL, $data).PHP_EOL);
 
 	flock($fp, LOCK_UN);
-	fclose($fp);
+	fclose($fp); */
 
 	return true;
 }

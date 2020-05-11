@@ -197,7 +197,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$displayIcon = $displayIcon ? $displayIcon : "/plugins/dynamix.docker.manager/images/question.png";
 		$template['display_iconSmall'] = "<a onclick='showDesc({$template['ID']},&#39;{$name}&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='$displayIcon'></a>";
 		$template['display_iconSelectable'] = "<img class='$iconClass' src='$displayIcon'>";
-		$template['display_infoIcon'] = "<a class='ca_appPopup ca_tooltip appIcons ca_fa-info' title='".tr("Click for more information")."' data-appNumber='$ID' data-appPath='{$template['Path']}' data-appName='{$template['Name']}' style='cursor:pointer'></a>";
+		$moreInfoTxt = $template['InfoLanguage'] ?: tr("Click for more information");
+		$template['display_infoIcon'] = "<a class='ca_appPopup ca_tooltip appIcons ca_fa-info' title='$moreInfoTxt' data-appNumber='$ID' data-appPath='{$template['Path']}' data-appName='{$template['Name']}' style='cursor:pointer'></a>";
 		if ( isset($ID) ) {
 			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appName='{$template['Name']}' data-appNumber='$ID' data-appPath='{$template['Path']}'>".$template['display_iconSelectable']."</a>";
 			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc({$template['ID']},&#39;".$name."&#39;);'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
@@ -245,13 +246,14 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			if ( in_array($countryCode,$installedLanguages) ) {
 				$template['display_languageUpdate'] = languageCheck($template) ? "<a class='ca_tooltip appIcons ca_fa-update languageUpdate' title='".tr("Update Language Pack")."' data-language='$countryCode' data-language_xml='{$template['TemplateURL']}'></a>" : "";
 				unset($template['display_dockerInstallIcon']);
-				if ( $currentLanguage != $countryCode )
-					$template['display_language_switch'] = "<a class='ca_tooltip appIcons ca_fa-switchto languageSwitch' title='".tr("Switch to this language")."' data-language='$countryCode'></a>";
-				if ( $countryCode !== "en_US" )
-					$template['display_Uninstall'] = "<a class='ca_tooltip appIcons ca_fa-delete languageRemove' title='".tr("Remove Language Pack")."' data-language='$countryCode'></a>";
+				if ( $currentLanguage != $countryCode ) {
+					$template['display_language_switch'] = "<a class='ca_tooltip appIcons ca_fa-switchto languageSwitch' title='{$template['SwitchLanguage']}' data-language='$countryCode'></a>";
+					if ( $countryCode !== "en_US" )
+						$template['display_Uninstall'] = "<a class='ca_tooltip appIcons ca_fa-delete languageRemove' title='".tr("Remove Language Pack")."' data-language='$countryCode'></a>";
+				}
 			} else {
 				unset($template['display_dockerInstallIcon']);
-				$template['display_languageInstallIcon'] = "<a class='ca_tooltip appIcons ca_fa-install languageInstall' title='".tr("Install Language Pack")."' data-language='$countryCode' data-language_xml='{$template['TemplateURL']}'></a>";
+				$template['display_languageInstallIcon'] = "<a class='ca_tooltip appIcons ca_fa-install languageInstall' title='{$template['InstallLanguage']}' data-language='$countryCode' data-language_xml='{$template['TemplateURL']}'></a>";
 			}
 		}
 
@@ -626,7 +628,7 @@ function getPopupDescription($appNumber) {
 		$currentLanguage = (is_dir("/usr/local/emhttp/languages/$currentLanguage") ) ? $currentLanguage : "en_US";
 		if ( in_array($countryCode,$installedLanguages) ) {
 			if ( $currentLanguage != $countryCode ) {
-				$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-switchto' onclick=CAswitchLanguage('$countryCode');> ".tr("Switch to this language")."</a>";
+				$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-switchto' onclick=CAswitchLanguage('$countryCode');> {$template['SwitchLanguage']}</a>";
 			}
 		} else {
 			$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-install languageInstall' onclick=installPlugin('{$template['TemplateURL']}');> ".tr("Install Language Pack")."</a>";
