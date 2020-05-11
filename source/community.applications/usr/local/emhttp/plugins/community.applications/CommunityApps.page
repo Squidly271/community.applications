@@ -1400,14 +1400,23 @@ function tr(string) {
 	return string;
 }
 
-function CAswitchLanguage(language) {
+/* function CAswitchLanguage(language) {
 	mySpinner();
 	data.searchActive = true; // so the system doesn't resort
 	saveState();
 	$.cookie("ca_languageSwitch","switched",{expires:365,path:'/'});
 	switchLanguage(language);
 }
-
+ */
+ 
+function CAswitchLanguage(language) {
+	post({action:'switchLanguage',language:language},function(result) {
+		data.searchActive = true; // so the system doesn't resort
+		saveState();
+		$.cookie("ca_languageSwitch","switched",{expires:365,path:'/'});
+		window.location.reload();
+	});
+}
 function installLanguage(languageURL,language) {
 	disableSearch();
 	my_openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,tr('Install Language Pack'),600,900,true,"refreshDisplay();");
@@ -1426,7 +1435,7 @@ function postRemoveLanguage(language) {
 		if ( result.switched ) {
 			saveState();
 			$.cookie("ca_languageSwitch","switched",{expires:365});
-			switchLanguage("");
+			CAswitchLanguage("");
 			window.location.reload();
 		} else {
 			refreshDisplay();

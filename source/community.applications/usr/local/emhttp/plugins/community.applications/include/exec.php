@@ -972,7 +972,24 @@ case 'createXML':
 	postReturn(["status"=>"ok","cache"=>$cacheVolume]);
 	break;
 	
-
+########################
+# Switch to a language #
+########################
+case 'switchLanguage':
+	$language = getPost("language","");
+	if ( $language == "en_US" )
+		$language = "";
+	
+	if ( ! is_dir("/usr/local/emhttp/languages/$language") )  {
+		postReturn(["error"=>"language $language is not installed"]);
+		break;
+	}
+	$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
+	$dynamixSettings['display']['locale'] = $language;
+	write_ini_file($caPaths['dynamixSettings'],$dynamixSettings);
+	postReturn(["status"=> "ok"]);
+	break;
+	
 ##########################################################################
 # Check to see if we need to switch the display language after a removal #
 ##########################################################################
