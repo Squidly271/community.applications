@@ -109,7 +109,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$pinned = "unpinned";
 			$pinnedTitle = tr("Click to pin this application");
 		}
-		$template['display_pinButton'] = "<span class='ca_tooltip $pinned' title='$pinnedTitle' data-repository='{$template['Repository']}' data-name='{$template['SortName']}'></span>";
+		$template['display_pinButton'] = $template['LanguagePack'] !== "en_US" ? "<span class='ca_tooltip $pinned' title='$pinnedTitle' data-repository='{$template['Repository']}' data-name='{$template['SortName']}'></span>" : "";
 		if ($template['Blacklist'])
 			unset($template['display_pinButton']);
 
@@ -200,7 +200,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$moreInfoTxt = $template['InfoLanguage'] ?: tr("Click for more information");
 		$template['display_infoIcon'] = "<a class='ca_appPopup ca_tooltip appIcons ca_fa-info' title='$moreInfoTxt' data-appNumber='$ID' data-appPath='{$template['Path']}' data-appName='{$template['Name']}' style='cursor:pointer'></a>";
 		if ( isset($ID) ) {
-			$template['display_iconClickable'] = "<a class='ca_appPopup' data-appName='{$template['Name']}' data-appNumber='$ID' data-appPath='{$template['Path']}'>".$template['display_iconSelectable']."</a>";
+			$template['display_iconClickable'] = "<a class='ca_appPopup ca_tooltip' title='$moreInfoTxt' data-appName='{$template['Name']}' data-appNumber='$ID' data-appPath='{$template['Path']}'>".$template['display_iconSelectable']."</a>";
 			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc({$template['ID']},&#39;".$name."&#39;);'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
 			$template['display_iconOnly'] = "<img class='$iconClass' src='".$displayIcon."'></img>";
 		} else {
