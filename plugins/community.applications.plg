@@ -1462,7 +1462,7 @@ THIS IS A REQUIRED UPDATE
 	
 	echo "Setting up cron for background notifications\n";
 	$cron = rand(0,59)." * * * * php /usr/local/emhttp/plugins/community.applications/scripts/notices.php > /dev/null 2>&1";
-	file_put_contents("/boot/config/plugins/community.applications/notification_scan.cron","\n# CRON for CA background scanning of applications\n$cron\n\n");
+	@file_put_contents("/boot/config/plugins/community.applications/notification_scan.cron","\n# CRON for CA background scanning of applications\n$cron\n\n");
 	exec("/usr/local/sbin/update_cron");
 ?>
 ]]>
