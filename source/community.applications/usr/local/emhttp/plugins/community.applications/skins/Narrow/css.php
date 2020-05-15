@@ -15,9 +15,6 @@ require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 
 $dynamix = parse_plugin_cfg("dynamix");
 
-
-
-
 $theme = $dynamix['theme'];
 
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
@@ -84,7 +81,7 @@ body.stop-scrolling{height:100%;overflow:auto}  /* disable SweetAlert killing th
 .popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'fontAwesome';content:'\f12e';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
 
 <?else:?>
-.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e987';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
+.popupTableAreaPlugin::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e986';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
 <?endif;?>
 <?if ( $unRaid67 ):?>
 .popupTableAreaDocker::before{position:absolute;margin-left:20rem;font-family:'Unraid';content:'\e90b';font-size:10rem;color:rgba(43,43,43,0.10);z-index:-1;}
