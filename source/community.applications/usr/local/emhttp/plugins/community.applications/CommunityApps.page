@@ -1399,19 +1399,12 @@ function tr(string) {
 				string = data.translation;
 			}
 		});
+    string =  string.replace(/\&amp;|[\?\{\}\|\&\~\!\[\]\(\)\/\\:\*^\.\"']|<.+?\/?>/g,'').replace(/  +/g,' ')||string;
 	<?endif;?>
+
 	return string;
 }
 
-/* function CAswitchLanguage(language) {
-	mySpinner();
-	data.searchActive = true; // so the system doesn't resort
-	saveState();
-	$.cookie("ca_languageSwitch","switched",{expires:365,path:'/'});
-	switchLanguage(language);
-}
- */
- 
 function CAswitchLanguage(language) {
 	post({action:'switchLanguage',language:language},function(result) {
 		data.searchActive = true; // so the system doesn't resort

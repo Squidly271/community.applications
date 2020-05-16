@@ -608,30 +608,6 @@ function write_ini_file($file, $array = []) {
 	}
 
 	file_put_contents($file,implode("\r\n",$data),LOCK_EX);
-/* 	$fp = fopen($file, 'w');
-	$retries = 0;
-	$max_retries = 100;
-
-	if (!$fp) {
-		return false;
-	}
-
-	do {
-		if ($retries > 0) {
-			usleep(rand(1, 5000));
-		}
-		$retries += 1;
-	} while (!flock($fp, LOCK_EX) && $retries <= $max_retries);
-
-	if ($retries == $max_retries) {
-		return false;
-	}
-
-	fwrite($fp, implode(PHP_EOL, $data).PHP_EOL);
-
-	flock($fp, LOCK_UN);
-	fclose($fp); */
-
 	return true;
 }
  /**
