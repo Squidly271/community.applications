@@ -33,7 +33,7 @@ function parse_language($file) {
 
 function tr($string,$ret=true) {
 	if ( function_exists("_") )
-		$string =  _($string);
+		$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
 	if ( $ret )
 		return $string;
 	else

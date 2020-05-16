@@ -6,7 +6,6 @@
 #                                                             #
 ###############################################################
 
-
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 require_once "$docroot/plugins/community.applications/include/paths.php";
@@ -32,14 +31,12 @@ require_once "$docroot/plugins/community.applications/include/helpers.php";
 
 function tr($string,$ret=true) {
 	if ( function_exists("_") )
-		$string =  _($string);
+		$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
 	if ( $ret )
 		return $string;
 	else
 		echo $string;
 }
-
-
 
 ?>
 <body bgcolor='white'>
