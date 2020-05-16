@@ -67,6 +67,7 @@ if ( $translations ) {
 	$genericTranslations = @parse_lang_file($genericFile);
 	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
 	$language = array_merge($pluginTranslations,$language);
+	$newTranslation = [];
 	foreach ($pluginTranslations as $test => $translation) {
 		$newTranslation[$test] = str_replace("'","&#39;",$translation);
 		$newTranslation[$test] = str_replace('"',"&#34;",$newTranslation[$test]);
@@ -75,7 +76,7 @@ if ( $translations ) {
 
 function tr($string,$ret=false) {
 	if ( function_exists("_") )
-		$string =  _($string);
+		$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
 	if ( $ret )
 		return $string;
 	else
@@ -1403,7 +1404,6 @@ function tr(string) {
 				string = data.translation;
 			}
 		});
-    string =  string.replace(/\&amp;|[\?\{\}\|\&\~\!\[\]\(\)\/\\:\*^\.\"']|<.+?\/?>/g,'').replace(/  +/g,' ')||string;
 	<?endif;?>
 
 	return string;

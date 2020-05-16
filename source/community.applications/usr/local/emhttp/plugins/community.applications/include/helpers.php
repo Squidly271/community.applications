@@ -539,6 +539,9 @@ if ( ! function_exists("tr") ) {
 			$translated = _($string);
 			if ( startsWith($translated,"&#34;") && endsWith($translated,"&#34;") )
 				$translated = first_str_replace(last_str_replace($translated,"&#34;",""),"&#34;","");
+			
+			$translated =  str_replace('"',"&#34;",str_replace("'","&#39;",$translated));
+
 			return $translated;
 		}
 		return $string;

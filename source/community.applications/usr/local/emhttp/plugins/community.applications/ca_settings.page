@@ -17,7 +17,7 @@ $cfg = parse_plugin_cfg($plugin);
 
 function tr($string,$ret=false) {
 	if ( function_exists("_") )
-		$string = _($string);
+		$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
 	if ( $ret )
 		return $string;
 	else
@@ -44,7 +44,7 @@ function tr($string,$ret=false) {
 	<?=mk_option($cfg['hideIncompatible'], "false", tr("No",true))?>
 	</select>
 
-> <?tr("This setting will hide applications that are listed as being incompatible with your version of unRaid");?>
+> <?tr("This setting will hide applications that are listed as being incompatible with your version of Unraid");?>
 
 <?tr("Enable Reinstall Default:");?>
 : <select name='defaultReinstall' size='1'>

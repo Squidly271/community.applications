@@ -27,7 +27,11 @@ if ( $translations ) {
 	$pluginTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/apps.txt");
 	$genericTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/translations.txt");
 	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-
+	$newTranslation = [];
+	foreach ($pluginTranslations as $test => $translation) {
+		$newTranslation[$test] = str_replace("'","&#39;",$translation);
+		$newTranslation[$test] = str_replace('"',"&#34;",$newTranslation[$test]);
+	}
 	if ( empty($language) ) 
 		$translations = false;
 }
@@ -35,7 +39,8 @@ if ( $translations ) {
 
 function tr($string,$ret=false) {
 	if ( function_exists("_") )
-		$string =  _($string);
+		$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
+
 	if ( $ret )
 		return $string;
 	else
@@ -69,7 +74,7 @@ div.spinner .unraid_mark_7{animation:mark_7 1.5s ease infinite}
 var translationArray = new Array;
 <? 
 	if ($translations) {
-		foreach ($language as $english => $translation):?>
+		foreach ($newTranslation as $english => $translation):?>
 			translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
 		<?endforeach;
 	}
