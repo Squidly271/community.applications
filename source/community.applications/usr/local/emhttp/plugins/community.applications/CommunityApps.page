@@ -67,6 +67,10 @@ if ( $translations ) {
 	$genericTranslations = @parse_lang_file($genericFile);
 	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
 	$language = array_merge($pluginTranslations,$language);
+	foreach ($pluginTranslations as $test => $translation) {
+		$newTranslation[$test] = str_replace("'","&#39;",$translation);
+		$newTranslation[$test] = str_replace('"',"&#34;",$newTranslation[$test]);
+	}
 }
 
 function tr($string,$ret=false) {
@@ -92,7 +96,7 @@ function tr($string,$ret=false) {
 var translationArray = new Array;
 <?
 	if ($translations) {
-		foreach ($pluginTranslations as $english => $translation):?>
+		foreach ($newTranslation as $english => $translation):?>
 			translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
 		<?endforeach;
 	}
