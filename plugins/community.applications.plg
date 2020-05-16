@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.05.12">
-<!ENTITY md5       "e84e2f0ce30190336873ecb5b394318c">
+<!ENTITY version   "2020.05.16">
+<!ENTITY md5       "7e9981584b42629a98bb9b520894808f">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2020.05.16
+- Fixed: Identically named applications within same repository but with different authors would get mixed up
+- Language Pack Misc Updates / Fixes
+- Changed: Don't Display ***Updating Content*** prior to accepting disclaimer
+- Changed: Remove option to not delete the image when uninstalling an app
+- Fixed: Plugin popup would display wrong watermark under certain conditions
+
 ###2020.05.12
 - Added: Localize values when hovering on the graphs
 - Fixed: Donation links on cards disappeared

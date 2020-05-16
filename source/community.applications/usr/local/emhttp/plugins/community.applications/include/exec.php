@@ -1057,7 +1057,7 @@ function DownloadApplicationFeed() {
 		$o['Blacklist'] = $o['CABlacklist'] ? true : $o['Blacklist'];
 		$o['MinVer'] = max(array($o['MinVer'],$o['UpdateMinVer']));
 
-		$o['Path']          = $caPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Name']);
+		$o['Path']          = $caPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Author'])."-".alphaNumeric($o['Name']);
 		if ( file_exists($o['Path'].".xml") ) {
 			$o['Path'] .= "(1)";
 		}
