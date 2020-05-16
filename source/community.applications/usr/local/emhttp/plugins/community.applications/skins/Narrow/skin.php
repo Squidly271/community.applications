@@ -198,9 +198,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$template['display_iconSmall'] = "<a onclick='showDesc({$template['ID']},&#39;{$name}&#39;);' style='cursor:pointer'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='$displayIcon'></a>";
 		$template['display_iconSelectable'] = "<img class='$iconClass' src='$displayIcon'>";
 		$moreInfoTxt = $template['InfoLanguage'] ?: tr("Click for more information");
-		$template['display_infoIcon'] = "<a class='ca_appPopup ca_tooltip appIcons ca_fa-info' title='$moreInfoTxt' data-appNumber='$ID' data-appPath='{$template['Path']}' data-appName='{$template['Name']}' style='cursor:pointer'></a>";
+		$appInfoBeta = $template['Beta'] ? "(Beta)" : "";
+		$template['display_infoIcon'] = "<a class='ca_appPopup ca_tooltip appIcons ca_fa-info' title='$moreInfoTxt' data-appNumber='$ID' data-appPath='{$template['Path']}' data-appName='{$template['Name']}' data-beta='$appInfoBeta' style='cursor:pointer'></a>";
 		if ( isset($ID) ) {
-			$template['display_iconClickable'] = "<a class='ca_appPopup ca_tooltip' title='$moreInfoTxt' data-appName='{$template['Name']}' data-appNumber='$ID' data-appPath='{$template['Path']}'>".$template['display_iconSelectable']."</a>";
+			$template['display_iconClickable'] = "<a class='ca_appPopup ca_tooltip' title='$moreInfoTxt' data-appName='{$template['Name']}' data-appNumber='$ID' data-appPath='{$template['Path']}' data-beta='$appInfoBeta'>".$template['display_iconSelectable']."</a>";
 			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc({$template['ID']},&#39;".$name."&#39;);'><img class='ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}' src='".$displayIcon."'></a>";
 			$template['display_iconOnly'] = "<img class='$iconClass' src='".$displayIcon."'></img>";
 		} else {
@@ -214,7 +215,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc({$template['ID']},&#39;{$name}&#39;);'><div class='ca_center'><i class='ca_appPopup $displayIconClass $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></div></a>";
 			$template['display_iconSelectable'] = "<div class='ca_center'><i class='$displayIconClass $iconClass'></i></div>";
 			if ( isset($ID) ) {
-				$template['display_iconClickable'] = "<a class='ca_appPopup' data-appName='{$template['Name']}' data-appNumber='$ID' data-appPath='{$template['Path']}' style='cursor:pointer' >".$template['display_iconSelectable']."</a>";
+				$template['display_iconClickable'] = "<a class='ca_appPopup' data-appName='{$template['Name']}' data-appNumber='$ID' data-appPath='{$template['Path']}' data-beta='$appInfoBeta' style='cursor:pointer' >".$template['display_iconSelectable']."</a>";
 				$template['display_iconSmall'] = "<a class='ca_appPopup' onclick='showDesc({$template['ID']},&#39;{$name}&#39;);'><div class='ca_center'><i class='fa fa-$displayIcon ca_appPopup $iconClass' data-appNumber='$ID' data-appPath='{$template['Path']}'></i></div></a>";
 				$template['display_iconOnly'] = "<div class='ca_center'><i class='fa fa-$displayIcon $iconClass'></i></div>";
 			} else {
@@ -566,8 +567,7 @@ function getPopupDescription($appNumber) {
 		$templateDescription .= "<tr><td></td><td>".sprintf(tr("(As of %s)"),my_lang(date("F",$template['LastUpdateScan'])).date(" j, Y  g:i a",$template['LastUpdateScan']),0)."</td></tr>";
 		$templateDescription .= "</td></tr>";
 	}
-	if ( $template['Beta'] )
-		$templateDescription .= "<tr><td></td><td style='color:#FF8C2F;font-size:1.5rem;'>(BETA)</td></tr>";
+
 	$templateDescription .= "</table></div>";
 
 	$templateDescription .= "<div class='ca_center'><span class='popUpDeprecated'>";

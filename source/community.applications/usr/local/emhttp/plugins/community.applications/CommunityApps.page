@@ -188,8 +188,9 @@ $(function(){
 		var appnumber = $(this).data("appnumber");
 		var apppath = $(this).data("apppath");
 		var appname = $(this).data("appname");
+		var beta = " "+$(this).data("beta");
 		appname = stripTags(appname);
-		showDesc_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname,450,650,true,"checkForPluginInstallRequested()");
+		showDesc_openBox("/plugins/community.applications/scripts/showDesc.php?appNumber="+appnumber+"&appPath="+apppath+"&appName="+appname+"'",appname+beta,450,650,true,"checkForPluginInstallRequested()");
 	});
 
 	$('.mainArea').on("click",".unpinned,.pinned",function() {
