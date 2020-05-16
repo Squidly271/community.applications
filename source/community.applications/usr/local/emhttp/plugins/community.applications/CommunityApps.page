@@ -94,12 +94,10 @@ function tr($string,$ret=false) {
 
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
 <script>
-var translationArray = new Array;
+var CA_trans = new Array;
 <?
 	if ($translations) {
-		foreach ($newTranslation as $english => $translation):?>
-			translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
-		<?endforeach;
+		foreach ($newTranslation as $english => $translation):?>CA_trans["<?=$english?>"]="<?=$translation?>";<?endforeach;
 	}
 ?>
 
@@ -1400,14 +1398,10 @@ function tr(string) {
 	<?if ( $translations ): ?>
 		var searchString = string.replace(/[?\{\}|&~!\[\]()/:*^."']/g,"");
 		searchString = searchString.replace(/  +/g, ' ');
-		translationArray.map(function(data) {
-			if (data.english == searchString) {
-				string = data.translation;
-			}
-		});
+		return CA_trans[searchString] ? CA_trans[searchString] : string;
+	<?else:?>
+		return string;
 	<?endif;?>
-
-	return string;
 }
 
 function CAswitchLanguage(language) {

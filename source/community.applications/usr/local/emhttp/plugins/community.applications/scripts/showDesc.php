@@ -71,14 +71,8 @@ div.spinner .unraid_mark_7{animation:mark_7 1.5s ease infinite}
 @keyframes mark_7{50% {transform:translateY(62px)} 100% {transform: translateY(0px)}}
 </style>
 <script>
-var translationArray = new Array;
-<? 
-	if ($translations) {
-		foreach ($newTranslation as $english => $translation):?>
-			translationArray.push({english:"<?=$english?>",translation:"<?=$translation?>"});
-		<?endforeach;
-	}
-?>
+
+
 var csrf_token = "<?=$csrf_token?>";
 $(function() {
 	$.removeCookie("ca_installPluginURL",{path:"/"});
