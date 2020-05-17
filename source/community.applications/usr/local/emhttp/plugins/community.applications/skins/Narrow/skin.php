@@ -631,7 +631,7 @@ function getPopupDescription($appNumber) {
 				$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-switchto' onclick=CAswitchLanguage('$countryCode');> {$template['SwitchLanguage']}</a>";
 			}
 		} else {
-			$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-install languageInstall' onclick=installPlugin('{$template['TemplateURL']}');> ".tr("Install Language Pack")."</a>";
+			$installLine .= "<a class='ca_tooltip appIconsPopUp ca_fa-install languageInstall' onclick=installPlugin('{$template['TemplateURL']}');> {$template['InstallLanguage']}</a>";
 		}
 		if ( file_exists("/var/log/plugins/lang-$countryCode.xml") ) {
 			if ( languageCheck($template) ) {
