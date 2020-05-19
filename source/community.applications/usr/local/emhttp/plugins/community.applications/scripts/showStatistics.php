@@ -121,6 +121,7 @@ switch ($_GET['arg1']) {
 		foreach ($templates as $template) {
 			$count = 0;
 			foreach ($templates as $searchTemplates) {
+				if ( $template['Language'] ) continue;
 				if ( ($template['Repository'] == $searchTemplates['Repository'])  ) {
 					if ( $searchTemplates['BranchName'] || $searchTemplates['Blacklist'] || $searchTemplates['Deprecated']) {
 						continue;
