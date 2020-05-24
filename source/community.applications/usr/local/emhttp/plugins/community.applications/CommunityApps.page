@@ -1405,6 +1405,7 @@ function tr(string) {
 }
 
 function CAswitchLanguage(language) {
+	$.cookie('locale','<?=$locale?>',{path:'/'}); // save the previous locale
 	post({action:'switchLanguage',language:language},function(result) {
 		data.searchActive = true; // so the system doesn't resort
 		saveState();
