@@ -11,23 +11,15 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 $translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
-if ( $translations )
+if ( $translations ) {
+	$_SERVER['REQUEST_URI'] = 'javascriptapps.txt';
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
+}
 
 require_once "$docroot/plugins/community.applications/include/helpers.php";
 require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
-
-$dynamix = parse_plugin_cfg("dynamix");
-
-if ( $translations ) {
-	$pluginTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/javascriptapps.txt");
-	$genericTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/translations.txt");
-	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-	if ( empty($language) ) 
-		$translations = false;
-}
 
 $plugins = glob("/boot/config/plugins/*.plg");
 $templates = readJsonFile($caPaths['community-templates-info']);

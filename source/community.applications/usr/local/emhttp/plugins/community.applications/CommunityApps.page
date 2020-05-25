@@ -59,18 +59,11 @@ if ( is_file($caPaths['addConverted']) ) {
 $date = (date("n/d"));
 
 if ( $translations ) {
-	require_once "$docroot/plugins/dynamix/include/Translations.php";
-
-	$translationFile = "$docroot/languages/{$_SESSION['locale']}/javascript".basename(strtolower($_SERVER['REQUEST_URI'])).".txt";
-	$genericFile     = "$docroot/languages/{$_SESSION['locale']}/translations.txt";
-	$pluginTranslations = @parse_lang_file($translationFile);
-	$genericTranslations = @parse_lang_file($genericFile);
-	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-	$language = array_merge($pluginTranslations,$language);
-	$newTranslation = [];
-	foreach ($pluginTranslations as $test => $translation) {
-		$newTranslation[$test] = str_replace("'","&#39;",$translation);
-		$newTranslation[$test] = str_replace('"',"&#34;",$newTranslation[$test]);
+	$ca_txt = "$docroot/languages/$locale/javascriptapps.txt";
+	$ca_dot = "$docroot/languages/$locale/javascriptapps.dot";
+	if ( file_exists($ca_txt) ) {
+		if ( !file_exists($ca_dot) ) file_put_contents($ca_dot,serialize(parse_lang_file($ca_txt)));
+		$language = array_merge($language,unserialize(file_get_contents($ca_dot)));
 	}
 }
 

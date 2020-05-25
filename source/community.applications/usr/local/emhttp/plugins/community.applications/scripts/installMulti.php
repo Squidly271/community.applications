@@ -13,22 +13,9 @@ require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 $unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
 $translations  = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
-$dynamix = parse_plugin_cfg("dynamix");
-
 if ( $translations ) {
-	require_once "$docroot/plugins/dynamix/include/Translations.php";
-	$pluginTranslations =  parse_lang_file("$docroot/languages/{$dynamix['locale']}/javascriptapps.txt");
-	$genericTranslations = parse_lang_file("$docroot/languages/{$dynamix['locale']}/translations.txt");
-	$dockerTranslations =  parse_lang_file("$docroot/languages/{$dynamix['locale']}/docker.txt");
-	
-	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($dockerTranslations) ? $dockerTranslations: [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-
-	if ( empty($language) ) 
-		$translations = false;
-}
-
-function parse_language($file) {
-  return array_filter(parse_ini_string(preg_replace(['/"/m','/^(null|yes|no|true|false|on|off|none)=/mi','/^([^>].*)=([^"\'`].*)$/m','/^:((help|plug)\d*)$/m','/^:end$/m'],['\'','$1.=','$1="$2"',"_$1_=\"",'"'],str_replace("=\n","=''\n",file_get_contents($file)))),'strlen');
+	$_SERVER['REQUEST_URI'] = 'javascriptapps.txt';
+	require_once("$docroot/plugins/dynamix/include/Translations.php");
 }
 
 function tr($string,$ret=true) {

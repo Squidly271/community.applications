@@ -17,25 +17,12 @@ $csrf_token     = $unRaidVars['csrf_token'];
 $appNumber      = urldecode($_GET['appPath']);
 $appName        = urldecode($_GET['appName']);
 $appName        = str_replace("'","",$appName);
-
-$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
-$dynamix = parse_plugin_cfg("dynamix");
+$translations   = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
 if ( $translations ) {
+	$_SERVER['REQUEST_URI'] = 'javascriptapps.txt';
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
-
-	$pluginTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/javascriptapps.txt");
-	$genericTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/translations.txt");
-	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-	$newTranslation = [];
-	foreach ($pluginTranslations as $test => $translation) {
-		$newTranslation[$test] = str_replace("'","&#39;",$translation);
-		$newTranslation[$test] = str_replace('"',"&#34;",$newTranslation[$test]);
-	}
-	if ( empty($language) ) 
-		$translations = false;
 }
-
 
 function tr($string,$ret=false) {
 	if ( function_exists("_") )
