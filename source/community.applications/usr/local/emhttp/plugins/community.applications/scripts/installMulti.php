@@ -15,7 +15,7 @@ $translations  = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
 if ( $translations ) {
 	$_SERVER['REQUEST_URI'] = 'apps';
-	require_once("$docroot/plugins/dynamix/include/Translations.php");
+	require_once "$docroot/plugins/dynamix/include/Translations.php";
 }
 
 function tr($string,$ret=true) {
