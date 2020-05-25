@@ -58,15 +58,6 @@ if ( is_file($caPaths['addConverted']) ) {
 }
 $date = (date("n/d"));
 
-if ( $translations ) {
-	$ca_txt = "$docroot/languages/$locale/javascriptapps.txt";
-	$ca_dot = "$docroot/languages/$locale/javascriptapps.dot";
-	if ( file_exists($ca_txt) ) {
-		if ( !file_exists($ca_dot) ) file_put_contents($ca_dot,serialize(parse_lang_file($ca_txt)));
-		$language = array_merge($language,unserialize(file_get_contents($ca_dot)));
-	}
-}
-
 function tr($string,$ret=false) {
 	if ( function_exists("_") )
 		$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
