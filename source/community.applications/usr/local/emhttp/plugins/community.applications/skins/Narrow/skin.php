@@ -550,10 +550,10 @@ function getPopupDescription($appNumber) {
 	}
 
 	$unraidVersion = parse_ini_file($caPaths['unRaidVersion']);
-	$templateDescription .= ( $template['MinVer'] > "6.4.0" ) ? "<tr><td nowrap>".tr("Minimum OS:")."</td><td>unRaid v".$template['MinVer']."</td></tr>" : "";
+	$templateDescription .= ( $template['MinVer'] > "6.4.0" ) ? "<tr><td nowrap>".tr("Minimum OS:")."</td><td>Unraid v".$template['MinVer']."</td></tr>" : "";
 
 	$template['MaxVer'] = $template['MaxVer'] ?: $template['DeprecatedMaxVer'];
-	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>".tr("Max OS:")."</td><td>unRaid v".$template['MaxVer']."</td></tr>" : "";
+	$templateDescription .= $template['MaxVer'] ? "<tr><td nowrap>".tr("Max OS:")."</td><td>Unraid v".$template['MaxVer']."</td></tr>" : "";
 	$downloads = getDownloads($template['downloads']);
 	if ($downloads)
 		$templateDescription .= "<tr><td>".tr("Total Downloads:")."</td><td>$downloads</td></tr>";
@@ -578,7 +578,7 @@ function getPopupDescription($appNumber) {
 		$templateDescription .= tr("This application / template has been deprecated")."<br>";
 
 	if ( !$template['Compatible'] )
-		$templateDescription .= tr("This application is not compatible with your version of unRaid")."<br>";
+		$templateDescription .= tr("This application is not compatible with your version of Unraid")."<br>";
 
 	$templateDescription .= "</span></div><hr>";
 

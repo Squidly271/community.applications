@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.05.16">
-<!ENTITY md5       "7e9981584b42629a98bb9b520894808f">
+<!ENTITY version   "2020.05.25">
+<!ENTITY md5       "4894e04f9d47ad4159b1abd66e87599d">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2020.05.25
+- Multi-language updates / fixes
+
 ###2020.05.16
 - Fixed: Identically named applications within same repository but with different authors would get mixed up
 - Language Pack Misc Updates / Fixes

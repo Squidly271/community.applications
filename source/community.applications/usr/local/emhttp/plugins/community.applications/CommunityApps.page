@@ -61,7 +61,7 @@ $date = (date("n/d"));
 if ( $translations ) {
 	require_once "$docroot/plugins/dynamix/include/Translations.php";
 
-	$translationFile = "$docroot/languages/{$_SESSION['locale']}/".basename(strtolower($_SERVER['REQUEST_URI'])).".txt";
+	$translationFile = "$docroot/languages/{$_SESSION['locale']}/javascript".basename(strtolower($_SERVER['REQUEST_URI'])).".txt";
 	$genericFile     = "$docroot/languages/{$_SESSION['locale']}/translations.txt";
 	$pluginTranslations = @parse_lang_file($translationFile);
 	$genericTranslations = @parse_lang_file($genericFile);
@@ -94,12 +94,6 @@ function tr($string,$ret=false) {
 
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
 <script>
-var CA_trans = new Array;
-<?
-	if ($translations) {
-		foreach ($newTranslation as $english => $translation):?>CA_trans["<?=$english?>"]="<?=$translation?>";<?endforeach;
-	}
-?>
 
 var searchBoxInput;
 var searchBoxAwesomplete;
@@ -282,7 +276,7 @@ $(function(){
 	  $(".ca_templatesDisplay").hide();
 		swal({
 			title: tr("Disclaimer"),
-			text: tr('All applications listed here are 3rd party additions to unRaid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here')+' <br><span class="ca_italic"><font color="green">'+tr('Every attempt is made to ensure that only safe and compatible applications are present')+'</font></span><br><br><center><a href="https://forums.unraid.net/topic/87144-ca-application-policies/" target="_blank">'+tr('Application Policy')+'</a>',
+			text: tr('All applications listed here are 3rd party additions to Unraid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here')+' <br><span class="ca_italic"><font color="green">'+tr('Every attempt is made to ensure that only safe and compatible applications are present')+'</font></span><br><br><center><a href="https://forums.unraid.net/topic/87144-ca-application-policies/" target="_blank">'+tr('Application Policy')+'</a>',
 			html: true,
 			type: 'warning',
 			showCancelButton: true,
@@ -1396,9 +1390,7 @@ function feedWarning(currentServer) {
 
 function tr(string) {
 	<?if ( $translations ): ?>
-		var searchString = string.replace(/[?\{\}|&~!\[\]()/:*^."']/g,"");
-		searchString = searchString.replace(/  +/g, ' ');
-		return CA_trans[searchString] ? CA_trans[searchString] : string;
+		return _(string);
 	<?else:?>
 		return string;
 	<?endif;?>
