@@ -14,7 +14,7 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 $translationsAllowed = is_file("$docroot/plugins/dynamix/include/Translations.php");
 if ( $translationsAllowed ) {
-	$_SERVER['REQUEST_URI'] = "docker/javascriptapps";
+	$_SERVER['REQUEST_URI'] = "docker/apps";
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
 	$my_translations = $language;
 }

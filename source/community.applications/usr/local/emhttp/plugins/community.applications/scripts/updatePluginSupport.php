@@ -22,7 +22,7 @@ require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 $dynamix = parse_plugin_cfg("dynamix");
 
 if ( $translations ) {
-	$pluginTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/javascriptapps.txt");
+	$pluginTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/apps.txt");
 	$genericTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/translations.txt");
 	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
 	if ( empty($language) ) 
