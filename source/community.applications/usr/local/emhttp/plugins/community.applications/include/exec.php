@@ -16,7 +16,6 @@ $translationsAllowed = is_file("$docroot/plugins/dynamix/include/Translations.ph
 if ( $translationsAllowed ) {
 	$_SERVER['REQUEST_URI'] = "docker/apps";
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
-	$my_translations = $language;
 }
 
 require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php"; # must be first include due to paths defined
@@ -25,13 +24,6 @@ require_once "$docroot/plugins/community.applications/include/helpers.php";
 require_once "$docroot/plugins/community.applications/skins/Narrow/skin.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
-
-# Merge the translation files together
-if ( $translationsAllowed ) {
-	$language = array_merge(is_array($language) ? $language : [],is_array($my_translations) ? $my_translations : []);
-}
-
-
 
 ################################################################################
 # Set up any default settings (when not explicitely set by the settings module #

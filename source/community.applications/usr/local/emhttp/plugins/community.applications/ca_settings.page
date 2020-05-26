@@ -23,8 +23,6 @@ function tr($string,$ret=false) {
 	else
 		echo $string;
 }
-	
-
 ?>
 
 <form markdown="1" method="POST" action="/update.php" target="progressFrame">

@@ -19,17 +19,10 @@ $appName        = urldecode($_GET['appName']);
 $appName        = str_replace("'","",$appName);
 
 $translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
-$dynamix = parse_plugin_cfg("dynamix");
 
 if ( $translations ) {
+	$_SERVER['REQUEST_URI'] = "docker/apps";
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
-
-	$pluginTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/apps.txt");
-	$genericTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/translations.txt");
-	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-
-	if ( empty($language) ) 
-		$translations = false;
 }
 
 
@@ -66,9 +59,8 @@ div.spinner .unraid_mark_7{animation:mark_7 1.5s ease infinite}
 @keyframes mark_6{50% {transform:translateY(40px)} 100% {transform:translateY(0px)}}
 @keyframes mark_7{50% {transform:translateY(62px)} 100% {transform: translateY(0px)}}
 </style>
+
 <script>
-
-
 var csrf_token = "<?=$csrf_token?>";
 $(function() {
 	$.removeCookie("ca_installPluginURL",{path:"/"});
@@ -284,7 +276,7 @@ function evaluateBoolean(str) {
 function openNewModalWindow(newURL) {
 	var popUp = window.open(newURL,"_parent");
 	if ( !popUp || popUp.closed || typeof popUp == "undefined" ) {
-		alert("CA requires popups to be enabled under certain circumstances.  You must white list your server within your browser to allow popups");
+		alert("<?tr("Popup Blocked CA requires popups to be enabled under certain circumstances.  You must white list your server within your browser to allow popups")?>");
 	}
 }
 
