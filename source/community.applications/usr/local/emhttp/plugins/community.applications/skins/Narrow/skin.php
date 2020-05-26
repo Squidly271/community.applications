@@ -549,7 +549,6 @@ function getPopupDescription($appNumber) {
 		}
 	}
 
-
 	$unraidVersion = parse_ini_file($caPaths['unRaidVersion']);
 	$templateDescription .= ( $template['MinVer'] > "6.4.0" ) ? "<tr><td nowrap>".tr("Minimum OS:")."</td><td>Unraid v".$template['MinVer']."</td></tr>" : "";
 
