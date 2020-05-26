@@ -27,11 +27,7 @@ if ( $translations ) {
 	$pluginTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/apps.txt");
 	$genericTranslations = @parse_lang_file("$docroot/languages/{$dynamix['locale']}/translations.txt");
 	$language = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-	$newTranslation = [];
-	foreach ($pluginTranslations as $test => $translation) {
-		$newTranslation[$test] = str_replace("'","&#39;",$translation);
-		$newTranslation[$test] = str_replace('"',"&#34;",$newTranslation[$test]);
-	}
+
 	if ( empty($language) ) 
 		$translations = false;
 }
