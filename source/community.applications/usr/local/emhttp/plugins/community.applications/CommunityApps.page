@@ -58,22 +58,6 @@ if ( is_file($caPaths['addConverted']) ) {
 }
 $date = (date("n/d"));
 
-/* if ( $translations ) {
-	require_once "$docroot/plugins/dynamix/include/Translations.php";
-
-	$translationFile = "$docroot/languages/{$_SESSION['locale']}/javascript".basename(strtolower($_SERVER['REQUEST_URI'])).".txt";
-	$genericFile     = "$docroot/languages/{$_SESSION['locale']}/translations.txt";
-	$pluginTranslations = @parse_lang_file($translationFile);
-	$genericTranslations = @parse_lang_file($genericFile);
-	$pluginTranslations = array_merge(is_array($genericTranslations) ? $genericTranslations : [],is_array($pluginTranslations) ? $pluginTranslations : [] );
-	$language = array_merge($pluginTranslations,$language);
-	$newTranslation = [];
-	foreach ($pluginTranslations as $test => $translation) {
-		$newTranslation[$test] = str_replace("'","&#39;",$translation);
-		$newTranslation[$test] = str_replace('"',"&#34;",$newTranslation[$test]);
-	}
-} */
-
 function tr($string,$ret=false) {
 	if ( function_exists("_") )
 		$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
@@ -751,7 +735,11 @@ function clearSearchBox() {
 
 function installPlugin(pluginURL) {
 	disableSearch();
-	my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay()");
+	<? if ( $translations ): ?>
+		openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay()");
+	<? else: ?>
+		my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay()");
+	<? endif; ?>
 }
 
 function my_openBox(cmd,title,height,width,load,func) {
@@ -840,7 +828,11 @@ function uninstallApp(application,humanName) {
 	}, function(isConfirm) {
 		if (isConfirm) {
 			application = application.basename();
-			my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin()");
+			<? if ( $translations ): ?>
+				openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin()");
+			<? else: ?>
+				my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin()");
+			<? endif; ?>
 		} else {
 			enableSearch();
 		}
@@ -1408,15 +1400,15 @@ function CAswitchLanguage(language) {
 }
 function installLanguage(languageURL,language) {
 	disableSearch();
-	my_openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,"<?tr('Install Language Pack')?>",600,900,true,"refreshDisplay();");
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,"<?tr('Install Language Pack')?>",600,900,true,"refreshDisplay();");
 }
 
 function updateLanguage(language) {
 	disableSearch();
-	my_openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"refreshDisplay();");
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"refreshDisplay();");
 }
 function removeLanguage(language) {
-	my_openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"refreshDisplay();");
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"refreshDisplay();");
 }
 
 </script>
