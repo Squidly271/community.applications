@@ -755,7 +755,7 @@ case 'statistics':
 	$o .= "<table style='margin-top:1rem;'>";
 	$o .= "<tr style='height:6rem;'><td colspan='2'><div class='ca_center'><i class='fa fa-users' style='font-size:6rem;'></i></td></tr>";
 	$o .= "<tr><td colspan='2'><div class='ca_center'><font size='5rem;'>Community Applications</font></div></td></tr>";
-	$o .= "<tr><td class='ca_table'>".tr("Last Change To Application Feed")."</td><td class='ca_stat'>$updateTime<br>$currentServer active</td></tr>";
+	$o .= "<tr><td class='ca_table'>".tr("Last Change To Application Feed")."</td><td class='ca_stat'>$updateTime<br>".tr($currentServer)."</td></tr>";
 	$o .= "<tr><td class='ca_table'>".tr("Number Of Docker Applications")."</td><td class='ca_stat'>{$statistics['docker']}</td></tr>";
 	$o .= "<tr><td class='ca_table'>".tr("Number Of Plugin Applications")."</td><td class='ca_stat'>{$statistics['plugin']}</td></tr>";
 	$o .= "<tr><td class='ca_table'>".tr("Number Of Templates")."</td><td class='ca_stat'>{$statistics['totalApplications']}</td></tr>";
