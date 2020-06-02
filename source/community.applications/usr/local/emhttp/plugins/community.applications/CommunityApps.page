@@ -221,6 +221,7 @@ $(function(){
 	$(".initDockerSearch").click(function()     { initDockerSearch(); });
 	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
+	$(".multi_deleteButton").click(function()   { deleteMulti(); });
 	$(".startupButton").click(function()        { updateContent(this); });
 	$("#sortIcon").click(function() {
 		if ( isIconEnabled("#sortIcon") ) {
@@ -993,23 +994,31 @@ function makePlural(string,count) {
 function getSelectedApps() {
 	if ( data.selected ) {
 		var selected = JSON.parse(data.selected);
+		var deletePaths = selected.deletePaths;
 		var docker = selected.docker;
 		var plugin = selected.plugin;
 	} else {
 		var selected = new Object();
+		var deletePaths = new Array();
 		var docker = new Array();
 		var plugin = new Array();
 	}
 
 	$(".ca_multiselect").each(function() {
 		var name = $(this).attr("data-name");
+		var deletechecked = $(this).attr("data-deletepath");
 		if ( $(this).is(':checked') ) {
+			deletePaths.push(deletechecked);
 			if ( $(this).attr("data-type") == "plugin" ) {
 				plugin.push(name);
 			} else {
 				docker.push(name);
 			}
 		} else {
+			var index= deletePaths.indexOf(deletechecked);
+			if ( index > -1 ) {
+				deletePaths.splice(index,1);
+			}
 			var index = plugin.indexOf(name);
 			if ( index > -1 ) {
 				plugin.splice(index,1);
@@ -1022,6 +1031,7 @@ function getSelectedApps() {
 	});
 	selected.docker = uniqueArrayElements(docker);
 	selected.plugin = uniqueArrayElements(plugin);
+	selected.deletePaths = uniqueArrayElements(deletePaths);
 	data.selected = JSON.stringify(selected);
 	return selected;
 }
@@ -1041,9 +1051,11 @@ function enableMultiInstall() {
 	var count = selected.plugin.length + selected.docker.length;
 	if ( count == 0 ) {
 		$(".multi_install,.multi_installClear").attr("disabled",true);
+		$(".multi_deleteButton").hide();
 		$(".multi_installButton").val("<?tr("Install Selected Applications")?>");
 	} else {
 		$(".multi_install,.multi_installClear").attr("disabled",false);
+		$(".multi_deleteButton").show();
 		var buttonText = (count == 1) ? sprintf(tr("Install %s Selected Application"),count) : sprintf(tr("Install %s Selected Applications"),count);
 		$(".multi_installButton").val(buttonText);
 	}
@@ -1066,6 +1078,31 @@ function installSort(a,b) {
 		return (a[0] < b[0]) ? -1 : 1;
 	}
 }
+function deleteMulti() {
+	var selected = getSelectedApps();
+	swal({
+		title: "<?tr("Delete Template?")?>",
+		text: sprintf(tr("Are you sure you want to delete %s applications from the previously installed list?"),"<font color='red'><strong>"+selected.deletePaths.length+"</strong></font>"),
+		type: "warning",
+		confirmButtonText: "<?tr("Delete")?>",
+		cancelButtonText: "<?tr("Cancel")?>",
+		showCancelButton: true,
+		showConfirmButton: true,
+		allowOutsideClick: true,
+		html: true
+	}, function(isConfirm) {
+		if (isConfirm) {
+			post({action:'remove_multiApplications',apps:selected.deletePaths}, function(result) {
+				clearMultiInstall();
+				enableSearch();
+				previousApps(false,true);
+			});
+		} else {
+			enableSearch();
+		}
+	});
+}
+
 function installMulti() {
 	var docker = new Array();
 	var pluginArray = new Array();

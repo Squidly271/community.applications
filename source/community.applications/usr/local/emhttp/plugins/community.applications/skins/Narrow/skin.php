@@ -126,7 +126,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			unset($template['display_Uninstall']); # prevent previously installed private apps from having 2 x's in previous apps section
 
 		$template['display_humanDate'] = date("F j, Y",$template['Date']);
-		$template['display_multi_install'] = ($template['Removable']) ? "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='{$template['Name']}' data-type='$appType' $checked>" : "";
+		$template['display_multi_install'] = ($template['Removable']) ? "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='{$template['Name']}' data-type='$appType' data-deletepath='{$template['InstallPath']}' $checked>" : "";
 		if (! $caSettings['dockerRunning'] && ! $template['Plugin'])
 			unset($template['display_multi_install']);
 

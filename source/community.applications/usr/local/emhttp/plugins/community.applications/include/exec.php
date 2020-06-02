@@ -981,6 +981,28 @@ case 'switchLanguage':
 	postReturn(["status"=> "ok"]);
 	break;
 
+#######################################################
+# Delete multiple checked off apps from previous apps #
+#######################################################
+case 'remove_multiApplications':
+	$apps = getPostArray("apps");
+	if ( ! count($apps) ) {
+		postReturn(["error"=>"No apps were in post when trying to remove multiple applications"]);
+		break;
+	}
+	foreach ($apps as $app) {
+		if ( strpos($app,"/boot/config/") === false ) {
+			$error = "Remove multiple apps: $app was not in /boot/config";
+			break;
+		}
+		@unlink($app);
+	}
+	if ( $error ) 
+		postReturn(["error"=>$error]);
+	else
+		postReturn(["status"=>"ok"]);
+	break;
+
 ###############################################
 # Return an error if the action doesn't exist #
 ###############################################
