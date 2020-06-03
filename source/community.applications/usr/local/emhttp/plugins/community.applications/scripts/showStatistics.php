@@ -8,27 +8,20 @@
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
+require_once "$docroot/plugins/community.applications/include/paths.php";
+require_once "$docroot/plugins/dynamix/include/Wrappers.php";
+require_once "$docroot/plugins/dynamix/include/Helpers.php";
+
 $translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
+$dynamix = parse_plugin_cfg("dynamix");
+
 if ( $translations ) {
-<<<<<<< HEAD
 	$_SERVER['REQUEST_URI'] = "docker/apps";
-=======
-	$_SERVER['REQUEST_URI'] = 'apps';
->>>>>>> d621edd779173fc06b1560e5b922c2157e1a564e
 	require_once "$docroot/plugins/dynamix/include/Translations.php";
 }
 
-require_once "$docroot/plugins/community.applications/include/paths.php";
-<<<<<<< HEAD
-=======
-require_once "$docroot/plugins/dynamix/include/Wrappers.php";
-require_once "$docroot/plugins/dynamix/include/Helpers.php";
->>>>>>> d621edd779173fc06b1560e5b922c2157e1a564e
 require_once "$docroot/plugins/community.applications/include/helpers.php";
-require_once "$docroot/plugins/dynamix/include/Helpers.php";
-
-$dynamix = parse_plugin_cfg("dynamix");
 
 function tr($string,$ret=true) {
 	if ( function_exists("_") )

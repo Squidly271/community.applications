@@ -7,22 +7,16 @@
 ###############################################################
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
+require_once "$docroot/plugins/community.applications/include/paths.php";
+require_once "$docroot/plugins/dynamix/include/Wrappers.php";
+
 $unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
 $translations  = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
 if ( $translations ) {
-<<<<<<< HEAD
 	$_SERVER['REQUEST_URI'] = "docker/apps";
-	require_once "$docroot/plugins/dynamix/include/Translations.php";
+	require_once("$docroot/plugins/dynamix/include/Translations.php");
 }
-
-require_once "$docroot/plugins/community.applications/include/paths.php";
-require_once "$docroot/plugins/dynamix/include/Wrappers.php";
-=======
-	$_SERVER['REQUEST_URI'] = 'apps';
-	require_once "$docroot/plugins/dynamix/include/Translations.php";
-}
->>>>>>> d621edd779173fc06b1560e5b922c2157e1a564e
 
 function tr($string,$ret=true) {
 	if ( function_exists("_") )
