@@ -6,13 +6,14 @@
 #          Licenced under the terms of GNU GPLv2              #
 #                                                             #
 ###############################################################
-
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 $translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
-if ( $translations )
+if ( $translations ) {
+	$_SERVER['REQUEST_URI'] = "docker/apps";
 	require_once("$docroot/plugins/dynamix/include/Translations.php");
+}
 
 require_once "$docroot/plugins/community.applications/include/helpers.php";
 require_once "$docroot/plugins/community.applications/include/paths.php";

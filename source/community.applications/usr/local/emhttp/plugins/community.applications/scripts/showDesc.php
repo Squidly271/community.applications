@@ -7,9 +7,15 @@
 ###############################################################
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-require_once "$docroot/plugins/dynamix/include/Wrappers.php";
-require_once "$docroot/plugins/dynamix/include/Helpers.php";
+$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
+
+if ( $translations ) {
+	$_SERVER['REQUEST_URI'] = "docker/apps";
+	require_once "$docroot/plugins/dynamix/include/Translations.php";
+}
+
 require_once "$docroot/plugins/community.applications/include/paths.php";
+require_once "$docroot/plugins/dynamix/include/Helpers.php";
 
 $unRaidVars     = parse_ini_file("/var/local/emhttp/var.ini");
 $caSettings     = parse_plugin_cfg("community.applications");
@@ -17,14 +23,6 @@ $csrf_token     = $unRaidVars['csrf_token'];
 $appNumber      = urldecode($_GET['appPath']);
 $appName        = urldecode($_GET['appName']);
 $appName        = str_replace("'","",$appName);
-
-$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
-
-if ( $translations ) {
-	$_SERVER['REQUEST_URI'] = "docker/apps";
-	require_once("$docroot/plugins/dynamix/include/Translations.php");
-}
-
 
 function tr($string,$ret=false) {
 	if ( function_exists("_") )

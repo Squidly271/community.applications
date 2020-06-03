@@ -5,23 +5,20 @@
 #          Licenced under the terms of GNU GPLv2              #
 #                                                             #
 ###############################################################
-
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-require_once "$docroot/plugins/community.applications/include/paths.php";
-require_once "$docroot/plugins/dynamix/include/Wrappers.php";
-require_once "$docroot/plugins/dynamix/include/Helpers.php";
-
 $translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
-
-$dynamix = parse_plugin_cfg("dynamix");
 
 if ( $translations ) {
 	$_SERVER['REQUEST_URI'] = "docker/apps";
 	require_once "$docroot/plugins/dynamix/include/Translations.php";
 }
 
+require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/community.applications/include/helpers.php";
+require_once "$docroot/plugins/dynamix/include/Helpers.php";
+
+$dynamix = parse_plugin_cfg("dynamix");
 
 function tr($string,$ret=true) {
 	if ( function_exists("_") )
