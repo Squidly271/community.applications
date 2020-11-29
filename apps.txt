@@ -1,0 +1,19 @@
+:plug1
+> <i class='fa fa-sort enabledIcon' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This chooses how to sort the results<br><br> <i 
+> class='fa fa-download' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-edit' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;These icons respectively will <span 
+> class='ca_bold'>Install or Edit</span> an application<br> <i class='fa fa-globe' aria-hidden='true' style='font-size:2rem;'></i> <i class='fa fa-cog' aria-hidden='true' 
+> style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;Clicking these icons will take you to an application's GUI or settings<br> <span class='ca_fa-support' style='font-size:2rem;'></span> 
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will take you to the appropriate support thread for an application<br> <span class='ca_fa-project' style='font-size:2rem;'></span> 
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This will take you to the project page for an application<br> <i class='fa fa-window-close' aria-hidden='true' style='font-size:2rem;color:maroon;'></i> 
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this icon will uninstall the application or delete it from the lists depending upon your current section<br> <span class='unpinned'> </span><span 
+> class='pinned'></span> &nbsp;&nbsp;Clicking these icons will pin / unpin an application for later viewer (from the Pinned Apps section)<br> <i class='fa fa-info-circle' aria-hidden='true' 
+> style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this will display more information about the application.  NOTE: You can also click on the application's icon 
+> to display more information.<br> <i class='fa fa-exclamation-triangle' aria-hidden='true' style='font-size:2rem;'></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Clicking this will display any 
+> warnings or extra comments about the application<br> <input type='checkbox' checked> &nbsp;&nbsp;&nbsp;On the previous apps section, you can select multiple applications to install 
+> simultaneously<br> <span class='ca_thumbsup' style='margin-left:0px; font-size:2rem;'></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is a recommended application based upon support requests 
+> and answers in the unRaid forum<br> <center>For support for this plugin, visit <a title='click for help' href="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" 
+> target="_blank">HERE</a></center>
+> 
+> To view the policies Community Applications has, click <a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>HERE</a>
+:end
+

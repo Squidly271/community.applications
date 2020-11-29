@@ -1,0 +1,35 @@
+# My PSAs / banners
+Happy New Year=
+Happy Holidays from Andrew, Tracey, and family=
+Please Enjoy Responsibly=
+Popup Blocked  CA requires popups to be enabled under certain circumstances  You must white list your server within your browser to allow popups=
+# Sorting Options
+Sorting options=
+Sorting options unavailable=
+# Initial disclaimer translations
+Disclaimer=
+All applications listed here are 3rd party additions to unRaid  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here=
+Every attempt is made to ensure that only safe and compatible applications are present=
+Application Policy=
+I Understand=
+Cancel=
+Installations of apps disabled  You must accept the warning to be able to install applications=
+Click=
+HERE=
+# Plugin Disclaimer
+Plugins=
+Community Applications contains both docker containers and plugin applications  Plugins are designed for OS enhancements, and run with full privileges on your system and are clearly identified within CA=
+Plugin Note=
+# Multi Install
+Install Plugin Applications=
+# Searches
+Search=
+Please enter search term=
+Search for=
+DockerHub Search for=
+#
+Install Plugin=
+# Remove App from previously installed
+Delete Template=ha
+
+
