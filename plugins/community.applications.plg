@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.09.19">
-<!ENTITY md5       "e982de7f7aadc68ee7e89bbb2ba8e346">
+<!ENTITY version   "2020.12.14">
+<!ENTITY md5       "ce18535401c94cb51591c02bbff4eff1">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2020.12.14
+- Add readmore link to tiles
+- Fixed: Statistics / Incompatible was showing wrong apps
+- Added: Repository popups
+- Added: Favourite repository shows up first in any search result
+- Added: Filters on searches
+- Fixed: Plex appearing twice within autocomplete
+- Changed: Donate buttons only appear on installed apps
+- Changed: Refine autocomplete entries
+- Fixed: Clicking on a category already selected would re-search the category
+
 ###2020.09.19
 - Added option to save debugging information
 
