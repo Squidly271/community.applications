@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2020.12.19">
-<!ENTITY md5       "97fa8f8c8e8dc2de1a1bf655d327cb13">
+<!ENTITY version   "2021.01.01">
+<!ENTITY md5       "69223834a5de4017d263ca9076e559ad">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.01.01
+- Fixed: Private Apps were being flagged as being part of a favourite repository if no favourite was selected
+- Fixed: Don't allow dockerHub to be flagged as favourite repository
+- Changed: Displaying repositories will only present what's present in the category / filter being browsed instead of all repositories
+- Added: Keep category / filter highlighted when displaying repositories to allow easy return to apps display
+- Fixed: Displaying apps from certain repositories (eg: Emby repository) would display some apps not present in the repository
+- Fixed: 'PiHole Template' (and possibly others) was not displaying within the auto complete entries due to branding rules
+- Changed: Speedup previous apps section displaying.
+- Fixed (via appfeed): Certain apps would never appear within Previous Apps
+- Changed: Simpler display of navigation menu
+
 ###2020.12.19
 - Fixed: Branding wasn't being properly removed
 
@@ -1585,7 +1596,7 @@ if [[ ! -e /usr/local/emhttp/plugins/dynamix/styles/font-cases.ttf ]]; then sed 
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."
-echo " Copyright 2015-2020, Andrew Zawadzki"
+echo " Copyright 2015-2021, Andrew Zawadzki"
 echo " Version: &version;"
 echo "----------------------------------------------------"
 echo ""
