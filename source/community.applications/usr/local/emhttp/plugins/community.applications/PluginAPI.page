@@ -1,0 +1,203 @@
+Menu='Buttons'
+Link='nav-user'
+---
+<?
+###############################################################
+#                                                             #
+# Community Applications copyright 2015-2021, Andrew Zawadzki #
+#                   Licenced under GPLv2                      #
+#                                                             #
+###############################################################
+?>
+
+<? if ( ! file_exists("/usr/local/emhttp/plugins/dynamix.plugin.manager/PluginHelpers.page") ) : ?>
+<style>
+.ca_plugin_notice{position:fixed;top:1px;left:0;}
+.ca_element_notice{padding-right:20px;width:100%;height:40px;line-height:40px;color:#e68a00;background:#feefb3;border-bottom:#e68a00 1px solid;text-align:center;font-size:1.4rem;z-index:900;display:none;}
+.ca_PluginUpdateDismiss{float:right;margin-right:20px;cursor:pointer;}
+.ca_pluginUpdateInfo{cursor:pointer;}
+.ca_PluginUpdateInstall{cursor:pointer;}
+a.bannerInfo {cursor:pointer;text-decoration:none;}
+.bannerInfo::before {content:"\f05a";font-family:fontAwesome;color:#e68a00;}
+</style>
+<script>
+var ca_PluginUpdatePLG;
+var ca_PluginUpdateElement;
+var ca_WarningItems = [];
+var currentWarning = 0;
+warningInterval = false;
+
+$(function() {
+	$(".upgrade_notice").after("<div class='ca_plugin_notice ca_element_notice'></div>");
+});
+
+if ( typeof caPluginUpdateCheck !== "function" ) {
+	function ca_PluginUpdate_openBox(cmd,title,height,width,load,func) {
+		// open shadowbox window (run in foreground)
+		var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
+		var options = load ? {modal:true,onClose:function(){ eval(func); }} : {modal:true};
+		Shadowbox.open({content:run, player:'iframe', title:title, height:height, width:width, options:options});
+	}
+
+	function ca_hidePluginUpdate(version) {
+		$.cookie(ca_PluginUpdatePLG,version);
+		$(ca_PluginUpdateElement).hide();
+	}
+
+	function ca_pluginUpdateInstall(plugin) {
+		ca_PluginUpdate_openBox("/plugins/community.applications/scripts/installPluginUpdate.sh&arg1="+plugin,"Installing Update",600,900,true,"window.location.reload()");
+	}
+
+	function ca_pluginUpdateShowInfo(cmd,title,height,width,load,func,id) {
+		// open shadowbox window (run in foreground)
+		var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
+		var options = load ? (func ? {modal:true,onClose:function(){setTimeout(func+'('+'"'+(id||'')+'")',0);}} : {modal:false,onClose:function(){location=location;}}) : {modal:false};
+		Shadowbox.open({content:run, player:'iframe', title:title, height:Math.min(height,screen.availHeight), width:Math.min(width,screen.availWidth), options:options});
+	}
+
+	function ca_pluginUpdate_evaluateBoolean(str) {
+		regex=/^\s*(true|1|on)\s*$/i
+		return regex.test(str);
+	}
+
+	function caPluginUpdateCheck(plugin,options=[],callback) {
+		ca_PluginUpdatePLG = plugin;
+		pluginFilename = plugin.substr(0, plugin.lastIndexOf("."));
+		console.time("checkPlugin "+plugin);
+		console.log("checkPlugin  "+plugin);
+		$.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'checkPlugin',options:{plugin:plugin}},function(caAPIresult) {
+			console.groupCollapsed("Result checkPlugin "+plugin);
+			console.log(caAPIresult);
+			console.timeEnd("checkPlugin "+plugin);
+			console.groupEnd();
+			var result = JSON.parse(caAPIresult);
+
+			if ( options.debug == true ) result.updateAvailable = true;
+			var name = options.name ? options.name : "this plugin ("+plugin+")";
+			if ( ! options.element ) {
+				if ( result.updateAvailable ) {
+					var HTML = "An upgrade to "+name+" is available.  Click <a class='ca_PluginUpdateInstall' onclick='ca_pluginUpdateInstall(&quot;"+plugin+"&quot;);'>here</a> to install version "+result.version+" <a class='bannerInfo fa fa-info-circle' onclick=ca_pluginUpdateShowInfo('/plugins/dynamix.plugin.manager/include/ShowChanges.php?file=%2Ftmp%2Fplugins%2F"+pluginFilename+".txt','Release&nbsp;Notes',600,900); return false;'></a>";
+					addBannerWarning(HTML,false,ca_pluginUpdate_evaluateBoolean(options.noDismiss));
+				}
+			} else {
+				if ( $.cookie(plugin) != result.version ) {
+					if ( result.updateAvailable ) {
+						var HTML = "An upgrade to "+name+" is available.  Click <a class='ca_PluginUpdateInstall' onclick='ca_pluginUpdateInstall(&quot;"+plugin+"&quot;);'>here</a> to install version "+result.version+" <i class='ca_pluginUpdateInfo fa fa-info-circle' onclick=ca_pluginUpdateShowInfo('/plugins/dynamix.plugin.manager/include/ShowChanges.php?file=%2Ftmp%2Fplugins%2F"+pluginFilename+".txt','Release&nbsp;Notes',600,900); return false;'></i>";
+						if ( ! ca_pluginUpdate_evaluateBoolean(options.noDismiss) ) {
+							HTML = HTML.concat("<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='ca_hidePluginUpdate(&quot;"+result.version+"&quot;);'></i>");
+						}
+						result.HTML = HTML;
+						ca_PluginUpdateElement = options.element ? options.element : ".ca_plugin_notice";
+
+						if ( ! ca_pluginUpdate_evaluateBoolean(options.dontShow) ) {
+							if ( ! options.element ) {
+								$(".ca_element_notice").html(HTML);
+								if (options.priority) {
+									var z_index = $(".upgrade_notice").css("z-index");
+									$(".ca_element_notice").css("z-index",z_index+1);
+								}
+							} else {
+								$(ca_PluginUpdateElement).html(HTML);
+							}
+							$(ca_PluginUpdateElement).addClass("ca_element_notice").show();
+						}
+					}
+				}
+			}
+			if ( typeof options === "function" ) {
+				callback = options;
+			}
+			if ( typeof callback === "function" ) {
+				callback(JSON.stringify(result));
+			}
+		});
+	}
+}
+
+if ( typeof addBannerWarning !== "function" ) {
+	function addBannerWarning(text,warning=true,noDismiss=false) {
+		var cookieText = text.replace(/[^a-z0-9]/gi,'');
+		if ( $.cookie(cookieText) == "true" ) { return false; }
+		
+		var z_index = $(".upgrade_notice").css("z-index"); 
+		$(".ca_element_notice").css("z-index",z_index+1); // Warnings take precendence over unRaid's OS warnings
+		if ( warning ) {
+			text = "<i class='fa fa-warning'></i> "+text;
+		}
+		var arrayEntry = ca_WarningItems.push("placeholder") - 1;
+		if ( ! noDismiss ) {
+			text = text + "<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='dismissBannerWarning("+arrayEntry+",&quot;"+cookieText+"&quot;)'></i>";
+		}
+		ca_WarningItems[arrayEntry] = text;
+		if ( ! warningInterval ) {
+			showWarnings();
+			warningInterval = setInterval(function() {
+				showWarnings()
+			},10000);
+		}
+		return arrayEntry;
+	}
+
+	function dismissBannerWarning(entry,cookieText) {
+		$.cookie(cookieText,"true");
+		removeBannerWarning(entry);
+	}
+
+	function removeBannerWarning(entry) {
+		ca_WarningItems[entry] = false;
+		showWarnings();
+	}
+
+	function filterArray(array) {
+		var newArray = [];
+		array.filter(function(value,index,arr) {
+			if ( value ) {
+				newArray.push(value);
+			}
+		});	
+		return newArray;
+	}
+
+	function showWarnings() {
+		var allWarnings = filterArray(Object.values(ca_WarningItems));
+		if ( allWarnings.length == 0 ) {
+			$(".ca_plugin_notice,.ca_element_notice").hide();
+			clearInterval(warningInterval);
+			warningInterval = false;
+			return;
+		}
+		if ( currentWarning >= allWarnings.length ) {
+			currentWarning = 0;
+		}
+		$(".upgrade_notice").hide();
+		$(".ca_plugin_notice,.ca_element_notice").show();
+		$(".ca_plugin_notice").html(allWarnings[currentWarning]);
+		currentWarning++;
+	}
+}
+</script>
+<? endif; ?>
+
+<script>
+if ( typeof addRebootNotice !== "function" ) {
+// add any pre-existing reboot notices	
+	$(function() {
+<?
+		$rebootNotice = @file("/tmp/reboot_notifications") ?: array();
+		foreach ($rebootNotice as $notice):
+?>
+			var rebootMessage = "<?=trim($notice)?>";
+			if ( rebootMessage ) {
+				addBannerWarning(rebootMessage,true,true);
+			}
+<?
+		endforeach;
+?>
+	});
+	
+	function addRebootNotice(message="You must reboot for changes to take effect") {
+		addBannerWarning(message,true,true);
+		$.post("/plugins/community.applications/scripts/PluginAPI.php",{action:'addRebootNotice',message:message});
+	}
+}
+</script>

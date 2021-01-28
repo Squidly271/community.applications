@@ -1,0 +1,71 @@
+Menu='Buttons'
+Link='nav-user'
+---
+<?
+###############################################################
+#                                                             #
+# Community Applications copyright 2015-2021, Andrew Zawadzki #
+#                   Licenced under GPLv2                      #
+#                                                             #
+###############################################################
+?>
+
+<?
+$unRaidSettings = parse_ini_file("/etc/unraid-version");
+$unRaid68 = version_compare($unRaidSettings['version'],"6.7.9",">");
+$caCFG = parse_plugin_cfg("community.applications");
+?>
+
+<? if ( "{$caCFG['notifications']}" == "yes" ) :?>
+<script>
+var CA_BANNER_NOTICES = [];
+$(function() {
+	$.post("/plugins/community.applications/scripts/notices.php",{action:"scan"},function(data) {
+		console.groupCollapsed("Result: CA Background Scan");
+		console.log(data);
+		console.groupEnd();
+		CA_BANNER_NOTICES = JSON.parse(data);
+		$.each(CA_BANNER_NOTICES,function(i,el) {
+			<? if ( $unRaid68 ): ?>
+				var dismiss = "<a class='bannerDismiss' onclick='ca_DismissNotice("+i+");'></a>";
+			<? else: ?>
+				var dismiss = "<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='ca_DismissNotice("+i+");'></i></span>";
+			<? endif; ?>
+			CA_BANNER_NOTICES[i]['warning_index'] = addBannerWarning(el.Banner+" <a onclick='ca_Notices("+i+");' style='cursor:pointer;'>More Info</a>"+dismiss,true,true);
+		});
+	});
+});
+
+function ca_Notices(index) {
+	var title = CA_BANNER_NOTICES[index]['App'];
+	if ( CA_BANNER_NOTICES[index]['Name'] ) {
+		title = CA_BANNER_NOTICES[index]['Name'];
+	}
+	swal({
+		title: title,
+		text: CA_BANNER_NOTICES[index]['PopUp'],
+		type: "error",
+		showCancelButton: false,
+		showConfirmButton: true,
+		html: true
+	});
+}
+
+function ca_DismissNotice(index) {
+	swal({
+		title: "Are you sure?",
+		text: "Are you sure you want to dismiss this warning?<br> ("+CA_BANNER_NOTICES[index]['Banner']+")",
+		html: true,
+		type: 'warning',
+		showCancelButton: true,
+		showConfirmButton: true,
+		confirmButtonText: "Yes"
+	},function(isConfirm) {
+		if ( isConfirm ) {
+			removeBannerWarning(CA_BANNER_NOTICES[index]['warning_index']);
+			$.post("/plugins/community.applications/scripts/notices.php",{action:"dismiss",ID:CA_BANNER_NOTICES[index]['ID']});
+		}
+	});
+}
+</script>
+<?endif;?>

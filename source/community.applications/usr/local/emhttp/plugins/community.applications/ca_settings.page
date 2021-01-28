@@ -1,0 +1,100 @@
+Menu="hidden"
+Title="Community Applications"
+Icon="community.applications.png"
+---
+<?
+###############################################################
+#                                                             #
+# Community Applications copyright 2015-2021, Andrew Zawadzki #
+#                   Licenced under GPLv2                      #
+#                                                             #
+###############################################################
+
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
+
+$plugin = "community.applications";
+
+require_once "$docroot/plugins/$plugin/include/paths.php";
+require_once "$docroot/plugins/$plugin/include/helpers.php";
+
+$cfg = parse_plugin_cfg($plugin);
+$apps = readJsonFile($caPaths['community-templates-info']);
+$repositories = [];
+
+foreach ($apps as $template) {
+	if ($template['BranchID'] || $template['Blacklist'] || $template['Deprecated']) continue;
+	$repositories[str_replace("'","*",$template['Repo'])]++;
+}
+arsort($repositories);
+
+
+function tr($string,$ret=false) {
+	if ( function_exists("_") )
+		$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
+	if ( $ret )
+		return $string;
+	else
+		echo $string;
+}
+?>
+
+<form markdown="1" method="POST" action="/update.php" target="progressFrame">
+<input type="hidden" name="#file" value="<?=$plugin?>/<?=$plugin?>.cfg">
+
+<?tr("Hide Deprecated Applications:");?>
+: <select name='hideDeprecated' size='1'>
+	<?=mk_option($cfg['hideDeprecated'], "true", tr("Yes",true))?>
+	<?=mk_option($cfg['hideDeprecated'], "false", tr("No",true))?>
+	</select>
+
+> <?tr("This setting hides deprecated applications from the list of available apps.  Deprecated apps will still however display within the installed and previous apps sections.");?>
+
+<?tr("Hide Incompatible Applications:");?>
+: <select name='hideIncompatible' size='1'>
+	<?=mk_option($cfg['hideIncompatible'], "true", tr("Yes",true))?>
+	<?=mk_option($cfg['hideIncompatible'], "false", tr("No",true))?>
+	</select>
+
+> <?tr("This setting will hide applications that are listed as being incompatible with your version of Unraid");?>
+
+<?tr("Enable Reinstall Default:");?>
+: <select name='defaultReinstall' size='1'>
+	<?=mk_option($cfg['defaultReinstall'],'false',tr("No",true))?>
+	<?=mk_option($cfg['defaultReinstall'],'true',tr("Yes",true))?>
+	</select>
+
+> <?tr("This option enables another button on the cards and popups which will allow you to reinstall an installed application using it's default template values.  This option can be confusing at times, and is only generally used if you wish to install and have an application running twice simultaneously");?>
+
+<?tr("Enable additional search results from dockerHub:");?>
+: <select name="dockerSearch" size="1">
+	<?=mk_option($cfg['dockerSearch'], "no", tr("No",true))?>
+	<?=mk_option($cfg['dockerSearch'], "yes", tr("Yes",true))?>
+	</select>
+
+> <?tr("This setting enables CA to retrieve additional search results from dockerHub.  Note that docker must be enabled for this to be operational");?>
+
+<?tr("Allow CA to send any emergency notifications:");?>
+: <select name='notifications' size='1'>
+	<?=mk_option($cfg['notifications'],"yes",tr("Yes",true))?>
+	<?=mk_option($cfg['notifications'],"no",tr("No",true))?>
+	</select>
+
+> <?tr("This setting allows CA to periodically scan your system and alert you to the presence of:");?><br>
+> <?tr("1. Known malware and security vulnerabilities within applications");?><br>
+> <?tr("2. Critical security vulnerabilities within Unraid OS");?><br>
+> <?tr("3. Any installed applications which may seriously hinder the operation of your server");?>
+
+<?tr("Save CA debugging information:");?>
+: <select name='debugging' size='1'>
+	<?=mk_option($cfg['debugging'],"yes",tr("Yes",true))?>
+	<?=mk_option($cfg['debugging'],"no",tr("No",true))?>
+	</select>
+	
+> <?tr("Only enable this when advised to from the author of Community Applications")?>
+
+&nbsp;
+: <input type="submit" name="#apply" value="<?tr("Apply");?>" id='Apply'><input type="button" id="DONE" value="<?tr("Done");?>" onclick="done()">
+
+<center><a href="https://forums.unraid.net/topic/38582-plug-in-community-applications/" target="_blank"><?tr("Support Thread");?></a></center>
+
+</form>
