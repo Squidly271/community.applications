@@ -47,7 +47,7 @@ function writeJsonFile($filename,$jsonArray) {
 	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 }
 function download_url($url, $path = "", $bg = false, $timeout = 45) {
-	global $debugging, $caPaths;
+	global $caSettings, $caPaths;
 
 	$ch = curl_init();
 	curl_setopt($ch,CURLOPT_URL,$url);
@@ -70,7 +70,7 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	if ( $path )
 		file_put_contents($path,$out);
 
-	if ($debugging) {
+	if ($caSettings['debugging'] == "yes") {
 		file_put_contents($caPaths['logging'],"DOWNLOAD URL: $url\nRESULT:\n".var_dump_ret($out)."\n",FILE_APPEND);
 	}
 	return $out ?: false;
@@ -551,7 +551,7 @@ function formatTags($leadTemplate) {
 # handles the POST return #
 ###########################
 function postReturn($retArray) {
-	global $debugging, $caPaths;
+	global $caSettings, $caPaths;
 
 	if (is_array($retArray))
 		echo json_encode($retArray);
@@ -560,7 +560,7 @@ function postReturn($retArray) {
 	ob_flush();
 	flush();
 
-	if ($debugging) {
+	if ($caSettings['debugging'] == "yes") {
 		file_put_contents($caPaths['logging'],"POST RETURN:\n".var_dump_ret($retArray)."\n",FILE_APPEND);
 	}
 }

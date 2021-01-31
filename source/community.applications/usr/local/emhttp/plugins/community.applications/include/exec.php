@@ -32,11 +32,9 @@ require_once "$docroot/webGui/include/Markdown.php";
 
 $caSettings = parse_plugin_cfg("community.applications");
 
-$debugging = $caSettings['debugging'] == "yes";
-
 $caSettings['maxPerPage']    = isMobile() ? 12 : 24;
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
-$caSettings['timeNew']       = "-10 years";
+//$caSettings['timeNew']       = "-10 years";
 $caSettings['favourite'] = str_replace("*","'",$caSettings['favourite']);
 
 if ( ! is_file($caPaths['warningAccepted']) )
@@ -61,7 +59,7 @@ if ( !is_dir($caPaths['templates-community']) ) {
 	@unlink($caPaths['community-templates-info']);
 }
 
-if ($debugging) {
+if ($caSettings['debugging'] == "yes") {
 	file_put_contents($caPaths['logging'],"POST CALLED\n".print_r($_POST,true),FILE_APPEND);
 }
 
@@ -206,7 +204,7 @@ case 'get_content':
 		if ( $template['Plugin'] && file_exists("/var/log/plugins/".basename($template['PluginURL'])) )
 			$template['InstallPath'] = $template['PluginURL'];
 
-		if ( ($newApp) && ($template['Date'] < $newAppTime) ) continue;
+//		if ( ($newApp) && ($template['Date'] < $newAppTime) ) continue;
 		$template['NewApp'] = $newApp;
 
 		if ( $category && ! preg_match($category,$template['Category'])) continue;
