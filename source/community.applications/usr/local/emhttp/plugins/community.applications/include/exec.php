@@ -225,7 +225,7 @@ case 'get_content':
 				$searchResults['favNameHit'][] = $template;
 				continue;
 			}
-			if ( filterMatch($filter,array($template['SortName'],$template['RepoName'],$template['Language'],$template['LanguageLocal'])) ) {
+			if ( filterMatch($filter,array($template['SortName'],$template['RepoName'],$template['Language'],$template['LanguageLocal'],$template['ExtraSearchTerms'])) ) {
 				$template['Name_highlighted'] = highlight($filter,$template['Name']);
 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
@@ -910,6 +910,12 @@ case 'populateAutoComplete':
 				
 			if ( $template['Plugin'] )
 				$autoComplete[strtolower($template['Author'])] = $template['Author'];
+			
+			if ( $template['ExtraSearchTerms'] ) {
+				foreach (explode(" ",$template['ExtraSearchTerms']) as $searchTerm) {
+					$autoComplete[strtolower($searchTerm)] = strtolower($searchTerm);
+				}
+			}
 		}
 	}
 	if ( version_compare("6.9.0-beta1",$caSettings['unRaidVersion'],"<") )
