@@ -408,6 +408,7 @@ case 'search_dockerhub':
 
 	$communityTemplates = readJsonFile($caPaths['community-templates-info']);
 	$filter = str_replace(" ","%20",$filter);
+	$filter = str_replace("/","%20",$filter);
 	$jsonPage = shell_exec("curl -s -X GET 'https://registry.hub.docker.com/v1/search?q=$filter&page=$pageNumber'");
 	$pageresults = json_decode($jsonPage,true);
 	$num_pages = $pageresults['num_pages'];
