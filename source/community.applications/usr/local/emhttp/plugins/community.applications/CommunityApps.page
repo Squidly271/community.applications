@@ -1620,7 +1620,11 @@ function setFavRepoSearch() {
 function getCategories() {
 	post({action:'get_categories'},function(result) {
 		$("#category_list").html(result.categories);
-		$(".caMenuItem").addClass("caMenuEnabled").removeClass("caMenuDisabled");
+		$(".caMenuItem").each(function() {
+			if ( ! ( $(this).hasClass("favouriteRepo") || $(this).hasClass("caPinnedMenu") ) ) {
+				$(this).addClass("caMenuEnabled").removeClass("caMenuDisabled");
+			}
+		});
 		$(".clearSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
 		setFavRepoSearch();
 
