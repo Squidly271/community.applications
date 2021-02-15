@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.01.01">
-<!ENTITY md5       "69223834a5de4017d263ca9076e559ad">
+<!ENTITY version   "2021.02.15">
+<!ENTITY md5       "b1cc113da6399e2a7ac045970b15a67f">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,21 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.02.15
+- Switch to a floating popup for app / repository information
+- Remove Excess Files
+- Update Awesomeplete library
+- Fixed: Refine 'branding' on apps (autocomplete)
+- Added: Highlight search results on repository name
+- Fixed: Allow manually deleting search term and pressing enter to clear search results
+- Fixed: Statistics popup for apps would display a minor error at times
+- Added: Support 'extra' search terms for applications if defined by the author
+- Added: Ability to search for a complete dockerHub repository (ie:  author/container)
+- Changed: Pinned menu enabled / disabled according to if apps are pinned or not
+- Changed: App popups changed to reflect current Unraid theme selected
+- Fixed: Flickering on Favourite Repo menu 
+- Changed: Don't show Show More Results from dockerHub if searching apps from a repository
+
 ###2021.01.01
 - Fixed: Private Apps were being flagged as being part of a favourite repository if no favourite was selected
 - Fixed: Don't allow dockerHub to be flagged as favourite repository
