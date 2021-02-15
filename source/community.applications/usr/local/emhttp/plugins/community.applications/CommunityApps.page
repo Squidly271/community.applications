@@ -300,6 +300,9 @@ $(function(){
 	});
 
 	$(".sectionMenu").on("click",function() {
+		if ( $(this).hasClass("caMenuDisabled") ) 
+			return;
+		
 		var section = $(this).attr("data-category");
 		switch (section) {
 			case "installed_apps":
