@@ -34,7 +34,6 @@ $caSettings = parse_plugin_cfg("community.applications");
 
 $caSettings['maxPerPage']    = isMobile() ? 12 : 24;
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
-//$caSettings['timeNew']       = "-10 years";
 $caSettings['favourite'] = str_replace("*","'",$caSettings['favourite']);
 
 if ( ! is_file($caPaths['warningAccepted']) )
@@ -204,7 +203,6 @@ case 'get_content':
 		if ( $template['Plugin'] && file_exists("/var/log/plugins/".basename($template['PluginURL'])) )
 			$template['InstallPath'] = $template['PluginURL'];
 
-//		if ( ($newApp) && ($template['Date'] < $newAppTime) ) continue;
 		$template['NewApp'] = $newApp;
 
 		if ( $category && ! preg_match($category,$template['Category'])) continue;

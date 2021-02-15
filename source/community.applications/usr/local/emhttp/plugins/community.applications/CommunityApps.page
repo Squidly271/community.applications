@@ -1631,6 +1631,8 @@ function getCategories() {
 		post({action:'areAppsPinned'},function(result) {
 			if (!result.status) {
 				$(".caPinnedMenu").removeClass("caMenuEnabled").addClass("caMenuDisabled");
+			} else {
+				$(".caPinnedMenu").removeClass("caMenuDisabled").addClass("caMenuEnabled");
 			}
 		});
 
