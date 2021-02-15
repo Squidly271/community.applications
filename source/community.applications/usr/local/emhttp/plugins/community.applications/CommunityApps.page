@@ -721,8 +721,10 @@ function doSearch(button,newSearch) {
 	}
 	data.searchActive = true;
 	var sortOrder = getSortOrder();
-	if ( "<?=$cfg['dockerSearch']?>" == "yes" && ! dockerNotEnabled) {
+	if ( "<?=$cfg['dockerSearch']?>" == "yes" && ! dockerNotEnabled && (filter.indexOf(" Repository") < 1) ) {
 		$('.dockerSearch').show();
+	} else {
+		$('.dockerSearch').hide();
 	}
 	post({action:'get_content',filter:filter,sortOrder:sortOrder},function(result) {
 		enableButtons();
