@@ -47,18 +47,23 @@ if ( $unRaid69B2 ) {
 	switch ($theme) {
 		case 'black':
 			$swalBackground = "#1c1b1b";
+			$tooltipsterContent = "#f2f2f2";
 			break;
 		case 'azure':
 			$swalBackground = "#e4e2e4";
+			$tooltipsterContent = "#101010";
 			break;
 		case 'gray':
 			$swalBackground = "#1b1d1b";
+			$tooltipsterContent = "#f2f2f2";
 			break;
 		case 'white':
 			$swalBackground = "#f0f0f0";
+			$tooltipsterContent = "#101010";
 			break;
 		default:
 			$swalBackground = "#1c1b1b"; // default to black
+			$tooltipsterContent = "#f2f2f2";
 			break;
 	}
 }	else {
@@ -1619,16 +1624,11 @@ function getCategories() {
 		$(".clearSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
 		setFavRepoSearch();
 
-		<? 
-			$pinnedApps = readJsonFile($caPaths['pinnedV2']);
-			foreach ($pinnedApps as $pin) {
-				if ($pin) {$pinFlag = true; break;}
-			}
-			if (!$pinFlag):?>
+		post({action:'areAppsPinned'},function(result) {
+			if (!result.status) {
 				$(".caPinnedMenu").removeClass("caMenuEnabled").addClass("caMenuDisabled");
-			<?endif;
-		?>
-				
+			}
+		});
 
 		restoreStateMenu = $.cookie("ca_selectedMenu");
 		if ( ! restoreStateMenu )
@@ -1800,7 +1800,7 @@ function popUpChart(descData,appnumber) {
 					display: true,
 					text: "<?tr("Trend Per Month");?>",
 					fontSize: 16,
-					fontColor: '#f2f2f2'
+					fontColor: '<?=$tooltipsterContent?>'
 				},
 				legend: {
 					display: false
@@ -1813,13 +1813,13 @@ function popUpChart(descData,appnumber) {
 								return label + " %";
 							},
 							precision: 0,
-							fontColor: '#f2f2f2'
+							fontColor: '<?=$tooltipsterContent?>'
 						}
 					}],
 					xAxes: [{
 						ticks: {
 							fontSize: fontSize,
-							fontColor: '#f2f2f2'
+							fontColor: '<?=$tooltipsterContent?>'
 						}
 					}]
 				}
@@ -1854,7 +1854,7 @@ function popUpChart(descData,appnumber) {
 					display: true,
 					text: "<?tr("Downloads Per Month")?>",
 					fontSize: 16,
-					fontColor: '#f2f2f2'
+					fontColor: '<?=$tooltipsterContent?>'
 				},
 				legend: {
 					display: false
@@ -1866,13 +1866,13 @@ function popUpChart(descData,appnumber) {
 							callback: function(label,index,labels) {
 								return label.toLocaleString();
 							},
-							fontColor: '#f2f2f2'
+							fontColor: '<?=$tooltipsterContent?>'
 						}
 					}],
 					xAxes: [{
 						ticks: {
 							fontSize: fontSize,
-							fontColor: '#f2f2f2'
+							fontColor: '<?=$tooltipsterContent?>'
 						}
 					}]
 				}
@@ -1902,7 +1902,7 @@ function popUpChart(descData,appnumber) {
 					display: true,
 					text: "<?tr("Total Downloads");?>",
 					fontSize: 16,
-					fontColor: '#f2f2f2'
+					fontColor: '<?=$tooltipsterContent?>'
 				},
 				legend: {
 					display: false
@@ -1914,13 +1914,13 @@ function popUpChart(descData,appnumber) {
 							callback: function(label,index,labels) {
 								return label.toLocaleString();
 							},
-							fontColor: '#f2f2f2'
+							fontColor: '<?=$tooltipsterContent?>'
 						}
 					}],
 					xAxes: [{
 						ticks: {
 							fontSize: fontSize,
-							fontColor: '#f2f2f2'
+							fontColor: '<?=$tooltipsterContent?>'
 						}
 					}]
 				}
