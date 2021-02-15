@@ -719,6 +719,10 @@ case "pinApp":
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 	$pinnedApps["$repository&$name"] = $pinnedApps["$repository&$name"] ? false : "$repository&$name";
 	writeJsonFile($caPaths['pinnedV2'],$pinnedApps);
+	foreach ($pinnedApps as $app) {
+		if ($app) $flag = true;
+	}
+	postReturn(['status' => $flag]);
 	break;
 
 ####################################

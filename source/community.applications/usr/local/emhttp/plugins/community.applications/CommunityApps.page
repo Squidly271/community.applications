@@ -1110,7 +1110,13 @@ function pinApp(button,repository,name) {
 	$(button).toggleClass("pinned unpinned");
 	var pinned = ( $(button).hasClass("unpinned") ) ? "<?tr("Click to pin this application")?>" : "<?tr("Click to unpin this application")?>";
 	$(button).attr('title',pinned);
-	post({action:'pinApp',repository:repository,name:name});
+	post({action:'pinApp',repository:repository,name:name},function(data) {
+		if ( data.status ) {
+			$('.caPinnedMenu').removeClass('caMenuDisabled').addClass('caMenuEnabled');
+		} else {
+			$('.caPinnedMenu').removeClass('caMenuEnabled').addClass('caMenuDisabled');
+		}
+	});
 }
 
 function setPageOne() {
@@ -1608,7 +1614,18 @@ function getCategories() {
 		$("#category_list").html(result.categories);
 		$(".caMenuItem").addClass("caMenuEnabled").removeClass("caMenuDisabled");
 		$(".clearSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
-			setFavRepoSearch();
+		setFavRepoSearch();
+
+		<? 
+			$pinnedApps = readJsonFile($caPaths['pinnedV2']);
+			foreach ($pinnedApps as $pin) {
+				if ($pin) {$pinFlag = true; break;}
+			}
+			if (!$pinFlag):?>
+				$(".caPinnedMenu").removeClass("caMenuEnabled").addClass("caMenuDisabled");
+			<?endif;
+		?>
+				
 
 		restoreStateMenu = $.cookie("ca_selectedMenu");
 		if ( ! restoreStateMenu )
