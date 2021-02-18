@@ -869,9 +869,11 @@ case 'removePrivateApp':
 	$templates = readJsonFile($caPaths['community-templates-info']);
 	$displayed = readJsonFile($caPaths['community-templates-displayed']);
 	foreach ( $displayed as &$displayType ) {
-		foreach ( $displayType as &$display ) {
-			if ( $display['Path'] == $path )
-				$display['Blacklist'] = true;
+		if ( is_array($displayType) ) {
+			foreach ( $displayType as &$display ) {
+				if ( $display['Path'] == $path )
+					$display['Blacklist'] = true;
+			}
 		}
 	}
 	foreach ( $templates as &$template ) {
