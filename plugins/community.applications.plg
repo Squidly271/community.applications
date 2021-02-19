@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.02.15">
-<!ENTITY md5       "b1cc113da6399e2a7ac045970b15a67f">
+<!ENTITY version   "2021.02.19">
+<!ENTITY md5       "b0d771dde2928b25fb42ac24b7535a27">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.02.19
+- Fixed: Certain apps previously pinned would not appear within pinned apps
+- Patched: Sort order in Installed / Previous Apps section
+- Fixed: Deleting a private app from within pinned apps would return an error
+
 ###2021.02.15
 - Switch to a floating popup for app / repository information
 - Remove Excess Files
@@ -1562,6 +1567,18 @@ THIS IS A REQUIRED UPDATE
 	
 	exec("rm -rf /tmp/ca_notices");
 
+	echo "Fixing pinned apps\n";
+	if ( is_file("/boot/config/plugins/community.applications/pinned_appsV2.json") ) {
+	  $original = json_decode(file_get_contents("/boot/config/plugins/community.applications/pinned_appsV2.json"),true);
+		if ( is_array($original) ) {
+			foreach ($original as $app) {
+				$amp = strpos($app,"&");
+				$new = substr($app,0,$amp).str_replace("-"," ",substr($app,$amp));
+				$pin[$new]=$new;
+			}
+		}
+		file_put_contents("/boot/config/plugins/community.applications/pinned_appsV2.json",json_encode($pin,JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	}
 	
 	echo "Setting up cron for background notifications\n";
 	$cron = rand(0,59)." * * * * php /usr/local/emhttp/plugins/community.applications/scripts/notices.php > /dev/null 2>&1";
