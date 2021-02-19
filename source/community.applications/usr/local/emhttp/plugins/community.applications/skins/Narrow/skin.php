@@ -7,7 +7,7 @@
 ###############################################################
 
 function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
-	global $caPaths, $caSettings;
+	global $caPaths, $caSettings, $sortOrder;
 
 	if ( is_file($caPaths['repositoriesDisplayed']) ) {
 		$file = readJsonFile($caPaths['repositoriesDisplayed']);
