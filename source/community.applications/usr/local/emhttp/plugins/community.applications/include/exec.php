@@ -650,9 +650,11 @@ if ( $caSettings['dockerRunning'] ) {
 			}
 		}
 	}
-	$sortOrder['sortBy'] = "Name";
-	$sortOrder['sortDir'] = "Up";
-	usort($displayed,"mySort");
+	if ( is_array($displayed) ) {
+		$sortOrder['sortBy'] = "Name";
+		$sortOrder['sortDir'] = "Up";
+		usort($displayed,"mySort");
+	}
 	$displayedApplications['community'] = $displayed;
 	writeJsonFile($caPaths['community-templates-displayed'],$displayedApplications);
 	postReturn(['status'=>"ok"]);
