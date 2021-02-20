@@ -46,23 +46,23 @@ $previousLocale = $_COOKIE["locale"];
 if ( $unRaid69B2 ) {
 	switch ($theme) {
 		case 'black':
-			$swalBackground = "#1c1b1b";
+			$swalBackground = "black";
 			$tooltipsterContent = "#f2f2f2";
 			break;
 		case 'azure':
-			$swalBackground = "#e4e2e4";
+			$swalBackground = "white";
 			$tooltipsterContent = "#101010";
 			break;
 		case 'gray':
-			$swalBackground = "#1b1d1b";
+			$swalBackground = "black";
 			$tooltipsterContent = "#f2f2f2";
 			break;
 		case 'white':
-			$swalBackground = "#f0f0f0";
+			$swalBackground = "white";
 			$tooltipsterContent = "#101010";
 			break;
 		default:
-			$swalBackground = "#1c1b1b"; // default to black
+			$swalBackground = "black"; // default to black
 			$tooltipsterContent = "#f2f2f2";
 			break;
 	}
