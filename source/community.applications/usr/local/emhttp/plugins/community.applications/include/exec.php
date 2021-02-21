@@ -270,6 +270,11 @@ function DownloadApplicationFeed() {
 		$o['Category'] = str_replace("Status:Stable","",$o['Category']);
 		$myTemplates[$i] = $o;
 
+		if ( ! $o['DonateText'] && $ApplicationFeed['repositories'][$o['RepoName']]['DonateText'] )
+			$o['DonateText'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateText'];
+		if ( ! $o['DonateLink'] && $ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'] )
+			$o['DonateLink'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'];
+
 		$ApplicationFeed['repositories'][$o['RepoName']]['downloads']++;
 		$ApplicationFeed['repositories'][$o['RepoName']]['trending'] += $o['trending'];
 		if ( $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] ) {
@@ -1037,7 +1042,7 @@ if ( $caSettings['dockerRunning'] ) {
 								$o = $file[$searchResult];
 								$o['Name'] = $installedName;
 								$o['InstallPath'] = $tempPath;
-								$o['SortName'] = $installedName;
+								$o['SortName'] = str_replace("-"," ",$installedName);
 								if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
 									$o['UpdateAvailable'] = true;
 								}
@@ -1093,7 +1098,7 @@ if ( $caSettings['dockerRunning'] ) {
 						$o['Removable'] = true;
 						$o['InstallPath'] = $tempPath;
 						$o['Name'] = $tempName;
-						$o['SortName'] = $o['Name'];
+						$o['SortName'] = str_replace("-"," ",$o['Name']);
 						break;
 					}
 				}
