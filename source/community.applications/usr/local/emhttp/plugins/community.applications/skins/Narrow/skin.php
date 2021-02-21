@@ -868,7 +868,7 @@ function getRepoDescriptionSkin($repository) {
 			
 	$t .= "<div class='popupTitle'>$repository</div>";
 	$t .= "<div class='ca_hr'></div>";
-	$t .= "<div class='popupIconArea ca_center'><img class='popupIcon' src='{$repo['icon']}'></div>";
+	$t .= "<div class='popupIconArea ca_center'><img class='popupIcon' src='{$repo['icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></div>";
 	$repo['bio'] = $repo['bio'] ? markdown($repo['bio']) : "<br><center>".tr("No description present");
 	$t .= "<div class='popupDescriptionArea ca_center'><br>".strip_tags($repo['bio'])."</div>";
 
