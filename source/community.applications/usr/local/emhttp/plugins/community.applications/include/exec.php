@@ -62,6 +62,13 @@ if ($caSettings['debugging'] == "yes") {
 	file_put_contents($caPaths['logging'],"POST CALLED\n".print_r($_POST,true),FILE_APPEND);
 }
 
+$sortOrder = readJsonFile($caPaths['sortOrder']);
+if ( ! $sortOrder ) {
+	$sortOrder['sortBy'] = "Name";
+	$sortOrder['sortDir'] = "Up";
+	writeJsonFile($caPaths['sortOrder'],$sortOrder);
+}
+
 ############################################
 ##                                        ##
 ## BEGIN MAIN ROUTINES CALLED BY THE HTML ##
@@ -152,6 +159,15 @@ switch ($_POST['action']) {
 		break;
 	case 'getFavourite':
 		getFavourite();
+		break;
+	case 'changeSortOrder':
+		changeSortOrder();
+		break;
+	case 'getSortOrder':
+		getSortOrder();
+		break;
+	case 'defaultSortOrder':
+		defaultSortOrder();
 		break;
 	###############################################
 	# Return an error if the action doesn't exist #
@@ -254,6 +270,14 @@ function DownloadApplicationFeed() {
 		$o['Category'] = str_replace("Status:Stable","",$o['Category']);
 		$myTemplates[$i] = $o;
 
+		$ApplicationFeed['repositories'][$o['RepoName']]['downloads']++;
+		$ApplicationFeed['repositories'][$o['RepoName']]['trending'] += $o['trending'];
+		if ( $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] ) {
+			if ($o['FirstSeen'] < $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'])
+				$ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] = $o['firstSeen'];
+		} else {
+			$ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] = $o['FirstSeen'];
+		}
 		if ( is_array($o['Branch']) ) {
 			if ( ! $o['Branch'][0] ) {
 				$tmp = $o['Branch'];
@@ -303,6 +327,13 @@ function DownloadApplicationFeed() {
 
 	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
 	writeJsonFile($caPaths['categoryList'],$ApplicationFeed['categories']);
+	
+	foreach ($ApplicationFeed['repositories'] as &$repo) {
+		if ( $repo['downloads'] ) {
+			$repo['trending'] = $repo['trending'] / $repo['downloads'];
+		}
+	}
+	
 	writeJsonFile($caPaths['repositoryList'],$ApplicationFeed['repositories']);
 	return true;
 }
@@ -525,7 +556,7 @@ function get_content() {
 	$filter      = getPost("filter",false);
 	$category    = getPost("category",false);
 	$newApp      = filter_var(getPost("newApp",false),FILTER_VALIDATE_BOOLEAN);
-	$sortOrder   = getSortOrder(getPostArray("sortOrder"));
+
 	$caSettings['startup'] = getPost("startupDisplay",false);
 	@unlink($caPaths['repositoriesDisplayed']);
 	switch ($category) {
@@ -587,7 +618,7 @@ function get_content() {
 				writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
 				@unlink($caPaths['community-templates-allSearchResults']);
 				@unlink($caPaths['community-templates-catSearchResults']);
-				$sortOrder['sortBy'] = "noSort";
+//				$sortOrder['sortBy'] = "noSort";
 				$o['display'] = my_display_apps($displayApplications['community'],"1");
 				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
 				postReturn($o);
@@ -717,7 +748,7 @@ function get_content() {
 			$searchResults['favNameHit'] = array();
 
 		$displayApplications['community'] = array_merge($searchResults['favNameHit'],$searchResults['nameHit'],$searchResults['anyHit']);
-		$sortOrder['sortBy'] = "noSort";
+//		$sortOrder['sortBy'] = "noSort";
 	} else {
 		usort($display,"mySort");
 		$displayApplications['community'] = $display;
@@ -735,9 +766,9 @@ function get_content() {
 		@unlink($caPaths['community-templates-catSearchResults']);
 	}
 	$o['display'] = display_apps();
-	if ( count($displayApplications['community']) < 2 )
-		$o['script'] = "disableSort();";
-
+/* 	if ( count($displayApplications['community']) < 2 ) {
+		//$o['script'] = "disableSort();";
+	} */
 	postReturn($o);
 }
 
@@ -801,15 +832,19 @@ function force_update() {
 ####################################################################################
 function display_content() {
 	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
-	$sortOrder = getSortOrder(getPostArray('sortOrder'));
+
 	$pageNumber = getPost("pageNumber","1");
 	$startup = getPost("startup",false);
 	$selectedApps = json_decode(getPost("selected",false),true);
 
-	$o['display'] = file_exists($caPaths['community-templates-displayed']) ? display_apps($pageNumber,$selectedApps,$startup) : "";
+	$o['display'] = "";
+	if ( file_exists($caPaths['community-templates-displayed']) || file_exists($caPaths['repositoriesDisplayed']) ) {
+		$o['display'] = display_apps($pageNumber,$selectedApps,$startup);
+	}
+	
 	$displayedApps = readJsonFile($caPaths['community-templates-displayed']);
-	if ( ! is_array($displayedApps['community']) || count($displayedApps['community']) < 1)
-		$o['script'] = "disableSort();";
+/* 	if ( ! is_array($displayedApps['community']) || count($displayedApps['community']) < 1)
+		$o['script'] = "disableSort();"; */
 	$currentServer = @file_get_contents($caPaths['currentServer']);
 	$o['script'] .= "feedWarning('$currentServer');";
 	postReturn($o);
@@ -855,7 +890,6 @@ function search_dockerhub() {
 	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$filter     = getPost("filter","");
 	$pageNumber = getPost("page","1");
-	$sortOrder  = getSortOrder(getPostArray('sortOrder'));
 
 	$communityTemplates = readJsonFile($caPaths['community-templates-info']);
 	$filter = str_replace(" ","%20",$filter);
@@ -1108,8 +1142,6 @@ if ( $caSettings['dockerRunning'] ) {
 		}
 	}
 	if ( is_array($displayed) ) {
-		$sortOrder['sortBy'] = "Name";
-		$sortOrder['sortDir'] = "Up";
 		usort($displayed,"mySort");
 	}
 	$displayedApplications['community'] = $displayed;
@@ -1391,7 +1423,9 @@ function populateAutoComplete() {
 				$autoComplete[$name] = str_replace("ca ","",$autoComplete[$name]);
 			if ( startsWith($autoComplete[$name],"binhex ") )
 				$autoComplete[$name] = str_replace("binhex ","",$autoComplete[$name]);
-
+			if ( startsWith($autoComplete[$name],"activ ") )
+				$autoComplete[$name] = str_replace("activ ","",$autoComplete[$name]);
+			
 			if ( $template['Plugin'] )
 				$autoComplete[strtolower($template['Author'])] = $template['Author'];
 
@@ -1669,5 +1703,54 @@ function toggleFavourite() {
 function getFavourite() {
 	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	postReturn(["favourite"=>$caSettings['favourite']]);
+}
+##########################
+# Changes the sort order #
+##########################
+function changeSortOrder() {
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
+
+	$sortOrder = getPostArray("sortOrder");
+	writeJsonFile($caPaths['sortOrder'],$sortOrder);
+
+	if ( is_file($caPaths['community-templates-displayed']) ) {
+		$displayed = readJsonFile($caPaths['community-templates-displayed']);
+		usort($displayed['community'],"mySort");
+		writeJsonFile($caPaths['community-templates-displayed'],$displayed);
+	}
+	if ( is_file($caPaths['community-templates-allSearchResults']) ) {
+		$allSearchResults = readJsonFile($caPaths['community-templates-allSearchResults']);
+		usort($allSearchResults['community'],"mySort");
+		writeJsonFile($caPaths['community-templates-allSearchResults'],$allSearchResults);
+	}
+	if ( is_file($caPaths['community-templates-catSearchResults']) ) {
+		$catSearchResults = readJsonFile($caPaths['community-templates-catSearchResults']);
+		usort($catSearchResults['community'],"mySort");
+		writeJsonFile($caPaths['community-templates-catSearchResults'],$catSearchResults);
+	}
+	if ( is_file($caPaths['repositoriesDisplayed']) ) {
+		$reposDisplayed = readJsonFile($caPaths['repositoriesDisplayed']);
+		usort($reposDisplayed['community'],"mySort");
+		writeJsonFile($caPaths['repositoriesDisplayed'],$reposDisplayed);
+	}
+	
+	postReturn(['status'=>"ok"]);
+}
+############################################
+# Gets the sort order when restoring state #
+############################################
+function getSortOrder() {
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
+	
+	postReturn(["sortBy"=>$sortOrder['sortBy'],"sortDir"=>$sortOrder['sortDir']]);
+}
+
+function defaultSortOrder() {
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
+	
+	$sortOrder['sortBy'] = "Name";
+	$sortOrder['sortDir'] = "Up";
+	writeJsonFile($caPaths['sortOrder'],$sortOrder);
+	postReturn(['status'=>"ok"]);
 }
 ?>

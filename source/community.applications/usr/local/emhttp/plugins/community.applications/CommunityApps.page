@@ -159,7 +159,7 @@ $(function(){
 // Override the OS switch language function so that CA can save it's current state when switching via the OS
 	$("#nav-item.LanguageButton").find("a").attr("onclick","CAswitchLanguage('<?=$previousLocale?>')");
 
-	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='<?tr("Sort By Name Ascending")?>' data-sort='nameUp'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='<?tr("Sort By Name Descending")?>' data-sort='nameDown'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='<?tr("Sort By Downloads")?>' data-sort='downloadsDown'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='<?tr("Sort By Trend")?>' data-sort='trendDown'></i><i class='sortIcons fa fa-calendar ca_staticTips' title='<?tr("Sort By Date Added")?>' data-sort='firstSeenDown'></i></span><span id='sortIcon' class='fa ca_toolsView disabledIcon'> <span class='fa-sort-alpha-asc'></span></span>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='<?tr('Search')?>' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
+	$("#title").append("<div class='searchArea'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='<?tr("Sort By Name Ascending")?>' data-sortBy='Name' data-sortDir='Up'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='<?tr("Sort By Name Descending")?>' data-sortBy='Name' data-sortDir='Down'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='<?tr("Sort By Downloads")?>' data-sortBy='downloads' data-sortDir='Down'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='<?tr("Sort By Trend")?>' data-sortBy='trending' data-sortDir='Down'></i><i class='sortIcons fa fa-calendar ca_staticTips' title='<?tr("Sort By Date Added")?>' data-sortBy='FirstSeen' data-sortDir='Down'></i></span><span id='sortIcon' class='fa ca_toolsView disabledIcon'> <span class='fa-sort-alpha-asc'></span></span>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='<?tr('Search')?>' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
 
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
@@ -350,16 +350,24 @@ $(function(){
 		}
 	});
 	$(".sortIcons").click(function() {
-		enableSortIcon(this);
+		$(".sortIcons").removeClass("enabledIcon");
+		$(this).addClass("enabledIcon");
 		data.currentpage = 1;
 		data.searchActive = false;
-		changeSortOrder();
-		$("#sortIconArea").toggle("slow");
-		var classList = $(this).attr('class').split(/\s+/);
+		var sortOrder = new Object();
+		sortOrder.sortBy = $(this).attr("data-sortBy");
+		sortOrder.sortDir = $(this).attr("data-sortDir");
+ 		var classList = $(this).attr('class').split(/\s+/);
 		$.each(classList, function(index, item) {
 			if ( item.startsWith("fa-") ) {
 				$("#sortIcon").html("&nbsp;<span class="+item+"></span>");
 			}
+		});
+		post({action:"changeSortOrder",sortOrder:sortOrder},function() {
+			changeSortOrder();
+			$("#sortIconArea").toggle("slow");
+
+
 		});
 	});
 
@@ -442,7 +450,9 @@ $(function(){
 			searchBoxAwesomplete.close();
 			initialStartup = true;
 		} else {
-			updateContent();
+			post({action:"defaultSortOrder"},function() {
+				updateContent();
+			});
 		}
 	}
 });
@@ -493,11 +503,6 @@ function updateContent(button) {
 		}
 		getCategories();
 	});
-}
-
-function enableSortIcon(icon) {
-	$(".sortIcons").removeClass("enabledIcon");
-	$(icon).addClass("enabledIcon");
 }
 
 function enableIcon(icon,enable) {
@@ -606,17 +611,13 @@ function changeCategory(button,subSwitch) {
 }
 
 function changePage(pageNumber) {
-	var sortOrder = getSortOrder();
-	if ( data.searchActive ) {
-		sortOrder = [["sortBy","noSort"]];
-	}
 	var selected = data.selected;
 	data.currentpage = pageNumber;
 
 	var oldHeight = $(".ca_templatesDisplay").height();
 	$(".ca_templatesDisplay").css("height",oldHeight);
 	hideSortIcons();
-	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected},function(result) {
+	post({action:'display_content',pageNumber:pageNumber,selected:selected},function(result) {
 		updateDisplay(result.display);
 		$(".ca_templatesDisplay").css("height","auto");
 	});
@@ -720,13 +721,12 @@ function doSearch(button,newSearch) {
 		return;
 	}
 	data.searchActive = true;
-	var sortOrder = getSortOrder();
 	if ( "<?=$cfg['dockerSearch']?>" == "yes" && ! dockerNotEnabled && (filter.indexOf(" Repository") < 1) ) {
 		$('.dockerSearch').show();
 	} else {
 		$('.dockerSearch').hide();
 	}
-	post({action:'get_content',filter:filter,sortOrder:sortOrder},function(result) {
+	post({action:'get_content',filter:filter},function(result) {
 		enableButtons();
 		updateDisplay(result.display);
 		data.section = "AppStore";
@@ -754,67 +754,23 @@ function refreshDisplay() {
 function changeSortOrder(button,buttonClass,previousApps) {
 	var pageNumber = data.currentpage;
 	var selected = data.selected;
-	var sortOrder = getSortOrder();
 	var startup = false;
 	if ( button || buttonClass || previousApps) {
 		data.searchFlag = false;
 	}
 	console.log("data");
 	console.log(data);
-/* 	if ( ! data.searchFlag ) {
-		sortOrder = [["sortBy","noSort"]];
-	} */
+
 	$(".startupButton").each(function(){
 		if ($(this).hasClass("selectedMenu")) {
 			startup = "true";
 		}
 	});
-	post({action:'display_content',sortOrder:sortOrder,pageNumber:pageNumber,selected:selected,startup:startup},function(result) {
+	post({action:'display_content',pageNumber:pageNumber,selected:selected,startup:startup},function(result) {
 		updateDisplay(result.display);
 	});
 }
 
-function getSortOrder() {
-	var sortOrder = new Object();
-
-	$(".sortIcons").each(function() {
-		if ( isIconEnabled(this) ) {
-			switch ( $(this).data("sort") ) {
-				case 'nameUp':
-					sortOrder.sortBy = ["sortBy","Name"];
-					sortOrder.sortDir = ["sortDir","Up"];
-					break;
-				case 'nameDown':
-					sortOrder.sortBy = ["sortBy","Name"];
-					sortOrder.sortDir = ["sortDir","Down"];
-					break;
-				case 'downloadsDown':
-					sortOrder.sortBy = ["sortBy","downloads"];
-					sortOrder.sortDir = ["sortDir","Down"];
-					break;
-				case 'trendDown':
-					sortOrder.sortBy = ["sortBy","trending"];
-					sortOrder.sortDir = ["sortDir","Down"];
-					break;
-				case 'firstSeenDown':
-					sortOrder.sortBy = ["sortBy","FirstSeen"];
-					sortOrder.sortDir = ["sortDir","Down"];
-					break;
-			}
-		}
-	});
-	if ( ! sortOrder.sortBy ) {
-		if ( ! isIconEnabled("#sortIcon")) {
-			sortOrder.sortBy = ["sortBy","noSort"];
-		} else {
-			sortOrder.sortBy = ["sortBy","Name"];
-			sortOrder.sortDir = ["sortDir","Up"];
-			var sortIcon = $.find(".sortIcons[data-sort='nameUp']");
-			$(sortIcon).addClass("enabledIcon");
-		}
-	}
-	return [sortOrder.sortBy,sortOrder.sortDir];
-}
 
 function getContent(init,category,description,newApp,startupDisplay) {
 	data.currentpage = 1;
@@ -833,13 +789,11 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		if ( (category == "New") || (category == "All") ) { category = ""; }
 
 		var filter = $('#searchBox').val();
-		var sortOrder = getSortOrder();
 		if ( ! filter ) {
 			$('.dockerSearch').hide();
 		}
-		post({action:'get_content',filter:filter,category:category,newApp:newApp,sortOrder:sortOrder,startupDisplay:startupDisplay},function(result) {
+		post({action:'get_content',filter:filter,category:category,newApp:newApp,startupDisplay:startupDisplay},function(result) {
 			updateDisplay(result.display);
-
 			if ( initialize ) {
 				populateAutoComplete();
 			}
@@ -889,8 +843,7 @@ function dockerSearch(pageNumber) {
 	enableIcon("#sortIcon",false);
 	$(".dockerSearch,.multi_installDiv").hide();
 	$("#Category").html(sprintf(tr("DockerHub Search for %s"),filter)+" <span id='pageNumber'></span>");
-	var sortOrder = getSortOrder();
-	post({action:'search_dockerhub',filter:filter,page:pageNumber,sortOrder:sortOrder},function(result) {
+	post({action:'search_dockerhub',filter:filter,page:pageNumber},function(result) {
 		updateDisplay(result.display);
 	});
 }
@@ -1410,11 +1363,6 @@ function saveState() {
 		$.cookie("ca_sortIcon",isIconEnabled("#sortIcon"));
 		$.cookie("ca_filter",$("#searchBox").val());
 		$.cookie("ca_categoryName",$(".categoryMenuName").html());
-		$(".sortIcons").each(function() {
-			if ( isIconEnabled(this) ) {
-				$.cookie("ca_sortButton",$(this).data("sort"));
-			}
-		});
 	}
 }
 
@@ -1444,25 +1392,20 @@ function restoreState() {
 
 	var ca_sortIcon = $.cookie("ca_sortIcon");
 	enableIcon("#sortIcon",ca_sortIcon);
-	$(".sortIcons").each(function() {
-		$(this).removeClass("enabledIcon");
+	post({action:"getSortOrder"},function(sortOrder) {
+		$(".sortIcons").removeClass("enabledIcon");
+		$(".sortIcons").each(function() {
+			if ( ($(this).attr("data-sortBy") == sortOrder.sortBy) && ($(this).attr("data-sortDir") == sortOrder.sortDir) ) {
+				$(this).addClass("enabledIcon");
+				var classList = $(this).attr('class').split(/\s+/);
+				$.each(classList, function(index, item) {
+					if ( item.startsWith("fa-") ) {
+						$("#sortIcon").html("&nbsp;<span class="+item+"></span>");
+					}
+				});
+			}
+		});
 	});
-	if ( ! ca_sortIcon || ca_sortIcon == "false" ) {
-		var selectedSort = "noSort";
-		var sortIcon = "";
-	} else {
-		var selectedSort = $.cookie("ca_sortButton");
-		var sortIcon = $.find(".sortIcons[data-sort='"+selectedSort+"']");
-		$(sortIcon).addClass("enabledIcon");
-		var classList = $(sortIcon).attr('class').split(/\s+/);
-	}
-
-	$.each(classList, function(index, item) {
-		if ( item.startsWith("fa-") ) {
-			$("#sortIcon").html("&nbsp;<span class="+item+"></span>");
-		}
-	});
-
 	populateAutoComplete();
 }
 

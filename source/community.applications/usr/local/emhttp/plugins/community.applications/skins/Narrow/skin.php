@@ -11,7 +11,7 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 
 	if ( is_file($caPaths['repositoriesDisplayed']) ) {
 		$file = readJsonFile($caPaths['repositoriesDisplayed']);
-		$startup = true;
+		//$startup = true;
 	} else {
 		if ( is_file($caPaths['community-templates-catSearchResults']) )
 			$file = readJsonFile($caPaths['community-templates-catSearchResults']);
@@ -40,14 +40,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
-	if ( filter_var($startup,FILTER_VALIDATE_BOOLEAN) )
-		$sortOrder['sortBy'] = "noSort";
-
-	if ( $sortOrder['sortBy'] != "noSort" ) {
-		if ( $sortOrder['sortBy'] == "Name" )
-			$sortOrder['sortBy'] = "SortName";
-		usort($file,"mySort");
-	}
 
 	$displayHeader .= getPageNavigation($pageNumber,count($file),false)."<br>";
 

@@ -84,15 +84,7 @@ function getPost($setting,$default) {
 function getPostArray($setting) {
 	return $_POST[$setting];
 }
-function getSortOrder($sortArray) {
-	if ( ! is_array($sortArray) )
-		return array();
 
-	foreach ($sortArray as $sort) {
-		$sortOrder[$sort[0]] = $sort[1];
-	}
-	return $sortOrder;
-}
 function var_dump_ret($mixed = null) {
 	ob_start();
 	var_dump($mixed);
