@@ -456,10 +456,8 @@ function displaySearchResults($pageNumber) {
 ######################################
 # Generate the display for the popup #
 ######################################
-function getPopupDescription($appNumber) {
+function getPopupDescriptionSkin($appNumber) {
 	global $caSettings, $caPaths, $language;
-
-	require_once "webGui/include/Markdown.php";
 
 	$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
 	$dockerVars = parse_ini_file($caPaths['docker_cfg']);
@@ -868,7 +866,7 @@ function getPopupDescription($appNumber) {
 #####################################
 # Generate the display for the repo #
 #####################################
-function getRepoDescription($repository) {
+function getRepoDescriptionSkin($repository) {
 	global $caSettings, $caPaths, $language;
 
 	$repositories = readJsonFile($caPaths['repositoryList']);
