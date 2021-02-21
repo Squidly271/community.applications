@@ -94,7 +94,7 @@ switch ($_POST['action']) {
 		previous_apps();
 		break;
 	case 'remove_application':
-		remove_applications();
+		remove_application();
 		break;
 	case 'updatePLGstatus':
 		updatePLGstatus();
@@ -520,7 +520,7 @@ function displayRepositories() {
 # get_content - get the results from templates according to categories, filters, etc #
 ######################################################################################
 function get_content() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 
 	$filter      = getPost("filter",false);
 	$category    = getPost("category",false);
@@ -745,7 +745,7 @@ function get_content() {
 # force_update -> forces an update of the applications #
 ########################################################
 function force_update() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 
 	$lastUpdatedOld = readJsonFile($caPaths['lastUpdated-old']);
 
@@ -800,8 +800,7 @@ function force_update() {
 # display_content - displays the templates according to view mode, sort order, etc #
 ####################################################################################
 function display_content() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$sortOrder = getSortOrder(getPostArray('sortOrder'));
 	$pageNumber = getPost("pageNumber","1");
 	$startup = getPost("startup",false);
@@ -821,8 +820,7 @@ function display_content() {
 # convert_docker - called when system adds a container from dockerHub #
 #######################################################################
 function convert_docker() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$dockerID = getPost("ID","");
 
 	$file = readJsonFile($caPaths['dockerSearchResults']);
@@ -854,8 +852,7 @@ function convert_docker() {
 # search_dockerhub - returns the results from dockerHub #
 #########################################################
 function search_dockerhub() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$filter     = getPost("filter","");
 	$pageNumber = getPost("page","1");
 	$sortOrder  = getSortOrder(getPostArray('sortOrder'));
@@ -913,14 +910,12 @@ function search_dockerhub() {
 # dismiss_warning - dismisses the warning from appearing at startup #
 #####################################################################
 function dismiss_warning() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	file_put_contents($caPaths['warningAccepted'],"warning dismissed");
 	postReturn(['status'=>"warning dismissed"]);
 }
 function dismiss_plugin_warning() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	file_put_contents($caPaths['pluginWarning'],"disclaimer ok");
 	postReturn(['status'=>"disclaimed"]);
 }
@@ -929,8 +924,7 @@ function dismiss_plugin_warning() {
 # Displays the list of installed or previously installed apps #
 ###############################################################
 function previous_apps() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$installed = getPost("installed","");
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
@@ -1127,8 +1121,7 @@ if ( $caSettings['dockerRunning'] ) {
 # Removes an app from the previously installed list (ie: deletes the user template #
 ####################################################################################
 function remove_application() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$application = getPost("application","");
 	if ( pathinfo($application,PATHINFO_EXTENSION) == "xml" || pathinfo($application,PATHINFO_EXTENSION) == "plg" )
 		@unlink($application);
@@ -1140,8 +1133,7 @@ function remove_application() {
 # Checks for an update still available (to update display) after update installed #
 ###################################################################################
 function updatePLGstatus() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$filename = getPost("filename","");
 	$displayed = readJsonFile($caPaths['community-templates-displayed']);
 	$superCategories = array_keys($displayed);
@@ -1161,8 +1153,7 @@ function updatePLGstatus() {
 # Uninstalls a docker #
 #######################
 function uninstall_docker() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$application = getPost("application","");
 
 # get the name of the container / image
@@ -1186,8 +1177,7 @@ function uninstall_docker() {
 # Pins / Unpins an application for later viewing #
 ##################################################
 function pinApp() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$repository = getPost("repository","oops");
 	$name = getPost("name","oops");
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
@@ -1200,8 +1190,7 @@ function pinApp() {
 # Gets if any apps are pinned or not #
 ######################################
 function areAppsPinned() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	postReturn(['status' => in_array(true,readJsonFile($caPaths['pinnedV2']))]);
 }
 
@@ -1209,8 +1198,7 @@ function areAppsPinned() {
 # Displays the pinned applications #
 ####################################
 function pinnedApps() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 	$file = readJsonFile($caPaths['community-templates-info']);
 	@unlink($caPaths['community-templates-allSearchResults']);
@@ -1251,8 +1239,7 @@ function pinnedApps() {
 # Displays the possible branch tags for an app #
 ################################################
 function displayTags() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$leadTemplate = getPost("leadTemplate","oops");
 	postReturn(['tags'=>formatTags($leadTemplate)]);
 }
@@ -1261,8 +1248,7 @@ function displayTags() {
 # Displays The Statistics For The Appfeed #
 ###########################################
 function statistics() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	@unlink($caPaths['community-templates-displayed']);
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);
@@ -1349,8 +1335,7 @@ function statistics() {
 # Removes a private app from the list #
 #######################################
 function removePrivateApp() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$path = getPost("path",false);
 
 	if ( ! $path || pathinfo($path,PATHINFO_EXTENSION) != "xml") {
@@ -1381,8 +1366,7 @@ function removePrivateApp() {
 # Creates the entries for autocomplete on searches #
 ####################################################
 function populateAutoComplete() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$templates = readJsonFile($caPaths['community-templates-info']);
 	$autoComplete = array_map(function($x){return str_replace(":","",tr($x['Cat']));},readJsonFile($caPaths['categoryList']));
 	foreach ($templates as $template) {
@@ -1428,8 +1412,7 @@ function populateAutoComplete() {
 # Displays the changelog #
 ##########################
 function caChangeLog() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$o = "<div style='margin:auto;width:500px;'>";
 	$o .= "<div class='ca_center'><font size='4rem'>".tr("Community Applications Changelog")."</font></div><br><br>";
 	postReturn(["changelog"=>$o.Markdown(plugin("changes","/var/log/plugins/community.applications.plg"))."<br><br>"]);
@@ -1439,8 +1422,7 @@ function caChangeLog() {
 # Populates the category list #
 ###############################
 function get_categories() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$categories = readJsonFile($caPaths['categoryList']);
 	if ( ! is_array($categories) || empty($categories) ) {
 		$cat = "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
@@ -1491,8 +1473,7 @@ function get_categories() {
 # Get the html for the popup #
 ##############################
 function getPopupDescription() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$appNumber = getPost("appPath","");
 	postReturn(getPopupDescriptionSkin($appNumber));
 }
@@ -1501,8 +1482,7 @@ function getPopupDescription() {
 # Get the html for a repo popup #
 #################################
 function getRepoDescription() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$repository = html_entity_decode(getPost("repository",""),ENT_QUOTES);
 	postReturn(getRepoDescriptionSkin($repository));
 }
@@ -1511,8 +1491,7 @@ function getRepoDescription() {
 # Creates the XML for a container install #
 ###########################################
 function createXML() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$xmlFile = getPost("xml","");
 	if ( ! $xmlFile ) {
 		postReturn(["error"=>"CreateXML: XML file was missing"]);
@@ -1606,8 +1585,7 @@ function createXML() {
 # Switch to a language #
 ########################
 function switchLanguage() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$language = getPost("language","");
 	if ( $language == "en_US" )
 		$language = "";
@@ -1626,8 +1604,7 @@ function switchLanguage() {
 # Delete multiple checked off apps from previous apps #
 #######################################################
 function remove_multiApplications() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$apps = getPostArray("apps");
 	if ( ! count($apps) ) {
 		postReturn(["error"=>"No apps were in post when trying to remove multiple applications"]);
@@ -1650,8 +1627,7 @@ function remove_multiApplications() {
 # Get's the categories present on a search #
 ############################################
 function getCategoriesPresent() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	if ( is_file($caPaths['community-templates-allSearchResults']) )
 		$displayed = readJsonFile($caPaths['community-templates-allSearchResults']);
 	else
@@ -1679,8 +1655,7 @@ function getCategoriesPresent() {
 # Set's the favourite repository #
 ##################################
 function toggleFavourite() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	$repository = html_entity_decode(getPost("repository",""),ENT_QUOTES);
 
 	$caSettings['favourite'] = $repository;
@@ -1692,8 +1667,7 @@ function toggleFavourite() {
 # Returns the favourite repository #
 ####################################
 function getFavourite() {
-	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning;
-
+	global $caPaths, $caSettings, $DockerClient, $DockerTemplates, $dockerRunning, $sortOrder;
 	postReturn(["favourite"=>$caSettings['favourite']]);
 }
 ?>
