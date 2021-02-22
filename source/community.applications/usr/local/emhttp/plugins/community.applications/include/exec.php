@@ -1460,7 +1460,7 @@ function caChangeLog() {
 # Populates the category list #
 ###############################
 function get_categories() {
-	global $caPaths, $sortOrder;
+	global $caPaths, $sortOrder, $translationsAllowed;
 	$categories = readJsonFile($caPaths['categoryList']);
 	if ( ! is_array($categories) || empty($categories) ) {
 		$cat = "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
