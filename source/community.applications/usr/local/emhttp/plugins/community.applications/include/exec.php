@@ -1221,6 +1221,7 @@ function pinApp() {
 	$name = getPost("name","oops");
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 	$pinnedApps["$repository&$name"] = $pinnedApps["$repository&$name"] ? false : "$repository&$name";
+	$pinnedApps = array_filter($pinnedApps);
 	writeJsonFile($caPaths['pinnedV2'],$pinnedApps);
 	postReturn(['status' => in_array(true,$pinnedApps)]);
 }
