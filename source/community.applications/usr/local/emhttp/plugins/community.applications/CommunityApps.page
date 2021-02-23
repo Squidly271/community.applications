@@ -647,8 +647,10 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	});
 }
 
+
 function mySpinner() {
 	$("div.spinner").show();
+
 	swalBackground("transparent");
 	swal({
 		title: "",

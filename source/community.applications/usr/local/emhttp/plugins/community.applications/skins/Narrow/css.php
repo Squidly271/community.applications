@@ -78,7 +78,7 @@ switch ($theme) {
 ?>
 .tooltipster-box{background:<?=$tooltipsterBackground?>!important}
 .tooltipster-content{color:<?=$tooltipsterContent?>!important}
-body.stop-scrolling{height:100%;overflow:auto}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
+body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
 .sweet-alert table{margin-top:0px}
 .popupHolder,.tooltipster-box {max-height:460px;}
 .sweet-overlay{background-color:rgba(0, 0, 0, 0) !important;} /* don't dim if spinner is displayed */
