@@ -237,7 +237,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .pageDots{color:grey;cursor:default;}
 .pageDots::after {content:"...";}
 .pageNavigation {font-size:2.0rem;}
-.pageNavNoClick {font-size:1.5rem;color:grey;cursor:default;}
+.pageNavNoClick {font-size:2.0rem;color:grey;cursor:default;}
 .pageSelected {cursor:default;}
 .pageRight::after {content:"\f138";font-family:fontAwesome;font-weight:bold;}
 .pageLeft::after {content:"\f137";font-family:fontAwesome;font-weight:bold;}

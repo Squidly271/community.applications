@@ -491,11 +491,6 @@ function checkRandomApp($test,$info=array(),$random=false) {
 	if ( $test['Blacklist'] )                         return false;
 	if ( $test['Deprecated'] && ( $caSettings['hideDeprecated'] == "true" ) ) return false;
 	if ( $random ) {
-		$return = ! appInstalled($test,$info);
-		if (! $return) {
-			exec("logger {$test['Repository']}");
-		}
-
 		return ! appInstalled($test,$info);
 	}
 	return true;
@@ -1738,7 +1733,15 @@ function changeSortOrder() {
 	}
 	if ( is_file($caPaths['repositoriesDisplayed']) ) {
 		$reposDisplayed = readJsonFile($caPaths['repositoriesDisplayed']);
-		usort($reposDisplayed['community'],"mySort");
+		foreach ($reposDisplayed['community'] as $repo) {
+			if ($repo['bio'])
+				$bio[] = $repo;
+			else
+				$nonbio[] = $repo;
+		}
+		usort($bio,"mysort");
+		usort($nonbio,"mysort");
+		$reposDisplayed['community'] = array_merge($bio,$nonbio);
 		writeJsonFile($caPaths['repositoriesDisplayed'],$reposDisplayed);
 	}
 	
