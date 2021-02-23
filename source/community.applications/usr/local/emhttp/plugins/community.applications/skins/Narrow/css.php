@@ -42,7 +42,7 @@ switch ($theme) {
 		$hrColor = "lightgrey";
 		$borderColor = "lightgrey";
 		$watermarkColor = "rgba(211, 211, 211, 0.8)";
-		$tooltipsterBackground = "linear-gradient(90deg,#d2d2d2 0,#f2f2f2)";
+		$tooltipsterBackground = "linear-gradient(90deg,#e2e2e2 0,#f2f2f2)";
 		$tooltipsterContent = "#101010";
 		break;
 	case 'azure':
@@ -52,7 +52,7 @@ switch ($theme) {
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
-		$tooltipsterBackground = "linear-gradient(90deg,#d2d2d2 0,#f2f2f2)";
+		$tooltipsterBackground = "linear-gradient(90deg,#e2e2e2 0,#f2f2f2)";
 		$tooltipsterContent = "#101010";
 		break;
 	case 'gray':
@@ -236,7 +236,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;text-decoration:none !important;}
 .pageDots{color:grey;cursor:default;}
 .pageDots::after {content:"...";}
-.pageNavigation {font-size:1.5rem;}
+.pageNavigation {font-size:2.0rem;}
 .pageNavNoClick {font-size:1.5rem;color:grey;cursor:default;}
 .pageSelected {cursor:default;}
 .pageRight::after {content:"\f138";font-family:fontAwesome;font-weight:bold;}

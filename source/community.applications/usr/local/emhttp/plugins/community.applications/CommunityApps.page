@@ -788,6 +788,16 @@ function getContent(init,category,description,newApp,startupDisplay) {
 		}
 		if ( (category == "New") || (category == "All") ) { category = ""; }
 
+		var el_dl = $.find(".sortIcons[data-sortby='downloads']");
+		var el_tr = $.find(".sortIcons[data-sortby='trending']");
+		if ( category == "repos" ) {
+			$(el_dl).tooltipster("content","<?=tr("Sort By Number Of Apps")?>");
+			$(el_tr).tooltipster("content","<?=tr("Sort By Average Trend")?>");
+		} else {
+			$(el_dl).tooltipster("content","<?=tr("Sort By Downloads")?>");
+			$(el_tr).tooltipster("content","<?=tr("Sort By Trend")?>");
+		}
+
 		var filter = $('#searchBox').val();
 		if ( ! filter ) {
 			$('.dockerSearch').hide();
