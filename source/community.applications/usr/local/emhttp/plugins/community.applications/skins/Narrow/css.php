@@ -28,7 +28,7 @@ switch ($theme) {
 	case 'black':
 		$donateBackground = "#f2f2f2";
 		$donateText = "#1c1b1b";
-		$templateBackground = "#191818";
+		$templateBackground = "#0f0f0f";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
 		$watermarkColor = "rgba(43, 43, 43, 0.4)";
@@ -38,7 +38,7 @@ switch ($theme) {
 	case 'white':
 		$donateBackground = "#1c1b1b";
 		$donateText = "#f2f2f2";
-		$templateBackground = "#f5f5f5";
+		$templateBackground = "#ffffff";
 		$hrColor = "lightgrey";
 		$borderColor = "lightgrey";
 		$watermarkColor = "rgba(211, 211, 211, 0.8)";
@@ -48,7 +48,7 @@ switch ($theme) {
 	case 'azure':
 		$donateBackground = "#606e7f";
 		$donateText = "#e4e2e4";
-		$templateBackground = "#e2e0e2";
+		$templateBackground = "#ffffff";
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
@@ -58,7 +58,7 @@ switch ($theme) {
 	case 'gray':
 		$donateBackground = "#606e7f";
 		$donateText = "#1b1d1b";
-		$templateBackground = "#1b1d1b";
+		$templateBackground = "#121212";
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
@@ -69,7 +69,7 @@ switch ($theme) {
 	default:
 		$donateBackground = "#f2f2f2";
 		$donateText = "#1c1b1b";
-		$templateBackground = "#191818";
+		$templateBackground = "#0f0f0f";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
 		$watermarkColor = "rgba(43, 43, 43, 0.4)";
