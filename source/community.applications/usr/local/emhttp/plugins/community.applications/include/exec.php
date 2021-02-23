@@ -1357,7 +1357,9 @@ function statistics() {
 	$o .= "<tr><td class='ca_table'>".tr("Number Of Plugin Applications")."</td><td class='ca_stat'>{$statistics['plugin']}</td></tr>";
 	$o .= "<tr><td class='ca_table'>".tr("Number Of Templates")."</td><td class='ca_stat'>{$statistics['totalApplications']}</td></tr>";
 	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;".tr("Repository List")."&quot;);' style='cursor:pointer;'>".tr("Number Of Repositories")."</a></td><td class='ca_stat'>{$statistics['repositories']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>".tr("Number Of Private Docker Applications")."</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>";
+	if ($statistics['private']) {
+		$o .= "<tr><td class='ca_table'><a data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>".tr("Number Of Private Docker Applications")."</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>";
+	}
 	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Invalid&quot;,&quot;".tr("All Invalid Templates Found")."&quot;);' style='cursor:pointer'>".tr("Number Of Invalid Templates")."</a></td><td class='ca_stat'>{$statistics['invalidXML']}</td></tr>";
 	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Fixed&quot;,&quot;".tr("Template Errors")."&quot;);' style='cursor:pointer'>".tr("Number Of Template Errors")."</a></td><td class='ca_stat'>{$statistics['caFixed']}+</td></tr>";
 	$o .= "<tr><td class='ca_table'><a data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Blacklisted Apps")."</a></td><td class='ca_stat'>{$statistics['blacklist']}</td></tr>";
