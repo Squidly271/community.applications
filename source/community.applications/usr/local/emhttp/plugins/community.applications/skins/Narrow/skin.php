@@ -144,6 +144,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$previousAppName = $template['Plugin'] ? $template['PluginURL'] : $template['Name'];
 			$checked = $checkedOffApps[$previousAppName] ? "checked" : "";
 
+			$template['OriginalCategories'] = $template['Category'];
 			$template['Category'] = categoryList($template['Category']);
 
 			$template['display_Private'] = ( $template['Private'] == "true" ) ? "<span class='ca_tooltip ca_private' title='".tr("Private Application")."'></span>" : "";
@@ -966,6 +967,8 @@ function displayCard($template) {
 	$holder = $template['Plugin'] ? "ca_holderPlugin" : "ca_holderDocker";
 	$holder = $template['Language'] ? "ca_holderLanguage" : $holder;
 	$holder = $template['RepositoryTemplate'] ? "ca_holderRepository" : $holder;
+	$holder = strpos($template['OriginalCategories'],"Drivers") !== false ? "ca_holderDriver" : $holder;
+	
 	$descriptionArea = $template['RepositoryTemplate'] ? "ca_descriptionAreaRepository" : "ca_descriptionArea";
 
 	if ($template['Language']) {
