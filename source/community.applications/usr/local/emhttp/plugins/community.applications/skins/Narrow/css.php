@@ -29,6 +29,7 @@ switch ($theme) {
 		$donateBackground = "#f2f2f2";
 		$donateText = "#1c1b1b";
 		$templateBackground = "#0f0f0f";
+		$templateFavourite = "#333333";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
 		$watermarkColor = "rgba(43, 43, 43, 0.4)";
@@ -39,6 +40,7 @@ switch ($theme) {
 		$donateBackground = "#1c1b1b";
 		$donateText = "#f2f2f2";
 		$templateBackground = "#ffffff";
+		$templateFavourite = "#d0d0d0";
 		$hrColor = "lightgrey";
 		$borderColor = "lightgrey";
 		$watermarkColor = "rgba(211, 211, 211, 0.8)";
@@ -49,6 +51,7 @@ switch ($theme) {
 		$donateBackground = "#606e7f";
 		$donateText = "#e4e2e4";
 		$templateBackground = "#ffffff";
+		$templateFavourite = "#e0e0e0";
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
@@ -59,6 +62,7 @@ switch ($theme) {
 		$donateBackground = "#606e7f";
 		$donateText = "#1b1d1b";
 		$templateBackground = "#121212";
+		$templateFavourite = "#2b2b2b";
 		$hrColor = "#606e7f";
 		$border = "#606e7f";
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
@@ -70,9 +74,12 @@ switch ($theme) {
 		$donateBackground = "#f2f2f2";
 		$donateText = "#1c1b1b";
 		$templateBackground = "#0f0f0f";
+		$templateFavourite = "#333333";
 		$hrColor = "#2b2b2b";
 		$borderColor = "#2b2b2b";
 		$watermarkColor = "rgba(43, 43, 43, 0.4)";
+		$tooltipsterBackground = "linear-gradient(90deg,#303030 0,#707070)";
+		$tooltipsterContent = "#f2f2f2";
 		break;
 }
 ?>
@@ -105,9 +112,11 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_descriptionAreaRepository {margin:1rem;width:auto;height:4rem;position:relative;margin-top:-12rem;}
 .ca_holderDocker {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderPlugin {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
+.ca_holderFav {background-color:<?=$templateFavourite?> !important;}
 .ca_holderLanguage {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderRepository {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderDriver {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
+
 <?if (! $unRaid69 ):?>
 .ca_holderPlugin::before{position:relative;float:right;margin-top:1rem;margin-right:3rem;font-family:'fontAwesome';content:'\f12e';font-size:8rem;color:<?=$watermarkColor?>;}
 <?else:?>

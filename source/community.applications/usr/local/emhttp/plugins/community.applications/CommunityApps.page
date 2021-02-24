@@ -217,6 +217,7 @@ $(function(){
 
 	$('.mainArea').on("click",".ca_favouriteRepo",function() {
 		$(".ca_fav").removeClass("ca_favouriteRepo").addClass("ca_non_favouriteRepo");
+		$(".ca_holderFav").removeClass("ca_holderFav");
 		$(this).removeClass("ca_favouriteRepo").addClass("ca_non_favouriteRepo");
 		setToolTipForFavourite();
 		post({action:'toggleFavourite',repository:""},function(data) {
@@ -1705,6 +1706,9 @@ function setFavourite(button) {
 	var repo = $(button).data("repository");
 	var apps = $.find('.ca_non_favouriteRepo[data-repository="'+repo+'"]');
 	$(apps).removeClass("ca_non_favouriteRepo").addClass("ca_favouriteRepo");
+	var apps = $.find('.ca_holder[data-repository="'+repo+'"]');
+	$(".ca_holder").removeClass("ca_holderFav");
+	$(apps).addClass("ca_holderFav");
 	setToolTipForFavourite();
 	clearTimeout(repoBannerTimer);
 	post({action:'toggleFavourite',repository:repo},function(data) {

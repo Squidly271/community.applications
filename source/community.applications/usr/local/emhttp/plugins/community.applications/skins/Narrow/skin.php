@@ -160,7 +160,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$niceRepoName = str_replace("' Repository","",$niceRepoName);
 			$niceRepoName = str_replace(" Repository","",$niceRepoName);
 			$favMsg = ($favClass == "ca_favouriteRepo") ? tr("Click to remove favourite repository") : tr(sprintf("Click to set %s as favourite repository",$niceRepoName));
-			
+			$template['ca_fav'] = ($caSettings['favourite'] && $caSettings['favourite'] == $template['RepoName']);
+
 			if ( $template['RepoName'] ) {
 				$template['display_favouriteButton'] = "<span class='appIcons ca_tooltip $favClass ca_fav' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."' title='$favMsg'></span>";
 			}
@@ -968,6 +969,9 @@ function displayCard($template) {
 	$holder = $template['Language'] ? "ca_holderLanguage" : $holder;
 	$holder = $template['RepositoryTemplate'] ? "ca_holderRepository" : $holder;
 	$holder = strpos($template['OriginalCategories'],"Drivers") !== false ? "ca_holderDriver" : $holder;
+	if ( $template['ca_fav'] )
+		$holder .= " ca_holderFav";
+
 	
 	$descriptionArea = $template['RepositoryTemplate'] ? "ca_descriptionAreaRepository" : "ca_descriptionArea";
 
@@ -978,7 +982,7 @@ function displayCard($template) {
 	}
 
 	$card = "
-		<div class='$holder'>
+		<div class='$holder ca_holder' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'>
 			<div class='ca_iconArea'>
 				<div class='ca_icon'>
 					{$template['display_iconClickable']}
