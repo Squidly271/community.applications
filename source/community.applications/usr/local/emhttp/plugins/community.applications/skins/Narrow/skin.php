@@ -95,28 +95,29 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			
 			$template['display_dockerName'] = $template['RepoName'];
 
-			$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>".tr("Donate")."</a>" : "";
+			$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate ca_href' data-href='{$template['DonateLink']}' data-target='_blank' title='{$template['DonateText']}'>".tr("Donate")."</a>" : "";
 
 			if ( $template['Forum'] )
-				$template['display_faSupport'] = "<a class='ca_tooltip ca_forum appIcons' target='_blank' href='{$template['Forum']}' title='".tr("Go to the forum")."'></a>";
+				$template['display_faSupport'] = "<a class='ca_tooltip ca_forum appIcons ca_href' data-target='_blank' data-href='{$template['Forum']}' title='".tr("Go to the forum")."'></a>";
 			if ( $template['Twitter'] )
-				$template['display_twitter'] = "<a class='ca_tooltip ca_twitter appIcons' target='_blank' href='{$template['Twitter']}' title='".tr("Go to twitter")."'></a>";
+				$template['display_twitter'] = "<a class='ca_tooltip ca_twitter appIcons ca_href' data-target='_blank' data-href='{$template['Twitter']}' title='".tr("Go to twitter")."'></a>";
 			if ( $template['Reddit'] )
-				$template['display_reddit'] = "<a class='ca_tooltip ca_reddit appIcons' target='_blank' href='{$template['Reddit']}' title='".tr("Go to reddit")."'></a>";
+				$template['display_reddit'] = "<a class='ca_tooltip ca_reddit appIcons ca_href' data-target='_blank' data-href='{$template['Reddit']}' title='".tr("Go to reddit")."'></a>";
 			if ( $template['Facebook'] )
-				$template['display_facebook'] = "<a class='ca_tooltip ca_facebook appIcons' target='_blank' href='{$template['Facebook']}' title='".tr("Go to facebook")."'></a>";
+				$template['display_facebook'] = "<a class='ca_tooltip ca_facebook appIcons ca_href' data-target='_blank' data-href='{$template['Facebook']}' title='".tr("Go to facebook")."'></a>";
 			if ( $template['Discord'] ) {
 				if (version_compare($caSettings['unRaidVersion'],"6.9.0-beta37",">")) {
-					$template['display_discord'] = "<a class='ca_tooltip ca_discord appIcons' target='_blank' href='{$template['Discord']}' title='".tr("Go to discord")."'></a>";
+					$template['display_discord'] = "<a class='ca_tooltip ca_discord appIcons ca_href' data-target='_blank' data-href='{$template['Discord']}' title='".tr("Go to discord")."'></a>";
 				} else {
 					$template['display_discord'] = "<img class='ca_tooltip ca_discord' data-theme='$theme' src='/plugins/community.applications/images/discord-$theme.svg' onclick='window.open(&quot;{$template['Discord']}&quot;,&quot;_blank&quot;);' title='Go to discord'></img>";
 				}
 			}
 			if ( $template['WebPage'] )
-				$template['display_webpage'] = "<a class='ca_tooltip ca_webpage appIcons' target='_blank' href='{$template['WebPage']}' title='".tr("Go to webpage")."'></a>";
+				$template['display_webpage'] = "<a class='ca_tooltip ca_webpage appIcons ca_href' data-target='_blank' data-href='{$template['WebPage']}' title='".tr("Go to webpage")."'></a>";
 			if ( $template['profile'] )
-				$template['display_profile'] = "<a class='ca_tooltip ca_profile appIcons' target='_blank' href='{$template['profile']}' title='".tr("Go to forum profile")."'></a>";
+				$template['display_profile'] = "<a class='ca_tooltip ca_profile appIcons ca_href' data-target='_blank' data-href='{$template['profile']}' title='".tr("Go to forum profile")."'></a>";
 			$favClass = ( $caSettings['favourite'] && ($caSettings['favourite'] == $template['RepoName']) ) ? "ca_favouriteRepo" : "ca_non_favouriteRepo";
+			$template['ca_fav'] = $caSettings['favourite'] && ($caSettings['favourite'] == $template['RepoName']);
 			$niceRepoName = str_replace("'s Repository","",$template['RepoName']);
 			$niceRepoName = str_replace("' Repository","",$niceRepoName);
 			$niceRepoName = str_replace(" Repository","",$niceRepoName);
@@ -150,11 +151,11 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['display_Private'] = ( $template['Private'] == "true" ) ? "<span class='ca_tooltip ca_private' title='".tr("Private Application")."'></span>" : "";
 
 			if ( $selected )
-				$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate' href='{$template['DonateLink']}' target='_blank' title='{$template['DonateText']}'>".tr("Donate")."</a>" : "";
+				$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate ca_href' data-href='{$template['DonateLink']}' data-target='_blank' title='{$template['DonateText']}'>".tr("Donate")."</a>" : "";
 
-			$template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons' target='_blank' href='{$template['Project']}' title='".tr("Go to the project page")."'></a>" : "";
+			$template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons ca_href' data-target='_blank' data-href='{$template['Project']}' title='".tr("Go to the project page")."'></a>" : "";
 			$supportText = $template['SupportClickLanguage'] ?: tr("Go to the support thread");
-			$template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons' href='{$template['Support']}' target='_blank' title='$supportText'></a>" : "";
+			$template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons ca_href' data-href='{$template['Support']}' data-target='_blank' title='$supportText'></a>" : "";
 			$favClass = ( $caSettings['favourite'] == $template['RepoName'] ) ? "ca_favouriteRepo" : "ca_non_favouriteRepo";
 			$niceRepoName = str_replace("'s Repository","",$template['RepoName']);
 			$niceRepoName = str_replace("' Repository","",$niceRepoName);
@@ -205,7 +206,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					if ( checkInstalledPlugin($template) ) {
 						$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 						$tmpVar = $pluginSettings ? "" : " disabled ";
-						$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons' title='".tr("Go to the plugin settings")."' href='/Apps/$pluginSettings'></a>" : "";
+						$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons ca_href' title='".tr("Go to the plugin settings")."' data-href='/Apps/$pluginSettings'></a>" : "";
 						unset($template['display_multi_install']);
 						unset($template['display_removable']);
 					} else {
@@ -222,7 +223,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							unset($template['display_multi_install']);
 
 							if ( $info[$name]['url'] && $info[$name]['running'] )
-								$template['dockerWebIcon'] = "<a class='ca_tooltip appIcons ca_fa-globe' href='{$info[$name]['url']}' target='_blank' title='".tr("Click to go to the WebUI")."'></a>";
+								$template['dockerWebIcon'] = "<a class='ca_tooltip appIcons ca_fa-globe ca_href' data-href='{$info[$name]['url']}' data-target='_blank' title='".tr("Click to go to the WebUI")."'></a>";
 						} else {
 							if ( $template['InstallPath'] )
 								$template['display_dockerReinstallIcon'] = "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='".tr("Click to reinstall")."' data-type='user' data-xml='".addslashes($template['InstallPath'])."'></a>";
@@ -328,7 +329,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					$template['display_languageInstallIcon'] = "<a class='ca_tooltip appIcons ca_fa-install languageInstall' title='{$template['InstallLanguage']}' data-language='$countryCode' data-language_xml='{$template['TemplateURL']}'></a>";
 				}
 				if ( $countryCode !== "en_US" ) {
-					$template['ca_LanguageDisclaimer'] = "<a class='ca_LanguageDisclaimer ca_fa-warning warning-yellow' href='{$template['disclaimLineLink']}' target='_blank'>&nbsp;{$template['disclaimLanguage']}</a>";
+					$template['ca_LanguageDisclaimer'] = "<a class='ca_LanguageDisclaimer ca_fa-warning warning-yellow ca_href' data-href='{$template['disclaimLineLink']}' data-target='_blank'>&nbsp;{$template['disclaimLanguage']}</a>";
 				}
 				//$template['display_author'] = languageAuthorList($template['Author']);
 			}
@@ -437,7 +438,7 @@ function displaySearchResults($pageNumber) {
 		$result['Category'] = "Docker Hub Search";
 		$result['display_iconClickable'] = "<i class='displayIcon fa fa-docker'></i>";
 		$result['Description'] = $result['Description'] ?: "No description present";
-		$result['display_faProject'] = "<a class='ca_tooltip ca_fa-project appIcons' title='Go to dockerHub page' target='_blank' href='{$result['DockerHub']}'></a>";
+		$result['display_faProject'] = "<a class='ca_tooltip ca_fa-project appIcons' title='Go to dockerHub page ca_href' data-target='_blank' data-href='{$result['DockerHub']}'></a>";
 		$result['display_dockerInstallIcon'] = $caSettings['NoInstalls'] ? "" : "<a class='ca_tooltip ca_fa-install appIcons' title='".tr("Click to install")."' onclick='dockerConvert(&#39;".$result['ID']."&#39;);'></a>";
 		$ct .= displayCard($result);
 		$count++;
@@ -618,7 +619,7 @@ function getPopupDescriptionSkin($appNumber) {
 						$installLine .= "<div><a class='appIconsPopUp ca_fa-pluginSettings' href='/Apps/$pluginSettings' target='$tabMode'> ".tr("Settings")."</a></div>";
 				} else {
 					$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
-					$installLine .= "<div><a style='cursor:pointer' class='appIconsPopUp ca_fa-install pluginInstall' onclick=installPlugin('{$template['PluginURL']}');> $buttonTitle</a></div>";
+					$installLine .= "<div><a style='cursor:pointer' class='appIconsPopUp ca_fa-install pluginInstall' onclick=installPlugin('{$template['PluginURL']}',true);> $buttonTitle</a></div>";
 				}
 			}
 		}
@@ -653,8 +654,8 @@ function getPopupDescriptionSkin($appNumber) {
 
 	if ( $template['Support'] || $template['Project'] ) {
 		$supportText = $template['SupportLanguage'] ?: tr("Support");
-		$installLine .= $template['Support'] ? "<div><a class='appIconsPopUp ca_fa-support' href='".$template['Support']."' target='_blank'> $supportText</strong></a></div>" : "";
-		$installLine .= $template['Project'] ? "<div><a class='appIconsPopUp ca_fa-project' href='".$template['Project']."' target='_blank'> ".tr("Project")."</strong></a></div>" : "";
+	$installLine .= $template['Support'] ? "<div><a class='appIconsPopUp ca_fa-support' href='{$template['Support']}' target='_blank'> $supportText</strong></a></div>" : "";
+		$installLine .= $template['Project'] ? "<div><a class='appIconsPopUp ca_fa-project' href='{$template['Project']}' target='_blank'> ".tr("Project")."</strong></a></div>" : "";
 	}
 	$installLine .= "<div><a class='appIconsPopUp ca_repository' onclick='showRepo(this);' data-appid='{$template['ID']}'> ".tr("Profile")."</a></div>";
 	$installLine .= "</div>";
@@ -936,6 +937,8 @@ function getRepoDescriptionSkin($repository) {
 	$t .= "<div class='ca_hr'></div>";
 	$t .= "<div>";
 	$t .= "<table style='margin-top:15px;width:60%;margin-left:105px;'>";
+	if ( $repo['FirstSeen'] > 1 )
+	$t .= "<tr><td style='width:50%;'>".tr("Added to CA")."</td><td style='width:30%;text-align:right;'>".date("F j, Y",$repo['FirstSeen'])."</td></tr>";
 	$t .= "<tr><td style='width:50%;'>".tr("Total Docker Applications")."</td><td style='width:30%;text-align:right;'>$totalDocker</td></tr>";
 	$t .= "<tr><td style='width:50%;'>".tr("Total Plugin Applications")."</td><td style='width:30%;text-align:right;'>$totalPlugins</td></tr>";
 	if ( $totalLanguage )

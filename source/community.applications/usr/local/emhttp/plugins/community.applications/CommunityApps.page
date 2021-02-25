@@ -210,12 +210,14 @@ $(function(){
 	$('.mainArea').on("click",'.ca_multiselect',function() {enableMultiInstall();});
 
 	$('.mainArea').on("click",".unpinned,.pinned",function() {
+		if ( popupVisible(this) ) return;
 		var repository = $(this).data("repository");
 		var name = $(this).data("name");
 		pinApp(this,repository,name);
 	});
 
 	$('.mainArea').on("click",".ca_favouriteRepo",function() {
+		if ( popupVisible(this) ) return;
 		$(".ca_fav").removeClass("ca_favouriteRepo").addClass("ca_non_favouriteRepo");
 		$(".ca_holderFav").removeClass("ca_holderFav");
 		$(this).removeClass("ca_favouriteRepo").addClass("ca_non_favouriteRepo");
@@ -234,23 +236,37 @@ $(function(){
 		});
 	});
 
+	$('.mainArea').on("click",".ca_href",function() {
+		if ( popupVisible() ) return;
+		var href = $(this).attr("data-href");
+		var target = $(this).attr("data-target");
+		if ( ! target ) target = "_blank";
+		window.open(href,target);
+	});
+	
 	$('.mainArea').on("click",".ca_non_favouriteRepo",function() {
+		if ( popupVisible(this) ) return;
 		setFavourite(this);
 	});
 	
 	$('body').on("click",".favPopup",function() {
+		if ( popupVisible(this) ) return;
 		setFavourite(this);
 		$(this).removeClass(".favPopup");
 		$(this).html(" Favourite Repository");
 	});
 	
 	$('body').on("click",".ca_repoSearch,.ca_repoSearchPopUp",function() {
+		if ( ! $(this).hasClass("ca_repoSearchPopUp") ) {
+			if ( popupVisible(this) ) return;
+		}
 		var repo = $(this).data("repository");
 		doSearch(false,repo);
 	});
 
 
 	$('.favouriteRepo').on("click",function() {
+		if ( popupVisible(this) ) return;
 		if ( $(this).hasClass("caMenuDisabled") )
 			return;
 		var repo = $(this).attr("data-repository");
@@ -258,12 +274,14 @@ $(function(){
 	});
 
 	$('.mainArea').on("click",".xmlInstall",function() {
+		if ( popupVisible(this) ) return;
 		var type = $(this).data("type");
 		var xml = $(this).data("xml");
 		xmlInstall(type,xml);
 	});
 
 	$('.menuItems').on("click",'.categoryMenu',function() {
+		if ( popupVisible(this) ) return;
 		if ( $(this).hasClass("selectedMenu") ) {
 			if ( $(this).hasClass("caRepositoryMenu") ) {
 				return;
@@ -288,6 +306,7 @@ $(function(){
 	});
 
 	$('.menuItems').on("click",".caMenuItem",function() {
+		if ( popupVisible(this) ) return;
 		if ( $(this).hasClass("caMenuDisabled") ) {
 			return;
 		}
@@ -306,6 +325,7 @@ $(function(){
 	});
 
 	$(".sectionMenu").on("click",function() {
+		if ( popupVisible(this) ) return;
 		if ( $(this).hasClass("caMenuDisabled") ) 
 			return;
 		
@@ -339,18 +359,20 @@ $(function(){
 		}
 	});
 
-	$(".initDockerSearch").click(function()     { initDockerSearch(); });
-	$(".multi_installButton").click(function()  { installMulti(); });
-	$(".multi_installClear").click(function()   { clearMultiInstall(); });
-	$(".multi_deleteButton").click(function()   { deleteMulti(); });
-	$(".multi_installAll").click(function()     { selectAllPrevious(); enableMultiInstall(); });
-	$(".startupButton").click(function()        { updateContent(this); });
+	$(".initDockerSearch").click(function()     { if ( popupVisible(this) ) return;initDockerSearch(); });
+	$(".multi_installButton").click(function()  { if ( popupVisible(this) ) return;installMulti(); });
+	$(".multi_installClear").click(function()   { if ( popupVisible(this) ) return;clearMultiInstall(); });
+	$(".multi_deleteButton").click(function()   { if ( popupVisible(this) ) return;deleteMulti(); });
+	$(".multi_installAll").click(function()     { if ( popupVisible(this) ) return;selectAllPrevious(); enableMultiInstall(); });
+	$(".startupButton").click(function()        { if ( popupVisible(this) ) return;updateContent(this); });
 	$("#sortIcon").click(function() {
+		if ( popupVisible(this) ) return;
 		if ( isIconEnabled("#sortIcon") ) {
 			$("#sortIconArea").toggle("slow");
 		}
 	});
 	$(".sortIcons").click(function() {
+		if ( popupVisible(this) ) return;
 		$(".sortIcons").removeClass("enabledIcon");
 		$(this).addClass("enabledIcon");
 		data.currentpage = 1;
@@ -373,18 +395,22 @@ $(function(){
 	});
 
 	$('.mainArea').on("click",".languageSwitch",function() {
+		if ( popupVisible(this) ) return;
 		CAswitchLanguage($(this).data("language"));
 	});
 
 	$('.mainArea').on("click",".languageInstall",function() {
+		if ( popupVisible(this) ) return;
 		installLanguage($(this).data("language_xml"),$(this).data("language"));
 	});
 
 	$('.mainArea').on("click",".languageRemove",function() {
+		if ( popupVisible(this) ) return;
 		removeLanguage($(this).data("language"));
 	});
 
 	$('.mainArea').on("click",".languageUpdate",function() {
+		if ( popupVisible(this) ) return;
 		updateLanguage($(this).data("language"));
 	});
 
@@ -886,7 +912,18 @@ function clearSearchBox() {
 	$(".categoryMenuName").html("<?tr("CATEGORIES");?>");
 }
 
-function installPlugin(pluginURL) {
+function popupVisible(el) {
+	if ( $(el).hasClass("appIconsPopUp") ) 
+		return false;
+	
+	return $(".popupHolder").is(":visible");
+}
+
+function installPlugin(pluginURL,popup=false) {
+	if ( ! popup)
+		if ( popupVisible() )
+			return;
+		
 	$(".tooltipstered").tooltipster("hide");
 	disableSearch();
 	<? if ( $translations ): ?>
