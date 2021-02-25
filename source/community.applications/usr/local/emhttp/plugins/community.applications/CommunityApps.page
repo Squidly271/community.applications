@@ -599,6 +599,10 @@ function setToolTip() {
 			origin.tooltipster("content","<div class='popupHolder' style='height:450px;'>Loading</div>");
 		},
 		functionBefore: function(instance,helper) {
+			if ( popupVisible() ) {
+				$(this).tooltipster("close");
+				return false;
+			}
 			var origin = $(helper.origin);
 			var appnumber = $(origin).data("appnumber");
 			var apppath = $(origin).data("apppath");
