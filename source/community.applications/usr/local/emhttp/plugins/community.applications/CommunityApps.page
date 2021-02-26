@@ -599,16 +599,15 @@ function setToolTip() {
 			origin.tooltipster("content","<div class='popupHolder' style='height:450px;'>Loading</div>");
 		},
 		functionBefore: function(instance,helper) {
-			if ( popupVisible() ) {
-				$(this).tooltipster("close");
-				return false;
-			}
 			var origin = $(helper.origin);
 			var appnumber = $(origin).data("appnumber");
 			var apppath = $(origin).data("apppath");
 			var appname = $(origin).data("appname");
 			var beta = " "+$(origin).data("beta");
-
+			if ( popupVisible() ) {
+				origin.tooltipster("close");
+				return false;
+			}
 			appname = stripTags(appname);
 			post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 				origin.tooltipster("content",result.description);
@@ -931,9 +930,9 @@ function installPlugin(pluginURL,popup=false) {
 	$(".tooltipstered").tooltipster("hide");
 	disableSearch();
 	<? if ( $translations ): ?>
-		openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay()");
+		openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay");
 	<? else: ?>
-		my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay()");
+		my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay");
 	<? endif; ?>
 }
 
@@ -1158,7 +1157,11 @@ function pinnedApps() {
 	});
 }
 
-function displayTags(leadTemplate) {
+function displayTags(leadTemplate,popup=false) {
+	if ( ! popup)
+		if ( popupVisible() )
+			return;
+		
 	$(".tooltipstered").tooltipster("hide");
 	post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true},function(result) {
 		disableSearch();
@@ -1719,15 +1722,15 @@ function CAswitchLanguage(language) {
 }
 function installLanguage(languageURL,language) {
 	disableSearch();
-	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,"<?tr('Install Language Pack')?>",600,900,true,"refreshDisplay();");
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,"<?tr('Install Language Pack')?>",600,900,true,"refreshDisplay");
 }
 
 function updateLanguage(language) {
 	disableSearch();
-	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"refreshDisplay();");
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"refreshDisplay");
 }
 function removeLanguage(language) {
-	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"refreshDisplay();");
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"refreshDisplay");
 }
 
 function setToolTipForFavourite() {

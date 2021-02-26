@@ -608,7 +608,7 @@ function getPopupDescriptionSkin($appNumber) {
 							$installLine .= "<div><a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;user&quot;,&quot;".addslashes($template['InstallPath'])."&quot;);'> ".tr("Reinstall")."</a></div>";
 						else {
 							$install = "<div><a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;default&quot;,&quot;".addslashes($template['Path'])."&quot;);'> ".tr("Install")."</a></div>";
-							$installLine .= $template['BranchID'] ? "<div><a style='cursor:pointer' class='appIconsPopUp ca_fa-install' onclick='displayTags({$template['ID']});'> ".tr("Install")."</a></div>" : $install;
+							$installLine .= $template['BranchID'] ? "<div><a style='cursor:pointer' class='appIconsPopUp ca_fa-install' onclick='displayTags({$template['ID']},true);'> ".tr("Install")."</a></div>" : $install;
 						}
 					}
 				}
