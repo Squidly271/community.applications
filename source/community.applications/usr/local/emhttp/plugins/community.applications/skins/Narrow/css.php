@@ -165,6 +165,7 @@ a.ca_reporeadmore {cursor:pointer;text-decoration:none;}
 a.ca_appreadmore {cursor:pointer;text-decoration:none;}
 a.ca_reporeadmore:hover {color:<?=$unRaid66color?>;}
 a.ca_appreadmore:hover {color:<?=$unRaid66color?>;}
+.ca_href {cursor:pointer;}
 input[type=checkbox] {width:2rem;height:2rem;margin-right:1rem;margin-top:-.5rem;margin-left:0rem;}
 .enabledIcon {cursor:pointer;color:<?=$unRaid66color?>;}
 .disabledIcon {color:#040404;font-size:2.5rem;}

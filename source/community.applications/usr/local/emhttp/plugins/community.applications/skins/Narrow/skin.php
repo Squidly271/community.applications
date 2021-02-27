@@ -578,7 +578,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? $template['IconFA'] : "fa fa-{$template['IconFA']}";
 		$templateDescription .= "<i class='$templateIcon popupIcon ca_center'></i>";
 	} else
-		$templateDescription .= "<img class='popupIcon' src='{$template['Icon']}'>";
+		$templateDescription .= "<img class='popupIcon' src='{$template['Icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>";
 
 	$templateDescription .= "</div>";
 

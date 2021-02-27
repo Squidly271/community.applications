@@ -389,8 +389,6 @@ $(function(){
 		post({action:"changeSortOrder",sortOrder:sortOrder},function() {
 			changeSortOrder();
 			$("#sortIconArea").toggle("slow");
-
-
 		});
 	});
 
@@ -571,9 +569,14 @@ function setToolTip() {
 		triggerClose:{click:true},
 		onlyOne:true,
 		functionBefore: function(instance,helper) {
-			$(".ca_repoPopup").tooltipster("hide");
 			var origin = $(helper.origin);
 			var repository = origin.attr("data-repository");
+			if ( ! $(origin).hasClass("ca_repoPopup") && popupVisible() ) {
+				origin.tooltipster("close");
+				return false;
+			}			
+			$(".ca_repoPopup").tooltipster("hide");
+
 			post({action:'getRepoDescription',repository:repository},function(data) {
 				origin.tooltipster("content",data.description);
 			});
