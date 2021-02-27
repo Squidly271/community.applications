@@ -918,6 +918,10 @@ function getRepoDescriptionSkin($repository) {
 		if ( $template['RepoName'] !== $repository ) continue;
 		if ( $template['BranchID'] ) continue;
 		
+		if ( $template['Blacklist'] ) continue;
+		if ( $template['Deprecated'] && $caSettings['hideDeprecated'] !== "false" ) continue;
+		if ( ! $template['Compatible'] && $caSettings['hideIncompatible'] !== "false" ) continue;
+		
 		if ( $template['Registry'] ) {
 			$totalDocker++;
 			if ( $template['downloads'] ) {
