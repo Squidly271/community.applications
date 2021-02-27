@@ -1718,17 +1718,20 @@ function changeSortOrder() {
 
 	if ( is_file($caPaths['community-templates-displayed']) ) {
 		$displayed = readJsonFile($caPaths['community-templates-displayed']);
-		usort($displayed['community'],"mySort");
+		if ($displayed['community'])
+			usort($displayed['community'],"mySort");
 		writeJsonFile($caPaths['community-templates-displayed'],$displayed);
 	}
 	if ( is_file($caPaths['community-templates-allSearchResults']) ) {
 		$allSearchResults = readJsonFile($caPaths['community-templates-allSearchResults']);
-		usort($allSearchResults['community'],"mySort");
+		if ( $allSearchResults['community'] )
+			usort($allSearchResults['community'],"mySort");
 		writeJsonFile($caPaths['community-templates-allSearchResults'],$allSearchResults);
 	}
 	if ( is_file($caPaths['community-templates-catSearchResults']) ) {
 		$catSearchResults = readJsonFile($caPaths['community-templates-catSearchResults']);
-		usort($catSearchResults['community'],"mySort");
+		if ( $catSearchResults['community'] )
+			usort($catSearchResults['community'],"mySort");
 		writeJsonFile($caPaths['community-templates-catSearchResults'],$catSearchResults);
 	}
 	if ( is_file($caPaths['repositoriesDisplayed']) ) {
