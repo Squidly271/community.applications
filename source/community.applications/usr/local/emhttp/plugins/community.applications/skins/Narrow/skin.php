@@ -438,7 +438,7 @@ function displaySearchResults($pageNumber) {
 		$result['Category'] = "Docker Hub Search";
 		$result['display_iconClickable'] = "<i class='displayIcon fa fa-docker'></i>";
 		$result['Description'] = $result['Description'] ?: "No description present";
-		$result['display_faProject'] = "<a class='ca_tooltip ca_fa-project appIcons' title='Go to dockerHub page ca_href' data-target='_blank' data-href='{$result['DockerHub']}'></a>";
+		$result['display_faProject'] = "<a class='ca_tooltip ca_fa-project appIcons ca_href' title='Go to dockerHub page' data-target='_blank' data-href='{$result['DockerHub']}'></a>";
 		$result['display_dockerInstallIcon'] = $caSettings['NoInstalls'] ? "" : "<a class='ca_tooltip ca_fa-install appIcons' title='".tr("Click to install")."' onclick='dockerConvert(&#39;".$result['ID']."&#39;);'></a>";
 		$ct .= displayCard($result);
 		$count++;
