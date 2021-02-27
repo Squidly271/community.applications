@@ -642,7 +642,7 @@ function getPopupDescriptionSkin($appNumber) {
 		}
 		if ( file_exists("/var/log/plugins/lang-$countryCode.xml") ) {
 			if ( languageCheck($template) ) {
-				$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-update languageInstall' data-languageonclick=installPlugin('$countryCode');> {$template['UpdateLanguage']}</a></div>";
+				$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-update languageInstall' onclick=updateLanguage('$countryCode');> {$template['UpdateLanguage']}</a></div>";
 			}
 		}
 		if ( $countryCode !== "en_US" ) {

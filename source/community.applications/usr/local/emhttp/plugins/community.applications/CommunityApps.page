@@ -1731,6 +1731,8 @@ function installLanguage(languageURL,language,popup=false) {
 }
 
 function updateLanguage(language) {
+	$(".tooltipstered").tooltipster("hide");
+
 	disableSearch();
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"refreshDisplay");
 }
