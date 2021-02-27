@@ -132,7 +132,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
 				$template['Icon'] = $template['IconHTTPS'];
 
-			$name = $template['SortName'];
+			$name = $template['Name'];
 			$appName = str_replace(" ","",$template['SortName']);
 			$ID = $template['ID'];
 			$template['ModeratorComment'] .= $template['CAComment'];
