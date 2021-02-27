@@ -638,11 +638,11 @@ function getPopupDescriptionSkin($appNumber) {
 				$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-switchto' onclick=CAswitchLanguage('$countryCode');> {$template['SwitchLanguage']}</a></div>";
 			}
 		} else {
-			$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-install languageInstall' onclick=installPlugin('{$template['TemplateURL']}');> {$template['InstallLanguage']}</a></div>";
+			$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-install languageInstall' onclick='installLanguage(&quot;{$template['TemplateURL']}&quot;,&quot;$countryCode&quot;,true);'> {$template['InstallLanguage']}</a></div>";
 		}
 		if ( file_exists("/var/log/plugins/lang-$countryCode.xml") ) {
 			if ( languageCheck($template) ) {
-				$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-update languageInstall' onclick=installPlugin('$countryCode');> {$template['UpdateLanguage']}</a></div>";
+				$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-update languageInstall' data-languageonclick=installPlugin('$countryCode');> {$template['UpdateLanguage']}</a></div>";
 			}
 		}
 		if ( $countryCode !== "en_US" ) {
@@ -1012,7 +1012,7 @@ function displayCard($template) {
 			</div>
 			<div class='ca_hr'></div>
 			<div class='ca_bottomLine'>
-				{$template['display_multi_install']}{$template['display_languageUpdate']}{$template['display_languageInstallIcon']}{$template['display_language_switch']}{$template['display_pluginInstallIcon']}{$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']}{$template['display_profile']}{$template['display_webpage']}{$template['display_faSupport']}{$template['display_twitter']}{$template['display_reddit']}{$template['display_discord']}{$template['display_facebook']}{$template['display_faFavourite']} {$template['display_faProject']} {$template['display_pinButton']}{$template['display_favouriteButton']}{$template['display_repoSearch']}
+				{$template['display_multi_install']}{$template['display_languageUpdate']}{$template['display_languageInstallIcon']}{$template['display_language_switch']}{$template['display_pluginInstallIcon']}{$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']}{$template['display_profile']}{$template['display_webpage']}{$template['display_faSupport']}{$template['display_twitter']}{$template['display_reddit']}{$template['display_discord']}{$template['display_facebook']} {$template['display_faProject']} {$template['display_pinButton']}{$template['display_repoSearch']}{$template['display_faFavourite']}{$template['display_favouriteButton']}
 				<span class='ca_bottomRight'>
 					{$template['display_removable']} {$template['display_Uninstall']}
 				</span>

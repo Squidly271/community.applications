@@ -398,7 +398,6 @@ $(function(){
 	});
 
 	$('.mainArea').on("click",".languageInstall",function() {
-		if ( popupVisible(this) ) return;
 		installLanguage($(this).data("language_xml"),$(this).data("language"));
 	});
 
@@ -1723,7 +1722,10 @@ function CAswitchLanguage(language) {
 		window.location.reload();
 	});
 }
-function installLanguage(languageURL,language) {
+function installLanguage(languageURL,language,popup=false) {
+	if ( ! popup && popupVisible() ) return;
+	$(".tooltipstered").tooltipster("hide");
+
 	disableSearch();
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,"<?tr('Install Language Pack')?>",600,900,true,"refreshDisplay");
 }
