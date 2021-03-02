@@ -310,7 +310,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					$currentLanguage = $dynamixSettings['display']['locale'] ?: "en_US";
 					$installedLanguages = array_diff(scandir("/usr/local/emhttp/languages"),array(".",".."));
 					$installedLanguages = array_filter($installedLanguages,function($v) {
-						return is_dir("/usr/local/emhttp/languages/$v");
+						return is_file("/boot/config/plugins/lang-$v.xml");
 					});
 					$installedLanguages[] = "en_US";
 				}
