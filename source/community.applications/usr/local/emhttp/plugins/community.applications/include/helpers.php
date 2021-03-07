@@ -53,7 +53,7 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	curl_setopt($ch,CURLOPT_URL,$url);
 	curl_setopt($ch,CURLOPT_FRESH_CONNECT,true);
 	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-//	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,15);
+	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,30);
 	curl_setopt($ch,CURLOPT_TIMEOUT,$timeout);
 	curl_setopt($ch,CURLOPT_ENCODING,"");
 	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
@@ -265,6 +265,29 @@ function fixAttributes(&$template,$attribute) {
 function versionCheck($template) {
 	global $caSettings;
 
+/* 	if ( $template['IncompatibleVersion'] ) {
+		if ( ! is_array($template['IcompatibleVersion']) ) {
+			$template['IncompatibleVersion'] = [];
+			$template['IncompatibleVersion'][] = $template['IncompatibleVersion'];
+		}
+		foreach ($template['IncompatibleVersion'] as $pluginVersion) {
+			if ( $pluginVersion == $template['pluginVersion'] ) return false;
+		}
+	}
+	 */
+	 
+	if ( $template['IncompatibleVersion'] ) {
+		if ( ! is_array($template['IncompatibleVersion']) ) {
+			$incompatible[] = $template['IncompatibleVersion'];
+		} else {
+			$incompatible = $template['IncompatibleVersion'];
+		}
+		foreach ($incompatible as $ver) {
+			if ( $ver == $template['pluginVersion'] ) return false;
+		}
+	}
+	
+	 
 	if ( $template['MinVer'] && ( version_compare($template['MinVer'],$caSettings['unRaidVersion']) > 0 ) ) return false;
 	if ( $template['MaxVer'] && ( version_compare($template['MaxVer'],$caSettings['unRaidVersion']) < 0 ) ) return false;
 	return true;
