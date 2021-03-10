@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.03.02">
-<!ENTITY md5       "1e2e3b37df276e2fd48f89ff5b8a92bf">
+<!ENTITY version   "2021.03.10">
+<!ENTITY md5       "4716ae326fc8bffe0d35f820e69387cc">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.03.10
+- Permission Fix
+- Changed: Re-institute connection timeout on all downloads (30 seconds)
+- Added: Ability to selectively mark a single plugin version as being incompatible
+
 ###2021.03.02
 - Emergency update: Unable to install de_DE / fr_FR languages if unraid.net is installed
 
