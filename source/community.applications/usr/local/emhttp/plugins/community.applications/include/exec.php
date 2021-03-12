@@ -1122,9 +1122,7 @@ if ( $caSettings['dockerRunning'] ) {
 		}
 	} else {
 		$all_plugs = array_merge(glob("/boot/config/plugins-error/*.plg"),glob("/boot/config/plugins-removed/*.plg"));
-		file_put_contents("/tmp/blah",print_r($all_plugs,true));
 		foreach ($all_plugs as $oldplug) {
-
 			foreach ($file as $template) {
 				if ( basename($oldplug) == basename($template['Repository']) ) {
 					if ( ! file_exists("/boot/config/plugins/".basename($oldplug)) ) {
