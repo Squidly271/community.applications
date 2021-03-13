@@ -1435,6 +1435,7 @@ function populateAutoComplete() {
 
 			if ( $template['ExtraSearchTerms'] ) {
 				foreach (explode(" ",$template['ExtraSearchTerms']) as $searchTerm) {
+					$searchTerm = str_replace("%20"," ",$searchTerm);
 					$autoComplete[strtolower($searchTerm)] = strtolower($searchTerm);
 				}
 			}
