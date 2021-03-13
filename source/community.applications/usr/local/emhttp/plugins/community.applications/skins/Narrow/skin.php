@@ -206,11 +206,14 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					if ( checkInstalledPlugin($template) ) {
 						$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 						$tmpVar = $pluginSettings ? "" : " disabled ";
-						$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons ca_href' title='".tr("Go to the plugin settings")."' data-href='/Apps/$pluginSettings'></a>" : "";
+						$template['display_pluginSettingsIcon'] = $pluginSettings ? "<a class='ca_tooltip ca_fa-pluginSettings appIcons ca_href' title='".tr("Go to the plugin settings")."' data-target='_self' data-href='/Apps/$pluginSettings'></a>" : "";
 						unset($template['display_multi_install']);
 						unset($template['display_removable']);
 					} else {
 						$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='".tr("Install plugin")."' onclick=installPlugin('{$template['PluginURL']}');></a>";
+					}
+					if ( $template['UpdateAvailable'] ) {
+						$template['display_pluginUpdate'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-update appIcons ca_href' title='".tr("Update plugin")."' data-target='_self' data-href='/Apps/Plugins'></a>";
 					}
 				} else {
 					if ( $caSettings['dockerRunning'] ) {
@@ -1012,7 +1015,7 @@ function displayCard($template) {
 			</div>
 			<div class='ca_hr'></div>
 			<div class='ca_bottomLine'>
-				{$template['display_multi_install']}{$template['display_languageUpdate']}{$template['display_languageInstallIcon']}{$template['display_language_switch']}{$template['display_pluginInstallIcon']}{$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']}{$template['display_profile']}{$template['display_webpage']}{$template['display_faSupport']}{$template['display_twitter']}{$template['display_reddit']}{$template['display_discord']}{$template['display_facebook']} {$template['display_faProject']} {$template['display_pinButton']}{$template['display_repoSearch']}{$template['display_faFavourite']}{$template['display_favouriteButton']}
+				{$template['display_multi_install']}{$template['display_pluginUpdate']}{$template['display_languageUpdate']}{$template['display_languageInstallIcon']}{$template['display_language_switch']}{$template['display_pluginInstallIcon']}{$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']}{$template['display_profile']}{$template['display_webpage']}{$template['display_faSupport']}{$template['display_twitter']}{$template['display_reddit']}{$template['display_discord']}{$template['display_facebook']} {$template['display_faProject']} {$template['display_pinButton']}{$template['display_repoSearch']}{$template['display_faFavourite']}{$template['display_favouriteButton']}
 				<span class='ca_bottomRight'>
 					{$template['display_removable']} {$template['display_Uninstall']}
 				</span>
