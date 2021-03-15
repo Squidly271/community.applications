@@ -364,6 +364,7 @@ function validURL($URL) {
 function filterMatch($filter,$searchArray,$exact=true) {
 	$filterwords = explode(" ",$filter);
 	foreach ( $filterwords as $testfilter) {
+		if ( ! trim($testfilter) ) continue;
 		foreach ($searchArray as $search) {
 			if ( stripos($search,$testfilter) !== false ) {
 				$foundword++;

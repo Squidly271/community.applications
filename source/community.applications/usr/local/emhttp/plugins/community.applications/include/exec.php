@@ -237,6 +237,7 @@ function DownloadApplicationFeed() {
 		$o['RepoName']      = $o['Repo'];
 		$o['SortAuthor']    = $o['Author'];
 		$o['SortName']      = str_replace("-"," ",$o['Name']);
+		$o['SortName']      = preg_replace('/\s+/',' ',$o['SortName']);
 		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
 
 		if ( $o['IconHTTPS'] )
