@@ -41,6 +41,11 @@ $unRaid69 =       version_compare($unRaidSettings['version'],"6.8.2",">");
 $translations =   is_file("$docroot/plugins/dynamix/include/Translations.php");
 $unRaid69B2 =     version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
 
+// Check md5's of files
+$caSettings = parse_plugin_cfg("community.applications");
+exec("cd /usr/local/emhttp/plugins/$plugin/ && md5sum -c ca.md5",$output,$md5Error);
+
+
 $previousLocale = $_COOKIE["locale"];
 
 if ( $unRaid69B2 ) {
@@ -1515,7 +1520,7 @@ function scrollToTop() {
 function addDockerWarning(enableDisable) {
 	if (enableDisable) {
 		if ( dockerWarningAdded === false) {
-			dockerWarningAdded = addBannerWarning("<?tr('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed')?>",true,true);
+			dockerWarningAdded = addBannerWarning("<?tr('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed')?>",true,false);
 		}
 	} else {
 		if ( dockerWarningAdded !== false ) {

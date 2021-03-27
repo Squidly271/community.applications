@@ -28,6 +28,9 @@
 	<li>VERSION</li>
 	<li><span id='caInstalledVersion'></span></li>
 	<li class='caMenuItem caChangeLog'><?tr("Change Log");?></li>
+<?if ($md5Error):?>
+	<li><font size='0'>Modified</font></li>
+<?endif;?>
 <?if ($cfg['debugging'] == "yes"):?>
 <hr>
 	<li class='caMenuItem debugging'><?tr("Debugging");?></li>
