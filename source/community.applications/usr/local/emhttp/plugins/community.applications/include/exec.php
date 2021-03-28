@@ -715,7 +715,10 @@ function get_content() {
 					$template['Language'] = highlight($filter,$template['Language']);
 					$template['LanguageLocal'] = highlight($filter,$template['LanguageLocal']);
 				}
-				$searchResults['nameHit'][] = $template;
+				if ( filterMatch($filter,array($template['ExtraSearchTerms'])) && $template['Plugin'] && $template['Author'] == "limetech" )
+					$searchResults['extraHit'][] = $template;
+				else
+					$searchResults['nameHit'][] = $template;
 			} else if ( filterMatch($filter,array($template['Author'],$template['Description'],$template['translatedCategories'])) ) {
 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
@@ -752,7 +755,12 @@ function get_content() {
 		} else
 			$searchResults['favNameHit'] = array();
 
-		$displayApplications['community'] = array_merge($searchResults['favNameHit'],$searchResults['nameHit'],$searchResults['anyHit']);
+		if ( is_array($searchResults['extraHit']) )
+			usort($searchResults['extraHit'],"mySort");
+		else
+			$searchResults['extraHit'] = array();
+
+		$displayApplications['community'] = array_merge($searchResults['extraHit'],$searchResults['favNameHit'],$searchResults['nameHit'],$searchResults['anyHit']);
 	} else {
 		usort($display,"mySort");
 		$displayApplications['community'] = $display;
