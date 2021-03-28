@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.03.12">
-<!ENTITY md5       "0832423e683e350dc171097b01aae6fc">
+<!ENTITY version   "2021.03.28">
+<!ENTITY md5       "e39c9076c712c503addd34a2c4f7041d">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.03.28
+- Add in further debugging info if required
+- Added: Prioritize certain Extra Search Terms
+- Fixed: Certain auto complete entries (eg: NUT) wouldn't return any search results
+- Fixed: Regression error - Clicking on a plugin's settings icon would open a new tab
+- Readded: Install updates for plugins
+
 ###2021.03.12
 - Added: Support plugins-error as part of previous apps
 - Added: Support spaces in extra search terms
