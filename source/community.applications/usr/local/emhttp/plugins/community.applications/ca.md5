@@ -15,7 +15,7 @@ deb660a22288039685e963f42296c091  ./include/exec.php
 b170210649f9cb7396ba3ae64d346bf3  ./include/helpers.php
 8f1129e0cdb994c6d1900192252433d8  ./include/paths.php
 9ba7ea3ef8bad60cb8335da9c0daea4f  ./javascript/libraries.js
-6522829d02f7fae8b7f9d491cbc8b981  ./skins/Narrow/css.php
+ea561c79e7d07750e18e43dc4fa72045  ./skins/Narrow/css.php
 b8e3ba44167496091be052434c90d296  ./skins/Narrow/skin.html
 7bebedcb67df7ed7c3933a79a3757d9b  ./skins/Narrow/skin.php
 38d1f40cbc64eed32cdb3292e1ec1f6e  ./scripts/PluginAPI.php

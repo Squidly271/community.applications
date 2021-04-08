@@ -173,9 +173,9 @@ input[type=checkbox] {width:2rem;height:2rem;margin-right:1rem;margin-top:-.5rem
 .unpinned {font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
 .pinned::after {content:"\f08d";font-family:fontAwesome;}
 .unpinned::after {content:"\f08d";font-family:fontAwesome;display:inline-block;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg); -o-transform: rotate(20deg);  transform: rotate(20deg);}
-.ca_favouriteRepo {font-size:2rem;cursor:pointer;padding-left:2.5rem !important;padding-right:.5rem;cursor:pointer;color:#1fa67a !important;padding:.3rem;}
+.ca_favouriteRepo {font-size:2rem;cursor:pointer;margin-left:2.5rem !important;padding-right:.5rem;cursor:pointer;color:#1fa67a !important;padding:.3rem;}
 .ca_favouriteRepo::before {content:"\f2be";font-family:fontAwesome;}
-.ca_non_favouriteRepo {font-size:2rem;cursor:pointer;padding-left:2.5rem !important;padding-right:.5rem;cursor:pointer;padding:.3rem;}
+.ca_non_favouriteRepo {font-size:2rem;cursor:pointer;margin-left:2.5rem !important;padding-right:.5rem;cursor:pointer;padding:.3rem;}
 .ca_non_favouriteRepo::before {content:"\f2be";font-family:fontAwesome;}
 .ca_repoSearch {font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
 .ca_repoSearchPopup {font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
