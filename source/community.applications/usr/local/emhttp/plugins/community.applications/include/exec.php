@@ -833,7 +833,11 @@ function force_update() {
 	getConvertedTemplates();
 	moderateTemplates();
 	$currentServer = @file_get_contents($caPaths['currentServer']);
-	postReturn(['status'=>"ok",'script'=>"feedWarning('$currentServer');"]);
+	
+	$appFeedTime = readJsonFile($caPaths['lastUpdated-old']);
+	$updateTime = tr(date("F",$appFeedTime['last_updated_timestamp']),0).date(" d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
+
+	postReturn(['status'=>"ok",'script'=>"feedWarning('$currentServer');$('.statistics').attr('title','{$updateTime}');"]);
 }
 
 
