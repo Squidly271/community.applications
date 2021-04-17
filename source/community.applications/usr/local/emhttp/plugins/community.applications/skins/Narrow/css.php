@@ -126,7 +126,7 @@ a.ca_categoryLink {text-decoration:none;color:inherit;}
 <?if ( $unRaid67 ):?>
 .ca_holderDocker::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e90b';font-size:9rem;color:<?=$watermarkColor?>;}
 <?endif;?>
-.ca_holderLanguage::before{position:relative;float:right;margin-top:.5rem;margin-right:3rem;font-family:'Unraid';content:'\e987';font-size:9rem;color:<?=$watermarkColor?>;}
+.ca_holderLanguage::before{position:relative;float:right;margin-right:3rem;font-family:'Unraid';content:'\e987';font-size:9rem;color:<?=$watermarkColor?>;}
 .ca_holderRepository::before{position:relative;float:right;margin-top:1.5rem;margin-right:3rem;margin-bottom:2rem;font-family:'fontAwesome';content:'\f2be';font-size:7rem;color:<?=$watermarkColor?>;}
 .ca_holderDriver::before{position:relative;float:right;margin-top:1.5rem;margin-right:3rem;margin-bottom:2rem;font-family:'fontAwesome';content:'\f013';font-size:7rem;color:<?=$watermarkColor?>;}
 .ca_topRightArea {display:block;position:relative;margin-top:.5rem;margin-right:2rem;z-index:9999;float:right;}
