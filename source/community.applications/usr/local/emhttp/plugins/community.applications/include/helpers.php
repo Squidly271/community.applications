@@ -210,17 +210,25 @@ function fixTemplates($template) {
 	if ( $template['DeprecatedMaxVer'] && version_compare($caSettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") )
 		$template['Deprecated'] = true;
 
-	$o['Author']        = getAuthor($o);
-	$o['DockerHubName'] = strtolower($o['Name']);
-	$o['RepoName']      = $o['Repo'];
-	$o['SortAuthor']    = $o['Author'];
-	$o['SortName']      = $o['Name'];
-	if ( $o['PluginURL'] ) {
-		$o['Author']        = $o['PluginAuthor'];
-		$o['Repository']    = $o['PluginURL'];
-		$o['SortAuthor']    = $o['Author'];
-		$o['SortName']      = $o['Name'];
+ 	if ( version_compare($caSettings['unRaidVersion'],"6.9.2",">") ) {
+		if ( $template['Config'] ) {
+			if ( $template['Config']['@attributes'] ) {
+				if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$template['Config']['@attributes']['Description']) ) {
+					$template['Config']['@attributes']['Description'] = "";
+				}
+			} else {
+				if (is_array($template['Config'])) {
+					foreach ($template['Config'] as &$config) {
+						if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$config['@attributes']['Description']) ) {
+							$config['@attributes']['Description'] = "";
+						}
+					}
+				}
+			}
+		}
 	}
+			
+					
 	return $template;
 }
 ###############################################
