@@ -227,8 +227,7 @@ function fixTemplates($template) {
 			}
 		}
 	}
-			
-					
+	
 	return $template;
 }
 ###############################################
