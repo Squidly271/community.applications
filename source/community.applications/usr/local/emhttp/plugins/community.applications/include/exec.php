@@ -1448,8 +1448,7 @@ function populateAutoComplete() {
 			if ( startsWith($autoComplete[$name],"activ ") )
 				$autoComplete[$name] = str_replace("activ ","",$autoComplete[$name]);
 			
-			if ( $template['Plugin'] )
-				$autoComplete[strtolower($template['Author'])] = $template['Author'];
+			$autoComplete[strtolower($template['Author'])] = $template['Author'];
 
 			if ( $template['ExtraSearchTerms'] ) {
 				foreach (explode(" ",$template['ExtraSearchTerms']) as $searchTerm) {
