@@ -1448,8 +1448,10 @@ function populateAutoComplete() {
 			if ( startsWith($autoComplete[$name],"activ ") )
 				$autoComplete[$name] = str_replace("activ ","",$autoComplete[$name]);
 			
-			$autoComplete[strtolower($template['Author'])] = $template['Author'];
-
+			if ( ! $autoComplete[strtolower($template['Author'])."'s Repository"] && ! $autoComplete[strtolower($template['Author']."' Repository")]) {
+				$autoComplete[strtolower($template['Author'])] = $template['Author'];
+			}
+			
 			if ( $template['ExtraSearchTerms'] ) {
 				foreach (explode(" ",$template['ExtraSearchTerms']) as $searchTerm) {
 					$searchTerm = str_replace("%20"," ",$searchTerm);
