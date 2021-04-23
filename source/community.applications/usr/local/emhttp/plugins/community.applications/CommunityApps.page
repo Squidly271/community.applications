@@ -720,17 +720,6 @@ function doSearch(button,newSearch) {
 		$('#searchBox').val(newSearch);
 	}
 	var filter = $('#searchBox').val();
-	if (filter) {
-		$(".categoryMenuName").html("<?=tr("FILTERS");?>");
-	} else {
-		$(".categoryMenuName").html("<?=tr("CATEGORIES");?>");
-	}
-
-	if ( button && ! filter) {
-		$("#searchBox").attr("placeholder","<?tr("Please enter search term")?>");
-	} else {
-		$("#searchBox").attr("placeholder","<?tr("Search")?>");
-	}
 
 	data.docker = "";
 	data.section = "AppStore";
@@ -919,7 +908,6 @@ function clearSearchBox() {
 		$('#searchButton').toggleClass('fa-remove fa-search');
 	}
 	$(".clearSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
-	$(".categoryMenuName").html("<?tr("CATEGORIES");?>");
 }
 
 function popupVisible(el) {
