@@ -339,8 +339,20 @@ $(function(){
 			case "installed_apps":
 				previousApps(true);
 				break;
+			case "inst_docker":
+				previousApps(true,false,"docker");
+				break;
+			case "inst_plugins":
+				previousApps(true,false,"plugins");
+				break;
 			case "previous_apps":
 				previousApps(false);
+				break;
+			case "prev_docker":
+				previousApps(false,false,"docker");
+				break;
+			case "prev_plugins":
+				previousApps(false,false,"plugins");
 				break;
 			case "pinned_apps":
 				pinnedApps();
@@ -950,7 +962,7 @@ function showModeration(script,title) {
 	showDesc_openBox("/plugins/<?=$plugin?>/scripts/showStatistics.php?arg1="+script,title,550,900,true,false);
 }
 
-function previousApps(installed,dontClear=false) {
+function previousApps(installed,dontClear=false,filter="") {
 	hideSortIcons();
 	clearCategory();
 	setPageOne();
@@ -960,7 +972,7 @@ function previousApps(installed,dontClear=false) {
 	$(".dockerSearch").hide();
 	enableIcon("#sortIcon",true);
 
-	post({action:'previous_apps',installed:installed},function(result) {
+	post({action:'previous_apps',installed:installed,filter:filter},function(result) {
 		if ( installed ) {
 			$(".multi_installDiv").hide();
 		} else {

@@ -979,6 +979,7 @@ function previous_apps() {
 	global $caPaths, $caSettings, $DockerClient;
 	
 	$installed = getPost("installed","");
+	$filter = getPost("filter","");
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
 
@@ -996,166 +997,174 @@ if ( $caSettings['dockerRunning'] ) {
 	$all_files = glob("{$caPaths['dockerManTemplates']}/*.xml");
 	$all_files = $all_files ?: array();
 	if ( $installed == "true" ) {
-		foreach ($info as $installedDocker) {
-			$installedName = $installedDocker['Name'];
-			if ( startsWith($installedImage,"library/") ) # official images are in DockerClient as library/mysql eg but template just shows mysql
-				$installedImage = str_replace("library/","",$installedImage);
+		if ( !$filter || $filter == "docker" ) {
+			foreach ($info as $installedDocker) {
+				$installedName = $installedDocker['Name'];
+				if ( startsWith($installedImage,"library/") ) # official images are in DockerClient as library/mysql eg but template just shows mysql
+					$installedImage = str_replace("library/","",$installedImage);
 
-			foreach ($file as $template) {
-				if ( $installedName == $template['Name'] ) {
-					$template['testrepo'] = $installedImage;
-					if ( startsWith($installedImage,$template['Repository']) ) {
-						$template['Uninstall'] = true;
-						$template['InstallPath'] = $template['Path'];
-						if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
-							$template['UpdateAvailable'] = true;
+				foreach ($file as $template) {
+					if ( $installedName == $template['Name'] ) {
+						$template['testrepo'] = $installedImage;
+						if ( startsWith($installedImage,$template['Repository']) ) {
+							$template['Uninstall'] = true;
+							$template['InstallPath'] = $template['Path'];
+							if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
+								$template['UpdateAvailable'] = true;
+							}
+							if ($template['Blacklist'] ) continue;
+
+							$displayed[] = $template;
+							break;
 						}
-						if ($template['Blacklist'] ) continue;
+					}
+				}
+			}
+	# handle renamed containers
+			foreach ($all_files as $xmlfile) {
+				$o = readXmlFile($xmlfile);
+				$o['Description'] = fixDescription($o['Description']);
+				$o['Overview'] = fixDescription($o['Overview']);
+				$o['InstallPath'] = $xmlfile;
+				$o['UnknownCompatible'] = true;
 
-						$displayed[] = $template;
-						break;
+				$flag = false;
+				$containerID = false;
+				foreach ($file as $templateDocker) {
+	# use startsWith to eliminate any version tags (:latest)
+					if ( startsWith($templateDocker['Repository'], $testRepo) ) {
+						if ( $templateDocker['Name'] == $o['Name'] ) {
+							$flag = true;
+							$containerID = $template['ID'];
+							break;
+						}
+					}
+				}
+				if ( ! $flag ) {
+					$runningflag = false;
+					foreach ($info as $installedDocker) {
+						$installedImage = $installedDocker['Image'];
+						$installedName = $installedDocker['Name'];
+						if ( startsWith($installedImage, $o['Repository']) ) {
+							if ( $installedName == $o['Name'] ) {
+								$runningflag = true;
+								$searchResult = searchArray($file,'Repository',$o['Repository']);
+								if ( ! $searchResult ) {
+									$searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
+								}
+								if ( $searchResult !== false ) {
+									$tempPath = $o['InstallPath'];
+									$containerID = $file[$searchResult]['ID'];
+									$o = $file[$searchResult];
+									$o['Name'] = $installedName;
+									$o['InstallPath'] = $tempPath;
+									$o['SortName'] = str_replace("-"," ",$installedName);
+									if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
+										$o['UpdateAvailable'] = true;
+									}
+								}
+								break;
+							}
+						}
+					}
+					if ( $runningflag ) {
+						$o['Uninstall'] = true;
+						$o['ID'] = $containerID;
+						if ( $o['Blacklist'] ) 	continue;
+
+						# handle a PR from LT where it is possible for an identical template (xml) to be present twice, with different filenames.
+						# Without this, an app could appear to be shown in installed apps twice
+						$fat32Fix[$searchResult]++;
+						if ($fat32Fix[$searchResult] > 1) continue;
+						$displayed[] = $o;
 					}
 				}
 			}
 		}
-# handle renamed containers
-		foreach ($all_files as $xmlfile) {
-			$o = readXmlFile($xmlfile);
-			$o['Description'] = fixDescription($o['Description']);
-			$o['Overview'] = fixDescription($o['Overview']);
-			$o['InstallPath'] = $xmlfile;
-			$o['UnknownCompatible'] = true;
+	} else {
+		if ( ! $filter || $filter == "docker" ) {
+	# now get the old not installed docker apps
+			foreach ($all_files as $xmlfile) {
+				$o = readXmlFile($xmlfile);
+				if ( ! $o ) continue;
+				$o['Description'] = fixDescription($o['Description']);
+				$o['Overview'] = fixDescription($o['Overview']);
+				$o['InstallPath'] = $xmlfile;
+				$o['UnknownCompatible'] = true;
+				$o['Removable'] = true;
+	# is the container running?
 
-			$flag = false;
-			$containerID = false;
-			foreach ($file as $templateDocker) {
-# use startsWith to eliminate any version tags (:latest)
-				if ( startsWith($templateDocker['Repository'], $testRepo) ) {
-					if ( $templateDocker['Name'] == $o['Name'] ) {
-						$flag = true;
-						$containerID = $template['ID'];
-						break;
-					}
-				}
-			}
-			if ( ! $flag ) {
-				$runningflag = false;
+				$flag = false;
 				foreach ($info as $installedDocker) {
 					$installedImage = $installedDocker['Image'];
 					$installedName = $installedDocker['Name'];
 					if ( startsWith($installedImage, $o['Repository']) ) {
 						if ( $installedName == $o['Name'] ) {
-							$runningflag = true;
-							$searchResult = searchArray($file,'Repository',$o['Repository']);
-							if ( ! $searchResult ) {
-								$searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
-							}
-							if ( $searchResult !== false ) {
-								$tempPath = $o['InstallPath'];
-								$containerID = $file[$searchResult]['ID'];
-								$o = $file[$searchResult];
-								$o['Name'] = $installedName;
-								$o['InstallPath'] = $tempPath;
-								$o['SortName'] = str_replace("-"," ",$installedName);
-								if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
-									$o['UpdateAvailable'] = true;
-								}
-							}
-							break;
+							$flag = true;
+							continue;
 						}
 					}
 				}
-				if ( $runningflag ) {
-					$o['Uninstall'] = true;
-					$o['ID'] = $containerID;
-					if ( $o['Blacklist'] ) 	continue;
-
-					# handle a PR from LT where it is possible for an identical template (xml) to be present twice, with different filenames.
-					# Without this, an app could appear to be shown in installed apps twice
-					$fat32Fix[$searchResult]++;
-					if ($fat32Fix[$searchResult] > 1) continue;
-					$displayed[] = $o;
-				}
-			}
-		}
-	} else {
-# now get the old not installed docker apps
-		foreach ($all_files as $xmlfile) {
-			$o = readXmlFile($xmlfile);
-			if ( ! $o ) continue;
-			$o['Description'] = fixDescription($o['Description']);
-			$o['Overview'] = fixDescription($o['Overview']);
-			$o['InstallPath'] = $xmlfile;
-			$o['UnknownCompatible'] = true;
-			$o['Removable'] = true;
-# is the container running?
-
-			$flag = false;
-			foreach ($info as $installedDocker) {
-				$installedImage = $installedDocker['Image'];
-				$installedName = $installedDocker['Name'];
-				if ( startsWith($installedImage, $o['Repository']) ) {
-					if ( $installedName == $o['Name'] ) {
-						$flag = true;
-						continue;
+				if ( ! $flag ) {
+					$testRepo = explode(":",$o['Repository'])[0];
+	# now associate the template back to a template in the appfeed
+					foreach ($file as $appTemplate) {
+						if (startsWith($appTemplate['Repository'],$testRepo)) {
+							$tempPath = $o['InstallPath'];
+							$tempName = $o['Name'];
+							$o = $appTemplate;
+							$o['Removable'] = true;
+							$o['InstallPath'] = $tempPath;
+							$o['Name'] = $tempName;
+							$o['SortName'] = str_replace("-"," ",$o['Name']);
+							break;
+						}
 					}
-				}
-			}
-			if ( ! $flag ) {
-				$testRepo = explode(":",$o['Repository'])[0];
-# now associate the template back to a template in the appfeed
-				foreach ($file as $appTemplate) {
-					if (startsWith($appTemplate['Repository'],$testRepo)) {
-						$tempPath = $o['InstallPath'];
-						$tempName = $o['Name'];
-						$o = $appTemplate;
-						$o['Removable'] = true;
-						$o['InstallPath'] = $tempPath;
-						$o['Name'] = $tempName;
-						$o['SortName'] = str_replace("-"," ",$o['Name']);
-						break;
-					}
-				}
 
-				if ( ! $o['Blacklist'] )
-					$displayed[] = $o;
+					if ( ! $o['Blacklist'] )
+						$displayed[] = $o;
+				}
 			}
 		}
 	}
 }
 # Now work on plugins
 	if ( $installed == "true" ) {
-		foreach ($file as $template) {
-			if ( ! $template['Plugin'] ) continue;
+		if ( ! $filter || $filter == "plugins" ) {
+			foreach ($file as $template) {
+				if ( ! $template['Plugin'] ) continue;
 
-			$filename = pathinfo($template['Repository'],PATHINFO_BASENAME);
+				$filename = pathinfo($template['Repository'],PATHINFO_BASENAME);
 
-			if ( checkInstalledPlugin($template) ) {
-				if ( $template['Blacklist'] ) continue;
+				if ( checkInstalledPlugin($template) ) {
+					if ( $template['Blacklist'] ) continue;
 
-				$template['InstallPath'] = "/var/log/plugins/$filename";
-				$template['Uninstall'] = true;
-				$displayed[] = $template;
+					$template['InstallPath'] = "/var/log/plugins/$filename";
+					$template['Uninstall'] = true;
+					$displayed[] = $template;
+				}
 			}
 		}
 	} else {
-		$all_plugs = array_merge(glob("/boot/config/plugins-error/*.plg"),glob("/boot/config/plugins-removed/*.plg"));
-		foreach ($all_plugs as $oldplug) {
-			foreach ($file as $template) {
-				if ( basename($oldplug) == basename($template['Repository']) ) {
-					if ( ! file_exists("/boot/config/plugins/".basename($oldplug)) ) {
-						if ( $template['Blacklist'] || ( ($caSettings['hideIncompatible'] == "true") && (! $template['Compatible']) ) ) continue;
-						$oldPlugURL = trim(plugin("pluginURL",$oldplug));
-						if ( strtolower(trim($template['PluginURL'])) != strtolower(trim($oldPlugURL)) ) {
-							continue;
+		if ( ! $filter || $filter == "plugins" ) {
+			$all_plugs = array_merge(glob("/boot/config/plugins-error/*.plg"),glob("/boot/config/plugins-removed/*.plg"));
+			foreach ($all_plugs as $oldplug) {
+				foreach ($file as $template) {
+					if ( basename($oldplug) == basename($template['Repository']) ) {
+						if ( ! file_exists("/boot/config/plugins/".basename($oldplug)) ) {
+							if ( $template['Blacklist'] || ( ($caSettings['hideIncompatible'] == "true") && (! $template['Compatible']) ) ) continue;
+							$oldPlugURL = trim(plugin("pluginURL",$oldplug));
+							if ( strtolower(trim($template['PluginURL'])) != strtolower(trim($oldPlugURL)) ) {
+								continue;
+							}
+							$template['Removable'] = true;
+							$template['InstallPath'] = $oldplug;
+							if ( $alreadySeen[$oldPlugURL] )
+								continue;
+							$alreadySeen[$oldPlugURL] = true;
+							$displayed[] = $template;
+							break;
 						}
-						$template['Removable'] = true;
-						$template['InstallPath'] = $oldplug;
-						if ( $alreadySeen[$oldPlugURL] )
-							continue;
-						$alreadySeen[$oldPlugURL] = true;
-						$displayed[] = $template;
-						break;
 					}
 				}
 			}
