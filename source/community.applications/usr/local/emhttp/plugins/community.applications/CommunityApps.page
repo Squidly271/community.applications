@@ -130,7 +130,7 @@ var repoBannerTimer = false;
 var unRaidFontSize = $("html").css("font-size").replace("px","");
 
 $(function(){
-	// This file is guaranteed to exist on the flash drive
+	// This file is guaranteed to exist on the flash drive.  Even though 6.10Beta3+ includes similar code, keep this code because CA just can't function properly with a flash offline / corrupted.
 	<? if ( ! is_file($caPaths['docker_cfg']) ): ?>
 		$(".mainArea,.menuItems").html("");
 		swal({
@@ -694,7 +694,6 @@ function myAlert(description,textdescription,textimage,imagesize, outsideClick, 
 	});
 }
 
-
 function mySpinner() {
 	$("div.spinner").show();
 
@@ -711,6 +710,7 @@ function mySpinner() {
 	swalBackground("transparent"); // Occasional race condition where swal is not initialized at time the initial background change happens
 
 }
+
 function myCloseSpinner() {
 	swal.close();
 	$("div.spinner, .sweet-alert").hide();
@@ -808,7 +808,6 @@ function changeSortOrder(button,buttonClass,previousApps) {
 		updateDisplay(result.display);
 	});
 }
-
 
 function getContent(init,category,description,newApp,startupDisplay) {
 	data.currentpage = 1;
@@ -1143,7 +1142,7 @@ function pinApp(button,repository,name) {
 function setPageOne() {
 	data.currentpage = 1;
 }
-
+	
 function clearCategory() {
 	$("#Category").html("&nbsp;");
 }
