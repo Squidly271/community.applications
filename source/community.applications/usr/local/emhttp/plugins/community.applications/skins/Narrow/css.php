@@ -324,7 +324,7 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .awesomplete > input {display: block;}
 .awesomplete > ul {position: absolute;left: 0;z-index: 1;min-width: 100%;box-sizing: border-box;list-style: none;padding: 0;margin: 0;background: #fff;}
 .awesomplete > ul:empty {display: none;}
-.awesomplete > ul {border-radius: .3em;margin: .2em 0 0;background: hsla(0,0%,100%,.9);background: linear-gradient(to bottom right, white, hsla(0,0%,100%,.8));border: 1px solid rgba(0,0,0,.3);box-shadow: .05em .2em .6em rgba(0,0,0,.2);text-shadow: none;}
+.awesomplete > ul {border-radius: .3em;margin: .2em 0 0;background: hsla(0,0%,100%);background: linear-gradient(to bottom right, white, hsla(0,0%,100%));border: 1px solid rgba(0,0,0,.3);box-shadow: .05em .2em .6em rgba(0,0,0,.2);text-shadow: none;}
 @supports (transform: scale(0)) {.awesomplete > ul {transition: .3s cubic-bezier(.4,.2,.5,1.4);transform-origin: 1.43em -.43em;}
 	.awesomplete > ul[hidden],.awesomplete > ul:empty {opacity: 0;transform: scale(0);display: block;transition-timing-function: ease;}
 }
