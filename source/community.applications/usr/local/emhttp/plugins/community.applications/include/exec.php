@@ -61,8 +61,11 @@ if ( !is_dir($caPaths['templates-community']) ) {
 if ($caSettings['debugging'] == "yes") {
 	if ( ! is_file($caPaths['logging']) ) {
 		$caVersion = plugin("version","/var/log/plugins/community.applications.plg");
+		
 		file_put_contents($caPaths['logging'],"Community Applications Version: $caVersion\n");
 		file_put_contents($caPaths['logging'],"MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5")."\n",FILE_APPEND);
+		$lingo = $_SESSION['locale'] ?: "en_US";
+		file_put_contents($caPaths['logging'],"Language: $lingo\n\n",FILE_APPEND);
 	}
 	file_put_contents($caPaths['logging'],"POST CALLED ({$_POST['action']})\n".print_r($_POST,true),FILE_APPEND);
 }
