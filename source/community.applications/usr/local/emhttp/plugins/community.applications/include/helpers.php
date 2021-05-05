@@ -210,7 +210,7 @@ function fixTemplates($template) {
 	if ( $template['DeprecatedMaxVer'] && version_compare($caSettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") )
 		$template['Deprecated'] = true;
 
- 	if ( version_compare($caSettings['unRaidVersion'],"6.9.2",">") ) {
+ 	if ( version_compare($caSettings['unRaidVersion'],"6.10.0-beta4",">") ) {
 		if ( $template['Config'] ) {
 			if ( $template['Config']['@attributes'] ) {
 				if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$template['Config']['@attributes']['Description']) ) {
