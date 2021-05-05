@@ -719,6 +719,7 @@ function myCloseSpinner() {
 
 function myCloseAlert() {
 	swal.close();
+	$("div.spinner, .sweet-alert").hide();
 	swalBackground("<?=$swalBackground?>");
 	enableSearch();
 }
