@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.03.28">
-<!ENTITY md5       "e39c9076c712c503addd34a2c4f7041d">
+<!ENTITY version   "2021.05.05">
+<!ENTITY md5       "87449dc17abaa7fc3dd7972cba071d0a">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,15 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.05.05
+- Fixed: CSS on Favourite Repo 
+- Maintenance improvements
+- Fixed: CSS Change language watermark to solve issue on Firefox when browser zoomed in
+- Added: Remove descriptions on docker Config elements when running a supported Unraid OS version
+- Misc code cleanup
+- Added: Author of container to autocomplete entries if author is not the same as repository
+- Added: Docker and Plugin submenus to both installed and previous apps sections
+
 ###2021.03.28
 - Add in further debugging info if required
 - Added: Prioritize certain Extra Search Terms
