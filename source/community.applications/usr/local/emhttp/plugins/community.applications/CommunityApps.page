@@ -117,6 +117,7 @@ data.prevpage = 0;
 data.currentpage = 1;
 data.searchFlag = false;
 data.searchActive = false; // Sets whether changepage re-sorts the displayed templates.
+data.previousAppsSection = ""; // The section the user is on within previous apps
 var dockerSearchFlag = false;
 var dockerNotEnabled;
 var postCount = 0;
@@ -335,21 +336,27 @@ $(function(){
 		var section = $(this).attr("data-category");
 		switch (section) {
 			case "installed_apps":
+				data.previousAppsSection = "";
 				previousApps(true);
 				break;
 			case "inst_docker":
+				data.previousAppsSection = "docker";
 				previousApps(true,false,"docker");
 				break;
 			case "inst_plugins":
+				data.previousAppsSection = "plugins";
 				previousApps(true,false,"plugins");
 				break;
 			case "previous_apps":
+				data.previousAppsSection = "";
 				previousApps(false);
 				break;
 			case "prev_docker":
+				data.previousAppsSection = "docker";
 				previousApps(false,false,"docker");
 				break;
 			case "prev_plugins":
+				data.previousAppsSection = "plugins";
 				previousApps(false,false,"plugins");
 				break;
 			case "pinned_apps":
@@ -1002,7 +1009,7 @@ function removeApp(application, humanName) {
 			enableMultiInstall(); // update the count
 			post({action:'remove_application',application:application}, function(result) {
 				enableSearch();
-				previousApps(false,true);
+				previousApps(false,true,data.previousAppsSection);
 			});
 		} else {
 			enableSearch();
@@ -1039,7 +1046,7 @@ function uninstallApp(application,humanName) {
 }
 
 function postUninstallPlugin() {
-	previousApps(true);
+	previousApps(true,false,data.previousAppsSection);
 	enableSearch();
 }
 
@@ -1096,7 +1103,7 @@ function uninstallDocker(application,humanName) {
 			myAlert("",sprintf(tr("Uninstalling %s"),humanName));
 			post({action:'uninstall_docker',application:application,noSpinner:true},function(result) {
 				enableSearch();
-				previousApps(true);
+				previousApps(true,false,data.previousAppsSection);
 			});
 		} else {
 			enableSearch();
