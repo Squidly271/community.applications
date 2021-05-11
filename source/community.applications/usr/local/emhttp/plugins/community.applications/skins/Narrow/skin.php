@@ -705,13 +705,7 @@ function getPopupDescriptionSkin($appNumber) {
 	}
 	if ( filter_var($template['multiLanguage'],FILTER_VALIDATE_BOOLEAN) )
 		$templateDescription .= "<tr><td>".tr("Multi Language Support")."</td><td>".tr("Yes")."</td></tr>";
-	if ( ! $template['Plugin'] ) {
-		if ( strtolower($template['Base']) == "unknown" || ! $template['Base'])
-			$template['Base'] = $template['BaseImage'];
 
-		if ( $template['Base'] )
-			$templateDescription .= "<tr><td nowrap>".tr("Base OS:")."</td><td>".$template['Base']."</td></tr>";
-	}
 	$templateDescription .= $template['stars'] ? "<tr><td nowrap>".tr("DockerHub Stars:")."</td><td><span class='dockerHubStar'></span> ".$template['stars']."</td></tr>" : "";
 
 	if ( $template['FirstSeen'] > 1 && $template['Name'] != "Community Applications" && $countryCode != "en_US")
