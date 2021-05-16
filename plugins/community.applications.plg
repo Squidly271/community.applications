@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.05.05">
-<!ENTITY md5       "87449dc17abaa7fc3dd7972cba071d0a">
+<!ENTITY version   "2021.05.16">
+<!ENTITY md5       "59597c97598812a51b1843f81f4b2576">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.05.16
+- Added more debugging information
+- Fixed: Docker apps with branding wouldn't show as installed during searches, or browsing (only via Installed Apps)
+- Removed: Support for BaseOS within templates (no one used it, and dockerHub hasn't supported returning this information for ~2 years)
+- Fixed: Uninstalling (or removing) from Previous Apps / Installed Apps and being on the docker/plugin sub category would return you back to the Main Category
+
 ###2021.05.05
 - Fixed: CSS on Favourite Repo 
 - Maintenance improvements
