@@ -419,7 +419,7 @@ function appInstalled($template,$info) {
 	if ($test['Language'])
 		return is_dir("/usr/local/emhttp/languages/lang-{$template['LanguagePack']}");
 
-	$name = $template['SortName'];
+	$name = $template['Name'];
 	$selected = $info[$name]['template'];
 	$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : "{$template['Repository']}:latest";
 	if ( ! strpos($tmpRepo,"/") )
