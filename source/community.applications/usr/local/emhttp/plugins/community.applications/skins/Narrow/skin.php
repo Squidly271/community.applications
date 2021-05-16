@@ -35,7 +35,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$selectedApps = array();
 
 	$dockerNotEnabled = (! $caSettings['dockerRunning'] && ! $caSettings['NoInstalls']) ? "true" : "false";
-		$displayHeader = "<script>addDockerWarning($dockerNotEnabled);var dockerNotEnabled = $dockerNotEnabled;</script>";
+	$displayHeader = "<script>addDockerWarning($dockerNotEnabled);var dockerNotEnabled = $dockerNotEnabled;</script>";
 
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 

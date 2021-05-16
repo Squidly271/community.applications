@@ -1586,7 +1586,12 @@ function post(options,callback) {
 				console.log(result);
 				console.groupEnd();
 			<?endif;?>
-			eval(callback(result));
+			try {
+				eval(callback(result));
+			} catch(e) {
+				post({action:'javascriptError',postCall:options.action,retval:result});
+				alert("Fatal error during "+options.action+" "+e);
+			}			
 			if (result.script) {
 				try {
 					eval(result.script);

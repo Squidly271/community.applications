@@ -177,6 +177,9 @@ switch ($_POST['action']) {
 	case 'defaultSortOrder':
 		defaultSortOrder();
 		break;
+	case 'javascriptError':
+		javascriptError();
+		break;
 	###############################################
 	# Return an error if the action doesn't exist #
 	###############################################
@@ -1802,5 +1805,15 @@ function defaultSortOrder() {
 	$sortOrder['sortDir'] = "Up";
 	writeJsonFile($caPaths['sortOrder'],$sortOrder);
 	postReturn(['status'=>"ok"]);
+}
+#######################################
+# Logs Javascript errors being caught #
+#######################################
+function javascriptError() {
+	global $caPaths, $caSettings;
+	
+	if ($caSettings['debugging'] == "yes") {
+		file_put_contents($caPaths['logging'],"******* ERROR **********\n".print_r($_POST,true)."\n",FILE_APPEND);
+	}
 }
 ?>
