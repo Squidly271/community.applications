@@ -131,6 +131,12 @@ var repoBannerTimer = false;
 var unRaidFontSize = $("html").css("font-size").replace("px","");
 
 $(function(){
+	window.onerror = function(msg,url,lineNo,columnNo, error) {
+		alert("Fatal javascript error. "+msg+error);
+		post({action:'javascriptError',msg:msg,url:url,lineNo:lineNo,columnNo:columnNo,error:error});
+	}
+});
+$(function(){
 	// This file is guaranteed to exist on the flash drive.  Even though 6.10Beta3+ includes similar code, keep this code because CA just can't function properly with a flash offline / corrupted.
 	<? if ( ! is_file($caPaths['docker_cfg']) ): ?>
 		$(".mainArea,.menuItems").html("");

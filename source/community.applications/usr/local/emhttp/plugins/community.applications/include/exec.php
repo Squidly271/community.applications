@@ -842,7 +842,7 @@ function force_update() {
 	
 	$appFeedTime = readJsonFile($caPaths['lastUpdated-old']);
 	$updateTime = tr(date("F",$appFeedTime['last_updated_timestamp']),0).date(" d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
-
+	$updateTime = str_replace("'","&apos;",$updateTime);
 	postReturn(['status'=>"ok",'script'=>"feedWarning('$currentServer');$('.statistics').attr('title','{$updateTime}');"]);
 }
 
