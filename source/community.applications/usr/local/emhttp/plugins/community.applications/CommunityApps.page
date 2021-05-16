@@ -1722,9 +1722,9 @@ function feedWarning(currentServer) {
 }
 
 function tr(string) {
-	<?if ( $translations ): ?>
+	<?if ( $translations && ! ($_SESSION['locale'] == "" || $_SESSION['locale'] == "en_US") ) : ?>
 		return _(string);
-	<?else:?>
+	<?else: ?>
 		return string;
 	<?endif;?>
 }
