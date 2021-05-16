@@ -292,6 +292,8 @@ $(function(){
 
 	$('.menuItems').on("click",'.categoryMenu',function() {
 		if ( popupVisible(this) ) return;
+		if ( $(this).hasClass("caMenuDisabled") )
+			return;
 		if ( $(this).hasClass("selectedMenu") ) {
 			if ( $(this).hasClass("caRepositoryMenu") ) {
 				return;

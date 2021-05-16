@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.05.16">
-<!ENTITY md5       "59597c97598812a51b1843f81f4b2576">
+<!ENTITY version   "2021.05.16a">
+<!ENTITY md5       "6fecb28c57b030e0a2d51a005ca8f38f">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -14,6 +14,7 @@
 
 <CHANGES>
 ###2021.05.16
+- Fixed: Regression error when searching it allowed clicking on categories which weren't present on the search
 - Added more debugging information
 - Fixed: Docker apps with branding wouldn't show as installed during searches, or browsing (only via Installed Apps)
 - Removed: Support for BaseOS within templates (no one used it, and dockerHub hasn't supported returning this information for ~2 years)
