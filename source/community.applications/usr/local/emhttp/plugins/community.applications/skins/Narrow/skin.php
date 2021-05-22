@@ -984,38 +984,38 @@ function displayCard($template) {
 		$language .= $template['LanguageLocal'] ? " - {$template['LanguageLocal']}" : "";
 		$template['Category'] = "";
 	}
-
+	extract($template);
 	$card = "
-		<div class='$holder ca_holder' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'>
+		<div class='$holder ca_holder' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
 			<div class='ca_iconArea'>
 				<div class='ca_icon'>
-					{$template['display_iconClickable']}
+					$display_iconClickable
 				</div>
 				<div class='ca_infoArea'>
 					<div class='ca_applicationInfo'>
 						<span class='ca_applicationName'>
-							$appName   {$template['display_faWarning']}{$template['display_beta']}
+							$appName   $display_faWarning$display_beta
 						</span>
-						{$template['display_Private']}
+						$display_Private
 						<br>
-						<span class='ca_author'>{$template['display_repoName']}</span>{$template['display_author']}
+						<span class='ca_author'>$display_repoName</span>$display_author
 						<br>
 						<span class='ca_categories'>
-							{$template['Category']}$language
+							$Category$language
 						</span>
-						<br>{$template['display_DonateImage']}{$template['ca_LanguageDisclaimer']}
+						<br>$display_DonateImage$ca_LanguageDisclaimer
 					</div>
 				</div>
 			</div>
 			<div class='ca_hr'></div>
 			<div class='ca_bottomLine'>
-				{$template['display_multi_install']}{$template['display_pluginUpdate']}{$template['display_languageUpdate']}{$template['display_languageInstallIcon']}{$template['display_language_switch']}{$template['display_pluginInstallIcon']}{$template['display_dockerInstallIcon']} $dockerReinstall {$template['display_dockerReinstallIcon']} {$template['display_dockerEditIcon']} {$template['display_pluginSettingsIcon']}{$template['display_infoIcon']} {$template['dockerWebIcon']}{$template['display_profile']}{$template['display_webpage']}{$template['display_faSupport']}{$template['display_twitter']}{$template['display_reddit']}{$template['display_discord']}{$template['display_facebook']} {$template['display_faProject']} {$template['display_pinButton']}{$template['display_repoSearch']}{$template['display_faFavourite']}{$template['display_favouriteButton']}
+				$display_multi_install$display_pluginUpdate$display_languageUpdate$display_languageInstallIcon$display_language_switch$display_pluginInstallIcon$display_dockerInstallIcon $dockerReinstall $display_dockerReinstallIcon $display_dockerEditIcon $display_pluginSettingsIcon$display_infoIcon $dockerWebIcon$display_profile$display_webpage$display_faSupport$display_twitter$display_reddit$display_discord$display_facebook $display_faProject $display_pinButton$display_repoSearch$display_faFavourite$display_favouriteButton
 				<span class='ca_bottomRight'>
-					{$template['display_removable']} {$template['display_Uninstall']}
+					$display_removable $display_Uninstall
 				</span>
 			</div>
-			<div class='{$descriptionArea}'>
-				{$template['CardDescription']}
+			<div class='$descriptionArea'>
+				$CardDescription
 			</div>
 		</div>
 		";
