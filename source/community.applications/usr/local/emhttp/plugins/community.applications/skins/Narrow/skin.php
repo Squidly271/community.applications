@@ -1020,7 +1020,7 @@ function displayCard($template) {
 		</div>
 		";
 
-	return $card;
+	return str_replace(["\t","\n"],"",$card);
 }
 
 ?>
