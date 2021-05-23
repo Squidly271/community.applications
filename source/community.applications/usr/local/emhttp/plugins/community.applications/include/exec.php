@@ -1498,7 +1498,7 @@ function get_categories() {
 	$categories = readJsonFile($caPaths['categoryList']);
 	if ( ! is_array($categories) || empty($categories) ) {
 		$cat = "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
-		postReturn(['categories'=>$cat]);
+		postReturn(['categories'=>$cat,'script'=>"$('.onlyShowWithFeed').hide();"]);
 		return;
 	} else {
 		if ($translationsAllowed) {

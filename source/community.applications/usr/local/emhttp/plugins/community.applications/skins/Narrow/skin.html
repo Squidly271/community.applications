@@ -1,31 +1,31 @@
 <div id="Category" class="categoryLine ca_italic">&nbsp;</div>
 <div class='menuItems'>
-<ul class='caMenu'>
-	<li class='caMenuItem sectionMenu' data-category='installed_apps'><?tr("Installed Apps");?></li>
-	<ul class='subCategory'>
-		<li class='caMenuItem sectionMenu' data-category='inst_docker'><?tr("Docker");?></li>
-		<li class='caMenuItem sectionMenu' data-category='inst_plugins'><?tr("Plugins");?></li>
+<ul class='caMenu '>
+	<li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='installed_apps'><?tr("Installed Apps");?></li>
+	<ul class='subCategoryonlyShowWithFeed'>
+		<li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='inst_docker'><?tr("Docker");?></li>
+		<li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='inst_plugins'><?tr("Plugins");?></li>
 	</ul>
-	<li class='caMenuItem sectionMenu' data-category='previous_apps'><?tr("Previous Apps");?></li>
-	<ul class='subCategory'>
+	<li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='previous_apps'><?tr("Previous Apps");?></li>
+	<ul class='subCategory onlyShowWithFeed'>
 		<li class='caMenuItem sectionMenu' data-category='prev_docker'><?tr("Docker");?></li>
 		<li class='caMenuItem sectionMenu' data-category='prev_plugins'><?tr("Plugins");?></li>
 	</ul>
-	<li class='caMenuItem sectionMenu caPinnedMenu' data-category='pinned_apps'><?tr("Pinned Apps");?></li>
-	<li class='caMenuItem favouriteRepo'><?tr("Favourite Repo");?></li>
-	<hr>
-	<li class='startupButton caMenuItem' data-category='onlynew'><?tr("New Apps");?></li>
-	<li class='startupButton caMenuItem' data-category='new'><?tr("Updated Apps");?></li>
-	<li class='startupButton caMenuItem' data-category='random'><?tr("Random Apps");?></li>
-	<li class='startupButton caMenuItem' data-category='topperforming'><?tr("Top New Installs");?></li>
-	<li class='startupButton caMenuItem' data-category='trending'><?tr("Trending Apps");?></li>
-<hr>
-	<span id='category_list'></span>
-	<li class='categoryMenu caMenuItem allApps' data-category='All'><?tr("All Apps");?></li>
+	<li class='caMenuItem sectionMenu caPinnedMenu onlyShowWithFeed' data-category='pinned_apps'><?tr("Pinned Apps");?></li>
+	<li class='caMenuItem favouriteRepo onlyShowWithFeed'><?tr("Favourite Repo");?></li>
+	<hr class='onlyShowWithFeed'>
+	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='onlynew'><?tr("New Apps");?></li>
+	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='new'><?tr("Updated Apps");?></li>
+	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='random'><?tr("Random Apps");?></li>
+	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='topperforming'><?tr("Top New Installs");?></li>
+	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='trending'><?tr("Trending Apps");?></li>
+<hr class='onlyShowWithFeed'>
+	<span id='category_list' class='onlyShowWithFeed'></span>
+	<li class='categoryMenu caMenuItem allApps onlyShowWithFeed' data-category='All'><?tr("All Apps");?></li>
 	<hr class='category_hr'>
-	<li class='categoryMenu caMenuItem caRepositoryMenu' data-category='repos'><?tr("Repositories");?></li>
-	<li class='caMenuItem clearSearch caMenuDisabled'><?tr("Clear Search");?></li>
-<hr class='category_hr'>
+	<li class='categoryMenu caMenuItem caRepositoryMenu onlyShowWithFeed' data-category='repos'><?tr("Repositories");?></li>
+	<li class='caMenuItem clearSearch caMenuDisabled onlyShowWithFeed'><?tr("Clear Search");?></li>
+<hr class='category_hr onlyShowWithFeed'>
 	<li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'><?tr("Settings");?></a></li>
 	<li class='caMenuItem statistics' onclick='disableSort();scrollToTop();showStatistics();'><?tr("Statistics");?></li>
 	<li class='caMenuItem' onclick='disableSort();scrollToTop();showCredits();'><?tr("Credits");?></li>
