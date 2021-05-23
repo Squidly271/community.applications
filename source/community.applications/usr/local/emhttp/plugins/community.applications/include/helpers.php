@@ -237,7 +237,11 @@ function makeXML($template) {
 	# ensure its a v2 template if the Config entries exist
 	if ( $template['Config'] && ! $template['@attributes'] )
 		$template['@attributes'] = array("version"=>2);
-
+	
+	if ( $template['OriginalOverview'] ) {
+		$template['Overview'] = $template['OriginalOverview'];
+		$template['Description'] = $template['OriginalOverview'];
+	}
 	fixAttributes($template,"Network");
 	fixAttributes($template,"Config");
 
