@@ -11,12 +11,12 @@ b398273cf7daa62ab00d2de2336ca25f  ./README.md
 6e48a62b91bdd066f023f46c6b491afd  ./images/discord-gray.svg
 8e7dc33512b8a78f28d7179a972c7c34  ./images/discord-hover.svg
 54e46db492ddb033dfeb2827c5efd4a8  ./images/discord-white.svg
-344103f5f410c4354f6e3688dd4195df  ./include/exec.php
+30e1d9b5d1891fa0052961e7b3743972  ./include/exec.php
 9ee9c5f6f0f3148dd0f97e459ca49e74  ./include/helpers.php
 8f1129e0cdb994c6d1900192252433d8  ./include/paths.php
 9ba7ea3ef8bad60cb8335da9c0daea4f  ./javascript/libraries.js
 e605780f0c220d94298c20a6914af598  ./skins/Narrow/css.php
-483f8f65bc760215ed59e719bf1e4cb3  ./skins/Narrow/skin.html
+78ebc06bc2695262f668b359271eccee  ./skins/Narrow/skin.html
 bf55e915707fea27c5f80b5588d285a1  ./skins/Narrow/skin.php
 38d1f40cbc64eed32cdb3292e1ec1f6e  ./scripts/PluginAPI.php
 bbd9dec6c5df486d75c46388c14f09ce  ./scripts/installMulti.php

@@ -818,7 +818,7 @@ function force_update() {
 	if (!file_exists($caPaths['community-templates-info'])) {
 		$updatedSyncFlag = true;
 		if (! DownloadApplicationFeed() ) {
-			$o['script'] = "$('.startupButton,.caMenu,.menuHeader').hide();$('.caRelated').show();";
+			$o['script'] = "$('.onlyShowWithFeed').hide();";
 			$o['data'] =  "<div class='ca_center'><font size='4'><span class='ca_bold'>".tr("Download of appfeed failed.")."</span></font><font size='3'><br><br>Community Applications requires your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of 208.67.222.222 and 208.67.220.220 and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.";
 			$tempFile = @file_get_contents($caPaths['appFeedDownloadError']);
 			$downloaded = @file_get_contents($tempFile);
@@ -1498,7 +1498,7 @@ function get_categories() {
 	$categories = readJsonFile($caPaths['categoryList']);
 	if ( ! is_array($categories) || empty($categories) ) {
 		$cat = "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
-		postReturn(['categories'=>$cat,'script'=>"$('.onlyShowWithFeed').hide();"]);
+		postReturn(['categories'=>$cat]);
 		return;
 	} else {
 		if ($translationsAllowed) {
