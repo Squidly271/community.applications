@@ -560,7 +560,17 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$template['Category'] = categoryList($template['Category'],true);
 	$template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
-	$template['Description'] = trim($template['Description']);
+	if ( $template['Overview'] )
+		$ovr = $template['OriginalOverview'] ?: $template['Overview'];
+	if ( ! $ovr )
+		$ovr = $template['OriginalDescription'] ?: $template['Description'];
+	
+	$ovr = str_replace(["[","&lt;"],"<",$ovr);
+	$ovr = str_replace(["]","&gt;"],">",$ovr);
+	$ovr = str_replace("<br>","\n",$ovr);
+	$ovr = str_replacE("    ","",$ovr);
+	$ovr = markdown(strip_tags($ovr));
+	$template['Description'] = str_replace("\n","<br>",$ovr);
 	$template['ModeratorComment'] .= $template['CAComment'];
 
 	if ( $template['Plugin'] ) {
@@ -585,8 +595,8 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$templateDescription .= "</div>";
 
-	$templateDescription .= "<div class='popupDescriptionArea ca_center'>";
-	$templateDescription .= $template['Language'] ? $template['Description'] : strip_tags($template['Description']);
+	$templateDescription .= "<div class='popupDescriptionArea ca_left'>";
+	$templateDescription .= $ovr;
 	$templateDescription .= "</div>";
 	if ( $donatelink )
 		$templateDescription .= "<span style='float:right;text-align:right;'><font size=0.75rem;>$donatetext</font>&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>".tr("Donate")."</a></span><br><br>";

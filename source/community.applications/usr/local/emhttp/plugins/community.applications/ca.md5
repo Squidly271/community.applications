@@ -15,9 +15,9 @@ b398273cf7daa62ab00d2de2336ca25f  ./README.md
 52120efaabf72bcb458de43faf368332  ./include/helpers.php
 8f1129e0cdb994c6d1900192252433d8  ./include/paths.php
 b73336e163337858313d87c9b923bb92  ./javascript/libraries.js
-e605780f0c220d94298c20a6914af598  ./skins/Narrow/css.php
+bb1d296314cc53139d571b2a398f127f  ./skins/Narrow/css.php
 78ebc06bc2695262f668b359271eccee  ./skins/Narrow/skin.html
-bf55e915707fea27c5f80b5588d285a1  ./skins/Narrow/skin.php
+9e1173a032eac28e0b71fd4866dc81c9  ./skins/Narrow/skin.php
 38d1f40cbc64eed32cdb3292e1ec1f6e  ./scripts/PluginAPI.php
 bbd9dec6c5df486d75c46388c14f09ce  ./scripts/installMulti.php
 ce2c904b6a40c4677a3ff3484776959e  ./scripts/installMultiPlugin.sh

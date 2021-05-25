@@ -299,6 +299,7 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_italic {font-style:italic;}
 .ca_bold {font-weight:bold;}
 .ca_center {margin:auto;text-align:center;}
+p {margin:auto;text-align:center;} /* override styling on popup */
 .ca_NoAppsFound {font-size:3rem;margin:auto;text-align:center;}
 .ca_NoDockerAppsFound {font-size:3rem;margin:auto;text-align:center;}
 .ca_templatesDisplay {display:flex;flex-wrap:wrap;justify-content:center;overflow-x:hidden;}
