@@ -1,6 +1,6 @@
 767d6f2203fed9541daeb57bbf7b58b3  ./Apps.page
 83b3f89cd42e8601c7c217d5b4889c81  ./CA_notices.page
-92193e39c529a0a8a2fb7c038a5dc030  ./CommunityApps.page
+3e6a44ef75aef1be4db2dd191b321517  ./CommunityApps.page
 6db73582f22dab13d329e862067ee84e  ./PluginAPI.page
 b398273cf7daa62ab00d2de2336ca25f  ./README.md
 1a908064914041c48be7bf0dab77515a  ./ca_settings.page
@@ -14,7 +14,7 @@ b398273cf7daa62ab00d2de2336ca25f  ./README.md
 30e1d9b5d1891fa0052961e7b3743972  ./include/exec.php
 52120efaabf72bcb458de43faf368332  ./include/helpers.php
 8f1129e0cdb994c6d1900192252433d8  ./include/paths.php
-9ba7ea3ef8bad60cb8335da9c0daea4f  ./javascript/libraries.js
+b73336e163337858313d87c9b923bb92  ./javascript/libraries.js
 e605780f0c220d94298c20a6914af598  ./skins/Narrow/css.php
 78ebc06bc2695262f668b359271eccee  ./skins/Narrow/skin.html
 bf55e915707fea27c5f80b5588d285a1  ./skins/Narrow/skin.php
