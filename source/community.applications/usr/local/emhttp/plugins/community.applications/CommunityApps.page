@@ -259,19 +259,19 @@ $(function(){
 		if ( ! target ) target = "_blank";
 		window.open(href,target);
 	});
-	
+
 	$('.mainArea').on("click",".ca_non_favouriteRepo",function() {
 		if ( popupVisible(this) ) return;
 		setFavourite(this);
 	});
-	
+
 	$('body').on("click",".favPopup",function() {
 		if ( popupVisible(this) ) return;
 		setFavourite(this);
 		$(this).removeClass(".favPopup");
 		$(this).html(" Favourite Repository");
 	});
-	
+
 	$('body').on("click",".ca_repoSearch,.ca_repoSearchPopUp",function() {
 		if ( ! $(this).hasClass("ca_repoSearchPopUp") ) {
 			if ( popupVisible(this) ) return;
@@ -306,7 +306,7 @@ $(function(){
 			}
 			if ( ! $(".caRepositoryMenu").hasClass("selectedMenu") ) {
 				return;
-			} 
+			}
 			$(".caRepositoryMenu").removeClass("selectedMenu");
 		}
 		scrollToTop();
@@ -337,16 +337,16 @@ $(function(){
 				$(".subCategory").hide("slow");
 			}
 		}
-	
+
 		$(this).addClass("selectedMenu");
 		$(this).next().show("slow");
 	});
 
 	$(".sectionMenu").on("click",function() {
 		if ( popupVisible(this) ) return;
-		if ( $(this).hasClass("caMenuDisabled") ) 
+		if ( $(this).hasClass("caMenuDisabled") )
 			return;
-		
+
 		var section = $(this).attr("data-category");
 		switch (section) {
 			case "installed_apps":
@@ -416,7 +416,7 @@ $(function(){
 		var sortOrder = new Object();
 		sortOrder.sortBy = $(this).attr("data-sortBy");
 		sortOrder.sortDir = $(this).attr("data-sortDir");
- 		var classList = $(this).attr('class').split(/\s+/);
+		var classList = $(this).attr('class').split(/\s+/);
 		$.each(classList, function(index, item) {
 			if ( item.startsWith("fa-") ) {
 				$("#sortIcon").html("&nbsp;<span class="+item+"></span>");
@@ -609,7 +609,7 @@ function setToolTip() {
 			if ( ! $(origin).hasClass("ca_repoPopup") && popupVisible() ) {
 				origin.tooltipster("close");
 				return false;
-			}			
+			}
 			$(".ca_repoPopup").tooltipster("hide");
 
 			post({action:'getRepoDescription',repository:repository},function(data) {
@@ -621,7 +621,7 @@ function setToolTip() {
 			origin.tooltipster("hide");
 		}
 	});
-	
+
 	$(".ca_appPopup").tooltipster({
 		contentAsHTML:true,
 		interactive:true,
@@ -650,7 +650,7 @@ function setToolTip() {
 			post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 				origin.tooltipster("content",result.description);
 				popUpChart(result,appnumber);
-				
+
 			});
 		},
 		functionAfter: function(helper) {
@@ -658,7 +658,7 @@ function setToolTip() {
 			origin.tooltipster("hide");
 		}
 	});
-			
+
 }
 
 function showSpecialCategory(button) {
@@ -767,7 +767,7 @@ function doSearch(button,newSearch) {
 	} else if (button) {
 		clearSearchBox();
 		filter = '';
-	} 
+	}
 
 	scrollToTop();
 	if (filter) {
@@ -942,9 +942,9 @@ function clearSearchBox() {
 }
 
 function popupVisible(el) {
-	if ( $(el).hasClass("appIconsPopUp") ) 
+	if ( $(el).hasClass("appIconsPopUp") )
 		return false;
-	
+
 	return $(".popupHolder").is(":visible");
 }
 
@@ -952,7 +952,7 @@ function installPlugin(pluginURL,popup=false) {
 	if ( ! popup)
 		if ( popupVisible() )
 			return;
-		
+
 	$(".tooltipstered").tooltipster("hide");
 	disableSearch();
 	<? if ( $translations ): ?>
@@ -1164,7 +1164,7 @@ function pinApp(button,repository,name) {
 function setPageOne() {
 	data.currentpage = 1;
 }
-	
+
 function clearCategory() {
 	$("#Category").html("&nbsp;");
 }
@@ -1187,7 +1187,7 @@ function displayTags(leadTemplate,popup=false) {
 	if ( ! popup)
 		if ( popupVisible() )
 			return;
-		
+
 	$(".tooltipstered").tooltipster("hide");
 	post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true},function(result) {
 		disableSearch();
@@ -1418,7 +1418,7 @@ function updateDisplay(data) {
 		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
 	});
 	myCloseAlert();
-		
+
 	saveState();
 }
 
@@ -1605,7 +1605,7 @@ function post(options,callback) {
 			} catch(e) {
 				post({action:'javascriptError',postCall:options.action,retval:result});
 				alert("Fatal error during "+options.action+" "+e);
-			}			
+			}
 			if (result.script) {
 				try {
 					eval(result.script);
