@@ -1464,8 +1464,8 @@ function restoreState() {
 		$(".multi_installDiv").hide();
 	}
 	data = JSON.parse($.cookie("ca_data"));
-	dockerSearchFlag = $.cookie("ca_dockerSearchFlag");
-	data.searchActive = $.cookie("ca_searchActive");
+	dockerSearchFlag = evaluateBoolean($.cookie("ca_dockerSearchFlag"));
+	data.searchActive = evaluateBoolean($.cookie("ca_searchActive"));
 	restoreStateMenu = $.cookie("ca_selectedMenu");
 	$(".categoryMenuName").html($.cookie("ca_categoryName"));
 	var filter = $.cookie("ca_filter");
