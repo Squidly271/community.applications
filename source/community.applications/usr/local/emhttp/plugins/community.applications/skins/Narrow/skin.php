@@ -86,11 +86,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['display_iconClickable'] = "<img class='displayIcon ca_tooltip ca_repoPopup' title='".tr("Click for more information")."' src='{$template['icon']}' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></img>";
 			$template['display_infoIcon'] = "<a class='appIcons ca_repoinfo ca_tooltip' title='".tr("Click for more information")."' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></a>";
 
-			if ( $template['bio'] ) {
-				$template['CardDescription'] = (strlen($template['bio']) > 240) ? substr($template['bio'],0,240)." ... <a class='ca_reporeadmore' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'> ".tr("Read more")."</a>" : $template['bio'];
-			} else {
+			if ( ! $template['bio'] )
 				$template['CardDescription'] = tr("No description present");
-			}
+			else 
+				$template['CardDescription'] = $template['bio'];
 			$template['bio'] = strip_tags(markdown($template['bio']));
 			
 			$template['display_dockerName'] = $template['RepoName'];
@@ -297,9 +296,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				}
 			}
 
-			if ( endsWith($template['CardDescription'],"...") ) {
+/* 			if ( endsWith($template['CardDescription'],"...") ) {
 				$template['CardDescription'] .= "<a class='ca_appreadmore ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' data-appName='{$template['Name']}' data-beta='$appInfoBeta'> ".tr("Read more")."</a>";
-			}
+			} */
 			$template['display_dockerName'] = "<span class='ca_applicationName'>";
 			$template['display_dockerName'] .= $template['Name_highlighted'] ?: $template['Name'];
 			$template['display_dockerName'] .= "</span>";
@@ -987,6 +986,7 @@ function displayCard($template) {
 
 	
 	$descriptionArea = $template['RepositoryTemplate'] ? "ca_descriptionAreaRepository" : "ca_descriptionArea";
+	$popupType = $template['RepositoryTemplate'] ? "ca_repoPopup" : "ca_appPopup";
 
 	if ($template['Language']) {
 		$language = "{$template['Language']}";
@@ -1023,7 +1023,7 @@ function displayCard($template) {
 					$display_removable $display_Uninstall
 				</span>
 			</div>
-			<div class='$descriptionArea'>
+			<div class='$descriptionArea cardDescription $popupType' data-appNumber='$ID' data-appPath='$Path' data-appName='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
 				$CardDescription
 			</div>
 		</div>

@@ -237,7 +237,7 @@ function DownloadApplicationFeed() {
 		if ( $o['Language'] ) {
 			$o['Category'] = "Language:";
 			$o['Compatible'] = true;
-			$o['Description'] = str_replace("\n","<br>",trim($o['Description']));
+			$o['Description'] = str_replace(" - ","<br>",trim($o['Description'])); // temp fix since this undoes a change feed makes.  Don't make this change in the feed in the future.
 		}
 
 		# Move the appropriate stuff over into a CA data file
@@ -249,7 +249,12 @@ function DownloadApplicationFeed() {
 		$o['SortAuthor']    = $o['Author'];
 		$o['SortName']      = str_replace("-"," ",$o['Name']);
 		$o['SortName']      = preg_replace('/\s+/',' ',$o['SortName']);
-		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
+
+		$des = $o['OriginalOverview'] ?: $o['Overview'];
+		$des = $o['Language'] ? $o['Description'] : $des;
+		$des = str_replace(["[","]"],["<",">"],$des);
+		$des = html_entity_decode($des);
+		$o['CardDescription'] = strip_tags(markdown(trim($des)),$o['Language'] ? "<br>" : "");
 
 		if ( $o['IconHTTPS'] )
 			$o['IconHTTPS'] = $caPaths['iconHTTPSbase'] .$o['IconHTTPS'];

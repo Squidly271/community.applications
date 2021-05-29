@@ -603,6 +603,10 @@ function setToolTip() {
 		maxWidth:unRaidFontSize*60,
 		triggerClose:{click:true},
 		onlyOne:true,
+		functionInit: function(instance,helper) {
+			var origin = $(helper.origin);
+			origin.tooltipster("content","<div class='popupHolder' style='height:450px;'>Loading</div>");
+		},
 		functionBefore: function(instance,helper) {
 			var origin = $(helper.origin);
 			var repository = origin.attr("data-repository");
@@ -1412,7 +1416,12 @@ function installMulti() {
 
 function updateDisplay(data) {
 	$("#templates_content").html(data);
+	var all_desc = document.getElementsByClassName("cardDescription");
+	for (var i=0;i<all_desc.length;i++) {
+		$clamp(all_desc[i],{clamp:3});
+	}
 	setToolTip();
+	$('.ca_appPopup, .ca_descriptionAreaRepository, .ca_repoinfo,.ca_repoPopup').attr("title","<?=tr("Click for more information")?>");
 	enableSearch();
 	$('img').on("error",function() {
 		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");

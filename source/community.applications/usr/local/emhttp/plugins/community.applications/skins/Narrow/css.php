@@ -108,8 +108,8 @@ a.ca_applicationName {text-decoration:none;color:inherit;}
 a.ca_author {text-decoration:none;color:inherit;}
 .ca_categoryLink {color:<?=$linkColor?>;font-weight:normal;}
 a.ca_categoryLink {text-decoration:none;color:inherit;}
-.ca_descriptionArea {margin:1rem;width:auto;height:4rem;position:relative;margin-top:-11rem;}
-.ca_descriptionAreaRepository {margin:1rem;width:auto;height:4rem;position:relative;margin-top:-12rem;}
+.ca_descriptionArea {margin:1rem;width:auto;height:5rem;position:relative;margin-top:-11rem;}
+.ca_descriptionAreaRepository {margin:1rem;width:auto;height:5rem;position:relative;margin-top:-12rem;}
 .ca_holderDocker {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderPlugin {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;font-size:1.2rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderFav {background-color:<?=$templateFavourite?> !important;}
@@ -158,6 +158,7 @@ table tbody td {line-height:1.8rem;}
 .ca_wide_info {display: inline-block;float:left;text-align:left;margin-left:1rem;margin-top:1.5rem;width:20rem;}
 .ca_highlight {color:#0e5d08;font-weight:bold;}
 .ca_description {color:#505E6F;}
+.cardDescription {cursor:pointer;}
 a.ca_appPopup {text-decoration:none;cursor:pointer;}
 .ca_repoPopup {text-decoration:none!important;cursor:pointer;color:inherit;}
 a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
@@ -300,6 +301,7 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_bold {font-weight:bold;}
 .ca_center {margin:auto;text-align:center;}
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
+h1 {font-size:1.5rem;} /* override dynamix styling for popup */
 .ca_NoAppsFound {font-size:3rem;margin:auto;text-align:center;}
 .ca_NoDockerAppsFound {font-size:3rem;margin:auto;text-align:center;}
 .ca_templatesDisplay {display:flex;flex-wrap:wrap;justify-content:center;overflow-x:hidden;}
