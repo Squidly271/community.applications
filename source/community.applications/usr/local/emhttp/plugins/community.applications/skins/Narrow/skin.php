@@ -88,10 +88,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 			if ( ! $template['bio'] )
 				$template['CardDescription'] = tr("No description present");
-			else 
+			else
 				$template['CardDescription'] = $template['bio'];
 			$template['bio'] = strip_tags(markdown($template['bio']));
-			
+
 			$template['display_dockerName'] = $template['RepoName'];
 
 			$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate ca_href' data-href='{$template['DonateLink']}' data-target='_blank' title='{$template['DonateText']}'>".tr("Donate")."</a>" : "";
@@ -165,7 +165,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			if ( $template['RepoName'] ) {
 				$template['display_favouriteButton'] = "<span class='appIcons ca_tooltip $favClass ca_fav' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."' title='$favMsg'></span>";
 			}
-			
+
 			$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</span></strong><font color='purple'>{$template['ModeratorComment']}</font>" : "";
 
 			if ( $pinnedApps["{$template['Repository']}&{$template['SortName']}"] ) {
@@ -568,7 +568,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$ovr = str_replace("<br>","\n",$ovr);
 	$ovr = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$ovr);
 	$ovr = markdown(strip_tags($ovr));
-	
+
 	$template['ModeratorComment'] .= $template['CAComment'];
 
 	if ( $template['Plugin'] ) {
@@ -874,7 +874,7 @@ function getRepoDescriptionSkin($repository) {
 	$templates = readJsonFile($caPaths['community-templates-info']);
 	$repo = $repositories[$repository];
 	$repo['icon'] = $repo['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
-			
+
 	$t .= "<div class='popupTitle'>$repository</div>";
 	$t .= "<div class='ca_hr'></div>";
 	$t .= "<div class='popupIconArea ca_center'><img class='popupIcon' src='{$repo['icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></div>";
@@ -889,14 +889,14 @@ function getRepoDescriptionSkin($repository) {
 
 	$t .= "<div class='ca_hr'></div>";
 
-	if ( $caSettings['favourite'] == $repository ) 
+	if ( $caSettings['favourite'] == $repository )
 		$t .= "<div class='ca_center'><span class='ca_favouriteRepo appIconsPopUp'> ".tr("Favourite Repository")."</span></div>";
 	else
 		$t .= "<div id='favMsg' class='ca_center'><span class='ca_non_favouriteRepo appIconsPopUp favPopup' data-repository='".htmlentities($repository,ENT_QUOTES)."'> ".tr("Set as favourite repository")."</span></div>";
 
 	$installLine = "<div style='display:flex;flex-wrap:wrap;justify-content:center;width:90%;margin-left:5%;'>";
 	$installLine .= "<div><a class='appIconsPopUp ca_repoSearchPopUp ca_showRepo' data-repository='".htmlentities($repository,ENT_QUOTES)."'> Search Apps</a></div>";
-	if ( $repo['WebPage'] ) 
+	if ( $repo['WebPage'] )
 		$installLine .= "<div><a class='appIconsPopUp ca_webpage' href='{$repo['WebPage']}' target='_blank'> ".tr("Web Page")."</a></div>";
 	if ( $repo['Forum'] )
 		$installLine .= "<div><a class='appIconsPopUp ca_forum' href='{$repo['Forum']}' target='_blank'> ".tr("Forum")."</a></div>";
@@ -915,18 +915,18 @@ function getRepoDescriptionSkin($repository) {
 			$installLine .= "<div><img src='/plugins/community.applications/images/discord-white.svg' style='height:1.5rem;'></img><a class='appIconsPopUp' style='position:absolute;' target='_blank' href='{$repo['Discord']}'> ".tr("Discord")."</a></div>";
 		}
 	}
-		
-	$t .= "$installLine</div>";			
+
+	$t .= "$installLine</div>";
 
 	$totalApps = $totalPlugins = $totalDocker = $totalDownloads = 0;
 	foreach ($templates as $template) {
 		if ( $template['RepoName'] !== $repository ) continue;
 		if ( $template['BranchID'] ) continue;
-		
+
 		if ( $template['Blacklist'] ) continue;
 		if ( $template['Deprecated'] && $caSettings['hideDeprecated'] !== "false" ) continue;
 		if ( ! $template['Compatible'] && $caSettings['hideIncompatible'] !== "false" ) continue;
-		
+
 		if ( $template['Registry'] ) {
 			$totalDocker++;
 			if ( $template['downloads'] ) {
@@ -952,9 +952,9 @@ function getRepoDescriptionSkin($repository) {
 	$t .= "<tr><td style='width:50%;'>".tr("Total Plugin Applications")."</td><td style='width:30%;text-align:right;'>$totalPlugins</td></tr>";
 	if ( $totalLanguage )
 		$t .= "<tr><td style='width:50%;'>".tr("Total Languages")."</td><td style='width:30%;text-align:right;'>$totalLanguage</td></tr>";
-	if ($dockerVars['DOCKER_AUTHORING_MODE'] == "yes") 
+	if ($dockerVars['DOCKER_AUTHORING_MODE'] == "yes")
 		$t .= "<tr><td style='width:50%;'><a href='{$repo['url']}' target='_blank'>".tr("Repository URL")."</a></td></tr>";
-	
+
 	$t .= "<tr><td style='width:50%;'>".tr("Total Applications")."</td><td style='width:30%;text-align:right;'>$totalApps</td></tr>";
 
 	if ( $downloadDockerCount && $totalDownloads ) {
@@ -963,7 +963,7 @@ function getRepoDescriptionSkin($repository) {
 		$t .= "<tr><td>".tr("Average Downloads Per App")."</td><td style='text-align:right;'>".number_format($avgDownloads)."</td></tr>";
 	}
 	$t .= "</table>";
-	$t .= "</div>"; 
+	$t .= "</div>";
 
 
 
@@ -986,7 +986,7 @@ function displayCard($template) {
 	if ( $template['ca_fav'] )
 		$holder .= " ca_holderFav";
 
-	
+
 	$descriptionArea = $template['RepositoryTemplate'] ? "ca_descriptionAreaRepository" : "ca_descriptionArea";
 	$popupType = $template['RepositoryTemplate'] ? "ca_repoPopup" : "ca_appPopup";
 

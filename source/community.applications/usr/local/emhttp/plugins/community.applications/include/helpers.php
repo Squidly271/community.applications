@@ -210,7 +210,7 @@ function fixTemplates($template) {
 	if ( $template['DeprecatedMaxVer'] && version_compare($caSettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") )
 		$template['Deprecated'] = true;
 
- 	if ( version_compare($caSettings['unRaidVersion'],"6.10.0-beta4",">") ) {
+	if ( version_compare($caSettings['unRaidVersion'],"6.10.0-beta4",">") ) {
 		if ( $template['Config'] ) {
 			if ( $template['Config']['@attributes'] ) {
 				if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$template['Config']['@attributes']['Description']) ) {
@@ -227,7 +227,7 @@ function fixTemplates($template) {
 			}
 		}
 	}
-	
+
 	return $template;
 }
 ###############################################
@@ -237,7 +237,7 @@ function makeXML($template) {
 	# ensure its a v2 template if the Config entries exist
 	if ( $template['Config'] && ! $template['@attributes'] )
 		$template['@attributes'] = array("version"=>2);
-	
+
 	if ( $template['OriginalOverview'] ) {
 		$template['Overview'] = $template['OriginalOverview'];
 		$template['Description'] = $template['OriginalOverview'];
@@ -286,7 +286,7 @@ function versionCheck($template) {
 		}
 	}
 	 */
-	 
+
 	if ( $template['IncompatibleVersion'] ) {
 		if ( ! is_array($template['IncompatibleVersion']) ) {
 			$incompatible[] = $template['IncompatibleVersion'];
@@ -297,8 +297,8 @@ function versionCheck($template) {
 			if ( $ver == $template['pluginVersion'] ) return false;
 		}
 	}
-	
-	 
+
+
 	if ( $template['MinVer'] && ( version_compare($template['MinVer'],$caSettings['unRaidVersion']) > 0 ) ) return false;
 	if ( $template['MaxVer'] && ( version_compare($template['MaxVer'],$caSettings['unRaidVersion']) < 0 ) ) return false;
 	return true;

@@ -61,7 +61,7 @@ if ( !is_dir($caPaths['templates-community']) ) {
 if ($caSettings['debugging'] == "yes") {
 	if ( ! is_file($caPaths['logging']) ) {
 		$caVersion = plugin("version","/var/log/plugins/community.applications.plg");
-		
+
 		file_put_contents($caPaths['logging'],"Community Applications Version: $caVersion\n");
 		file_put_contents($caPaths['logging'],"MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5")."\n",FILE_APPEND);
 		$lingo = $_SESSION['locale'] ?: "en_US";
@@ -349,13 +349,13 @@ function DownloadApplicationFeed() {
 
 	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
 	writeJsonFile($caPaths['categoryList'],$ApplicationFeed['categories']);
-	
+
 	foreach ($ApplicationFeed['repositories'] as &$repo) {
 		if ( $repo['downloads'] ) {
 			$repo['trending'] = $repo['trending'] / $repo['downloads'];
 		}
 	}
-	
+
 	writeJsonFile($caPaths['repositoryList'],$ApplicationFeed['repositories']);
 	return true;
 }
@@ -844,7 +844,7 @@ function force_update() {
 	getConvertedTemplates();
 	moderateTemplates();
 	$currentServer = @file_get_contents($caPaths['currentServer']);
-	
+
 	$appFeedTime = readJsonFile($caPaths['lastUpdated-old']);
 	$updateTime = tr(date("F",$appFeedTime['last_updated_timestamp']),0).date(" d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
 	$updateTime = str_replace("'","&apos;",$updateTime);
@@ -866,7 +866,7 @@ function display_content() {
 	if ( file_exists($caPaths['community-templates-displayed']) || file_exists($caPaths['repositoriesDisplayed']) ) {
 		$o['display'] = display_apps($pageNumber,$selectedApps,$startup);
 	}
-	
+
 	$displayedApps = readJsonFile($caPaths['community-templates-displayed']);
 /* 	if ( ! is_array($displayedApps['community']) || count($displayedApps['community']) < 1)
 		$o['script'] = "disableSort();"; */
@@ -881,7 +881,7 @@ function display_content() {
 #######################################################################
 function convert_docker() {
 	global $caPaths;
-	
+
 	$dockerID = getPost("ID","");
 
 	$file = readJsonFile($caPaths['dockerSearchResults']);
@@ -914,7 +914,7 @@ function convert_docker() {
 #########################################################
 function search_dockerhub() {
 	global $caPaths;
-	
+
 	$filter     = getPost("filter","");
 	$pageNumber = getPost("page","1");
 
@@ -972,13 +972,13 @@ function search_dockerhub() {
 #####################################################################
 function dismiss_warning() {
 	global $caPaths;
-	
+
 	file_put_contents($caPaths['warningAccepted'],"warning dismissed");
 	postReturn(['status'=>"warning dismissed"]);
 }
 function dismiss_plugin_warning() {
 	global $caPaths;
-	
+
 	file_put_contents($caPaths['pluginWarning'],"disclaimer ok");
 	postReturn(['status'=>"disclaimed"]);
 }
@@ -988,7 +988,7 @@ function dismiss_plugin_warning() {
 ###############################################################
 function previous_apps() {
 	global $caPaths, $caSettings, $DockerClient;
-	
+
 	$installed = getPost("installed","");
 	$filter = getPost("filter","");
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
@@ -1205,7 +1205,7 @@ function remove_application() {
 ###################################################################################
 function updatePLGstatus() {
 	global $caPaths;
-	
+
 	$filename = getPost("filename","");
 	$displayed = readJsonFile($caPaths['community-templates-displayed']);
 	$superCategories = array_keys($displayed);
@@ -1250,7 +1250,7 @@ function uninstall_docker() {
 ##################################################
 function pinApp() {
 	global $caPaths;
-	
+
 	$repository = getPost("repository","oops");
 	$name = getPost("name","oops");
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
@@ -1265,7 +1265,7 @@ function pinApp() {
 ######################################
 function areAppsPinned() {
 	global $caPaths;
-	
+
 	postReturn(['status' => in_array(true,readJsonFile($caPaths['pinnedV2']))]);
 }
 
@@ -1412,7 +1412,7 @@ function statistics() {
 #######################################
 function removePrivateApp() {
 	global $caPaths;
-	
+
 	$path = getPost("path",false);
 
 	if ( ! $path || pathinfo($path,PATHINFO_EXTENSION) != "xml") {
@@ -1467,11 +1467,11 @@ function populateAutoComplete() {
 				$autoComplete[$name] = str_replace("binhex ","",$autoComplete[$name]);
 			if ( startsWith($autoComplete[$name],"activ ") )
 				$autoComplete[$name] = str_replace("activ ","",$autoComplete[$name]);
-			
+
 			if ( ! $autoComplete[strtolower($template['Author'])."'s Repository"] && ! $autoComplete[strtolower($template['Author']."' Repository")]) {
 				$autoComplete[strtolower($template['Author'])] = $template['Author'];
 			}
-			
+
 			if ( $template['ExtraSearchTerms'] ) {
 				foreach (explode(" ",$template['ExtraSearchTerms']) as $searchTerm) {
 					$searchTerm = str_replace("%20"," ",$searchTerm);
@@ -1567,7 +1567,7 @@ function getRepoDescription() {
 ###########################################
 function createXML() {
 	global $caPaths;
-	
+
 	$xmlFile = getPost("xml","");
 	if ( ! $xmlFile ) {
 		postReturn(["error"=>"CreateXML: XML file was missing"]);
@@ -1662,7 +1662,7 @@ function createXML() {
 ########################
 function switchLanguage() {
 	global $caPaths;
-	
+
 	$language = getPost("language","");
 	if ( $language == "en_US" )
 		$language = "";
@@ -1704,7 +1704,7 @@ function remove_multiApplications() {
 ############################################
 function getCategoriesPresent() {
 	global $caPaths;
-	
+
 	if ( is_file($caPaths['community-templates-allSearchResults']) )
 		$displayed = readJsonFile($caPaths['community-templates-allSearchResults']);
 	else
@@ -1745,7 +1745,7 @@ function toggleFavourite() {
 ####################################
 function getFavourite() {
 	global $caSettings;
-	
+
 	postReturn(["favourite"=>$caSettings['favourite']]);
 }
 ##########################
@@ -1788,7 +1788,7 @@ function changeSortOrder() {
 		$reposDisplayed['community'] = array_merge($bio,$nonbio);
 		writeJsonFile($caPaths['repositoriesDisplayed'],$reposDisplayed);
 	}
-	
+
 	postReturn(['status'=>"ok"]);
 }
 ############################################
@@ -1796,7 +1796,7 @@ function changeSortOrder() {
 ############################################
 function getSortOrder() {
 	global $sortOrder;
-	
+
 	postReturn(["sortBy"=>$sortOrder['sortBy'],"sortDir"=>$sortOrder['sortDir']]);
 }
 
@@ -1805,7 +1805,7 @@ function getSortOrder() {
 ############################################################
 function defaultSortOrder() {
 	global $caPaths, $sortOrder;
-	
+
 	$sortOrder['sortBy'] = "Name";
 	$sortOrder['sortDir'] = "Up";
 	writeJsonFile($caPaths['sortOrder'],$sortOrder);
@@ -1816,7 +1816,7 @@ function defaultSortOrder() {
 #######################################
 function javascriptError() {
 	global $caPaths, $caSettings;
-	
+
 	if ($caSettings['debugging'] == "yes") {
 		file_put_contents($caPaths['logging'],"******* ERROR **********\n".print_r($_POST,true)."\n",FILE_APPEND);
 	}
