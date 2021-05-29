@@ -869,6 +869,7 @@ function getPopupDescriptionSkin($appNumber) {
 function getRepoDescriptionSkin($repository) {
 	global $caSettings, $caPaths, $language;
 
+	$dockerVars = parse_ini_file($caPaths['docker_cfg']);
 	$repositories = readJsonFile($caPaths['repositoryList']);
 	$templates = readJsonFile($caPaths['community-templates-info']);
 	$repo = $repositories[$repository];
@@ -892,7 +893,6 @@ function getRepoDescriptionSkin($repository) {
 		$t .= "<div class='ca_center'><span class='ca_favouriteRepo appIconsPopUp'> ".tr("Favourite Repository")."</span></div>";
 	else
 		$t .= "<div id='favMsg' class='ca_center'><span class='ca_non_favouriteRepo appIconsPopUp favPopup' data-repository='".htmlentities($repository,ENT_QUOTES)."'> ".tr("Set as favourite repository")."</span></div>";
-
 
 	$installLine = "<div style='display:flex;flex-wrap:wrap;justify-content:center;width:90%;margin-left:5%;'>";
 	$installLine .= "<div><a class='appIconsPopUp ca_repoSearchPopUp ca_showRepo' data-repository='".htmlentities($repository,ENT_QUOTES)."'> Search Apps</a></div>";
@@ -952,7 +952,9 @@ function getRepoDescriptionSkin($repository) {
 	$t .= "<tr><td style='width:50%;'>".tr("Total Plugin Applications")."</td><td style='width:30%;text-align:right;'>$totalPlugins</td></tr>";
 	if ( $totalLanguage )
 		$t .= "<tr><td style='width:50%;'>".tr("Total Languages")."</td><td style='width:30%;text-align:right;'>$totalLanguage</td></tr>";
-
+	if ($dockerVars['DOCKER_AUTHORING_MODE'] == "yes") 
+		$t .= "<tr><td style='width:50%;'><a href='{$repo['url']}' target='_blank'>".tr("Repository URL")."</a></td></tr>";
+	
 	$t .= "<tr><td style='width:50%;'>".tr("Total Applications")."</td><td style='width:30%;text-align:right;'>$totalApps</td></tr>";
 
 	if ( $downloadDockerCount && $totalDownloads ) {
