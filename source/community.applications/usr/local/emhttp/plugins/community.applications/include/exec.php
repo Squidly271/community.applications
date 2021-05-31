@@ -252,6 +252,7 @@ function DownloadApplicationFeed() {
 
 		$des = $o['OriginalOverview'] ?: $o['Overview'];
 		$des = $o['Language'] ? $o['Description'] : $des;
+		if ( ! $des && $o['Description'] ) $des = $o['Description'];
 		$des = str_replace(["[","]"],["<",">"],$des);
 		$des = html_entity_decode($des);
 		$o['CardDescription'] = strip_tags(markdown(trim($des)),$o['Language'] ? "<br>" : "");
