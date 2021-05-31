@@ -38,7 +38,7 @@ function tr($string,$ret=false) {
 }
 ?>
 
-<form markdown="1" method="POST" action="/update.php" target="progressFrame">
+<form class='js-confirm-leave' markdown="1" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="<?=$plugin?>/<?=$plugin?>.cfg">
 
 <?tr("Hide Deprecated Applications:");?>
