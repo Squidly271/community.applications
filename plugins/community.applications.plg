@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.05.16c">
-<!ENTITY md5       "04aa91e76010b2cb8100d0b9cc4dc1b3">
+<!ENTITY version   "2021.06.04">
+<!ENTITY md5       "8d47a7d43d6b7469c5df689c78125017">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.06.04
+- Added: Confirmation dialog (6.10) if leaving CA Settings without applying changes
+- Skin optimizations (13% less data transferred to browser, faster, smaller code base)
+- Fixed: In event of an appfeed failure, completely disable searches, browsing etc.
+- Fixed: Regression error: Original overviews weren't being sent to dockerMan for installation
+- Unraid 6.10 compatibility changes
+- Fixed: After installing one app via a search, and then another app via a search when returning back to CA the search for / search box would contain incorrect values
+- Added: Support Markdown formatting in app overviews
+- Added: Dynamically cutoff the descriptions in the cards based upon what fits rather than a set character count
+- Fixed: Descriptions on blacklisted cards wouldn't appear
+
 ###2021.05.16
 - Fixed: Regression error when searching it allowed clicking on categories which weren't present on the search
 - Added more debugging information

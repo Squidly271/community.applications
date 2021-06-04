@@ -11,11 +11,11 @@ a9d4cd0e4e1f37cbe3806b952a96ddb1  ./ca_settings.page
 6e48a62b91bdd066f023f46c6b491afd  ./images/discord-gray.svg
 8e7dc33512b8a78f28d7179a972c7c34  ./images/discord-hover.svg
 54e46db492ddb033dfeb2827c5efd4a8  ./images/discord-white.svg
-3bfc1687b9c954cf5020cb3ae25bec0f  ./include/exec.php
+cac429956427e21b806d5315f60aca63  ./include/exec.php
 d7f50413cbaac1c6cb9ceaaef48f270a  ./include/helpers.php
 8f1129e0cdb994c6d1900192252433d8  ./include/paths.php
 3758b1cb84123ea534ce8fb68f92879e  ./javascript/libraries.js
-4a613e9480d7b3d9aa85741bd683b52f  ./skins/Narrow/css.php
+4bbd230376521c81b95346dc2397d668  ./skins/Narrow/css.php
 dc5fd31a387046c672a1035bdf0da632  ./skins/Narrow/skin.html
 d975e0703c7a5ded05c77632da3dbdb1  ./skins/Narrow/skin.php
 38d1f40cbc64eed32cdb3292e1ec1f6e  ./scripts/PluginAPI.php

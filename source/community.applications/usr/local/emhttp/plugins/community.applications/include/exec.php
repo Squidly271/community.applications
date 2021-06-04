@@ -5,7 +5,6 @@
 #                   Licenced under GPLv2                      #
 #                                                             #
 ###############################################################
-
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
 ### Translations section has to be first so that nothing else winds up caching the file(s)
