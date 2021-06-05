@@ -108,8 +108,8 @@ a.ca_applicationName {text-decoration:none;color:inherit;}
 a.ca_author {text-decoration:none;color:inherit;}
 .ca_categoryLink {color:<?=$linkColor?>;font-weight:normal;}
 a.ca_categoryLink {text-decoration:none;color:inherit;}
-.ca_descriptionArea {margin:1rem;width:auto;height:5rem;position:relative;margin-top:-11rem;}
-.ca_descriptionAreaRepository {margin:1rem;width:auto;height:5rem;position:relative;margin-top:-12rem;}
+.ca_descriptionArea {margin:1rem;width:auto;height:6rem;position:relative;margin-top:-11rem;}
+.ca_descriptionAreaRepository {margin:1rem;width:auto;height:6rem;position:relative;margin-top:-12rem;}
 .ca_holderDocker {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderPlugin {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderFav {background-color:<?=$templateFavourite?> !important;}
@@ -188,8 +188,7 @@ input[type=checkbox] {width:2rem;height:2rem;margin-right:1rem;margin-top:-.5rem
 a.appIcons {text-decoration:none;}
 .appIconsPopUp {font-size:2rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;color:default;}
 .appIconsPopUp:hover {text-decoration:none;color:<?=$unRaid66color?>;}
-.myReadmore {text-align:center;}
-.myReadmoreButton {color:blue;}
+.myReadmoreButton {color:#6363ca;}
 .supportLink {color:inherit;padding-left:.5rem;padding-right:.5rem;}
 .donateLink {font-size:1.2rem;}
 .donate:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}

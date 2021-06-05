@@ -136,6 +136,7 @@ var initialStartup = true;
 var repoBanner = false;
 var repoBannerTimer = false;
 var unRaidFontSize = $("html").css("font-size").replace("px","");
+var resizeTimer;
 
 $(function(){
 	window.onerror = function(msg,url,lineNo,columnNo, error) {
@@ -175,7 +176,7 @@ $(function(){
 // Override the OS switch language function so that CA can save it's current state when switching via the OS
 	$("#nav-item.LanguageButton").find("a").attr("onclick","CAswitchLanguage('<?=$previousLocale?>')");
 
-	$("#title").append("<div class='searchArea onlyShowWithFeed'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='<?tr("Sort By Name Ascending")?>' data-sortBy='Name' data-sortDir='Up'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='<?tr("Sort By Name Descending")?>' data-sortBy='Name' data-sortDir='Down'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='<?tr("Sort By Downloads")?>' data-sortBy='downloads' data-sortDir='Down'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='<?tr("Sort By Trend")?>' data-sortBy='trending' data-sortDir='Down'></i><i class='sortIcons fa fa-calendar ca_staticTips' title='<?tr("Sort By Date Added")?>' data-sortBy='FirstSeen' data-sortDir='Down'></i></span><span id='sortIcon' class='fa ca_toolsView disabledIcon'> <span class='fa-sort-alpha-asc'></span></span>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='<?tr('Search')?>' autofocus><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
+	$("#title").append("<div class='searchArea onlyShowWithFeed'><span id='sortIconArea' style='display:none;'><i class='sortIcons fa fa-sort-alpha-asc enabledIcon ca_staticTips' title='<?tr("Sort By Name Ascending")?>' data-sortBy='Name' data-sortDir='Up'></i><i class='sortIcons fa fa-sort-alpha-desc ca_staticTips' title='<?tr("Sort By Name Descending")?>' data-sortBy='Name' data-sortDir='Down'></i><i class='sortIcons fa fa-sort-numeric-desc ca_staticTips' title='<?tr("Sort By Downloads")?>' data-sortBy='downloads' data-sortDir='Down'></i><i class='sortIcons fa fa-sort-amount-desc ca_staticTips' title='<?tr("Sort By Trend")?>' data-sortBy='trending' data-sortDir='Down'></i><i class='sortIcons fa fa-calendar ca_staticTips' title='<?tr("Sort By Date Added")?>' data-sortBy='FirstSeen' data-sortDir='Down'></i></span><span id='sortIcon' class='fa ca_toolsView disabledIcon'> <span class='fa-sort-alpha-asc'></span></span>&nbsp;<span id='searchFilter' class='status' style='margin-top:-1rem;'><input type='text' id='searchBox' placeholder='<?tr('Search')?>'><button class='searchSubmit' style='margin-right:10px' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></button></div>");
 
 	searchBoxInput = document.getElementById("searchBox");
 	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
@@ -264,7 +265,14 @@ $(function(){
 		if ( popupVisible(this) ) return;
 		setFavourite(this);
 	});
-
+	$(window).resize(function() {
+		if ( resizeTimer ) return;
+		resizeTimer = setTimeout(function() {
+			truncateDescriptions();
+			resizeTimer = false;
+		},1000);
+	});
+		
 	$('body').on("click",".favPopup",function() {
 		if ( popupVisible(this) ) return;
 		setFavourite(this);
@@ -1416,19 +1424,38 @@ function installMulti() {
 
 function updateDisplay(data) {
 	$("#templates_content").html(data);
-	var all_desc = document.getElementsByClassName("cardDescription");
-	for (var i=0;i<all_desc.length;i++) {
-		$clamp(all_desc[i],{clamp:3});
-	}
+	truncateDescriptions();
 	setToolTip();
 	$('.ca_appPopup, .ca_descriptionAreaRepository, .ca_repoinfo,.ca_repoPopup').attr("title","<?=tr("Click for more information")?>");
 	enableSearch();
 	$('img').on("error",function() {
 		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
 	});
-	myCloseAlert();
 
 	saveState();
+}
+
+function isOverflown(element){
+	return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+}
+function truncateDescriptions() {
+	$(".cardDescription").each(function() {
+		if ( ! $(this).attr("data-originalDescription") )
+			$(this).attr("data-originalDescription",$(this).html());
+
+		var newDescription = $(this).attr("data-originalDescription");
+		newDescription = newDescription.slice(0,600); // Chop it off where we know it won't fit - Set very very large to handle tablets that are displaying more info than a desktop
+		$(this).html(newDescription);
+		while ( isOverflown(this) ) {
+			newDescription = newDescription.slice(0,-5);
+			$(this).html(newDescription + " ... <span class='myReadmoreButton'><?=tr("Read more");?></span>");
+			if ( ! isOverflown(this) ) {
+				break;
+			}
+		}
+
+
+	});
 }
 
 function saveState() {

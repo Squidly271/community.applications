@@ -236,8 +236,9 @@ function DownloadApplicationFeed() {
 		if ( $o['Language'] ) {
 			$o['Category'] = "Language:";
 			$o['Compatible'] = true;
-			$o['Description'] = str_replace(" - ","<br>",trim($o['Description'])); // temp fix since this undoes a change feed makes.  Don't make this change in the feed in the future.
+	//		$o['Description'] = str_replace(" - ","<br>",trim($o['Description'])); // temp fix since this undoes a change feed makes.  Don't make this change in the feed in the future.
 		}
+		// above doesn't work properly with <br>'s being present when set to the overflow thingy
 
 		# Move the appropriate stuff over into a CA data file
 		$o['ID']            = $i;
@@ -253,7 +254,9 @@ function DownloadApplicationFeed() {
 		$des = $o['Language'] ? $o['Description'] : $des;
 		if ( ! $des && $o['Description'] ) $des = $o['Description'];
 		$des = str_replace(["[","]"],["<",">"],$des);
+		$des = str_replace("\n","  ",$des);
 		$des = html_entity_decode($des);
+		
 		$o['CardDescription'] = strip_tags(markdown(trim($des)),$o['Language'] ? "<br>" : "");
 
 		if ( $o['IconHTTPS'] )
