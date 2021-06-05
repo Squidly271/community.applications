@@ -272,7 +272,7 @@ $(function(){
 			resizeTimer = false;
 		},1000);
 	});
-		
+
 	$('body').on("click",".favPopup",function() {
 		if ( popupVisible(this) ) return;
 		setFavourite(this);
@@ -1453,8 +1453,6 @@ function truncateDescriptions() {
 				break;
 			}
 		}
-
-
 	});
 }
 

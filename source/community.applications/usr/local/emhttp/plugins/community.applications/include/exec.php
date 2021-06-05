@@ -256,7 +256,7 @@ function DownloadApplicationFeed() {
 		$des = str_replace(["[","]"],["<",">"],$des);
 		$des = str_replace("\n","  ",$des);
 		$des = html_entity_decode($des);
-		
+
 		$o['CardDescription'] = strip_tags(markdown(trim($des)),$o['Language'] ? "<br>" : "");
 
 		if ( $o['IconHTTPS'] )
