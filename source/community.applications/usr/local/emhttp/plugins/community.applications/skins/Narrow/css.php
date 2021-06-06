@@ -35,6 +35,7 @@ switch ($theme) {
 		$watermarkColor = "rgba(43, 43, 43, 0.4)";
 		$tooltipsterBackground = "linear-gradient(90deg,#303030 0,#707070)";
 		$tooltipsterContent = "#f2f2f2";
+		$aColor = "#000000";
 		break;
 	case 'white':
 		$donateBackground = "#1c1b1b";
@@ -46,6 +47,7 @@ switch ($theme) {
 		$watermarkColor = "rgba(211, 211, 211, 0.8)";
 		$tooltipsterBackground = "linear-gradient(90deg,#e2e2e2 0,#f2f2f2)";
 		$tooltipsterContent = "#101010";
+		$aColor = "#486dba";
 		break;
 	case 'azure':
 		$donateBackground = "#606e7f";
@@ -57,6 +59,7 @@ switch ($theme) {
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
 		$tooltipsterBackground = "linear-gradient(90deg,#e2e2e2 0,#f2f2f2)";
 		$tooltipsterContent = "#101010";
+		$aColor = "#486dba";
 		break;
 	case 'gray':
 		$donateBackground = "#606e7f";
@@ -68,6 +71,7 @@ switch ($theme) {
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
 		$tooltipsterBackground = "linear-gradient(90deg,#303030 0,#707070)";
 		$tooltipsterContent = "#f2f2f2";
+		$aColor = "#000000";
 		break;
 // Use settings for black as a fallback
 	default:
@@ -84,6 +88,7 @@ switch ($theme) {
 }
 ?>
 .tooltipster-box{background:<?=$tooltipsterBackground?>!important}
+a {color:<?=$aColor?>;}
 .tooltipster-content{color:<?=$tooltipsterContent?>!important}
 body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
 .sweet-alert table{margin-top:0px}
@@ -107,6 +112,7 @@ a.ca_applicationName {text-decoration:none;color:inherit;}
 .ca_author {cursor:pointer;font-size:1rem;font-style:italic;}
 a.ca_author {text-decoration:none;color:inherit;}
 .ca_categoryLink {color:<?=$linkColor?>;font-weight:normal;}
+.moderationLink {color:<?=$linkColor?>;font-weight:normal;}
 a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_descriptionArea {margin:1rem;width:auto;height:6rem;position:relative;margin-top:-11rem;}
 .ca_descriptionAreaRepository {margin:1rem;width:auto;height:6rem;position:relative;margin-top:-12rem;}
@@ -288,7 +294,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 #searchBox{top:-0.6rem;padding:0.6rem;}
 .searchSubmit{height:3.4rem;}
 <?endif;?>
-.popUpLink {cursor:pointer;}
+.popUpLink {cursor:pointer;color:<?$aColor?>;}
 a.popUpLink {text-decoration:none;}
 a.popUpLink:hover {color:<?=$unRaid66color?>;}
 .popUpDeprecated {color:#FF8C2F;}

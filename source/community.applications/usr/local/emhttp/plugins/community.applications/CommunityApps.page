@@ -1438,6 +1438,7 @@ function updateDisplay(data) {
 function isOverflown(element){
 	return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
 }
+
 function truncateDescriptions() {
 	$(".cardDescription").each(function() {
 		if ( ! $(this).attr("data-originalDescription") )
@@ -1449,9 +1450,6 @@ function truncateDescriptions() {
 		while ( isOverflown(this) ) {
 			newDescription = newDescription.slice(0,-5);
 			$(this).html(newDescription + " ... <span class='myReadmoreButton'><?=tr("Read more");?></span>");
-			if ( ! isOverflown(this) ) {
-				break;
-			}
 		}
 	});
 }
