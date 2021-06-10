@@ -35,7 +35,7 @@ switch ($theme) {
 		$watermarkColor = "rgba(43, 43, 43, 0.4)";
 		$tooltipsterBackground = "linear-gradient(90deg,#303030 0,#707070)";
 		$tooltipsterContent = "#f2f2f2";
-		$aColor = "#000000";
+		$aColor = "#00b8d6";
 		break;
 	case 'white':
 		$donateBackground = "#1c1b1b";
@@ -71,7 +71,7 @@ switch ($theme) {
 		$watermarkColor = "rgba(96, 110, 127, 0.1)";
 		$tooltipsterBackground = "linear-gradient(90deg,#303030 0,#707070)";
 		$tooltipsterContent = "#f2f2f2";
-		$aColor = "#000000";
+		$aColor = "#00b8d6";
 		break;
 // Use settings for black as a fallback
 	default:
