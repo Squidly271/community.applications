@@ -116,7 +116,11 @@ a.ca_author {text-decoration:none;color:inherit;}
 .moderationLink {color:<?=$linkColor?>;font-weight:normal;}
 a.ca_categoryLink {text-decoration:none;color:inherit;}
 .ca_descriptionArea {margin:1rem;width:auto;max-height:6rem;position:relative;margin-top:-11rem;}
+.ca_descriptionArea:hover {color:<?=$unRaid66color?>;}
+.ca_descriptionArea:hover span {filter: invert(100%);}
 .ca_descriptionAreaRepository {margin:1rem;width:auto;max-height:6rem;position:relative;margin-top:-12rem;}
+.ca_descriptionAreaRepository:hover {color:<?=$unRaid66color?>;}
+.ca_descriptionAreaRepository:hover span {filter: invert(100%);}
 .ca_holderDocker {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderPlugin {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:24rem;min-width:37rem;max-width:50rem;flex-grow:1;flex-basis:37rem;overflow:hidden;padding:0px;margin-left:0px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;border-radius:10px 10px 10px 10px;}
 .ca_holderFav {background-color:<?=$templateFavourite?> !important;}
@@ -166,7 +170,6 @@ table tbody td {line-height:1.8rem;}
 .ca_highlight {color:#0e5d08;font-weight:bold;}
 .ca_description {color:#505E6F;}
 .cardDescription {cursor:pointer;}
-.cardDescription:hover {color:<?=$unRaid66color?> !important;}
 a.ca_appPopup {text-decoration:none;cursor:pointer;}
 .ca_repoPopup {text-decoration:none!important;cursor:pointer;color:inherit;}
 a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
