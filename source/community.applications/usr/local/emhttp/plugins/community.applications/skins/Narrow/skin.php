@@ -296,9 +296,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				}
 			}
 
-/* 			if ( endsWith($template['CardDescription'],"...") ) {
-				$template['CardDescription'] .= "<a class='ca_appreadmore ca_appPopup' data-appNumber='$ID' data-appPath='{$template['Path']}' data-appName='{$template['Name']}' data-beta='$appInfoBeta'> ".tr("Read more")."</a>";
-			} */
 			$template['display_dockerName'] = "<span class='ca_applicationName'>";
 			$template['display_dockerName'] .= $template['Name_highlighted'] ?: $template['Name'];
 			$template['display_dockerName'] .= "</span>";
@@ -696,7 +693,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$templateDescription .= "&nbsp;<span class='ca_favourite' title='".tr("Favourite Repository")."'></span>";
 
 	$templateDescription .= "</td></tr>";
-	$templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><font color=red>Private Repository</font></td></tr>" : "";
+	$templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><span class='modComment'>Private Repository</span></td></tr>" : "";
 	$templateDescription .= ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes"  && $template['TemplateURL']) ? "<tr><td></td><td><a class='popUpLink' href='{$template['TemplateURL']}' target='_blank'>".tr("Application Template")."</a></td></tr>" : "";
 	if ( $template['Category'] ) {
 		$templateDescription .= "<tr><td>".tr("Categories:")."</td><td>".$template['Category'];
@@ -772,7 +769,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$templateDescription .= "<div><span class='ca_fa-warning warning-yellow'></span>&nbsp; <font size='1'>".tr("Another browser tab or device has updated the displayed templates.  Some actions are not available")."</font></div>";
 
 
-	$templateDescription .= $template['ModeratorComment'] ? "<br><br><span class='ca_bold'><font color='red'>".tr("Moderator Comments:")."</font></span> ".$template['ModeratorComment'] : "";
+	$templateDescription .= $template['ModeratorComment'] ? "<br><br><span class='ca_bold modComment'>".tr("Moderator Comments:")."</span> ".$template['ModeratorComment'] : "";
 	$templateDescription .= "</p><br><div class='ca_center'>";
 
 
@@ -814,7 +811,7 @@ function getPopupDescriptionSkin($appNumber) {
 					copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 					$appInformation .= " - <span class='ca_bold'><a href='/Apps/Plugins' target='_parent'>".tr("Install The Update")."</a></span>";
 				} else
-					$appInformation .= " - <font color='green'>".tr("Latest Version")."</font>";
+					$appInformation .= " - <font color='#4cc337'>".tr("Latest Version")."</font>";
 			}
 			$appInformation .= Markdown($template['Changes']);
 		} elseif ($template['Language']) {

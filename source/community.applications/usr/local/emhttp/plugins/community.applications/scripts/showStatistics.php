@@ -60,7 +60,7 @@ switch ($_GET['arg1']) {
 		ksort($repos,SORT_FLAG_CASE | SORT_NATURAL);
 		echo "<tt><table>";
 		foreach (array_keys($repos) as $repo) {
-			echo "<tr><td><span class='ca_bold'>$repo</td><td><a href='{$repos[$repo]}' target='_blank'>{$repos[$repo]}</a></td></tr>";
+			echo "<tr><td><span class='ca_bold'>$repo</td><td><a class='popUpLink' href='{$repos[$repo]}' target='_blank'>{$repos[$repo]}</a></td></tr>";
 		}
 		echo "</table></tt>";
 		break;

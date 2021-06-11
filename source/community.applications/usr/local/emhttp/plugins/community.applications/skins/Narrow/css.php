@@ -88,6 +88,7 @@ switch ($theme) {
 }
 ?>
 .tooltipster-box{background:<?=$tooltipsterBackground?>!important}
+.modComment {color:#d67777;}
 a {color:<?=$aColor?>;}
 .tooltipster-content{color:<?=$tooltipsterContent?>!important}
 body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
@@ -165,13 +166,10 @@ table tbody td {line-height:1.8rem;}
 .ca_highlight {color:#0e5d08;font-weight:bold;}
 .ca_description {color:#505E6F;}
 .cardDescription {cursor:pointer;}
+.cardDescription:hover {color:<?=$unRaid66color?> !important;}
 a.ca_appPopup {text-decoration:none;cursor:pointer;}
 .ca_repoPopup {text-decoration:none!important;cursor:pointer;color:inherit;}
 a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
-a.ca_reporeadmore {cursor:pointer;text-decoration:none;}
-a.ca_appreadmore {cursor:pointer;text-decoration:none;}
-a.ca_reporeadmore:hover {color:<?=$unRaid66color?>;}
-a.ca_appreadmore:hover {color:<?=$unRaid66color?>;}
 .ca_href {cursor:pointer;}
 input[type=checkbox] {width:2rem;height:2rem;margin-right:1rem;margin-top:-.5rem;margin-left:0rem;}
 .enabledIcon {cursor:pointer;color:<?=$unRaid66color?>;}

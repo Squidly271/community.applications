@@ -11,13 +11,13 @@ a9d4cd0e4e1f37cbe3806b952a96ddb1  ./ca_settings.page
 6e48a62b91bdd066f023f46c6b491afd  ./images/discord-gray.svg
 8e7dc33512b8a78f28d7179a972c7c34  ./images/discord-hover.svg
 54e46db492ddb033dfeb2827c5efd4a8  ./images/discord-white.svg
-84ea299cecf582c96f637d8657148831  ./include/exec.php
+ba7e6456556f29f6e8fa0ade0dcadd30  ./include/exec.php
 d7f50413cbaac1c6cb9ceaaef48f270a  ./include/helpers.php
 8f1129e0cdb994c6d1900192252433d8  ./include/paths.php
 eb76c1b6ed3da5e5b393f22d2ec18430  ./javascript/libraries.js
-4799ad5cd2aa76e01d0634df9178f0d7  ./skins/Narrow/css.php
+83889732fae782879bd3bc9406c3fc25  ./skins/Narrow/css.php
 944beab17894885ed9ae22db3920a054  ./skins/Narrow/skin.html
-d975e0703c7a5ded05c77632da3dbdb1  ./skins/Narrow/skin.php
+803c7bb7182371831f27dea9ebcfeddb  ./skins/Narrow/skin.php
 38d1f40cbc64eed32cdb3292e1ec1f6e  ./scripts/PluginAPI.php
 bbd9dec6c5df486d75c46388c14f09ce  ./scripts/installMulti.php
 ce2c904b6a40c4677a3ff3484776959e  ./scripts/installMultiPlugin.sh
@@ -25,6 +25,6 @@ ce2c904b6a40c4677a3ff3484776959e  ./scripts/installMultiPlugin.sh
 5846421e95b475e1156c3f68164ccc4f  ./scripts/languageInstall.sh
 729c178196af99c94116246f0c8be7a5  ./scripts/notices.php
 1efbd780e8ead27a768d1631fb51150c  ./scripts/pluginInstall.sh
-10e9f1a136907d8df1c46f1669831db8  ./scripts/showStatistics.php
+f9c3f431935fb20801f3fef152dc7b58  ./scripts/showStatistics.php
 4425f8fd4ef662a7dc65cee01de3e419  ./scripts/updatePLG.sh
 02759ea835ee4ce5a051fead96ab9b9b  ./scripts/updatePluginSupport.php

@@ -1393,17 +1393,17 @@ function statistics() {
 	$o .= "<tr><td class='ca_table'>".tr("Number Of Docker Applications")."</td><td class='ca_stat'>{$statistics['docker']}</td></tr>";
 	$o .= "<tr><td class='ca_table'>".tr("Number Of Plugin Applications")."</td><td class='ca_stat'>{$statistics['plugin']}</td></tr>";
 	$o .= "<tr><td class='ca_table'>".tr("Number Of Templates")."</td><td class='ca_stat'>{$statistics['totalApplications']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;".tr("Repository List")."&quot;);' style='cursor:pointer;'>".tr("Number Of Repositories")."</a></td><td class='ca_stat'>{$statistics['repositories']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Repository&quot;,&quot;".tr("Repository List")."&quot;);' style='cursor:pointer;' class='popUpLink'>".tr("Number Of Repositories")."</a></td><td class='ca_stat'>{$statistics['repositories']}</td></tr>";
 	if ($statistics['private']) {
-		$o .= "<tr><td class='ca_table'><a data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>".tr("Number Of Private Docker Applications")."</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>";
+		$o .= "<tr><td class='ca_table'><a class='popUpLink' data-category='PRIVATE' onclick='showSpecialCategory(this);' style='cursor:pointer;'>".tr("Number Of Private Docker Applications")."</a></td><td class='ca_stat'>{$statistics['private']}</td></tr>";
 	}
-	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Invalid&quot;,&quot;".tr("All Invalid Templates Found")."&quot;);' style='cursor:pointer'>".tr("Number Of Invalid Templates")."</a></td><td class='ca_stat'>{$statistics['invalidXML']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Fixed&quot;,&quot;".tr("Template Errors")."&quot;);' style='cursor:pointer'>".tr("Number Of Template Errors")."</a></td><td class='ca_stat'>{$statistics['caFixed']}+</td></tr>";
-	$o .= "<tr><td class='ca_table'><a data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Blacklisted Apps")."</a></td><td class='ca_stat'>{$statistics['blacklist']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a data-category='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Incompatible Applications")."</a></td><td class='ca_stat'>{$statistics['totalIncompatible']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Deprecated Applications")."</a></td><td class='ca_stat'>{$statistics['totalDeprecated']}</td></tr>";
-	$o .= "<tr><td class='ca_table'><a onclick='showModeration(&quot;Moderation&quot;,&quot;".tr("All Moderation Entries")."&quot;);' style='cursor:pointer'>".tr("Number Of Moderation Entries")."</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>";
-	$o .= "<tr><td class='ca_table'><a href='{$caPaths['application-feed']}' target='_blank'>".tr("Primary Server")."</a> / <a href='{$caPaths['application-feedBackup']}' target='_blank'> ".tr("Backup Server")."</a></td></tr>";
+	$o .= "<tr><td class='ca_table'><a class='popUpLink' onclick='showModeration(&quot;Invalid&quot;,&quot;".tr("All Invalid Templates Found")."&quot;);' style='cursor:pointer'>".tr("Number Of Invalid Templates")."</a></td><td class='ca_stat'>{$statistics['invalidXML']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a class='popUpLink' onclick='showModeration(&quot;Fixed&quot;,&quot;".tr("Template Errors")."&quot;);' style='cursor:pointer'>".tr("Number Of Template Errors")."</a></td><td class='ca_stat'>{$statistics['caFixed']}+</td></tr>";
+	$o .= "<tr><td class='ca_table'><a class='popUpLink' data-category='BLACKLIST' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Blacklisted Apps")."</a></td><td class='ca_stat'>{$statistics['blacklist']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a class='popUpLink' data-category='INCOMPATIBLE' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Incompatible Applications")."</a></td><td class='ca_stat'>{$statistics['totalIncompatible']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a class='popUpLink' data-category='DEPRECATED' onclick='showSpecialCategory(this);' style='cursor:pointer'>".tr("Number Of Deprecated Applications")."</a></td><td class='ca_stat'>{$statistics['totalDeprecated']}</td></tr>";
+	$o .= "<tr><td class='ca_table'><a class='popUpLink' onclick='showModeration(&quot;Moderation&quot;,&quot;".tr("All Moderation Entries")."&quot;);' style='cursor:pointer'>".tr("Number Of Moderation Entries")."</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>";
+	$o .= "<tr><td class='ca_table'><a class='popUpLink' href='{$caPaths['application-feed']}' target='_blank'>".tr("Primary Server")."</a> / <a class='popUpLink' href='{$caPaths['application-feedBackup']}' target='_blank'> ".tr("Backup Server")."</a></td></tr>";
 	$o .= "</table>";
 	$o .= "<div class='ca_center'><a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>".tr("Application Policy")."</a></div>";
 
