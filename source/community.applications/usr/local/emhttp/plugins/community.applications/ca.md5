@@ -11,13 +11,13 @@ a9d4cd0e4e1f37cbe3806b952a96ddb1  ./ca_settings.page
 6e48a62b91bdd066f023f46c6b491afd  ./images/discord-gray.svg
 8e7dc33512b8a78f28d7179a972c7c34  ./images/discord-hover.svg
 54e46db492ddb033dfeb2827c5efd4a8  ./images/discord-white.svg
-ba7e6456556f29f6e8fa0ade0dcadd30  ./include/exec.php
+13dfe950ed61efb6a567bfecb5506cbb  ./include/exec.php
 d7f50413cbaac1c6cb9ceaaef48f270a  ./include/helpers.php
 8f1129e0cdb994c6d1900192252433d8  ./include/paths.php
 eb76c1b6ed3da5e5b393f22d2ec18430  ./javascript/libraries.js
 3d5ecb488a4b90fdd5005dea1abe1ad3  ./skins/Narrow/css.php
 944beab17894885ed9ae22db3920a054  ./skins/Narrow/skin.html
-803c7bb7182371831f27dea9ebcfeddb  ./skins/Narrow/skin.php
+715c92f632837f3c3dc099d014f3deee  ./skins/Narrow/skin.php
 38d1f40cbc64eed32cdb3292e1ec1f6e  ./scripts/PluginAPI.php
 bbd9dec6c5df486d75c46388c14f09ce  ./scripts/installMulti.php
 ce2c904b6a40c4677a3ff3484776959e  ./scripts/installMultiPlugin.sh

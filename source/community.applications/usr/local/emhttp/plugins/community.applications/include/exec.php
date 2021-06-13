@@ -297,11 +297,13 @@ function DownloadApplicationFeed() {
 
 		$ApplicationFeed['repositories'][$o['RepoName']]['downloads']++;
 		$ApplicationFeed['repositories'][$o['RepoName']]['trending'] += $o['trending'];
-		if ( $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] ) {
-			if ($o['FirstSeen'] < $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'])
-				$ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] = $o['firstSeen'];
-		} else {
-			$ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] = $o['FirstSeen'];
+		if ( ! $o['ModeratorComment'] == "Duplicated Template" ) {
+			if ( $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] ) {
+				if ( $o['FirstSeen'] < $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'])
+					$ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] = $o['firstSeen'];
+			} else {
+				$ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] = $o['FirstSeen'];
+			}
 		}
 		if ( is_array($o['Branch']) ) {
 			if ( ! $o['Branch'][0] ) {
@@ -1405,7 +1407,7 @@ function statistics() {
 	$o .= "<tr><td class='ca_table'><a class='popUpLink' onclick='showModeration(&quot;Moderation&quot;,&quot;".tr("All Moderation Entries")."&quot;);' style='cursor:pointer'>".tr("Number Of Moderation Entries")."</a></td><td class='ca_stat'>{$statistics['totalModeration']}+</td></tr>";
 	$o .= "<tr><td class='ca_table'><a class='popUpLink' href='{$caPaths['application-feed']}' target='_blank'>".tr("Primary Server")."</a> / <a class='popUpLink' href='{$caPaths['application-feedBackup']}' target='_blank'> ".tr("Backup Server")."</a></td></tr>";
 	$o .= "</table>";
-	$o .= "<div class='ca_center'><a href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>".tr("Application Policy")."</a></div>";
+	$o .= "<div class='ca_center'><a class='popUpLink' href='https://forums.unraid.net/topic/87144-ca-application-policies/' target='_blank'>".tr("Application Policy")."</a></div>";
 
 	postReturn(['statistics'=>$o]);
 }

@@ -950,7 +950,7 @@ function getRepoDescriptionSkin($repository) {
 	if ( $totalLanguage )
 		$t .= "<tr><td style='width:50%;'>".tr("Total Languages")."</td><td style='width:30%;text-align:right;'>$totalLanguage</td></tr>";
 	if ($dockerVars['DOCKER_AUTHORING_MODE'] == "yes")
-		$t .= "<tr><td style='width:50%;'><a href='{$repo['url']}' target='_blank'>".tr("Repository URL")."</a></td></tr>";
+		$t .= "<tr><td style='width:50%;'><a class='popUpLink' href='{$repo['url']}' target='_blank'>".tr("Repository URL")."</a></td></tr>";
 
 	$t .= "<tr><td style='width:50%;'>".tr("Total Applications")."</td><td style='width:30%;text-align:right;'>$totalApps</td></tr>";
 
