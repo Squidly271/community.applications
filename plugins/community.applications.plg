@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.06.04">
-<!ENTITY md5       "8d47a7d43d6b7469c5df689c78125017">
+<!ENTITY version   "2021.06.21">
+<!ENTITY md5       "5a73877880fa75f4ec86568791d3b9ed">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,15 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.4.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.06.21
+- Maintenance Update
+- Fixed: Repository that contained a duplicated dockerHub repository (even if it was removed from CA) wouldn't appear in the correct order when sorting repositories by Date Added
+- Fixed: When clicking on the description of an app, only allow clicking on the text, not the complete area allowed for the text
+- Changed: Remove autofocus on search bar when entering Apps tab (Some mobile devices would automatically bring up the virtual keyboard whenever entering the Apps tab)
+- Fixed / Changed: Complete revamp of how the readmore is generated on the app's tile
+- Fixed: Adjust color of hyperlinks on black / grey themes
+- Fixed: Various CSS tweaks, and all hyperlinks should now properly follow the CSS rules for color changes on hover etc.
+
 ###2021.06.04
 - Added: Confirmation dialog (6.10) if leaving CA Settings without applying changes
 - Skin optimizations (13% less data transferred to browser, faster, smaller code base)
