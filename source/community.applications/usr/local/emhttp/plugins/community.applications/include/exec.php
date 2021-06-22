@@ -1016,12 +1016,12 @@ if ( $caSettings['dockerRunning'] ) {
 		if ( !$filter || $filter == "docker" ) {
 			foreach ($info as $installedDocker) {
 				$installedName = $installedDocker['Name'];
+				$installedImage = $installedDocker['Image'];
 				if ( startsWith($installedImage,"library/") ) # official images are in DockerClient as library/mysql eg but template just shows mysql
 					$installedImage = str_replace("library/","",$installedImage);
 
-				foreach ($file as $template) {
+				foreach ($file as &$template) {
 					if ( $installedName == $template['Name'] ) {
-						$template['testrepo'] = $installedImage;
 						if ( startsWith($installedImage,$template['Repository']) ) {
 							$template['Uninstall'] = true;
 							$template['InstallPath'] = $template['Path'];
@@ -1029,7 +1029,7 @@ if ( $caSettings['dockerRunning'] ) {
 								$template['UpdateAvailable'] = true;
 							}
 							if ($template['Blacklist'] ) continue;
-
+							$template['testrepo'] = $installedImage;
 							$displayed[] = $template;
 							break;
 						}
@@ -1047,6 +1047,7 @@ if ( $caSettings['dockerRunning'] ) {
 				$flag = false;
 				$containerID = false;
 				foreach ($file as $templateDocker) {
+					if ( $templateDocker['testrepo'] ) continue;
 	# use startsWith to eliminate any version tags (:latest)
 					if ( startsWith($templateDocker['Repository'], $testRepo) ) {
 						if ( $templateDocker['Name'] == $o['Name'] ) {
@@ -1092,6 +1093,7 @@ if ( $caSettings['dockerRunning'] ) {
 						# Without this, an app could appear to be shown in installed apps twice
 						$fat32Fix[$searchResult]++;
 						if ($fat32Fix[$searchResult] > 1) continue;
+						if ($o['testrepo']) continue;
 						$displayed[] = $o;
 					}
 				}
@@ -1113,6 +1115,7 @@ if ( $caSettings['dockerRunning'] ) {
 				$flag = false;
 				foreach ($info as $installedDocker) {
 					$installedImage = $installedDocker['Image'];
+					$installedImage = str_replace("library/","",$installedImage);
 					$installedName = $installedDocker['Name'];
 					if ( startsWith($installedImage, $o['Repository']) ) {
 						if ( $installedName == $o['Name'] ) {
