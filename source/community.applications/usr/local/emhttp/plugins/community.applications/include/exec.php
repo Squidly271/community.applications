@@ -1021,6 +1021,7 @@ if ( $caSettings['dockerRunning'] ) {
 					$installedImage = str_replace("library/","",$installedImage);
 
 				foreach ($file as &$template) {
+					if ( $template['BranchID'] ) continue;
 					if ( $installedName == $template['Name'] ) {
 						if ( startsWith($installedImage,$template['Repository']) ) {
 							$template['Uninstall'] = true;
