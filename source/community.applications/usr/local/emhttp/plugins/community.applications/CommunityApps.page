@@ -670,7 +670,6 @@ function setToolTip() {
 			origin.tooltipster("hide");
 		}
 	});
-
 }
 
 function showSpecialCategory(button) {
@@ -741,7 +740,6 @@ function mySpinner() {
 		html: true
 	});
 	swalBackground("transparent"); // Occasional race condition where swal is not initialized at time the initial background change happens
-
 }
 
 function myCloseSpinner() {

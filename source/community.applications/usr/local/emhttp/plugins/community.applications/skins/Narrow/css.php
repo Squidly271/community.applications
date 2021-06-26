@@ -18,7 +18,6 @@ $theme = $dynamix['theme'];
 
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
-$unRaid66 = version_compare($unRaidSettings['version'],"6.5.3",">");
 $unRaid67 = version_compare($unRaidSettings['version'],"6.7.0-rc4",">");
 $unRaid69 = version_compare($unRaidSettings['version'],"6.9.0-beta1",">");
 $unRaid66color = "#FF8C2F";
@@ -280,20 +279,16 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 #searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;}
 <?endif;?>
 <?if ( $theme == "black" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2rem;border:1px solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.5rem;border:none;}
+.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:3.4rem;border:1px solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;}
+#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;padding:0.6rem;}
 <?endif;?>
 <?if ( $theme == "gray" ):?>
 .searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.9rem;border:.1rem solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-.7rem;padding:0px .2rem;background:transparent;border:none;cursor:pointer;}
 #searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;}
 <?endif;?>
 <?if ( $theme == "white" ):?>
-.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:2.6rem;border:1px; solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;}
-#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.5rem;border:none;}
-<?endif;?>
-<?if ($unRaid66 && ( $theme == "black" || $theme == "white") ):?>
-#searchBox{top:-0.6rem;padding:0.6rem;}
-.searchSubmit{height:3.4rem;}
+.searchSubmit{font-family:'FontAwesome';width:2.9rem;height:3.4rem;border:1px; solid #dadada;border-radius:4px 4px 4px 4px;font-size:1.1rem;position:relative; top:-6px;padding:0px 2px;background:transparent;border:none;cursor:pointer;}
+#searchBox{margin-left:1rem;margin-right:0;position:relative;top:-.6rem;border:none;padding:0.6rem;}
 <?endif;?>
 .popUpLink {cursor:pointer;color:<?$aColor?>;}
 a.popUpLink {text-decoration:none;}

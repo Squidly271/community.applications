@@ -512,9 +512,8 @@ function checkRandomApp($test,$info=array(),$random=false) {
 	if ( ! $test['Compatible'] && $caSettings['hideIncompatible'] == "true" ) return false;
 	if ( $test['Blacklist'] )                         return false;
 	if ( $test['Deprecated'] && ( $caSettings['hideDeprecated'] == "true" ) ) return false;
-	if ( $random ) {
-		return ! appInstalled($test,$info);
-	}
+	if ( $random ) return ! appInstalled($test,$info);
+	
 	return true;
 }
 ##############################################################
@@ -658,7 +657,6 @@ function get_content() {
 						$startupType = "Trending"; break;
 				}
 
-
 				$o['display'] =  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>".sprintf(tr("An error occurred.  Could not find any %s Apps"),$startupType)."</span></font><br><br>";
 				$o['script'] = "$('#templateSortButtons,#sortButtons').hide();enableIcon('#sortIcon',false);";
 				postReturn($o);
@@ -766,9 +764,9 @@ function get_content() {
 		}
 		else
 			$searchResults['anyHit'] = array();
-		if ( is_array($searchResults['favNameHit']) ) {
+		if ( is_array($searchResults['favNameHit']) )
 			usort($searchResults['favNameHit'],"mySort");
-		} else
+		else
 			$searchResults['favNameHit'] = array();
 
 		if ( is_array($searchResults['extraHit']) )
@@ -873,13 +871,10 @@ function display_content() {
 	}
 
 	$displayedApps = readJsonFile($caPaths['community-templates-displayed']);
-/* 	if ( ! is_array($displayedApps['community']) || count($displayedApps['community']) < 1)
-		$o['script'] = "disableSort();"; */
 	$currentServer = @file_get_contents($caPaths['currentServer']);
 	$o['script'] .= "feedWarning('$currentServer');";
 	postReturn($o);
 }
-
 
 #######################################################################
 # convert_docker - called when system adds a container from dockerHub #
@@ -1025,7 +1020,7 @@ function previous_apps() {
 					$containerID = false;
 					foreach ($file as $templateDocker) {
 						if ( $templateDocker['testrepo'] ) continue;
-		# use startsWith to eliminate any version tags (:latest)
+						# use startsWith to eliminate any version tags (:latest)
 						if ( startsWith($templateDocker['Repository'], $testRepo) ) {
 							if ( $templateDocker['Name'] == $o['Name'] ) {
 								$flag = true;
@@ -1628,7 +1623,6 @@ function createXML() {
 						$valueReferenced = array_values(array_filter(explode("/",$config['value'])));
 						if ( $valueReferenced[0] == "mnt" && $valueReferenced[1] && ! in_array($valueReferenced[1],$disksPresent) )
 							$config['value'] = str_replace("/mnt/{$valueReferenced[1]}/","/mnt/{$disksPresent[0]}/",$config['value']);
-
 					}
 				}
 			}

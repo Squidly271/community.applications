@@ -55,5 +55,4 @@ switch ($_POST['action']) {
 		file_put_contents("/tmp/reboot_notifications",implode("\n",array_unique($existing)));
 		break;
 }
-
 ?>
