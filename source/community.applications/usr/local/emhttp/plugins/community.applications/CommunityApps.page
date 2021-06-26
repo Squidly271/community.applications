@@ -1569,10 +1569,12 @@ function addDockerWarning(enableDisable) {
 	if (enableDisable) {
 		if ( dockerWarningAdded === false) {
 			dockerWarningAdded = addBannerWarning("<?tr('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed')?>",true,false);
+			$(".dockerSpecific").removeClass("caMenuEnabled").addClass("caMenuDisabled");
 		}
 	} else {
 		if ( dockerWarningAdded !== false ) {
 			removeBannerWarning(dockerWarningAdded);
+			$(".dockerSpecific").removeClass("caMenuDisabled").addClass("caMenuEnabled");
 			dockerWarningAdded = false;
 		}
 	}
