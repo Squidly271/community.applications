@@ -830,8 +830,6 @@ function changeSortOrder(button,buttonClass,previousApps) {
 	if ( button || buttonClass || previousApps) {
 		data.searchFlag = false;
 	}
-	console.log("data");
-	console.log(data);
 
 	$(".startupButton").each(function(){
 		if ($(this).hasClass("selectedMenu")) {
@@ -1473,7 +1471,6 @@ function saveState() {
 			categoriesEnabled.push($(this).data("category"));
 		});
 		$.cookie("ca_categories_enabled",JSON.stringify(categoriesEnabled));
-			console.log(categoriesEnabled);
 		$.cookie("ca_selectedMenu",selectedMenu);
 		$.cookie("ca_sortIcon",isIconEnabled("#sortIcon"));
 		$.cookie("ca_filter",$("#searchBox").val());
@@ -1701,7 +1698,6 @@ function getCategories() {
 			}
 		});
 
-		restoreStateMenu = $.cookie("ca_selectedMenu");
 		if ( ! restoreStateMenu )
 			restoreStateMenu = $.cookie("ca_startupButton");
 

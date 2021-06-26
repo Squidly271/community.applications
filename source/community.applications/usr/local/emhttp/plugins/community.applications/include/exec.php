@@ -1022,6 +1022,7 @@ if ( $caSettings['dockerRunning'] ) {
 
 				foreach ($file as &$template) {
 					if ( $template['BranchID'] ) continue;
+					if ( $template['Blacklist'] ) continue;
 					if ( $installedName == $template['Name'] ) {
 						if ( startsWith($installedImage,$template['Repository']) ) {
 							$template['Uninstall'] = true;
@@ -1029,7 +1030,6 @@ if ( $caSettings['dockerRunning'] ) {
 							if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
 								$template['UpdateAvailable'] = true;
 							}
-							if ($template['Blacklist'] ) continue;
 							$template['testrepo'] = $installedImage;
 							$displayed[] = $template;
 							break;
