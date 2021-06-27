@@ -79,6 +79,12 @@ if ( is_file($caPaths['addConverted']) ) {
 }
 $date = (date("n/d"));
 
+// Check for updates to apps (run in background)
+
+exec("echo '$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate.php check nonotify > /dev/null 2>&1' | at now >/dev/null");
+exec("echo '$docroot/plugins/dynamix.plugin.manager/scripts/plugin checkall > /dev/null 2>&1' | at now >/dev/null");
+
+
 function tr($string,$ret=false) {
 	if ( function_exists("_") )
 		$string = str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
