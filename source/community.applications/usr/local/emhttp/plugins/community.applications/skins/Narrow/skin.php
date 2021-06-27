@@ -198,7 +198,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 			if ( $template['Plugin'] )
 				$template['UpdateAvailable'] = checkPluginUpdate($template['PluginURL']);
-
 			if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls'] ){  # certain "special" categories (blacklist, deprecated, etc) don't allow the installation etc icons
 				if ( $template['Plugin'] ) {
 					$pluginName = basename($template['PluginURL']);
@@ -222,6 +221,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip ca_fa-install appIcons' type='button' style='margin:0px' title='".tr("Click to reinstall the application using default values")."' onclick='displayTags(&quot;$ID&quot;);'></a>" : $template['display_dockerDefaultIcon'];
 							$template['display_dockerEditIcon']    = "<a class='ca_tooltip appIcons ca_fa-edit xmlInstall' title='".tr("Click to edit the application values")."' data-type='edit' data-xml='".addslashes($info[$name]['template'])."'></a>";
 							$template['display_dockerReinstallIcon'] = $caSettings['defaultReinstall'] == "true" ? "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='".tr("Click to reinstall")."' data-type='default' data-xml='".addslashes($template['Path'])."'></a>" : "";
+							$template['display_dockerUpdate'] = $template['UpdateAvailable'] ? "<a class='ca_tooltip appIcons ca_fa-update dockerUpdate' data-name='{$template['Name']}' title='".tr("Update container")."'></a>" : "";
 							unset($template['display_multi_install']);
 
 							if ( $info[$name]['url'] && $info[$name]['running'] )
@@ -801,9 +801,6 @@ function getPopupDescriptionSkin($appNumber) {
 		$changeLogMessage = "<div class='ca_center'><font size='0'>".tr($changeLogMessage)."</font></div><br>";
 	}
 	if ( trim($template['Changes']) ) {
-/* 		if ( $appNumber != "ca" && $appNumber != "ca_update" )
-			$templateDescription .= "</div>"; */
-
 		if ( $template['Plugin'] ) {
 			if ( file_exists("/var/log/plugins/$pluginName") ) {
 				$appInformation = tr("Currently Installed Version:")." ".plugin("version","/var/log/plugins/$pluginName");
@@ -1017,7 +1014,7 @@ function displayCard($template) {
 			</div>
 			<div class='ca_hr'></div>
 			<div class='ca_bottomLine'>
-				$display_multi_install$display_pluginUpdate$display_languageUpdate$display_languageInstallIcon$display_language_switch$display_pluginInstallIcon$display_dockerInstallIcon $dockerReinstall $display_dockerReinstallIcon $display_dockerEditIcon $display_pluginSettingsIcon$display_infoIcon $dockerWebIcon$display_profile$display_webpage$display_faSupport$display_twitter$display_reddit$display_discord$display_facebook $display_faProject $display_pinButton$display_repoSearch$display_faFavourite$display_favouriteButton
+				$display_multi_install$display_dockerUpdate$display_pluginUpdate$display_languageUpdate$display_languageInstallIcon$display_language_switch$display_pluginInstallIcon$display_dockerInstallIcon $dockerReinstall $display_dockerReinstallIcon $display_dockerEditIcon $display_pluginSettingsIcon$display_infoIcon $dockerWebIcon$display_profile$display_webpage$display_faSupport$display_twitter$display_reddit$display_discord$display_facebook $display_faProject $display_pinButton$display_repoSearch$display_faFavourite$display_favouriteButton
 				<span class='ca_bottomRight'>
 					$display_removable $display_Uninstall
 				</span>

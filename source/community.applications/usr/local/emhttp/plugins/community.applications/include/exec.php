@@ -1019,7 +1019,6 @@ function previous_apps() {
 					$flag = false;
 					$containerID = false;
 					foreach ($file as $templateDocker) {
-						if ( $templateDocker['testrepo'] ) continue;
 						# use startsWith to eliminate any version tags (:latest)
 						if ( startsWith($templateDocker['Repository'], $testRepo) ) {
 							if ( $templateDocker['Name'] == $o['Name'] ) {
@@ -1032,7 +1031,7 @@ function previous_apps() {
 					if ( ! $flag ) {
 						$runningflag = false;
 						foreach ($info as $installedDocker) {
-							$installedImage = $installedDocker['Image'];
+							$installedImage = str_replace("library/","",$installedDocker['Image']);
 							$installedName = $installedDocker['Name'];
 							if ( startsWith($installedImage, $o['Repository']) ) {
 								if ( $installedName == $o['Name'] ) {

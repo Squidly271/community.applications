@@ -98,6 +98,7 @@ function tr($string,$ret=false) {
 <? endif; ?>
 
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
+<script src='<?autov("/plugins/dynamix.docker.manager/javascript/docker.js")?>'></script>
 <?if (!$unRaid610):?>
 <script>
 	/*! sprintf-js v1.1.2 | Copyright (c) 2007-present, Alexandru Mărășteanu <hello@alexei.ro> | BSD-3-Clause */
@@ -252,7 +253,13 @@ $(function(){
 			setFavRepoSearch();
 		});
 	});
-
+	
+	$('.mainArea').on("click",".dockerUpdate",function() {
+		if ( popupVisible(this) ) return;
+		var container = $(this).attr("data-name");
+		updateContainer(container);
+	});
+	
 	$('.mainArea').on("click",".ca_href",function() {
 		if ( popupVisible() ) return;
 		var href = $(this).attr("data-href");
@@ -463,10 +470,6 @@ $(function(){
 	$('.mainArea').on("mouseleave",".ca_discord",function() {
 		$(this).attr("src","/plugins/community.applications/images/discord-<?=$theme?>.svg");
 	});
-<?endif;?>
-
-<?if ( ! $unRaid66 ):?>
-	$("html").css("font-size","10px");
 <?endif;?>
 
 	/* Everything is now initialized.  This is the start of the actual "real" code */
