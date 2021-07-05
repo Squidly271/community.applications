@@ -66,7 +66,7 @@ if ( $unRaid69B2 ) {
 			$tooltipsterContent = "#101010";
 			break;
 		default:
-			$swalBackground = "black"; // default to black
+			$swalBackground = "black"; // default to black.  This should only be when someone adds a new theme.  It is NOT the default that the OS uses
 			$tooltipsterContent = "#f2f2f2";
 			break;
 	}
@@ -81,7 +81,7 @@ $date = (date("n/d"));
 
 // Check for updates to apps (run in background)
 
-exec("echo '$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate.php check nonotify > /dev/null 2>&1' | at now >/dev/null");
+exec("echo '$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate check nonotify > /dev/null 2>&1' | at now >/dev/null");
 exec("echo '$docroot/plugins/dynamix.plugin.manager/scripts/plugin checkall > /dev/null 2>&1' | at now >/dev/null");
 
 
