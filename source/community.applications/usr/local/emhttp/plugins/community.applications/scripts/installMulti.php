@@ -15,19 +15,36 @@ if ( $translations ) {
 require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 require_once "$docroot/plugins/community.applications/include/helpers.php";
+require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
 
+$caSettings['dockerRunning'] = true;
 $unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
 $translations  = is_file("$docroot/plugins/dynamix/include/Translations.php");
+
+$DockerClient = new DockerClient();
+$DockerTemplates = new DockerTemplates();
+
+$running = getRunningContainers();
 
 $exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";
 $javascript = file_get_contents("/usr/local/emhttp/plugins/dynamix/javascript/dynamix.js");
 echo "<script>$javascript</script>";
 
+$dockers = explode(",",$_GET['docker']);
+if ( $_GET['upgrade'] ) {
+	foreach ( $dockers as $container ) {
+		if ( $running[$container]['running'] ) {
+			echo "Stopping $container...\n";
+			myStopContainer($running[$container]['Id']);
+		}
+	}
+}
+
 if ( $_GET['docker'] ) {
 	echo "<div id='output'>";
-	$dockers = explode(",",$_GET['docker']);
+
 	$msg = $_GET['upgrade'] ? "Upgrading docker application %s" : "Installing docker applications %s";
-	echo sprintf(tr($msg)),str_replace(",",", ",$_GET['docker']))."<br>";
+	echo sprintf(tr($msg),str_replace(",",", ",$_GET['docker']))."<br>";
 	$_GET['updateContainer'] = true;
 	$_GET['ct'] = $dockers;
 	$_GET['communityApplications'] = true;
@@ -104,6 +121,13 @@ function addCloseButton() {
 			echo "<script>top.Shadowbox.close();</script>";
 		}
 		@unlink("/tmp/community.applications/tempFiles/newCreateDocker.php");
+	} else {
+		foreach ( $dockers as $container ) {
+			if ( $running[$container]['running'] ) {
+				passthru("docker start $container");
+			}
+		}
 	}
+		
 }
 ?>

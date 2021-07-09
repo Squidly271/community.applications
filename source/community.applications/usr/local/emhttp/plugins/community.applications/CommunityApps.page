@@ -79,10 +79,17 @@ if ( is_file($caPaths['addConverted']) ) {
 }
 $date = (date("n/d"));
 
-// Check for updates to apps (run in background)
+// Force check for updates to apps (run in background) - Only check once per day when entering in CA
 
-exec("echo '$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate check nonotify > /dev/null 2>&1' | at now >/dev/null");
-exec("echo '$docroot/plugins/dynamix.plugin.manager/scripts/plugin checkall > /dev/null 2>&1' | at now >/dev/null");
+if ( ( time() - @filemtime("/tmp/plugins/community.applications.plg") ) > 86400 ) {
+	exec("echo '$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate check nonotify > /dev/null 2>&1' | at now >/dev/null");
+	foreach (glob("/var/log/plugins/*.plg") as $plg) {
+		if ( $plg == "/var/log/plugins/community.applications.plg" || $plg == "unRAIDServer.plg" )
+			continue; // avoid possible race condition
+
+		exec("echo '$docroot/plugins/dynamix.plugin.manager/scripts/plugin check ".basename($plg)." > /dev/null 2>&1' | at now >/dev/null");
+	}
+}
 
 
 function tr($string,$ret=false) {
@@ -264,7 +271,7 @@ $(function(){
 		if ( popupVisible(this) ) return;
 		var container = $(this).attr("data-name");
 		var docker = [container];
-		openBox('/plugins/community.applications/scripts/installMulti.php&upgrade=true&docker='+container,"<?tr('Update Container')?>",600,900,true,"refreshDisplay");
+		openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?upgrade=true&docker='+docker,"<?tr('Update Container')?>",600,900,true,"refreshDisplay");
 	});
 	
 	$('.mainArea').on("click",".ca_href",function() {
@@ -966,17 +973,17 @@ function popupVisible(el) {
 	return $(".popupHolder").is(":visible");
 }
 
-function installPlugin(pluginURL,popup=false) {
+function installPlugin(pluginURL,popup=false,update=false) {
 	if ( ! popup)
 		if ( popupVisible() )
 			return;
-
+	type = update ? "update" : "install";
 	$(".tooltipstered").tooltipster("hide");
 	disableSearch();
 	<? if ( $translations ): ?>
-		openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay");
+		openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1='+type+'&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay");
 	<? else: ?>
-		my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=install&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay");
+		my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1='+type+'&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay");
 	<? endif; ?>
 }
 

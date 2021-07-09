@@ -211,7 +211,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 						$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='".tr("Install plugin")."' onclick=installPlugin('{$template['PluginURL']}');></a>";
 					}
 					if ( $template['UpdateAvailable'] ) {
-						$template['display_pluginUpdate'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-update appIcons ca_href' title='".tr("Update plugin")."' data-target='_self' data-href='/Apps/Plugins'></a>";
+						$template['display_pluginUpdate'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-update appIcons updatePlugin' title='".tr("Update plugin")."' onclick=installPlugin('$pluginName',false,true);></a>";
 					}
 				} else {
 					if ( $caSettings['dockerRunning'] ) {
