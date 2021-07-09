@@ -263,7 +263,8 @@ $(function(){
 	$('.mainArea').on("click",".dockerUpdate",function() {
 		if ( popupVisible(this) ) return;
 		var container = $(this).attr("data-name");
-		updateContainer(container);
+		var docker = [container];
+		openBox('/plugins/community.applications/scripts/installMulti.php&upgrade=true&docker='+container,"<?tr('Update Container')?>",600,900,true,"refreshDisplay");
 	});
 	
 	$('.mainArea').on("click",".ca_href",function() {
