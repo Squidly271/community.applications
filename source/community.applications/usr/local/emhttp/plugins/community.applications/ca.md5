@@ -1,6 +1,6 @@
 767d6f2203fed9541daeb57bbf7b58b3  ./Apps.page
 83b3f89cd42e8601c7c217d5b4889c81  ./CA_notices.page
-1a90c8b77cb75f79d57b1a9b2285add4  ./CommunityApps.page
+e4ba7ca68bc2b1e384fb73851ae7c3cb  ./CommunityApps.page
 6db73582f22dab13d329e862067ee84e  ./PluginAPI.page
 b398273cf7daa62ab00d2de2336ca25f  ./README.md
 a9d4cd0e4e1f37cbe3806b952a96ddb1  ./ca_settings.page
@@ -19,7 +19,7 @@ e29c13353bc1277fc2c3597782d7c954  ./skins/Narrow/css.php
 adc2d62d429accb264cedad58e6ef7a5  ./skins/Narrow/skin.html
 01a2b427ddd0eb019d7166d1356037fe  ./skins/Narrow/skin.php
 430966e5646376b62905b63a30de7102  ./scripts/PluginAPI.php
-cef8c79608f95fff58473bc65af2525f  ./scripts/installMulti.php
+11eecc7264a3057ee70cc00a24c8299b  ./scripts/installMulti.php
 ce2c904b6a40c4677a3ff3484776959e  ./scripts/installMultiPlugin.sh
 524afab04ca930f59117a846f819fb2f  ./scripts/installPluginUpdate.sh
 5846421e95b475e1156c3f68164ccc4f  ./scripts/languageInstall.sh

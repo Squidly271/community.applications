@@ -124,9 +124,12 @@ function addCloseButton() {
 	} else {
 		foreach ( $dockers as $container ) {
 			if ( $running[$container]['running'] ) {
+				echo "Starting $container";
 				passthru("docker start $container");
 			}
 		}
+		echo "<br>".tr("Docker Application Installation finished")."<br><script>addCloseButton();</script>";
+		echo "<script>top.Shadowbox.close();</script>";
 	}
 		
 }
