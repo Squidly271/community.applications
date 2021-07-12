@@ -221,7 +221,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							$template['display_dockerDefaultIcon'] = $template['BranchID'] ? "<a class='ca_tooltip ca_fa-install appIcons' type='button' style='margin:0px' title='".tr("Click to reinstall the application using default values")."' onclick='displayTags(&quot;$ID&quot;);'></a>" : $template['display_dockerDefaultIcon'];
 							$template['display_dockerEditIcon']    = "<a class='ca_tooltip appIcons ca_fa-edit xmlInstall' title='".tr("Click to edit the application values")."' data-type='edit' data-xml='".addslashes($info[$name]['template'])."'></a>";
 							$template['display_dockerReinstallIcon'] = $caSettings['defaultReinstall'] == "true" ? "<a class='ca_tooltip ca_fa-install appIcons xmlInstall' title='".tr("Click to reinstall")."' data-type='default' data-xml='".addslashes($template['Path'])."'></a>" : "";
-							$template['display_dockerUpdate'] = $template['UpdateAvailable'] ? "<a class='ca_tooltip appIcons ca_fa-update dockerUpdate' data-name='{$template['Name']}' title='".tr("Update container")."'></a>" : "";
+							$template['display_dockerUpdate'] = $template['UpdateAvailable'] ? "<a class='ca_tooltip appIcons ca_fa-update dockerUpdate' data-name='$name' title='".tr("Update container")."'></a>" : "";
 							unset($template['display_multi_install']);
 
 							if ( $info[$name]['url'] && $info[$name]['running'] )

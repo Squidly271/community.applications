@@ -63,4 +63,5 @@ $caPaths['LanguageErrors']                      = "https://squidly271.github.io/
 $caPaths['CA_languageBase']                     = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/languages/";
 $caPaths['CA_logs']                             = "/tmp/CA_logs";
 $caPaths['logging']                             = "{$caPaths['CA_logs']}/ca_log.txt";
+$caPaths['updateTime']                          = "{$caPaths['tempFiles']}/checkForUpdatesTime";
 ?>

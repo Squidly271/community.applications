@@ -79,18 +79,13 @@ if ( is_file($caPaths['addConverted']) ) {
 }
 $date = (date("n/d"));
 
-// Force check for updates to apps (run in background) - Only check once per day when entering in CA
-
-if ( ( time() - @filemtime("/tmp/plugins/community.applications.plg") ) > 86400 ) {
-	exec("echo '$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate check nonotify > /dev/null 2>&1' | at now >/dev/null");
-	foreach (glob("/var/log/plugins/*.plg") as $plg) {
-		if ( $plg == "/var/log/plugins/community.applications.plg" || $plg == "unRAIDServer.plg" )
-			continue; // avoid possible race condition
-
-		exec("echo '$docroot/plugins/dynamix.plugin.manager/scripts/plugin check ".basename($plg)." > /dev/null 2>&1' | at now >/dev/null");
+// Only check for updates to containers / plugins max once per hour
+if ( $cfg['checkForUpdates'] == "yes" ) {
+	if ( ( time() - @filemtime($caPaths['updateTime']) ) > 3600 ) {
+		touch($caPaths['updateTime']);
+		exec("echo '/usr/local/emhttp/plugins/community.applications/scripts/checkForUpdates.php >/dev/null 2>&1' | at now >/dev/null");
 	}
 }
-
 
 function tr($string,$ret=false) {
 	if ( function_exists("_") )
@@ -267,46 +262,6 @@ $(function(){
 		});
 	});
 	
-	$('.mainArea').on("click",".dockerUpdate",function() {
-		if ( popupVisible(this) ) return;
-		var container = $(this).attr("data-name");
-		var docker = [container];
-		execUpContainer(container);
-	});
-function execUpContainer(container) {
-  var title = _('Updating the container')+': '+container;
-  var cmd = '/plugins/dynamix.docker.manager/include/CreateDocker.php?updateContainer=true&ct[]='+encodeURIComponent(container);
-  popupWithIframe(title, cmd, true, 'refreshDisplay');
-}
-function popupWithIframe(title, cmd, reload, func) {
-  pauseEvents();
-  $('#iframe-popup').html('<iframe id="myIframe" frameborder="0" scrolling="yes" width="100%" height="99%"></iframe>');
-  $('#iframe-popup').dialog({
-    autoOpen:true,
-    title:title,
-    draggable:true,
-    width:800,
-    height:((screen.height / 5) * 4) || 0,
-    resizable:true,
-    modal:true,
-    show:{effect:'fade', duration:250},
-    hide:{effect:'fade', duration:250},
-    open:function(ev, ui) {
-      $('#myIframe').attr('src', cmd);
-    },
-    close:function(event, ui) {
-      if (reload && !$('#myIframe').contents().find('#canvas').length) {
-        if (func) setTimeout(func+'()',0); else location = window.location.href;
-      } else {
-        resumeEvents();
-      }
-    }
-  });
-  $('.ui-dialog .ui-dialog-titlebar').addClass('menu');
-  $('.ui-dialog .ui-dialog-title').css('text-align', 'center').css('width', '100%');
-  $('.ui-dialog .ui-dialog-content').css('padding', '12');
-}
-
 	$('.mainArea').on("click",".ca_href",function() {
 		if ( popupVisible() ) return;
 		var href = $(this).attr("data-href");
@@ -315,6 +270,10 @@ function popupWithIframe(title, cmd, reload, func) {
 		window.open(href,target);
 	});
 
+	$('.mainArea').on("click",".dockerUpdate",function() {
+		var container = $(this).attr("data-name");
+		openBox('/plugins/dynamix.docker.manager/include/CreateDocker.php?updateContainer=true&ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,refreshDisplay);
+	});
 	$('.mainArea').on("click",".ca_non_favouriteRepo",function() {
 		if ( popupVisible(this) ) return;
 		setFavourite(this);

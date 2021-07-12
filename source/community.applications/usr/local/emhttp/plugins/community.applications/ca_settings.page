@@ -73,6 +73,14 @@ function tr($string,$ret=false) {
 
 > <?tr("This setting enables CA to retrieve additional search results from dockerHub.  Note that docker must be enabled for this to be operational");?>
 
+<?tr("Allow CA to check for updates to applications:");?>
+: <select name="updateCheck" size="1">
+	<?=mk_option($cfg['updateCheck'],"yes",tr("Yes",true))?>
+	<?=mk_option($cfg['updateCheck'],"no",tr("No",true))?>
+	</select>
+	
+> <?tr("This setting enables CA to check for updates to applications");?>
+
 <?tr("Allow CA to send any emergency notifications:");?>
 : <select name='notifications' size='1'>
 	<?=mk_option($cfg['notifications'],"yes",tr("Yes",true))?>
