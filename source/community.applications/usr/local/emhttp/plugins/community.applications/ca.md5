@@ -1,6 +1,6 @@
 767d6f2203fed9541daeb57bbf7b58b3  ./Apps.page
 83b3f89cd42e8601c7c217d5b4889c81  ./CA_notices.page
-fb20889fd933fe9511975455d71559c2  ./CommunityApps.page
+464e08e065233dd9fca3fabcbe6f6669  ./CommunityApps.page
 6db73582f22dab13d329e862067ee84e  ./PluginAPI.page
 b398273cf7daa62ab00d2de2336ca25f  ./README.md
 2cdb7da0d67a11278ada7fd029707738  ./ca_settings.page
@@ -29,3 +29,4 @@ f9c3f431935fb20801f3fef152dc7b58  ./scripts/showStatistics.php
 4425f8fd4ef662a7dc65cee01de3e419  ./scripts/updatePLG.sh
 02759ea835ee4ce5a051fead96ab9b9b  ./scripts/updatePluginSupport.php
 0a4b291ae29b73cea0437a11ba28c8d9  ./scripts/checkForUpdates.php
+4d085a2c11108ac26a5591c2ac5ccda9  ./scripts/installUpdate.php

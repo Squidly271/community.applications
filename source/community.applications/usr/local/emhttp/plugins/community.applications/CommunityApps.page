@@ -80,7 +80,7 @@ if ( is_file($caPaths['addConverted']) ) {
 $date = (date("n/d"));
 
 // Only check for updates to containers / plugins max once per hour
-if ( $cfg['checkForUpdates'] == "yes" ) {
+if ( $cfg['updateCheck'] == "yes" ) {
 	if ( ( time() - @filemtime($caPaths['updateTime']) ) > 3600 ) {
 		touch($caPaths['updateTime']);
 		exec("echo '/usr/local/emhttp/plugins/community.applications/scripts/checkForUpdates.php >/dev/null 2>&1' | at now >/dev/null");
@@ -272,7 +272,7 @@ $(function(){
 
 	$('.mainArea').on("click",".dockerUpdate",function() {
 		var container = $(this).attr("data-name");
-		openBox('/plugins/dynamix.docker.manager/include/CreateDocker.php?updateContainer=true&ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,refreshDisplay);
+		openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,refreshDisplay);
 	});
 	$('.mainArea').on("click",".ca_non_favouriteRepo",function() {
 		if ( popupVisible(this) ) return;
