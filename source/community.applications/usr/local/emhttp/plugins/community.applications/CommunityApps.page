@@ -272,7 +272,7 @@ $(function(){
 
 	$('.mainArea').on("click",".dockerUpdate",function() {
 		var container = $(this).attr("data-name");
-		openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,refreshDisplay);
+		openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
 	});
 	$('.mainArea').on("click",".ca_non_favouriteRepo",function() {
 		if ( popupVisible(this) ) return;
@@ -827,6 +827,7 @@ function enableButtons() {
 }
 
 function refreshDisplay() {
+	console.log("refreshDisplay");
 	changeSortOrder(null,null,null);
 }
 
@@ -970,12 +971,13 @@ function installPlugin(pluginURL,popup=false,update=false) {
 		if ( popupVisible() )
 			return;
 	type = update ? "update" : "install";
+	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
 	$(".tooltipstered").tooltipster("hide");
 	disableSearch();
 	<? if ( $translations ): ?>
-		openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1='+type+'&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay");
+		openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"refreshDisplay");
 	<? else: ?>
-		my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1='+type+'&arg2='+pluginURL,"<?tr('Install Plugin')?>",600,900,true,"refreshDisplay");
+		my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"refreshDisplay");
 	<? endif; ?>
 }
 

@@ -30,7 +30,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	global $caPaths, $caSettings, $plugin, $displayDeprecated, $sortOrder;
 
 	$info = getRunningContainers();
-
+	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	if ( ! $selectedApps )
 		$selectedApps = array();
 
@@ -81,6 +81,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 						break;
 				}
 			}
+
 
 			$template['icon'] = $template['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 			$template['display_iconClickable'] = "<img class='displayIcon ca_tooltip ca_repoPopup' title='".tr("Click for more information")."' src='{$template['icon']}' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."'></img>";
@@ -134,6 +135,13 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$name = $template['Name'];
 			$appName = str_replace(" ","",$template['SortName']);
 			$ID = $template['ID'];
+			
+			$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
+			if ( $dockerUpdateStatus[$tmpRepo] == "false" ) {
+				$template['UpdateAvailable'] = true;
+			} else { 
+				$template['UpdateAvailable'] = false;
+			}
 			$template['ModeratorComment'] .= $template['CAComment'];
 			$template['RepoName_highlighted'] = $template['RepoName_highlighted'] ?: $template['RepoName'];
 

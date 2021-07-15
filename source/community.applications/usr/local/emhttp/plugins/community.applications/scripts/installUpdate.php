@@ -1,11 +1,18 @@
 <?
+###############################################################
+#                                                             #
+# Community Applications copyright 2015-2021, Andrew Zawadzki #
+#                   Licenced under GPLv2                      #
+#                                                             #
+###############################################################
+require_once "/usr/local/emhttp/plugins/dynamix/include/Helpers.php";
+
   $_GET['updateContainer'] = "true";
 //	$_GET['communityApplications'] = true;
 	include("/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php");
 ?>
+<script src='<?autov("/plugins/dynamix/javascript/dynamix.js")?>'></script>
 <script>
-function addCloseButton() {
-	addLog("<p class='centered'><button class='logLine' type='button' onclick='" + (top.Shadowbox ? "top.Shadowbox" : "window") + ".close()'>Done</button></p>");
-}
-addCloseButton();
+// Redefine the done button to something CA can use
+$(":button").attr("onclick","top.Shadowbox.close();");
 </script>
