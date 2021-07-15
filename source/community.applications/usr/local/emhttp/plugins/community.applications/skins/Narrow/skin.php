@@ -586,6 +586,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$xml = readXmlFile($caPaths['pluginTempDownload']);
 		$template['Changes'] = $xml['Changes'];
 	}
+	$template['Changes'] = strip_tags(str_replace(["[","]"],["<",">"],$template['Changes']),"<br>");
 
 	$templateDescription .= "<div class='popupTitle'>{$template['Name']}</div>";
 	$templateDescription .= "<div class='ca_hr'></div>";

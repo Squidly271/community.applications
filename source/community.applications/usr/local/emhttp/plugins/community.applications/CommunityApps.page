@@ -606,6 +606,7 @@ function stripTags(string) {
 
 function setToolTip() {
 //	$('.tooltipstered').tooltipster('destroy');
+// Mod comment CA tooltips have to be tooltipster due to the occasional use of <a href> within them
 	$('.ca_tooltip-warning').tooltipster({
 		contentAsHTML:true,
 		interactive:true,
