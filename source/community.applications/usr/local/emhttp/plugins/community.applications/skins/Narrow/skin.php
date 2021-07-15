@@ -999,6 +999,7 @@ function displayCard($template) {
 		$template['Category'] = "";
 	}
 	extract($template);
+	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
 	$card = "
 		<div class='$holder ca_holder' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
 			<div class='ca_iconArea'>
