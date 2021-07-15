@@ -586,7 +586,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$xml = readXmlFile($caPaths['pluginTempDownload']);
 		$template['Changes'] = $xml['Changes'];
 	}
-	$template['Changes'] = strip_tags(str_replace(["[","]"],["<",">"],$template['Changes']),"<br>");
+	$template['Changes'] = Markdown(strip_tags(str_replace(["[","]"],["<",">"],$template['Changes']),"<br>"));
 
 	$templateDescription .= "<div class='popupTitle'>{$template['Name']}</div>";
 	$templateDescription .= "<div class='ca_hr'></div>";
@@ -820,9 +820,9 @@ function getPopupDescriptionSkin($appNumber) {
 				} else
 					$appInformation .= " - <font color='#4cc337'>".tr("Latest Version")."</font>";
 			}
-			$appInformation .= Markdown($template['Changes']);
+			$appInformation .= $template['Changes'];
 		} elseif ($template['Language']) {
-			$appInformation .= Markdown(trim($template['Changes']));
+			$appInformation .= trim($template['Changes']);
 		} else {
 			$appInformation = $template['Changes'];
 			$appInformation = str_replace("\n","<br>",$appInformation);
