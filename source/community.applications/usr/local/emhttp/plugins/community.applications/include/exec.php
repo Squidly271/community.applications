@@ -991,7 +991,7 @@ function previous_apps() {
 
 	$installed = getPost("installed","");
 	$filter = getPost("filter","");
-	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
+//	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
 
 	@unlink($caPaths['community-templates-allSearchResults']);
@@ -1047,9 +1047,9 @@ function previous_apps() {
 										$o['Name'] = $installedName;
 										$o['InstallPath'] = $tempPath;
 										$o['SortName'] = str_replace("-"," ",$installedName);
-										if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
+/* 										if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
 											$o['UpdateAvailable'] = true;
-										}
+										} */
 									}
 									break;
 								}

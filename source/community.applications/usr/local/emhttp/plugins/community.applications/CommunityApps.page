@@ -272,8 +272,13 @@ $(function(){
 
 	$('.mainArea').on("click",".dockerUpdate",function() {
 		var container = $(this).attr("data-name");
-		openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
+		<? if ( $translations ): ?>		
+			openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
+		<? else: ?>
+			my_openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
+		<? endif; ?>
 	});
+
 	$('.mainArea').on("click",".ca_non_favouriteRepo",function() {
 		if ( popupVisible(this) ) return;
 		setFavourite(this);
