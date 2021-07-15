@@ -31,6 +31,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$info = getRunningContainers();
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
+
 	if ( ! $selectedApps )
 		$selectedApps = array();
 
@@ -137,7 +138,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$ID = $template['ID'];
 			
 			$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
-			if ( $dockerUpdateStatus[$tmpRepo] == "false" ) {
+			if ( ! filter_var($dockerUpdateStatus[$tmpRepo]['status'],FILTER_VALIDATE_BOOLEAN) ) {
 				$template['UpdateAvailable'] = true;
 			} else { 
 				$template['UpdateAvailable'] = false;
