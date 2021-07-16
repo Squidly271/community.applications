@@ -176,7 +176,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			}
 
 			$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</span></strong><font color='purple'>{$template['ModeratorComment']}</font>" : "";
-
+			
 			if ( $pinnedApps["{$template['Repository']}&{$template['SortName']}"] ) {
 				$pinned = "pinned";
 				$pinnedTitle = tr("Click to unpin this application");
@@ -265,6 +265,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$warningColor = "warning-red";
 			}
 
+			if ( $template['Requires'] )
+				$template['display_warning-text'] = tr("This application has additional requirements");
 			if ( $template['ModeratorComment'] )
 				$template['display_warning-text'] = $template['ModeratorComment'];
 			if ( $template['Deprecated'] || ! $template['Compatible'] || $template['Blacklist'] )
@@ -604,6 +606,9 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$templateDescription .= "<div class='popupDescriptionArea ca_left'>";
 	$templateDescription .= $ovr;
+	if ( $template['Requires'] ) {
+		$templateDescription .= "<br><br><span class='ca_bold'>".tr("Additional Requirements:")."&nbsp;&nbsp;</span>{$template['Requires']}";
+	}
 	$templateDescription .= "</div>";
 	if ( $donatelink )
 		$templateDescription .= "<span style='float:right;text-align:right;'><font size=0.75rem;>$donatetext</font>&nbsp;&nbsp;<a class='popup-donate donateLink' href='$donatelink' target='_blank'>".tr("Donate")."</a></span><br><br>";
