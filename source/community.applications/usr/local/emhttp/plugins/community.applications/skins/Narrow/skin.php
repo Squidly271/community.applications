@@ -582,9 +582,11 @@ function getPopupDescriptionSkin($appNumber) {
 		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
 		$template['pluginVersion'] = @plugin("version",$caPaths['pluginTempDownload']) ?: $template['pluginVersion'];
 	} else {
-		download_url($template['TemplateURL'],$caPaths['pluginTempDownload']);
-		$xml = readXmlFile($caPaths['pluginTempDownload']);
-		$template['Changes'] = $xml['Changes'];
+		if ( ! $template['Changes'] ) {
+			download_url($template['TemplateURL'],$caPaths['pluginTempDownload']);
+			$xml = readXmlFile($caPaths['pluginTempDownload']);
+			$template['Changes'] = $xml['Changes'];
+		}
 	}
 	$template['Changes'] = Markdown(strip_tags(str_replace(["[","]"],["<",">"],$template['Changes']),"<br>"));
 
