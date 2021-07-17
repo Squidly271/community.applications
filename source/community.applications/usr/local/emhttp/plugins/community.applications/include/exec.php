@@ -395,8 +395,8 @@ function getConvertedTemplates() {
 		$o['Date']         = ( $o['Date'] ) ? strtotime( $o['Date'] ) : 0;
 		$o['SortAuthor']   = $o['Author'];
 		$o['Compatible']   = versionCheck($o);
-		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
-
+		$o['Description']  = $o['Description'] ?: $o['Overview'];
+		$o['CardDescription'] = $o['Description'];
 		$o = fixTemplates($o);
 		$myTemplates[$i]  = $o;
 		$i = ++$i;
