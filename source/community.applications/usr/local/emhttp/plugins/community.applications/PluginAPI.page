@@ -8,6 +8,8 @@ Link='nav-user'
 #                   Licenced under GPLv2                      #
 #                                                             #
 ###############################################################
+
+### Note: This file is only needed on OS versions less than 6.8.3
 ?>
 
 <? if ( ! file_exists("/usr/local/emhttp/plugins/dynamix.plugin.manager/PluginHelpers.page") ) : ?>

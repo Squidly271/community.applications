@@ -272,6 +272,7 @@ $(function(){
 
 	$('.mainArea').on("click",".dockerUpdate",function() {
 		var container = $(this).attr("data-name");
+		$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
 		<? if ( $translations ): ?>		
 			openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
 		<? else: ?>

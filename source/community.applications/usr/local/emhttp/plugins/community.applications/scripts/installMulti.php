@@ -14,37 +14,47 @@ if ( $translations ) {
 
 require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
-require_once "$docroot/plugins/community.applications/include/helpers.php";
-require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
 
-$caSettings['dockerRunning'] = true;
 $unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
 $translations  = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
-$DockerClient = new DockerClient();
-$DockerTemplates = new DockerTemplates();
+function tr($string,$ret=true) {
+	if ( function_exists("_") )
+		$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
+	if ( $ret )
+		return $string;
+	else
+		echo $string;
+}
 
-$running = getRunningContainers();
+function startsWith($haystack, $needle) {
+	return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;
+}
 
-$exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";
+# Modify the system file to avoid a harmless error from being displayed under normal circumstances
+# Not needed under unRaid 6.6.2+
+
+if ( version_compare($unRaidVersion['version'],"6.6.2",">=") ) {
+	$exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";
+} else {
+	$exeFile = "/tmp/community.applications/tempFiles/newCreateDocker.php";
+	$dockerInstall = file("/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php",FILE_IGNORE_NEW_LINES);
+	foreach ($dockerInstall as $line) {
+		if ( startsWith(trim($line),"removeContainer(") ) {
+			$line = "#$line";
+		}
+		$newInstall[] = $line;
+	}
+	file_put_contents($exeFile,implode("\n",$newInstall));
+	chmod($exeFile,0777);
+}
 $javascript = file_get_contents("/usr/local/emhttp/plugins/dynamix/javascript/dynamix.js");
 echo "<script>$javascript</script>";
 
-$dockers = explode(",",$_GET['docker']);
-if ( $_GET['upgrade'] ) {
-	foreach ( $dockers as $container ) {
-		if ( $running[$container]['running'] ) {
-			echo "Stopping $container...\n";
-			myStopContainer($running[$container]['Id']);
-		}
-	}
-}
-
 if ( $_GET['docker'] ) {
 	echo "<div id='output'>";
-
-	$msg = $_GET['upgrade'] ? "Upgrading docker application %s" : "Installing docker applications %s";
-	echo sprintf(tr($msg),str_replace(",",", ",$_GET['docker']))."<br>";
+	$dockers = explode(",",$_GET['docker']);
+	echo sprintf(tr("Installing docker applications %s"),str_replace(",",", ",$_GET['docker']))."<br>";
 	$_GET['updateContainer'] = true;
 	$_GET['ct'] = $dockers;
 	$_GET['communityApplications'] = true;
@@ -87,50 +97,38 @@ function addCloseButton() {
 }
 </script>
 <?
-	if ( ! $_GET['upgrade'] ) {
-		foreach ($dockers as $docker) {
-			echo sprintf(tr("Starting %s"),"<span class='ca_bold'>$docker</span>")."<br>";
-			unset($output);
-			exec("docker start $docker 2>&1",$output,$retval);
-			if ($retval) {
-				$failFlag = true;
-				echo sprintf(tr("%s failed to start.  You should install it by itself to fix the errors"),"<span class='ca_bold'>$docker</span>")."<br>";
-				foreach ($output as $line) {
-					echo "<tt>$line</tt><br>";
-				}
-				echo "<br>";
+	foreach ($dockers as $docker) {
+		echo sprintf(tr("Starting %s"),"<span class='ca_bold'>$docker</span>")."<br>";
+		unset($output);
+		exec("docker start $docker 2>&1",$output,$retval);
+		if ($retval) {
+			$failFlag = true;
+			echo sprintf(tr("%s failed to start.  You should install it by itself to fix the errors"),"<span class='ca_bold'>$docker</span>")."<br>";
+			foreach ($output as $line) {
+				echo "<tt>$line</tt><br>";
 			}
+			echo "<br>";
 		}
-		echo "<br>".tr("Setting installed applications to autostart")."<br>";
-		$autostartFile = @file("/var/lib/docker/unraid-autostart",FILE_IGNORE_NEW_LINES);
-		if ( ! $autostartFile ) {
-			$autostartFile = array();
-		}
-		foreach ($autostartFile as $line) {
-			$autostart[$line] = true;
-		}
-		foreach ($dockers as $docker) {
-			$autostart[$docker] = true;
-		}
-		$autostartFile = implode("\n",array_keys($autostart));
-		file_put_contents("/var/lib/docker/unraid-autostart",$autostartFile);
+	}
+	echo "<br>".tr("Setting installed applications to autostart")."<br>";
+	$autostartFile = @file("/var/lib/docker/unraid-autostart",FILE_IGNORE_NEW_LINES);
+	if ( ! $autostartFile ) {
+		$autostartFile = array();
+	}
+	foreach ($autostartFile as $line) {
+		$autostart[$line] = true;
+	}
+	foreach ($dockers as $docker) {
+		$autostart[$docker] = true;
+	}
+	$autostartFile = implode("\n",array_keys($autostart));
+	file_put_contents("/var/lib/docker/unraid-autostart",$autostartFile);
 
-		if ( $failFlag || !$_GET['plugin']) {
-			echo "<br>".tr("Docker Application Installation finished")."<br><script>addCloseButton();</script>";
-		} else {
-			echo "<script>top.Shadowbox.close();</script>";
-		}
-		@unlink("/tmp/community.applications/tempFiles/newCreateDocker.php");
-	} else {
-		foreach ( $dockers as $container ) {
-			if ( $running[$container]['running'] ) {
-				echo "Starting $container";
-				passthru("docker start $container");
-			}
-		}
+	if ( $failFlag || !$_GET['plugin']) {
 		echo "<br>".tr("Docker Application Installation finished")."<br><script>addCloseButton();</script>";
+	} else {
 		echo "<script>top.Shadowbox.close();</script>";
 	}
-		
+	@unlink("/tmp/community.applications/tempFiles/newCreateDocker.php");
 }
 ?>
