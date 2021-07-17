@@ -584,7 +584,8 @@ function getPopupDescriptionSkin($appNumber) {
 		$template['pluginVersion'] = @plugin("version",$caPaths['pluginTempDownload']) ?: $template['pluginVersion'];
 	} else {
 		if ( ! $template['Changes'] ) {
-			download_url($template['TemplateURL'],$caPaths['pluginTempDownload']);
+			$templateURL = $template['caTemplateURL'] ?: $template['TemplateURL'];
+			download_url($templateURL,$caPaths['pluginTempDownload']);
 			$xml = readXmlFile($caPaths['pluginTempDownload']);
 			$template['Changes'] = $xml['Changes'];
 		}
@@ -711,7 +712,7 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$templateDescription .= "</td></tr>";
 	$templateDescription .= ($template['Private'] == "true") ? "<tr><td></td><td><span class='modComment'>Private Repository</span></td></tr>" : "";
-	$templateDescription .= ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes"  && $template['TemplateURL']) ? "<tr><td></td><td><a class='popUpLink' href='{$template['TemplateURL']}' target='_blank'>".tr("Application Template")."</a></td></tr>" : "";
+	$templateDescription .= ( $dockerVars['DOCKER_AUTHORING_MODE'] == "yes"  && $templateURL) ? "<tr><td></td><td><a class='popUpLink' href='$templateURL' target='_blank'>".tr("Application Template")."</a></td></tr>" : "";
 	if ( $template['Category'] ) {
 		$templateDescription .= "<tr><td>".tr("Categories:")."</td><td>".$template['Category'];
 		$templateDescription .= "</td></tr>";
