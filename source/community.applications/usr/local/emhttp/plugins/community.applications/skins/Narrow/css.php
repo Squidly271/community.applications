@@ -87,6 +87,8 @@ switch ($theme) {
 }
 ?>
 .tooltipster-box{background:<?=$tooltipsterBackground?>!important}
+.additionalRequirementsHeader {font-size:1.5rem;color:#d67777;font-weight:bold;}
+.additionalRequirements {margin-left:2rem;}
 .modComment {color:#d67777;}
 a {color:<?=$aColor?>;}
 .tooltipster-content{color:<?=$tooltipsterContent?>!important}

@@ -606,7 +606,8 @@ function getPopupDescriptionSkin($appNumber) {
 	$templateDescription .= "<div class='popupDescriptionArea ca_left'>";
 	$templateDescription .= $ovr;
 	if ( $template['Requires'] ) {
-		$templateDescription .= "<br><br><span class='ca_bold'>".tr("Additional Requirements:")."&nbsp;&nbsp;</span>{$template['Requires']}";
+		$template['Requires'] = Markdown(strip_tags(str_replace(["\r","\n","&#xD;"],["","<br>",""],trim($template['Requires'])),"<br>"));
+		$templateDescription .= "<br><br><div class='additionalRequirementsHeader'>".tr("Additional Requirements")."</div><div class='additionalRequirements'>{$template['Requires']}</div>";
 	}
 	$templateDescription .= "</div>";
 	if ( $donatelink )
