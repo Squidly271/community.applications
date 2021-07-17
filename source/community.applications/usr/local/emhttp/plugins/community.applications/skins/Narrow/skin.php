@@ -160,7 +160,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 			if ( $selected )
 				$template['display_DonateImage'] = $template['DonateLink'] ? "<a class='ca_tooltip donateLink donate ca_href' data-href='{$template['DonateLink']}' data-target='_blank' title='{$template['DonateText']}'>".tr("Donate")."</a>" : "";
-
 			$template['display_faProject'] = $template['Project'] ? "<a class='ca_tooltip ca_fa-project appIcons ca_href' data-target='_blank' data-href='{$template['Project']}' title='".tr("Go to the project page")."'></a>" : "";
 			$supportText = $template['SupportClickLanguage'] ?: tr("Go to the support thread");
 			$template['display_faSupport'] = $template['Support'] ? "<a class='ca_tooltip ca_fa-support appIcons ca_href' data-href='{$template['Support']}' data-target='_blank' title='$supportText'></a>" : "";
@@ -832,9 +831,6 @@ function getPopupDescriptionSkin($appNumber) {
 			$appInformation .= trim($template['Changes']);
 		} else {
 			$appInformation = $template['Changes'];
-			$appInformation = str_replace("\n","<br>",$appInformation);
-			$appInformation = str_replace("[","<",$appInformation);
-			$appInformation = str_replace("]",">",$appInformation);
 		}
 		if ( ! $template['Language'] ) {
 			$templateDescription .= "<div class='ca_center'><br><font size='4'><span class='ca_bold'>".tr("Change Log")."</span></div></font><br>$changeLogMessage$appInformation";
