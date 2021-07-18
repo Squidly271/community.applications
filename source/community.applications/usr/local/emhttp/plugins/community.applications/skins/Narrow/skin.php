@@ -579,7 +579,8 @@ function getPopupDescriptionSkin($appNumber) {
 	$template['ModeratorComment'] .= $template['CAComment'];
 
 	if ( $template['Plugin'] ) {
-		download_url($template['PluginURL'],$caPaths['pluginTempDownload']);
+		$templateURL = $template['PluginURL'];
+		download_url($templateURL,$caPaths['pluginTempDownload']);
 		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
 		$template['pluginVersion'] = @plugin("version",$caPaths['pluginTempDownload']) ?: $template['pluginVersion'];
 	} else {
