@@ -28,5 +28,5 @@ ce2c904b6a40c4677a3ff3484776959e  ./scripts/installMultiPlugin.sh
 f9c3f431935fb20801f3fef152dc7b58  ./scripts/showStatistics.php
 4425f8fd4ef662a7dc65cee01de3e419  ./scripts/updatePLG.sh
 02759ea835ee4ce5a051fead96ab9b9b  ./scripts/updatePluginSupport.php
-2452ccc1d8d7d402061a9725fa766c9b  ./scripts/checkForUpdates.php
+9af8cc532a7aa0be482acd82e168d0ee  ./scripts/checkForUpdates.php
 ce77df69331ccd3bf4037389325a01e1  ./scripts/installUpdate.php
