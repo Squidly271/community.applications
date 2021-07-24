@@ -7,7 +7,7 @@
 #                                                             #
 ###############################################################
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
-$updateFile = is_file("$docroot/plugins/dynamix.dockerMan/scripts/dockerupdate") ? "dockerupdate" : "dockerupdate.php";
+$updateFile = is_file("$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate") ? "dockerupdate" : "dockerupdate.php";
 exec("$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate check nonotify > /dev/null 2>&1");
 foreach (glob("/var/log/plugins/*.plg") as $plg) {
 	if ( $plg == "/var/log/plugins/community.applications.plg" || $plg == "unRAIDServer.plg" || $plg == "gui.search.plg" || $plg == "page.notes.plg")

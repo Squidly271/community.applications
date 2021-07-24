@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.06.21">
-<!ENTITY md5       "5a73877880fa75f4ec86568791d3b9ed">
+<!ENTITY version   "2021.07.24">
+<!ENTITY md5       "7e113e94228291fbb559845733359839">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,23 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.6.2" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.07.24
+- Fixed: Official containers were showing in Previous apps when installed, not within installed apps
+- Fixed: Apps installed as a branch would show twice within Installed Apps
+- Fixed: When installing from Previous Apps, the startup category would be get highlighted when returning to CA
+- Enhanced: Faster handling of installed apps section
+- Fixed: Disable docker sub-menu on installed / previous apps if docker service isn't enabled
+- Changed: Minimim OS compatibility now Unraid 6.6.2
+- Added: Ability to directly install updates to docker / plugin apps within CA instead of redirecting to Docker / Plugins tab
+- Changed: Fix reference made to Switch Language icon (Compatibility with a future version of Unraid [maybe])
+- Changed: Don't display xxx's Repository on tiles.  Only display xxx
+- Security Change: Don't allow HTML within changelogs
+- Added: Support Markdown within changelogs
+- Added: Support Changelogs from Private Apps
+- Added: Support for additional requirements xml tag
+- Fixed: Apps that were set to never get the template updated in dockerMan would never display a changelog if one was present
+- Added: Optional check for updates to apps outside of scheduled Dynamix checking
+
 ###2021.06.21
 - Maintenance Update
 - Fixed: Repository that contained a duplicated dockerHub repository (even if it was removed from CA) wouldn't appear in the correct order when sorting repositories by Date Added

@@ -80,6 +80,7 @@ if ( is_file($caPaths['addConverted']) ) {
 $date = (date("n/d"));
 
 // Only check for updates to containers / plugins max once per hour
+exec("mkdir -p {$caPaths['tempFiles']}");
 if ( $cfg['updateCheck'] == "yes" ) {
 	if ( ( time() - @filemtime($caPaths['updateTime']) ) > 3600 ) {
 		touch($caPaths['updateTime']);
@@ -153,8 +154,8 @@ $(function(){
 	}
 });
 $(function(){
-	// This file is guaranteed to exist on the flash drive.  Even though 6.10Beta3+ includes similar code, keep this code because CA just can't function properly with a flash offline / corrupted.
 	<? if ( ! is_file($caPaths['docker_cfg']) ): ?>
+		// This file is guaranteed to exist on the flash drive.  Even though 6.10Beta3+ includes similar code, keep this code because CA just can't function properly with a flash offline / corrupted.
 		$(".mainArea,.menuItems").html("");
 		swal({
 			title: "<?tr("Fatal Flash Drive Error")?>",
