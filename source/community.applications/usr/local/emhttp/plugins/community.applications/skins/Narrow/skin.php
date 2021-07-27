@@ -477,10 +477,12 @@ function getPopupDescriptionSkin($appNumber) {
 		$DockerClient = new DockerClient();
 		$info = $DockerTemplates->getAllInfo();
 		$dockerRunning = $DockerClient->getDockerContainers();
+		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
 		unset($caSettings['dockerRunning']);
 		$info = array();
 		$dockerRunning = array();
+		$dockerUpdateStatus = array();
 	}
 	if ( ! is_file($caPaths['warningAccepted']) )
 		$caSettings['NoInstalls'] = true;
@@ -626,6 +628,10 @@ function getPopupDescriptionSkin($appNumber) {
 			if ( ! $template['Plugin'] ) {
 				if ( $caSettings['dockerRunning'] ) {
 					if ( $selected ) {
+						$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
+						if ( ! filter_var($dockerUpdateStatus[$tmpRepo]['status'],FILTER_VALIDATE_BOOLEAN) ) {
+							$installLine .= "<div><a class='appIconsPopUp ca_fa-update' onclick='updateDocker(&quot;$name&quot;);'> ".tr("Update")."</a></div>";
+						}
 						$installLine .= $caSettings['defaultReinstall'] == "true" ? "<div><a class='appIconsPopUp ca_fa-install xmlInstall' onclick='xmlInstall(&quot;default&quot;,&quot;".addslashes($template['Path'])."&quot;);'> ".tr("Reinstall (default)")."</a></div>" : "";
 						$installLine .= "<div><a class='appIconsPopUp ca_fa-edit' onclick='xmlInstall(&quot;edit&quot;,&quot;".addslashes($info[$name]['template'])."&quot;);'> ".tr("Edit")."</a></div>";
 						if ( $info[$name]['url'] && $info[$name]['running'] ) {

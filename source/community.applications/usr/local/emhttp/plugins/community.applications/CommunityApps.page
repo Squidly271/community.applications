@@ -271,15 +271,11 @@ $(function(){
 		window.open(href,target);
 	});
 
-	$('.mainArea').on("click",".dockerUpdate",function() {
+	$('.mainArea, a').on("click",".dockerUpdate",function() {
 		var container = $(this).attr("data-name");
-		$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
-		<? if ( $translations ): ?>		
-			openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
-		<? else: ?>
-			my_openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
-		<? endif; ?>
+		updateDocker(container);
 	});
+
 
 	$('.mainArea').on("click",".ca_non_favouriteRepo",function() {
 		if ( popupVisible(this) ) return;
@@ -1815,6 +1811,16 @@ function updateLanguage(language) {
 function removeLanguage(language) {
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"refreshDisplay");
 }
+
+function updateDocker(container) {
+	$(".ca_appPopup").tooltipster("close");
+	$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
+	<? if ( $translations ): ?>		
+		openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
+	<? else: ?>
+		my_openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
+	<? endif; ?>
+}	
 
 function setToolTipForFavourite() {
 	$(".ca_fav").each(function(){
