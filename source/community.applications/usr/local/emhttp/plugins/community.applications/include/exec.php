@@ -396,7 +396,7 @@ function getConvertedTemplates() {
 		$o['SortAuthor']   = $o['Author'];
 		$o['Compatible']   = versionCheck($o);
 		$o['Description']  = $o['Description'] ?: $o['Overview'];
-		$o['CardDescription'] = $o['Description'];
+		$o['CardDescription'] = strip_tags(trim(markdown($o['Description'])));
 		$o = fixTemplates($o);
 		$myTemplates[$i]  = $o;
 		$i = ++$i;
