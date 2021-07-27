@@ -826,7 +826,7 @@ function getPopupDescriptionSkin($appNumber) {
 				$appInformation = tr("Currently Installed Version:")." ".plugin("version","/var/log/plugins/$pluginName");
 				if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$caPaths['pluginTempDownload']) ) {
 					copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
-					$appInformation .= " - <span class='ca_bold'><a href='/Apps/Plugins' target='_parent'>".tr("Install The Update")."</a></span>";
+					$appInformation .= " - <a class='ca_bold popUpLink updatePlugin' onclick='installPlugin(&quot;$pluginName&quot;,true,true);'>".tr("Install The Update")."</a></span>";
 				} else
 					$appInformation .= " - <font color='#4cc337'>".tr("Latest Version")."</font>";
 			}
