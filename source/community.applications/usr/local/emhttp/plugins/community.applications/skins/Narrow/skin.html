@@ -1,6 +1,8 @@
 <div id="Category" class="categoryLine ca_italic">&nbsp;</div>
 <div class='menuItems'>
 <ul class='caMenu '>
+	<li class='caMenuItem clearSearch caMenuDisabled onlyShowWithFeed'><?tr("Clear Search");?></li>
+	<hr class='category_hr'>
 	<li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='installed_apps'><?tr("Installed Apps");?></li>
 	<ul class='subCategory onlyShowWithFeed'>
 		<li class='caMenuItem sectionMenu onlyShowWithFeed dockerSpecific' data-category='inst_docker'><?tr("Docker");?></li>
@@ -24,7 +26,6 @@
 	<li class='categoryMenu caMenuItem allApps onlyShowWithFeed' data-category='All'><?tr("All Apps");?></li>
 	<hr class='category_hr'>
 	<li class='categoryMenu caMenuItem caRepositoryMenu onlyShowWithFeed' data-category='repos'><?tr("Repositories");?></li>
-	<li class='caMenuItem clearSearch caMenuDisabled onlyShowWithFeed'><?tr("Clear Search");?></li>
 <hr class='category_hr onlyShowWithFeed'>
 	<li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'><?tr("Settings");?></a></li>
 	<li class='caMenuItem statistics' onclick='disableSort();scrollToTop();showStatistics();'><?tr("Statistics");?></li>

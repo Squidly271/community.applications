@@ -941,7 +941,7 @@ function search_dockerhub() {
 		$o['Author'] = $details[0];
 		$o['Name'] = $details[1];
 		$o['Description'] = $result['description'];
-		$o['CardDescription'] = (strlen($o['Description']) > 240) ? substr($o['Description'],0,240)." ..." : $o['Description'];
+		$o['CardDescription'] = $o['Description'];
 		$o['Automated'] = $result['is_automated'];
 		$o['Stars'] = $result['star_count'];
 		$o['Official'] = $result['is_official'];

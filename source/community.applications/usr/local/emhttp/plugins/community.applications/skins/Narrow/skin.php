@@ -647,6 +647,13 @@ function getPopupDescriptionSkin($appNumber) {
 					}
 				}
 			} else {
+				
+				if ( file_exists("/var/log/plugins/$pluginName") ) {
+					if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$caPaths['pluginTempDownload']) ) {
+						copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
+						$installLine .= "<div><a class='appIconsPopUp ca_fa-update' onclick='installPlugin(&quot;$pluginName&quot;,true,true);'> ".tr("Update")."</a></div>";
+					}
+				}				
 				if ( file_exists("/var/log/plugins/$pluginName") ) {
 					$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 					if ( $pluginSettings )
@@ -828,14 +835,7 @@ function getPopupDescriptionSkin($appNumber) {
 	}
 	if ( trim($template['Changes']) ) {
 		if ( $template['Plugin'] ) {
-			if ( file_exists("/var/log/plugins/$pluginName") ) {
-				$appInformation = tr("Currently Installed Version:")." ".plugin("version","/var/log/plugins/$pluginName");
-				if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$caPaths['pluginTempDownload']) ) {
-					copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
-					$appInformation .= " - <a class='ca_bold popUpLink updatePlugin' onclick='installPlugin(&quot;$pluginName&quot;,true,true);'>".tr("Install The Update")."</a></span>";
-				} else
-					$appInformation .= " - <font color='#4cc337'>".tr("Latest Version")."</font>";
-			}
+
 			$appInformation .= $template['Changes'];
 		} elseif ($template['Language']) {
 			$appInformation .= trim($template['Changes']);
@@ -999,7 +999,7 @@ function displayCard($template) {
 	$holder = $template['Plugin'] ? "ca_holderPlugin" : "ca_holderDocker";
 	$holder = $template['Language'] ? "ca_holderLanguage" : $holder;
 	$holder = $template['RepositoryTemplate'] ? "ca_holderRepository" : $holder;
-	$holder = strpos($template['OriginalCategories'],"Drivers") !== false ? "ca_holderDriver" : $holder;
+	$holder = (strpos($template['OriginalCategories'],"Drivers") !== false) && $template['Plugin'] ? "ca_holderDriver" : $holder;
 	if ( $template['ca_fav'] )
 		$holder .= " ca_holderFav";
 

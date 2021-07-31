@@ -1532,6 +1532,7 @@ function restoreState() {
 		});
 	});
 	populateAutoComplete();
+	clearMultiInstall();
 }
 
 function disableSearch() {
