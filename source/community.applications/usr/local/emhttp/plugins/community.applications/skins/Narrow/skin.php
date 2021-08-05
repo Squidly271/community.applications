@@ -632,16 +632,16 @@ function getPopupDescriptionSkin($appNumber) {
 						if ( ! filter_var($dockerUpdateStatus[$tmpRepo]['status'],FILTER_VALIDATE_BOOLEAN) ) {
 							$installLine .= "<div><a class='appIconsPopUp ca_fa-update' onclick='updateDocker(&quot;$name&quot;);'> ".tr("Update")."</a></div>";
 						}
-						$installLine .= $caSettings['defaultReinstall'] == "true" ? "<div><a class='appIconsPopUp ca_fa-install xmlInstall' onclick='xmlInstall(&quot;default&quot;,&quot;".addslashes($template['Path'])."&quot;);'> ".tr("Reinstall (default)")."</a></div>" : "";
-						$installLine .= "<div><a class='appIconsPopUp ca_fa-edit' onclick='xmlInstall(&quot;edit&quot;,&quot;".addslashes($info[$name]['template'])."&quot;);'> ".tr("Edit")."</a></div>";
+						$installLine .= $caSettings['defaultReinstall'] == "true" ? "<div><a class='appIconsPopUp ca_fa-install xmlInstall' data-type='default' data-xml='".addslashes($template['Path'])."'> ".tr("Reinstall (default)")."</a></div>" : "";
+						$installLine .= "<div><a class='appIconsPopUp ca_fa-edit xmlInstall' data-type='edit' data-xml='".addslashes($info[$name]['template'])."'> ".tr("Edit")."</a></div>";
 						if ( $info[$name]['url'] && $info[$name]['running'] ) {
 							$installLine .= "<div><a class='appIconsPopUp ca_fa-globe' href='{$info[$name]['url']}' target='_blank'> ".tr("WebUI")."</a></div>";
 						}
 					} else {
 						if ( $template['InstallPath'] )
-							$installLine .= "<div><a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;user&quot;,&quot;".addslashes($template['InstallPath'])."&quot;);'> ".tr("Reinstall")."</a></div>";
+							$installLine .= "<div><a class='appIconsPopUp ca_fa-install xmlInstall' data-type='user' data-xml='".addslashes($template['InstallPath'])."'> ".tr("Reinstall")."</a></div>";
 						else {
-							$install = "<div><a class='appIconsPopUp ca_fa-install' onclick='xmlInstall(&quot;default&quot;,&quot;".addslashes($template['Path'])."&quot;);'> ".tr("Install")."</a></div>";
+							$install = "<div><a class='appIconsPopUp ca_fa-install xmlInstall' data-type='default' data-xml='".addslashes($template['Path'])."'> ".tr("Install")."</a></div>";
 							$installLine .= $template['BranchID'] ? "<div><a style='cursor:pointer' class='appIconsPopUp ca_fa-install' onclick='displayTags({$template['ID']},true);'> ".tr("Install")."</a></div>" : $install;
 						}
 					}

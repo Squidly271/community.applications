@@ -313,11 +313,16 @@ $(function(){
 		doSearch(false,repo);
 	});
 
-	$('.mainArea').on("click",".xmlInstall",function() {
+	$('body').on("click",".xmlInstall",function() {
 		if ( popupVisible(this) ) return;
 		var type = $(this).data("type");
 		var xml = $(this).data("xml");
-		xmlInstall(type,xml);
+		saveState();
+		post({action:'createXML',xml:xml},function(result){
+			if ( result.status == "ok" ) {
+				openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
+			}
+		});
 	});
 
 	$('.menuItems').on("click",'.categoryMenu',function() {
@@ -1228,15 +1233,6 @@ function displayTags(leadTemplate,popup=false) {
 				enableSearch();
 			}
 		});
-	});
-}
-
-function xmlInstall(type,xml) {
-	saveState();
-	post({action:'createXML',xml:xml},function(result){
-		if ( result.status == "ok" ) {
-			openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
-		}
 	});
 }
 
