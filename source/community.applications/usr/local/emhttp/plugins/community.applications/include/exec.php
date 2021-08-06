@@ -537,6 +537,9 @@ function displayRepositories() {
 	$allRepos = array();
 	$bio = array();
 	foreach ($templates as $template) {
+		if ( $template['Blacklist'] ) continue;
+		if ( $template['Deprecated'] && $caSettings['hideDeprecated'] == "true" ) continue;
+		if ( ! $template['Compatible'] && $caSettings['hideIncompatible'] == "true" ) continue;
 		$repoName = $template['RepoName'];
 		if ( ! $repoName ) continue;
 		if ( $repoName == $caSettings['favourite'] ) {
