@@ -573,10 +573,12 @@ function getPopupDescriptionSkin($appNumber) {
 	if ( ! $ovr )
 		$ovr = $template['OriginalDescription'] ?: $template['Description'];
 	$ovr = html_entity_decode($ovr);
+//	$ovr = str_replace("&#xD","<br>",$ovr);
 	$ovr = str_replace(["[","]"],["<",">"],$ovr);
-	$ovr = str_replace("<br>","\n",$ovr);
+//	$ovr = str_replace("<br>","\n",$ovr);
+	$ovr = str_replace("\n","<br>",$ovr);
 	$ovr = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$ovr);
-	$ovr = markdown(strip_tags($ovr));
+	$ovr = markdown(strip_tags($ovr,"<br>"));
 
 	$template['ModeratorComment'] .= $template['CAComment'];
 
