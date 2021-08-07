@@ -271,7 +271,7 @@ $(function(){
 		window.open(href,target);
 	});
 
-	$('.mainArea, a').on("click",".dockerUpdate",function() {
+	$('body').on("click",".dockerUpdate",function() {
 		var container = $(this).attr("data-name");
 		updateDocker(container);
 	});

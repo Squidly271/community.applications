@@ -632,7 +632,7 @@ function getPopupDescriptionSkin($appNumber) {
 					if ( $selected ) {
 						$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
 						if ( ! filter_var($dockerUpdateStatus[$tmpRepo]['status'],FILTER_VALIDATE_BOOLEAN) ) {
-							$installLine .= "<div><a class='appIconsPopUp ca_fa-update' onclick='updateDocker(&quot;$name&quot;);'> ".tr("Update")."</a></div>";
+							$installLine .= "<div><a class='appIconsPopUp ca_fa-update dockerUpdate' data-name='$name'> ".tr("Update")."</a></div>";
 						}
 						$installLine .= $caSettings['defaultReinstall'] == "true" ? "<div><a class='appIconsPopUp ca_fa-install xmlInstall' data-type='default' data-xml='".addslashes($template['Path'])."'> ".tr("Reinstall (default)")."</a></div>" : "";
 						$installLine .= "<div><a class='appIconsPopUp ca_fa-edit xmlInstall' data-type='edit' data-xml='".addslashes($info[$name]['template'])."'> ".tr("Edit")."</a></div>";
