@@ -736,7 +736,7 @@ function get_content() {
 					$searchResults['extraHit'][] = $template;
 				else
 					$searchResults['nameHit'][] = $template;
-			} else if ( filterMatch($filter,array($template['Author'],$template['Description'],$template['translatedCategories'])) ) {
+			} else if ( filterMatch($filter,array($template['Author'],$template['CardDescription'],$template['translatedCategories'])) ) {
 				$template['Description'] = highlight($filter, $template['Description']);
 				$template['Author'] = highlight($filter, $template['Author']);
 				$template['CardDescription'] = highlight($filter,$template['CardDescription']);

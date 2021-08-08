@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.08.08">
-<!ENTITY md5       "2448de7657b77c114ba5c588a4518d1d">
+<!ENTITY version   "2021.08.08a">
+<!ENTITY md5       "159b56e397273e8d397abde4f7c2798d">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.6.2" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.08.08a
+- Fixed: Branches not installing
+- Fixed: Search results didn't include descriptions
+
 ###2021.08.08
 - Added: Updates to plugins / docker apps directly from popup
 - Added: Remove HTML from any private apps' descriptions (security)
