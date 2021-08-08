@@ -836,7 +836,6 @@ function enableButtons() {
 }
 
 function refreshDisplay() {
-	console.log("refreshDisplay");
 	changeSortOrder(null,null,null);
 }
 
