@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.07.24">
-<!ENTITY md5       "7e113e94228291fbb559845733359839">
+<!ENTITY version   "2021.08.08">
+<!ENTITY md5       "2448de7657b77c114ba5c588a4518d1d">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.6.2" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.08.08
+- Added: Updates to plugins / docker apps directly from popup
+- Added: Remove HTML from any private apps' descriptions (security)
+- Changed: Don't artificially cut off dockerHub descriptions at 240 characters.  Follow the same logic as every other app in CA
+- Fixed: Hitting Select All on Previous Apps screen followed by a manual install of a previous app followed by Install All would return an error when installing everything else
+- Relocate Clear Search link to somewhere more logical
+- Changed: Only show Drivers watermark if the app is a plugin
+- Improved: Prep work for a possible new skinning engine
+- Changed: Improvements to the popup Descriptions to make them more inline with how they would look when installing
+- Changed: If a repository only has incompatible / deprecated apps, don't display it within Repositories unless CA settings would allow it (Would result in No Matching Apps Found)
+
 ###2021.07.24
 - Fixed: Official containers were showing in Previous apps when installed, not within installed apps
 - Fixed: Apps installed as a branch would show twice within Installed Apps
