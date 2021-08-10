@@ -19,6 +19,7 @@ function checkPluginUpdate($filename) {
 	global $caSettings;
 
 	$filename = basename($filename);
+	if ( ! is_file("/var/log/plugins/$filename") ) return false;
 	$upgradeVersion = (is_file("/tmp/plugins/$filename")) ? plugin("version","/tmp/plugins/$filename") : "0";
 	$installedVersion = $upgradeVersion ? plugin("version","/var/log/plugins/$filename") : 0;
 

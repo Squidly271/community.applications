@@ -28,7 +28,7 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 
 function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false) {
 	global $caPaths, $caSettings, $plugin, $displayDeprecated, $sortOrder;
-
+	
 	$info = getRunningContainers();
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 
@@ -649,7 +649,6 @@ function getPopupDescriptionSkin($appNumber) {
 					}
 				}
 			} else {
-				
 				if ( file_exists("/var/log/plugins/$pluginName") ) {
 					if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$caPaths['pluginTempDownload']) ) {
 						copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");

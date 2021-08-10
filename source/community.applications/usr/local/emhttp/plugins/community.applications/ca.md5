@@ -10,7 +10,7 @@
 8e7dc33512b8a78f28d7179a972c7c34  ./images/discord-hover.svg
 54e46db492ddb033dfeb2827c5efd4a8  ./images/discord-white.svg
 c3da3edf0e6eb1970f962c6fab2be134  ./include/exec.php
-fb83da749030a79db1c00e6a9980fe5c  ./include/helpers.php
+c2ce310c9303a1006bfc04589a596a91  ./include/helpers.php
 3893704ad833c765384c5fcf3147a7f7  ./include/paths.php
 eb76c1b6ed3da5e5b393f22d2ec18430  ./javascript/libraries.js
 8c24d585c7dd3ff9ef961bb2c2705711  ./PluginAPI.page
@@ -29,4 +29,4 @@ f9c3f431935fb20801f3fef152dc7b58  ./scripts/showStatistics.php
 02759ea835ee4ce5a051fead96ab9b9b  ./scripts/updatePluginSupport.php
 4e97f00c3f0a52603239b00acf890990  ./skins/Narrow/css.php
 1668b7fa961aef793fca369a793e7f16  ./skins/Narrow/skin.html
-d12de475db056b5f71db9d3cf6c5222d  ./skins/Narrow/skin.php
+e6e3dd4b0f35c2f1374af23096fd5e89  ./skins/Narrow/skin.php
