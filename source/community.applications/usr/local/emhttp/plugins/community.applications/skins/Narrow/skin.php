@@ -174,7 +174,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$template['display_favouriteButton'] = "<span class='appIcons ca_tooltip $favClass ca_fav' data-repository='".htmlentities($template['RepoName'],ENT_QUOTES)."' title='$favMsg'></span>";
 			}
 
-			$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "</span></strong><font color='purple'>{$template['ModeratorComment']}</font>" : "";
+			$template['display_ModeratorComment'] .= $template['ModeratorComment'] ? "<font color='purple'>{$template['ModeratorComment']}</font>" : "";
 			
 			if ( $pinnedApps["{$template['Repository']}&{$template['SortName']}"] ) {
 				$pinned = "pinned";
@@ -188,14 +188,14 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				unset($template['display_pinButton']);
 
 			if ( $template['Uninstall'] && $template['Name'] != "Community Applications" ) {
-				$template['display_Uninstall'] = "<a class='ca_tooltip ca_fa-delete' title='".tr("Uninstall Application")."' ";
-				$template['display_Uninstall'] .= ( $template['Plugin'] ) ? "onclick='uninstallApp(&quot;{$template['InstallPath']}&quot;,&quot;{$template['Name']}&quot;);'>" : "onclick='uninstallDocker(&quot;{$info[$name]['template']}&quot;,&quot;{$template['Name']}&quot;);'>";
+				$template['display_Uninstall'] = "<a class='ca_tooltip ca_fa-delete uninstallApp' title='".tr("Uninstall Application")."' ";
+				$template['display_Uninstall'] .= ( $template['Plugin'] ) ? "data-type='plugin' data-app='{$template['InstallPath']}' data-name='{$template['Name']}'>" : "data-type='docker' data-app='{$info[$name]['template']}' data-name='{$template['Name']}'>";
 				$template['display_Uninstall'] .= "</a>";
 			} else {
 				if ( $template['Private'] == "true" )
-					$template['display_Uninstall'] = "<a class='ca_tooltip  ca_fa-delete' title='".tr("Remove Private Application")."' onclick='deletePrivateApp(&quot;{$template['Path']}&quot;,&quot;{$template['SortName']}&quot;,&quot;{$template['SortAuthor']}&quot;);'></a>";
+					$template['display_Uninstall'] = "<a class='ca_tooltip  ca_fa-delete deletePrivateApp' title='".tr("Remove Private Application")."' data-path='{$template['Path']}' data-name='{$template['SortName']}' data-author='{$template['SortAuthor']}'></a>";
 			}
-			$template['display_removable'] = $template['Removable'] && ! $selected ? "<a class='ca_tooltip ca_fa-delete' title='".tr("Remove Application From List")."' onclick='removeApp(&quot;{$template['InstallPath']}&quot;,&quot;{$template['Name']}&quot;);'></a>" : "";
+			$template['display_removable'] = $template['Removable'] && ! $selected ? "<a class='ca_tooltip ca_fa-delete removeApp' title='".tr("Remove Application From List")."' data-path='{$template['InstallPath']}' data-name='{$template['Name']}'></a>" : "";
 			if ( $template['display_Uninstall'] && $template['display_removable'] )
 				unset($template['display_Uninstall']); # prevent previously installed private apps from having 2 x's in previous apps section
 
@@ -216,10 +216,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 						unset($template['display_multi_install']);
 						unset($template['display_removable']);
 					} else {
-						$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons' title='".tr("Install plugin")."' onclick=installPlugin('{$template['PluginURL']}');></a>";
+						$template['display_pluginInstallIcon'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-install appIcons pluginInstall' title='".tr("Install plugin")."' data-url='{$template['PluginURL']}';></a>";
 					}
 					if ( $template['UpdateAvailable'] ) {
-						$template['display_pluginUpdate'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-update appIcons updatePlugin' title='".tr("Install The Update")."' onclick=installPlugin('$pluginName',false,true);></a>";
+						$template['display_pluginUpdate'] = "<a style='cursor:pointer' class='ca_tooltip ca_fa-update appIcons pluginInstall' title='".tr("Install The Update")."' data-url='$pluginName' data-update='true';></a>";
 					}
 				} else {
 					if ( $caSettings['dockerRunning'] ) {
@@ -652,7 +652,7 @@ function getPopupDescriptionSkin($appNumber) {
 				if ( file_exists("/var/log/plugins/$pluginName") ) {
 					if ( plugin("version","/var/log/plugins/$pluginName") != plugin("version",$caPaths['pluginTempDownload']) ) {
 						copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
-						$installLine .= "<div><a class='appIconsPopUp ca_fa-update' onclick='installPlugin(&quot;$pluginName&quot;,true,true);'> ".tr("Update")."</a></div>";
+						$installLine .= "<div><a class='appIconsPopUp ca_fa-update pluginInstall' data-url='$pluginName' data-update='true'> ".tr("Update")."</a></div>";
 					}
 				}				
 				if ( file_exists("/var/log/plugins/$pluginName") ) {
@@ -661,7 +661,7 @@ function getPopupDescriptionSkin($appNumber) {
 						$installLine .= "<div><a class='appIconsPopUp ca_fa-pluginSettings' href='/Apps/$pluginSettings' target='$tabMode'> ".tr("Settings")."</a></div>";
 				} else {
 					$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
-					$installLine .= "<div><a style='cursor:pointer' class='appIconsPopUp ca_fa-install pluginInstall' onclick=installPlugin('{$template['PluginURL']}',true);> $buttonTitle</a></div>";
+					$installLine .= "<div><a style='cursor:pointer' class='appIconsPopUp ca_fa-install pluginInstall' data-url='{$template['PluginURL']}'> $buttonTitle</a></div>";
 				}
 			}
 		}
@@ -677,14 +677,14 @@ function getPopupDescriptionSkin($appNumber) {
 		$currentLanguage = (is_dir("/usr/local/emhttp/languages/$currentLanguage") ) ? $currentLanguage : "en_US";
 		if ( in_array($countryCode,$installedLanguages) ) {
 			if ( $currentLanguage != $countryCode ) {
-				$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-switchto' onclick=CAswitchLanguage('$countryCode');> {$template['SwitchLanguage']}</a></div>";
+				$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-switchto languageSwitch' data-language='$countryCode'> {$template['SwitchLanguage']}</a></div>";
 			}
 		} else {
-			$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-install languageInstall' onclick='installLanguage(&quot;{$template['TemplateURL']}&quot;,&quot;$countryCode&quot;,true);'> {$template['InstallLanguage']}</a></div>";
+			$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-install languageInstall' data-language_xml='{$template['TemplateURL']}' data-language='$countryCode'> {$template['InstallLanguage']}</a></div>";
 		}
 		if ( file_exists("/var/log/plugins/lang-$countryCode.xml") ) {
 			if ( languageCheck($template) ) {
-				$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-update languageInstall' onclick=updateLanguage('$countryCode');> {$template['UpdateLanguage']}</a></div>";
+				$installLine .= "<div><a class='ca_tooltip appIconsPopUp ca_fa-update languageUpdate' data-language='$countryCode'> {$template['UpdateLanguage']}</a></div>";
 			}
 		}
 		if ( $countryCode !== "en_US" ) {
@@ -696,8 +696,8 @@ function getPopupDescriptionSkin($appNumber) {
 
 	if ( $template['Support'] || $template['Project'] ) {
 		$supportText = $template['SupportLanguage'] ?: tr("Support");
-	$installLine .= $template['Support'] ? "<div><a class='appIconsPopUp ca_fa-support' href='{$template['Support']}' target='_blank'> $supportText</strong></a></div>" : "";
-		$installLine .= $template['Project'] ? "<div><a class='appIconsPopUp ca_fa-project' href='{$template['Project']}' target='_blank'> ".tr("Project")."</strong></a></div>" : "";
+	$installLine .= $template['Support'] ? "<div><a class='appIconsPopUp ca_fa-support' href='{$template['Support']}' target='_blank'> $supportText</a></div>" : "";
+		$installLine .= $template['Project'] ? "<div><a class='appIconsPopUp ca_fa-project' href='{$template['Project']}' target='_blank'> ".tr("Project")."</a></div>" : "";
 	}
 	$installLine .= "<div><a class='appIconsPopUp ca_repository' onclick='showRepo(this);' data-appid='{$template['ID']}'> ".tr("Profile")."</a></div>";
 	$installLine .= "</div>";

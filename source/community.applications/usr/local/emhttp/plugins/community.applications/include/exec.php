@@ -236,9 +236,7 @@ function DownloadApplicationFeed() {
 		if ( $o['Language'] ) {
 			$o['Category'] = "Language:";
 			$o['Compatible'] = true;
-	//		$o['Description'] = str_replace(" - ","<br>",trim($o['Description'])); // temp fix since this undoes a change feed makes.  Don't make this change in the feed in the future.
 		}
-		// above doesn't work properly with <br>'s being present when set to the overflow thingy
 
 		# Move the appropriate stuff over into a CA data file
 		$o['ID']            = $i;
@@ -1014,8 +1012,8 @@ function previous_apps() {
 			if ( !$filter || $filter == "docker" ) {
 				foreach ($all_files as $xmlfile) {
 					$o = readXmlFile($xmlfile);
-					$o['Description'] = fixDescription($o['Description']);
 					$o['Overview'] = fixDescription($o['Overview']);
+					$o['CardDescription'] = $o['Overview'];
 					$o['InstallPath'] = $xmlfile;
 					$o['UnknownCompatible'] = true;
 
@@ -1079,8 +1077,8 @@ function previous_apps() {
 				foreach ($all_files as $xmlfile) {
 					$o = readXmlFile($xmlfile);
 					if ( ! $o ) continue;
-					$o['Description'] = fixDescription($o['Description']);
 					$o['Overview'] = fixDescription($o['Overview']);
+					$o['CardDescription'] = $o['Overview'];
 					$o['InstallPath'] = $xmlfile;
 					$o['UnknownCompatible'] = true;
 					$o['Removable'] = true;

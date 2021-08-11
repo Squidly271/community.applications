@@ -304,7 +304,6 @@ $(function(){
 		doSearch(false,repo);
 	});
 
-
 	$('.favouriteRepo').on("click",function() {
 		if ( popupVisible(this) ) return;
 		if ( $(this).hasClass("caMenuDisabled") )
@@ -324,7 +323,32 @@ $(function(){
 			}
 		});
 	});
+	
+	$('body').on("click",".pluginInstall",function() {
+		if ( popupVisible(this) ) return;
+		
+		var plugin = $(this).data("url");
+		var type = $(this).data("update") ? true : false;
+		installPlugin(plugin,type);
+	});
 
+
+	$("body").on("click",".uninstallApp",function() {
+		if ( popupVisible(this) ) return;
+		var type = $(this).data("type");
+		var name = $(this).data("name");
+		var app = $(this).data("app");
+		switch (type) {
+			case "docker":
+				uninstallDocker(app,name);
+				break;
+			case "plugin":
+				uninstallApp(app,name);
+				break;
+		}
+	});
+				
+	
 	$('.menuItems').on("click",'.categoryMenu',function() {
 		if ( popupVisible(this) ) return;
 		if ( $(this).hasClass("caMenuDisabled") )
@@ -457,25 +481,40 @@ $(function(){
 		});
 	});
 
-	$('.mainArea').on("click",".languageSwitch",function() {
+	$('body').on("click",".languageSwitch",function() {
 		if ( popupVisible(this) ) return;
 		CAswitchLanguage($(this).data("language"));
 	});
 
-	$('.mainArea').on("click",".languageInstall",function() {
+	$('body').on("click",".languageInstall",function() {
 		installLanguage($(this).data("language_xml"),$(this).data("language"));
 	});
 
-	$('.mainArea').on("click",".languageRemove",function() {
+	$('body').on("click",".languageRemove",function() {
 		if ( popupVisible(this) ) return;
 		removeLanguage($(this).data("language"));
 	});
 
-	$('.mainArea').on("click",".languageUpdate",function() {
+	$('body').on("click",".languageUpdate",function() {
 		if ( popupVisible(this) ) return;
 		updateLanguage($(this).data("language"));
 	});
 
+	$('body').on("click",".deletePrivateApp",function() {
+		if ( popupVisible(this) ) return;
+		var path = $(this).data("path");
+		var name = $(this).data("name");
+		var author = $(this).data("author");
+		deletePrivateApp(path,name,author);
+	});
+
+	$("body").on("click",".removeApp",function() {
+		if ( popupVisible(this) ) return;
+		var path = $(this).data("path");
+		var name = $(this).data("name");
+		removeApp(path,name);
+	});
+	
 <?if ( version_compare($unRaidSettings['version'],"6.9.0-beta38","<") ):?>
 	$('.mainArea').on("mouseover",".ca_discord",function() {
 		$(this).attr("src","/plugins/community.applications/images/discord-hover.svg");
@@ -974,10 +1013,7 @@ function popupVisible(el) {
 	return $(".popupHolder").is(":visible");
 }
 
-function installPlugin(pluginURL,popup=false,update=false) {
-	if ( ! popup)
-		if ( popupVisible() )
-			return;
+function installPlugin(pluginURL,update=false) {
 	type = update ? "update" : "install";
 	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
 	$(".tooltipstered").tooltipster("hide");
@@ -1036,7 +1072,7 @@ function removeApp(application, humanName) {
 	disableSearch();
 	swal({
 		title: "<?tr("Delete Template?")?>",
-		text: sprintf(tr("Are you sure you want to delete %s from the list of previously installed applications?"),"<font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>")+"<br><font size='0'>"+application+"</font>",
+		text: sprintf(tr("Are you sure you want to delete %s from the list of previously installed applications?"),"<span class='ca_italic ca_bold caHighlight'>"+humanName+"</span>")+"<br><font size='0'>"+application+"</font>",
 		type: "warning",
 		confirmButtonText: "<?tr("Yes, delete it!")?>",
 		cancelButtonText: "<?tr("Cancel")?>",
@@ -1062,7 +1098,7 @@ function uninstallApp(application,humanName) {
 	disableSearch();
 	swal({
 		title: "<?tr("Uninstall Application?")?>",
-		text: sprintf(tr("Are you sure you want to uninstall %s?"),"<font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>"),
+		text: sprintf(tr("Are you sure you want to uninstall %s?"),"<span class='ca_italic ca_bold caHighlight'>"+humanName+"</span>"),
 		type: "warning",
 		showCancelButton: true,
 		showConfirmButton: true,
@@ -1100,7 +1136,7 @@ function deletePrivateApp(path,name,author) {
 	disableSearch();
 	swal({
 		title: "<?tr("Remove Private Application?")?>",
-		text: sprintf(tr("Are you sure you want to remove the private application %s by %s?"),"<span class='ca_italic'><font color='red'><span class='ca_bold'>"+name+"</span></font>","<font color='red'><span class='ca_bold'>"+author+"</span></font>")+"<br><font size='0'>("+displayPath+")",
+		text: sprintf(tr("Are you sure you want to remove the private application %s by %s?"),"<span class='ca_italic'><span class='ca_bold caHighlight'>"+name+"</span>","<span class='ca_bold caHighlight'>"+author+"</span>")+"<br><font size='0'>("+displayPath+")",
 		type: "warning",
 			showCancelButton: true,
 			showConfirmButton: true,
@@ -1129,7 +1165,7 @@ function uninstallDocker(application,humanName) {
 	disableSearch();
 	swal({
 		title: "<?tr("Uninstall Application?")?>",
-		text: sprintf(tr("Are you sure you want to uninstall %s?"),"<font color='red'><strong><span class='ca_italic'>"+humanName+"</span></strong></font>"),
+		text: sprintf(tr("Are you sure you want to uninstall %s?"),"<span class='ca_italic ca_bold caHighlight'>"+humanName+"</span>"),
 		type: "warning",
 		showCancelButton: true,
 		showConfirmButton: true,
@@ -1337,7 +1373,7 @@ function deleteMulti() {
 	var selected = getSelectedApps();
 	swal({
 		title: "<?tr("Delete Template?")?>",
-		text: sprintf(tr("Are you sure you want to delete %s applications from the previously installed list?"),"<font color='red'><strong>"+selected.deletePaths.length+"</strong></font>"),
+		text: sprintf(tr("Are you sure you want to delete %s applications from the previously installed list?"),"<span class='caHighlight ca_bold'>"+selected.deletePaths.length+"</span>"),
 		type: "warning",
 		confirmButtonText: "<?tr("Delete")?>",
 		cancelButtonText: "<?tr("Cancel")?>",
@@ -1396,7 +1432,7 @@ function installMulti() {
 	}
 	var text = sprintf(tr("Are you sure you want to install %s docker and %s plugin application(s)?"),dockerCount,pluginCount);
 	text = text.concat(dockerCount ? "<br><span class='ca_italic'><?tr("Docker applications will be installed utilizing the most recently saved template with no user input on your part")?></span>" : "");
-	text = text.concat(cookieWarning ? "<br><font color='red'>"+cookieWarning+"</font>" : "");
+	text = text.concat(cookieWarning ? "<br><span class='caHighlight>"+cookieWarning+"</span>" : "");
 	swal({
 		title: dockerCount+pluginCount > 1 ? tr("Install Applications") : tr("Install Application"),
 		text: text,
@@ -1790,8 +1826,7 @@ function CAswitchLanguage(language) {
 		window.location.reload();
 	});
 }
-function installLanguage(languageURL,language,popup=false) {
-	if ( ! popup && popupVisible() ) return;
+function installLanguage(languageURL,language) {
 	$(".tooltipstered").tooltipster("hide");
 
 	disableSearch();
