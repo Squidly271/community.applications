@@ -310,7 +310,7 @@ h1 {font-size:1.5rem;} /* override dynamix styling for popup */
 .ca_templatesDisplay {display:flex;flex-wrap:wrap;justify-content:center;overflow-x:hidden;}
 #warningNotAccepted {display:none;}
 .menuItems {position:absolute; left:0px;width:14rem;height:auto;}
-.mainArea {position:absolute;left:18.5rem;right:0px; display:block;overflow-x:hidden;}
+.mainArea {position:absolute;left:18.5rem;right:0px; display:block;overflow-x:hidden;min-height:90vh;}
 .multi_installDiv {width:100%; display:none;padding-bottom:20px;}
 .ca_toolsView {font-size:2.3rem; position:relative;top:-0.2rem;}
 #templates_content {overflow-x:hidden;}
