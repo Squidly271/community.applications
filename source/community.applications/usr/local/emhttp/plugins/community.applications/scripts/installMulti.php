@@ -58,6 +58,7 @@ if ( $_GET['docker'] ) {
 	$_GET['updateContainer'] = true;
 	$_GET['ct'] = $dockers;
 	$_GET['communityApplications'] = true;
+	$_GET['mute'] = false;
 	@include($exeFile); # under new GUI, this line returns a duplicated session_start() error.  
 	echo "</div>";
 ?>

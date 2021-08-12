@@ -16,10 +16,10 @@ eb76c1b6ed3da5e5b393f22d2ec18430  ./javascript/libraries.js
 8c24d585c7dd3ff9ef961bb2c2705711  ./PluginAPI.page
 b398273cf7daa62ab00d2de2336ca25f  ./README.md
 717f49d6faabd7e1d7cf0940beb5cd5e  ./scripts/checkForUpdates.php
-bbd9dec6c5df486d75c46388c14f09ce  ./scripts/installMulti.php
+c83dee5045392761136e6330e896d959  ./scripts/installMulti.php
 ce2c904b6a40c4677a3ff3484776959e  ./scripts/installMultiPlugin.sh
 524afab04ca930f59117a846f819fb2f  ./scripts/installPluginUpdate.sh
-ce77df69331ccd3bf4037389325a01e1  ./scripts/installUpdate.php
+92028dcc61f62158cbc7064e6143d287  ./scripts/installUpdate.php
 5846421e95b475e1156c3f68164ccc4f  ./scripts/languageInstall.sh
 729c178196af99c94116246f0c8be7a5  ./scripts/notices.php
 430966e5646376b62905b63a30de7102  ./scripts/PluginAPI.php

@@ -7,7 +7,8 @@
 ###############################################################
 require_once "/usr/local/emhttp/plugins/dynamix/include/Helpers.php";
 
-  $_GET['updateContainer'] = "true";
+$_GET['updateContainer'] = "true";
+$_GET['mute'] = false;
 //	$_GET['communityApplications'] = true;
 	include("/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php");
 ?>
