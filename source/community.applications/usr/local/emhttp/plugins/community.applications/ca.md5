@@ -1,7 +1,7 @@
 767d6f2203fed9541daeb57bbf7b58b3  ./Apps.page
 83b3f89cd42e8601c7c217d5b4889c81  ./CA_notices.page
 2cdb7da0d67a11278ada7fd029707738  ./ca_settings.page
-c12498897c6986f2dc5a88d9ccac6b9a  ./CommunityApps.page
+c2c927b524c58a1be457ab0a7e2a1a35  ./CommunityApps.page
 7c88ace586933a4a60b0ef2f8a97a662  ./default.cfg
 4344942541019c3b5464d508c7f0dd30  ./images/community.applications.png
 6e48a62b91bdd066f023f46c6b491afd  ./images/discord-azure.svg
@@ -27,6 +27,6 @@ ce2c904b6a40c4677a3ff3484776959e  ./scripts/installMultiPlugin.sh
 f9c3f431935fb20801f3fef152dc7b58  ./scripts/showStatistics.php
 4425f8fd4ef662a7dc65cee01de3e419  ./scripts/updatePLG.sh
 02759ea835ee4ce5a051fead96ab9b9b  ./scripts/updatePluginSupport.php
-a4931b1b57d6f539831ff6571468a4c5  ./skins/Narrow/css.php
+1fc488a771c8a553912f83c91aebf9c1  ./skins/Narrow/css.php
 1668b7fa961aef793fca369a793e7f16  ./skins/Narrow/skin.html
-2aca28d227f8729e9ed0fe12ab571afa  ./skins/Narrow/skin.php
+7da9e3c2309849800577ac33f4ee107c  ./skins/Narrow/skin.php

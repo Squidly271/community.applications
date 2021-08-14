@@ -506,6 +506,10 @@ $(function(){
 		updateLanguage($(this).data("language"));
 	});
 
+	$("body").on("click",".popUpClose",function() {
+		$(".tooltipstered").tooltipster("hide");
+	});
+	
 	$('body').on("click",".deletePrivateApp",function() {
 		if ( popupVisible(this) ) return;
 		var path = $(this).data("path");

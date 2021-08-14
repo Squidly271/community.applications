@@ -305,8 +305,10 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_center {margin:auto;text-align:center;}
 .ca_large {font-size:2rem;}
 .ca_normal {font-size:1.4rem !important;}
-.ca_readmore {font-size:2rem !important;margin-top:10px;cursor:pointer;padding-left:.5rem;padding-right:.5rem;color:default;}
+.ca_readmore {font-size:2rem !important;margin-top:10px;cursor:pointer;padding-left:.5rem;padding-right:.5rem;color:#6363ca;}
 .ca_readmore:hover {text-decoration:none;color:<?=$unRaid66color?>;}
+.popUpClose {font-size:1.5rem;color:#f34646;font-weight:bold;cursor:pointer;}
+.popUpClose:hover {color:<?=$unRaid66color?>;}
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 h1 {font-size:1.5rem;} /* override dynamix styling for popup */
 .ca_NoAppsFound {font-size:3rem;margin:auto;text-align:center;}

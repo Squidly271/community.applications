@@ -605,6 +605,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$template['Changes'] = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$template['Changes']); // Prevent inadvertent code blocks
 	$template['Changes'] = Markdown(strip_tags(str_replace(["[","]"],["<",">"],$template['Changes']),"<br>"));
 
+	$templateDescription .= "<div class='popUpClose'>".tr("CLOSE")."</div>";
 	$templateDescription .= "<div class='popupTitle'>{$template['Name']}</div>";
 	$templateDescription .= "<div class='ca_hr'></div>";
 	$templateDescription .= "<div class='ca_center popupIconArea'>";
@@ -905,6 +906,7 @@ function getRepoDescriptionSkin($repository) {
 	$repo = $repositories[$repository];
 	$repo['icon'] = $repo['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 
+	$t .= "<div class='popUpClose'>".tr("CLOSE")."</div>";
 	$t .= "<div class='popupTitle'>$repository</div>";
 	$t .= "<div class='ca_hr'></div>";
 	$t .= "<div class='popupIconArea ca_center'><img class='popupIcon' src='{$repo['icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></div>";
