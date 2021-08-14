@@ -724,6 +724,7 @@ function setToolTip() {
 			appname = stripTags(appname);
 			post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 				origin.tooltipster("content",result.description);
+				$('.readmore').readmore({maxHeight:160,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("Read more")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'></i>"})
 				popUpChart(result,appnumber);
 
 			});
