@@ -303,6 +303,8 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .ca_italic {font-style:italic;}
 .ca_bold {font-weight:bold;}
 .ca_center {margin:auto;text-align:center;}
+.ca_large {font-size:2rem;}
+.ca_normal {font-size:1.4rem !important;}
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 h1 {font-size:1.5rem;} /* override dynamix styling for popup */
 .ca_NoAppsFound {font-size:3rem;margin:auto;text-align:center;}

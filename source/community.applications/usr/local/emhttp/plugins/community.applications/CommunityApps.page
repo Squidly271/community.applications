@@ -324,6 +324,12 @@ $(function(){
 		});
 	});
 	
+	$('body').on("click",".displayTags",function() {
+		if ( popupVisible(this) ) return;
+		var id = $(this).data("id");
+		displayTags(id);
+	});
+	
 	$('body').on("click",".pluginInstall",function() {
 		if ( popupVisible(this) ) return;
 		
@@ -1247,10 +1253,6 @@ function pinnedApps() {
 }
 
 function displayTags(leadTemplate,popup=false) {
-	if ( ! popup)
-		if ( popupVisible() )
-			return;
-
 	$(".tooltipstered").tooltipster("hide");
 	post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true},function(result) {
 		disableSearch();
