@@ -1013,6 +1013,7 @@ function previous_apps() {
 				foreach ($all_files as $xmlfile) {
 					$o = readXmlFile($xmlfile);
 					$o['Overview'] = fixDescription($o['Overview']);
+					$o['Description'] = $o['Overview'];
 					$o['CardDescription'] = $o['Overview'];
 					$o['InstallPath'] = $xmlfile;
 					$o['UnknownCompatible'] = true;
@@ -1044,8 +1045,11 @@ function previous_apps() {
 									if ( $searchResult !== false ) {
 										$tempPath = $o['InstallPath'];
 										$containerID = $file[$searchResult]['ID'];
+										$tmpOvr = $o['Overview'];
 										$o = $file[$searchResult];
 										$o['Name'] = $installedName;
+										$o['Overview'] = $tmpOvr;
+										$o['CardDescription'] = $tmpOvr;
 										$o['InstallPath'] = $tempPath;
 										$o['SortName'] = str_replace("-"," ",$installedName);
 /* 										if ( $dockerUpdateStatus[$installedImage]['status'] == "false" || $dockerUpdateStatus[$template['Name']] == "false" ) {
@@ -1066,9 +1070,9 @@ function previous_apps() {
 							$fat32Fix[$searchResult]++;
 							if ($fat32Fix[$searchResult] > 1) continue;
 							if ($o['testrepo']) continue;
-							$displayed[] = $o;
 						}
 					}
+					$displayed[] = $o;
 				}
 			}
 		} else {
@@ -1078,6 +1082,7 @@ function previous_apps() {
 					$o = readXmlFile($xmlfile);
 					if ( ! $o ) continue;
 					$o['Overview'] = fixDescription($o['Overview']);
+					$o['Description'] = $o['Overview'];
 					$o['CardDescription'] = $o['Overview'];
 					$o['InstallPath'] = $xmlfile;
 					$o['UnknownCompatible'] = true;
@@ -1103,7 +1108,11 @@ function previous_apps() {
 							if (startsWith($appTemplate['Repository'],$testRepo)) {
 								$tempPath = $o['InstallPath'];
 								$tempName = $o['Name'];
+								$tempOvr = $o['Overview'];
 								$o = $appTemplate;
+								$o['Overview'] = $tempOvr;
+								$o['Description'] = $tempOvr;
+								$o['CardDescription'] = $tempOvr;
 								$o['Removable'] = true;
 								$o['InstallPath'] = $tempPath;
 								$o['Name'] = $tempName;
@@ -1111,10 +1120,9 @@ function previous_apps() {
 								break;
 							}
 						}
-
+					}
 						if ( ! $o['Blacklist'] )
 							$displayed[] = $o;
-					}
 				}
 			}
 		}
