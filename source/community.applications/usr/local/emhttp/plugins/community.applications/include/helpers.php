@@ -238,10 +238,8 @@ function makeXML($template) {
 	if ( $template['Config'] && ! $template['@attributes'] )
 		$template['@attributes'] = array("version"=>2);
 
-	if ( $template['OriginalOverview'] ) {
-		$template['Overview'] = $template['OriginalOverview'];
-		$template['Description'] = $template['OriginalOverview'];
-	}
+	if ($template['Overview']) $template['Description'] = $template['Overview'];
+	
 	fixAttributes($template,"Network");
 	fixAttributes($template,"Config");
 

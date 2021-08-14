@@ -605,7 +605,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$template['Changes'] = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$template['Changes']); // Prevent inadvertent code blocks
 	$template['Changes'] = Markdown(strip_tags(str_replace(["[","]"],["<",">"],$template['Changes']),"<br>"));
 
-	$templateDescription .= "<div class='popUpClose'>".tr("CLOSE")."</div>";
+//	$templateDescription .= "<div class='popUpClose'>".tr("CLOSE")."</div>";
 	$templateDescription .= "<div class='popupTitle'>{$template['Name']}</div>";
 	$templateDescription .= "<div class='ca_hr'></div>";
 	$templateDescription .= "<div class='ca_center popupIconArea'>";
@@ -889,7 +889,7 @@ function getPopupDescriptionSkin($appNumber) {
 		}
 		$down = is_array($down) ? $down : array();
 	}
-	$templateDescription = "<div class='popupHolder'>$templateDescription</div>";
+	$templateDescription = "<div class='popUpClose'>".tr("CLOSE")."</div><div class='popupHolder'>$templateDescription</div>";
 	@unlink($caPaths['pluginTempDownload']);
 	return array("description"=>$templateDescription,"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel);
 }

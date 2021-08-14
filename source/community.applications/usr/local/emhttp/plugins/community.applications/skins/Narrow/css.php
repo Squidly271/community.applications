@@ -147,7 +147,7 @@ i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
 .ca_bottomLine {display:block;position:relative;padding-top:9.5rem;margin-left:1.5rem;}
 .ca_bottomRight {float:right;margin-right:2rem;padding-top:0.5rem;}
 .ca_hr {margin-left:10px;margin-right:10px;border:1px; border-color:<?=$hrColor?>; border-top-style:solid;border-right-style:none;border-bottom-style:none;border-left-style:none;}
-.categoryLine {margin-left:10px;margin-top:-15px;font-size:1.5rem;font-weight:normal;color:<?=$unRaid66color?>;}
+.categoryLine {margin-left:10px;margin-top:-15px;font-size:1.5rem;font-weight:normal;color:#6363ca;}
 .searchArea {float:right;z-index:2;width:auto;position:static;}
 .sortIcons {font-size:1.8rem;margin-right:20px;cursor:pointer;}
 ul.caMenu {list-style-type: none;margin:0px 0px 20px 0px;padding: 0;font-size:1.5rem;}
