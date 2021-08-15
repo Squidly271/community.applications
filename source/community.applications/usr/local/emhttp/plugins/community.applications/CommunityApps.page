@@ -674,8 +674,8 @@ function setToolTip() {
 		trigger:'custom',
 		triggerOpen:{click:true,touchstart:true},
 		multiple:true,
-		minWidth:unRaidFontSize*60,
-		maxWidth:unRaidFontSize*60,
+		minWidth:unRaidFontSize*70,
+		maxWidth:unRaidFontSize*70,
 		triggerClose:{click:true},
 		onlyOne:true,
 		functionInit: function(instance,helper) {
@@ -707,8 +707,8 @@ function setToolTip() {
 		trigger:'custom',
 		triggerOpen:{click:true,touchstart:true},
 		multiple:true,
-		minWidth:unRaidFontSize*60,
-		maxWidth:unRaidFontSize*60,
+		minWidth:unRaidFontSize*70,
+		maxWidth:unRaidFontSize*70,
 		triggerClose:{click:true,tap:true},
 		onlyOne:true,
 		functionInit: function(instance,helper) {

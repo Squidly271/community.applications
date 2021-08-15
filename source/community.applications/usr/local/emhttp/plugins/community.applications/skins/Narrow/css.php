@@ -94,9 +94,9 @@ a {color:<?=$aColor?>;}
 .tooltipster-content{color:<?=$tooltipsterContent?>!important}
 body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
 .sweet-alert table{margin-top:0px}
-.popupHolder,.tooltipster-box {max-height:460px;}
+.popupHolder,.tooltipster-box {max-height:500px;}
 .sweet-overlay{background-color:rgba(0, 0, 0, 0) !important;} /* don't dim if spinner is displayed */
-.popupTable{font-size:1.5rem;width:45rem;margin-top:0px;margin-left:auto;}
+.popupTable{font-size:1.5rem;width:55rem;margin-top:0px;margin-left:auto;}
 .popupTable td {width:30%;text-align:left;}
 .ca_LanguageDisclaimer {cursor:pointer;font-size:.9rem;}
 .ca_LanguageDisclaimer:hover {color:<?=$linkColor?>;}
