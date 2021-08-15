@@ -1070,9 +1070,9 @@ function previous_apps() {
 							$fat32Fix[$searchResult]++;
 							if ($fat32Fix[$searchResult] > 1) continue;
 							if ($o['testrepo']) continue;
+							$displayed[] = $o;
 						}
-					}
-					$displayed[] = $o;
+					}					
 				}
 			}
 		} else {
@@ -1120,9 +1120,10 @@ function previous_apps() {
 								break;
 							}
 						}
-					}
+					
 						if ( ! $o['Blacklist'] )
 							$displayed[] = $o;
+					}
 				}
 			}
 		}
