@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.08.08a">
-<!ENTITY md5       "159b56e397273e8d397abde4f7c2798d">
+<!ENTITY version   "2021.08.16">
+<!ENTITY md5       "5222d2300a89fc91b53be8089722d00d">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,14 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.6.2" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.08.16
+- Unraid 6.10.0-rc2 compatibility
+- Fixed: If a plugin failed to install, the update icon would appear
+- More skin improvements
+- Added: Allow outside click to close popup even if below the lowest displayed card
+- Added: Reinstall default now prompts to select a branch if app supports it
+- Changed: Installed / Previous Apps will now show the description the user sets instead of the default one
+
 ###2021.08.08a
 - Fixed: Branches not installing
 - Fixed: Search results didn't include descriptions
