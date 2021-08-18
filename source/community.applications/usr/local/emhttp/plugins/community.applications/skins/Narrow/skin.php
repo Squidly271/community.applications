@@ -138,6 +138,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$ID = $template['ID'];
 			
 			$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
+			$tmpRepo = strpos($tmpRepo,"/") ? $tmpRepo : "library/$tmpRepo";
 			if ( ! filter_var($dockerUpdateStatus[$tmpRepo]['status'],FILTER_VALIDATE_BOOLEAN) ) {
 				$template['UpdateAvailable'] = true;
 			} else { 
@@ -639,6 +640,7 @@ function getPopupDescriptionSkin($appNumber) {
 				if ( $caSettings['dockerRunning'] ) {
 					if ( $selected ) {
 						$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
+						$tmpRepo = strpos($tmpRepo,"/") ? $tmpRepo : "library/$tmpRepo";
 						if ( ! filter_var($dockerUpdateStatus[$tmpRepo]['status'],FILTER_VALIDATE_BOOLEAN) ) {
 							$installLine .= "<div><a class='appIconsPopUp ca_fa-update dockerUpdate' data-name='$name'> ".tr("Update")."</a></div>";
 						}
