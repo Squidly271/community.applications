@@ -1674,7 +1674,8 @@ function post(options,callback) {
 					alert("<?tr("You have been logged out")?>");
 					window.location.reload();
 				}	else {
-					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>"+retval.escapeHTML());
+					
+					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
 					throw new Error("Something went badly wrong!");
 				}
 			}
