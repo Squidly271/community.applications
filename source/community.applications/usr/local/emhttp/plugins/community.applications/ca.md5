@@ -1,7 +1,7 @@
 767d6f2203fed9541daeb57bbf7b58b3  ./Apps.page
 83b3f89cd42e8601c7c217d5b4889c81  ./CA_notices.page
 2cdb7da0d67a11278ada7fd029707738  ./ca_settings.page
-09b5ef42448cc280f279296e4fcbb05a  ./CommunityApps.page
+ba02e0b349a7974c1c9e38eeaf7e4f4d  ./CommunityApps.page
 7c88ace586933a4a60b0ef2f8a97a662  ./default.cfg
 4344942541019c3b5464d508c7f0dd30  ./images/community.applications.png
 6e48a62b91bdd066f023f46c6b491afd  ./images/discord-azure.svg
@@ -9,7 +9,7 @@
 6e48a62b91bdd066f023f46c6b491afd  ./images/discord-gray.svg
 8e7dc33512b8a78f28d7179a972c7c34  ./images/discord-hover.svg
 54e46db492ddb033dfeb2827c5efd4a8  ./images/discord-white.svg
-9ef84ddf9cb08272cfbaeed5c08fcb43  ./include/exec.php
+5aa58127b80715b769bcfd4634b89f34  ./include/exec.php
 00068044737bb1c08f2c0bad98b97646  ./include/helpers.php
 3893704ad833c765384c5fcf3147a7f7  ./include/paths.php
 eb76c1b6ed3da5e5b393f22d2ec18430  ./javascript/libraries.js

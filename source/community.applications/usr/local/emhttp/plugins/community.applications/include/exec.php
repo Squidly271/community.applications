@@ -1182,10 +1182,11 @@ function previous_apps() {
 # Removes an app from the previously installed list (ie: deletes the user template #
 ####################################################################################
 function remove_application() {
-	$application = getPost("application","");
-	if ( pathinfo($application,PATHINFO_EXTENSION) == "xml" || pathinfo($application,PATHINFO_EXTENSION) == "plg" )
-		@unlink($application);
-
+	$application = realpath(getPost("application",""));
+	if ( ! (strpos($application,"/boot/config") === false) ) {
+		if ( pathinfo($application,PATHINFO_EXTENSION) == "xml" || pathinfo($application,PATHINFO_EXTENSION) == "plg" )
+			@unlink($application);
+	}
 	postReturn(['status'=>"ok"]);
 }
 
@@ -1406,6 +1407,11 @@ function removePrivateApp() {
 
 	if ( ! $path || pathinfo($path,PATHINFO_EXTENSION) != "xml") {
 		postReturn(["error"=>"Something went wrong-> not an xml file: $path"]);
+		return;
+	}
+	$path = realpath($path);
+	if ( strpos($path,"/boot/config/community.applications") !== false ) {
+		postReturn(["error"=>"Path not contained within /boot/config/community.applications"]);
 		return;
 	}
 	$templates = readJsonFile($caPaths['community-templates-info']);
@@ -1675,7 +1681,7 @@ function remove_multiApplications() {
 		return;
 	}
 	foreach ($apps as $app) {
-		if ( strpos($app,"/boot/config/") === false ) {
+		if ( strpos(realpath($app),"/boot/config/") === false ) {
 			$error = "Remove multiple apps: $app was not in /boot/config";
 			break;
 		}

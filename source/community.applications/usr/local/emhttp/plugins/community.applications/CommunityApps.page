@@ -1845,7 +1845,7 @@ function updateLanguage(language) {
 	$(".tooltipstered").tooltipster("hide");
 
 	disableSearch();
-	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"refreshDisplay");
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"window.location.reload");
 }
 function removeLanguage(language) {
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"refreshDisplay");
