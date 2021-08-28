@@ -626,7 +626,7 @@ function updateContent(button) {
 			var plugins = $.cookie("ca_plugininstallpending");
 			$.removeCookie("ca_plugininstallpending");
 			myCloseAlert();
-			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugins,"<?tr('Install Plugin Applications')?>",600,900,true);
+			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugins,"<?tr('Install Plugin Applications')?>",600,900,true);
 		} else {
 			if ( result.data ) {
 				updateDisplay(result.data);
@@ -1030,9 +1030,9 @@ function installPlugin(pluginURL,update=false) {
 	$(".tooltipstered").tooltipster("hide");
 	disableSearch();
 	<? if ( $translations ): ?>
-		openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"refreshDisplay");
+		openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"refreshDisplay");
 	<? else: ?>
-		my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"refreshDisplay");
+		my_openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"refreshDisplay");
 	<? endif; ?>
 }
 
@@ -1123,9 +1123,9 @@ function uninstallApp(application,humanName) {
 		if (isConfirm) {
 			application = application.basename();
 			<? if ( $translations ): ?>
-				openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin");
+				openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin");
 			<? else: ?>
-				my_openBox('/plugins/community.applications/scripts/pluginInstall.sh&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin()");
+				my_openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin()");
 			<? endif; ?>
 		} else {
 			enableSearch();
@@ -1462,7 +1462,7 @@ function installMulti() {
 				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
 				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,tr('Install '+makePlural("Application",dockerCount)),600,1100,true);
 			} else {
-				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.sh&arg1='+plugin,tr('Install '+makePlural("Application",pluginCount)),600,900,true);
+				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugin,tr('Install '+makePlural("Application",pluginCount)),600,900,true);
 				enableSearch();
 			}
 		} else {
