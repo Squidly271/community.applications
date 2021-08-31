@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.08.16">
-<!ENTITY md5       "5222d2300a89fc91b53be8089722d00d">
+<!ENTITY version   "2021.08.31">
+<!ENTITY md5       "dcb516be2697022805b53f625a8219b8">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.6.2" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.08.31
+- Security updates
+- Fixed: Always reload CA if installing language updates
+- Fixed: Official containers would always show an update available
+- Added: Basic diagnostics information to 'something really went wrong' message
+
 ###2021.08.16
 - Unraid 6.10.0-rc2 compatibility
 - Fixed: If a plugin failed to install, the update icon would appear
