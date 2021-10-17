@@ -238,8 +238,8 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .ca_webpage::before {content:"\f0ac";font-family:fontAwesome;}
 .changelogMessage{font-size:1rem;line-height:1rem;margin-top:1rem;}
 .cardCategory{font-size:1rem;margin-left:0.75rem;}
-.cardDescription{cursor: pointer;display: block;position: relative;top:0.5rem;max-height: 5rem;overflow: hidden;}
-.cardDesc{display:inline-block;max-height:6rem;overflow:hidden;}
+.cardDescription{cursor: pointer;display: block;position: relative;top:0.5rem;max-height: 7rem;overflow: hidden;}
+.cardDesc{display:inline-block;max-height:7rem;overflow:hidden;}
 .card_readmore{color:<?=$unRaid66color?>;}
 #Category{font-size:2rem;margin-bottom:0.5rem;}
 .changelogTitle{font-size:2rem;line-height:2rem;margin-top:2rem;font-weight:normal;}
@@ -276,7 +276,7 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
  .favCardBackground::before{content:"\f004";font-family:fontAwesome;}
 .homeMore{color:<?=$unRaid66color?>;cursor:pointer;}
 .homeMore:hover{color:#d67777;}
-.homespotlightIconArea{display: inline-block;position: relative;top: -23rem;left: 30rem;cursor:pointer;}
+.homespotlightIconArea{display: inline-block;position: relative;top: -23rem;left: 24rem;cursor:pointer;}
 .hoverMenu {color:<?=$unRaid66color?>;}
 .infoIcon::before{content:"\f05a";font-family:fontAwesome;}
 .infoButton {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
@@ -383,7 +383,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .spinnerBackground {position:fixed;top:0;left:0;width:100%;height:100vh;display:none;background:transparent;z-index:9999;}
 .spotlightDate{font-size:1.5rem;}
 .spotlightCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
-.spotlightHome{min-width:45rem !important;max-width:45rem !important;height:24rem !important;margin-bottom:1rem;}
+.spotlightHome{min-width:36rem !important;max-width:36rem !important;height:24rem !important;margin-bottom:1rem;}
 .spotlightPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
 .spotlightHeader{font-size:2rem;}
 .spotlightIconArea{display:inline-block;float:left;width:10rem;}
