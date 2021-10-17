@@ -693,13 +693,15 @@ function get_content() {
 					$display[] = $spot;
 				}
 				if ( $displayApplications['community'] ) {
-
 					$o['display'] .= "<div class='ca_homeTemplatesHeader'>{$type['text1']}</div>";
 					$o['display'] .= "<div class='ca_homeTemplatesLine2'>{$type['text2']} ";
 					if ( $type['cat'] )
 						$o['display'] .= "<span class='homeMore' data-des='{$type['text1']}' data-category='{$type['cat']}' data-sortby='{$type['sortby']}' data-sortdir='{$type['sortdir']}'>".tr("SHOW MORE");
 					$o['display'] .= "</div>";
 					$homeClass = $type['type'] == "spotlight" ? "caHomeSpotlight" : "";
+					if ( $caSettings['descriptions'] == "yes" )
+						$homeClass = "caHomeSpotlight";
+					
 					$o['display'] .= "<div class='ca_homeTemplates $homeClass'>".my_display_apps($display,"1")."</div>";
 					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();$('.ca_holder').addClass('mobileHolderFix');";
 

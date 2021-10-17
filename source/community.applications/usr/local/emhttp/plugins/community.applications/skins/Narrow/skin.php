@@ -664,7 +664,10 @@ function displayCard($template) {
 	}
 
 	extract($template);
-
+	
+	if ( $caSettings['descriptions'] == "yes" )
+		$class="spotlightHome";
+	
 	$appType = $Plugin ? "appPlugin" : "appDocker";
 	$appType = $Language ? "appLanguage": $appType;
 	$appType = (strpos($Category,"Drivers") !== false) && $Plugin ? "appDriver" : $appType;
@@ -776,6 +779,7 @@ function displayCard($template) {
 		</div>
 		";
 	if ( $class=='spotlightHome' ) {
+		$Overview = $Overview ?: $Description;
 		$ovr = html_entity_decode($Overview);
 		$ovr = trim($ovr);
 		$ovr = str_replace(["[","]"],["<",">"],$ovr);
@@ -786,13 +790,15 @@ function displayCard($template) {
 
 		$ovr = str_replace("\n","<br>",$ovr);
 		$Overview = explode("<br>",$ovr)[0];
-		$card .= "
-			<div class='cardDescription ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>
-			<div class='homespotlightIconArea ca_center' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
-				<div><img class='spotlightIcon' src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Unraid.svg'></img></div>
-				<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
-			</div>
-		";
+		$card .= "<div class='cardDescription ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
+		if ( $RecommendedDate ) {
+			$card .= "
+				<div class='homespotlightIconArea ca_center' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
+					<div><img class='spotlightIcon' src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Unraid.svg'></img></div>
+					<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
+				</div>
+			";
+		}
 	}
 	$card .= "</div>";
 	if ( $Installed ) {
