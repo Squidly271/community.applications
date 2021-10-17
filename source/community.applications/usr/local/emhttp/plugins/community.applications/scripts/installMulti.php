@@ -7,16 +7,13 @@
 ###############################################################
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
-if ( $translations ) {
-	$_SERVER['REQUEST_URI'] = "docker/apps";
-	require_once "$docroot/plugins/dynamix/include/Translations.php";
-}
+$_SERVER['REQUEST_URI'] = "docker/apps";
+require_once "$docroot/plugins/dynamix/include/Translations.php";
 
 require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 
 $unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
-$translations  = is_file("$docroot/plugins/dynamix/include/Translations.php");
 
 function tr($string,$ret=true) {
 	if ( function_exists("_") )

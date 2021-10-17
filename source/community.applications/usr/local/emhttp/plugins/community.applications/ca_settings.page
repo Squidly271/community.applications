@@ -1,6 +1,5 @@
 Menu="hidden"
 Title="Community Applications"
-Icon="community.applications.png"
 ---
 <?
 ###############################################################
@@ -57,21 +56,13 @@ function tr($string,$ret=false) {
 
 > <?tr("This setting will hide applications that are listed as being incompatible with your version of Unraid");?>
 
-<?tr("Enable Reinstall Default:");?>
+<?tr("Allow install of second instance:");?>
 : <select name='defaultReinstall' size='1'>
 	<?=mk_option($cfg['defaultReinstall'],'false',tr("No",true))?>
 	<?=mk_option($cfg['defaultReinstall'],'true',tr("Yes",true))?>
 	</select>
 
 > <?tr("This option enables another button on the cards and popups which will allow you to reinstall an installed application using it's default template values.  This option can be confusing at times, and is only generally used if you wish to install and have an application running twice simultaneously");?>
-
-<?tr("Enable additional search results from dockerHub:");?>
-: <select name="dockerSearch" size="1">
-	<?=mk_option($cfg['dockerSearch'], "no", tr("No",true))?>
-	<?=mk_option($cfg['dockerSearch'], "yes", tr("Yes",true))?>
-	</select>
-
-> <?tr("This setting enables CA to retrieve additional search results from dockerHub.  Note that docker must be enabled for this to be operational");?>
 
 <?tr("Allow CA to check for updates to applications:");?>
 : <select name="updateCheck" size="1">
@@ -99,6 +90,14 @@ function tr($string,$ret=false) {
 	</select>
 	
 > <?tr("Only enable this when advised to from the author of Community Applications")?>
+
+<?tr("Enable developer mode:");?>
+: <select name='dev' size='1'>
+	<?=mk_option($cfg['dev'],"no",tr("No",true))?>
+	<?=mk_option($cfg['dev'],"yes",tr("Yes",true))?>
+	</select>
+	
+> <?tr("This unlocks some extra features within CA generally only used by developers.  Not recommended to enable")?>
 
 &nbsp;
 : <input type="submit" name="#apply" value="<?tr("Apply");?>" id='Apply'><input type="button" id="DONE" value="<?tr("Done");?>" onclick="done()">

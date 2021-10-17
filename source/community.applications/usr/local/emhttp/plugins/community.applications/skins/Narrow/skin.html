@@ -1,8 +1,8 @@
-<div id="Category" class="categoryLine ca_italic">&nbsp;</div>
+<div class='spinnerBackground'></div>
 <div class='menuItems'>
 <ul class='caMenu '>
-	<li class='caMenuItem clearSearch caMenuDisabled onlyShowWithFeed'><?tr("Clear Search");?></li>
-	<hr class='category_hr'>
+	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='new'><?tr("Home");?></li>
+	<hr class='onlyShowWithFeed'>
 	<li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='installed_apps'><?tr("Installed Apps");?></li>
 	<ul class='subCategory onlyShowWithFeed'>
 		<li class='caMenuItem sectionMenu onlyShowWithFeed dockerSpecific' data-category='inst_docker'><?tr("Docker");?></li>
@@ -16,12 +16,7 @@
 	<li class='caMenuItem sectionMenu caPinnedMenu onlyShowWithFeed' data-category='pinned_apps'><?tr("Pinned Apps");?></li>
 	<li class='caMenuItem favouriteRepo onlyShowWithFeed'><?tr("Favourite Repo");?></li>
 	<hr class='onlyShowWithFeed'>
-	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='onlynew'><?tr("New Apps");?></li>
-	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='new'><?tr("Updated Apps");?></li>
-	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='random'><?tr("Random Apps");?></li>
-	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='topperforming'><?tr("Top New Installs");?></li>
-	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='trending'><?tr("Trending Apps");?></li>
-<hr class='onlyShowWithFeed'>
+
 	<span id='category_list' class='onlyShowWithFeed'></span>
 	<li class='categoryMenu caMenuItem allApps onlyShowWithFeed' data-category='All'><?tr("All Apps");?></li>
 	<hr class='category_hr'>
@@ -49,11 +44,16 @@
 </span>
 <div class='mainArea'>
 <div class='spinner fixed'></div>
-<div class='multi_installDiv'><span class='multi_deleteButton' style='float:right;visibility:hidden;'><a class='ca_fa-delete' style='font-size:2.5rem;'></a></span><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='<?tr("Install Selected Applications");?>' disabled><input type='button' class='multi_installAll' value='<?tr("Select all on page")?>'><input type='button' class='multi_installClear' value='<?tr("Clear");?>' disabled></div></div>
 <strong><font size='3'></strong></font>
-<div class='dockerSearch' style='display:none'><div class='ca_center'><i class='fa fa-docker initDockerSearch' style='font-size:5rem;color:DarkCyan;cursor:pointer;'></i><br><a class='initDockerSearch' style='cursor:pointer;'><?tr("Click Here To Get More Results From DockerHub");?></a></div></div>
+<div class='searchArea onlyShowWithFeed'><span id='searchFilter'><input type='text' id='searchBox' placeholder='<?tr('Search')?>'><span class='searchSubmit' onclick='doSearch(true)'><i id='searchButton' class='fa fa-search fa-lg'></i></span>
+</div>
+<div id="Category" class="categoryLine">&nbsp;
+</div>
+	<div class='dockerSearch' style='display:none'><a class='initDockerSearch'><?tr("Click Here To Get More Results From DockerHub");?></a></div>
+
+<div id='sortIconArea' style='display:none;'><?tr("Sort By:")?> <a id='defaultSort' class='sortIcons enabledIcon' data-sortBy='Name' data-sortDir='Up'><?tr("Name Ascending")?></a><a class='sortIcons' data-sortBy='Name' data-sortDir='Down'><?tr("Name Descending")?></a><a class='sortIcons' data-sortBy='downloads' data-sortDir='Down'><?tr("Downloads")?></a><a class='sortIcons' data-sortBy='FirstSeen' data-sortDir='Down'><?tr("Date Added")?></a></span></div>
 <div id='templates_content'><div class='ca_templatesDisplay'><font size='6'><?tr("Updating Content");?></font></div></div>
-<div class='multi_installDiv'><div class='ca_center'><input class='multi_install multi_installButton' type='button' value='<?tr("Install Selected Applications");?>' disabled><input type='button' class='multi_installAll' value='<?tr("Select all on page")?>'><input type='button' class='multi_installClear' value='<?tr("Clear")?>' disabled></div></div>
+<div class='multi_installDiv'><input class='multi_install multi_installButton' type='button' value='<?tr("Install Selected Applications");?>' disabled><input type='button' class='multi_installAll' value='<?tr("Select all on page")?>'><input type='button' class='multi_installClear' value='<?tr("Clear")?>' disabled><input type='button' class='multi_deleteButton' style='visibility:hidden;' value='<?tr("Delete")?>'></input></div>
 </div>
 </div>
 <span id='debugging'></span>
@@ -70,7 +70,7 @@
 		<div class='ca_center ca_creditheader'><?tr("Application Feed");?></div>
 		<div class='ca_center ca_credit'>Andrew Zawadzki, Kode, Limetech</div>
 		<div class='ca_center ca_creditheader'><?tr("Additional Testing");?></div>
-		<div class='ca_center ca_credit'>CHBMB, SpaceInvaderOne, Sparklyballs, wgstarks, DJoss, Zer0Nin3r, Mex, prostuff1, bonienl, ljm42, kizer, trurl, Jos, Limetech</div>
+		<div class='ca_center ca_credit'>CHBMB, SpaceInvaderOne, Sparklyballs, wgstarks, DJoss, Zer0Nin3r, Mex, prostuff1, bonienl, ljm42, kizer, trurl, Jos, Limetech, SimonF, ich777, jimmy898, Alex.b, neruve, Eugeni_CAT, ChaseCares, TheEyeTGuy</div>
 		<div class='ca_center ca_creditheader'><?tr("Additional Libraries");?></div>
 		<div class='ca_center ca_credit'>Awesomeplete (Lea Verou)<br>Chart.js (various)<br>chartjs-plugin-trendline (Marcus Alsterfjord)<br>XML2Array/Array2XML (Miles Johnson)<br>sprintf.js (Alexandru Mărășteanu) (&lt; Unraid 6.10 only)</div>
 		<br>

@@ -183,12 +183,6 @@ function searchArray($array,$key,$value,$startingIndex=0) {
 	}
 	return $result;
 }
-#############################
-# Highlights search results #
-#############################
-function highlight($text, $search) {
-	return preg_replace('#'. preg_quote($text,'#') .'#si', '<span class="caHighlight">\\0</span>', $search);
-}
 ########################################################
 # Fix common problems (maintainer errors) in templates #
 ########################################################
@@ -239,7 +233,7 @@ function makeXML($template) {
 		$template['@attributes'] = array("version"=>2);
 
 	if ($template['Overview']) $template['Description'] = $template['Overview'];
-	
+
 	fixAttributes($template,"Network");
 	fixAttributes($template,"Config");
 
@@ -541,9 +535,10 @@ function fixDescription($Description) {
 ############################
 # displays the branch tags #
 ############################
-function formatTags($leadTemplate) {
+function formatTags($leadTemplate,$rename="false") {
 	global $caPaths;
 
+	$type = $rename == "true" ? "second" : "default";
 	$file = readJsonFile($caPaths['community-templates-info']);
 	$template = $file[$leadTemplate];
 	$childTemplates = $file[$leadTemplate]['BranchID'];
@@ -551,11 +546,11 @@ function formatTags($leadTemplate) {
 		$o =  tr("Something really went wrong here");
 	else {
 		$defaultTag = $template['BranchDefault'] ? $template['BranchDefault'] : "latest";
-		
+
 		$o = "<table>";
-		$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a class='appIconsPopUp xmlInstall ca_normal' data-type='default' data-xml='{$template['Path']}'>Default</a></td><td class='appIconsPopUp xml Install ca_normal' data-type='default' data-xml='{$template['Path']}'>".tr("Install Using The Template's Default Tag")." (<span class='ca_bold'>:$defaultTag</span>)</td></tr>";
+		$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a class='appIconsPopUp xmlInstall ca_normal' data-type='$type' data-xml='{$template['Path']}'>Default</a></td><td class='appIconsPopUp xml Install ca_normal' data-type='default' data-xml='{$template['Path']}'>".tr("Install Using The Template's Default Tag")." (<span class='ca_bold'>:$defaultTag</span>)</td></tr>";
 		foreach ($childTemplates as $child) {
-			$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a class='appIconsPopUp xmlInstall ca_normal' data-type='default' data-xml='{$file[$child]['Path']}'>{$file[$child]['BranchName']}</a></td><td class='appIconsPopUp xmlInstall ca_normal' data-type='default' data-xml='{$file[$child]['Path']}'>{$file[$child]['BranchDescription']}</td></tr>";
+			$o .= "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a class='appIconsPopUp xmlInstall ca_normal' data-type='$type' data-xml='{$file[$child]['Path']}'>{$file[$child]['BranchName']}</a></td><td class='appIconsPopUp xmlInstall ca_normal' data-type='default' data-xml='{$file[$child]['Path']}'>{$file[$child]['BranchDescription']}</td></tr>";
 		}
 		$o .= "</table>";
 	}
@@ -583,16 +578,13 @@ function postReturn($retArray) {
 ####################################
 if ( ! function_exists("tr") ) {
 	function tr($string,$options=-1) {
-		if ( function_exists("_") ) {
-			$translated = _($string,$options);
-			if ( startsWith($translated,"&#34;") && endsWith($translated,"&#34;") )
-				$translated = first_str_replace(last_str_replace($translated,"&#34;",""),"&#34;","");
+		$translated = _($string,$options);
+		if ( startsWith($translated,"&#34;") && endsWith($translated,"&#34;") )
+			$translated = first_str_replace(last_str_replace($translated,"&#34;",""),"&#34;","");
 
-			$translated =  str_replace('"',"&#34;",str_replace("'","&#39;",$translated));
+		$translated =  str_replace('"',"&#34;",str_replace("'","&#39;",$translated));
 
-			return $translated;
-		}
-		return $string;
+		return $translated;
 	}
 }
 #############################

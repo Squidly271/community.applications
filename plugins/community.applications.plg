@@ -2,17 +2,42 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.08.31">
-<!ENTITY md5       "dcb516be2697022805b53f625a8219b8">
+<!ENTITY version   "2021.10.17">
+<!ENTITY md5       "345ae536972b749de9efe2717ba04dbb">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
 ]>
 
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.6.2" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.10.17
+- Complete overhaul of GUI
+- Fixed: Disable categories after performing a dockerHub search
+- Removed: Compatibility with OS versions prior to 6.9.0
+- Fixed: Attempting to sort a repository display would return errors if only a single repository was present
+- Added: When installing a second instance, automatically change the app name
+- Changed: Priority of support options is now Project, Discord, Support Forum
+- Removed: Help text (unnecessary with replacement GUI)
+- Fixed: Setting a favourite repository would change all of CA's settings back to defaults
+- Added: Support ReadMe files on templates
+- Fixed: Multiple instances of apps installed using the same tag would only appear once within installed apps
+- Removed: dockerHub searches (See release post)
+- Fixed: All steamcmd apps would show as being installed if any of them were.
+- Changed: Dim background on any sweet alerts (eg: choose branch)
+- Fixed: Display aberrations if app's name didn't fit within designated area
+- Fixed: Entering a search term (but not searching for it) followed by selecting a category would return errors
+- Added: Languages show up within Installed Apps (plugins subsection)
+- Added: Identification of apps which are currently installed
+- Fixed: Second instance would show up within Previous Apps (and give installed options) if original instance was installed, then second instance was not installed and both used the same tag
+- Added: Fatal error if docker image / folder is either completely full or mounted read-only
+- Fixed: Hover area / click area of left menus extended into blank area to the right
+- Fixed: Deleting the entire private repository storage location (/boot/config/plugins/community.applications/private) would result in the private applications still appearing until the next appfeed update
+- Fixed: Various issues related to installing 2nd instances
+- Rediscovered: A profound appreciation of the phrase 'Nothing takes 5 minutes'
+
 ###2021.08.31
 - Security updates
 - Fixed: Always reload CA if installing language updates

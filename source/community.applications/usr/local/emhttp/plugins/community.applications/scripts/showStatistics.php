@@ -12,18 +12,13 @@ require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 require_once "$docroot/plugins/dynamix/include/Helpers.php";
 
-$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
-
-if ( $translations ) {
-	$_SERVER['REQUEST_URI'] = "docker/apps";
-	require_once "$docroot/plugins/dynamix/include/Translations.php";
-}
+$_SERVER['REQUEST_URI'] = "docker/apps";
+require_once "$docroot/plugins/dynamix/include/Translations.php";
 
 require_once "$docroot/plugins/community.applications/include/helpers.php";
 
 function tr($string,$ret=true) {
-	if ( function_exists("_") )
-		$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
+	$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
 	if ( $ret )
 		return $string;
 	else

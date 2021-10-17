@@ -3,3 +3,2161 @@ Name="Apps"
 Type="xmenu"
 Tabs="true"
 Code="e942"
+---
+<?
+###############################################################
+#                                                             #
+# Community Applications copyright 2015-2021, Andrew Zawadzki #
+#                   Licenced under GPLv2                      #
+#                                                             #
+###############################################################
+
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
+$plugin = "community.applications";
+
+require_once "$docroot/plugins/$plugin/include/paths.php";
+require_once "$docroot/plugins/$plugin/include/helpers.php";
+
+// Restart logging over at start of every session
+exec("rm -rf {$caPaths['CA_logs']}");
+exec("mkdir -p {$caPaths['CA_logs']}");
+$diagnosticsFile = htmlspecialchars(str_replace(' ','_',strtolower($var['NAME'])));
+
+$cfg = parse_plugin_cfg($plugin);
+$cfg['dockerSearch'] = "yes";
+if ( ! is_file($caPaths['warningAccepted']) ) {
+	$firstRun = "true";
+}
+if ( ! is_file($caPaths['pluginWarning']) ) {
+	$pluginWarning = "false";
+}
+
+if ( ! is_file($caPaths['docker_cfg']) ) {
+	exec("logger -t 'Community Applications' 'Fatal Flash Drive Error: /boot/config/docker.cfg does not exist'");
+}
+
+if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) )
+	$writeTest = @file_put_contents($caPaths['dockerWriteTest'],"Oscar");
+	
+$unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
+$unRaid610      = version_compare($unRaidSettings['version'],"6.10.0-beta17",">");
+
+// Check md5's of files
+exec("cd /usr/local/emhttp/plugins/$plugin/ && md5sum -c ca.md5",$output,$md5Error);
+
+$previousLocale = $_COOKIE["locale"];
+
+switch ($theme) {
+	case 'black':
+		$swalBackground = "black";
+		$tooltipsterContent = "#f2f2f2";
+		$chartGrid = "#222222";
+		break;
+	case 'azure':
+		$swalBackground = "white";
+		$tooltipsterContent = "#101010";
+		$chartGrid = "#dddddd";
+
+		break;
+	case 'gray':
+		$swalBackground = "black";
+		$tooltipsterContent = "#f2f2f2";
+		$chartGrid = "#222222";
+		break;
+	case 'white':
+		$swalBackground = "white";
+		$tooltipsterContent = "#101010";
+		$chartGrid = "#dddddd";
+		break;
+	default:
+		$swalBackground = "black"; // default to black.  This should only be when someone adds a new theme.  It is NOT the default that the OS uses
+		$tooltipsterContent = "#f2f2f2";
+		$chartGrid = "#222222";
+		break;
+}
+
+if ( is_file($caPaths['addConverted']) ) {
+	$dockerConvertFlag = "true";
+}
+$date = (date("n/d"));
+
+$startupDisplayed = is_file($caPaths['startupDisplayed']) ? "true" : "false";
+if ( $startupDisplayed == "true" && $_COOKIE['ca_languageSwitch'] ) {
+	$killCookie = "true";
+}
+
+// Only check for updates to containers / plugins max once per hour
+exec("mkdir -p {$caPaths['tempFiles']}");
+if ( $cfg['updateCheck'] == "yes" ) {
+	if ( ( time() - @filemtime($caPaths['updateTime']) ) > 3600 ) {
+		touch($caPaths['updateTime']);
+		exec("echo '/usr/local/emhttp/plugins/community.applications/scripts/checkForUpdates.php >/dev/null 2>&1' | at now >/dev/null");
+	}
+}
+
+function tr($string,$ret=false) {
+	$string = str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
+	if ( $ret )
+		return $string;
+	else
+		echo $string;
+}
+
+?>
+
+<link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
+<? if ( is_file("$docroot/plugins/dynamix/styles/community.applications-$theme.css") ):?>
+<link type='text/css' rel='stylesheet' href='<?=autov("/plugins/dynamix/styles/community.applications-$theme.css")?>'>
+<? endif; ?>
+
+<script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
+<script src='<?autov("/plugins/dynamix.docker.manager/javascript/docker.js")?>'></script>
+<?if (!$unRaid610):?>
+<script>
+	/*! sprintf-js v1.1.2 | Copyright (c) 2007-present, Alexandru Mărășteanu <hello@alexei.ro> | BSD-3-Clause */
+	!function(){"use strict";var g={not_string:/[^s]/,not_bool:/[^t]/,not_type:/[^T]/,not_primitive:/[^v]/,number:/[diefg]/,numeric_arg:/[bcdiefguxX]/,json:/[j]/,not_json:/[^j]/,text:/^[^\x25]+/,modulo:/^\x25{2}/,placeholder:/^\x25(?:([1-9]\d*)\$|\(([^)]+)\))?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-gijostTuvxX])/,key:/^([a-z_][a-z_\d]*)/i,key_access:/^\.([a-z_][a-z_\d]*)/i,index_access:/^\[(\d+)\]/,sign:/^[+-]/};function y(e){return function(e,t){var r,n,i,s,a,o,p,c,l,u=1,f=e.length,d="";for(n=0;n<f;n++)if("string"==typeof e[n])d+=e[n];else if("object"==typeof e[n]){if((s=e[n]).keys)for(r=t[u],i=0;i<s.keys.length;i++){if(null==r)throw new Error(y('[sprintf] Cannot access property "%s" of undefined value "%s"',s.keys[i],s.keys[i-1]));r=r[s.keys[i]]}else r=s.param_no?t[s.param_no]:t[u++];if(g.not_type.test(s.type)&&g.not_primitive.test(s.type)&&r instanceof Function&&(r=r()),g.numeric_arg.test(s.type)&&"number"!=typeof r&&isNaN(r))throw new TypeError(y("[sprintf] expecting number but found %T",r));switch(g.number.test(s.type)&&(c=0<=r),s.type){case"b":r=parseInt(r,10).toString(2);break;case"c":r=String.fromCharCode(parseInt(r,10));break;case"d":case"i":r=parseInt(r,10);break;case"j":r=JSON.stringify(r,null,s.width?parseInt(s.width):0);break;case"e":r=s.precision?parseFloat(r).toExponential(s.precision):parseFloat(r).toExponential();break;case"f":r=s.precision?parseFloat(r).toFixed(s.precision):parseFloat(r);break;case"g":r=s.precision?String(Number(r.toPrecision(s.precision))):parseFloat(r);break;case"o":r=(parseInt(r,10)>>>0).toString(8);break;case"s":r=String(r),r=s.precision?r.substring(0,s.precision):r;break;case"t":r=String(!!r),r=s.precision?r.substring(0,s.precision):r;break;case"T":r=Object.prototype.toString.call(r).slice(8,-1).toLowerCase(),r=s.precision?r.substring(0,s.precision):r;break;case"u":r=parseInt(r,10)>>>0;break;case"v":r=r.valueOf(),r=s.precision?r.substring(0,s.precision):r;break;case"x":r=(parseInt(r,10)>>>0).toString(16);break;case"X":r=(parseInt(r,10)>>>0).toString(16).toUpperCase()}g.json.test(s.type)?d+=r:(!g.number.test(s.type)||c&&!s.sign?l="":(l=c?"+":"-",r=r.toString().replace(g.sign,"")),o=s.pad_char?"0"===s.pad_char?"0":s.pad_char.charAt(1):" ",p=s.width-(l+r).length,a=s.width&&0<p?o.repeat(p):"",d+=s.align?l+r+a:"0"===o?l+a+r:a+l+r)}return d}(function(e){if(p[e])return p[e];var t,r=e,n=[],i=0;for(;r;){if(null!==(t=g.text.exec(r)))n.push(t[0]);else if(null!==(t=g.modulo.exec(r)))n.push("%");else{if(null===(t=g.placeholder.exec(r)))throw new SyntaxError("[sprintf] unexpected placeholder");if(t[2]){i|=1;var s=[],a=t[2],o=[];if(null===(o=g.key.exec(a)))throw new SyntaxError("[sprintf] failed to parse named argument key");for(s.push(o[1]);""!==(a=a.substring(o[0].length));)if(null!==(o=g.key_access.exec(a)))s.push(o[1]);else{if(null===(o=g.index_access.exec(a)))throw new SyntaxError("[sprintf] failed to parse named argument key");s.push(o[1])}t[2]=s}else i|=2;if(3===i)throw new Error("[sprintf] mixing positional and named placeholders is not (yet) supported");n.push({placeholder:t[0],param_no:t[1],keys:t[2],sign:t[3],pad_char:t[4],align:t[5],width:t[6],precision:t[7],type:t[8]})}r=r.substring(t[0].length)}return p[e]=n}(e),arguments)}function e(e,t){return y.apply(null,[e].concat(t||[]))}var p=Object.create(null);"undefined"!=typeof exports&&(exports.sprintf=y,exports.vsprintf=e),"undefined"!=typeof window&&(window.sprintf=y,window.vsprintf=e,"function"==typeof define&&define.amd&&define(function(){return{sprintf:y,vsprintf:e}}))}();
+</script>
+<?endif;?>
+<script>
+
+var searchBoxInput;
+var searchBoxAwesomplete;
+var pluginInstallIntervalTimer;
+var showRepoIntervalTimer;
+
+var data = new Object();
+data.docker = "";
+data.section = "AppStore";
+data.selected_category = "";
+data.subcategory = "";
+data.selected_subcategory = "";
+data.selected = "";
+data.lastUpdated = 0;
+data.nextpage = 0;
+data.prevpage = 0;
+data.currentpage = 1;
+data.searchFlag = false;
+data.searchActive = false; // Sets whether changepage re-sorts the displayed templates.
+data.previousAppsSection = ""; // The section the user is on within previous apps
+var dockerNotEnabled;
+var postCount = 0;
+var cookieWarning = false;
+var dockerWarningAdded = false;
+var backupServerWarning = false;
+var restoreStateMenu = false;
+var initialStartup = true;
+var repoBanner = false;
+var repoBannerTimer = false;
+var unRaidFontSize = $("html").css("font-size").replace("px","");
+var resizeTimer;
+
+$(function(){
+	window.onerror = function(msg,url,lineNo,columnNo, error) {
+		post({action:'javascriptError',msg:msg,url:url,lineNo:lineNo,columnNo:columnNo,error:error});
+	}
+
+	if ( "<?=$killCookie?>" == "true" ) { // This is needed so that if language gets switched on the home page the home page gets regenerated correctly
+		$.cookie("ca_languageSwitch","");
+	}
+
+	<? if ( $cfg['debugging'] == "yes" ):?>
+		addBannerWarning("<?tr("Debugging enabled.  This significantly increases the memory used by your browser");?>"),true,true;
+	<?endif;?>
+	<? if ( ! is_file($caPaths['docker_cfg']) ): ?>
+		// This file is guaranteed to exist on the flash drive.  Even though 6.10Beta3+ includes similar code, keep this code because CA just can't function properly with a flash offline / corrupted.
+		$(".mainArea,.menuItems").html("");
+		swal({
+			title: "<?tr("Fatal Flash Drive Error")?>",
+			text: '<?tr('This usually means your flash drive is corrupted or has dropped offline.  The rest of the Unraid GUI will also be affected.  Post a new thread in the Unraid forums if this error continues')?>',
+			html: true,
+			type: 'error',
+			showCancelButton: false,
+			showConfirmButton: true,
+			confirmButtonText: "<?tr('OK')?>"
+		}, function (isConfirm) {
+			if ( isConfirm ) {
+				location.replace("/Main");
+			}
+		});
+		return;
+	<?endif;?>
+	
+	//abort execution if a write to the docker image failed
+	<? if ( $writeTest === false ): ?>
+		$(".mainArea,.menuItems").html("");
+		swal({
+			title: "<?tr("Fatal Docker Image Error")?>",
+			text: "<?tr("Your docker image or folder is either read-only or completely full.  Issues will result because of this.  You should create a new post in the Unraid forums and include your diagnostics")?>",
+			html: true,
+			type: 'error',
+			showCancelButton: false,
+			showConfirmationButton: true,
+			confirmButtonText: "<?tr("OK")?>"
+		}, function (isConfirm) {
+			location.replace("/Main");
+		});
+		return;
+	<?endif;?>
+	
+	caPluginUpdateCheck("community.applications.plg",{
+			noDismiss:true,
+			name:"Community Applications",
+			debug:false,
+			priority:true
+		},function(result) {
+			var result = JSON.parse(result);
+			$("#caInstalledVersion").html(result.installedVersion);
+		}
+	);
+
+// Override the OS switch language function so that CA can save it's current state when switching via the OS
+	$(".LanguageButton").find("a").attr("onclick","CAswitchLanguage('<?=$previousLocale?>')");
+
+	$("body").append("<div class='sidebar'><div class='sidebarClose'></div><div class='sidenav sidenavHide'><div id='sidenavContent'></div></div>");
+
+	searchBoxInput = document.getElementById("searchBox");
+	searchBoxAwesomplete = new Awesomplete(searchBoxInput);
+
+	if ( "<?=$date?>" == "12/24" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> <?tr("Happy Holidays from Andrew, Tracey, and family")?> <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
+	if ( "<?=$date?>" == "12/25" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> <?tr("Happy Holidays from Andrew, Tracey, and family")?> <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
+	if ( "<?=$date?>" == "1/01" )  addBannerWarning("<?tr("Happy New Year!")?>",false);
+	if ( "<?=$date?>" == "12/31" ) addBannerWarning("<?tr("Happy New Year!")?> <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> <?tr("Please Enjoy Responsibly")?>",false);
+
+	context.init({preventDoubleContext:false,left:false,above:true,right:false,bottom:true});
+
+	$(".sidebarClose").on("click",function(e) {
+		closeSidebar();
+	});
+
+	$("#searchBox").keydown(function(e) { // Allow ESC key to exit from tooltipster popups
+		if (e.which === 13) {
+			searchBoxAwesomplete.close();
+			checkSortOrder();
+			doSearch();
+		}
+	});
+
+	$('body').keydown(function(e) {
+		if (e.which === 27) {
+			closeSidebar();
+		}
+	});
+
+	$('.caChangeLog').on("click",function() {disableSort();scrollToTop();caChangeLog();});
+	$('.mainArea').on("click",'.ca_multiselect',function() {enableMultiInstall();});
+
+	$('#sidenavContent').on("click",".unpinned,.pinned",function() {
+		var repository = $(this).data("repository");
+		var name = $(this).data("name");
+		pinApp(this,repository,name);
+	});
+
+	$('.mainArea').on("click",".ca_favouriteRepo",function() {
+		$(".ca_fav").removeClass("ca_favouriteRepo").addClass("ca_non_favouriteRepo");
+		$(".ca_holderFav").removeClass("ca_holderFav");
+		$(this).removeClass("ca_favouriteRepo").addClass("ca_non_favouriteRepo");
+		setToolTipForFavourite();
+		post({action:'toggleFavourite',repository:""},function(data) {
+			clearTimeout(repoBannerTimer);
+			if ( repoBanner !== false ) {
+				removeBannerWarning(repoBanner);
+			}
+			repoBanner = addBannerWarning("<?tr("Removed favourite repository");?>",false,true);
+			repoBannerTimer = setTimeout(function(){
+				removeBannerWarning(repoBanner);
+				repoBanner = false;
+			},5000);
+			setFavRepoSearch();
+		});
+	});
+
+	$('.mainArea').on("click",".ca_href",function() {
+		var href = $(this).attr("data-href");
+		var target = $(this).attr("data-target");
+		if ( ! target ) target = "_blank";
+		window.open(href,target);
+	});
+
+	$('body').on("click",".dockerUpdate",function() {
+		var container = $(this).attr("data-name");
+		updateDocker(container);
+	});
+
+
+	$('body').on("click",".fav,.nonfav",function() {
+		setFavourite(this);
+	});
+
+	$('body').on("click",".ca_repoSearch,.ca_repoSearchPopUp",function() {
+		closeSidebar();
+		var repo = $(this).data("repository");
+		checkSortOrder();
+		doSearch(false,repo);
+	});
+
+	$('.favouriteRepo').on("click",function() {
+		if ( $(this).hasClass("caMenuDisabled") )
+			return;
+		var repo = $(this).attr("data-repository");
+		checkSortOrder();
+		doSearch(false,repo);
+	});
+
+	$('body').on("click",".xmlInstall",function() {
+		var type = $(this).data("type");
+		var xml = $(this).data("xml");
+
+		saveState();
+		post({action:'createXML',xml:xml,type:type},function(result){
+			if ( result.status == "ok" ) {
+				if (type == "second")
+					type = "default"
+				
+				openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
+			}
+		});
+	});
+
+	$('body').on("click",".displayTags",function() {
+		var id = $(this).data("id");
+		displayTags(id);
+	});
+
+	$('body').on("click",".pluginInstall",function() {
+		var plugin = $(this).data("url");
+		var type = $(this).data("update") ? true : false;
+		installPlugin(plugin,type);
+	});
+
+
+	$("body").on("click",".uninstallApp",function() {
+		var type = $(this).data("type");
+		var name = $(this).data("name");
+		var app = $(this).data("app");
+		switch (type) {
+			case "docker":
+				uninstallDocker(app,name);
+				break;
+			case "plugin":
+				uninstallApp(app,name);
+				break;
+		}
+	});
+
+	$("body").on("click",".repoPopup,.ca_repoinfo,.ca_reporeadmore,.ca_repoFromPopUp", function() {
+		context.destroy("#supportPopup");
+		context.destroy("#actionsPopup");
+		if ( ! $(".sidebar").is(":visible") ) {
+			$.cookie("sidebarAppName","");
+			$.cookie("sidebarAppPath","");
+			var fromCard = true;
+		}
+
+		$("#sidenavContent").html("");
+		var repository = $(this).data("repository");
+		$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
+		$(".sidebar").fadeIn();
+		$("body").css("overflow","hidden");
+		post({action:'getRepoDescription',repository:repository},function(data) {
+			$("#sidenavContent").html(data.description);
+			$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"});
+			if (fromCard) {
+				$(".popUpBack").hide();
+			}
+		});
+	});
+
+
+	$('body').on("click",".ca_appPopup,.cardDescription,.homespotlightIconArea",function() {
+		if ( $(".dropdown-menu").is(":visible") ) {
+			$(".dropdown-menu").hide();
+			return;
+		}
+
+		$("body").css("overflow","hidden");
+
+		var apppath = $(this).data("apppath");
+		var appname = $(this).data("appname");
+		appname = stripTags(appname);
+
+		showSidebarApp(apppath,appname);
+
+	});
+
+	$('.menuItems').on("click",'.categoryMenu',function() {
+		var menu = this;
+		if ( $(menu).hasClass("caMenuDisabled") )
+			return;
+		if ( $(menu).hasClass("selectedMenu") ) {
+			if ( $(menu).hasClass("caRepositoryMenu") ) {
+				return;
+			}
+			if ( ! $(".caRepositoryMenu").hasClass("selectedMenu") ) {
+				return;
+			}
+			$(".caRepositoryMenu").removeClass("selectedMenu");
+		}
+		if ( ! data.searchFlag ) {
+			$("#searchBox").val("");
+		}
+		checkSortOrder();
+		showSortIcons();
+		scrollToTop();
+		changeCategory(menu,false);
+	});
+
+	$('.menuItems').on("mouseover",".caMenuItem",function() {
+		if ( $(this).hasClass("caMenuEnabled") ) {
+			$(this).addClass("hoverMenu");
+		}
+	});
+
+	$('.menuItems').on("mouseleave",".caMenuItem",function() {
+		$(this).removeClass("hoverMenu");
+	});
+
+	$(".sidebar").on("click",".chartMenu",function() {
+		if ($(this).hasClass("selectedMenu") )
+			return;
+		$(".chartMenu").removeClass("selectedMenu");
+		$(this).addClass("selectedMenu");
+		$(".caChart").hide();
+		var chart = $(this).data("chart");
+		$("#"+chart).show();
+	});
+
+	$(".sidebar").on("click",".popUpBack",function() {
+		var apppath = $.cookie("sidebarAppPath");
+		var appname = $.cookie("sidebarAppName");
+		showSidebarApp(apppath,appname);
+	});
+
+	$('.menuItems').on("click",".caMenuItem",function() {
+		if ( $(this).hasClass("caMenuDisabled") ) {
+			return;
+		}
+		if ( $(this).hasClass("selectedMenu") ) {
+			return;
+		}
+		if ( ! $(this).hasClass("caRepositoryMenu") ) {
+			$(".caMenuItem").removeClass("selectedMenu");
+			if ( ! $(this).parent().hasClass("subCategory") ) {
+				$(".subCategory").hide("slow");
+			}
+		}
+		if ( $(this).hasClass("caRepositoryMenu") && $(".startupButton").hasClass("selectedMenu") ) {
+			$(".startupButton").removeClass("selectedMenu");
+			$(".allApps").addClass("selectedMenu");
+		}
+
+		$(this).addClass("selectedMenu");
+		$(this).next().show("slow");
+	});
+
+	$(".sectionMenu").on("click",function() {
+		if ( $(this).hasClass("caMenuDisabled") )
+			return;
+
+		var section = $(this).attr("data-category");
+		showSortIcons();
+		switch (section) {
+			case "installed_apps":
+				data.previousAppsSection = "";
+				previousApps(true);
+				break;
+			case "inst_docker":
+				data.previousAppsSection = "docker";
+				previousApps(true,false,"docker");
+				break;
+			case "inst_plugins":
+				data.previousAppsSection = "plugins";
+				previousApps(true,false,"plugins");
+				break;
+			case "previous_apps":
+				data.previousAppsSection = "";
+				previousApps(false);
+				break;
+			case "prev_docker":
+				data.previousAppsSection = "docker";
+				previousApps(false,false,"docker");
+				break;
+			case "prev_plugins":
+				data.previousAppsSection = "plugins";
+				previousApps(false,false,"plugins");
+				break;
+			case "pinned_apps":
+				pinnedApps();
+				break;
+		}
+	});
+
+	$(".mainArea").on("click",".homeMore",function() {
+		var description = $(this).data("des");
+		var category = $(this).data("category");
+
+		var menuItem = $.find(".caMenuItem[data-category='"+category+"']");
+		$('.caMenuItem').removeClass('selectedMenu');
+		$(menuItem).addClass('selectedMenu');
+
+		if ($(this).data("sortby")) {
+			var sortBy = $(this).data("sortby");
+			var sortDir = $(this).data("sortdir");
+			$(".sortIcons").removeClass("enabledIcon");
+			var sortOrder = new Object();
+			sortOrder.sortBy = sortBy;
+			sortOrder.sortDir = sortDir;
+			$(".sortIcons").each(function() {
+				if ( $(this).data("sortby") == sortBy && $(this).data("sortdir") == sortDir ) {
+					$(this).addClass("enabledIcon").addClass("startupMore");
+				}
+			});
+		}
+		$("#CategoryLine").html($(this).data("des"));
+		scrollToTop();
+		post({action:"changeSortOrder",sortOrder:sortOrder},function() {
+			getContent(false,category,description,false);
+		});
+	});
+
+	$(".debugging").on("click",function() {
+		var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+		var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+		var filename='CA-Logging-'+localISOTime.substr(0,16).replace(/[-:]/g,'').replace('T','-')+'.zip';
+
+		$.post('/webGui/include/Download.php',{cmd:'save',file:filename,source:"<?=$caPaths['logging']?>"},function(zip) {
+			location = zip;
+		});
+	});
+
+	$(".clearSearch").click(function() {
+		if ( $(this).hasClass("caMenuEnabled") ) {
+			checkSortOrder();
+			doSearch(true);
+		}
+	});
+
+	$(".initDockerSearch").click(function()     { initDockerSearch(); });
+	$(".multi_installButton").click(function()  { installMulti(); });
+	$(".multi_installClear").click(function()   { clearMultiInstall(); });
+	$(".multi_deleteButton").click(function()   { deleteMulti(); });
+	$(".multi_installAll").click(function()     { selectAllPrevious(); enableMultiInstall(); });
+	$(".startupButton").click(function()        { hideSortIcons();updateContent(this); });
+
+	$(".sortIcons").click(function() {
+		$(".sortIcons").removeClass("enabledIcon");
+		$(this).addClass("enabledIcon");
+		data.currentpage = 1;
+		data.searchActive = false;
+		var sortOrder = new Object();
+		sortOrder.sortBy = $(this).attr("data-sortBy");
+		sortOrder.sortDir = $(this).attr("data-sortDir");
+
+		post({action:"changeSortOrder",sortOrder:sortOrder},function() {
+			changeSortOrder();
+		});
+	});
+
+	$('body').on("click",".languageSwitch",function() {
+		CAswitchLanguage($(this).data("language"));
+	});
+
+	$('body').on("click",".languageInstall",function() {
+		installLanguage($(this).data("language_xml"),$(this).data("language"));
+	});
+
+	$('body').on("click",".languageRemove",function() {
+		removeLanguage($(this).data("language"));
+	});
+
+	$('body').on("click",".languageUpdate",function() {
+		updateLanguage($(this).data("language"));
+	});
+
+	$("body").on("click",".popUpClose",function() {
+		closeSidebar();
+	});
+
+	$('body').on("click",".deletePrivateApp",function() {
+		var path = $(this).data("path");
+		var name = $(this).data("name");
+		var author = $(this).data("author");
+		deletePrivateApp(path,name,author);
+	});
+
+	$("body").on("click",".removeApp",function() {
+		var path = $(this).data("path");
+		var name = $(this).data("name");
+		removeApp(path,name);
+	});
+
+	/* Everything is now initialized.  This is the start of the actual "real" code */
+	if ( "<?=$firstRun?>" == "true" ) {
+	  $(".ca_templatesDisplay").hide();
+		swal({
+			title: "<?tr("Disclaimer")?>",
+			text: '<?tr('All applications listed here are 3rd party additions to Unraid.  Neither the authors of Community Applications nor Limetech make any warranty as to the suitability of any application listed here')?> <br><span class="ca_italic"><font color="green"><?tr('Every attempt is made to ensure that only safe and compatible applications are present')?></font></span><br><br><center><a href="https://forums.unraid.net/topic/87144-ca-application-policies/" target="_blank"><?tr('Application Policy')?></a>',
+			html: true,
+			type: 'warning',
+			showCancelButton: true,
+			showConfirmButton: true,
+			cancelButtonText: "<?tr('Cancel')?>",
+			confirmButtonText: "<?tr('I Understand')?>"
+		}, function (isConfirm) {
+			if ( isConfirm ) {
+				post({action:'dismiss_warning'},function(result) {
+					location.reload();
+				});
+			} else {
+			$(".ca_templatesDisplay").show();
+				addBannerWarning("<?tr("Installations of apps disabled.  You must accept the warning to be able to install applications.")?>   <a onclick='window.location.reload();' style='cursor:pointer;'><?tr("Click here")?></a>",true,true);
+				updateContent();
+			}
+		});
+	} else if ( "<?=$pluginWarning?>" == "false" ) {
+		$(".ca_templatesDisplay").hide();
+		swal({
+			title: "<?tr('Plugins')?>",
+			text: '<?tr('Community Applications contains both docker containers and plugin applications.  Plugins are designed for OS enhancements, and run with full privileges on your system and are clearly identified within CA.')?><br><br><ceter><a href="https://forums.unraid.net/topic/87144-ca-application-policies-notes/?tab=comments#comment-817555" target="_blank"><?tr('Plugin Note')?></a></center>',
+			type: 'warning',
+			html: true,
+			showCancelButton: false,
+			showConfirmButton: true,
+			confirmButtonText: "<?tr("I Understand")?>"
+		}, function (isConfirm) {
+			if (isConfirm) {
+				post({action:'dismiss_plugin_warning'},function(result) {
+					location.reload();
+				});
+			}
+		});
+	} else {
+		if ( "<?=$startupDisplayed?>" != "true" && (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") || $.cookie("ca_languageSwitch") ) {
+			initialStartup = false;
+			getCategories();
+			restoreState();
+			refreshDisplay();
+			searchBoxAwesomplete.close();
+			initialStartup = true;
+			var apppath = $.cookie("sidebarAppPath");
+			var appname = $.cookie("sidebarAppName");
+			if ( apppath ) {
+				showSidebarApp(apppath,appname);
+			}
+		} else {
+			post({action:"defaultSortOrder"},function() {
+				updateContent();
+				if ("<?=$startupDisplayed?>" == "true" && (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") || $.cookie("ca_languageSwitch") ) {
+					var apppath = $.cookie("sidebarAppPath");
+					var appname = $.cookie("sidebarAppName");
+					showSidebarApp(apppath,appname);
+				}
+			});
+		}
+	}
+});
+
+function disableSort() {
+	hideSortIcons();
+}
+function hideSortIcons() {
+	$("#sortIconArea").hide();
+}
+function showSortIcons() {
+	$("#sortIconArea").show();
+}
+
+function updateContent(button) {
+	clearSearchBox();
+	clearCategory();
+	$(".caMenuItem").removeClass("selectedMenu");
+	$(".subCategory").hide();
+
+	startupScreen = $.cookie("ca_startupButton") ? $.cookie("ca_startupButton") : "onlynew";
+	$(".caMenuItem[data-category='"+startupScreen+"']").addClass("selectedMenu");
+
+	startupScreen = button ? $(button).data("category") : startupScreen;
+	$.cookie("ca_startupButton",startupScreen,{expires:365});
+	$.cookie("ca_selectedMenu",startupScreen,{expires:365});
+	disableSearch();
+
+	post({action:'force_update'}, function(result) {
+		if ( $.cookie("ca_plugininstallpending" || ! button ) ) {
+			var plugins = $.cookie("ca_plugininstallpending");
+			$.removeCookie("ca_plugininstallpending");
+			myCloseAlert();
+			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugins,"<?tr('Install Plugin Applications')?>",600,900,true);
+		} else {
+			if ( result.data ) {
+				updateDisplay(result.data);
+			} else {
+				data.searchActive = true;
+				getContent(true,'INITIALIZE',"","",startupScreen);
+			}
+		}
+		getCategories();
+	});
+}
+
+function stripTags(string) {
+	return string.replace(/(<([^>]+)>)/ig,"");
+}
+
+function setToolTip() {
+	$('.ca_tooltip-warning').tooltipster({
+		contentAsHTML:true,
+		interactive:true,
+		multiple:true,
+		trigger:'custom',
+		triggerOpen:{click: true, mouseenter: true},
+		triggerClose:{click:true,scroll:true,mouseleave:true}
+	});
+}
+
+function showSpecialCategory(button) {
+	checkSortOrder();
+	showSortIcons();
+	$(".caMenuItem").removeClass("selectedMenu");
+	$(".multi_installDiv").hide();
+	data.selected_category = "DOESNTMATTERWHATSHERE";
+	data.section = "AppStore";
+	changeCategory(button,false);
+	$("#Category").append(" - <?tr("Installs not allowed from this page");?>");
+}
+
+function changeCategory(button,subSwitch) {
+	var description = $(button).text();
+	var category = $(button).attr("data-category");
+
+	$(".multi_installDiv").hide();
+	getContent(false,category,description,false);
+}
+
+function changePage(pageNumber) {
+	var selected = data.selected;
+	data.currentpage = pageNumber;
+
+	post({action:'display_content',pageNumber:pageNumber,selected:selected},function(result) {
+		updateDisplay(result.display);
+	});
+}
+
+function swalBackground(color) {
+	$(".sweet-alert").css("background-color",color);
+}
+
+function myAlert(description,textdescription,textimage,imagesize, outsideClick, showCancel, showConfirm, alertType) {
+	if ( !outsideClick ) outsideClick = false;
+	if ( !showCancel )   showCancel = false;
+	if ( !showConfirm )  showConfirm = false;
+	if ( imagesize == "" ) { imagesize = "80"; }
+	disableSearch();
+
+	swal({
+		title: description,
+		text: textdescription,
+		allowOutsideClick: outsideClick,
+		showConfirmButton: showConfirm,
+		showCancelButton: showCancel,
+		cancelButtonText: "<?tr("Cancel")?>",
+		type: alertType,
+		animation: false,
+		html: true
+	});
+}
+
+function mySpinner() {
+	$("div.spinner").show();
+	$(".spinnerBackground").show();
+}
+
+function myCloseSpinner() {
+	$("div.spinner,.spinnerBackground").hide();
+}
+
+function myCloseAlert() {
+	swal.close();
+	$("div.spinner, .sweet-alert").hide();
+	swalBackground("<?=$swalBackground?>");
+	enableSearch();
+}
+
+function doSearch(button,newSearch) {
+	if ( ! newSearch === false ) {
+		$('#searchBox').val(newSearch);
+	}
+	var filter = $('#searchBox').val();
+	filter = $.trim(filter);
+	if ( ! filter ) {
+		$("#searchBox").val(filter);
+		return;
+	}
+
+	data.docker = "";
+	data.section = "AppStore";
+
+	$('#searchBox').val(filter);
+	$(".multi_installDiv").hide();
+
+	if ($('#searchButton').hasClass('fa-search')) {
+		if (filter) {
+			$('#searchButton').toggleClass('fa-search fa-remove');
+		}
+	} else if (button) {
+		clearSearchBox();
+		filter = '';
+	}
+
+	scrollToTop();
+	if (filter) {
+		$("#sortIconArea").show();
+		$("#Category").html(sprintf(tr("Search for %s"),filter));
+		data.searchFlag = true;
+	} else {
+		updateContent();
+		data.searchFlag = false;
+		return;
+	}
+	data.searchActive = true;
+	if ( ! dockerNotEnabled && (filter.indexOf(" Repository") < 1) ) {
+		$('.dockerSearch').show();
+	} else {
+		$('.dockerSearch').hide();
+	}
+	post({action:'get_content',filter:filter},function(result) {
+		enableButtons();
+		updateDisplay(result.display);
+		data.section = "AppStore";
+		$(".selectedMenu").removeClass("selectedMenu");
+		$(".subCategory").hide();
+		$(".allApps").addClass("selectedMenu");
+		post({action:'getCategoriesPresent'},function(result) {
+			$(".categoryMenu").removeClass("caMenuEnabled").addClass("caMenuDisabled");
+			result.forEach(function(category) {
+				var menuItem = $.find(".caMenuItem[data-category='"+category+"']");
+				$(menuItem).removeClass("caMenuDisabled").addClass("caMenuEnabled");
+			});
+		});
+	});
+}
+
+function enableButtons() {
+	data.selected_category = "";
+}
+
+function refreshDisplay() {
+	changeSortOrder(null,null,null);
+}
+
+function changeSortOrder(button,buttonClass,previousApps) {
+	var pageNumber = data.currentpage;
+	var selected = data.selected;
+	var startup = false;
+	if ( button || buttonClass || previousApps) {
+		data.searchFlag = false;
+	}
+
+	$(".startupButton").each(function(){
+		if ($(this).hasClass("selectedMenu")) {
+			startup = "true";
+		}
+	});
+	post({action:'display_content',pageNumber:pageNumber,selected:selected,startup:startup},function(result) {
+		updateDisplay(result.display);
+	});
+}
+
+function getContent(init,category,description,newApp,startupDisplay) {
+	data.currentpage = 1;
+	var initialize;
+
+	enableSearch();
+
+	if ( category != "NONE" ) {
+		if ( category == "INITIALIZE" ) {
+			initializeAppStore();
+			category = "NONE";
+			initialize = true;
+			enableButtons();
+		}
+
+		if ( (category == "New") || (category == "All") ) { category = ""; }
+		var el_dl = $.find(".sortIcons[data-sortby='downloads']");
+		var el_tr = $.find(".sortIcons[data-sortby='trending']");
+
+		if ( category == "repos" ) {
+			$(el_dl).html("<?=tr("Number Of Apps")?>");
+			$(el_tr).html("<?=tr("Average Trend")?>");
+		} else {
+			$(el_dl).html("<?=tr("Downloads")?>");
+			$(el_tr).html("<?=tr("Trend")?>");
+		}
+
+		var filter = $('#searchBox').val();
+		if ( ! filter ) {
+			$('.dockerSearch').hide();
+		}
+		if ( description && ! filter ) {
+			$("#Category").html(description);
+		}
+		post({action:'get_content',filter:filter,category:category,newApp:newApp,startupDisplay:startupDisplay},function(result) {
+			updateDisplay(result.display);
+			if ( initialize ) {
+				populateAutoComplete();
+			}
+		});
+	}
+}
+
+function populateAutoComplete() {
+	post({action:'populateAutoComplete'},function(result) {
+		searchBoxAwesomplete.list = result.autocomplete;
+		searchBoxAwesomplete.maxItems = 20;
+		searchBoxAwesomplete.minChars = 3;
+		Awesomplete.$('#searchBox').removeEventListener('awesomplete-selectcomplete',awesompleteSearch);
+		Awesomplete.$('#searchBox').addEventListener('awesomplete-selectcomplete',awesompleteSearch);
+		searchBoxAwesomplete.close(); // otherwise it opens automatically during restore state
+	});
+}
+
+function awesompleteSearch() {
+	doSearch(false);
+}
+
+function mySearch(filter) {
+	filter = filter.replace(/<(?:.|\n)*?>/gm, '');
+	$('#searchBox').val(filter);
+
+	if ( $("#searchButton").hasClass('fa-search') ) {
+		$('#searchButton').toggleClass('fa-search fa-remove');
+	}
+	initDockerSearch(1);
+}
+
+function initDockerSearch() {
+	var filter = $('#searchBox').val();
+	filter = filter.replace(" ","%20");
+	window.open("https://hub.docker.com/search?q="+filter+"&type=image","_blank");
+}
+
+function openNewWindow(newURL,target='_self') {
+	var popUp = window.open(newURL,target);
+	if ( !popUp || popUp.closed || typeof popUp == "undefined" ) {
+		addBannerWarning("<?tr("Popup Blocked.  CA requires popups to be enabled under certain circumstances.  You must white list your server within your browser to allow popups")?>",true,true);
+	}
+}
+
+function clearSearchBox() {
+	$(".categoryMenu").removeClass("caMenuDisabled").addClass("caMenuEnabled");
+	$("#searchBox").val("");
+	hideSortIcons();
+	if ($('#searchButton').hasClass('fa-remove')) {
+		$('#searchButton').toggleClass('fa-remove fa-search');
+	}
+}
+
+function closeSidebar(cookie=false,visible=false) {
+	if ( ! cookie ) {
+		$.cookie("sidebarAppPath","");
+		$.cookie("sidebarAppName","");
+	}
+	context.destroy("#supportPopup");
+	context.destroy("#actionsPopup");
+	
+	$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide");
+	$("#sidenavContent").html("");
+	$(".back_to_top").removeClass("back_to_top_hide");
+	$("body").css("overflow","auto");
+	$(".sidebar").fadeOut();
+}
+
+function installPlugin(pluginURL,update=false) {
+	type = update ? "update" : "install";
+	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
+	closeSidebar(true);
+	disableSearch();
+	openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
+}
+
+function OpenSidebarAndRefreshDisplay() {
+	post({action:"onStartupScreen"},function(result) {
+		if (result.status) {
+			window.location.reload();
+		} else {
+			var apppath = $.cookie("sidebarAppPath");
+			var appname = $.cookie("sidebarAppName");
+			appname = stripTags(appname);
+
+			refreshDisplay();
+			if ( apppath ) {
+				showSidebarApp(apppath,appname);
+			}
+		}
+	});
+}
+
+function showDesc_openBox(cmd,title,height,width,load,func) {
+	// open shadowbox window (run in foreground)
+	var run = cmd.split('?')[0].substr(-4)=='.php' ? cmd : '/logging.htm?cmd='+cmd+'&csrf_token=<?=$var['csrf_token']?>';
+	var options = load ? {modal:false,onClose:function(){ eval(func); }} : {modal:true};
+	Shadowbox.open({content:run, player:'iframe', title:title, height:height, width:width, options:options});
+}
+
+function showModeration(script,title) {
+	$("#sb-nav-close").css("visisbility","visible");
+	showDesc_openBox("/plugins/<?=$plugin?>/scripts/showStatistics.php?arg1="+script,title,550,900,true,false);
+}
+
+function previousApps(installed,dontClear=false,filter="") {
+	clearCategory();
+	setPageOne();
+	data.docker = "";
+
+	clearSearchBox();
+	$(".dockerSearch").hide();
+	showSortIcons();
+
+	post({action:'previous_apps',installed:installed,filter:filter},function(result) {
+		if ( installed ) {
+			$(".multi_installDiv").hide();
+		} else {
+			$(".multi_installDiv").show();
+			if ( ! dontClear ) {
+				clearMultiInstall();
+			}
+		}
+		var msg = installed ? "<?tr("Installed Apps");?>" : "<?tr("Previous Apps");?>";
+		$("#Category").html(msg);
+		changeSortOrder(null,null,"true");
+		saveState();
+	});
+}
+
+function removeApp(application, humanName) {
+	closeSidebar();
+	disableSearch();
+	swal({
+		title: "<?tr("Delete Template?")?>",
+		text: sprintf(tr("Are you sure you want to delete %s from the list of previously installed applications?"),"<span class='ca_italic ca_bold caHighlight'>"+humanName+"</span>")+"<br><font size='0'>"+application+"</font>",
+		type: "warning",
+		confirmButtonText: "<?tr("Yes, delete it!")?>",
+		cancelButtonText: "<?tr("Cancel")?>",
+		showCancelButton: true,
+		showConfirmButton: true,
+		allowOutsideClick: true,
+		html: true
+	}, function(isConfirm) {
+		if (isConfirm) {
+			$('input[type="checkbox"][data-humanName="'+humanName+'"]').prop("checked",false);			// remove the checkbox from the app
+			enableMultiInstall(); // update the count
+			post({action:'remove_application',application:application}, function(result) {
+				enableSearch();
+				$(".caMenuItem").removeClass("selectedMenu");
+				var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
+				$(menuItem).addClass("selectedMenu");
+				previousApps(false,true,data.previousAppsSection);
+			});
+		} else {
+			enableSearch();
+		}
+	});
+}
+
+function uninstallApp(application,humanName) {
+	closeSidebar();
+	disableSearch();
+	swal({
+		title: "<?tr("Uninstall Application?")?>",
+		text: sprintf(tr("Are you sure you want to uninstall %s?"),"<span class='ca_italic ca_bold caHighlight'>"+humanName+"</span>"),
+		type: "warning",
+		showCancelButton: true,
+		showConfirmButton: true,
+		cancelButtonText: "<?tr("Cancel")?>",
+		confirmButtonText: "<?tr("Yes uninstall it")?>",
+		closeOnConfirm: true,
+		showLoaderOnConfirm: false,
+		allowOutsideClick: true,
+		html: true
+	}, function(isConfirm) {
+		if (isConfirm) {
+			application = application.basename();
+			openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin");
+		} else {
+			enableSearch();
+		}
+	});
+}
+
+function postUninstallPlugin() {
+	previousApps(true,false,data.previousAppsSection);
+	enableSearch();
+}
+
+String.prototype.basename = function() {
+	return this.split('/').reverse()[0];
+}
+
+function deletePrivateApp(path,name,author) {
+	var displayPath = path.replace("/boot/config/plugins/","...");
+	disableSearch();
+	swal({
+		title: "<?tr("Remove Private Application?")?>",
+		text: sprintf(tr("Are you sure you want to remove the private application %s by %s?"),"<span class='ca_italic'><span class='ca_bold caHighlight'>"+name+"</span>","<span class='ca_bold caHighlight'>"+author+"</span>")+"<br><font size='0'>("+displayPath+")",
+		type: "warning",
+			showCancelButton: true,
+			showConfirmButton: true,
+			cancelButtonText: "<?tr("Cancel")?>",
+			confirmButtonText: "<?tr("Yes, remove it!")?>",
+			closeOnConfirm: false,
+			showLoaderOnConfirm: true,
+			allowOutsideClick: true,
+			html: true
+	}, function(isConfirm) {
+		if ( isConfirm ) {
+			swal(sprintf(tr("Removing %s"),name),"","info");
+			getSelectedApps();
+			post({action:'removePrivateApp',path:path,noSpinner:true},function(result) {
+				myCloseAlert();
+				refreshDisplay();
+				enableSearch();
+			});
+		} else {
+			enableSearch();
+		}
+	});
+}
+
+function uninstallDocker(application,humanName) {
+	closeSidebar();
+	disableSearch();
+	swal({
+		title: "<?tr("Uninstall Application?")?>",
+		text: sprintf(tr("Are you sure you want to uninstall %s?"),"<span class='ca_italic ca_bold caHighlight'>"+humanName+"</span>"),
+		type: "warning",
+		showCancelButton: true,
+		showConfirmButton: true,
+		cancelButtonText: "<?tr("Cancel")?>",
+		confirmButtonText: "<?tr("Yes uninstall it")?>",
+		closeOnConfirm: false,
+		showLoaderOnConfirm: true,
+		allowOutsideClick: true,
+		html: true
+	}, function( isConfirm ) {
+		if ( isConfirm ) {
+			myAlert("",sprintf(tr("Uninstalling %s"),humanName));
+			post({action:'uninstall_docker',application:application,noSpinner:true},function(result) {
+				myCloseAlert();
+				enableSearch();
+				$(".caMenuItem").removeClass("selectedMenu");
+				var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
+				$(menuItem).addClass("selectedMenu");
+
+				previousApps(true,false,data.previousAppsSection);
+			});
+		} else {
+			enableSearch();
+		}
+	});
+}
+
+function appStore() {
+	data.nextpage = 0;
+	data.prevpage = 0;
+	initializeAppStore();
+	updateContent();
+	clearCategory();
+	data.docker = "";
+}
+
+function initializeAppStore() {
+	data.section = "AppStore";
+	data.selected_category = "";
+	$(".multi_installDiv").hide();
+}
+
+function checkPLGupdate() {
+	var filename = data.plgfilename;
+	post({action:'updatePLGstatus',filename:filename},function(result) {
+		var pageNumber = data.currentpage;
+		changePage(pageNumber);
+	});
+}
+
+function pinApp(button,repository,name) {
+	$(button).toggleClass("pinned unpinned");
+	var pinned = ( $(button).hasClass("unpinned") ) ? "<?tr("Click to pin this application")?>" : "<?tr("Click to unpin this application")?>";
+	$(button).attr('title',pinned);
+	post({action:'pinApp',repository:repository,name:name},function(data) {
+		if ( data.status ) {
+			$('.caPinnedMenu').removeClass('caMenuDisabled').addClass('caMenuEnabled');
+		} else {
+			$('.caPinnedMenu').removeClass('caMenuEnabled').addClass('caMenuDisabled');
+		}
+	});
+}
+
+function setPageOne() {
+	data.currentpage = 1;
+}
+
+function clearCategory() {
+	$("#Category").html("&nbsp;");
+}
+
+function pinnedApps() {
+	setPageOne();
+	data.docker = "";
+	clearSearchBox();
+	clearCategory();
+	showSortIcons();
+	$("#Category").html("<?tr("Pinned Apps");?>");
+	$(".dockerSearch,.multi_installDiv").hide();
+	post({action:'pinnedApps'},function(result) {
+		refreshDisplay();
+		myCloseAlert();
+	});
+}
+
+function displayTags(leadTemplate,rename=false) {
+	closeSidebar();
+	post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true,rename:rename},function(result) {
+		disableSearch();
+		swal({
+			title: "<?tr("Choose A Branch To Install")?>",
+			text: result.tags,
+			html: true,
+			type: "warning",
+			showCancelButton: true,
+			showConfirmButton: false,
+			cancelButtonText: "<?tr("Cancel")?>",
+			allowOutsideClick: true
+		}, function(isConfirm) {
+			if ( ! isConfirm ) {
+				enableSearch();
+			}
+		});
+	});
+}
+
+function makePlural(string,count) {
+	return ( (count > 1) || (count == 0) ) ? string + "s" : string;
+}
+function selectAllPrevious() {
+	$(".ca_multiselect").each(function() {
+		$(this).prop("checked",true);
+	});
+	getSelectedApps();
+}
+
+function getSelectedApps() {
+	if ( data.selected ) {
+		var selected = JSON.parse(data.selected);
+		var deletePaths = selected.deletePaths;
+		var docker = selected.docker;
+		var plugin = selected.plugin;
+	} else {
+		var selected = new Object();
+		var deletePaths = new Array();
+		var docker = new Array();
+		var plugin = new Array();
+	}
+
+	$(".ca_multiselect").each(function() {
+		var name = $(this).attr("data-name");
+		var deletechecked = $(this).attr("data-deletepath");
+		if ( $(this).is(':checked') ) {
+			deletePaths.push(deletechecked);
+			if ( $(this).attr("data-type") == "plugin" ) {
+				plugin.push(name);
+			} else {
+				docker.push(name);
+			}
+		} else {
+			var index= deletePaths.indexOf(deletechecked);
+			if ( index > -1 ) {
+				deletePaths.splice(index,1);
+			}
+			var index = plugin.indexOf(name);
+			if ( index > -1 ) {
+				plugin.splice(index,1);
+			}
+			var index = docker.indexOf(name);
+			if (index > -1 ) {
+				docker.splice(index,1);
+			}
+		}
+	});
+	selected.docker = uniqueArrayElements(docker);
+	selected.plugin = uniqueArrayElements(plugin);
+	selected.deletePaths = uniqueArrayElements(deletePaths);
+	data.selected = JSON.stringify(selected);
+	return selected;
+}
+
+function uniqueArrayElements(sourceArray) {
+	var uniqueEntries = new Array();
+	$.each(sourceArray, function(i, el) {
+		if ($.inArray(el,uniqueEntries) === -1) {
+			uniqueEntries.push(el)
+		}
+	});
+	return uniqueEntries;
+}
+
+function enableMultiInstall() {
+	var selected = getSelectedApps();
+	var count = selected.plugin.length + selected.docker.length;
+	if ( count == 0 ) {
+		$(".multi_install,.multi_installClear").attr("disabled",true);
+		$(".multi_deleteButton").css("visibility","hidden");
+		$(".multi_installButton").val("<?tr("Install Selected Applications")?>");
+	} else {
+		$(".multi_install,.multi_installClear").attr("disabled",false);
+		$(".multi_deleteButton").css("visibility","visible");
+		var buttonText = (count == 1) ? sprintf(tr("Install %s Selected Application"),count) : sprintf(tr("Install %s Selected Applications"),count);
+		$(".multi_installButton").val(buttonText);
+	}
+	getSelectedApps();
+}
+
+function clearMultiInstall() {
+	data.selected = "";
+	$(".ca_multiselect").each(function() {
+		$(this).prop("checked",false);
+	});
+	$(".multi_install,.multi_installClear").attr("disabled",true);
+	enableMultiInstall();
+}
+
+function installSort(a,b) {
+	if (a[0] === b[0]) {
+		return 0;
+	} else {
+		return (a[0] < b[0]) ? -1 : 1;
+	}
+}
+
+function deleteMulti() {
+	var selected = getSelectedApps();
+	swal({
+		title: "<?tr("Delete Template?")?>",
+		text: sprintf(tr("Are you sure you want to delete %s applications from the previously installed list?"),"<span class='caHighlight ca_bold'>"+selected.deletePaths.length+"</span>"),
+		type: "warning",
+		confirmButtonText: "<?tr("Delete")?>",
+		cancelButtonText: "<?tr("Cancel")?>",
+		showCancelButton: true,
+		showConfirmButton: true,
+		allowOutsideClick: true,
+		html: true
+	}, function(isConfirm) {
+		if (isConfirm) {
+			post({action:'remove_multiApplications',apps:selected.deletePaths}, function(result) {
+				clearMultiInstall();
+				enableSearch();
+				previousApps(false,true);
+			});
+		} else {
+			enableSearch();
+		}
+	});
+}
+
+function installMulti() {
+	var docker = new Array();
+	var pluginArray = new Array();
+	var plugin = "";
+	var pluginCount = 0;
+	var dockerCount = 0;
+	var selected = getSelectedApps();
+	var cookieWarning = "";
+
+	$.each(selected.plugin,function(i,el) {
+		pluginArray.push([el.basename().replace(".plg",""),el]);
+		pluginCount += 1;
+	});
+// Sort them so that the install in the same order as if the system was booting.
+// NOTE: The sort drops the .plg from the order so that UD+ winds up installing after UD.  This differs from the boot sequence.
+	pluginArray.sort(installSort);
+	if (pluginCount) {
+		pluginArray.forEach( function(value) {
+			plugin += value[1] + "*";
+		});
+	}
+
+	$.each(selected.docker,function(i,el) {
+		docker.push(el);
+		dockerCount += 1;
+	});
+	disableSearch();
+	if ( ! cookiesEnabled() && dockerCount && pluginCount ) {
+		pluginCount = 0;
+		cookieWarning = "<br><?tr("Cookies not enabled.  Plugins must be separately installed from docker applications")?>";
+	}
+	if ( (dockerCount + pluginCount) > 1 ) {
+		var buttonText = "<?tr("Yes, install them")?>";
+	} else {
+		var buttonText = "<?tr("Yes, install it")?>";
+	}
+	var text = sprintf(tr("Are you sure you want to install %s docker and %s plugin application(s)?"),dockerCount,pluginCount);
+	text = text.concat(dockerCount ? "<br><span class='ca_italic'><?tr("Docker applications will be installed utilizing the most recently saved template with no user input on your part")?></span>" : "");
+	text = text.concat(cookieWarning ? "<br><span class='caHighlight>"+cookieWarning+"</span>" : "");
+	swal({
+		title: dockerCount+pluginCount > 1 ? tr("Install Applications") : tr("Install Application"),
+		text: text,
+		type: "info",
+		showCancelButton: true,
+		cancelButtonText: "<?tr("Cancel")?>",
+		showConfirmButton: true,
+		confirmButtonText: buttonText,
+		closeOnConfirm: false,
+		showLoaderOnConfirm: true,
+		allowOutsideClick: true,
+		html: true
+	}, function( isConfirm ) {
+		if ( isConfirm ) {
+			myCloseAlert();
+			if ( docker.length && plugin.length ) {
+				$.cookie("ca_plugininstallpending",plugin);
+			}
+			if ( docker.length ) {
+				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
+				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,tr('Install '+makePlural("Application",dockerCount)),600,1100,true);
+			} else {
+				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugin,tr('Install '+makePlural("Application",pluginCount)),600,900,true);
+				enableSearch();
+			}
+		} else {
+			enableSearch();
+		}
+	});
+}
+
+function updateDisplay(data) {
+	// This has to be first.  If this doesn't happen, performance gets worse the more you click around
+	$(".supportButtonCardContext").each(function() {
+		var ID = $(this).attr("id");
+		context.destroy("#"+ID);
+	});
+
+	$("#templates_content").html(data);
+	setToolTip();
+	enableSearch();
+	$('img').on("error",function() {
+		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+	});
+	context.init();
+	$('.supportButtonCardContext').each(function() {
+		var supportContext = $(this).data("context");
+		var ID = $(this).attr("id");
+		var opts = [];
+		supportContext.forEach(function(item,index){
+			opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
+		});
+		context.attach('#'+ID, opts);
+	});
+	$(".cardDesc").each(function() {
+		var description = $(this).html();
+		while (isOverflown(this)) {
+			description = description.slice(0,-5);
+			$(this).html(description + "... <span class='card_readmore'><?=tr("Read more")?></span>");
+		}
+	});
+	$(".ca_applicationName,.betaPopupText,.installedCardText").each(function() {
+		while (isOverflown(this)) {
+			var existingSize = $(this).css("font-size");
+			var size = existingSize.replace("px","");
+			var newSize = size - 1;
+			if (newSize == 0)
+				return false;
+			
+			$(this).css("font-size",newSize+"px");
+		}
+	});
+
+	saveState();
+}
+
+function isOverflown(element){
+	return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+}
+
+function saveState() {
+	<? if ( $cfg['debugging'] == "yes" ):?>
+		console.log("Save State");
+	<?endif;?>
+	$.cookie("ca_categoryText",$("#Category").html());
+	$.cookie("ca_data",JSON.stringify(data));
+	$.cookie("ca_searchActive",data.searchActive);
+	$.cookie("ca_installMulti",$(".multi_installDiv").is(":visible"));
+	var selectedMenu = $(".selectedMenu").data("category");
+	if ( ! selectedMenu ) {
+		selectedMenu = "";
+	}
+	var categoriesEnabled = new Array();
+	$(".caMenuEnabled").each(function(){
+		categoriesEnabled.push($(this).data("category"));
+	});
+	$.cookie("ca_categories_enabled",JSON.stringify(categoriesEnabled));
+	$.cookie("ca_selectedMenu",selectedMenu);
+	$.cookie("ca_filter",$("#searchBox").val());
+	$.cookie("ca_categoryName",$(".categoryMenuName").html());
+	}
+
+function restoreState() {
+	swalBackground("transparent");
+
+	<? if ( $cfg['debugging'] == "yes" ):?>
+		console.log("Restore State");
+	<?endif;?>
+	$.removeCookie("ca_languageSwitch",{path:'/'});
+
+	$("#Category").html($.cookie("ca_categoryText"));
+	if ( $.cookie("ca_installMulti") == "true" ) {
+		$(".multi_installDiv").show();
+	} else {
+		$(".multi_installDiv").hide();
+	}
+	data = JSON.parse($.cookie("ca_data"));
+	data.searchActive = evaluateBoolean($.cookie("ca_searchActive"));
+	restoreStateMenu = $.cookie("ca_selectedMenu");
+	$(".categoryMenuName").html($.cookie("ca_categoryName"));
+	var filter = $.cookie("ca_filter");
+	$("#searchBox").val(filter);
+	if (filter)
+		$("#searchButton").removeClass("fa-search").addClass("fa-remove");
+
+	var ca_sortIcon = $.cookie("ca_sortIcon");
+//	enableIcon("#sortIcon",ca_sortIcon);
+	post({action:"getSortOrder"},function(sortOrder) {
+		$(".sortIcons").removeClass("enabledIcon");
+		$(".sortIcons").each(function() {
+			if ( ($(this).attr("data-sortBy") == sortOrder.sortBy) && ($(this).attr("data-sortDir") == sortOrder.sortDir) ) {
+				$(this).addClass("enabledIcon");
+			}
+		});
+	});
+	populateAutoComplete();
+	clearMultiInstall();
+}
+
+function disableSearch() {
+	$("#searchBox").prop("disabled",true);
+}
+
+function enableSearch() {
+	$("#searchBox").prop("disabled",false);
+}
+
+function evaluateBoolean(str) {
+	regex=/^\s*(true|1|on)\s*$/i
+	return regex.test(str);
+}
+
+function cookiesEnabled() {
+	return evaluateBoolean(navigator.cookieEnabled);
+}
+
+function showCredits() {
+	$(".multi_installDiv,.dockerSearch").hide();
+	clearCategory(); clearSearchBox();
+	var credits = $('#caCredits').html();
+	updateDisplay(credits);
+}
+
+function showStatistics() {
+	$(".multi_installDiv,.dockerSearch").hide();
+	clearCategory(); clearSearchBox();
+	post({action:'statistics'},function(result) {
+		updateDisplay(result.statistics);
+	});
+}
+
+function caChangeLog() {
+	$(".multi_installDiv,.dockerSearch").hide();
+	clearCategory(); clearSearchBox();
+	post({action:'caChangeLog'},function(result) {
+		updateDisplay(result.changelog);
+	});
+}
+
+function scrollToTop() {
+	$('html,body').animate({scrollTop:0},0);
+}
+
+function addDockerWarning(enableDisable) {
+	if (enableDisable) {
+		if ( dockerWarningAdded === false) {
+			dockerWarningAdded = addBannerWarning("<?tr('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed')?>",true,false);
+			$(".dockerSpecific").removeClass("caMenuEnabled").addClass("caMenuDisabled");
+		}
+	} else {
+		if ( dockerWarningAdded !== false ) {
+			removeBannerWarning(dockerWarningAdded);
+			$(".dockerSpecific").removeClass("caMenuDisabled").addClass("caMenuEnabled");
+			dockerWarningAdded = false;
+		}
+	}
+}
+
+String.prototype.escapeHTML = function() {
+	return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function post(options,callback) {
+	var URL = "/plugins/<?=$plugin?>/include/exec.php";
+
+	if ( typeof options === "function" ) {
+		callback = options;
+	} else {
+		<? if ( $cfg['debugging'] == "yes" ):?>
+			var msg = postCount > 0 ? "Embedded Post: " : "Post: ";
+			console.log(msg+JSON.stringify(options));
+		<?endif;?>
+	}
+
+	if ( postCount == 0 && ! options.noSpinner ) {
+		mySpinner();
+	}
+	postCount++;
+	<? if ( $cfg['debugging'] == "yes" ):?>
+		console.log("Post Count: "+postCount);
+	<?endif;?>
+	if ( typeof callback === "function" ) {
+		$.post(URL,options,function(retval){
+			try {
+				var result = JSON.parse(retval);
+				if (result.error) {
+					alert(result.error);
+				}
+			} catch(e) {
+				myCloseAlert();
+				myCloseSpinner();
+				if ( ! $.trim(retval) ) {
+					retval = "<?tr("No data was returned.  It is probable that another browser session has rebooted your server.  Reloading this browser tab will probably fix this error")?>";
+				}
+				if ( retval.indexOf("<!DOCTYPE html>") === 0 ) {
+					myCloseSpinner();
+					myCloseAlert();
+					alert("<?tr("You have been logged out")?>");
+					window.location.reload();
+				}	else {
+
+					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
+					throw new Error("Something went badly wrong!");
+				}
+			}
+			<? if ( $cfg['debugging'] == "yes" ):?>
+				console.groupCollapsed("Result "+options.action);
+				console.log(result);
+				console.groupEnd();
+			<?endif;?>
+			try {
+				eval(callback(result));
+			} catch(e) {
+				post({action:'javascriptError',postCall:options.action,retval:result});
+				alert("Fatal error during "+options.action+" "+e);
+			}
+			if (result.script) {
+				try {
+					eval(result.script);
+				} catch(e) {
+					alert("Could not execute Script "+e);
+				}
+			}
+			postCount--;
+			if (postCount < 0) postCount = 0;
+			if ( postCount == 0 && ! options.noSpinner) {
+				myCloseSpinner();
+			}
+		});
+	} else {
+		$.post(URL,options);
+		postCount--;
+		if ( postCount < 0 ) postCount = 0;
+		if ( postCount == 0) {
+			myCloseSpinner();
+		}
+	}
+	if ( ! cookiesEnabled() ) {
+		if ( cookieWarning === false) {
+			cookieWarning = addBannerWarning("<?tr("Community Applications works best when cookies are enabled in your browser.  Certain features may not be available.")?>");
+		}
+	} else {
+		if ( cookieWarning !== false ) {
+			removeBannerWarning(cookieWarning);
+			cookieWarning = false;
+		}
+	}
+}
+
+function setFavRepoSearch() {
+	post({action:'getFavourite'},function(result) {
+		if (result.favourite) {
+			$(".favouriteRepo").addClass("caMenuEnabled").removeClass("caMenuDisabled");
+		} else {
+			$(".favouriteRepo").addClass("caMenuDisabled").removeClass("caMenuEnabled");
+		}
+		$(".favouriteRepo").attr("data-repository",result.favourite);
+	});
+}
+
+function getCategories() {
+	post({action:'get_categories'},function(result) {
+		$("#category_list").html(result.categories);
+		$(".caMenuItem").each(function() {
+			if ( ! ( $(this).hasClass("favouriteRepo") || $(this).hasClass("caPinnedMenu") ) ) {
+				$(this).addClass("caMenuEnabled").removeClass("caMenuDisabled");
+			}
+		});
+		setFavRepoSearch();
+
+		post({action:'areAppsPinned'},function(result) {
+			if (!result.status) {
+				$(".caPinnedMenu").removeClass("caMenuEnabled").addClass("caMenuDisabled");
+			} else {
+				$(".caPinnedMenu").removeClass("caMenuDisabled").addClass("caMenuEnabled");
+			}
+		});
+
+		if ( ! restoreStateMenu )
+			restoreStateMenu = $.cookie("ca_startupButton");
+
+		<? if ( $cfg['debugging'] == "yes" ):?>
+			console.log(restoreStateMenu);
+		<?endif;?>
+		var menuItem = $.find(".caMenuItem[data-category='"+restoreStateMenu+"']");
+		$(".caMenuItem").each(function(){
+			$(this).removeClass("selectedMenu");
+		});
+		$(menuItem).addClass("selectedMenu");
+		$(menuItem).parent().show();
+		$(menuItem).next().show();
+		restoreStateMenu = false;
+
+		if ( $("#searchBox").val() ) {
+			post({action:'getCategoriesPresent'},function(result) {
+				$(".categoryMenu").removeClass("caMenuEnabled").addClass("caMenuDisabled");
+				result.forEach(function(category) {
+					var menuItem = $.find(".caMenuItem[data-category='"+category+"']");
+					$(menuItem).removeClass("caMenuDisabled").addClass("caMenuEnabled");
+					document.referrer = "/Apps";
+				});
+				var selectedMenu = $.cookie("ca_selectedMenu");
+				if ( selectedMenu ) {
+					var menuItem = $.find(".caMenuItem[data-category='"+selectedMenu+"']");
+					$(menuItem).addClass("selectedMenu");
+				}	else
+					$(".allApps").addClass("selectedMenu");
+
+			});
+		}
+	});
+}
+
+function feedWarning(currentServer) {
+	if ( currentServer != "Primary Server" ) {
+		if ( currentServer == "" ) {
+			addBannerWarning("<?tr("Unknown error happened.  Please post a screenshot in the support thread of the Statistics screen")?>");
+		} else {
+				if ( !backupServerWarning ) {
+				backupServerWarning = addBannerWarning("<?tr("Backup Server Active.  Some icons may not appear, and plugin installations may be affected")?>",true,true);
+			} else {
+				removeBannerWarning(backupServerWarning);
+				backupServerWarning = false;
+			}
+		}
+	} else if ( backupServerWarning ) {
+		removeBannerWarning(backupServerWarning);
+		backupServerWarning = false;
+	}
+}
+
+function tr(string) {
+	<?if ( ! ($_SESSION['locale'] == "" || $_SESSION['locale'] == "en_US") ) : ?>
+		return _(string);
+	<?else: ?>
+		return string;
+	<?endif;?>
+}
+
+function CAswitchLanguage(language) {
+	if ( language == "en_US" || ! language)
+		var oldlanguage = '<?=$locale?>';
+	else
+		var oldlanguage = "";
+
+	data.searchActive = true; // so the system doesn't resort
+	saveState();
+	$.cookie('locale',oldlanguage,{path:'/'}); // save the previous locale
+	post({action:'switchLanguage',language:language},function(result) {
+		$.cookie("ca_languageSwitch","switched",{expires:365,path:'/'});
+		myCloseSpinner();
+		window.location.reload();
+	});
+}
+
+function installLanguage(languageURL,language) {
+
+	disableSearch();
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,"<?tr('Install Language Pack')?>",600,900,true,"postLanguageRefresh");
+}
+
+function updateLanguage(language) {
+
+	disableSearch();
+	$.cookie("updateLanguage",language);
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"postUpdateLanguage");
+}
+
+function postUpdateLanguage() {
+	var languageUpdate = $.cookie("updateLanguage");
+	var currentLanguage = "<?=$_SESSION['locale']?>";
+
+	if (languageUpdate == currentLanguage)
+		window.location.reload();
+	else {
+		var apppath = $.cookie("sidebarAppPath");
+		var appname = $.cookie("sidebarAppName");
+		showSidebarApp(apppath,appname);
+		refreshDisplay();
+	}
+}
+function removeLanguage(language) {
+	closeSidebar();
+	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"postLanguageRemove");
+
+}
+
+function postLanguageRefresh() {
+
+	
+	var apppath = $.cookie("sidebarAppPath");
+	var appname = $.cookie("sidebarAppName");
+	if ( apppath ) {
+		showSidebarApp(apppath,appname);
+	}
+	refreshDisplay();
+}
+
+function postLanguageRemove() {
+	var cat = $(".selectedMenu").data("category");
+	if ( cat == "installed_apps" || cat == "inst_plugins" || cat == "inst_docker" ) {
+		
+		postUninstallPlugin();
+		return;
+	}
+	postLanguageRefresh();
+}
+
+function updateDocker(container) {
+	closeSidebar();
+	$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
+	openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
+}
+
+function setToolTipForFavourite() {
+	$(".ca_fav").each(function(){
+		if ( $(this).hasClass("ca_favouriteRepo") ) {
+			$(this).attr("title","<?tr("Click to remove favourite repository");?>");
+		} else {
+			var repository = $(this).data("repository");
+			repository = repository.replace("'s Repository","").replace("' Repository","").replace(" Repository","");
+			$(this).attr("title",sprintf("Click to set %s as favourite repository",repository));
+		}
+	});
+}
+
+function setFavourite(button) {
+	$(button).toggleClass("fav nonfav");
+	var repo = $(button).data("repository");
+	clearTimeout(repoBannerTimer);
+
+	post({action:'toggleFavourite',repository:repo},function(data) {
+		if ( repoBanner !== false )
+			removeBannerWarning(repoBanner);
+		if ( data.fav ) {
+			var bannerMessage = repo.replace("'s Repository","").replace("' Repository","").replace(" Repository","");
+			repoBanner = addBannerWarning(sprintf("%s set as favourite repository",bannerMessage),false,true);
+		} else {
+			var bannerMessage = repo.replace("'s Repository","").replace("' Repository","").replace(" Repository","");
+			repoBanner = addBannerWarning(sprintf("%s removed as favourite repository",bannerMessage),false,true);
+		}
+		repoBannerTimer = setTimeout(function() {
+			removeBannerWarning(repoBanner);
+			repoBanner = false;
+		},5000);
+		$(".favCardBackground").each(function() {
+			if ( $(this).data("repository") == data.fav )
+				$(this).show();
+			else
+				$(this).hide();
+		});
+		setFavRepoSearch();
+	});
+}
+
+function popupInstallXML(xml,type) {
+	saveState();
+	post({action:'createXML',xml:xml,type:type},function(result){
+		if ( result.status == "ok" ) {
+			if (type == "second") {
+				type = "default";
+			}
+			openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
+		}
+	});
+}
+
+function popUpChart(descData) {
+	if ( $("#trendChart").length ) {
+		var fontSize = 14;
+
+		if (descData.trendLabel.length > 3) {
+			var fontSize = 12;
+		}
+		if (descData.trendLabel.length > 6) {
+			var fontSize = 11;
+		}
+		if (descData.trendLabel.length > 8) {
+			var fontSize = 8;
+		}
+
+		var ctx = document.getElementById("trendChart").getContext('2d');
+		let chart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				datasets: [{
+					data: descData.trendData,
+					borderColor: '#FF8C2F',
+					trendlineLinear: {
+						style: "rgb(255 ,66 ,255)",
+						lineStyle: "dotted",
+						width: 2
+					}
+				}],
+				labels: descData.trendLabel
+			},
+			options: {
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem,data) {
+							return tooltipItem.yLabel.toLocaleString()+"%";
+						}
+					}
+				},
+				title: {
+					display: true,
+					text: "<?tr("Trend Per Month");?>",
+					fontSize: 16,
+					fontColor: '<?=$tooltipsterContent?>',
+				},
+				legend: {
+					display: false
+				},
+				events: ["mousemove","mouseout"],
+				scales: {
+					yAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},
+						ticks: {
+							callback: function(label,index,labels) {
+								return label + " %";
+							},
+							precision: 0,
+							fontColor: '<?=$tooltipsterContent?>'
+						}
+					}],
+					xAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},
+						ticks: {
+							fontSize: fontSize,
+							fontColor: '<?=$tooltipsterContent?>',
+							color: '#ffffff'
+						}
+					}]
+				}
+			}
+		});
+	}
+	if ( $("#downloadChart").length ) {
+		var ctx = document.getElementById("downloadChart").getContext('2d');
+		let chart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				datasets: [{
+					data: descData.downloadtrend,
+					borderColor: '#FF8C2F',
+					trendlineLinear: {
+						style: "rgb(255 ,66 ,255)",
+						lineStyle: "dotted",
+						width: 2
+					}
+				}],
+				labels: descData.downloadLabel
+			},
+			options: {
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem,data) {
+							return tooltipItem.yLabel.toLocaleString();
+						}
+					}
+				},
+				title: {
+					display: true,
+					text: "<?tr("Downloads Per Month")?>",
+					fontSize: 16,
+					fontColor: '<?=$tooltipsterContent?>'
+				},
+				legend: {
+					display: false
+				},
+				events: ["mousemove","mouseout"],
+				scales: {
+					yAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},
+						ticks: {
+							callback: function(label,index,labels) {
+								return label.toLocaleString();
+							},
+							fontColor: '<?=$tooltipsterContent?>'
+						}
+					}],
+					xAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},
+						ticks: {
+							fontSize: fontSize,
+							fontColor: '<?=$tooltipsterContent?>'
+						}
+					}]
+				}
+			}
+		});
+	}
+	if ( $("#totalDownloadChart").length ) {
+		var ctx = document.getElementById("totalDownloadChart").getContext('2d');
+		let chart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				datasets: [{
+					data: descData.totaldown,
+					borderColor: '#FF8C2F'
+				}],
+				labels: descData.totaldownLabel
+			},
+			options: {
+				tooltips: {
+					callbacks: {
+						label: function(tooltipItem,data) {
+							return tooltipItem.yLabel.toLocaleString();
+						}
+					}
+				},
+				title: {
+					display: true,
+					text: "<?tr("Total Downloads");?>",
+					fontSize: 16,
+					fontColor: '<?=$tooltipsterContent?>'
+				},
+				legend: {
+					display: false
+				},
+				events: ["mousemove","mouseout"],
+				scales: {
+					yAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},
+						ticks: {
+							callback: function(label,index,labels) {
+								return label.toLocaleString();
+							},
+							fontColor: '<?=$tooltipsterContent?>'
+						}
+					}],
+					xAxes: [{
+						gridLines: {
+							color: '<?=$chartGrid?>'
+						},
+						ticks: {
+							fontSize: fontSize,
+							fontColor: '<?=$tooltipsterContent?>'
+						}
+					}]
+				}
+			}
+		});
+	}
+}
+
+function showSidebarApp(apppath,appname) {
+	$.cookie("sidebarAppPath",apppath);
+	$.cookie("sidebarAppName",appname);
+	$("#sidenavContent").html("");
+	$(".sidebar").fadeIn();
+	$(".back_to_top").addClass("back_to_top_hide");
+	$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
+	setTimeout(function() {
+		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
+			$("#sidenavContent").html(result.description);
+			$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"})
+			popUpChart(result);
+			if ( result.supportContext ) {
+				var opts = [];
+				result.supportContext.forEach(function(item,index){
+					opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
+				});
+				context.attach('#supportPopup', opts)
+			}
+			if ( result.actionsContext ) {
+				var opts = [];
+				result.actionsContext.forEach(function(item,index){
+					if ( item.divider ) {
+						opts.push({divider:true});
+					} else {
+						opts.push({text:item.text,icon:item.icon,action:function(){
+							eval(item.action);
+						}});
+					}
+				});
+				context.attach("#actionsPopup",opts);
+			}
+			$(".popupName,.betaPopupText").each(function() {
+				while (isOverflown(this)) {
+					var existingSize = $(this).css("font-size");
+					var size = existingSize.replace("px","");
+					var newSize = size - 1;
+					if (newSize == 0)
+						return false;
+
+					$(this).css("font-size",newSize+"px");
+				}
+			});
+		})
+	},500);
+}
+
+function checkSortOrder() {
+	var sortButton = false;
+	$(".sortIcons").each(function() {
+		if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+			sortButton = true;
+		}
+	});
+	if ( !sortButton) {
+		$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+		post({action:"defaultSortOrder"},function(data) {
+			$("#defaultSort").addClass("enabledIcon");
+		});
+	}
+}
+
+</script>
+
+<?include "/usr/local/emhttp/plugins/$plugin/skins/Narrow/skin.html"?>

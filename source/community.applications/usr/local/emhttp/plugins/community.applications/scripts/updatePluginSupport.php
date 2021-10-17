@@ -16,14 +16,10 @@ require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 
 $dynamix = parse_plugin_cfg("dynamix");
 
-$translations = is_file("$docroot/plugins/dynamix/include/Translations.php");
-
-if ( $translations ) {
-	session_start();
-	$_SESSION['locale'] = $dynamix['locale'];
-	$_SERVER['REQUEST_URI'] = "apps";
-	require_once("$docroot/plugins/dynamix/include/Translations.php");
-}
+session_start();
+$_SESSION['locale'] = $dynamix['locale'];
+$_SERVER['REQUEST_URI'] = "apps";
+require_once("$docroot/plugins/dynamix/include/Translations.php");
 
 $plugins = glob("/boot/config/plugins/*.plg");
 $templates = readJsonFile($caPaths['community-templates-info']);
