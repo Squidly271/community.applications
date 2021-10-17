@@ -1266,6 +1266,7 @@ function pinnedApps() {
 			}
 		}
 	}
+	usort($displayed,"mySort");
 	$displayedApplications['community'] = $displayed;
 	$displayedApplications['pinnedFlag']  = true;
 	writeJsonFile($caPaths['community-templates-displayed'],$displayedApplications);

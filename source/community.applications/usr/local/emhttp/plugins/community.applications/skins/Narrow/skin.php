@@ -110,8 +110,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					$tmpRepo = "library/$tmpRepo";
 				}
 				foreach ($dockerRunning as $testDocker) {
-					if ( $tmpRepo == $testDocker['Image'] || "$tmpRepo:latest" == $testDocker['Image'] && $template['Name'] == $testDocker['Name']  && ! $template['Uninstall']) {
-						$template['Installed'] = true;
+					if ( ($tmpRepo == $testDocker['Image'] || "$tmpRepo:latest" == $testDocker['Image']) && ($template['Name'] == $testDocker['Name']) ) {
+						$template['Installed'] = ! $template['Uninstall']; // Stops the Installed flag from appearing within Installed apps
 						break;
 					}
 				}

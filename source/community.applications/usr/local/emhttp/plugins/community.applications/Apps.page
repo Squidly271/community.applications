@@ -1008,6 +1008,7 @@ function showModeration(script,title) {
 }
 
 function previousApps(installed,dontClear=false,filter="") {
+	checkSortOrder();
 	clearCategory();
 	setPageOne();
 	data.docker = "";
@@ -1204,6 +1205,7 @@ function clearCategory() {
 }
 
 function pinnedApps() {
+	checkSortOrder();
 	setPageOne();
 	data.docker = "";
 	clearSearchBox();

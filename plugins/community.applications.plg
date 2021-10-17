@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.10.17">
-<!ENTITY md5       "345ae536972b749de9efe2717ba04dbb">
+<!ENTITY version   "2021.10.17a">
+<!ENTITY md5       "dc57c53368af08621d06bc89a4b7e2bd">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.10.17a
+- Fixed: Certain apps would have the Installed flag showing when in Installed Apps
+- Fixed: Pinned Apps were not honoring the sort order when initially going into that section
+- Fixed: Going from Home / SHOW MORE to Installed / Previously Installed the sort order would be incorrect
+
 ###2021.10.17
 - Complete overhaul of GUI
 - Fixed: Disable categories after performing a dockerHub search
@@ -1694,11 +1699,11 @@ THIS IS A REQUIRED UPDATE
 <?
   $version = parse_ini_file("/etc/unraid-version");
   
-  if ( version_compare($version['version'],"6.4.0", "<") )
+  if ( version_compare($version['version'],"6.9.0", "<") )
   {
     echo "********************************************************************\n";
     echo "\n";
-    echo "Community Applications Requires unRaid version 6.4.0 or greater to run\n";
+    echo "Community Applications Requires unRaid version 6.9.0 or greater to run\n";
     echo "\n";
     echo "********************************************************************\n";
     exit(1);
