@@ -570,7 +570,7 @@ function postReturn($retArray) {
 	flush();
 
 	if ($caSettings['debugging'] == "yes") {
-		file_put_contents($caPaths['logging'],"POST RETURN ({$_POST['action']})\n".var_dump_ret($retArray)."\n",FILE_APPEND);
+		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')." POST RETURN ({$_POST['action']})\n".var_dump_ret($retArray)."\n",FILE_APPEND);
 	}
 }
 ####################################

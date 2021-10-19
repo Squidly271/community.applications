@@ -2,17 +2,23 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.10.17a">
-<!ENTITY md5       "dc57c53368af08621d06bc89a4b7e2bd">
+<!ENTITY version   "2021.10.19">
+<!ENTITY md5       "7dea1ce7c5cbe68dac07acb4763cd63c">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
 ]>
 
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.8.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.10.19
+- Changed: Drop limit of displayed apps on home page from 25 to 7 / 10 depending upon settings
+- Added: Ability to display descriptions by default on the cards.  (Go to CA's Settings page)
+- Changed: Easier access to debugging information in certain cases
+- Changed: Re-add compatibility with 6.8+ (Disable feature that requires 6.9)
+
 ###2021.10.17a
 - Fixed: Certain apps would have the Installed flag showing when in Installed Apps
 - Fixed: Pinned Apps were not honoring the sort order when initially going into that section

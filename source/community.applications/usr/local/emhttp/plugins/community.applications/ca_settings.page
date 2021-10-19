@@ -1,5 +1,6 @@
-Menu="hidden"
+Menu="Utilities"
 Title="Community Applications"
+Icon="users"
 ---
 <?
 ###############################################################
@@ -36,6 +37,23 @@ function tr($string,$ret=false) {
 		echo $string;
 }
 ?>
+<script>
+$(function() {
+	<?if ( is_file($caPaths['logging']) ):?>
+		$("#debugging").show();
+	<?endif;?>
+});
+
+function debug() {
+	var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+	var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+	var filename='CA-Logging-'+localISOTime.substr(0,16).replace(/[-:]/g,'').replace('T','-')+'.zip';
+
+	$.post('/webGui/include/Download.php',{cmd:'save',file:filename,source:"<?=$caPaths['logging']?>"},function(zip) {
+		location = zip;
+	});
+}
+</script>
 
 <form class='js-confirm-leave' markdown="1" method="POST" action="/update.php" target="progressFrame">
 <input type="hidden" name="#file" value="<?=$plugin?>/<?=$plugin?>.cfg">
@@ -106,6 +124,8 @@ function tr($string,$ret=false) {
 	</select>
 	
 > <?tr("This unlocks some extra features within CA generally only used by developers.  Not recommended to enable")?>
+
+<input id='debugging' type='button' onclick='debug();' value='DOWNLOAD LOG' style='display:none;'></input>
 
 &nbsp;
 : <input type="submit" name="#apply" value="<?tr("Apply");?>" id='Apply'><input type="button" id="DONE" value="<?tr("Done");?>" onclick="done()">

@@ -65,7 +65,7 @@ if ($caSettings['debugging'] == "yes") {
 		$lingo = $_SESSION['locale'] ?: "en_US";
 		file_put_contents($caPaths['logging'],"Language: $lingo\n\n",FILE_APPEND);
 	}
-	file_put_contents($caPaths['logging'],"POST CALLED ({$_POST['action']})\n".print_r($_POST,true),FILE_APPEND);
+	file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  POST CALLED ({$_POST['action']})\n".print_r($_POST,true),FILE_APPEND);
 }
 
 $sortOrder = readJsonFile($caPaths['sortOrder']);
@@ -405,6 +405,8 @@ function appOfDay($file) {
 	global $caPaths,$caSettings,$sortOrder;
 
 	$info = getRunningContainers();
+	
+	$max = $caSettings['descriptions'] == "yes" ? 7 : 10;
 
 	switch ($caSettings['startup']) {
 		case "random":
@@ -429,7 +431,7 @@ function appOfDay($file) {
 				foreach ($file as $template) {
 					if ( ! checkRandomApp($template,$info,true) ) continue;
 					$appOfDay[] = $template['ID'];
-					if (count($appOfDay) == 25) break;
+					if (count($appOfDay) == $max) break;
 				}
 			}
 			writeJsonFile($caPaths['appOfTheDay'],$appOfDay);
@@ -443,7 +445,7 @@ function appOfDay($file) {
 				if ( $template['FirstSeen'] > 1538357652 ) {
 					if ( checkRandomApp($template) ) {
 						$appOfDay[] = $template['ID'];
-						if ( count($appOfDay) == 25 ) break;
+						if ( count($appOfDay) == $max ) break;
 					}
 				}
 			}
@@ -463,7 +465,7 @@ function appOfDay($file) {
 							continue;
 						$repos[] = $template['Repository'];
 						$appOfDay[] = $template['ID'];
-						if ( count($appOfDay) == 25 ) break;
+						if ( count($appOfDay) == $max ) break;
 					}
 				}
 			}
@@ -482,7 +484,7 @@ function appOfDay($file) {
 							continue;
 						$repos[] = $template['Repository'];						
 						$appOfDay[] = $template['ID'];
-						if ( count($appOfDay) == 25 ) break;
+						if ( count($appOfDay) == $max ) break;
 					}
 				}
 			}
@@ -494,7 +496,7 @@ function appOfDay($file) {
 			foreach($file as $template) {
 				if ($template['RecommendedDate']) {
 					$appOfDay[] = $template['ID'];
-					if ( count($appOfDay) == 25 ) break;
+					if ( count($appOfDay) == 7 ) break;
 				} else {
 					break;
 				}

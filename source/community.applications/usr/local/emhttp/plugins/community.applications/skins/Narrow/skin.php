@@ -100,7 +100,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['Twitter'] = $repositories[$template['Repo']]['Twitter'];
 			$template['Reddit'] = $repositories[$template['Repo']]['Reddit'];
 			$template['Facebook'] = $repositories[$template['Repo']]['Facebook'];
-			$template['Discord'] = $repositories[$template['RepoName']]['Discord'];
+			if ( version_compare($caSettings['unRaidVersion'],"6.9.0",">=") )
+				$template['Discord'] = $repositories[$template['RepoName']]['Discord'];
 
 			$template['checked'] = $checkedOffApps[$previousAppName] ? "checked" : "";
 			
@@ -199,7 +200,7 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
 	$dockerVars = parse_ini_file($caPaths['docker_cfg']);
-	$caSettings = parse_plugin_cfg("community.applications");
+//	$caSettings = parse_plugin_cfg("community.applications");
 	$csrf_token = $unRaidVars['csrf_token'];
 	$tabMode = '_parent';
 
@@ -233,13 +234,16 @@ function getPopupDescriptionSkin($appNumber) {
 		$index = searchArray($displayed['community'],"Path",$appNumber);
 		$ind = $index;
 		while ( true ) {
+			$template = $displayed[$ind];
 			if ( $template['Name'] == $displayed['community'][$ind]['Name'] ) {
 				$index = $ind;
 				break;
 			}
-			$ind = searchArray($displayed['community'],"Path",$ind+1);
-			if ( $ind === false )
+			$ind = searchArray($displayed['community'],"Path",$appNumber,$ind+1);
+			if ( $ind === false ) {
+				unset($template);
 				break;
+			}
 		}
 	}
 			
@@ -462,8 +466,10 @@ function getPopupDescriptionSkin($appNumber) {
 	if ( $template['Project'] )
 		$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
 
-	if ( $allRepositories[$template['Repo']]['Discord'] )
-		$supportContext[] = array("icon"=>"ca_discord","link"=>$allRepositories[$template['Repo']]['Discord'],"text"=>tr("Discord"));
+	if ( version_compare($caSettings['unRaidVersion'],"6.9.0",">=") ) {
+		if ( $allRepositories[$template['Repo']]['Discord'] )
+			$supportContext[] = array("icon"=>"ca_discord","link"=>$allRepositories[$template['Repo']]['Discord'],"text"=>tr("Discord"));
+	}
 	if ( $template['Support'] )
 		$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support Forum"));
 
@@ -605,9 +611,10 @@ function getRepoDescriptionSkin($repository) {
 		$t .= "<a class='appIconsPopUp ca_reddit' href='{$repo['Reddit']}' target='_blank'> ".tr("Reddit")."</a>";
 	if ( $repo['Twitter'] )
 		$t .= "<a class='appIconsPopUp ca_twitter' href='{$repo['Twitter']}' target='_blank'> ".tr("Twitter")."</a>";
-	if ( $repo['Discord'] )
-		$t .= "<a class='appIconsPopUp ca_discord_popup' target='_blank' href='{$repo['Discord']}' target='_blank'> ".tr("Discord")."</a>";
-
+	if ( version_compare($caSettings['unRaidVersion'],"6.9.0",">=") ) {
+		if ( $repo['Discord'] )
+			$t .= "<a class='appIconsPopUp ca_discord_popup' target='_blank' href='{$repo['Discord']}' target='_blank'> ".tr("Discord")."</a>";
+	}
 	$t .= "
 		</div>
 	  <div class='repoStats'>Statistics</div>
@@ -693,8 +700,10 @@ function displayCard($template) {
 			$supportContext[] = array("icon"=>"ca_fa-readme","link"=>$template['ReadMe'],"text"=>tr("Read Me First"));
 		if ( $template['Project'] )
 			$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
-		if ( $Discord )
-			$supportContext[] = array("icon"=>"ca_discord","link"=>$Discord,"text"=>tr("Discord"));
+		if ( version_compare($caSettings['unRaidVersion'],"6.9.0",">=") ) {
+			if ( $Discord )
+				$supportContext[] = array("icon"=>"ca_discord","link"=>$Discord,"text"=>tr("Discord"));
+		}
 		if ( $template['Support'] )
 			$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support Forum"));
 
