@@ -34,7 +34,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$caSettings['dockerRunning'] = "true";
-		$info = $DockerTemplates->getAllInfo();
+	//	$info = $DockerTemplates->getAllInfo();
+		$info = readJsonFile($caPaths['info']);
 		$dockerRunning = $DockerClient->getDockerContainers();
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
@@ -132,7 +133,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		}
 	}
 
-	$ct .= getPageNavigation($pageNumber,count($file),false,true)."<br><br><br>";
+	$ct .= getPageNavigation($pageNumber,count($file),false,true);
 
 	if ( ! $count )
 		$displayHeader .= "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div><script>hideSortIcons();</script>";
@@ -264,9 +265,9 @@ function getPopupDescriptionSkin($appNumber) {
 	}
 	$currentServer = file_get_contents($caPaths['currentServer']);
 
-	if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
+/* 	if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
 		$template['Icon'] = $template['IconHTTPS'];
-
+ */
 	$ID = $template['ID'];
 
 	$template['Profile'] = $allRepositories[$template['RepoName']]['profile'];

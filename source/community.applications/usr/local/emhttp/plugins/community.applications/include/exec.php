@@ -41,11 +41,11 @@ $DockerTemplates = new DockerTemplates();
 
 if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 	$caSettings['dockerRunning'] = true;
-	$dockerRunning = $DockerClient->getDockerContainers();
+//	$dockerRunning = $DockerClient->getDockerContainers();
 } else {
 	$caSettings['dockerSearch'] = "no";
 	unset($caSettings['dockerRunning']);
-	$dockerRunning = array();
+//	$dockerRunning = array();
 }
 
 @mkdir($caPaths['tempFiles'],0777,true);
@@ -404,8 +404,6 @@ function getConvertedTemplates() {
 function appOfDay($file) {
 	global $caPaths,$caSettings,$sortOrder;
 
-	$info = getRunningContainers();
-	
 	$max = $caSettings['descriptions'] == "yes" ? 7 : 10;
 
 	switch ($caSettings['startup']) {
@@ -424,17 +422,18 @@ function appOfDay($file) {
 					}
 				}
 				if ( $flag )
-					unset($app);
+					unset($appOfDay);
 			}
 			if ( ! $appOfDay ) {
 				shuffle($file);
 				foreach ($file as $template) {
-					if ( ! checkRandomApp($template,$info,true) ) continue;
+					if ( ! checkRandomApp($template) ) continue;
 					$appOfDay[] = $template['ID'];
 					if (count($appOfDay) == $max) break;
 				}
 			}
 			writeJsonFile($caPaths['appOfTheDay'],$appOfDay);
+			
 			break;
 		case "onlynew":
 			$sortOrder['sortBy'] = "FirstSeen";
@@ -510,7 +509,7 @@ function appOfDay($file) {
 #####################################################
 # Checks selected app for eligibility as app of day #
 #####################################################
-function checkRandomApp($test,$info=array(),$random=false) {
+function checkRandomApp($test) {
 	global $caSettings;
 
 	if ( $test['Name'] == "Community Applications" )  return false;
@@ -519,7 +518,7 @@ function checkRandomApp($test,$info=array(),$random=false) {
 	if ( ! $test['Compatible'] && $caSettings['hideIncompatible'] == "true" ) return false;
 	if ( $test['Blacklist'] )                         return false;
 	if ( $test['Deprecated'] && ( $caSettings['hideDeprecated'] == "true" ) ) return false;
-	if ( $random ) return ! appInstalled($test,$info);
+//	if ( $random ) return ! appInstalled($test,$info);
 
 	return true;
 }
@@ -618,8 +617,6 @@ function get_content() {
 			break;
 	}
 	$category = $category ? "/$category/i" : false;
-
-	$newAppTime = strtotime($caSettings['timeNew']);
 
 	getConvertedTemplates();
 
@@ -965,8 +962,8 @@ function previous_apps() {
 
 	$installed = getPost("installed","");
 	$filter = getPost("filter","");
-	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
-
+//	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
+	$info = $caSettings['dockerRunning'] ? readJsonFile($caPaths['info']) : array();
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);
 	@unlink($caPaths['repositoriesDisplayed']);
@@ -1191,7 +1188,7 @@ function updatePLGstatus() {
 # Uninstalls a docker #
 #######################
 function uninstall_docker() {
-	global $DockerClient, $dockerRunning;
+	global $DockerClient, $caPaths, $caSettings;
 	$application = getPost("application","");
 
 # get the name of the container / image
@@ -1199,14 +1196,17 @@ function uninstall_docker() {
 	$doc->load($application);
 	$containerName  = stripslashes($doc->getElementsByTagName( "Name" )->item(0)->nodeValue);
 
-	$dockerInfo = $DockerClient->getDockerContainers();
-	$container = searchArray($dockerInfo,"Name",$containerName);
+	$dockerRunning = $DockerClient->getDockerContainers();
+	$container = searchArray($dockerRunning,"Name",$containerName);
 
 	if ( $dockerRunning[$container]['Running'] )
 		myStopContainer($dockerRunning[$container]['Id']);
 
 	$DockerClient->removeContainer($containerName,$dockerRunning[$container]['Id']);
 	$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
+
+	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
+	writeJsonFile($caPaths['info'],$info);
 
 	postReturn(['status'=>"Uninstalled"]);
 }
@@ -1570,7 +1570,7 @@ function caChangeLog() {
 # Populates the category list #
 ###############################
 function get_categories() {
-	global $caPaths, $sortOrder;
+	global $caPaths, $sortOrder, $caSettings, $DockerClient;
 	$categories = readJsonFile($caPaths['categoryList']);
 	if ( ! is_array($categories) || empty($categories) ) {
 		$cat = "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
@@ -1613,6 +1613,8 @@ function get_categories() {
 			}
 		}
 	}
+	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
+	writeJsonFile($caPaths['info'],$info);
 	postReturn(["categories"=>$cat]);
 }
 
