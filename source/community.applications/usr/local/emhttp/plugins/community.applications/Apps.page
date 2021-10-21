@@ -1148,10 +1148,12 @@ function uninstallDocker(application,humanName) {
 			post({action:'uninstall_docker',application:application,noSpinner:true},function(result) {
 				myCloseAlert();
 				enableSearch();
-				$(".caMenuItem").removeClass("selectedMenu");
-				var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
-				$(menuItem).addClass("selectedMenu");
-
+				if ( $(".selectedMenu").data("category") !== "inst_docker" && $(".selectedMenu").data("category") !== "inst_plugin") {
+					$(".caMenuItem").removeClass("selectedMenu");
+					var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
+					$(menuItem).addClass("selectedMenu");
+					$(menuItem).next().show("slow");
+				}
 				previousApps(true,false,data.previousAppsSection);
 			});
 		} else {

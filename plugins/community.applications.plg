@@ -10,9 +10,14 @@
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
 ]>
 
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.8.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.10.21
+- Changed / Fixed: Rendering speed at startup, page transitions etc
+- Fixee: Uninstalling from a category woulen't highlight Installed Apps after finish.
+- Fixed: Uninstalling from either the docker or plugin subsection of installed apps would highlight Installed Apps after uninstall
+
 ###2021.10.19
 - Changed: Drop limit of displayed apps on home page from 25 to 7 / 10 depending upon settings
 - Added: Ability to display descriptions by default on the cards.  (Go to CA's Settings page)
@@ -1705,11 +1710,11 @@ THIS IS A REQUIRED UPDATE
 <?
   $version = parse_ini_file("/etc/unraid-version");
   
-  if ( version_compare($version['version'],"6.8.0", "<") )
+  if ( version_compare($version['version'],"6.9.0", "<") )
   {
     echo "********************************************************************\n";
     echo "\n";
-    echo "Community Applications Requires unRaid version 6.8.0 or greater to run\n";
+    echo "Community Applications Requires unRaid version 6.9.0 or greater to run\n";
     echo "\n";
     echo "********************************************************************\n";
     exit(1);
