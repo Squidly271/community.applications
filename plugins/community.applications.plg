@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.10.19">
-<!ENTITY md5       "7dea1ce7c5cbe68dac07acb4763cd63c">
+<!ENTITY version   "2021.10.21">
+<!ENTITY md5       "722f5d1c563ea81ac2119bcf71b82efb">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -17,6 +17,7 @@
 - Changed / Fixed: Rendering speed at startup, page transitions etc
 - Fixee: Uninstalling from a category woulen't highlight Installed Apps after finish.
 - Fixed: Uninstalling from either the docker or plugin subsection of installed apps would highlight Installed Apps after uninstall
+- Various CSS tweaks
 
 ###2021.10.19
 - Changed: Drop limit of displayed apps on home page from 25 to 7 / 10 depending upon settings
