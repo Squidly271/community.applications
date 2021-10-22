@@ -23,7 +23,6 @@
 - Changed: Drop limit of displayed apps on home page from 25 to 7 / 10 depending upon settings
 - Added: Ability to display descriptions by default on the cards.  (Go to CA's Settings page)
 - Changed: Easier access to debugging information in certain cases
-- Changed: Re-add compatibility with 6.8+ (Disable feature that requires 6.9)
 
 ###2021.10.17a
 - Fixed: Certain apps would have the Installed flag showing when in Installed Apps
