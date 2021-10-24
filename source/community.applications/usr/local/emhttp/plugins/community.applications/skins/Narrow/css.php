@@ -309,7 +309,7 @@ p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling 
 .pageDots::after {content:"...";}
 .pageDots{color:grey;cursor:default;}
 .pageLeft::after {content:"\f137";font-family:fontAwesome;}
-.pageNavigation {font-size:1.5rem;}
+.pageNavigation {font-size:1.5rem;padding-bottom:20rem;}
 .pageNavNoClick {font-size:1.5rem;cursor:default !important;}
 .pageNavNoClick:hover{color:initial !important;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;text-decoration:none !important;}

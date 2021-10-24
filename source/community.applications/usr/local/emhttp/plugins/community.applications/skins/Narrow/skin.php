@@ -11,6 +11,7 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 
 	if ( is_file($caPaths['repositoriesDisplayed']) ) {
 		$file = readJsonFile($caPaths['repositoriesDisplayed']);
+		//$startup = true;
 	} else {
 		if ( is_file($caPaths['community-templates-catSearchResults']) )
 			$file = readJsonFile($caPaths['community-templates-catSearchResults']);
@@ -77,9 +78,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['Icon'] = $template['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 
 			if ( ! $template['bio'] )
-				$template['Description'] = tr("No description present");
+				$template['CardDescription'] = tr("No description present");
 			else
-				$template['Description'] = $template['bio'];
+				$template['CardDescription'] = $template['bio'];
 			$template['bio'] = strip_tags(markdown($template['bio']));
 
 			$template['display_dockerName'] = $template['RepoName'];
@@ -799,8 +800,7 @@ function displayCard($template) {
 
 		$ovr = str_replace("\n","<br>",$ovr);
 		$Overview = explode("<br>",$ovr)[0];
-		$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
-		$card .= "<div class='$descClass ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
+		$card .= "<div class='cardDescription ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
 		if ( $RecommendedDate ) {
 			$card .= "
 				<div class='homespotlightIconArea ca_center' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
@@ -871,6 +871,9 @@ function displayPopup($template) {
 			$card.= "<div class='supportPopup' id='supportPopup'><span class='ca_fa-support'> ".tr("Support")."</div>";
 
 		$card .= $LanguagePack != "en_US" ? "<div class='$pinned' style='display:inline-block' title='$pinnedTitle' data-repository='$Repository' data-name='$SortName'></div>" : "";
+		if ( ! $caSettings['dockerRunning'] && (! $Plugin && ! $Language) ) {
+			$card .= "<div class='ca_red'>".tr("Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed")."</div>";
+		}
 		$card .= "
 			</div>
 		</div>

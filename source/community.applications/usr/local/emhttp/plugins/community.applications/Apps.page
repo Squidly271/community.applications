@@ -344,7 +344,7 @@ $(function(){
 		}
 	});
 
-	$("body").on("click",".repoPopup,.ca_repoinfo,.ca_reporeadmore,.ca_repoFromPopUp,.cardDescriptionRepo", function() {
+	$("body").on("click",".repoPopup,.ca_repoinfo,.ca_reporeadmore,.ca_repoFromPopUp", function() {
 		context.destroy("#supportPopup");
 		context.destroy("#actionsPopup");
 		if ( ! $(".sidebar").is(":visible") ) {
