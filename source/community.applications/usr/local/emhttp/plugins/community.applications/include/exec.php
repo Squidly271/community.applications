@@ -958,11 +958,10 @@ function dismiss_plugin_warning() {
 # Displays the list of installed or previously installed apps #
 ###############################################################
 function previous_apps() {
-	global $caPaths, $caSettings, $DockerClient;
+	global $caPaths, $caSettings;
 
 	$installed = getPost("installed","");
 	$filter = getPost("filter","");
-//	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
 	$info = $caSettings['dockerRunning'] ? readJsonFile($caPaths['info']) : array();
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);

@@ -11,7 +11,6 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 
 	if ( is_file($caPaths['repositoriesDisplayed']) ) {
 		$file = readJsonFile($caPaths['repositoriesDisplayed']);
-		//$startup = true;
 	} else {
 		if ( is_file($caPaths['community-templates-catSearchResults']) )
 			$file = readJsonFile($caPaths['community-templates-catSearchResults']);
@@ -78,9 +77,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['Icon'] = $template['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 
 			if ( ! $template['bio'] )
-				$template['CardDescription'] = tr("No description present");
+				$template['Description'] = tr("No description present");
 			else
-				$template['CardDescription'] = $template['bio'];
+				$template['Description'] = $template['bio'];
 			$template['bio'] = strip_tags(markdown($template['bio']));
 
 			$template['display_dockerName'] = $template['RepoName'];
@@ -800,7 +799,8 @@ function displayCard($template) {
 
 		$ovr = str_replace("\n","<br>",$ovr);
 		$Overview = explode("<br>",$ovr)[0];
-		$card .= "<div class='cardDescription ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
+		$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
+		$card .= "<div class='$descClass ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
 		if ( $RecommendedDate ) {
 			$card .= "
 				<div class='homespotlightIconArea ca_center' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
