@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.10.21">
-<!ENTITY md5       "722f5d1c563ea81ac2119bcf71b82efb">
+<!ENTITY version   "2021.10.24">
+<!ENTITY md5       "006e7c01738ccab4b1ba5c41424b22d8">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.10.24
+- Windows 11 temporary compatibility fix
+- Fixed: Repository descriptions weren't showing up on cards if descriptions were allowed in Settings
+
 ###2021.10.21
 - Changed / Fixed: Rendering speed at startup, page transitions etc
 - Fixee: Uninstalling from a category woulen't highlight Installed Apps after finish.
