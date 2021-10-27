@@ -113,13 +113,15 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				}
 				foreach ($dockerRunning as $testDocker) {
 					if ( ($tmpRepo == $testDocker['Image'] || "$tmpRepo:latest" == $testDocker['Image']) && ($template['Name'] == $testDocker['Name']) ) {
-						$template['Installed'] = ! $template['Uninstall']; // Stops the Installed flag from appearing within Installed apps
+//						$template['Installed'] = ! $template['Uninstall']; // Stops the Installed flag from appearing within Installed apps
+						$template['Installed'] = true;
+					
 						break;
 					}
 				}
 			} else {
 				$pluginName = basename($template['PluginURL']);
-				$template['Installed'] = checkInstalledPlugin($template) && ! $template['Uninstall'];
+				$template['Installed'] = checkInstalledPlugin($template) ;
 
 			}
 			
@@ -680,7 +682,20 @@ function displayCard($template) {
 	$appType = $Language ? "appLanguage": $appType;
 	$appType = (strpos($Category,"Drivers") !== false) && $Plugin ? "appDriver" : $appType;
 	$appType = $RepositoryTemplate ? "appRepository" : $appType;
-
+	switch ($appType) {
+		case "appPlugin":
+			$typeTitle = tr("This application is a plugin");
+			break;
+		case "appDocker":
+			$typeTitle = tr("This application is a docker container");
+			break;
+		case "appLanguage":
+			$typeTitle = tr("This is a language pack");
+			break;
+		case "appDriver":
+			$typeTitle = tr("This application is a driver (plugin)");
+			break;
+	}
 	if ($InstallPath)
 		$Path = $InstallPath;
 
@@ -692,7 +707,6 @@ function displayCard($template) {
 		$author = $Author;
 	if ( $Language )
 		$author = "Unraid";
-
 
 	if ( !$RepositoryTemplate ) {
 		$cardClass = "ca_appPopup";
@@ -722,15 +736,12 @@ function displayCard($template) {
 			$supportContext[] = array("icon"=>"ca_reddit","link"=>$Reddit,"text"=>tr("Reddit"));
 		if ( $Facebook )
 			$supportContext[] = array("icon"=>"ca_facebook","link"=>$Facebook,"text"=>tr("Facebook"));
-
 		if ( $WebPage )
 			$supportContext[] = array("icon"=>"ca_webpage","link"=>$WebPage,"text"=>tr("Web Page"));
-
 
 		$Name = str_replace("' Repository","",str_replace("'s Repository","",$author));
 		$Name = str_replace(" Repository","",$Name);
 		$author = "";
-
 	}
 
 	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
@@ -750,14 +761,13 @@ function displayCard($template) {
 		";
 
 	$card .= "
-			<span class='$appType'></span>
+			<span class='$appType' title='".htmlentities($typeTitle)."'></span>
 	";
-	if ( $ca_fav )
-		$card .= "<span class='favCardBackground' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
-	else
-		$card .= "<span class='favCardBackground' style='display:none;' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
-
-
+	if ( $ca_fav ) {
+		$favText = $RepositoryTemplate ? tr("This is your favourite repository") : tr("This application is from your favourite repository");
+		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
+	}	else
+		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."' style='display:none;' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
 
 	if ($Removable && !$DockerInfo) {
 		$previousAppName = $Plugin ? $PluginURL : $Name;
@@ -769,7 +779,7 @@ function displayCard($template) {
 	$card .= "<div class='ca_iconArea'>";
 	if ( ! $IconFA )
 		$card .= "
-			<img class='ca_displayIcon'src='$Icon'></img>
+			<img class='ca_displayIcon' src='$Icon'></img>
 		";
 	else {
 		$displayIcon = $template['IconFA'] ?: $template['Icon'];
@@ -821,7 +831,7 @@ function displayCard($template) {
 		$card .= "</div>";
 	} else if ( $RecommendedDate ) {
 		$card .= "<div class='spotlightCardBackground'>";
-		$card .= "<div class='spotlightPopupText'></div>";
+		$card .= "<div class='spotlightPopupText' title='".tr("This is a spotlight application")."'></div>";
 		$card .= "</div>";
 	}
 	return str_replace(["\t","\n"],"",$card);
@@ -932,6 +942,7 @@ function displayPopup($template) {
 				<tr><td class='popupTableLeft'>".tr("Categories")."</td><td class='popupTableRight'>$Category</td></tr>
 				<tr><td class='popupTableLeft'>".tr("Added")."</td><td class='popupTableRight'>$DateAdded</td></tr>
 	";
+	$downloadText = getDownloads($downloads);	
 	if ($downloadText)
 		$card .= "<tr><td class='popupTableLeft'>".tr("Downloads")."</td><td class='popupTableRight'>$downloadText</td></tr>";
 	if (!$Plugin && !$LanguagePack)
@@ -967,7 +978,7 @@ function displayPopup($template) {
 			<div class='donateDiv'><span class='donate'><a href='$DonateLink' target='_blank'>".tr("Donate")."</a></span></div>
 		";
 	}
-	$downloadText = getDownloads($downloads);
+
 	$card .= "
 			</div>
 		</div>
