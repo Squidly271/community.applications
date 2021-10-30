@@ -1615,7 +1615,7 @@ function get_categories() {
 	}
 //	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
 	if ( $caSettings['dockerRunning'] ) {
-		$info = $DockerTemplates->getAllInfo();
+		$info = $DockerTemplates->getAllInfo(false,true,true);
 # workaround for incorrect caching in dockerMan
 		$containers = $DockerClient->getDockerContainers();
 		foreach ($containers as &$container) {

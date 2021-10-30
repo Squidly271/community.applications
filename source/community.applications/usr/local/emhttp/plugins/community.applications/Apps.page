@@ -1854,11 +1854,9 @@ function removeLanguage(language) {
 }
 
 function postLanguageRefresh() {
-
-	
 	var apppath = $.cookie("sidebarAppPath");
 	var appname = $.cookie("sidebarAppName");
-	if ( apppath ) {
+	if ( $.trim(apppath) ) {
 		showSidebarApp(apppath,appname);
 	}
 	refreshDisplay();
