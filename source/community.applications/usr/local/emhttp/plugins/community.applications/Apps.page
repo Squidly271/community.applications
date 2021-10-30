@@ -36,9 +36,9 @@ if ( ! is_file($caPaths['docker_cfg']) ) {
 	exec("logger -t 'Community Applications' 'Fatal Flash Drive Error: /boot/config/docker.cfg does not exist'");
 }
 
-if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) )
+/* if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) )
 	$writeTest = @file_put_contents($caPaths['dockerWriteTest'],"Oscar");
-	
+	 */
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 $unRaid610      = version_compare($unRaidSettings['version'],"6.10.0-beta17",">");
 
@@ -183,7 +183,7 @@ $(function(){
 	<?endif;?>
 	
 	//abort execution if a write to the docker image failed
-	<? if ( $writeTest === false ): ?>
+/* 	<? if ( $writeTest === false ): ?>
 		$(".mainArea,.menuItems").html("");
 		swal({
 			title: "<?tr("Fatal Docker Image Error")?>",
@@ -197,7 +197,7 @@ $(function(){
 			location.replace("/Main");
 		});
 		return;
-	<?endif;?>
+	<?endif;?> */
 	
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
@@ -640,7 +640,7 @@ $(function(){
 			initialStartup = true;
 			var apppath = $.cookie("sidebarAppPath");
 			var appname = $.cookie("sidebarAppName");
-			if ( apppath ) {
+			if ( $.trim(apppath) ) {
 				showSidebarApp(apppath,appname);
 			}
 		} else {
@@ -649,7 +649,9 @@ $(function(){
 				if ("<?=$startupDisplayed?>" == "true" && (document.referrer.indexOf("/Apps/") > 1) && ( document.referrer.indexOf("/Apps/ca_settings") < 1 ) && cookiesEnabled() && ("<?=$dockerConvertFlag?>" != "true") || $.cookie("ca_languageSwitch") ) {
 					var apppath = $.cookie("sidebarAppPath");
 					var appname = $.cookie("sidebarAppName");
-					showSidebarApp(apppath,appname);
+					if ( $.trim(apppath) ) {
+						showSidebarApp(apppath,appname);
+					}
 				}
 			});
 		}
@@ -738,6 +740,7 @@ function changePage(pageNumber) {
 
 	post({action:'display_content',pageNumber:pageNumber,selected:selected},function(result) {
 		updateDisplay(result.display);
+		scrollToTop();
 	});
 }
 
@@ -988,7 +991,7 @@ function OpenSidebarAndRefreshDisplay() {
 			appname = stripTags(appname);
 
 			refreshDisplay();
-			if ( apppath ) {
+			if ( $.trim(apppath) ) {
 				showSidebarApp(apppath,appname);
 			}
 		}
@@ -1089,6 +1092,12 @@ function uninstallApp(application,humanName) {
 }
 
 function postUninstallPlugin() {
+	if ( $(".selectedMenu").data("category") !== "inst_docker" && $(".selectedMenu").data("category") !== "inst_plugin") {
+		$(".caMenuItem").removeClass("selectedMenu");
+		var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
+		$(menuItem).addClass("selectedMenu");
+		$(menuItem).next().show("slow");
+	}	
 	previousApps(true,false,data.previousAppsSection);
 	enableSearch();
 }
@@ -1437,7 +1446,7 @@ function installMulti() {
 
 function updateDisplay(data) {
 	// This has to be first.  If this doesn't happen, performance gets worse the more you click around
-	$(".supportButtonCardContext").each(function() {
+	$(".supportButtonCardContext,.actionsButtonContext").each(function() {
 		var ID = $(this).attr("id");
 		context.destroy("#"+ID);
 	});
@@ -1455,6 +1464,19 @@ function updateDisplay(data) {
 		var opts = [];
 		supportContext.forEach(function(item,index){
 			opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
+		});
+		context.attach('#'+ID, opts);
+	});
+	$('.actionsButtonContext').each(function() {
+		var actionsContext = $(this).data("context");
+		var ID = $(this).attr("id");
+		var opts = [];
+		actionsContext.forEach(function(item,index){
+			if ( item.divider ) {
+				opts.push({divider:true});
+			} else {
+				opts.push({text:item.text,icon:item.icon,action:function(){eval(item.action);}});
+			}
 		});
 		context.attach('#'+ID, opts);
 	});

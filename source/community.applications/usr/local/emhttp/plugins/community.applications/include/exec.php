@@ -1570,7 +1570,7 @@ function caChangeLog() {
 # Populates the category list #
 ###############################
 function get_categories() {
-	global $caPaths, $sortOrder, $caSettings, $DockerClient;
+	global $caPaths, $sortOrder, $caSettings, $DockerClient, $DockerTemplates;
 	$categories = readJsonFile($caPaths['categoryList']);
 	if ( ! is_array($categories) || empty($categories) ) {
 		$cat = "<span class='ca_fa-warning'></span> Category list N/A<br><br>";
@@ -1613,8 +1613,18 @@ function get_categories() {
 			}
 		}
 	}
-	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
-	writeJsonFile($caPaths['info'],$info);
+//	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
+	if ( $caSettings['dockerRunning'] ) {
+		$info = $DockerTemplates->getAllInfo();
+# workaround for incorrect caching in dockerMan
+		$containers = $DockerClient->getDockerContainers();
+		foreach ($containers as &$container) {
+			$container['running'] = $info[$container['Name']]['running'];
+			$container['url'] = $info[$container['Name']]['url'];
+		}
+	}
+	
+	writeJsonFile($caPaths['info'],$containers);
 	postReturn(["categories"=>$cat]);
 }
 
