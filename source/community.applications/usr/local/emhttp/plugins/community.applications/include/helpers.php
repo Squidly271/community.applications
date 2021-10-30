@@ -626,6 +626,30 @@ function write_ini_file($file,$array) {
 	file_put_contents($file,implode("\r\n", $res),LOCK_EX);
 }
 
+###################################################
+# Gets all the information about what's installed #
+###################################################
+function getAllInfo($force=false) {
+	global $caSettings, $DockerTemplates, $DockerClient, $caPaths;
+	
+	$containers = [];
+	if ( $force ) {
+		if ( $caSettings['dockerRunning'] ) {
+			$info = $DockerTemplates->getAllInfo(false,true,true);
+			$containers = $DockerClient->getDockerContainers();
+			foreach ($containers as &$container) {
+				$container['running'] = $info[$container['Name']]['running'];
+				$container['url'] = $info[$container['Name']]['url'];
+				$container['template'] = $info[$container['Name']]['template'];
+			}
+		}
+		writeJsonFile($caPaths['info'],$containers);
+	} else {
+		$containers = readJsonFile($caPaths['info']);
+	}
+	return $containers;
+}
+
 /**
  * @copyright Copyright 2006-2012, Miles Johnson - http://milesj.me
  * @license   http://opensource.org/licenses/mit-license.php - Licensed under the MIT License

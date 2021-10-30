@@ -962,8 +962,8 @@ function previous_apps() {
 
 	$installed = getPost("installed","");
 	$filter = getPost("filter","");
-//	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
-	$info = $caSettings['dockerRunning'] ? readJsonFile($caPaths['info']) : array();
+	$info = getAllInfo();
+	
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);
 	@unlink($caPaths['repositoriesDisplayed']);
@@ -1205,8 +1205,9 @@ function uninstall_docker() {
 	$DockerClient->removeContainer($containerName,$dockerRunning[$container]['Id']);
 	$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
 
-	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
-	writeJsonFile($caPaths['info'],$info);
+//	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
+	$info = getAllInfo(true);
+//	writeJsonFile($caPaths['info'],$info);
 
 	postReturn(['status'=>"Uninstalled"]);
 }
@@ -1613,18 +1614,7 @@ function get_categories() {
 			}
 		}
 	}
-//	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
-	if ( $caSettings['dockerRunning'] ) {
-		$info = $DockerTemplates->getAllInfo(false,true,true);
-# workaround for incorrect caching in dockerMan
-		$containers = $DockerClient->getDockerContainers();
-		foreach ($containers as &$container) {
-			$container['running'] = $info[$container['Name']]['running'];
-			$container['url'] = $info[$container['Name']]['url'];
-		}
-	}
-	
-	writeJsonFile($caPaths['info'],$containers);
+	getAllInfo(true);
 	postReturn(["categories"=>$cat]);
 }
 

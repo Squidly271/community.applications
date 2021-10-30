@@ -35,13 +35,13 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$caSettings['dockerRunning'] = "true";
 	//	$info = $DockerTemplates->getAllInfo();
-		$info = readJsonFile($caPaths['info']);
-		$dockerRunning = $DockerClient->getDockerContainers();
+		$info = getAllInfo();
+		//$dockerRunning = $DockerClient->getDockerContainers();
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
 		unset($caSettings['dockerRunning']);
 		$info = array();
-		$dockerRunning = array();
+//		$dockerRunning = array();
 		$dockerUpdateStatus = array();
 	}
 
@@ -95,15 +95,14 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$ct .= displayCard($template);
 			$count++;
 			if ( $count == $caSettings['maxPerPage'] ) break;
-		} else {
-			
-			
+		} else {		
 			$actionsContext = [];
+			$selected = false;
 			if ( ! $template['Language'] ) {
 				if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
 					if ( ! $template['Plugin'] ) {
 						if ( $caSettings['dockerRunning'] ) {
-								foreach ($dockerRunning as $testDocker) {
+							foreach ($info as $testDocker) {
 								if ( ($template['Repository'] == $testDocker['Image'] || "{$template['Repository']}:latest" == $testDocker['Image']) && ($template['Name'] == $testDocker['Name']) ) {
 									$selected = true;
 									$name = $testDocker['Name'];
@@ -127,9 +126,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									else
 										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second');");
 								}
-								$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$name]['template'])."','edit');");
+								$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$ind]['template'])."','edit');");
 								$actionsContext[] = array("divider"=>true);
-								$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallDocker('".addslashes($info[$name]['template'])."','{$template['Name']}');");
+								$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallDocker('".addslashes($info[$ind]['template'])."','{$template['Name']}');");
 
 							} elseif ( ! $template['Blacklist'] || ! $template['Compatible']) {
 								if ( $template['InstallPath'] ) {
@@ -223,9 +222,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				if ( ! strpos($tmpRepo,"/") ) {
 					$tmpRepo = "library/$tmpRepo";
 				}
-				foreach ($dockerRunning as $testDocker) {
+				foreach ($info as $testDocker) {
 					if ( ($tmpRepo == $testDocker['Image'] || "$tmpRepo:latest" == $testDocker['Image']) && ($template['Name'] == $testDocker['Name']) ) {
-//						$template['Installed'] = ! $template['Uninstall']; // Stops the Installed flag from appearing within Installed apps
 						$template['Installed'] = true;
 					
 						break;
@@ -311,7 +309,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 # Generate the display for the popup #
 ######################################
 function getPopupDescriptionSkin($appNumber) {
-	global $caSettings, $caPaths, $language;
+	global $caSettings, $caPaths, $language, $DockerTemplates, $DockerClient;
 
 	$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
 	$dockerVars = parse_ini_file($caPaths['docker_cfg']);
@@ -323,9 +321,7 @@ function getPopupDescriptionSkin($appNumber) {
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$caSettings['dockerRunning'] = "true";
-		$DockerTemplates = new DockerTemplates();
-		$DockerClient = new DockerClient();
-		$info = $DockerTemplates->getAllInfo();
+		$info = getAllInfo();
 		$dockerRunning = $DockerClient->getDockerContainers();
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
