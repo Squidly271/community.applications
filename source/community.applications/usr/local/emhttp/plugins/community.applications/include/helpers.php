@@ -642,9 +642,15 @@ function getAllInfo($force=false) {
 				$container['template'] = $info[$container['Name']]['template'];
 			}
 		}
+		if ($caSettings['debugging'] == "yes") {
+			file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  Forced info update\n",FILE_APPEND);
+		}
 		writeJsonFile($caPaths['info'],$containers);
 	} else {
 		$containers = readJsonFile($caPaths['info']);
+		if ($caSettings['debugging'] == "yes") {
+			file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  Cached info update\n",FILE_APPEND);
+		}
 	}
 	return $containers;
 }
