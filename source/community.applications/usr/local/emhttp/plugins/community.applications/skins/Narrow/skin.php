@@ -36,6 +36,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$caSettings['dockerRunning'] = "true";
 	//	$info = $DockerTemplates->getAllInfo();
 		$info = getAllInfo();
+		file_put_contents("/tmp/blah",print_r($info,true));
 		//$dockerRunning = $DockerClient->getDockerContainers();
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
@@ -103,7 +104,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					if ( ! $template['Plugin'] ) {
 						if ( $caSettings['dockerRunning'] ) {
 							foreach ($info as $testDocker) {
-								if ( ($template['Repository'] == $testDocker['Image'] || "{$template['Repository']}:latest" == $testDocker['Image']) && ($template['Name'] == $testDocker['Name']) ) {
+								$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
+								$tmpRepo = strpos($tmpRepo,"/") ? $tmpRepo : "library/$tmpRepo";
+								if ( ($tmpRepo == $testDocker['Image'] || "{$tmpRepo}:latest" == $testDocker['Image']) && ($template['Name'] == $testDocker['Name']) ) {
 									$selected = true;
 									$name = $testDocker['Name'];
 									break;
@@ -115,8 +118,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								if ( $info[$ind]['url'] && $info[$ind]['running'] ) {
 									$actionsContext[] = array("icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$ind]['url']}','_blank');");
 								}
-								$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
-								$tmpRepo = strpos($tmpRepo,"/") ? $tmpRepo : "library/$tmpRepo";
+
 								if ( ! filter_var($dockerUpdateStatus[$tmpRepo]['status'],FILTER_VALIDATE_BOOLEAN) ) {
 									$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
 								}
@@ -194,6 +196,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"installLanguage('{$template['TemplateURL']}','$countryCode');");
 				}
 				if ( file_exists("/var/log/plugins/lang-$countryCode.xml") ) {
+					$template['Installed'] = true;
 					if ( languageCheck($template) ) {
 						$actionsContext[] = array("icon"=>"ca_fa-update","text"=>$template['UpdateLanguage'],"action"=>"updateLanguage('$countryCode');");
 					}
@@ -767,7 +770,6 @@ function getRepoDescriptionSkin($repository) {
 ###########################
 function displayCard($template) {
 	global $caSettings;
-	
 	$appName = str_replace("-"," ",$template['display_dockerName']);
 
 	$popupType = $template['RepositoryTemplate'] ? "ca_repoPopup" : "ca_appPopup";
@@ -887,7 +889,7 @@ function displayCard($template) {
 	}	else
 		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."' style='display:none;' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
 
-	if ($Removable && !$DockerInfo) {
+	if ($Removable && !$DockerInfo  && ! $Installed) {
 		$previousAppName = $Plugin ? $PluginURL : $Name;
 		$type = ($appType == "appDocker") ? "docker" : "plugin";
 		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";
@@ -939,7 +941,7 @@ function displayCard($template) {
 		}
 	}
 	$card .= "</div>";
-	if ( $Installed ) {
+	if ( $Installed || $Uninstall) {
 		$card .= "<div class='installedCardBackground'>";
 		$card .= "<div class='installedCardText ca_center'>".tr("INSTALLED")."</div>";
 		$card .= "</div>";

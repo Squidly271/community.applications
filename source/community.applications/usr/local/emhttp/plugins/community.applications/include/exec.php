@@ -362,7 +362,6 @@ function getConvertedTemplates() {
 	$templates = readJsonFile($caPaths['community-templates-info']);
 
 	if ( empty($templates) ) return false;
-	exec("logger getConvertedTemplates");
 
 	foreach ($templates as $template) {
 		if ( ! $template['Private'] )
@@ -1614,7 +1613,6 @@ function get_categories() {
 			}
 		}
 	}
-	getAllInfo(true);
 	postReturn(["categories"=>$cat]);
 }
 

@@ -17,6 +17,11 @@ $plugin = "community.applications";
 
 require_once "$docroot/plugins/$plugin/include/paths.php";
 require_once "$docroot/plugins/$plugin/include/helpers.php";
+require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
+
+
+$DockerClient = new DockerClient();
+$DockerTemplates = new DockerTemplates();
 
 // Restart logging over at start of every session
 exec("rm -rf {$caPaths['CA_logs']}");
@@ -94,6 +99,13 @@ if ( $cfg['updateCheck'] == "yes" ) {
 		exec("echo '/usr/local/emhttp/plugins/community.applications/scripts/checkForUpdates.php >/dev/null 2>&1' | at now >/dev/null");
 	}
 }
+if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
+	$caSettings['dockerRunning'] = true;
+} else {
+	$caSettings['dockerSearch'] = "no";
+	unset($caSettings['dockerRunning']);
+}
+getAllInfo(true);
 
 function tr($string,$ret=false) {
 	$string = str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
