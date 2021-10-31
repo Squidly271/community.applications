@@ -139,10 +139,16 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
 								}	else {
 									if ( ! $template['BranchID'] ) {
-										$template['newInstallAction'] = "popupInstallXML('".addslashes($template['Path'])."','default');";
-
+										if ( is_file("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml") ) {
+											$test = readXmlFile("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml",true);
+											if ( $template['Repository'] == $test['Repository'] ) {
+												$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"<span class='ca_red'>".tr("Reinstall From Previous Apps")."</span>","action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user');");
+												$actionsContext[] = array("divider"=>true);
+											}
+										}
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"popupInstallXML('".addslashes($template['Path'])."','default');");
 									} else {
-										$template['newInstallAction'] = "displayTags('{$template['ID']}');";
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"displayTags('{$template['ID']}');");
 									}
 								}
 							}
@@ -867,9 +873,6 @@ function displayCard($template) {
 				$card .= "<div class='actionsButton' onclick={$actionsContext[0]['action']}>{$actionsContext[0]['text']}</div>";
 			else
 				$card .= "<div class='actionsButton actionsButtonContext' id='actions$ID' data-context='".json_encode($actionsContext,JSON_HEX_QUOT | JSON_HEX_APOS)."'>".tr("Actions")."</div>";
-		}
-		if ( $newInstallAction ) {
-			$card .= "<div class='actionsButton' onclick=$newInstallAction>".tr("Install")."</div>";
 		}
 	}
 	
