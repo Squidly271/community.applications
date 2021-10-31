@@ -80,10 +80,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 			if ( ! $template['bio'] )
 				$template['CardDescription'] = tr("No description present");
-			else
-				$template['CardDescription'] = $template['bio'];
-			$template['bio'] = strip_tags(markdown($template['bio']));
-
+			else {
+				$template['bio'] = strip_tags(markdown($template['bio']));
+				$template['Description'] = $template['bio'];
+			}
 			$template['display_dockerName'] = $template['RepoName'];
 
 			$favClass = ( $caSettings['favourite'] && ($caSettings['favourite'] == $template['RepoName']) ) ? "ca_favouriteRepo" : "ca_non_favouriteRepo";
@@ -160,14 +160,16 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 								$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
 							}
-							$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
+							$pluginSettings = ($pluginName == "community.applications.plg") ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 							if ( $pluginSettings ) {
 								$actionsContext[] = array("icon"=>"ca_fa-pluginSettings","text"=>tr("Settings"),"action"=>"openNewWindow('/Apps/$pluginSettings');");
 							}
-							if ( ! empty($actionsContext) )
-								$actionsContext[] = array("divider"=>true);
-
-							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallApp('/var/log/plugins/$pluginName','".str_replace(" ","&#32;",$template['Name'])."');");
+							if ( $pluginName != "community.applications.plg" ) {
+								if ( ! empty($actionsContext) )
+									$actionsContext[] = array("divider"=>true);
+								
+								$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallApp('/var/log/plugins/$pluginName','".str_replace(" ","&#32;",$template['Name'])."');");
+							}
 						} elseif ( ! $template['Blacklist'] || ! $template['Compatible'] ) {
 							$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
 							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
@@ -508,10 +510,9 @@ function getPopupDescriptionSkin($appNumber) {
 							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
 						}	else {
 							if ( ! $template['BranchID'] ) {
-								$template['newInstallAction'] = "popupInstallXML('".addslashes($template['Path'])."','default');";
-
+								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default');");
 							} else {
-								$template['newInstallAction'] = "displayTags('{$template['ID']}');";
+								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}');");
 							}
 						}
 					}
@@ -522,14 +523,16 @@ function getPopupDescriptionSkin($appNumber) {
 						@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 						$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
 					}
-					$pluginSettings = $pluginName == "community.applications.plg" ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
+					$pluginSettings = ($pluginName == "community.applications.plg") ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 					if ( $pluginSettings ) {
 						$actionsContext[] = array("icon"=>"ca_fa-pluginSettings","text"=>tr("Settings"),"action"=>"openNewWindow('/Apps/$pluginSettings');");
 					}
-					if ( ! empty($actionsContext) )
-						$actionsContext[] = array("divider"=>true);
+					if ( $pluginName != "community.applications.plg" ) {
+						if ( ! empty($actionsContext) )
+							$actionsContext[] = array("divider"=>true);
 
-					$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallApp('/var/log/plugins/$pluginName','{$template['Name']}');");
+						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallApp('/var/log/plugins/$pluginName','{$template['Name']}');");
+					}
 				} elseif ( ! $template['Blacklist'] || ! $template['Compatible'] ) {
 					$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
 					$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
@@ -865,7 +868,7 @@ function displayCard($template) {
 	$card .= "
 		<div class='ca_holder $class'>
 		<div class='ca_bottomLine $bottomClass'>
-				<div class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</div>
+		<div class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</div>
 		";
 	if ( $class == "spotlightHome" ) {
 		if ( $actionsContext ) {
@@ -883,14 +886,15 @@ function displayCard($template) {
 			<div class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</div>
 		";
 
-	$card .= "
-			<span class='$appType' title='".htmlentities($typeTitle)."'></span>
-	";
+	$card .= "<span class='$appType' title='".htmlentities($typeTitle)."'></span>";
 	if ( $ca_fav ) {
 		$favText = $RepositoryTemplate ? tr("This is your favourite repository") : tr("This application is from your favourite repository");
 		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
 	}	else
 		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."' style='display:none;' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
+	if ( $Pinned )
+		$card .= "<span class='pinnedCard'></span>";
+	
 
 	if ($Removable && !$DockerInfo  && ! $Installed) {
 		$previousAppName = $Plugin ? $PluginURL : $Name;
@@ -933,7 +937,8 @@ function displayCard($template) {
 
 		$ovr = str_replace("\n","<br>",$ovr);
 		$Overview = explode("<br>",$ovr)[0];
-		$card .= "<div class='cardDescription ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
+		$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
+		$card .= "<div class='$descClass ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
 		if ( $RecommendedDate ) {
 			$card .= "
 				<div class='homespotlightIconArea ca_center' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
@@ -989,15 +994,15 @@ function displayPopup($template) {
 			$card .= "<div class='popupAuthorMain'>$Author</div>";
 
 		if ( $actionsContext ) {
-			$card .= "
-				<div class='actionsPopup' id='actionsPopup'>".tr("Actions")."</div>
-			";
+			if ( count($actionsContext) == 1 ) {
+				$card .= "<div class='actionsPopup'><span onclick={$actionsContext[0]['action']}>{$actionsContext[0]['text']}</span></div>";
+			} else {
+				$card .= "
+					<div class='actionsPopup' id='actionsPopup'>".tr("Actions")."</div>
+				";
+			}
 		}
-		if ( $newInstallAction ) {
-			$card .= "
-				<div class='actionsPopup'><span onclick=$newInstallAction><span class='ca_fa-install'> ".tr("Install")."</span></span></div>
-			";
-		}
+
 		if ( count($supportContext) == 1 )
 			$card .= "<div class='supportPopup'><a href='{$supportContext[0]['link']}' target='_blank'><span class='{$supportContext[0]['icon']}'> {$supportContext[0]['text']}</span></a></div>";
 		elseif ( count($supportContext) )
