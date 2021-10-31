@@ -26,6 +26,8 @@ $DockerTemplates = new DockerTemplates();
 // Restart logging over at start of every session
 exec("rm -rf {$caPaths['CA_logs']}");
 exec("mkdir -p {$caPaths['CA_logs']}");
+exec("mkdir -p {$caPaths['tempFiles']}");
+
 $diagnosticsFile = htmlspecialchars(str_replace(' ','_',strtolower($var['NAME'])));
 
 $cfg = parse_plugin_cfg($plugin);
@@ -41,9 +43,6 @@ if ( ! is_file($caPaths['docker_cfg']) ) {
 	exec("logger -t 'Community Applications' 'Fatal Flash Drive Error: /boot/config/docker.cfg does not exist'");
 }
 
-/* if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) )
-	$writeTest = @file_put_contents($caPaths['dockerWriteTest'],"Oscar");
-	 */
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 $unRaid610      = version_compare($unRaidSettings['version'],"6.10.0-beta17",">");
 
@@ -105,6 +104,7 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 	$caSettings['dockerSearch'] = "no";
 	unset($caSettings['dockerRunning']);
 }
+
 getAllInfo(true);
 
 function tr($string,$ret=false) {
@@ -131,7 +131,6 @@ function tr($string,$ret=false) {
 </script>
 <?endif;?>
 <script>
-
 var searchBoxInput;
 var searchBoxAwesomplete;
 var pluginInstallIntervalTimer;
@@ -193,23 +192,6 @@ $(function(){
 		});
 		return;
 	<?endif;?>
-	
-	//abort execution if a write to the docker image failed
-/* 	<? if ( $writeTest === false ): ?>
-		$(".mainArea,.menuItems").html("");
-		swal({
-			title: "<?tr("Fatal Docker Image Error")?>",
-			text: "<?tr("Your docker image or folder is either read-only or completely full.  Issues will result because of this.  You should create a new post in the Unraid forums and include your diagnostics")?>",
-			html: true,
-			type: 'error',
-			showCancelButton: false,
-			showConfirmationButton: true,
-			confirmButtonText: "<?tr("OK")?>"
-		}, function (isConfirm) {
-			location.replace("/Main");
-		});
-		return;
-	<?endif;?> */
 	
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
@@ -1210,6 +1192,10 @@ function pinApp(button,repository,name) {
 	$(button).toggleClass("pinned unpinned");
 	var pinned = ( $(button).hasClass("unpinned") ) ? "<?tr("Click to pin this application")?>" : "<?tr("Click to unpin this application")?>";
 	$(button).attr('title',pinned);
+
+	var app = $.find(".pinnedCard[data-pindata='"+repository+name+"']");
+	$(app).toggle("slow");
+
 	post({action:'pinApp',repository:repository,name:name},function(data) {
 		if ( data.status ) {
 			$('.caPinnedMenu').removeClass('caMenuDisabled').addClass('caMenuEnabled');
@@ -1923,9 +1909,9 @@ function setFavourite(button) {
 		},5000);
 		$(".favCardBackground").each(function() {
 			if ( $(this).data("repository") == data.fav )
-				$(this).show();
+				$(this).show("slow");
 			else
-				$(this).hide();
+				$(this).hide("slow");
 		});
 		setFavRepoSearch();
 	});

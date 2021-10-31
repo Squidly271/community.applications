@@ -275,8 +275,8 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .fav{background-color:#009900;}
 .nonfav{background-color: <?=$supportPopupBackground?>;}
 .favCardSpotlight{left:-40.25rem !important;}
- .favCardBackground{float:right;color:#bb0000;padding-top:.25rem;margin-left:1rem;}
- .favCardBackground::before{content:"\f004";font-family:fontAwesome;}
+.favCardBackground{float:right;color:#bb0000;padding-top:.25rem;margin-left:1rem;}
+.favCardBackground::before{content:"\f004";font-family:fontAwesome;}
 .homeMore{color:<?=$unRaid66color?>;cursor:pointer;}
 .homeMore:hover{color:#d67777;}
 .homespotlightIconArea{display: inline-block;position: relative;top: -25rem;left: 24rem;cursor:pointer;}
@@ -320,7 +320,7 @@ p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling 
 .pageSelected {cursor:default;color:<?=$unRaid66color?>;}
 .pinned {margin-left:1rem;font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;color:#1fa67a;padding:.3rem;}
 .pinned::after {content:"\f08d";font-family:fontAwesome;}
-.pinnedCard{float:right;color:#1fa67a;padding-top:.25rem;font-size:1.5rem;}
+.pinnedCard{float:right;color:#1fa67a;font-size:1.75rem;}
 .pinnedCard::before{content:"\f08d";font-family:fontAwesome;}
 .pinned:hover {text-decoration:none;color:<?=$unRaid66color?>;}
 .plugin::after {font-family:'Unraid';content:'\e986';font-size:2.5rem;}

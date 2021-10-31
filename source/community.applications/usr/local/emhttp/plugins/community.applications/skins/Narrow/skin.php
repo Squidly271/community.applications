@@ -892,8 +892,10 @@ function displayCard($template) {
 		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
 	}	else
 		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."' style='display:none;' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
-	if ( $Pinned )
-		$card .= "<span class='pinnedCard'></span>";
+	if ( ! $Pinned )
+		$pinStyle = "display:none;";
+	
+	$card .= "<span class='pinnedCard' title='".htmlentities(tr("This application is pinned for later viewing"))."' data-pindata='$Repository$SortName' style='$pinStyle'></span>";
 	
 
 	if ($Removable && !$DockerInfo  && ! $Installed) {

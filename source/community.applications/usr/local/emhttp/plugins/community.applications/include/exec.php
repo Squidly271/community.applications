@@ -186,9 +186,11 @@ switch ($_POST['action']) {
 function DownloadApplicationFeed() {
 	global $caPaths, $caSettings, $statistics;
 
+	$info = readJsonFile($caPaths['info']);
 	exec("rm -rf '{$caPaths['tempFiles']}'");
 	@mkdir($caPaths['templates-community'],0777,true);
-
+	writeJsonFile($caPaths['info'],$info);
+	
 	$currentFeed = "Primary Server";
 	$downloadURL = randomFile();
 	$ApplicationFeed = download_json($caPaths['application-feed'],$downloadURL);
@@ -969,6 +971,7 @@ function previous_apps() {
 	@unlink($caPaths['startupDisplayed']);
 
 	$file = readJsonFile($caPaths['community-templates-info']);
+	
 # $info contains all installed containers
 # now correlate that to a template;
 # this section handles containers that have not been renamed from the appfeed
@@ -1891,6 +1894,9 @@ function defaultSortOrder() {
 	postReturn(['status'=>"ok"]);
 }
 
+###################################################################
+# Checks whether we're on the startup screen when restoring state #
+###################################################################
 function onStartupScreen() {
 	global $caPaths;
 

@@ -625,7 +625,6 @@ function write_ini_file($file,$array) {
 	}
 	file_put_contents($file,implode("\r\n", $res),LOCK_EX);
 }
-
 ###################################################
 # Gets all the information about what's installed #
 ###################################################
