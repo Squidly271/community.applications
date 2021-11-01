@@ -244,6 +244,9 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .cardDescription{cursor: pointer;display: block;position: relative;top:0.5rem;max-height: 7rem;overflow: hidden;}
 .cardDesc{display:inline-block;max-height:7rem;overflow:hidden;}
 .card_readmore{color:<?=$unRaid66color?>;}
+.cardWarning{font-size:1.5rem;animation: pulse 3s infinite;}
+@keyframes pulse {0%,100% {color:#bdbd14;} 50% {color:transparent;}}
+
 #Category{font-size:2rem;margin-bottom:0.5rem;}
 .changelogTitle{font-size:2rem;line-height:2rem;margin-top:2rem;font-weight:normal;}
 .changelog{font-size:1.2rem;line-height:1.4rem;margin-top:1.5rem;}

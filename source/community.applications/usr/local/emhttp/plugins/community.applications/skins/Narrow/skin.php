@@ -919,7 +919,24 @@ function displayCard($template) {
 
 
 	$card .= "
-				<div class='ca_applicationName'>$Name</div>
+				<div class='ca_applicationName'>$Name
+	";
+	if ( $CAComment || $ModeratorComment || $Deprecated || ! $Compatible || $Blacklist ) {
+		if ( $CAComment )
+			$warning = tr($CAComment);
+		if ( $ModeratorComment )
+			$warning = tr($ModeratorComment);
+		if ( $Deprecated )
+			$warning = tr("This application template has been deprecated");
+		if ( ! $Compatible )
+			$warning = tr("This application is not compatible with your version of Unraid");
+		if ( $Blacklist )
+			$warning = tr("This application template has been blacklisted");
+		
+		$card .= "&nbsp;<span class='ca_fa-warning cardWarning' title='".htmlentities($warning,ENT_QUOTES)."'></span>";
+	}
+	$card .= "
+				</div>
 				<div class='ca_author'>$author</div>
 				<div class='cardCategory'>$Category</div>
 	";
@@ -938,7 +955,8 @@ function displayCard($template) {
 		$ovr = markdown(strip_tags($ovr,"<br>"));
 
 		$ovr = str_replace("\n","<br>",$ovr);
-		$Overview = explode("<br>",$ovr)[0];
+	#	$Overview = explode("<br>",$ovr)[0];
+		$Overview = str_replace("<br>"," ",$ovr);
 		$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
 		$card .= "<div class='$descClass ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
 		if ( $RecommendedDate ) {
@@ -1035,7 +1053,7 @@ function displayPopup($template) {
 	}
 
 	if ( $ModeratorComment ) {
-		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div></div>";
+		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>".tr($ModeratorComment)."</div></div>";
 	}
 
 	if ( $RecommendedReason) {
