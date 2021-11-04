@@ -90,6 +90,8 @@ if ( $startupDisplayed == "true" && $_COOKIE['ca_languageSwitch'] ) {
 	$killCookie = "true";
 }
 
+$dockerSearchActive = is_file($caPaths['dockerSearchActive']);
+
 // Only check for updates to containers / plugins max once per hour
 exec("mkdir -p {$caPaths['tempFiles']}");
 if ( $cfg['updateCheck'] == "yes" ) {
@@ -635,14 +637,18 @@ $(function(){
 			initialStartup = false;
 			getCategories();
 			restoreState();
-			refreshDisplay();
-			searchBoxAwesomplete.close();
-			initialStartup = true;
-			var apppath = $.cookie("sidebarAppPath");
-			var appname = $.cookie("sidebarAppName");
-			if ( $.trim(apppath) ) {
-				showSidebarApp(apppath,appname);
-			}
+			<? if ( $dockerSearchActive ): ?>
+				dockerSearch(data.currentpage);
+			<? else: ?>
+				refreshDisplay();
+				searchBoxAwesomplete.close();
+				initialStartup = true;
+				var apppath = $.cookie("sidebarAppPath");
+				var appname = $.cookie("sidebarAppName");
+				if ( $.trim(apppath) ) {
+					showSidebarApp(apppath,appname);
+				}
+			<? endif; ?>
 		} else {
 			post({action:"defaultSortOrder"},function() {
 				updateContent();
@@ -2183,6 +2189,9 @@ function initDockerSearch() {
 }
 
 function dockerSearch(pageNumber) {
+	scrollToTop();
+	$(".selectedMenu").removeClass("selectedMenu");
+	$(".nonDockerSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");	
 	var filter = $('#searchBox').val();
 	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
 	data.docker = "searching docker";

@@ -64,5 +64,6 @@ $caPaths['updateTime']                          = "/tmp/$CA/checkForUpdatesTime"
 $caPaths['dockerWriteTest']                     = "/var/lib/docker/communityApplicationsWriteTest";
 $caPaths['info']                                = $caPaths['tempFiles']."/info.json";
 $caPaths['dockerSearchResults']                 = $caPaths['tempFiles']."/dockerSearch.json";
-$caPaths['dockerSearchInstall']                 = $caPaths['tempFiles']."/docksearch.xml";
+$caPaths['dockerSearchInstall']                 = $caPaths['tempFiles']."/dockerConvert.xml";
+$caPaths['dockerSearchActive']                  = $caPaths['tempFiles']."/dockerSearchActive";
 ?>

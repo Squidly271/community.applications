@@ -589,13 +589,15 @@ function displayRepositories() {
 ######################################################################################
 function get_content() {
 	global $caPaths, $caSettings;
-
+	
 	$filter      = getPost("filter",false);
 	$category    = getPost("category",false);
 	$newApp      = filter_var(getPost("newApp",false),FILTER_VALIDATE_BOOLEAN);
 
 	$caSettings['startup'] = getPost("startupDisplay",false);
 	@unlink($caPaths['repositoriesDisplayed']);
+	@unlink($caPaths['dockerSearchActive']);
+	
 	switch ($category) {
 		case "PRIVATE":
 			$category = false;
@@ -975,6 +977,7 @@ function previous_apps() {
 	@unlink($caPaths['community-templates-catSearchResults']);
 	@unlink($caPaths['repositoriesDisplayed']);
 	@unlink($caPaths['startupDisplayed']);
+	@unlink($caPaths['dockerSearchActive']);
 
 	$file = readJsonFile($caPaths['community-templates-info']);
 	
@@ -1249,13 +1252,15 @@ function areAppsPinned() {
 ####################################
 function pinnedApps() {
 	global $caPaths, $caSettings;
+	
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 	$file = readJsonFile($caPaths['community-templates-info']);
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);
 	@unlink($caPaths['repositoriesDisplayed']);
 	@unlink($caPaths['startupDisplayed']);
-
+	@unlink($caPaths['dockerSearchActive']);
+	
 	foreach ($pinnedApps as $pinned) {
 		$startIndex = 0;
 		$search = explode("&",$pinned);
@@ -1958,10 +1963,12 @@ function search_dockerhub() {
 		$o['display'] = "<div class='ca_NoDockerAppsFound'>".tr("No Matching Applications Found On Docker Hub")."</div>";
 		$o['script'] = "$('#dockerSearch').hide();";
 		postReturn($o);
-		@unlink($caPaths['dockerSerchResults']);
+		@unlink($caPaths['dockerSearchResults']);
+		@unlink($caPaths['dockerSearchActive']);
 		return;
 	}
-
+	
+	touch($caPaths['dockerSearchActive']);
 	$i = 0;
 	foreach ($pageresults['results'] as $result) {
 		unset($o);

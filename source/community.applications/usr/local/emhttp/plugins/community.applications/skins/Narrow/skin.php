@@ -275,6 +275,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = true) {
 	global $caSettings;
 
+	$pageFunction = $dockerSearch ? "dockerSearch": "changePage";
+	if ( $dockerSearch )
+		$caSettings['maxPerPage'] = 25;
+	
 	if ( $caSettings['maxPerPage'] < 0 ) return;
 	$swipeScript = "<script>";
 
@@ -293,30 +297,30 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 
 	$o .= "<div class='pageNavigation'>";
 	$previousPage = $pageNumber - 1;
-	$o .= ( $pageNumber == 1 ) ? "<span class='pageLeft pageNumber pageNavNoClick'></span>" : "<span class='pageLeft ca_tooltip pageNumber' onclick='changePage(&quot;$previousPage&quot;)'></span>";
+	$o .= ( $pageNumber == 1 ) ? "<span class='pageLeft pageNumber pageNavNoClick'></span>" : "<span class='pageLeft ca_tooltip pageNumber' onclick='$pageFunction(&quot;$previousPage&quot;)'></span>";
 	$swipeScript .= "data.prevpage = $previousPage;";
 	$startingPage = $pageNumber - 5;
 	if ($startingPage < 3 )
 		$startingPage = 1;
 	else
-		$o .= "<a class='ca_tooltip pageNumber' onclick='changePage(&quot;1&quot;);'>1</a><span class='pageNumber pageDots'></span>";
+		$o .= "<a class='ca_tooltip pageNumber' onclick='pageFunction(&quot;1&quot;);'>1</a><span class='pageNumber pageDots'></span>";
 
 	$endingPage = $pageNumber + 5;
 	if ( $endingPage > $totalPages )
 		$endingPage = $totalPages;
 
 	for ($i = $startingPage; $i <= $endingPage; $i++)
-		$o .= ( $i == $pageNumber ) ? "<span class='pageNumber pageSelected'>$i</span>" : "<a class='ca_tooltip pageNumber' onclick='changePage(&quot;$i&quot;);'>$i</a>";
+		$o .= ( $i == $pageNumber ) ? "<span class='pageNumber pageSelected'>$i</span>" : "<a class='ca_tooltip pageNumber' onclick='$pageFunction(&quot;$i&quot;);'>$i</a>";
 
 	if ( $endingPage != $totalPages) {
 		if ( ($totalPages - $pageNumber ) > 6)
 			$o .= "<span class='pageNumber pageDots'></span>";
 
 		if ( ($totalPages - $pageNumber ) >5 )
-			$o .= "<a class='ca_tooltip pageNumber' onclick='changePage(&quot;$totalPages&quot;);'>$totalPages</a>";
+			$o .= "<a class='ca_tooltip pageNumber' onclick='$pageFunction(&quot;$totalPages&quot;);'>$totalPages</a>";
 	}
 	$nextPage = $pageNumber + 1;
-	$o .= ( $pageNumber < $totalPages ) ? "<span class='ca_tooltip pageNumber pageRight' onclick='changePage(&quot;$nextPage&quot;);'></span>" : "<span class='pageRight pageNumber pageNavNoClick'></span>";
+	$o .= ( $pageNumber < $totalPages ) ? "<span class='ca_tooltip pageNumber pageRight' onclick='$pageFunction(&quot;$nextPage&quot;);'></span>" : "<span class='pageRight pageNumber pageNavNoClick'></span>";
 	$swipeScript .= ( $pageNumber < $totalPages ) ? "data.nextpage = $nextPage;" : "data.nextpage = 0;";
 	$swipeScript .= "</script>";
 	$o .= "</div></div><script>data.currentpage = $pageNumber;</script>";
@@ -340,9 +344,13 @@ function getPopupDescriptionSkin($appNumber) {
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$caSettings['dockerRunning'] = "true";
-		$info = getAllInfo();
+		$infoTmp = getAllInfo();
+		foreach ($infoTmp as $container) {
+			$info[$container['Name']] = $container;
+		}
 		$dockerRunning = $DockerClient->getDockerContainers();
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
+		file_put_contents("/tmp/blah",print_r($dockerRunning,true));
 	} else {
 		unset($caSettings['dockerRunning']);
 		$info = array();
@@ -375,7 +383,7 @@ function getPopupDescriptionSkin($appNumber) {
 			}
 		}
 	}
-			
+
 	if ( $index !== false ) {
 /* 		$Displayed = true;
  */		$template = $displayed['community'][$index];
@@ -799,19 +807,19 @@ function displaySearchResults($pageNumber) {
 	$num_pages = $tempFile['num_pages'];
 	$file = $tempFile['results'];
 	$templates = readJsonFile($caPaths['community-templates-info']);
+	$caSettings['descriptions'] = "yes";
 
-	$ct = dockerNavigate($num_pages,$pageNumber)."<br>";
+	$ct = tr("NOTE You must visit the dockerHub page to gather the information required to install correctly")."<br><br>";
 	$ct .= "<div class='ca_templatesDisplay'>";
 
 	$columnNumber = 0;
 	foreach ($file as $result) {
 		$result['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
 		$result['display_dockerName'] = "<a class='ca_tooltip ca_applicationName' style='cursor:pointer;' onclick='mySearch(this.innerText);' title='".tr("Search for similar containers")."'>{$result['Name']}</a>";
-		$result['Category'] = "Docker Hub Search";
+		$result['Category'] = "Docker&nbsp;Hub&nbsp;Search";
 		$result['Description'] = $result['Description'] ?: "No description present";
 		$result['Compatible'] = true;
-		$result['actionsContext'] = [["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"dockerConvert($ID);"]];
-
+		$result['actionsContext'] = [["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"dockerConvert({$result['ID']});"]];
 
 		$ct .= displayCard($result);
 		$count++;
@@ -920,7 +928,7 @@ function displayCard($template) {
 		$card .= "
 			<div class='ca_holder $class'>
 			<div class='ca_bottomLine $bottomClass'>
-			<div class='infoButton_docker dockerPopup' data-dockerHub='$DockerHub'>".tr("Info")."</div>";
+			<div class='infoButton_docker dockerPopup' data-dockerHub='$DockerHub'>".tr("Docker Hub")."</div>";
 	} else {
 		$backgroundClickable = "ca_backgroundClickable";
 		$card .= "
@@ -983,7 +991,7 @@ function displayCard($template) {
 	$card .= "
 				<div class='ca_applicationName'>$Name
 	";
-	if ( $CAComment || $ModeratorComment || $Deprecated || ! $Compatible || $Blacklist ) {
+	if ( $CAComment || $ModeratorComment || $Deprecated || (isset($Compatible) && ! $Compatible) || $Blacklist ) {
 		if ( $CAComment )
 			$warning = tr($CAComment);
 		if ( $ModeratorComment )
