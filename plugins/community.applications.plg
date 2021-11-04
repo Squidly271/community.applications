@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.10.24">
-<!ENTITY md5       "006e7c01738ccab4b1ba5c41424b22d8">
+<!ENTITY version   "2021.11.04">
+<!ENTITY md5       "141cad5fcc1c5f1ffee6f95d44a142dd">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,23 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.11.04
+- Added: dockerHub searching
+- Changed: App cards showing descriptions is now the default setting
+- Fixed: Private Apps were not displaying
+- Added: More debugging information
+- Added: Cards with descriptions now include the Actions / Install button
+- Added: Flags on cards if favourite repository, pinned, additional comments etc
+- Fixed: Under certain circumstances after an application feed update, CA would think that no apps were installed
+- Added: Allow reinstalls from a search / browse, not just from previous apps
+- Fixed: Race condition when returning to CA from a docker install
+- Fixed: Checkbox on previous app wouldn't disappear if you installed the app separately
+- Enhanced: Better caching
+- Fixed: Under certain rare circumstances, and app could appear as being installed if it wasn't
+- Enhanced: Under supported OS versions, CA will ask the OS to not attempt a download of the app's icon if it doesn't exist
+- Added: Hover text to the various flags on the cards
+- Fixed: Download statistic wasn't appearing on the sidebar
+
 ###2021.10.24
 - Windows 11 temporary compatibility fix
 - Fixed: Repository descriptions weren't showing up on cards if descriptions were allowed in Settings

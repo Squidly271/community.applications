@@ -937,6 +937,13 @@ function displayCard($template) {
 			<div class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</div>
 		";
 	}
+	if ( count($supportContext) == 1)
+		$card .= "<div class='supportButton'><span class='ca_href' data-href='{$supportContext[0]['link']}' data-target='_blank'>{$supportContext[0]['text']}</span></div>";
+	elseif (!empty($supportContext))
+		$card .= "
+			<div class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</div>
+		";
+
 	if ( $class == "spotlightHome" ) {
 		if ( $actionsContext ) {
 			if ( count($actionsContext) == 1)
@@ -946,13 +953,6 @@ function displayCard($template) {
 		}
 	}
 	
-	if ( count($supportContext) == 1)
-		$card .= "<div class='supportButton'><span class='ca_href' data-href='{$supportContext[0]['link']}' data-target='_blank'>{$supportContext[0]['text']}</span></div>";
-	elseif (!empty($supportContext))
-		$card .= "
-			<div class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</div>
-		";
-
 	$card .= "<span class='$appType' title='".htmlentities($typeTitle)."'></span>";
 	if ( $ca_fav ) {
 		$favText = $RepositoryTemplate ? tr("This is your favourite repository") : tr("This application is from your favourite repository");
