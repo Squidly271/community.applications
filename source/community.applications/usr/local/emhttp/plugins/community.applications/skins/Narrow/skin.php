@@ -992,10 +992,8 @@ function displayCard($template) {
 				<div class='ca_applicationName'>$Name
 	";
 	if ( $CAComment || $ModeratorComment || $Deprecated || (isset($Compatible) && ! $Compatible) || $Blacklist ) {
-		if ( $CAComment )
-			$warning = tr($CAComment);
-		if ( $ModeratorComment )
-			$warning = tr($ModeratorComment);
+		if ( $CAComment || $ModeratorComment)
+			$warning = tr("Click info to see the notes regarding this application");
 		if ( $Deprecated )
 			$warning = tr("This application template has been deprecated");
 		if ( ! $Compatible )

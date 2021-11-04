@@ -583,13 +583,6 @@ $(function(){
 		closeSidebar();
 	});
 
-	$('body').on("click",".deletePrivateApp",function() {
-		var path = $(this).data("path");
-		var name = $(this).data("name");
-		var author = $(this).data("author");
-		deletePrivateApp(path,name,author);
-	});
-
 	$("body").on("click",".removeApp",function() {
 		var path = $(this).data("path");
 		var name = $(this).data("name");
@@ -1099,36 +1092,6 @@ function postUninstallPlugin() {
 
 String.prototype.basename = function() {
 	return this.split('/').reverse()[0];
-}
-
-function deletePrivateApp(path,name,author) {
-	var displayPath = path.replace("/boot/config/plugins/","...");
-	disableSearch();
-	swal({
-		title: "<?tr("Remove Private Application?")?>",
-		text: sprintf(tr("Are you sure you want to remove the private application %s by %s?"),"<span class='ca_italic'><span class='ca_bold caHighlight'>"+name+"</span>","<span class='ca_bold caHighlight'>"+author+"</span>")+"<br><font size='0'>("+displayPath+")",
-		type: "warning",
-			showCancelButton: true,
-			showConfirmButton: true,
-			cancelButtonText: "<?tr("Cancel")?>",
-			confirmButtonText: "<?tr("Yes, remove it!")?>",
-			closeOnConfirm: false,
-			showLoaderOnConfirm: true,
-			allowOutsideClick: true,
-			html: true
-	}, function(isConfirm) {
-		if ( isConfirm ) {
-			swal(sprintf(tr("Removing %s"),name),"","info");
-			getSelectedApps();
-			post({action:'removePrivateApp',path:path,noSpinner:true},function(result) {
-				myCloseAlert();
-				refreshDisplay();
-				enableSearch();
-			});
-		} else {
-			enableSearch();
-		}
-	});
 }
 
 function uninstallDocker(application,humanName) {

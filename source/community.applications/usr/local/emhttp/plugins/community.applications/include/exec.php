@@ -403,6 +403,7 @@ function getConvertedTemplates() {
 		$myTemplates[$i]  = $o;
 		$i = ++$i;
 	}
+	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
 	return true;
 }
 
