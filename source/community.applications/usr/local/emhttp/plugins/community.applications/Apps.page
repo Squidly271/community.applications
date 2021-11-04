@@ -299,6 +299,10 @@ $(function(){
 		doSearch(false,repo);
 	});
 
+	$('body').on("click",".templateSearch",function() {
+		doSearch(false);
+	});
+	
 	$('body').on("click",".xmlInstall",function() {
 		var type = $(this).data("type");
 		var xml = $(this).data("xml");

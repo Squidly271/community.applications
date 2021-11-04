@@ -64,6 +64,7 @@ if ($caSettings['debugging'] == "yes") {
 		file_put_contents($caPaths['logging'],"MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5")."\n",FILE_APPEND);
 		$lingo = $_SESSION['locale'] ?: "en_US";
 		file_put_contents($caPaths['logging'],"Language: $lingo\n\n",FILE_APPEND);
+		file_put_contents($caPaths['logging'],"Settings:\n".print_r($caSettings,true)."\n",FILE_APPEND);
 	}
 	file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  POST CALLED ({$_POST['action']})\n".print_r($_POST,true),FILE_APPEND);
 }
@@ -1216,9 +1217,7 @@ function uninstall_docker() {
 	$DockerClient->removeContainer($containerName,$dockerRunning[$container]['Id']);
 	$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
 
-//	$info = $caSettings['dockerRunning'] ? $DockerClient->getDockerContainers() : array();
 	$info = getAllInfo(true);
-//	writeJsonFile($caPaths['info'],$info);
 
 	postReturn(['status'=>"Uninstalled"]);
 }

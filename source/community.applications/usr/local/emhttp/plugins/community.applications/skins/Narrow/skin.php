@@ -303,7 +303,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 	if ($startingPage < 3 )
 		$startingPage = 1;
 	else
-		$o .= "<a class='ca_tooltip pageNumber' onclick='pageFunction(&quot;1&quot;);'>1</a><span class='pageNumber pageDots'></span>";
+		$o .= "<a class='ca_tooltip pageNumber' onclick='$pageFunction(&quot;1&quot;);'>1</a><span class='pageNumber pageDots'></span>";
 
 	$endingPage = $pageNumber + 5;
 	if ( $endingPage > $totalPages )
@@ -809,7 +809,7 @@ function displaySearchResults($pageNumber) {
 	$templates = readJsonFile($caPaths['community-templates-info']);
 	$caSettings['descriptions'] = "yes";
 
-	$ct = tr("NOTE You must visit the dockerHub page to gather the information required to install correctly")."<br><br>";
+	$ct = "<div>".tr("NOTE You must visit the dockerHub page to gather the information required to install correctly")."<span class='templateSearch' style='float:right'>Show CA templates</span></div><br><br>";
 	$ct .= "<div class='ca_templatesDisplay'>";
 
 	$columnNumber = 0;

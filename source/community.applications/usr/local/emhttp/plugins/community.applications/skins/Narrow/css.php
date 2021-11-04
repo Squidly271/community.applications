@@ -421,6 +421,8 @@ ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer
 table tbody td {line-height:1.8rem;}
 table {background-color:transparent;}
 #templates_content {overflow-x:hidden;margin-bottom:3rem;}
+.templateSearch{cursor:pointer;font-size:1.5rem;}
+.templateSearch:hover{color:<?=$unRaid66color?>;}
 .trendingDown::before {content:"\f063";font-family:fontAwesome;}
 .trendingUp::before {content:"\f062";font-family:fontAwesome;}
 .unpinned {font-size:2rem;cursor:pointer;margin-left:1rem;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
