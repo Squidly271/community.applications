@@ -29,6 +29,9 @@
 - Enhanced: Under supported OS versions, CA will ask the OS to not attempt a download of the app's icon if it doesn't exist
 - Added: Hover text to the various flags on the cards
 - Fixed: Download statistic wasn't appearing on the sidebar
+- Fixed: Don't allow CA to be uninstalled from within CA
+- Fixed: Descriptions on repository cards would display an error when clicking on them
+
 
 ###2021.10.24
 - Windows 11 temporary compatibility fix
