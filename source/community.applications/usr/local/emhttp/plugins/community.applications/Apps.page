@@ -363,6 +363,8 @@ $(function(){
 
 
 	$('body').on("click",".ca_appPopup,.cardDescription,.homespotlightIconArea",function() {
+		if ( $(this).hasClass("dockerCardBackground") || $(this).hasClass("noClick") )
+			return;
 		if ( $(".dropdown-menu").is(":visible") ) {
 			$(".dropdown-menu").hide();
 			return;
@@ -375,9 +377,13 @@ $(function(){
 		appname = stripTags(appname);
 
 		showSidebarApp(apppath,appname);
-
 	});
 
+	$('body').on("click",".dockerPopup", function() {
+		var url = $(this).data("dockerhub");
+		openNewWindow(url,'_blank');
+	});
+	
 	$('.menuItems').on("click",'.categoryMenu',function() {
 		var menu = this;
 		if ( $(menu).hasClass("caMenuDisabled") )
@@ -920,21 +926,6 @@ function awesompleteSearch() {
 	doSearch(false);
 }
 
-function mySearch(filter) {
-	filter = filter.replace(/<(?:.|\n)*?>/gm, '');
-	$('#searchBox').val(filter);
-
-	if ( $("#searchButton").hasClass('fa-search') ) {
-		$('#searchButton').toggleClass('fa-search fa-remove');
-	}
-	initDockerSearch(1);
-}
-
-function initDockerSearch() {
-	var filter = $('#searchBox').val();
-	filter = filter.replace(" ","%20");
-	window.open("https://hub.docker.com/search?q="+filter+"&type=image","_blank");
-}
 
 function openNewWindow(newURL,target='_self') {
 	var popUp = window.open(newURL,target);
@@ -2178,6 +2169,36 @@ function checkSortOrder() {
 			$("#defaultSort").addClass("enabledIcon");
 		});
 	}
+}
+
+function initDockerSearch() {
+	dockerSearch(1);
+	data.docker = "searching docker";
+	data.section = "";
+	data.selected_category = "";
+	$(".selectedMenu").removeClass("selectedMenu");
+	$(".nonDockerSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
+	hideSortIcons();
+	$(".subCategory").hide();
+}
+
+function dockerSearch(pageNumber) {
+	var filter = $('#searchBox').val();
+	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
+	data.docker = "searching docker";
+	$(".dockerSearch,.multi_installDiv").hide();
+	$("#Category").html(sprintf(tr("DockerHub Search for %s"),filter)+" <span id='pageNumber'></span>");
+	post({action:'search_dockerhub',filter:filter,page:pageNumber},function(result) {
+		updateDisplay(result.display);
+	});
+}
+
+function dockerConvert(dockerID) {
+	post({action:'convert_docker',ID:dockerID},function(result) {
+		myCloseAlert();
+		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + $.trim(result.xml);
+		openNewWindow(templateURL);
+	});
 }
 
 </script>

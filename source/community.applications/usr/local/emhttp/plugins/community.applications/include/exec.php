@@ -174,6 +174,12 @@ switch ($_POST['action']) {
 	case 'onStartupScreen':
 		onStartupScreen();
 		break;
+	case 'convert_docker':
+		convert_docker();
+		break;
+	case 'search_dockerhub':
+		search_dockerhub();
+		break;		
 	###############################################
 	# Return an error if the action doesn't exist #
 	###############################################
@@ -1599,11 +1605,11 @@ function get_categories() {
 		usort($newCat,"mySort"); // Sort it alphabetically according to the language.  May not work right in non-roman charsets
 
 		foreach ($newCat as $category) {
-			$cat .= "<li class='categoryMenu caMenuItem' data-category='{$category['Cat']}'>".$category['Des']."</li>";
+			$cat .= "<li class='categoryMenu caMenuItem nonDockerSearch' data-category='{$category['Cat']}'>".$category['Des']."</li>";
 			if (is_array($category['Sub'])) {
 				$cat .= "<ul class='subCategory'>";
 				foreach($category['Sub'] as $subcategory) {
-					$cat .= "<li class='categoryMenu caMenuItem' data-category='{$subcategory['Cat']}'>".$subcategory['Des']."</li>";
+					$cat .= "<li class='categoryMenu caMenuItem nonDockerSearch' data-category='{$subcategory['Cat']}'>".$subcategory['Des']."</li>";
 				}
 				$cat .= "</ul>";
 			}
@@ -1611,7 +1617,7 @@ function get_categories() {
 		$templates = readJsonFile($caPaths['community-templates-info']);
 		foreach ($templates as $template) {
 			if ($template['Private'] == true && ! $template['Blacklist']) {
-				$cat .= "<li class='categoryMenu caMenuItem' data-category='PRIVATE'>".tr("Private Apps")."</li>";
+				$cat .= "<li class='categoryMenu caMenuItem nonDockerSearch' data-category='PRIVATE'>".tr("Private Apps")."</li>";
 				break;
 			}
 		}
@@ -1901,6 +1907,93 @@ function onStartupScreen() {
 	global $caPaths;
 
 	postReturn(['status'=>is_file($caPaths['startupDisplayed'])]);
+}
+
+#######################################################################
+# convert_docker - called when system adds a container from dockerHub #
+#######################################################################
+function convert_docker() {
+	global $caPaths;
+
+	$dockerID = getPost("ID","");
+
+	$file = readJsonFile($caPaths['dockerSearchResults']);
+	$dockerIndex = searchArray($file['results'],"ID",$dockerID);
+	$docker = $file['results'][$dockerIndex];
+	$docker['Description'] = str_replace("&", "&amp;", $docker['Description']);
+
+	$dockerfile['Name'] = $docker['Name'];
+	$dockerfile['Support'] = $docker['DockerHub'];
+	$dockerfile['Description'] = $docker['Description']."\n\nConverted By Community Applications   Always verify this template (and values) against the dockerhub support page for the container\n\n{$docker['DockerHub']}";
+	$dockerfile['Overview'] = $dockerfile['Description'];
+	$dockerfile['Registry'] = $docker['DockerHub'];
+	$dockerfile['Repository'] = $docker['Repository'];
+	$dockerfile['BindTime'] = "true";
+	$dockerfile['Privileged'] = "false";
+	$dockerfile['Networking']['Mode'] = "bridge";
+	$dockerfile['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
+	$dockerXML = makeXML($dockerfile);
+
+	file_put_contents($caPaths['dockerSearchInstall'],$dockerXML);
+	postReturn(['xml'=>$caPaths['dockerSearchInstall']]);
+}
+
+#########################################################
+# search_dockerhub - returns the results from dockerHub #
+#########################################################
+function search_dockerhub() {
+	global $caPaths;
+
+	$filter     = getPost("filter","");
+	$pageNumber = getPost("page","1");
+
+	$communityTemplates = readJsonFile($caPaths['community-templates-info']);
+	$filter = str_replace(" ","%20",$filter);
+	$filter = str_replace("/","%20",$filter);
+	$jsonPage = shell_exec("curl -s -X GET 'https://registry.hub.docker.com/v1/search?q=$filter&page=$pageNumber'");
+	$pageresults = json_decode($jsonPage,true);
+	$num_pages = $pageresults['num_pages'];
+
+	if ($pageresults['num_results'] == 0) {
+		$o['display'] = "<div class='ca_NoDockerAppsFound'>".tr("No Matching Applications Found On Docker Hub")."</div>";
+		$o['script'] = "$('#dockerSearch').hide();";
+		postReturn($o);
+		@unlink($caPaths['dockerSerchResults']);
+		return;
+	}
+
+	$i = 0;
+	foreach ($pageresults['results'] as $result) {
+		unset($o);
+		$o['IconFA'] = "docker";
+		$o['Repository'] = $result['name'];
+		$details = explode("/",$result['name']);
+		$o['Author'] = $details[0];
+		$o['Name'] = $details[1];
+		$o['Description'] = $result['description'];
+		$o['Automated'] = $result['is_automated'];
+		$o['Stars'] = $result['star_count'];
+		$o['Official'] = $result['is_official'];
+		$o['Trusted'] = $result['is_trusted'];
+		if ( $o['Official'] ) {
+			$o['DockerHub'] = "https://hub.docker.com/_/".$result['name']."/";
+			$o['Name'] = $o['Author'];
+		} else
+			$o['DockerHub'] = "https://hub.docker.com/r/".$result['name']."/";
+
+		$o['ID'] = $i;
+		$searchName = str_replace("docker-","",$o['Name']);
+		$searchName = str_replace("-docker","",$searchName);
+
+		$dockerResults[$i] = $o;
+		$i=++$i;
+	}
+	$dockerFile['num_pages'] = $num_pages;
+	$dockerFile['page_number'] = $pageNumber;
+	$dockerFile['results'] = $dockerResults;
+
+	writeJsonFile($caPaths['dockerSearchResults'],$dockerFile);
+	postReturn(['display'=>displaySearchResults($pageNumber)]);
 }
 #######################################
 # Logs Javascript errors being caught #

@@ -184,6 +184,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-
 .ca_fa-globe::before {content:"\f0ac";font-family:fontAwesome;}
 .ca_fa-info::before {content:"\f05a";font-family:fontAwesome;}
 .ca_fa-install::before {content:"\f019";font-family:fontAwesome;}
+.ca_fa-money::before {content:"\f0d6";font-family:fontAwesome;}
 .ca_fa-pluginSettings::before {content:"\f013";font-family:fontAwesome;}
 .ca_fa-project::before {content:"\e953";font-family:Unraid;}
 .ca_fa-readme::before {content:"\f02d";font-family:fontAwesome;}
@@ -264,6 +265,7 @@ i.displayIcon {font-size:5.5rem;color:#626868;padding-top:0.25rem;}
 img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 #cookieWarning {display:none;}
 .docker::after{font-family:'Unraid';content:'\e90b';font-size:2.5rem;}
+.dockerCardBackground{height:18.5rem;cursor:default !important;}
 .dockerHubStar {font-size:1rem;}
 .dockerHubStar::before{content:"\e95a";font-family:UnRaid;}
 .dockerSearch{display:inline-block;float:right;}
@@ -287,12 +289,13 @@ img.displayIcon {height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .infoIcon::before{content:"\f05a";font-family:fontAwesome;}
 .infoButton {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .infoButton:hover{background:<?=$unRaid66color?>}
+.infoButton_docker {line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
+.infoButton_docker:hover{background:<?=$unRaid66color?>}
 .initDockerSearch{cursor:pointer;text-decoration:none;font-size:1.5rem;}
 .initDockerSearch:hover{color:<?=$unRaid66color?>}
 a.initDockerSearch{cursor:pointer;text-decoration:none;color:unset;}
 .installedCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #322fff;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .installedCardText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.5rem;right:-1rem;width:100%;overflow:hidden;height:2rem;}
-
 input[type=checkbox] {width:2rem;height:2rem;margin-left:0rem;}
 input[type=button]{background:none;font-size:1.5rem;}
 input:hover[type=button]{color:<?=$unRaid66color?>;background:none !important;}
@@ -309,12 +312,13 @@ input[type=button][disabled]{background:none;}
 .moderationLink {color:<?=$linkColor?>;font-weight:normal;}
 .multi_installDiv {width:100%; display:none;padding-bottom:20px;}
 .myReadmoreButton {color:#6363ca;}
+.noClick{cursor:default !important;}
 .notice.shift {margin-top:0px;}
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 .pageDots::after {content:"...";}
 .pageDots{color:grey;cursor:default;}
 .pageLeft::after {content:"\f137";font-family:fontAwesome;}
-.pageNavigation {font-size:1.5rem;padding-bottom:20rem;}
+.pageNavigation {font-size:1.5rem;}
 .pageNavNoClick {font-size:1.5rem;cursor:default !important;}
 .pageNavNoClick:hover{color:initial !important;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;text-decoration:none !important;}

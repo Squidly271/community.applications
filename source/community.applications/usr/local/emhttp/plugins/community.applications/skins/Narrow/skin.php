@@ -131,7 +131,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$ind]['template'])."','edit');");
 								$actionsContext[] = array("divider"=>true);
 								$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallDocker('".addslashes($info[$ind]['template'])."','{$template['Name']}');");
-
+								if ( $template['DonateLink'] ) {
+									$actionsContext[] = array("divider"=>true);
+									$actionsContext[] = array("icon"=>"ca_fa-money","text"=>tr("Donate"),"action"=>"openNewWindow('".addslashes($template['DonateLink'])."','_blank');");
+								}
 							} elseif ( ! $template['Blacklist'] || ! $template['Compatible']) {
 								if ( $template['InstallPath'] ) {
 									$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user');");
@@ -164,11 +167,16 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							if ( $pluginSettings ) {
 								$actionsContext[] = array("icon"=>"ca_fa-pluginSettings","text"=>tr("Settings"),"action"=>"openNewWindow('/Apps/$pluginSettings');");
 							}
+
 							if ( $pluginName != "community.applications.plg" ) {
 								if ( ! empty($actionsContext) )
 									$actionsContext[] = array("divider"=>true);
 								
 								$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallApp('/var/log/plugins/$pluginName','".str_replace(" ","&#32;",$template['Name'])."');");
+							}
+							if ( $template['DonateLink'] ) {
+									$actionsContext[] = array("divider"=>true);
+									$actionsContext[] = array("icon"=>"ca_fa-money","text"=>tr("Donate"),"action"=>"openNewWindow('".addslashes($template['DonateLink'])."','_blank');");
 							}
 						} elseif ( ! $template['Blacklist'] || ! $template['Compatible'] ) {
 							$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
@@ -774,6 +782,44 @@ function getRepoDescriptionSkin($repository) {
 	return array("description"=>$t);
 }
 
+########################################################################################
+# function used to display the navigation (page up/down buttons) for dockerHub results #
+########################################################################################
+function dockerNavigate($num_pages, $pageNumber) {
+	return getPageNavigation($pageNumber,$num_pages * 25, true);
+}
+
+##############################################################
+# function that actually displays the results from dockerHub #
+##############################################################
+function displaySearchResults($pageNumber) {
+	global $caPaths, $caSettings, $plugin;
+
+	$tempFile = readJsonFile($caPaths['dockerSearchResults']);
+	$num_pages = $tempFile['num_pages'];
+	$file = $tempFile['results'];
+	$templates = readJsonFile($caPaths['community-templates-info']);
+
+	$ct = dockerNavigate($num_pages,$pageNumber)."<br>";
+	$ct .= "<div class='ca_templatesDisplay'>";
+
+	$columnNumber = 0;
+	foreach ($file as $result) {
+		$result['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
+		$result['display_dockerName'] = "<a class='ca_tooltip ca_applicationName' style='cursor:pointer;' onclick='mySearch(this.innerText);' title='".tr("Search for similar containers")."'>{$result['Name']}</a>";
+		$result['Category'] = "Docker Hub Search";
+		$result['Description'] = $result['Description'] ?: "No description present";
+		$result['Compatible'] = true;
+		$result['actionsContext'] = [["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"dockerConvert($ID);"]];
+
+
+		$ct .= displayCard($result);
+		$count++;
+	}
+	$ct .= "</div>";
+
+	return $ct.dockerNavigate($num_pages,$pageNumber);
+}
 ###########################
 # Generate the app's card #
 ###########################
@@ -782,7 +828,7 @@ function displayCard($template) {
 	$appName = str_replace("-"," ",$template['display_dockerName']);
 
 	$popupType = $template['RepositoryTemplate'] ? "ca_repoPopup" : "ca_appPopup";
-	if ( $template['Category'] == "Docker Hub Search" )
+	if ( $template['DockerHub'] )
 		unset($popupType);
 
 	if ($template['Language']) {
@@ -820,7 +866,11 @@ function displayCard($template) {
 	$Category = explode(" ",$Category)[0];
 	$Category = explode(":",$Category)[0];
 
-	$author = $RepoShort ?: $RepoName;
+	if ( ! $DockerHub )
+		$author = $RepoShort ?: $RepoName;
+	else 
+		$author = $Author;
+	
 	if ( $Plugin )
 		$author = $Author;
 	if ( $Language )
@@ -865,11 +915,20 @@ function displayCard($template) {
 	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
 
 	$bottomClass = $class ? "ca_bottomLineSpotLight" : "";
-	$card .= "
-		<div class='ca_holder $class'>
-		<div class='ca_bottomLine $bottomClass'>
-		<div class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</div>
+	if ( $DockerHub ) {
+		$backgroundClickable = "dockerCardBackground";
+		$card .= "
+			<div class='ca_holder $class'>
+			<div class='ca_bottomLine $bottomClass'>
+			<div class='infoButton_docker dockerPopup' data-dockerHub='$DockerHub'>".tr("Info")."</div>";
+	} else {
+		$backgroundClickable = "ca_backgroundClickable";
+		$card .= "
+			<div class='ca_holder $class'>
+			<div class='ca_bottomLine $bottomClass'>
+			<div class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</div>
 		";
+	}
 	if ( $class == "spotlightHome" ) {
 		if ( $actionsContext ) {
 			if ( count($actionsContext) == 1)
@@ -904,16 +963,19 @@ function displayCard($template) {
 		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";
 	}
 	$card .= "</div>";
-	$card .= "<div class='$cardClass ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>";
+	$card .= "<div class='$cardClass $backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>";
 	$card .= "<div class='ca_iconArea'>";
+	if ( $DockerHub )
+		$imageNoClick = "noClick";
+	
 	if ( ! $IconFA )
 		$card .= "
-			<img class='ca_displayIcon' src='$Icon'></img>
+			<img class='ca_displayIcon $imageNoClick' src='$Icon'></img>
 		";
 	else {
 		$displayIcon = $template['IconFA'] ?: $template['Icon'];
 		$displayIconClass = startsWith($displayIcon,"icon-") ? $displayIcon : "fa fa-$displayIcon";
-		$card  .= "<i class='ca_appPopup $displayIconClass displayIcon' data-apppath='$Path' data-appname='$Name'></i>";
+		$card  .= "<i class='ca_appPopup $displayIconClass displayIcon $imageNoClick' data-apppath='$Path' data-appname='$Name'></i>";
 	}
 	$card .= "</div>";
 
@@ -958,7 +1020,7 @@ function displayCard($template) {
 	#	$Overview = explode("<br>",$ovr)[0];
 		$Overview = str_replace("<br>"," ",$ovr);
 		$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
-		$card .= "<div class='$descClass ca_backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
+		$card .= "<div class='$descClass $backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
 		if ( $RecommendedDate ) {
 			$card .= "
 				<div class='homespotlightIconArea ca_center' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
@@ -970,18 +1032,35 @@ function displayCard($template) {
 	}
 	$card .= "</div>";
 	if ( $Installed || $Uninstall) {
-		$card .= "<div class='installedCardBackground'>";
-		$card .= "<div class='installedCardText ca_center'>".tr("INSTALLED")."</div>";
-		$card .= "</div>";
+		$card .= "
+			<div class='installedCardBackground'>
+				<div class='installedCardText ca_center'>".tr("INSTALLED")."</div>
+			</div>";
 	} else if ( $Beta ) {
-		$card .= "<div class='betaCardBackground'>";
-		$card .= "<div class='betaPopupText ca_center'>".tr("BETA")."</div>";
-		$card .= "</div>";
+		$card .= "
+			<div class='betaCardBackground'>
+				<div class='betaPopupText ca_center'>".tr("BETA")."</div>
+			</div>
+		";
 	} else if ( $RecommendedDate ) {
-		$card .= "<div class='spotlightCardBackground'>";
-		$card .= "<div class='spotlightPopupText' title='".tr("This is a spotlight application")."'></div>";
-		$card .= "</div>";
-	}
+		$card .= "
+			<div class='spotlightCardBackground'>
+				<div class='spotlightPopupText' title='".tr("This is a spotlight application")."'></div>
+			</div>
+		";
+	} else if ( $Official ) {
+		$card .= "
+			<div class='betaCardBackground'>
+				<div class='betaPopupText ca_center' title='This is an official container'>".tr("OFFICIAL")."</div>
+			</div>
+		";
+	} else if ( $Trusted ) {
+		$card .= "
+			<div class='spotlightCardBackground'>
+				<div class='betaPopupText ca_center' title='This container is digitally signed'>".tr("Digitally Signed")."</div>
+			</div>
+		";
+	}		
 	return str_replace(["\t","\n"],"",$card);
 }
 
@@ -1164,6 +1243,7 @@ function displayPopup($template) {
 			<div class='spotlightPopupText'></div>
 		";
 	}
+
 	$card .= "</div>";
 
 	return $card;
