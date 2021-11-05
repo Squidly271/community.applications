@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.11.04">
-<!ENTITY md5       "141cad5fcc1c5f1ffee6f95d44a142dd">
+<!ENTITY version   "2021.11.05">
+<!ENTITY md5       "b09763f39bcf3bf27abb85efd0be27d5">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.11.05
+- Fixed: The link in moderator comments (on info screen) would go to the wrong URL on occasion
+
 ###2021.11.04
 - Added: dockerHub searching
 - Changed: App cards showing descriptions is now the default setting
