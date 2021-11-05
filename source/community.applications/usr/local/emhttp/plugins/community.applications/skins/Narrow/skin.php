@@ -36,7 +36,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$caSettings['dockerRunning'] = "true";
 	//	$info = $DockerTemplates->getAllInfo();
 		$info = getAllInfo();
-		file_put_contents("/tmp/blah",print_r($info,true));
 		//$dockerRunning = $DockerClient->getDockerContainers();
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
@@ -350,7 +349,6 @@ function getPopupDescriptionSkin($appNumber) {
 		}
 		$dockerRunning = $DockerClient->getDockerContainers();
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
-		file_put_contents("/tmp/blah",print_r($dockerRunning,true));
 	} else {
 		unset($caSettings['dockerRunning']);
 		$info = array();
@@ -1138,7 +1136,7 @@ function displayPopup($template) {
 	}
 
 	if ( $ModeratorComment ) {
-		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>".tr($ModeratorComment)."</div></div>";
+		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div></div>";
 	}
 
 	if ( $RecommendedReason) {
@@ -1251,7 +1249,6 @@ function displayPopup($template) {
 	}
 
 	$card .= "</div>";
-
 	return $card;
 }
 ?>
