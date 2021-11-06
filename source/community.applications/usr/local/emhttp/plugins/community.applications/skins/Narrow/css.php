@@ -136,7 +136,7 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .appLanguage{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}
 .appLanguage::before{font-family:'Unraid';content:'\e987';}
 .appDriver{float:right;font-size:1.8rem;opacity:0.7;margin-left:1rem;}
-.appDriver::before{content:"\f085";font-family:fontAwesome;}
+.appDriver::before{content:"\f2db";font-family:fontAwesome;}
 .appsPerPage{float:right;}
 .appsPerPage::before{content:"\f009";font-family:fontAwesome;}
 .appsPerPage:hover{color:<?=$unRaid66color?>;}
@@ -171,11 +171,14 @@ a.ca_author {text-decoration:none;color:inherit;}
 .ca_categories {font-size:1rem;font-style:italic;}
 a.ca_categories {text-decoration:none;color:inherit;}
 .ca_center {margin:auto;text-align:center;}
+
 .ca_credit { padding:.5rem 0 1rem 0; font-size:1.5rem;line-height:2rem; font-style:italic;}
 .ca_creditheader { font-size:2rem; padding-top:1rem;}
 .ca_discord::before{content:"\e988";font-family:Unraid;}
 .ca_discord_popup::before{content:"\e988";font-family:Unraid;font-size:2.2rem;vertical-align:middle;}
 img.ca_displayIcon{height:8rem;width:8rem;}
+.ca_fa-additional::before{content:"\f055";font-family:fontAwesome;}
+.ca_fa-comment::before{content:"\f075";font-family:fontAwesome;}
 .ca_fa-delete {color:#882626;}
 .ca_fa-delete::before {content:"\f00d";font-family:fontAwesome;}
 a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-0.25rem;cursor:pointer;float:right;}
@@ -245,8 +248,7 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .cardDescription{cursor: pointer;display: block;position: relative;top:0.5rem;max-height: 7rem;overflow: hidden;}
 .cardDesc{display:inline-block;max-height:7rem;overflow:hidden;}
 .card_readmore{color:<?=$unRaid66color?>;}
-.cardWarning{font-size:1.5rem;animation: pulse 3s infinite;}
-@keyframes pulse {0%,100% {color:#bdbd14;} 50% {color:transparent;}}
+.cardWarning{font-size:1.5rem;color:#bdbd14;}
 
 #Category{font-size:2rem;margin-bottom:0.5rem;}
 .changelogTitle{font-size:2rem;line-height:2rem;margin-top:2rem;font-weight:normal;}
@@ -314,6 +316,8 @@ input[type=button][disabled]{background:none;}
 .myReadmoreButton {color:#6363ca;}
 .noClick{cursor:default !important;}
 .notice.shift {margin-top:0px;}
+.officialCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #854153;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
+.officialPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.25rem;right:-1rem;width:100%;overflow:hidden;height:2.5rem;}
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 .pageDots::after {content:"...";}
 .pageDots{color:grey;cursor:default;}

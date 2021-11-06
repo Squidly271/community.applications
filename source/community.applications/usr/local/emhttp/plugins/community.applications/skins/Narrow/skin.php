@@ -256,6 +256,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			if ( $template['Language'] ) {
 				$template['Installed'] = is_dir("{$caPaths['languageInstalled']}{$template['LanguagePack']}") && ! $template['Uninstall'];
 			}
+			
+			if ( startsWith($template['Repository'],"library/") || startsWith($template['Repository'],"registry.hub.docker.com/library/") || strpos($template['Repository'],"/") === false)
+				$template['Official'] = true;
+			
 	# Entries created.  Now display it
 			$ct .= displayCard($template);
 			$count++;
@@ -989,9 +993,16 @@ function displayCard($template) {
 	$card .= "
 				<div class='ca_applicationName'>$Name
 	";
-	if ( $CAComment || $ModeratorComment || $Deprecated || (isset($Compatible) && ! $Compatible) || $Blacklist ) {
-		if ( $CAComment || $ModeratorComment)
+	$commentIcon = "ca_fa-warning";
+	if ( $CAComment || $ModeratorComment || $Deprecated || (isset($Compatible) && ! $Compatible) || $Blacklist || $Requires) {
+		if ( $CAComment || $ModeratorComment) {
+			$commentIcon = "ca_fa-comment";
 			$warning = tr("Click info to see the notes regarding this application");
+		}
+		if ( $Requires) {
+			$commentIcon = "ca_fa-additional";
+			$warning = tr("This application has additional requirements");
+		}
 		if ( $Deprecated )
 			$warning = tr("This application template has been deprecated");
 		if ( ! $Compatible )
@@ -999,7 +1010,7 @@ function displayCard($template) {
 		if ( $Blacklist )
 			$warning = tr("This application template has been blacklisted");
 		
-		$card .= "&nbsp;<span class='ca_fa-warning cardWarning' title='".htmlentities($warning,ENT_QUOTES)."'></span>";
+		$card .= "&nbsp;<span class='$commentIcon cardWarning' title='".htmlentities($warning,ENT_QUOTES)."'></span>";
 	}
 	$card .= "
 				</div>
@@ -1052,10 +1063,10 @@ function displayCard($template) {
 				<div class='spotlightPopupText' title='".tr("This is a spotlight application")."'></div>
 			</div>
 		";
-	} else if ( $Official ) {
+	} else if ( ($Official || strtolower($Author) == strtolower($Name) || in_array($Author,["plexinc","emby","onlyoffice"])) && ! $Language ) {
 		$card .= "
-			<div class='betaCardBackground'>
-				<div class='betaPopupText ca_center' title='This is an official container'>".tr("OFFICIAL")."</div>
+			<div class='officialCardBackground'>
+				<div class='officialPopupText ca_center' title='This is an official container'>".tr("OFFICIAL")."</div>
 			</div>
 		";
 	} else if ( $Trusted ) {
