@@ -119,6 +119,7 @@ function tr($string,$ret=false) {
 
 ?>
 
+
 <link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
 <? if ( is_file("$docroot/plugins/dynamix/styles/community.applications-$theme.css") ):?>
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/dynamix/styles/community.applications-$theme.css")?>'>
@@ -345,26 +346,8 @@ $(function(){
 	});
 
 	$("body").on("click",".repoPopup,.ca_repoinfo,.ca_reporeadmore,.ca_repoFromPopUp,.cardDescriptionRepo", function() {
-		context.destroy("#supportPopup");
-		context.destroy("#actionsPopup");
-		if ( ! $(".sidebar").is(":visible") ) {
-			$.cookie("sidebarAppName","");
-			$.cookie("sidebarAppPath","");
-			var fromCard = true;
-		}
-
-		$("#sidenavContent").html("");
 		var repository = $(this).data("repository");
-		$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
-		$(".sidebar").fadeIn();
-		$("body").css("overflow","hidden");
-		post({action:'getRepoDescription',repository:repository},function(data) {
-			$("#sidenavContent").html(data.description);
-			$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"});
-			if (fromCard) {
-				$(".popUpBack").hide();
-			}
-		});
+		showRepoPopup(repository);
 	});
 
 
@@ -2085,6 +2068,8 @@ function popUpChart(descData) {
 function showSidebarApp(apppath,appname) {
 	$.cookie("sidebarAppPath",apppath);
 	$.cookie("sidebarAppName",appname);
+	data.sidebarapppath = apppath;
+	data.sidebarappname = appname;
 	$("#sidenavContent").html("");
 	$(".sidebar").fadeIn();
 	$(".back_to_top").addClass("back_to_top_hide");
@@ -2092,6 +2077,21 @@ function showSidebarApp(apppath,appname) {
 	setTimeout(function() {
 		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 			$("#sidenavContent").html(result.description);
+			$('.screenshot').magnificPopup({
+				closeMarkup: "<button type='button' class='mfp-close narrow'>"+tr("CLOSE")+"</button>",
+				closeOnContentClick: true,
+				type:'image',
+				removalDelay: 300,
+				mainClass: 'mfp-fade',
+				callbacks: {
+					open: function() {
+						closeSidebar();
+					},
+					close: function() {
+						showSidebarApp(data.sidebarapppath,data.sidebarappname);
+					}
+				}
+			});
 			$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"})
 			popUpChart(result);
 			if ( result.supportContext ) {
@@ -2127,6 +2127,43 @@ function showSidebarApp(apppath,appname) {
 			});
 		})
 	},500);
+}
+
+function showRepoPopup(repository) {
+	data.repository = repository;
+	context.destroy("#supportPopup");
+	context.destroy("#actionsPopup");
+	if ( ! $(".sidebar").is(":visible") ) {
+		$.cookie("sidebarAppName","");
+		$.cookie("sidebarAppPath","");
+		var fromCard = true;
+	}
+
+	$("#sidenavContent").html("");
+
+	$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
+	$(".sidebar").fadeIn();
+	$("body").css("overflow","hidden");
+	post({action:'getRepoDescription',repository:repository},function(result) {
+		$("#sidenavContent").html(result.description);
+		$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"});
+		if (fromCard) {
+			$(".popUpBack").hide();
+		}
+		$('.screenshot').magnificPopup({
+			type:'image',
+			closeMarkup: "<button type='button' class='mfp-close narrow'>"+tr("CLOSE")+"</button>",
+			closeOnContentClick: true,				
+			callbacks: {
+				open: function() {
+					closeSidebar();
+				},
+				close: function() {
+					showRepoPopup(data.repository);
+				}
+			}
+		});
+	});
 }
 
 function checkSortOrder() {

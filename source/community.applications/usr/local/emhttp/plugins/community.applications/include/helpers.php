@@ -433,6 +433,7 @@ function getAuthor($template) {
 	if ( $template['PluginURL'] ) return $template['PluginAuthor'];
 
 	if ( $template['Author'] ) return strip_tags($template['Author']);
+	$template['Repository'] = str_replace(["lscr.io/","ghcr.io/","registry.hub.docker.com/","library/"],"",$template['Repository']);
 	$repoEntry = explode("/",$template['Repository']);
 	if (count($repoEntry) < 2)
 		$repoEntry[] = "";

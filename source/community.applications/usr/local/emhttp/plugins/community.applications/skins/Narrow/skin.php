@@ -734,9 +734,22 @@ function getRepoDescriptionSkin($repository) {
 				<div class='repoDonateText'>{$repo['DonateText']}</div>
 				<a class='donate' href='{$repo['DonateLink']}' target='_blank'>".tr("Donate")."</a>
 			</div>
-			<div class='repoLinks'>
 		";
 	}
+	if ( $repo['Photo']) {
+		$photos = is_array($repo['Photo']) ? $repo['Photo'] : [$repo['Photo']];
+		
+		$t .= "<div><div class='screenshotText'>".tr("Photos")."</div>";
+		foreach ($photos as $shot) {
+			$t .= "<a class='screenshot' href='$shot'><img class='screen' src='$shot' onerror='this.style.display=&quot;none&quot;'></img></a>";
+		}
+		$t .= "</div>";
+	}
+	$t .= "
+		</div>	
+		<div class='repoLinks'>
+	";
+	
 	$t .= "<div class='repoLinkArea'>";
 
 	if ( $repo['WebPage'] )
@@ -1051,7 +1064,13 @@ function displayCard($template) {
 			<div class='installedCardBackground'>
 				<div class='installedCardText ca_center'>".tr("INSTALLED")."</div>
 			</div>";
-	} else if ( $Beta ) {
+	} else if ( $Official ) {
+		$card .= "
+			<div class='officialCardBackground'>
+				<div class='officialPopupText ca_center' title='This is an official container'>".tr("OFFICIAL")."</div>
+			</div>
+		";
+		} else if ( $Beta ) {
 		$card .= "
 			<div class='betaCardBackground'>
 				<div class='betaPopupText ca_center'>".tr("BETA")."</div>
@@ -1063,12 +1082,7 @@ function displayCard($template) {
 				<div class='spotlightPopupText' title='".tr("This is a spotlight application")."'></div>
 			</div>
 		";
-	} else if ( ($Official || strtolower($Author) == strtolower($Name) || in_array($Author,["plexinc","emby","onlyoffice"])) && ! $Language ) {
-		$card .= "
-			<div class='officialCardBackground'>
-				<div class='officialPopupText ca_center' title='This is an official container'>".tr("OFFICIAL")."</div>
-			</div>
-		";
+
 	} else if ( $Trusted ) {
 		$card .= "
 			<div class='spotlightCardBackground'>
@@ -1240,6 +1254,19 @@ function displayPopup($template) {
 			";
 		}
 	}
+	if ( $Screenshot || $Photo) {
+		$ScreenshotTitle = $Screenshot ? tr("Screenshots") : tr("Photos");
+		$pictures = $Screenshot ? $Screenshot : $Photo;
+		if ( ! is_array($pictures) )
+			$pictures = [$pictures];
+		
+		$card .= "<div><div class='screenshotText'>Screenshots</div>";
+		foreach ($pictures as $shot) {
+			$card .= "<a class='screenshot' href='$shot'><img class='screen' src='$shot' onerror='this.style.display=&quot;none&quot;'></img></a>";
+		}
+		$card .= "</div>";
+	}
+	$card .= "</div>";
 	if ( $display_changes ) {
 		$card .= "
 			<div class='changelogTitle'>".tr("Change Log")."</div>
@@ -1259,7 +1286,7 @@ function displayPopup($template) {
 		";
 	}
 
-	$card .= "</div>";
+
 	return $card;
 }
 ?>
