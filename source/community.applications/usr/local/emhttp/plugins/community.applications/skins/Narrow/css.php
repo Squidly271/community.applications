@@ -383,6 +383,8 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .rightTitle{font-size:2.5rem;margin-top:2rem;margin-bottom:2rem;}
 .screen{border:3px solid; border-radius: 5px 5px 5px 5px; border-color:<?=$unRaid66color?>; vertical-align:top; max-width:200px;max-height:200px;margin:10px;}
 .screen:hover{opacity:50%}
+.vid{border:3px solid; border-radius: 5px 5px 5px 5px; border-color:<?=$unRaid66color?>; vertical-align:top; max-width:200px;max-height:200px;margin:10px;}
+.vid:hover{opacity:50%}
 .screenshotText{font-size:2rem;}
 .searchArea {z-index:2;width:auto;position:static;}
 .searchSubmit{font-family:'FontAwesome';width:2rem;min-width:2rem;height:3.4rem;font-size:1.1rem;position:relative;padding-top:1.1rem;padding-bottom:1rem;padding-right:1rem;background:<?=$templateHoverBackground?>;border:none;cursor:pointer;background:<?=$templateHoverBackground?>;}

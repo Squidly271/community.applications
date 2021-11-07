@@ -741,7 +741,7 @@ function getRepoDescriptionSkin($repository) {
 		
 		$t .= "<div><div class='screenshotText'>".tr("Photos")."</div>";
 		foreach ($photos as $shot) {
-			$t .= "<a class='screenshot' href='$shot'><img class='screen' src='$shot' onerror='this.style.display=&quot;none&quot;'></img></a>";
+			$t .= "<a class='screenshot' href='".trim($shot)."'><img class='screen' src='".trim($shot)."' onerror='this.style.display=&quot;none&quot;'></img></a>";
 		}
 		$t .= "</div>";
 	}
@@ -1254,15 +1254,22 @@ function displayPopup($template) {
 			";
 		}
 	}
-	if ( $Screenshot || $Photo) {
+	if ( $Screenshot || $Photo || $Video) {
 		$ScreenshotTitle = $Screenshot ? tr("Screenshots") : tr("Photos");
 		$pictures = $Screenshot ? $Screenshot : $Photo;
 		if ( ! is_array($pictures) )
 			$pictures = [$pictures];
-		
-		$card .= "<div><div class='screenshotText'>Screenshots</div>";
+		$card .= "<div><div class='screenshotText'>$ScreenshotTitle</div>";
 		foreach ($pictures as $shot) {
-			$card .= "<a class='screenshot' href='$shot'><img class='screen' src='$shot' onerror='this.style.display=&quot;none&quot;'></img></a>";
+			$card .= "<a class='screenshot' href='".trim($shot)."'><img class='screen' src='".trim($shot)."'></img></a>";
+		}
+		if ( $Video ) {
+			if ( ! $Video[1] ) {
+				$Video = [$Video];
+			}
+			foreach ( $Video as $vid ) {
+				$card .= "<a class='video' href='".trim($vid['Link'])."'><img class='vid' src='".trim($vid['Still'])."'></img></a>";
+			}
 		}
 		$card .= "</div>";
 	}
