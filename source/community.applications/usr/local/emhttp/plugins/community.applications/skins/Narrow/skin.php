@@ -1240,7 +1240,25 @@ function displayPopup($template) {
 		</div>
 		</div>
 	";
-
+	if ( $Screenshot || $Photo || $Video) {
+		$ScreenshotTitle = $Screenshot ? tr("Screenshots") : tr("Photos");
+		$pictures = $Screenshot ? $Screenshot : $Photo;
+		if ( ! is_array($pictures) )
+			$pictures = [$pictures];
+		$card .= "<div><div class='screenshotText'>$ScreenshotTitle</div>";
+		foreach ($pictures as $shot) {
+			$card .= "<a class='screenshot mfp-image' href='".trim($shot)."'><img class='screen' src='".trim($shot)."'></img></a>";
+		}
+		if ( $Video ) {
+			if ( ! $Video[1] ) {
+				$Video = [$Video];
+			}
+			foreach ( $Video as $vid ) {
+				$card .= "<a class='screenshot mfp-iframe' href='".trim($vid['Link'])."'><img class='vid' src='".trim($vid['Still'])."'></img></a>";
+			}
+		}
+		$card .= "</div>";
+	}
 	if (is_array($trends) && (count($trends) > 1) ){
 		if ( $downloadtrend ) {
 			$card .= "
@@ -1254,26 +1272,8 @@ function displayPopup($template) {
 			";
 		}
 	}
-	if ( $Screenshot || $Photo || $Video) {
-		$ScreenshotTitle = $Screenshot ? tr("Screenshots") : tr("Photos");
-		$pictures = $Screenshot ? $Screenshot : $Photo;
-		if ( ! is_array($pictures) )
-			$pictures = [$pictures];
-		$card .= "<div><div class='screenshotText'>$ScreenshotTitle</div>";
-		foreach ($pictures as $shot) {
-			$card .= "<a class='screenshot' href='".trim($shot)."'><img class='screen' src='".trim($shot)."'></img></a>";
-		}
-		if ( $Video ) {
-			if ( ! $Video[1] ) {
-				$Video = [$Video];
-			}
-			foreach ( $Video as $vid ) {
-				$card .= "<a class='video' href='".trim($vid['Link'])."'><img class='vid' src='".trim($vid['Still'])."'></img></a>";
-			}
-		}
-		$card .= "</div>";
-	}
-	$card .= "</div>";
+
+
 	if ( $display_changes ) {
 		$card .= "
 			<div class='changelogTitle'>".tr("Change Log")."</div>

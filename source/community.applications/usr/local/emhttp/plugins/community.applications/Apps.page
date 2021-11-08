@@ -2083,26 +2083,7 @@ function showSidebarApp(apppath,appname) {
 				type:'image',
 				removalDelay: 300,
 				mainClass: 'mfp-fade',
-				zoom: {
-					enabled: true, // By default it's false, so don't forget to enable it
-					duration: 500, // duration of the effect, in milliseconds
-					easing: 'ease-in-out'
-				},
-				callbacks: {
-					open: function() {
-						closeSidebar();
-					},
-					close: function() {
-						showSidebarApp(data.sidebarapppath,data.sidebarappname);
-					}
-				}
-			});
-			$('.video').magnificPopup({
-				closeMarkup: "<button type='button' class='mfp-close narrow'>"+tr("CLOSE")+"</button>",
-				closeOnContentClick: true,
-				type:'iframe',
-				removalDelay: 300,
-				mainClass: 'mfp-fade',
+				gallery: true,
 				zoom: {
 					enabled: true, // By default it's false, so don't forget to enable it
 					duration: 500, // duration of the effect, in milliseconds

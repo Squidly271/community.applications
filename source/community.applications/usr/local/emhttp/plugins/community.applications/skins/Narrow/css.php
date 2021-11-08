@@ -381,9 +381,9 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .repoLinkArea{margin-top:1.5rem;}
 .repoRight{text-align:right;}
 .rightTitle{font-size:2.5rem;margin-top:2rem;margin-bottom:2rem;}
-.screen{border:3px solid; border-radius: 5px 5px 5px 5px; border-color:<?=$unRaid66color?>; vertical-align:top; max-width:200px;max-height:200px;margin:10px;}
+.screen{border:3px solid; border-radius: 5px 5px 5px 5px; border-color:<?=$unRaid66color?>; vertical-align:top; max-width:10rem;height:10rem;margin:10px;}
 .screen:hover{opacity:50%}
-.vid{border:3px solid; border-radius: 5px 5px 5px 5px; border-color:<?=$unRaid66color?>; vertical-align:top; max-width:200px;max-height:200px;margin:10px;}
+.vid{border:3px solid; border-radius: 5px 5px 5px 5px; border-color:<?=$unRaid66color?>; vertical-align:top; max-width:10rem;height:10rem;margin:10px;}
 .vid:hover{opacity:50%}
 .screenshotText{font-size:2rem;}
 .searchArea {z-index:2;width:auto;position:static;}
@@ -468,7 +468,7 @@ table {background-color:transparent;}
 .mfp-content {position: relative;display: inline-block;vertical-align: middle;margin: 0 auto;text-align: left;z-index: 1045; }
 .mfp-inline-holder .mfp-content,.mfp-ajax-holder .mfp-content {width: 100%;cursor: auto; }
 .mfp-ajax-cur {cursor: progress; }
-.mfp-zoom-out-cur, .mfp-zoom-out-cur .mfp-image-holder .mfp-close {cursor: -moz-zoom-out;cursor: -webkit-zoom-out;cursor: zoom-out; }
+.mfp-zoom-out-cur, .mfp-zoom-out-cur .mfp-image-holder .mfp-close {cursor: -moz-zoom-out;cursor: -webkit-zoom-out;cursor: zoom-out; overflow:unset !important; }
 .mfp-zoom {cursor: pointer;cursor: -webkit-zoom-in;cursor: -moz-zoom-in;cursor: zoom-in; }
 .mfp-auto-cursor .mfp-content {cursor: auto; }
 .mfp-close,.mfp-arrow,.mfp-preloader,.mfp-counter {-webkit-user-select: none;-moz-user-select: none;user-select: none; }
@@ -537,7 +537,7 @@ img.mfp-img {width: auto;max-width: 100%;height: auto;display: block;line-height
 /* overlay at start */
 .mfp-fade.mfp-bg {opacity: 0;-webkit-transition: all 0.5s ease-out;-moz-transition: all 0.5s ease-out;transition: all 0.5s ease-out;}
 /* overlay animate in */
-.mfp-fade.mfp-bg.mfp-ready {opacity: 0.8;}
+.mfp-fade.mfp-bg.mfp-ready {opacity: 0.8; overflow:unset !important;}
 /* overlay animate out */
 .mfp-fade.mfp-bg.mfp-removing {opacity: 0;}
 /* content at start */
