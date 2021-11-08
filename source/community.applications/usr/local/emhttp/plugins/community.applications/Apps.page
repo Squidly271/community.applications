@@ -687,6 +687,9 @@ function updateContent(button) {
 }
 
 function stripTags(string) {
+	if ( ! string )
+		string = "";
+	
 	return string.replace(/(<([^>]+)>)/ig,"");
 }
 
@@ -959,6 +962,7 @@ function OpenSidebarAndRefreshDisplay() {
 		} else {
 			var apppath = $.cookie("sidebarAppPath");
 			var appname = $.cookie("sidebarAppName");
+			
 			appname = stripTags(appname);
 
 			refreshDisplay();
