@@ -847,7 +847,7 @@ function displaySearchResults($pageNumber) {
 # Generate the app's card #
 ###########################
 function displayCard($template) {
-	global $caSettings;
+	global $caSettings, $caPaths;
 	$appName = str_replace("-"," ",$template['display_dockerName']);
 
 	$popupType = $template['RepositoryTemplate'] ? "ca_repoPopup" : "ca_appPopup";
@@ -1052,7 +1052,7 @@ function displayCard($template) {
 		if ( $RecommendedDate ) {
 			$card .= "
 				<div class='homespotlightIconArea ca_center' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
-					<div><img class='spotlightIcon' src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Unraid.svg'></img></div>
+		<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}'></img></div>
 					<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
 				</div>
 			";
@@ -1094,7 +1094,7 @@ function displayCard($template) {
 }
 
 function displayPopup($template) {
-	global $caSettings;
+	global $caSettings, $caPaths;
 
 	extract($template);
 
@@ -1173,7 +1173,7 @@ function displayPopup($template) {
 		$card .= "
 			<div class='spotlightPopup'>
 				<div class='spotlightIconArea ca_center'>
-					<div><img class='spotlightIcon' src='https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Unraid.svg'></img></div>
+					<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}'></img></div>
 					<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
 				</div>
 				<div class='spotlightInfoArea'>
@@ -1185,6 +1185,28 @@ function displayPopup($template) {
 			</div>
 		";
 	}
+	if ( $Screenshot || $Photo || $Video) {
+		$ScreenshotTitle = $Screenshot || $Video ? tr("Screenshots") : tr("Photos");
+		$card .= "<div><div class='screenshotText'>$ScreenshotTitle</div>";
+		if ( $Screenshot || $Photo ) {
+			$pictures = $Screenshot ? $Screenshot : $Photo;
+			if ( ! is_array($pictures) )
+				$pictures = [$pictures];
+	
+			foreach ($pictures as $shot) {
+				$card .= "<a class='screenshot mfp-image' href='".trim($shot)."'><img class='screen' src='".trim($shot)."'></img></a>";
+			}
+		}
+		if ( $Video ) {
+			if ( ! is_array($Video) )
+				$Video = [$Video];
+		
+			foreach ( $Video as $vid ) {
+				$card .= "<a class='screenshot mfp-iframe' href='".trim($vid)."'><img class='vid' src='{$caPaths['VideoStill']}'></img></a>";
+			}
+		}	
+		$card .= "</div>";
+	}	
 	$appType = $Plugin ? tr("Plugin") : tr("Docker");
 	$appType = $Language ? tr("Language") : $appType;
 	
@@ -1240,25 +1262,7 @@ function displayPopup($template) {
 		</div>
 		</div>
 	";
-	if ( $Screenshot || $Photo || $Video) {
-		$ScreenshotTitle = $Screenshot ? tr("Screenshots") : tr("Photos");
-		$pictures = $Screenshot ? $Screenshot : $Photo;
-		if ( ! is_array($pictures) )
-			$pictures = [$pictures];
-		$card .= "<div><div class='screenshotText'>$ScreenshotTitle</div>";
-		foreach ($pictures as $shot) {
-			$card .= "<a class='screenshot mfp-image' href='".trim($shot)."'><img class='screen' src='".trim($shot)."'></img></a>";
-		}
-		if ( $Video ) {
-			if ( ! $Video[1] ) {
-				$Video = [$Video];
-			}
-			foreach ( $Video as $vid ) {
-				$card .= "<a class='screenshot mfp-iframe' href='".trim($vid['Link'])."'><img class='vid' src='".trim($vid['Still'])."'></img></a>";
-			}
-		}
-		$card .= "</div>";
-	}
+
 	if (is_array($trends) && (count($trends) > 1) ){
 		if ( $downloadtrend ) {
 			$card .= "

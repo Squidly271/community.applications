@@ -2082,7 +2082,7 @@ function showSidebarApp(apppath,appname) {
 		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 			$("#sidenavContent").html(result.description);
 			$('.screenshot').magnificPopup({
-				closeMarkup: "<button type='button' class='mfp-close narrow'>"+tr("CLOSE")+"</button>",
+				closeMarkup: "<span class='mfp-close narrow'>"+tr("CLOSE")+"</span>",
 				closeOnContentClick: true,
 				type:'image',
 				removalDelay: 300,

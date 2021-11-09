@@ -482,7 +482,8 @@ table {background-color:transparent;}
 button.mfp-close,button.mfp-arrow {overflow: visible;cursor: pointer;background: transparent;border: 0;-webkit-appearance: none;display: block;outline: none;padding: 0;z-index: 1046;box-shadow: none;touch-action: manipulation; }
 button::-moz-focus-inner {padding: 0;border: 0; }
 .mfp-close {cursor:pointer !important;width: fit-content !important;height: 44px;line-height: 44px;position: absolute;right: 0;top: 0;text-decoration: none;text-align: center;opacity: 0.65;padding: 0 0 18px 10px;color: #FFF;font-style: normal;font-size: 2rem;font-family: Arial, Baskerville, monospace; }
-.mfp-close:hover,.mfp-close:focus {opacity: 1; }
+/* .mfp-close:hover,.mfp-close:focus {opacity: 1; } */
+.mfp-close:hover {color:<?=$unRaid66color?> !important;}
 .mfp-close:active {top: 1px; }
 .mfp-close-btn-in .mfp-close {color: #333; }
 .mfp-image-holder .mfp-close,.mfp-iframe-holder .mfp-close {color: #FFF;right: -6px;text-align: center;width: 100%; }
