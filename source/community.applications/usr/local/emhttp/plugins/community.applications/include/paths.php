@@ -66,6 +66,5 @@ $caPaths['info']                                = $caPaths['tempFiles']."/info.j
 $caPaths['dockerSearchResults']                 = $caPaths['tempFiles']."/dockerSearch.json";
 $caPaths['dockerSearchInstall']                 = $caPaths['tempFiles']."/dockerConvert.xml";
 $caPaths['dockerSearchActive']                  = $caPaths['tempFiles']."/dockerSearchActive";
-$caPaths['VideoStill']                          = "https://github.com/Squidly271/community.applications/raw/master/webImages/movie-850.svg";
 $caPaths['SpotlightIcon']                       = "https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Unraid.svg";
 ?>

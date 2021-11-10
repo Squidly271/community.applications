@@ -2095,9 +2095,11 @@ function showSidebarApp(apppath,appname) {
 				},
 				callbacks: {
 					open: function() {
+						$('body').addClass("dimScreenShot");
 						closeSidebar();
 					},
 					close: function() {
+						$('body').removeClass("dimScreenShot");
 						showSidebarApp(data.sidebarapppath,data.sidebarappname);
 					}
 				}

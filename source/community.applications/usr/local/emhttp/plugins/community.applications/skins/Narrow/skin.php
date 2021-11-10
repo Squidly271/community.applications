@@ -1187,7 +1187,7 @@ function displayPopup($template) {
 	}
 	if ( $Screenshot || $Photo || $Video) {
 		$ScreenshotTitle = $Screenshot || $Video ? tr("Screenshots") : tr("Photos");
-		$card .= "<div><div class='screenshotText'>$ScreenshotTitle</div>";
+//		$card .= "<div><div class='screenshotText'>$ScreenshotTitle</div>";
 		if ( $Screenshot || $Photo ) {
 			$pictures = $Screenshot ? $Screenshot : $Photo;
 			if ( ! is_array($pictures) )
@@ -1202,10 +1202,10 @@ function displayPopup($template) {
 				$Video = [$Video];
 		
 			foreach ( $Video as $vid ) {
-				$card .= "<a class='screenshot mfp-iframe' href='".trim($vid)."'><img class='vid' src='{$caPaths['VideoStill']}'></img></a>";
+				$card .= "<a class='screenshot mfp-iframe' href='".trim($vid)."'><div class='vid ca_fa-film'></div></a>";
 			}
 		}	
-		$card .= "</div>";
+//		$card .= "</div>";
 	}	
 	$appType = $Plugin ? tr("Plugin") : tr("Docker");
 	$appType = $Language ? tr("Language") : $appType;
@@ -1277,7 +1277,6 @@ function displayPopup($template) {
 		}
 	}
 
-
 	if ( $display_changes ) {
 		$card .= "
 			<div class='changelogTitle'>".tr("Change Log")."</div>
@@ -1285,6 +1284,15 @@ function displayPopup($template) {
 			<div class='changelog popup_readmore'>$display_changes</div>
 		";
 	}
+	$moderation = readJsonFile($caPaths['fixedTemplates_txt']);
+	if ( $moderation[$Repo][$Repository] ) {
+		$card .= "<div class='templateErrors'>".tr("Template Errors")."</div>";
+		foreach ($moderation[$Repo][$Repository] as $error) {
+			$card .= "<li class='templateErrorsList'>$error</li>";
+		}
+	}
+	
+	
 	if ( $Beta ) {
 		$card .= "
 			<div class='betaPopupBackground'>
