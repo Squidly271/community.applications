@@ -358,8 +358,7 @@ $(function(){
 			$(".dropdown-menu").hide();
 			return;
 		}
-
-		$("body").css("overflow","hidden");
+		$("body").addClass("body_sidebarScroll");
 
 		var apppath = $(this).data("apppath");
 		var appname = $(this).data("appname");
@@ -943,7 +942,7 @@ function closeSidebar(cookie=false,visible=false) {
 	$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide");
 	$("#sidenavContent").html("");
 	$(".back_to_top").removeClass("back_to_top_hide");
-	$("body").css("overflow","auto");
+	$("body").removeClass("body_sidebarScroll");
 	$(".sidebar").fadeOut();
 }
 
@@ -2155,7 +2154,8 @@ function showRepoPopup(repository) {
 
 	$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
 	$(".sidebar").fadeIn();
-	$("body").css("overflow","hidden");
+	$("body").addClass("body_sidebarScroll");
+	$("body").css("overflow","hidden !important");
 	post({action:'getRepoDescription',repository:repository},function(result) {
 		$("#sidenavContent").html(result.description);
 		$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"});

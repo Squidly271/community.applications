@@ -35,7 +35,6 @@
 - Fixed: Don't allow CA to be uninstalled from within CA
 - Fixed: Descriptions on repository cards would display an error when clicking on them
 
-
 ###2021.10.24
 - Windows 11 temporary compatibility fix
 - Fixed: Repository descriptions weren't showing up on cards if descriptions were allowed in Settings

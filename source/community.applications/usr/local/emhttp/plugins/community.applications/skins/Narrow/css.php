@@ -151,6 +151,7 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .betaPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.25rem;right:-1rem;width:100%;overflow:hidden;height:2.5rem;}
 body.stop-scrolling{height:70%;overflow:inherit;}  /* disable SweetAlert killing the scroll bar ( stops the wiggle ) */
 body{scrollbar-gutter:stable;cursor:default !important;}
+.body_sidebarScroll{overflow:hidden !important;}
 .caChangeLog {cursor:pointer;}
 .caChart {display:none;border:none;}
 . {display:inline-block;width:7rem;height:3rem;}

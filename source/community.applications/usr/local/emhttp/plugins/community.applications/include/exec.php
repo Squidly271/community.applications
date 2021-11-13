@@ -1307,7 +1307,11 @@ function statistics() {
 	@unlink($caPaths['community-templates-displayed']);
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);
-	$statistics = download_json($caPaths['statisticsURL'],$caPaths['statistics']);
+	if ( ! is_file($caPaths['statistics']) ) 
+		$statistics = download_json($caPaths['statisticsURL'],$caPaths['statistics']);
+	else
+		$statistics = readJsonFile($caPaths['statistics']);
+	
 	download_json($caPaths['moderationURL'],$caPaths['moderation']);
 	$statistics['totalModeration'] = count(readJsonFile($caPaths['moderation']));
 	$repositories = readJsonFile($caPaths['repositoryList']);

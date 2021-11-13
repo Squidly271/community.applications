@@ -344,6 +344,8 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$allRepositories = readJsonFile($caPaths['repositoryList']);
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
+	if ( ! is_file($caPaths['statistics']) )
+		download_json($caPaths['statisticsURL'],$caPaths['statistics']);
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$caSettings['dockerRunning'] = "true";
@@ -1292,10 +1294,10 @@ function displayPopup($template) {
 			<div class='changelog popup_readmore'>$display_changes</div>
 		";
 	}
-	$moderation = readJsonFile($caPaths['fixedTemplates_txt']);
-	if ( $moderation[$Repo][$Repository] ) {
+	$moderation = readJsonFile($caPaths['statistics']);
+	if ( $moderation['fixedTemplates'][$Repo][$Repository] ) {
 		$card .= "<div class='templateErrors'>".tr("Template Errors")."</div>";
-		foreach ($moderation[$Repo][$Repository] as $error) {
+		foreach ($moderation['fixedTemplates'][$Repo][$Repository] as $error) {
 			$card .= "<li class='templateErrorsList'>$error</li>";
 		}
 	}
