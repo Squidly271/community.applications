@@ -1294,9 +1294,9 @@ function displayPopup($template) {
 		";
 	}
 	$moderation = readJsonFile($caPaths['statistics']);
-	if ( $moderation['fixedTemplates'][$Repo][$Repository] ) {
+	if ( $moderation['fixedTemplates'][$Repo][str_replace("library/","",$Repository)] ) {
 		$card .= "<div class='templateErrors'>".tr("Template Errors")."</div>";
-		foreach ($moderation['fixedTemplates'][$Repo][$Repository] as $error) {
+		foreach ($moderation['fixedTemplates'][$Repo][str_replace("library/","",$Repository)] as $error) {
 			$card .= "<li class='templateErrorsList'>$error</li>";
 		}
 	}
