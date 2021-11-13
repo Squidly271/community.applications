@@ -389,8 +389,7 @@ function getPopupDescriptionSkin($appNumber) {
 	}
 
 	if ( $index !== false ) {
-/* 		$Displayed = true;
- */		$template = $displayed['community'][$index];
+		$template = $displayed['community'][$index];
 	}
 
 	# handle case where the app being asked to display isn't on the most recent displayed list (ie: multiple browser tabs open)
@@ -551,7 +550,7 @@ function getPopupDescriptionSkin($appNumber) {
 						if ( ! empty($actionsContext) )
 							$actionsContext[] = array("divider"=>true);
 
-						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallApp('/var/log/plugins/$pluginName','{$template['Name']}');");
+						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallApp('/var/log/plugins/$pluginName','".str_replace(" ","&nbsp;",$template['Name'])."');");
 					}
 				} elseif ( ! $template['Blacklist'] || ! $template['Compatible'] ) {
 					$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
@@ -1134,7 +1133,7 @@ function displayPopup($template) {
 
 		if ( $actionsContext ) {
 			if ( count($actionsContext) == 1 ) {
-				$card .= "<div class='actionsPopup'><span onclick={$actionsContext[0]['action']}>{$actionsContext[0]['text']}</span></div>";
+				$card .= "<div class='actionsPopup'><span onclick={$actionsContext[0]['action']}>".str_replace("ca_red","",$actionsContext[0]['text'])."</span></div>";
 			} else {
 				$card .= "
 					<div class='actionsPopup' id='actionsPopup'>".tr("Actions")."</div>
