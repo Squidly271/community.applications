@@ -736,13 +736,22 @@ function getRepoDescriptionSkin($repository) {
 			</div>
 		";
 	}
-	if ( $repo['Photo']) {
-		$photos = is_array($repo['Photo']) ? $repo['Photo'] : [$repo['Photo']];
+	if ( $repo['Photo'] || $repo['Video']) {
+		$t .= "<div>";
+		if ( $repo['Photo'] ) {
+			$photos = is_array($repo['Photo']) ? $repo['Photo'] : [$repo['Photo']];
 		
-		$t .= "<div><div class='screenshotText'>".tr("Photos")."</div>";
-		foreach ($photos as $shot) {
-			$t .= "<a class='screenshot' href='".trim($shot)."'><img class='screen' src='".trim($shot)."' onerror='this.style.display=&quot;none&quot;'></img></a>";
+			foreach ($photos as $shot) {
+				$t .= "<a class='screenshot' href='".trim($shot)."'><img class='screen' src='".trim($shot)."' onerror='this.style.display=&quot;none&quot;'></img></a>";
+			}
 		}
+		if ( $repo['Video'] ) {
+			$videos = is_array($repo['Video']) ? $repo['Video'] : [$repo['Video']];
+			foreach ($videos as $vid) {
+				$t .= "<a class='screenshot mfp-iframe' href='".trim($vid)."'><div class='vid ca_fa-film'></div></a>";
+			}
+		}			
+		
 		$t .= "</div>";
 	}
 	$t .= "
@@ -1186,8 +1195,7 @@ function displayPopup($template) {
 		";
 	}
 	if ( $Screenshot || $Photo || $Video) {
-		$ScreenshotTitle = $Screenshot || $Video ? tr("Screenshots") : tr("Photos");
-//		$card .= "<div><div class='screenshotText'>$ScreenshotTitle</div>";
+		$card .= "<div>";
 		if ( $Screenshot || $Photo ) {
 			$pictures = $Screenshot ? $Screenshot : $Photo;
 			if ( ! is_array($pictures) )
@@ -1205,7 +1213,7 @@ function displayPopup($template) {
 				$card .= "<a class='screenshot mfp-iframe' href='".trim($vid)."'><div class='vid ca_fa-film'></div></a>";
 			}
 		}	
-//		$card .= "</div>";
+		$card .= "</div>";
 	}	
 	$appType = $Plugin ? tr("Plugin") : tr("Docker");
 	$appType = $Language ? tr("Language") : $appType;

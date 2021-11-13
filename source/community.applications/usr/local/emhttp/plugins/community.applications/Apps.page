@@ -2089,8 +2089,8 @@ function showSidebarApp(apppath,appname) {
 				mainClass: 'mfp-fade',
 				gallery: true,
 				zoom: {
-					enabled: true, // By default it's false, so don't forget to enable it
-					duration: 500, // duration of the effect, in milliseconds
+					enabled: true, 
+					duration: 500, 
 					easing: 'ease-in-out'
 				},
 				callbacks: {
@@ -2164,20 +2164,22 @@ function showRepoPopup(repository) {
 		}
 		$('.screenshot').magnificPopup({
 			type:'image',
-			closeMarkup: "<button type='button' class='mfp-close narrow'>"+tr("CLOSE")+"</button>",
+			closeMarkup: "<span class='mfp-close narrow'>"+tr("CLOSE")+"</span>",
 			closeOnContentClick: true,
 			removalDelay: 300,
 			mainClass: 'mfp-fade',			
 			zoom: {
-				enabled: true, // By default it's false, so don't forget to enable it
-				duration: 500, // duration of the effect, in milliseconds
+				enabled: true, 
+				duration: 500, 
 				easing: 'ease-in-out'
 			},			
 			callbacks: {
 				open: function() {
+					$('body').addClass("dimScreenShot");
 					closeSidebar();
 				},
 				close: function() {
+					$('body').removeClass("dimScreenShot");
 					showRepoPopup(data.repository);
 				}
 			}

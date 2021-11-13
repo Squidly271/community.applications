@@ -387,8 +387,7 @@ a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?
 .screen:hover{opacity:50%}
 .vid{display:inline-block;font-size:8rem;position:relative;top:-0.5rem;color:<?=$sidebarText?>;opacity:70%;padding-right:10px;}
 .vid:hover{color:<?=$unRaid66color;?>}
-/* .screenshotText{font-size:2.5rem;}
- */.searchArea {z-index:2;width:auto;position:static;}
+.searchArea {z-index:2;width:auto;position:static;}
 .searchSubmit{font-family:'FontAwesome';width:2rem;min-width:2rem;height:3.4rem;font-size:1.1rem;position:relative;padding-top:1.1rem;padding-bottom:1rem;padding-right:1rem;background:<?=$templateHoverBackground?>;border:none;cursor:pointer;background:<?=$templateHoverBackground?>;}
 #searchBox{margin-left:0rem;margin-right:0;margin-bottom:1rem;top:-.6rem;border:none;padding:0.6rem;background:<?=$templateHoverBackground?>;padding-right:0.5rem;}
 #searchButton:hover{color:<?=$unRaid66color?>;}
@@ -432,7 +431,7 @@ ul.subCategory {list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer
 table tbody td {line-height:1.8rem;}
 table {background-color:transparent;}
 #templates_content {overflow-x:hidden;margin-bottom:3rem;}
-.templateErrors{font-size:2.5rem;}
+.templateErrors{font-size:2.5rem;margin-top:2rem;}
 .templateErrorsList{margin-left:3rem;}
 .templateSearch{cursor:pointer;font-size:1.5rem;}
 .templateSearch:hover{color:<?=$unRaid66color?>;}
