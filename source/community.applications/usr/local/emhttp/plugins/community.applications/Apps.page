@@ -195,7 +195,7 @@ $(function(){
 		});
 		return;
 	<?endif;?>
-	
+
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
 			name:"Community Applications",
@@ -303,7 +303,7 @@ $(function(){
 	$('body').on("click",".templateSearch",function() {
 		doSearch(false);
 	});
-	
+
 	$('body').on("click",".xmlInstall",function() {
 		var type = $(this).data("type");
 		var xml = $(this).data("xml");
@@ -313,7 +313,7 @@ $(function(){
 			if ( result.status == "ok" ) {
 				if (type == "second")
 					type = "default"
-				
+
 				openNewWindow("/Apps/AddContainer?xmlTemplate="+type+":"+xml);
 			}
 		});
@@ -371,7 +371,7 @@ $(function(){
 		var url = $(this).data("dockerhub");
 		openNewWindow(url,'_blank');
 	});
-	
+
 	$('.menuItems').on("click",'.categoryMenu',function() {
 		var menu = this;
 		if ( $(menu).hasClass("caMenuDisabled") )
@@ -688,7 +688,7 @@ function updateContent(button) {
 function stripTags(string) {
 	if ( ! string )
 		string = "";
-	
+
 	return string.replace(/(<([^>]+)>)/ig,"");
 }
 
@@ -938,7 +938,7 @@ function closeSidebar(cookie=false,visible=false) {
 	}
 	context.destroy("#supportPopup");
 	context.destroy("#actionsPopup");
-	
+
 	$(".sidenav").removeClass("sidenavShow").addClass("sidenavHide");
 	$("#sidenavContent").html("");
 	$(".back_to_top").removeClass("back_to_top_hide");
@@ -961,7 +961,7 @@ function OpenSidebarAndRefreshDisplay() {
 		} else {
 			var apppath = $.cookie("sidebarAppPath");
 			var appname = $.cookie("sidebarAppName");
-			
+
 			appname = stripTags(appname);
 
 			refreshDisplay();
@@ -1071,7 +1071,7 @@ function postUninstallPlugin() {
 		var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
 		$(menuItem).addClass("selectedMenu");
 		$(menuItem).next().show("slow");
-	}	
+	}
 	previousApps(true,false,data.previousAppsSection);
 	enableSearch();
 }
@@ -1442,7 +1442,7 @@ function updateDisplay(data) {
 			var newSize = size - 1;
 			if (newSize == 0)
 				return false;
-			
+
 			$(this).css("font-size",newSize+"px");
 		}
 	});
@@ -1813,7 +1813,7 @@ function postLanguageRefresh() {
 function postLanguageRemove() {
 	var cat = $(".selectedMenu").data("category");
 	if ( cat == "installed_apps" || cat == "inst_plugins" || cat == "inst_docker" ) {
-		
+
 		postUninstallPlugin();
 		return;
 	}
@@ -2088,8 +2088,8 @@ function showSidebarApp(apppath,appname) {
 				mainClass: 'mfp-fade',
 				gallery: true,
 				zoom: {
-					enabled: true, 
-					duration: 500, 
+					enabled: true,
+					duration: 500,
 					easing: 'ease-in-out'
 				},
 				callbacks: {
@@ -2167,12 +2167,12 @@ function showRepoPopup(repository) {
 			closeMarkup: "<span class='mfp-close narrow'>"+tr("CLOSE")+"</span>",
 			closeOnContentClick: true,
 			removalDelay: 300,
-			mainClass: 'mfp-fade',			
+			mainClass: 'mfp-fade',
 			zoom: {
-				enabled: true, 
-				duration: 500, 
+				enabled: true,
+				duration: 500,
 				easing: 'ease-in-out'
-			},			
+			},
 			callbacks: {
 				open: function() {
 					$('body').addClass("dimScreenShot");
@@ -2216,7 +2216,7 @@ function initDockerSearch() {
 function dockerSearch(pageNumber) {
 	scrollToTop();
 	$(".selectedMenu").removeClass("selectedMenu");
-	$(".nonDockerSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");	
+	$(".nonDockerSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
 	var filter = $('#searchBox').val();
 	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
 	data.docker = "searching docker";

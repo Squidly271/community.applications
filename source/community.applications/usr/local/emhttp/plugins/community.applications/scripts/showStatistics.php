@@ -87,7 +87,7 @@ switch ($_GET['arg1']) {
 					echo "</code>";
 				}
 			}
-		}	
+		}
 
 		$dupeList = readJsonFile($caPaths['pluginDupes']);
 		if ($dupeList) {
@@ -148,4 +148,4 @@ switch ($_GET['arg1']) {
 ?>
 <script>
 	document.getElementById("spinner").style.display = "none";
-</script>	
+</script>

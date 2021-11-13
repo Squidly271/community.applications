@@ -95,7 +95,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$ct .= displayCard($template);
 			$count++;
 			if ( $count == $caSettings['maxPerPage'] ) break;
-		} else {		
+		} else {
 			$actionsContext = [];
 			$selected = false;
 			if ( ! $template['Language'] ) {
@@ -111,7 +111,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									break;
 								}
 							}
-			
+
 							if ( $selected ) {
 								$ind = searchArray($info,"Name",$name);
 								if ( $info[$ind]['url'] && $info[$ind]['running'] ) {
@@ -156,7 +156,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							}
 						}
 					} else {
-						$pluginName = basename($template['PluginURL']);						
+						$pluginName = basename($template['PluginURL']);
 						if ( file_exists("/var/log/plugins/$pluginName") ) {
 							if ( plugin("version","/var/log/plugins/$pluginName") != $template['pluginVersion'] ) {
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
@@ -170,7 +170,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							if ( $pluginName != "community.applications.plg" ) {
 								if ( ! empty($actionsContext) )
 									$actionsContext[] = array("divider"=>true);
-								
+
 								$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallApp('/var/log/plugins/$pluginName','".str_replace(" ","&#32;",$template['Name'])."');");
 							}
 							if ( $template['DonateLink'] ) {
@@ -222,7 +222,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					}
 				}
 			}
-	
+
 			$template['actionsContext'] = $actionsContext;
 
 			$template['ca_fav'] = $caSettings['favourite'] && ($caSettings['favourite'] == $template['RepoName']);
@@ -234,7 +234,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$template['Discord'] = $repositories[$template['RepoName']]['Discord'];
 
 			$template['checked'] = $checkedOffApps[$previousAppName] ? "checked" : "";
-			
+
 			if ( ! $template['Plugin'] ) {
 				$tmpRepo = $template['Repository'];
 				if ( ! strpos($tmpRepo,"/") ) {
@@ -243,7 +243,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				foreach ($info as $testDocker) {
 					if ( ($tmpRepo == $testDocker['Image'] || "$tmpRepo:latest" == $testDocker['Image']) && ($template['Name'] == $testDocker['Name']) ) {
 						$template['Installed'] = true;
-					
+
 						break;
 					}
 				}
@@ -252,14 +252,14 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$template['Installed'] = checkInstalledPlugin($template) ;
 
 			}
-			
+
 			if ( $template['Language'] ) {
 				$template['Installed'] = is_dir("{$caPaths['languageInstalled']}{$template['LanguagePack']}") && ! $template['Uninstall'];
 			}
-			
+
 			if ( startsWith($template['Repository'],"library/") || startsWith($template['Repository'],"registry.hub.docker.com/library/") || strpos($template['Repository'],"/") === false)
 				$template['Official'] = true;
-			
+
 	# Entries created.  Now display it
 			$ct .= displayCard($template);
 			$count++;
@@ -281,7 +281,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 	$pageFunction = $dockerSearch ? "dockerSearch": "changePage";
 	if ( $dockerSearch )
 		$caSettings['maxPerPage'] = 25;
-	
+
 	if ( $caSettings['maxPerPage'] < 0 ) return;
 	$swipeScript = "<script>";
 
@@ -741,7 +741,7 @@ function getRepoDescriptionSkin($repository) {
 		$t .= "<div>";
 		if ( $repo['Photo'] ) {
 			$photos = is_array($repo['Photo']) ? $repo['Photo'] : [$repo['Photo']];
-		
+
 			foreach ($photos as $shot) {
 				$t .= "<a class='screenshot' href='".trim($shot)."'><img class='screen' src='".trim($shot)."' onerror='this.style.display=&quot;none&quot;'></img></a>";
 			}
@@ -751,15 +751,15 @@ function getRepoDescriptionSkin($repository) {
 			foreach ($videos as $vid) {
 				$t .= "<a class='screenshot mfp-iframe' href='".trim($vid)."'><div class='vid ca_fa-film'></div></a>";
 			}
-		}			
-		
+		}
+
 		$t .= "</div>";
 	}
 	$t .= "
-		</div>	
+		</div>
 		<div class='repoLinks'>
 	";
-	
+
 	$t .= "<div class='repoLinkArea'>";
 
 	if ( $repo['WebPage'] )
@@ -871,10 +871,10 @@ function displayCard($template) {
 	}
 
 	extract($template);
-	
+
 	if ( $caSettings['descriptions'] == "yes" )
 		$class="spotlightHome";
-	
+
 	$appType = $Plugin ? "appPlugin" : "appDocker";
 	$appType = $Language ? "appLanguage": $appType;
 	$appType = (strpos($Category,"Drivers") !== false) && $Plugin ? "appDriver" : $appType;
@@ -901,9 +901,9 @@ function displayCard($template) {
 
 	if ( ! $DockerHub )
 		$author = $RepoShort ?: $RepoName;
-	else 
+	else
 		$author = $Author;
-	
+
 	if ( $Plugin )
 		$author = $Author;
 	if ( $Language )
@@ -977,7 +977,7 @@ function displayCard($template) {
 				$card .= "<div class='actionsButton actionsButtonContext' id='actions$ID' data-context='".json_encode($actionsContext,JSON_HEX_QUOT | JSON_HEX_APOS)."'>".tr("Actions")."</div>";
 		}
 	}
-	
+
 	$card .= "<span class='$appType' title='".htmlentities($typeTitle)."'></span>";
 	if ( $ca_fav ) {
 		$favText = $RepositoryTemplate ? tr("This is your favourite repository") : tr("This application is from your favourite repository");
@@ -986,9 +986,9 @@ function displayCard($template) {
 		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."' style='display:none;' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
 	if ( ! $Pinned )
 		$pinStyle = "display:none;";
-	
+
 	$card .= "<span class='pinnedCard' title='".htmlentities(tr("This application is pinned for later viewing"))."' data-pindata='$Repository$SortName' style='$pinStyle'></span>";
-	
+
 
 	if ($Removable && !$DockerInfo  && ! $Installed) {
 		$previousAppName = $Plugin ? $PluginURL : $Name;
@@ -1000,7 +1000,7 @@ function displayCard($template) {
 	$card .= "<div class='ca_iconArea'>";
 	if ( $DockerHub )
 		$imageNoClick = "noClick";
-	
+
 	if ( ! $IconFA )
 		$card .= "
 			<img class='ca_displayIcon $imageNoClick' src='$Icon'></img>
@@ -1032,7 +1032,7 @@ function displayCard($template) {
 			$warning = tr("This application is not compatible with your version of Unraid");
 		if ( $Blacklist )
 			$warning = tr("This application template has been blacklisted");
-		
+
 		$card .= "&nbsp;<span class='$commentIcon cardWarning' title='".htmlentities($warning,ENT_QUOTES)."'></span>";
 	}
 	$card .= "
@@ -1099,7 +1099,7 @@ function displayCard($template) {
 				<div class='betaPopupText ca_center' title='This container is digitally signed'>".tr("Digitally Signed")."</div>
 			</div>
 		";
-	}		
+	}
 	return str_replace(["\t","\n"],"",$card);
 }
 
@@ -1201,7 +1201,7 @@ function displayPopup($template) {
 			$pictures = $Screenshot ? $Screenshot : $Photo;
 			if ( ! is_array($pictures) )
 				$pictures = [$pictures];
-	
+
 			foreach ($pictures as $shot) {
 				$card .= "<a class='screenshot mfp-image' href='".trim($shot)."'><img class='screen' src='".trim($shot)."'></img></a>";
 			}
@@ -1209,16 +1209,16 @@ function displayPopup($template) {
 		if ( $Video ) {
 			if ( ! is_array($Video) )
 				$Video = [$Video];
-		
+
 			foreach ( $Video as $vid ) {
 				$card .= "<a class='screenshot mfp-iframe' href='".trim($vid)."'><div class='vid ca_fa-film'></div></a>";
 			}
-		}	
+		}
 		$card .= "</div>";
-	}	
+	}
 	$appType = $Plugin ? tr("Plugin") : tr("Docker");
 	$appType = $Language ? tr("Language") : $appType;
-	
+
 	$card .= "
 		<div>
 		<div class='popupInfoSection'>
@@ -1229,7 +1229,7 @@ function displayPopup($template) {
 				<tr><td class='popupTableLeft'>".tr("Categories")."</td><td class='popupTableRight'>$Category</td></tr>
 				<tr><td class='popupTableLeft'>".tr("Added")."</td><td class='popupTableRight'>$DateAdded</td></tr>
 	";
-	$downloadText = getDownloads($downloads);	
+	$downloadText = getDownloads($downloads);
 	if ($downloadText)
 		$card .= "<tr><td class='popupTableLeft'>".tr("Downloads")."</td><td class='popupTableRight'>$downloadText</td></tr>";
 	if (!$Plugin && !$LanguagePack)
@@ -1300,8 +1300,7 @@ function displayPopup($template) {
 			$card .= "<li class='templateErrorsList'>$error</li>";
 		}
 	}
-	
-	
+
 	if ( $Beta ) {
 		$card .= "
 			<div class='betaPopupBackground'>

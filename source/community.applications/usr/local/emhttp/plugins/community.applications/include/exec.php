@@ -180,7 +180,7 @@ switch ($_POST['action']) {
 		break;
 	case 'search_dockerhub':
 		search_dockerhub();
-		break;		
+		break;
 	###############################################
 	# Return an error if the action doesn't exist #
 	###############################################
@@ -197,7 +197,7 @@ function DownloadApplicationFeed() {
 	exec("rm -rf '{$caPaths['tempFiles']}'");
 	@mkdir($caPaths['templates-community'],0777,true);
 	writeJsonFile($caPaths['info'],$info);
-	
+
 	$currentFeed = "Primary Server";
 	$downloadURL = randomFile();
 	$ApplicationFeed = download_json($caPaths['application-feed'],$downloadURL);
@@ -442,7 +442,7 @@ function appOfDay($file) {
 				}
 			}
 			writeJsonFile($caPaths['appOfTheDay'],$appOfDay);
-			
+
 			break;
 		case "onlynew":
 			$sortOrder['sortBy'] = "FirstSeen";
@@ -490,7 +490,7 @@ function appOfDay($file) {
 					if ( checkRandomApp($template) ) {
 						if ( in_array($template['Repository'],$repos) )
 							continue;
-						$repos[] = $template['Repository'];						
+						$repos[] = $template['Repository'];
 						$appOfDay[] = $template['ID'];
 						if ( count($appOfDay) == $max ) break;
 					}
@@ -591,7 +591,7 @@ function displayRepositories() {
 ######################################################################################
 function get_content() {
 	global $caPaths, $caSettings;
-	
+
 	$filter      = getPost("filter",false);
 	$category    = getPost("category",false);
 	$newApp      = filter_var(getPost("newApp",false),FILTER_VALIDATE_BOOLEAN);
@@ -599,7 +599,7 @@ function get_content() {
 	$caSettings['startup'] = getPost("startupDisplay",false);
 	@unlink($caPaths['repositoriesDisplayed']);
 	@unlink($caPaths['dockerSearchActive']);
-	
+
 	switch ($category) {
 		case "PRIVATE":
 			$category = false;
@@ -711,7 +711,7 @@ function get_content() {
 					$homeClass = $type['type'] == "spotlight" ? "caHomeSpotlight" : "";
 					if ( $caSettings['descriptions'] == "yes" )
 						$homeClass = "caHomeSpotlight";
-					
+
 					$o['display'] .= "<div class='ca_homeTemplates $homeClass'>".my_display_apps($display,"1")."</div>";
 					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();$('.ca_holder').addClass('mobileHolderFix');";
 
@@ -973,7 +973,7 @@ function previous_apps() {
 	$installed = getPost("installed","");
 	$filter = getPost("filter","");
 	$info = getAllInfo();
-	
+
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);
 	@unlink($caPaths['repositoriesDisplayed']);
@@ -981,7 +981,7 @@ function previous_apps() {
 	@unlink($caPaths['dockerSearchActive']);
 
 	$file = readJsonFile($caPaths['community-templates-info']);
-	
+
 # $info contains all installed containers
 # now correlate that to a template;
 # this section handles containers that have not been renamed from the appfeed
@@ -1251,7 +1251,7 @@ function areAppsPinned() {
 ####################################
 function pinnedApps() {
 	global $caPaths, $caSettings;
-	
+
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 	$file = readJsonFile($caPaths['community-templates-info']);
 	@unlink($caPaths['community-templates-allSearchResults']);
@@ -1259,7 +1259,7 @@ function pinnedApps() {
 	@unlink($caPaths['repositoriesDisplayed']);
 	@unlink($caPaths['startupDisplayed']);
 	@unlink($caPaths['dockerSearchActive']);
-	
+
 	foreach ($pinnedApps as $pinned) {
 		$startIndex = 0;
 		$search = explode("&",$pinned);
@@ -1307,11 +1307,11 @@ function statistics() {
 	@unlink($caPaths['community-templates-displayed']);
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);
-	if ( ! is_file($caPaths['statistics']) ) 
+	if ( ! is_file($caPaths['statistics']) )
 		$statistics = download_json($caPaths['statisticsURL'],$caPaths['statistics']);
 	else
 		$statistics = readJsonFile($caPaths['statistics']);
-	
+
 	download_json($caPaths['moderationURL'],$caPaths['moderation']);
 	$statistics['totalModeration'] = count(readJsonFile($caPaths['moderation']));
 	$repositories = readJsonFile($caPaths['repositoryList']);
@@ -1333,7 +1333,7 @@ function statistics() {
 
 		if ( $template['Official'] && ! $template['Blacklist'] )
 			$statistics['official']++;
-		
+
 		if ( ! $template['PluginURL'] && ! $template['Repository'] )
 			$statistics['invalidXML']++;
 		else {
@@ -1371,7 +1371,7 @@ function statistics() {
 
 	$statistics['invalidXML'] = @count($invalidXML) ?: tr("unknown");
 	$statistics['repositories'] = @count($repositories) ?: tr("unknown");
-	
+
 	$o =  "
 		<div style='height:auto;overflow:scroll; overflow-x:hidden; overflow-y:hidden;margin:auto;width:700px;'>
 			<table style='margin-top:1rem;'>
@@ -1982,7 +1982,7 @@ function search_dockerhub() {
 		@unlink($caPaths['dockerSearchActive']);
 		return;
 	}
-	
+
 	touch($caPaths['dockerSearchActive']);
 	$i = 0;
 	foreach ($pageresults['results'] as $result) {

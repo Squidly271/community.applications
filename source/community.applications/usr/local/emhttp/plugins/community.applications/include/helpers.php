@@ -631,7 +631,7 @@ function write_ini_file($file,$array) {
 ###################################################
 function getAllInfo($force=false) {
 	global $caSettings, $DockerTemplates, $DockerClient, $caPaths;
-	
+
 	$containers = [];
 	if ( $force ) {
 		if ( $caSettings['dockerRunning'] ) {

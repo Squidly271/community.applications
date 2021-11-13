@@ -145,7 +145,6 @@ a.appIconsPopUp { text-decoration:none;color:inherit;}
 .appRepository{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}
 .appRepository::before{font-family:'fontAwesome';content:'\f2be';}
 .back_to_top_hide{z-index:0;}
-
 .betaCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .betaPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #FF8C2F;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
 .betaPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.25rem;right:-1rem;width:100%;overflow:hidden;height:2.5rem;}
@@ -172,7 +171,6 @@ a.ca_author {text-decoration:none;color:inherit;}
 .ca_categories {font-size:1rem;font-style:italic;}
 a.ca_categories {text-decoration:none;color:inherit;}
 .ca_center {margin:auto;text-align:center;}
-
 .ca_credit { padding:.5rem 0 1rem 0; font-size:1.5rem;line-height:2rem; font-style:italic;}
 .ca_creditheader { font-size:2rem; padding-top:1rem;}
 .ca_discord::before{content:"\e988";font-family:Unraid;}
@@ -251,7 +249,6 @@ a.ca_repoPopup:hover {color:<?=$unRaid66color?>;}
 .cardDesc{display:inline-block;max-height:7rem;overflow:hidden;}
 .card_readmore{color:<?=$unRaid66color?>;}
 .cardWarning{font-size:1.5rem;color:#bdbd14;}
-
 #Category{font-size:2rem;margin-bottom:0.5rem;}
 .changelogTitle{font-size:2rem;line-height:2rem;margin-top:2rem;font-weight:normal;}
 .changelog{font-size:1.2rem;line-height:1.4rem;margin-top:1.5rem;}
@@ -522,22 +519,22 @@ img.mfp-img {width: auto;max-width: 100%;height: auto;display: block;line-height
 .mfp-gallery .mfp-image-holder .mfp-figure {cursor: pointer; }
 @media screen and (max-width: 800px) and (orientation: landscape), screen and (max-height: 300px) {
  /**
-  * Remove all paddings around the image on small screen
+	* Remove all paddings around the image on small screen
  */
 	.mfp-img-mobile .mfp-image-holder {padding-left: 0;padding-right: 0; }
 	.mfp-img-mobile img.mfp-img {padding: 0; }
-  .mfp-img-mobile .mfp-figure:after {top: 0;bottom: 0; }
-  .mfp-img-mobile .mfp-figure small {display: inline;margin-left: 5px; }
-  .mfp-img-mobile .mfp-bottom-bar {background: rgba(0, 0, 0, 0.6);bottom: 0;margin: 0;top: auto;padding: 3px 5px;position: fixed;box-sizing: border-box; }
-    .mfp-img-mobile .mfp-bottom-bar:empty {padding: 0; }
-  .mfp-img-mobile .mfp-counter {right: 5px;top: 3px; }
-  .mfp-img-mobile .mfp-close {top: 0;right: 0;width: 35px;height: 35px;line-height: 35px;background: rgba(0, 0, 0, 0.6);position: fixed;text-align: center;padding: 0; }
+	.mfp-img-mobile .mfp-figure:after {top: 0;bottom: 0; }
+	.mfp-img-mobile .mfp-figure small {display: inline;margin-left: 5px; }
+	.mfp-img-mobile .mfp-bottom-bar {background: rgba(0, 0, 0, 0.6);bottom: 0;margin: 0;top: auto;padding: 3px 5px;position: fixed;box-sizing: border-box; }
+		.mfp-img-mobile .mfp-bottom-bar:empty {padding: 0; }
+	.mfp-img-mobile .mfp-counter {right: 5px;top: 3px; }
+	.mfp-img-mobile .mfp-close {top: 0;right: 0;width: 35px;height: 35px;line-height: 35px;background: rgba(0, 0, 0, 0.6);position: fixed;text-align: center;padding: 0; }
 }
 @media all and (max-width: 900px) {
-  .mfp-arrow {-webkit-transform: scale(0.75);transform: scale(0.75); }
-  .mfp-arrow-left {-webkit-transform-origin: 0;transform-origin: 0; }
-  .mfp-arrow-right {-webkit-transform-origin: 100%;transform-origin: 100%; }
-  .mfp-container {padding-left: 6px;padding-right: 6px; }
+	.mfp-arrow {-webkit-transform: scale(0.75);transform: scale(0.75); }
+	.mfp-arrow-left {-webkit-transform-origin: 0;transform-origin: 0; }
+	.mfp-arrow-right {-webkit-transform-origin: 100%;transform-origin: 100%; }
+	.mfp-container {padding-left: 6px;padding-right: 6px; }
 }
 /* overlay at start */
 .mfp-fade.mfp-bg {opacity: 0;-webkit-transition: all 0.5s ease-out;-moz-transition: all 0.5s ease-out;transition: all 0.5s ease-out;}
