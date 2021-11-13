@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.11.05">
-<!ENTITY md5       "b09763f39bcf3bf27abb85efd0be27d5">
+<!ENTITY version   "2021.11.13">
+<!ENTITY md5       "52355131bd68892a2c783c4d884cd721">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,18 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.11.13
+- Added: Support for screenshots, videos and more
+- Fixed: Certain plugins couldn't be uninstalled from the sidebar
+- Fixed: Plugins with only a single action after installing (Uninstall) would show the action in red
+- Added: Show template errors on the sidebar
+- Fixed: Main body would allow scrolling when the sidebar was open
+- Fixed: Possible error message if cookies are not enabled
+- Fixed: Author listed on sidebar would be wrong if the container was hosted on lscr.io
+- Fixed: Certain search terms (eg: Unraid) would return strange results
+- Refined: More intelligent duplicated template detection on statistics screen
+- CSS Tweaks
+
 ###2021.11.05
 - Fixed: The link in moderator comments (on info screen) would go to the wrong URL on occasion
 
