@@ -29,7 +29,7 @@ require_once "$docroot/webGui/include/Markdown.php";
 $caSettings = parse_plugin_cfg("community.applications");
 
 $caSettings['dockerSearch']  = "yes";
-$caSettings['maxPerPage']    = 18;
+$caSettings['maxPerPage']    = 24;
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
 $caSettings['favourite']     = str_replace("*","'",$caSettings['favourite']);
 
