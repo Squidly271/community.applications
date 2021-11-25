@@ -251,6 +251,8 @@ function DownloadApplicationFeed() {
 		$o['SortName']      = str_replace("-"," ",$o['Name']);
 		$o['SortName']      = preg_replace('/\s+/',' ',$o['SortName']);
 		$o['random']        = rand();
+		
+		if ( $o['CAComment'] ) $o['CAComment'] = tr($o['CAComment']);
 
 		$des = $o['OriginalOverview'] ?: $o['Overview'];
 		$des = $o['Language'] ? $o['Description'] : $des;

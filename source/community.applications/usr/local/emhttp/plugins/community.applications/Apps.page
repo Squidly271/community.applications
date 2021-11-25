@@ -1867,8 +1867,27 @@ function setFavourite(button) {
 	});
 }
 
-function popupInstallXML(xml,type) {
+function popupInstallXML(xml,type,comment="") {
 	saveState();
+	if ( $.trim(comment) ) {
+		swal({
+			title: "<?tr("Attention")?>",
+			text: comment,
+			allowOutsideClick: false,
+			showConfirmButton: true,
+			showCancelButton: false,
+			confirmButtonText: "<?tr("OK")?>",
+			animation: false,
+			type: "warning",
+			html: true
+		}, function (isConfirm) {
+			installXML(xml,type);
+		});
+	} else {
+		installXML(xml,type);
+	}
+}
+function installXML(xml,type) {
 	post({action:'createXML',xml:xml,type:type},function(result){
 		if ( result.status == "ok" ) {
 			if (type == "second") {

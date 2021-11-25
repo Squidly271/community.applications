@@ -148,7 +148,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 												$actionsContext[] = array("divider"=>true);
 											}
 										}
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"popupInstallXML('".addslashes($template['Path'])."','default');");
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32",htmlspecialchars($template['CAComment']))."');");
 									} else {
 										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"displayTags('{$template['ID']}');");
 									}
