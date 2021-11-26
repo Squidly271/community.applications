@@ -372,7 +372,7 @@ a.popup-donate {text-decoration:none;font-style:italic;color:black;font-size:1.5
 a.popup-donate:hover {color:<?=$donateText?>;background-color:<?=$unRaid66color?>}
 .readmore-js-collapsed{-webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.1)));}
 .repoDonateText{margin-bottom:0.5rem;}
-.repoLinks{margin-top:3rem;}
+.repoLinks{margin-top:3rem;margin-left:1.5rem;}
 .repoPopup {margin-right:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .repoPopup:hover {text-decoration:none;background-color:<?=$unRaid66color?>;}
 .repoStats{font-size:2rem;margin-top:2rem;}

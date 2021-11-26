@@ -529,7 +529,6 @@ function checkRandomApp($test) {
 	if ( ! $test['Compatible'] && $caSettings['hideIncompatible'] == "true" ) return false;
 	if ( $test['Blacklist'] )                         return false;
 	if ( $test['Deprecated'] && ( $caSettings['hideDeprecated'] == "true" ) ) return false;
-//	if ( $random ) return ! appInstalled($test,$info);
 
 	return true;
 }

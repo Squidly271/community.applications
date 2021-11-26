@@ -371,8 +371,17 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$index = searchArray($displayed['community'],"InstallPath",$appNumber);
 	if ( $index === false ) {
-		$index = searchArray($displayed['community'],"Path",$appNumber);
-		$ind = $index;
+		$ind = searchArray($displayed['community'],"Path",$appNumber,true);
+		foreach ($ind as $i) {
+			$template = $displayed[$i];
+			if ( $template['Name'] == $displayed['community'][$i]['Name'] ) {
+				$index = $i;
+				break;
+			}
+		}
+	}
+		
+/* 		$ind = $index;
 		while ( true ) {
 			$template = $displayed[$ind];
 			if ( $template['Name'] == $displayed['community'][$ind]['Name'] ) {
@@ -384,8 +393,8 @@ function getPopupDescriptionSkin($appNumber) {
 				unset($template);
 				break;
 			}
-		}
-	}
+		} 
+	}*/
 
 	if ( $index !== false ) {
 		$template = $displayed['community'][$index];
