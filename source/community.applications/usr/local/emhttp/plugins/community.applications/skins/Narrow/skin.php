@@ -105,7 +105,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							foreach ($info as $testDocker) {
 								$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
 								$tmpRepo = strpos($tmpRepo,"/") ? $tmpRepo : "library/$tmpRepo";
-								if ( ($tmpRepo == $testDocker['Image'] || "{$tmpRepo}:latest" == $testDocker['Image']) && ($template['Name'] == $testDocker['Name']) ) {
+								if ( ( ($tmpRepo == $testDocker['Image'] && $template['Name'] == $testDocker['Name']) || "{$tmpRepo}:latest" == $testDocker['Image']) && ($template['Name'] == $testDocker['Name']) ) {
 									$selected = true;
 									$name = $testDocker['Name'];
 									break;
@@ -977,7 +977,7 @@ function displayCard($template) {
 		$card .= "<div class='supportButton'><span class='ca_href' data-href='{$supportContext[0]['link']}' data-target='_blank'>{$supportContext[0]['text']}</span></div>";
 	elseif (!empty($supportContext))
 		$card .= "
-			<div class='supportButton supportButtonCardContext' id='support$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</div>
+			<div class='supportButton supportButtonCardContext' id='support".preg_replace("/[^a-zA-Z0-9]+/", "",$Name)."$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</div>
 		";
 
 	if ( $class == "spotlightHome" ) {
@@ -985,7 +985,7 @@ function displayCard($template) {
 			if ( count($actionsContext) == 1)
 				$card .= "<div class='actionsButton' onclick={$actionsContext[0]['action']}>{$actionsContext[0]['text']}</div>";
 			else
-				$card .= "<div class='actionsButton actionsButtonContext' id='actions$ID' data-context='".json_encode($actionsContext,JSON_HEX_QUOT | JSON_HEX_APOS)."'>".tr("Actions")."</div>";
+				$card .= "<div class='actionsButton actionsButtonContext' id='actions".preg_replace("/[^a-zA-Z0-9]+/", "",$Name)."$ID' data-context='".json_encode($actionsContext,JSON_HEX_QUOT | JSON_HEX_APOS)."'>".tr("Actions")."</div>";
 		}
 	}
 
