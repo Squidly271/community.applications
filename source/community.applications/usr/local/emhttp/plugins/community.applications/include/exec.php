@@ -1744,6 +1744,52 @@ function createXML() {
 						$valueReferenced = array_values(array_filter(explode("/",$config['value'])));
 						if ( $valueReferenced[0] == "mnt" && $valueReferenced[1] && ! in_array($valueReferenced[1],$disksPresent) )
 							$config['value'] = str_replace("/mnt/{$valueReferenced[1]}/","/mnt/{$disksPresent[0]}/",$config['value']);
+						
+						// Check for pre-existing folders only differing by "case" and adjust accordingly
+					
+						// Default path
+						if ( ! $config['value'] ) { // Don't override default if value exists
+							$configPath = explode("/",$config['@attributes']['Default']);
+							$testPath = "/";
+							foreach ($configPath as &$entry) {
+								$directories = @scandir($testPath);
+								if ( ! $directories ) {
+									break;
+								}
+								foreach ($directories as $testDir) {
+									if ( strtolower($testDir) == strtolower($entry) ) {
+										if ( $testDir == $entry )
+											break;
+										
+										$entry = $testDir;
+									}
+								}
+								$testPath .= $entry."/";
+							}
+							$config['@attributes']['Default'] = implode("/",$configPath);
+						}
+						
+						// entered path
+						if ( $config['value'] ) {
+							$configPath = explode("/",$config['value']);
+							$testPath = "/";
+							foreach ($configPath as &$entry) {
+								$directories = @scandir($testPath);
+								if ( ! $directories ) {
+									break;
+								}
+								foreach ($directories as $testDir) {
+									if ( strtolower($testDir) == strtolower($entry) ) {
+										if ( $testDir == $entry )
+											break;
+										
+										$entry = $testDir;
+									}
+								}
+								$testPath .= $entry."/";
+							}
+							$config['value'] = implode("/",$configPath);
+						}
 					}
 				}
 			}

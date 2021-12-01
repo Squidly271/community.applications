@@ -371,17 +371,7 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$index = searchArray($displayed['community'],"InstallPath",$appNumber);
 	if ( $index === false ) {
-		$ind = searchArray($displayed['community'],"Path",$appNumber,true);
-		foreach ($ind as $i) {
-			$template = $displayed[$i];
-			if ( $template['Name'] == $displayed['community'][$i]['Name'] ) {
-				$index = $i;
-				break;
-			}
-		}
-	}
-		
-/* 		$ind = $index;
+ 		$ind = $index;
 		while ( true ) {
 			$template = $displayed[$ind];
 			if ( $template['Name'] == $displayed['community'][$ind]['Name'] ) {
@@ -394,7 +384,7 @@ function getPopupDescriptionSkin($appNumber) {
 				break;
 			}
 		} 
-	}*/
+	}
 
 	if ( $index !== false ) {
 		$template = $displayed['community'][$index];
@@ -1057,6 +1047,7 @@ function displayCard($template) {
 		";
 	if ( $class=='spotlightHome' ) {
 		$Overview = $Overview ?: $Description;
+		
 		$ovr = html_entity_decode($Overview);
 		$ovr = trim($ovr);
 		$ovr = str_replace(["[","]"],["<",">"],$ovr);

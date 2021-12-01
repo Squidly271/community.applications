@@ -171,14 +171,7 @@ function favouriteSort($a,$b) {
 # returns the index number of the array       #
 # return value === false if not found         #
 ###############################################
-function searchArray($array,$key,$value,$multi=false) {
-	if ( $multi )
-		return array_keys(array_column($array,$key),$value);
-	else
-		return array_search($value,array_column($array,$key));
-
-
-/* 	$result = false;
+function searchArray($array,$key,$value,$startingIndex=0) {
 	if (count($array) ) {
 		for ($i = $startingIndex; $i <= max(array_keys($array)); $i++) {
 			if ( $array[$i][$key] == $value ) {
@@ -187,7 +180,7 @@ function searchArray($array,$key,$value,$multi=false) {
 			}
 		}
 	}
-	return $result; */
+	return $result;
 }
 ########################################################
 # Fix common problems (maintainer errors) in templates #

@@ -358,7 +358,6 @@ $(function(){
 			$(".dropdown-menu").hide();
 			return;
 		}
-		$("body").addClass("body_sidebarScroll");
 
 		var apppath = $(this).data("apppath");
 		var appname = $(this).data("appname");
@@ -2092,6 +2091,8 @@ function showSidebarApp(apppath,appname) {
 	$.cookie("sidebarAppName",appname);
 	data.sidebarapppath = apppath;
 	data.sidebarappname = appname;
+	$("body").addClass("body_sidebarScroll");
+
 	$("#sidenavContent").html("");
 	$(".sidebar").fadeIn();
 	$(".back_to_top").addClass("back_to_top_hide");
