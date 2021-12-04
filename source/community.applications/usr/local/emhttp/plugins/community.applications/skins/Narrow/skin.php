@@ -144,7 +144,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 										if ( is_file("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml") ) {
 											$test = readXmlFile("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml",true);
 											if ( $template['Repository'] == $test['Repository'] ) {
-												$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"<span class='ca_red'>".tr("Reinstall From Previous Apps")."</span>","action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user');");
+												
+												$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"<span class='ca_red'>".tr("Reinstall From Previous Apps")."</span>","action"=>"popupInstallXML('".addslashes("{$caPaths['dockerManTemplates']}/my-{$template['Name']}").".xml','user');");
 												$actionsContext[] = array("divider"=>true);
 											}
 										}

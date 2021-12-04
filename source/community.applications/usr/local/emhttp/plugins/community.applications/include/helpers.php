@@ -41,11 +41,31 @@ function randomFile() {
 # 7 Functions to avoid typing the same lines over and over again #
 ##################################################################
 function readJsonFile($filename) {
+	global $caSettings, $caPaths;
+	
+	if ( $caSettings['debugging'] == "yes" )
+		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')." Read JSON file $filename\n",FILE_APPEND);
+
 	$json = json_decode(@file_get_contents($filename),true);
+	if ($caSettings['debugging'] == "yes"  && ! $json) {
+		if ( ! is_file($filename) )
+			file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')." $filename not found\n",FILE_APPEND);
+
+		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')." JSON Read Error ($filename)\n",FILE_APPEND);
+	}
 	return is_array($json) ? $json : array();
 }
 function writeJsonFile($filename,$jsonArray) {
-	file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	global $caSettings, $caPaths;
+	
+	if ($caSettings['debugging'] == "yes")
+		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')." Write JSON File $filename\n",FILE_APPEND);
+
+	$result = file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	
+	if ( $caSettings['debugging'] == "true" && ! $result )
+		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  Write error $filename\n",FILE_APPEND);
+		
 }
 function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	global $caSettings, $caPaths;
@@ -172,6 +192,7 @@ function favouriteSort($a,$b) {
 # return value === false if not found         #
 ###############################################
 function searchArray($array,$key,$value,$startingIndex=0) {
+	$result = false;
 	if (count($array) ) {
 		for ($i = $startingIndex; $i <= max(array_keys($array)); $i++) {
 			if ( $array[$i][$key] == $value ) {

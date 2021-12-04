@@ -153,6 +153,7 @@ data.currentpage = 1;
 data.searchFlag = false;
 data.searchActive = false; // Sets whether changepage re-sorts the displayed templates.
 data.previousAppsSection = ""; // The section the user is on within previous apps
+data.searchInProgress = false;
 var dockerNotEnabled;
 var postCount = 0;
 var cookieWarning = false;
@@ -226,7 +227,7 @@ $(function(){
 		closeSidebar();
 	});
 
-	$("#searchBox").keydown(function(e) { // Allow ESC key to exit from tooltipster popups
+	$("#searchBox").keydown(function(e) {
 		if (e.which === 13) {
 			searchBoxAwesomplete.close();
 			checkSortOrder();
@@ -772,6 +773,12 @@ function myCloseAlert() {
 }
 
 function doSearch(button,newSearch) {
+	if ( data.searchInProgress )
+		return;
+	
+	data.searchInProgress = true;
+
+	
 	if ( ! newSearch === false ) {
 		$('#searchBox').val(newSearch);
 	}
@@ -779,6 +786,7 @@ function doSearch(button,newSearch) {
 	filter = $.trim(filter);
 	if ( ! filter ) {
 		$("#searchBox").val(filter);
+		data.searchInProgress = false;
 		return;
 	}
 
@@ -805,6 +813,7 @@ function doSearch(button,newSearch) {
 	} else {
 		updateContent();
 		data.searchFlag = false;
+		data.searchInProgress = false;
 		return;
 	}
 	data.searchActive = true;
@@ -813,6 +822,8 @@ function doSearch(button,newSearch) {
 	} else {
 		$('.dockerSearch').hide();
 	}
+
+	data.searchInProgress = true;
 	post({action:'get_content',filter:filter},function(result) {
 		enableButtons();
 		updateDisplay(result.display);
@@ -826,6 +837,7 @@ function doSearch(button,newSearch) {
 				var menuItem = $.find(".caMenuItem[data-category='"+category+"']");
 				$(menuItem).removeClass("caMenuDisabled").addClass("caMenuEnabled");
 			});
+			data.searchInProgress = false;
 		});
 	});
 }
@@ -1613,9 +1625,8 @@ function post(options,callback) {
 					alert("<?tr("You have been logged out")?>");
 					window.location.reload();
 				}	else {
-
 					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
-					throw new Error("Something went badly wrong!");
+					throw new Error("Something went badly wrong!"+options.action);
 				}
 			}
 			<? if ( $cfg['debugging'] == "yes" ):?>

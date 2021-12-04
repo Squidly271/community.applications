@@ -5,6 +5,7 @@
 #                   Licenced under GPLv2                      #
 #                                                             #
 ###############################################################
+debug_backtrace();
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 ### Translations section has to be first so that nothing else winds up caching the file(s)
 
@@ -251,6 +252,9 @@ function DownloadApplicationFeed() {
 		$o['SortName']      = str_replace("-"," ",$o['Name']);
 		$o['SortName']      = preg_replace('/\s+/',' ',$o['SortName']);
 		$o['random']        = rand();
+		$tmpRepo = explode(":",$o['Repository']);
+
+		$o['Repository'] = implode(":",$tmpRepo);
 		
 		if ( $o['CAComment'] ) $o['CAComment'] = tr($o['CAComment']);
 
