@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.11.13a">
-<!ENTITY md5       "290619e1e3d19a3b909486be94f3d312">
+<!ENTITY version   "2021.12.05">
+<!ENTITY md5       "f4fb221df7547bbe11b11db927306992">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,18 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.12.05
+- Changed: Number of cards displayed back to 24
+- Added: Explicit support for Discord links per app in templates
+- Added: If there's a comment on an app within CA, then display the comment whenever installing the app from the card
+- Fixed: Minor CSS errors
+- Fixed: When multiple instances of an app were installed, uninstalling one of them from the card could result in the other instance being uninstalled instead
+- Added: Automatically adjust templates to match user's system if the template referenced a share and the share already existed but differed in case
+- Fixed: After returning from an install the main area could be scrolled separately from the sidebar
+- Fixed: On a template using Branches you couldn't click the text description on the default branch
+- Fixed: On a search for a previously installed app you may not have been able to reinstall it from previous apps directly from the card
+- Fixed: Prevent a search from happening if a search is already in progress
+
 ###2021.11.13
 - Added: Support for screenshots, videos and more
 - Fixed: Certain plugins couldn't be uninstalled from the sidebar
