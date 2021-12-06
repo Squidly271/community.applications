@@ -56,19 +56,18 @@ if ( !is_dir($caPaths['templates-community']) ) {
 	@unlink($caPaths['community-templates-info']);
 }
 
-if ($caSettings['debugging'] == "yes") {
 	if ( ! is_file($caPaths['logging']) ) {
 		$caVersion = plugin("version","/var/log/plugins/community.applications.plg");
 
-		file_put_contents($caPaths['logging'],"Community Applications Version: $caVersion\n");
-		file_put_contents($caPaths['logging'],"Unraid version: {$caSettings['unRaidVersion']}\n\n",FILE_APPEND);
-		file_put_contents($caPaths['logging'],"MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5")."\n",FILE_APPEND);
+		debug("Community Applications Version: $caVersion");
+		debug("Unraid version: {$caSettings['unRaidVersion']}");
+		debug("MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5"));
 		$lingo = $_SESSION['locale'] ?: "en_US";
-		file_put_contents($caPaths['logging'],"Language: $lingo\n\n",FILE_APPEND);
-		file_put_contents($caPaths['logging'],"Settings:\n".print_r($caSettings,true)."\n",FILE_APPEND);
+		debug("Language: $lingo");
+		debug("Settings:\n".print_r($caSettings,true));
 	}
-	file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  POST CALLED ({$_POST['action']})\n".print_r($_POST,true),FILE_APPEND);
-}
+	debug("POST CALLED ({$_POST['action']})\n".print_r($_POST,true));
+
 
 $sortOrder = readJsonFile($caPaths['sortOrder']);
 if ( ! $sortOrder ) {
@@ -2071,8 +2070,6 @@ function search_dockerhub() {
 function javascriptError() {
 	global $caPaths, $caSettings;
 
-	if ($caSettings['debugging'] == "yes") {
-		file_put_contents($caPaths['logging'],"******* ERROR **********\n".print_r($_POST,true)."\n",FILE_APPEND);
-	}
+	debug("******* ERROR **********\n".print_r($_POST,true));
 }
 ?>

@@ -43,28 +43,26 @@ function randomFile() {
 function readJsonFile($filename) {
 	global $caSettings, $caPaths;
 	
-	if ( $caSettings['debugging'] == "yes" )
-		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')." Read JSON file $filename\n",FILE_APPEND);
+	debug("Read JSON file $filename");
 
 	$json = json_decode(@file_get_contents($filename),true);
-	if ($caSettings['debugging'] == "yes"  && ! $json) {
+	if (! $json) {
 		if ( ! is_file($filename) )
-			file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')." $filename not found\n",FILE_APPEND);
+			debug("$filename not found");
 
-		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')." JSON Read Error ($filename)\n",FILE_APPEND);
+		debug("JSON Read Error ($filename)");
 	}
 	return is_array($json) ? $json : array();
 }
 function writeJsonFile($filename,$jsonArray) {
 	global $caSettings, $caPaths;
 	
-	if ($caSettings['debugging'] == "yes")
-		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')." Write JSON File $filename\n",FILE_APPEND);
+	debug("Write JSON File $filename");
 
 	$result = file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 	
-	if ( $caSettings['debugging'] == "true" && ! $result )
-		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  Write error $filename\n",FILE_APPEND);
+	if ( ! $result )
+		debug("Write error $filename");
 		
 }
 function download_url($url, $path = "", $bg = false, $timeout = 45) {
@@ -91,9 +89,7 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	if ( $path )
 		file_put_contents($path,$out);
 
-	if ($caSettings['debugging'] == "yes") {
-		file_put_contents($caPaths['logging'],"DOWNLOAD URL: $url\nRESULT:\n".var_dump_ret($out)."\n",FILE_APPEND);
-	}
+	debug("DOWNLOAD URL: $url\nRESULT:\n".var_dump_ret($out));
 	return $out ?: false;
 }
 function download_json($url,$path) {
@@ -590,9 +586,7 @@ function postReturn($retArray) {
 	ob_flush();
 	flush();
 
-	if ($caSettings['debugging'] == "yes") {
-		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')." POST RETURN ({$_POST['action']})\n".var_dump_ret($retArray)."\n",FILE_APPEND);
-	}
+	debug("POST RETURN ({$_POST['action']})\n".var_dump_ret($retArray));
 }
 ####################################
 # Translation backwards compatible #
@@ -663,17 +657,22 @@ function getAllInfo($force=false) {
 				$container['template'] = $info[$container['Name']]['template'];
 			}
 		}
-		if ($caSettings['debugging'] == "yes") {
-			file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  Forced info update\n",FILE_APPEND);
-		}
+		debug("Forced info update");
 		writeJsonFile($caPaths['info'],$containers);
 	} else {
 		$containers = readJsonFile($caPaths['info']);
-		if ($caSettings['debugging'] == "yes") {
-			file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  Cached info update\n",FILE_APPEND);
-		}
+		debug("Cached info update");
 	}
 	return $containers;
+}
+#######################
+# Logs the debug info #
+#######################
+function debug($str) {
+	global $caSettings, $caPaths;
+	
+	if ( $caSettings['debugging'] == "yes" )
+		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  $str\n",FILE_APPEND);
 }
 
 /**
