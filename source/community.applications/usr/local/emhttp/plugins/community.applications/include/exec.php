@@ -415,7 +415,7 @@ function getConvertedTemplates() {
 function appOfDay($file) {
 	global $caPaths,$caSettings,$sortOrder;
 
-	$max = $caSettings['descriptions'] == "yes" ? 7 : 10;
+	$max = 7;
 
 	switch ($caSettings['startup']) {
 		case "random":
@@ -709,9 +709,7 @@ function get_content() {
 					if ( $type['cat'] )
 						$o['display'] .= "<span class='homeMore' data-des='{$type['text1']}' data-category='{$type['cat']}' data-sortby='{$type['sortby']}' data-sortdir='{$type['sortdir']}'>".tr("SHOW MORE");
 					$o['display'] .= "</div>";
-					$homeClass = $type['type'] == "spotlight" ? "caHomeSpotlight" : "";
-					if ( $caSettings['descriptions'] == "yes" )
-						$homeClass = "caHomeSpotlight";
+					$homeClass = "caHomeSpotlight";
 
 					$o['display'] .= "<div class='ca_homeTemplates $homeClass'>".my_display_apps($display,"1")."</div>";
 					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();$('.ca_holder').addClass('mobileHolderFix');";

@@ -34,14 +34,11 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$caSettings['dockerRunning'] = "true";
-	//	$info = $DockerTemplates->getAllInfo();
 		$info = getAllInfo();
-		//$dockerRunning = $DockerClient->getDockerContainers();
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
 		unset($caSettings['dockerRunning']);
 		$info = array();
-//		$dockerRunning = array();
 		$dockerUpdateStatus = array();
 	}
 
@@ -836,7 +833,6 @@ function displaySearchResults($pageNumber) {
 	$num_pages = $tempFile['num_pages'];
 	$file = $tempFile['results'];
 	$templates = readJsonFile($caPaths['community-templates-info']);
-	$caSettings['descriptions'] = "yes";
 
 	$ct = "<div>".tr("NOTE You must visit the dockerHub page to gather the information required to install correctly")."<span class='templateSearch' style='float:right'>Show CA templates</span></div><br><br>";
 	$ct .= "<div class='ca_templatesDisplay'>";
@@ -876,8 +872,7 @@ function displayCard($template) {
 
 	extract($template);
 
-	if ( $caSettings['descriptions'] == "yes" )
-		$class="spotlightHome";
+	$class = "spotlightHome";
 
 	$appType = $Plugin ? "appPlugin" : "appDocker";
 	$appType = $Language ? "appLanguage": $appType;
@@ -949,7 +944,7 @@ function displayCard($template) {
 
 	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
 
-	$bottomClass = $class ? "ca_bottomLineSpotLight" : "";
+	$bottomClass = "ca_bottomLineSpotLight";
 	if ( $DockerHub ) {
 		$backgroundClickable = "dockerCardBackground";
 		$card .= "
@@ -971,13 +966,11 @@ function displayCard($template) {
 			<div class='supportButton supportButtonCardContext' id='support".preg_replace("/[^a-zA-Z0-9]+/", "",$Name)."$ID' data-context='".json_encode($supportContext)."'>".tr("Support")."</div>
 		";
 
-	if ( $class == "spotlightHome" ) {
-		if ( $actionsContext ) {
-			if ( count($actionsContext) == 1)
-				$card .= "<div class='actionsButton' onclick={$actionsContext[0]['action']}>{$actionsContext[0]['text']}</div>";
-			else
-				$card .= "<div class='actionsButton actionsButtonContext' id='actions".preg_replace("/[^a-zA-Z0-9]+/", "",$Name)."$ID' data-context='".json_encode($actionsContext,JSON_HEX_QUOT | JSON_HEX_APOS)."'>".tr("Actions")."</div>";
-		}
+	if ( $actionsContext ) {
+		if ( count($actionsContext) == 1)
+			$card .= "<div class='actionsButton' onclick={$actionsContext[0]['action']}>{$actionsContext[0]['text']}</div>";
+		else
+			$card .= "<div class='actionsButton actionsButtonContext' id='actions".preg_replace("/[^a-zA-Z0-9]+/", "",$Name)."$ID' data-context='".json_encode($actionsContext,JSON_HEX_QUOT | JSON_HEX_APOS)."'>".tr("Actions")."</div>";
 	}
 
 	$card .= "<span class='$appType' title='".htmlentities($typeTitle)."'></span>";
@@ -1046,30 +1039,28 @@ function displayCard($template) {
 	$card .= "
 		</div>
 		";
-	if ( $class=='spotlightHome' ) {
-		$Overview = $Overview ?: $Description;
-		
-		$ovr = html_entity_decode($Overview);
-		$ovr = trim($ovr);
-		$ovr = str_replace(["[","]"],["<",">"],$ovr);
-		$ovr = str_replace("\n","<br>",$ovr);
 
-		$ovr = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$ovr);
-		$ovr = markdown(strip_tags($ovr,"<br>"));
+	$Overview = $Overview ?: $Description;
+	
+	$ovr = html_entity_decode($Overview);
+	$ovr = trim($ovr);
+	$ovr = str_replace(["[","]"],["<",">"],$ovr);
+	$ovr = str_replace("\n","<br>",$ovr);
 
-		$ovr = str_replace("\n","<br>",$ovr);
-	#	$Overview = explode("<br>",$ovr)[0];
-		$Overview = str_replace("<br>"," ",$ovr);
-		$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
-		$card .= "<div class='$descClass $backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
-		if ( $RecommendedDate ) {
-			$card .= "
-				<div class='homespotlightIconArea ca_center' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
-		<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}'></img></div>
-					<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
-				</div>
-			";
-		}
+	$ovr = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$ovr);
+	$ovr = markdown(strip_tags($ovr,"<br>"));
+
+	$ovr = str_replace("\n","<br>",$ovr);
+	$Overview = str_replace("<br>"," ",$ovr);
+	$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
+	$card .= "<div class='$descClass $backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
+	if ( $RecommendedDate ) {
+		$card .= "
+			<div class='homespotlightIconArea ca_center' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
+	<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}'></img></div>
+				<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
+			</div>
+		";
 	}
 	$card .= "</div>";
 	if ( $Installed || $Uninstall) {
