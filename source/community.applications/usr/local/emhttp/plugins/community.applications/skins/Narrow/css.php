@@ -60,7 +60,6 @@ switch ($theme) {
 		$supportPopupBackground = "#1c1b1b";
 		$modCommentBorder = "#cf3131";
 		$sidebarCloseBackground = "rgba(0,0,0,0.7)";
-
 		break;
 	case 'azure':
 		$donateBackground = "#606e7f";
@@ -79,7 +78,6 @@ switch ($theme) {
 		$supportPopupBackground = "#ffffff";
 		$modCommentBorder = "#cf3131";
 		$sidebarCloseBackground = "rgba(0,0,0,0.7)";
-
 		break;
 	case 'gray':
 		$donateBackground = "#606e7f";
@@ -98,7 +96,6 @@ switch ($theme) {
 		$supportPopupBackground = "#ffffff";
 		$modCommentBorder = "#cf3131";
 		$sidebarCloseBackground = "rgba(0,0,0,0.7)";
-
 		break;
 // Use settings for black as a fallback
 	default:
@@ -322,9 +319,9 @@ p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling 
 .pageDots::after {content:"...";}
 .pageDots{color:grey;cursor:default;}
 .pageLeft::after {content:"\f137";font-family:fontAwesome;}
-.pageNavigation {font-size:1.5rem;}
-.pageNavNoClick {font-size:1.5rem;cursor:default !important;}
-.pageNavNoClick:hover{color:initial !important;}
+.pageNavigation {font-size:1.5rem;margin-bottom:3rem;}
+.pageNavNoClick {font-size:1.5rem;cursor:default !important;opacity:0.5;}
+.pageNavNoClick:hover{color:<?=$sidebarText?> !important;opacity:0.5;}
 .pageNumber{margin-left:1rem;margin-right:1rem;cursor:pointer;text-decoration:none !important;}
 .pageNumber:hover{color:<?=$unRaid66color?>;}
 .pageRight::after {content:"\f138";font-family:fontAwesome;}
