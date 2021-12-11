@@ -429,6 +429,7 @@ table {background-color:transparent;}
 .unraidIcon{margin-top:4rem;}
 .vid{display:inline-block;font-size:8rem;position:relative;top:-0.5rem;color:<?=$sidebarText?>;opacity:70%;padding-right:10px;}
 .vid:hover{color:<?=$unRaid66color;?>}
+.warningCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #810000;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 #warningNotAccepted{display:none;}
 
 .awesomplete [hidden] {display: none;}

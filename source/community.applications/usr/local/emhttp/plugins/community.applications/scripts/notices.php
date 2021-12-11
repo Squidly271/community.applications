@@ -44,7 +44,7 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 } else
 	$dockerRunning = false;
 
-function debug($message) {
+function debug1($message) {
 	global $debugging;
 
 	if ($debugging) echo $message;
@@ -54,10 +54,10 @@ function conditionsMet($value) {
 	global $conditionsMet;
 
 	if ($value)
-		debug("  Passed\n");
+		debug1("  Passed\n");
 	else {
 		$conditionsMet = false;
-		debug("  Failed\n");
+		debug1("  Failed\n");
 	}
 }
 
@@ -79,7 +79,7 @@ switch ($action) {
 		}
 
 		if ( $local && ! is_array($notices) ) {
-			debug("Not a valid local json file");
+			debug1("Not a valid local json file");
 			return;
 		}
 
@@ -89,7 +89,7 @@ switch ($action) {
 			if ( in_array($notice['ID'],$dismissed) )
 				continue;
 
-			debug("Searching for $app");
+			debug1("Searching for $app");
 			$found = false;
 
 			$plugin = ( startsWith($app,"https://") || strtolower(pathinfo($app,PATHINFO_EXTENSION)) == "plg");
@@ -122,31 +122,31 @@ switch ($action) {
 				}
 			}
 			if ( $found ) {
-				debug("   Found  Looking for conditions\n");
+				debug1("   Found  Looking for conditions\n");
 				$conditionsMet = true;
 				if ( $notice['Conditions']['unraid'] ) {
 					$unraid = parse_ini_file("/etc/unraid-version");
 					$unraidVersion = $unraid['version'];
 					foreach ($notice['Conditions']['unraid'] as $condition) {
 						if ( ! $conditionsMet ) break;
-						debug("Testing unraid version $unraidVersion {$condition[0]} {$condition[1]}");
+						debug1("Testing unraid version $unraidVersion {$condition[0]} {$condition[1]}");
 						conditionsMet(version_compare($unraidVersion,$condition[1],$condition[0]));
 					}
 				}
 			} else {
-				debug("  Not Found");
+				debug1("  Not Found");
 				continue;
 			}
 
 			if ( $plugin && $notice['Conditions']['plugin'] ) {
 				$pluginVersion = @plugin("version","/var/log/plugins/".basename($app));
 				if ( ! $pluginVersion ) {
-					debug("Unable to determine plugin version.  Carrying on");
+					debug1("Unable to determine plugin version.  Carrying on");
 					continue;
 				}
 				foreach ($notice['Conditions']['plugin'] as $condition) {
 					if ( ! $conditionsMet ) break;
-					debug("Testing plugin version $pluginVersion {$condition[0]} {$condition[1]}");
+					debug1("Testing plugin version $pluginVersion {$condition[0]} {$condition[1]}");
 					$cmp = strcmp($pluginVersion,$condition[1]);
 		// do some operator substitutions
 					switch($condition[0]) {
@@ -208,12 +208,12 @@ switch ($action) {
 			}
 
 			if ( $notice['Conditions']['code'] && $conditionsMet) {
-				debug("Executing {$notice['Conditions']['code']}");
+				debug1("Executing {$notice['Conditions']['code']}");
 				conditionsMet(eval($notice['Conditions']['code']));
 			}
 
 			if ($conditionsMet) {
-				debug("Conditions Met.  Send the notification!\n");
+				debug1("Conditions Met.  Send the notification!\n");
 				if ( $sendNotification ) {
 					$command = "/usr/local/emhttp/plugins/dynamix/scripts/notify -b -e 'Community Applications Background Scanning' -s 'Attention Required' -d ".escapeshellarg($notice['email']."  Login to your server for more detail.  To not receive this notification again, dismiss the banner when logged into your server")." -i 'warning'";
 					exec($command);
@@ -221,9 +221,9 @@ switch ($action) {
 				$notice['App'] = $app;
 				$unRaidNotifications[] = $notice;
 			} else {
-				debug("Conditions not met.  Do nothing!\n");
+				debug1("Conditions not met.  Do nothing!\n");
 			}
-			debug("\n");
+			debug1("\n");
 		}
 		echo json_encode($unRaidNotifications ?: [],JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 		break;

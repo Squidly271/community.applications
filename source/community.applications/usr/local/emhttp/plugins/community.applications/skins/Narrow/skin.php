@@ -148,7 +148,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 										}
 										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32",htmlspecialchars($template['CAComment']))."');");
 									} else {
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"displayTags('{$template['ID']}');");
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"displayTags('{$template['ID']}',false,'".str_replace(" ","&#32",htmlspecialchars($template['CAComment']))."');");
 									}
 								}
 							}
@@ -518,16 +518,18 @@ function getPopupDescriptionSkin($appNumber) {
 						$actionsContext[] = array("divider"=>true);
 						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallDocker('".addslashes($info[$name]['template'])."','{$template['Name']}');");
 
-					} elseif ( ! $template['Blacklist'] || ! $template['Compatible']) {
+					} elseif ( ! $template['Blacklist'] ) {
 						if ( $template['InstallPath'] ) {
 							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user');");
 							$actionsContext[] = array("divider"=>true);
 							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
 						}	else {
-							if ( ! $template['BranchID'] ) {
-								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default');");
-							} else {
-								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}');");
+								if ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true" ) {
+								if ( ! $template['BranchID'] ) {
+									$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default');");
+								} else {
+									$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}');");
+								}
 							}
 						}
 					}
@@ -548,18 +550,17 @@ function getPopupDescriptionSkin($appNumber) {
 
 						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallApp('/var/log/plugins/$pluginName','".str_replace(" ","&nbsp;",$template['Name'])."');");
 					}
-				} elseif ( ! $template['Blacklist'] || ! $template['Compatible'] ) {
-					$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
-					$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
+				} elseif ( ! $template['Blacklist']  ) {
+					if ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true") {
+						$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
+						$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
+					}
 					if ( $template['InstallPath'] ) {
 						if ( ! empty($actionsContext) )
 							$actionsContext[] = array("divider"=>true);
 						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','$pluginName');");
 					}
-/* 					if ( count($actionsContext) == 1 ) {
-						$template['newInstallAction'] = "installPlugin('{$template['PluginURL']}')";
-						unset($actionsContext);
-					} */
+
 				}
 			}
 		}
@@ -1063,34 +1064,51 @@ function displayCard($template) {
 		";
 	}
 	$card .= "</div>";
-	if ( $Installed || $Uninstall) {
+	if ( $Blacklist ) {
+		$card .= "
+			<div class='warningCardBackground'>
+				<div class='betaPopupText ca_center' title='".tr("This application template / has been blacklisted")."'>&nbsp;".tr("Blacklisted")."&nbsp;</div>
+			</div>
+		";		
+	} elseif ( ! $Compatible ) {
+		$card .= "
+			<div class='warningCardBackground'>
+				<div class='betaPopupText ca_center' title='".tr("This application is not compatible with your version of Unraid")."'>&nbsp;".tr("Incompatible")."&nbsp;</div>
+			</div>
+		";
+	} elseif ( $Deprecated ) {
+		$card .= "
+			<div class='warningCardBackground'>
+				<div class='betaPopupText ca_center' title='".tr("This application template has been deprecated")."'>&nbsp;".tr("Deprecated")."&nbsp;</div>
+			</div>
+		";
+	} elseif ( $Installed || $Uninstall) {
 		$card .= "
 			<div class='installedCardBackground'>
 				<div class='installedCardText ca_center'>".tr("INSTALLED")."</div>
-			</div>";
-	} else if ( $Official ) {
+			</div>";		
+	} elseif ( $Official ) {
 		$card .= "
 			<div class='officialCardBackground'>
 				<div class='officialPopupText ca_center' title='This is an official container'>".tr("OFFICIAL")."</div>
 			</div>
 		";
-		} else if ( $Beta ) {
+	} elseif ( $Beta ) {
 		$card .= "
 			<div class='betaCardBackground'>
 				<div class='betaPopupText ca_center'>".tr("BETA")."</div>
 			</div>
 		";
-	} else if ( $RecommendedDate ) {
+	} elseif ( $RecommendedDate ) {
 		$card .= "
 			<div class='spotlightCardBackground'>
 				<div class='spotlightPopupText' title='".tr("This is a spotlight application")."'></div>
 			</div>
 		";
-
-	} else if ( $Trusted ) {
+	} elseif ( $Trusted ) {
 		$card .= "
 			<div class='spotlightCardBackground'>
-				<div class='betaPopupText ca_center' title='This container is digitally signed'>".tr("Digitally Signed")."</div>
+				<div class='betaPopupText ca_center' title='".tr("This container is digitally signed")."'>".tr("Digitally Signed")."</div>
 			</div>
 		";
 	}
@@ -1232,7 +1250,7 @@ function displayPopup($template) {
 		$card .= "<tr><td class='popupTableLeft'>".tr("DockerHub Stars:")."</td><td class='popupTableRight'>$stars <span class='dockerHubStar'></span></td></tr>";
 
 
-	if ( $Plugin ) {
+	if ( $Plugin || ! $Compatible) {
 		if ( $MinVer )
 			$card .= "<tr><td class='popupTableLeft'>".tr("Min OS")."</td><td class='popupTableRight'>$MinVer</td></tr>";
 		if ( $MaxVer )
