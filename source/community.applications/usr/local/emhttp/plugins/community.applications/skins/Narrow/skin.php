@@ -1064,22 +1064,28 @@ function displayCard($template) {
 		";
 	}
 	$card .= "</div>";
+	if ( $Installed || $Uninstall ) {
+		$flagTextStart = tr("Installed")."<br>";
+	} else {
+		$flagTextStart = "&nbsp;";
+		$flagTextEnd = "&nbsp;";
+	}
 	if ( $Blacklist ) {
 		$card .= "
 			<div class='warningCardBackground'>
-				<div class='betaPopupText ca_center' title='".tr("This application template / has been blacklisted")."'>&nbsp;".tr("Blacklisted")."&nbsp;</div>
+				<div class='betaPopupText ca_center' title='".tr("This application template / has been blacklisted")."'>$flagTextStart".tr("Blacklisted")."$flagTextEnd</div>
 			</div>
 		";		
 	} elseif ( isset($Compatible) && ! $Compatible ) {
 		$card .= "
 			<div class='warningCardBackground'>
-				<div class='betaPopupText ca_center' title='".tr("This application is not compatible with your version of Unraid")."'>&nbsp;".tr("Incompatible")."&nbsp;</div>
+				<div class='betaPopupText ca_center' title='".tr("This application is not compatible with your version of Unraid")."'>$flagTextStart".tr("Incompatible")."$flagTextEnd</div>
 			</div>
 		";
 	} elseif ( $Deprecated ) {
 		$card .= "
 			<div class='warningCardBackground'>
-				<div class='betaPopupText ca_center' title='".tr("This application template has been deprecated")."'>&nbsp;".tr("Deprecated")."&nbsp;</div>
+				<div class='betaPopupText ca_center' title='".tr("This application template has been deprecated")."'>$flagTextStart".tr("Deprecated")."$flagTextEnd</div>
 			</div>
 		";
 	} elseif ( $Installed || $Uninstall) {
