@@ -1070,7 +1070,7 @@ function displayCard($template) {
 				<div class='betaPopupText ca_center' title='".tr("This application template / has been blacklisted")."'>&nbsp;".tr("Blacklisted")."&nbsp;</div>
 			</div>
 		";		
-	} elseif ( ! $Compatible ) {
+	} elseif ( isset($Compatible) && ! $Compatible ) {
 		$card .= "
 			<div class='warningCardBackground'>
 				<div class='betaPopupText ca_center' title='".tr("This application is not compatible with your version of Unraid")."'>&nbsp;".tr("Incompatible")."&nbsp;</div>

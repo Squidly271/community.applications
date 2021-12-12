@@ -996,57 +996,40 @@ function previous_apps() {
 					$o['CardDescription'] = $o['Overview'];
 					$o['InstallPath'] = $xmlfile;
 					$o['UnknownCompatible'] = true;
-					$flag = false;
 					$containerID = false;
-					foreach ($file as $templateDocker) {
-						# use startsWith to eliminate any version tags (:latest)
-						if ( startsWith($templateDocker['Repository'], $testRepo) ) {
-							if ( $templateDocker['Name'] == $o['Name'] ) {
-								$flag = true;
-								$containerID = $template['ID'];
+
+					$runningflag = false;
+					foreach ($info as $installedDocker) {
+						$installedImage = str_replace("library/","",$installedDocker['Image']);
+						$installedName = $installedDocker['Name'];
+						if ( $installedName == $o['Name'] ) {
+							if ( startsWith($installedImage, $o['Repository']) ) {
+								$runningflag = true;
+								$searchResult = searchArray($file,'Repository',$o['Repository']);
+								if ( $searchResult === false) {
+									$searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
+								}
+								if ( $searchResult !== false ) {
+									$tempPath = $o['InstallPath'];
+									$containerID = $file[$searchResult]['ID'];
+									$tmpOvr = $o['Overview'];
+									$o = $file[$searchResult];
+									$o['Name'] = $installedName;
+									$o['Overview'] = $tmpOvr;
+									$o['CardDescription'] = $tmpOvr;
+									$o['InstallPath'] = $tempPath;
+									$o['SortName'] = str_replace("-"," ",$installedName);
+								}
 								break;
 							}
 						}
 					}
-					if ( ! $flag ) {
-						$runningflag = false;
-						foreach ($info as $installedDocker) {
-							$installedImage = str_replace("library/","",$installedDocker['Image']);
-							$installedName = $installedDocker['Name'];
-							if ( $installedName == $o['Name'] ) {
-								if ( startsWith($installedImage, $o['Repository']) ) {
-									$runningflag = true;
-									$searchResult = searchArray($file,'Repository',$o['Repository']);
-									if ( ! $searchResult ) {
-										$searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
-									}
-									if ( $searchResult !== false ) {
-										$tempPath = $o['InstallPath'];
-										$containerID = $file[$searchResult]['ID'];
-										$tmpOvr = $o['Overview'];
-										$o = $file[$searchResult];
-										$o['Name'] = $installedName;
-										$o['Overview'] = $tmpOvr;
-										$o['CardDescription'] = $tmpOvr;
-										$o['InstallPath'] = $tempPath;
-										$o['SortName'] = str_replace("-"," ",$installedName);
-									}
-									break;
-								}
-							}
-						}
-						if ( $runningflag ) {
-							$o['Uninstall'] = true;
-							$o['ID'] = $containerID;
-							if ( $o['Blacklist'] ) 	continue;
+					if ( $runningflag ) {
+						$o['Uninstall'] = true;
+						$o['ID'] = $containerID;
+						if ( $o['Blacklist'] ) 	continue;
 
-							# handle a PR from LT where it is possible for an identical template (xml) to be present twice, with different filenames.
-							# Without this, an app could appear to be shown in installed apps twice
-/* 							$fat32Fix[$searchResult]++;
-							if ($fat32Fix[$searchResult] > 1) continue; */
-							if ($o['testrepo']) continue;
-							$displayed[] = $o;
-						}
+						$displayed[] = $o;
 					}
 				}
 			}
