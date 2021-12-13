@@ -137,6 +137,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									$actionsContext[] = array("divider"=>true);
 									$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
 								}	else {
+									$installComment = $template['CAComment'];
+									if ( ! $installComment && $template['Requires'] )
+										$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires']);
 									if ( ! $template['BranchID'] ) {
 										if ( is_file("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml") ) {
 											$test = readXmlFile("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml",true);
@@ -146,9 +149,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 												$actionsContext[] = array("divider"=>true);
 											}
 										}
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32",htmlspecialchars($template['CAComment']))."');");
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32",htmlspecialchars($installComment))."');");
 									} else {
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"displayTags('{$template['ID']}',false,'".str_replace(" ","&#32",htmlspecialchars($template['CAComment']))."');");
+									
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"displayTags('{$template['ID']}',false,'".str_replace(" ","&#32",htmlspecialchars($installComment))."');");
 									}
 								}
 							}
@@ -177,7 +181,12 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							}
 						} elseif ( ! $template['Blacklist'] || ! $template['Compatible'] ) {
 							$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
-							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
+							if ( ! $template['InstallPath'] ) {
+								$installComment = $template['CAComment'];
+								if ( ! $installComment && $template['Requires'] )
+									$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires']);
+							}
+							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}','','".str_replace(" ","&#32",htmlspecialchars($installComment))."');");
 							if ( $template['InstallPath'] ) {
 								if ( ! empty($actionsContext) )
 									$actionsContext[] = array("divider"=>true);
@@ -524,11 +533,13 @@ function getPopupDescriptionSkin($appNumber) {
 							$actionsContext[] = array("divider"=>true);
 							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
 						}	else {
-								if ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true" ) {
-								if ( ! $template['BranchID'] ) {
-									$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default');");
-								} else {
-									$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}');");
+							if ( ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true" )  ) {
+								if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
+									if ( ! $template['BranchID'] ) {
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default');");
+									} else {
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}');");
+									}
 								}
 							}
 						}
@@ -552,8 +563,10 @@ function getPopupDescriptionSkin($appNumber) {
 					}
 				} elseif ( ! $template['Blacklist']  ) {
 					if ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true") {
-						$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
-						$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
+						if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
+							$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
+							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
+						}
 					}
 					if ( $template['InstallPath'] ) {
 						if ( ! empty($actionsContext) )
