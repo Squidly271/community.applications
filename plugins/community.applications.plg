@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.12.05">
-<!ENTITY md5       "f4fb221df7547bbe11b11db927306992">
+<!ENTITY version   "2021.12.18">
+<!ENTITY md5       "ae38ebfb405a09df6fd20b63fd898abb">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,18 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2021.12.18
+- Prep work for next release
+- Added: Ability to cancel installation from card if there's a warning popup
+- Fixed: Plugins wouldn't display popup if there was a warning when installing from card
+- Added: Clearly show if an installed app is blacklisted / deprecated
+- Fixed: The very first template in the application feed wouldn't display correctly if it was installed
+- Fixed: Emergency notifications weren't working
+- Fixed: Even if settings didn't allow incompatible or deprecated installs, CA was allowing them via statistics and the sidebar
+- Fixed: Misc CSS fixes
+- Fixed: Removing coding for displaying cards without any description
+- Added: Under the hood debugging system far simpler
+
 ###2021.12.05
 - Changed: Number of cards displayed back to 24
 - Added: Explicit support for Discord links per app in templates

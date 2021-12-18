@@ -966,18 +966,21 @@ function installPlugin(pluginURL,update=false,comment="") {
 		swal({
 			title: "<?tr("Attention")?>",
 			text: comment,
-			allowOutsideClick: false,
+			allowOutsideClick: true,
 			showConfirmButton: true,
-			showCancelButton: false,
+			showCancelButton: true,
 			confirmButtonText: "<?tr("OK")?>",
+			cancelButtonText: "<?tr("CANCEL")?>",
 			animation: false,
 			type: "warning",
 			html: true
 		}, function (isConfirm) {
-			openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
+			if (isConfirm) {
+				openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
+			}
 		});	
 	} else {
-	openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
+		openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
 	}		
 
 }
@@ -1900,15 +1903,18 @@ function popupInstallXML(xml,type,comment="") {
 		swal({
 			title: "<?tr("Attention")?>",
 			text: comment,
-			allowOutsideClick: false,
+			allowOutsideClick: true,
 			showConfirmButton: true,
-			showCancelButton: false,
+			showCancelButton: true,
 			confirmButtonText: "<?tr("OK")?>",
+			cancelButtonText: "<?tr("Cancel")?>",
 			animation: false,
 			type: "warning",
 			html: true
 		}, function (isConfirm) {
-			installXML(xml,type);
+			if (isConfirm) {
+				installXML(xml,type);
+			}
 		});
 	} else {
 		installXML(xml,type);
