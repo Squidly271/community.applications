@@ -134,6 +134,9 @@ function tr($string,$ret=false) {
 </script>
 <?endif;?>
 <script>
+String.prototype.basename = function() {return this.split('/').reverse()[0];}
+String.prototype.escapeHTML = function() {return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
 var searchBoxInput;
 var searchBoxAwesomplete;
 var pluginInstallIntervalTimer;
@@ -226,9 +229,7 @@ $(function(){
 	$(".sidebarClose").on("click",function(e) {
 		closeSidebar();
 	});
-	$(".mainArea").on("click",".actionsButtonContext,.actionsButton,.supportButton,.supportButtonCardContext",function() {
-		data.actions = true;
-	});
+
 	$("#searchBox").keydown(function(e) {
 		if (e.which === 13) {
 			searchBoxAwesomplete.close();
@@ -348,29 +349,25 @@ $(function(){
 		}
 	});
 
-	$('body').on("click",".ca_holder",function(event) {
-		if (data.actions) {
-			data.actions = false;
+	$("body").on("click",".repoPopup,.ca_repoinfo,.ca_reporeadmore,.ca_repoFromPopUp,.cardDescriptionRepo", function() {
+		var repository = $(this).data("repository");
+		showRepoPopup(repository);
+	});
+
+
+	$('body').on("click",".ca_appPopup,.cardDescription,.homespotlightIconArea",function() {
+		if ( $(this).hasClass("dockerCardBackground") || $(this).hasClass("noClick") )
+			return;
+		if ( $(".dropdown-menu").is(":visible") ) {
+			$(".dropdown-menu").hide();
 			return;
 		}
-		data.actions = false;
-		event.stopPropagation();
-		if ( $(this).hasClass("ca_repoPopup") ) {
-			var repository = $(this).data("repository");
-			showRepoPopup(repository);
-		} else {
-			if ( $(this).hasClass("dockerCardBackground") || $(this).hasClass("noClick") )
-				return;
-			if ( $(".dropdown-menu").is(":visible") ) {
-				$(".dropdown-menu").hide();
-				return;
-			}
 
-			var apppath = $(this).data("apppath");
-			var appname = $(this).data("appname");
-			appname = stripTags(appname);
-			showSidebarApp(apppath,appname);
-		}
+		var apppath = $(this).data("apppath");
+		var appname = $(this).data("appname");
+		appname = stripTags(appname);
+
+		showSidebarApp(apppath,appname);
 	});
 
 	$('body').on("click",".dockerPopup", function() {
@@ -987,8 +984,7 @@ function installPlugin(pluginURL,update=false,comment="") {
 		});	
 	} else {
 		openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
-	}		
-
+	}
 }
 
 function OpenSidebarAndRefreshDisplay() {
@@ -1113,10 +1109,6 @@ function postUninstallPlugin() {
 	enableSearch();
 }
 
-String.prototype.basename = function() {
-	return this.split('/').reverse()[0];
-}
-
 function uninstallDocker(application,humanName) {
 	closeSidebar();
 	disableSearch();
@@ -1216,7 +1208,6 @@ function pinnedApps() {
 }
 
 function displayTags(leadTemplate,rename=false) {
-	event.stopPropagation();
 	closeSidebar();
 	post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true,rename:rename},function(result) {
 		disableSearch();
@@ -1240,6 +1231,7 @@ function displayTags(leadTemplate,rename=false) {
 function makePlural(string,count) {
 	return ( (count > 1) || (count == 0) ) ? string + "s" : string;
 }
+
 function selectAllPrevious() {
 	$(".ca_multiselect").each(function() {
 		$(this).prop("checked",true);
@@ -1512,7 +1504,7 @@ function saveState() {
 	$.cookie("ca_selectedMenu",selectedMenu);
 	$.cookie("ca_filter",$("#searchBox").val());
 	$.cookie("ca_categoryName",$(".categoryMenuName").html());
-	}
+}
 
 function restoreState() {
 	swalBackground("transparent");
@@ -1538,7 +1530,6 @@ function restoreState() {
 		$("#searchButton").removeClass("fa-search").addClass("fa-remove");
 
 	var ca_sortIcon = $.cookie("ca_sortIcon");
-//	enableIcon("#sortIcon",ca_sortIcon);
 	post({action:"getSortOrder"},function(sortOrder) {
 		$(".sortIcons").removeClass("enabledIcon");
 		$(".sortIcons").each(function() {
@@ -1608,10 +1599,6 @@ function addDockerWarning(enableDisable) {
 			dockerWarningAdded = false;
 		}
 	}
-}
-
-String.prototype.escapeHTML = function() {
-	return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function post(options,callback) {
@@ -1807,13 +1794,11 @@ function CAswitchLanguage(language) {
 }
 
 function installLanguage(languageURL,language) {
-
 	disableSearch();
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,"<?tr('Install Language Pack')?>",600,900,true,"postLanguageRefresh");
 }
 
 function updateLanguage(language) {
-
 	disableSearch();
 	$.cookie("updateLanguage",language);
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"postUpdateLanguage");
@@ -1832,10 +1817,10 @@ function postUpdateLanguage() {
 		refreshDisplay();
 	}
 }
+
 function removeLanguage(language) {
 	closeSidebar();
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"postLanguageRemove");
-
 }
 
 function postLanguageRefresh() {
@@ -1905,7 +1890,6 @@ function setFavourite(button) {
 }
 
 function popupInstallXML(xml,type,comment="") {
-	event.stopPropagation();
 	saveState();
 	if ( $.trim(comment) ) {
 		swal({
