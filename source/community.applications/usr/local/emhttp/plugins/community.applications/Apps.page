@@ -355,7 +355,7 @@ $(function(){
 	});
 
 
-	$('body').on("click",".ca_appPopup,.cardDescription,.homespotlightIconArea",function() {
+	$('body').on("click",".ca_appPopup",function() {
 		if ( $(this).hasClass("dockerCardBackground") || $(this).hasClass("noClick") )
 			return;
 		if ( $(".dropdown-menu").is(":visible") ) {

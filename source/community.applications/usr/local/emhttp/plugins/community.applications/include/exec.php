@@ -504,7 +504,7 @@ function appOfDay($file) {
 			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
 			foreach($file as $template) {
-				if ($template['RecommendedDate'] )	{
+				if ($template['RecommendedDate']) {
 					if ( $caSettings['hideIncompatible'] == "true" && ! versionCheck($template)) continue;
 					
 					$appOfDay[] = $template['ID'];
