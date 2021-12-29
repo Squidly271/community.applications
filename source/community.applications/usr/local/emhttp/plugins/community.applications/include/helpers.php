@@ -46,7 +46,7 @@ function readJsonFile($filename) {
 	debug("Read JSON file $filename");
 
 	$json = json_decode(@file_get_contents($filename),true);
-	if (! $json) {
+	if ( $json === false ) {
 		if ( ! is_file($filename) )
 			debug("$filename not found");
 
@@ -387,7 +387,8 @@ function filterMatch($filter,$searchArray,$exact=true) {
 function pluginDupe($templates) {
 	global $caPaths;
 
-	$pluginList = array();
+	$pluginList = [];
+	$dupeList = [];
 	foreach ($templates as $template) {
 		if ( $template['Plugin'] )
 			$pluginList[basename($template['Repository'])]++;
@@ -583,9 +584,7 @@ function postReturn($retArray) {
 		echo json_encode($retArray);
 	else
 		echo $retArray;
-	ob_flush();
 	flush();
-
 	debug("POST RETURN ({$_POST['action']})\n".var_dump_ret($retArray));
 }
 ####################################

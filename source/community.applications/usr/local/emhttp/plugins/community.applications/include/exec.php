@@ -505,7 +505,7 @@ function appOfDay($file) {
 			usort($file,"mySort");
 			foreach($file as $template) {
 				if ($template['RecommendedDate']) {
-					if ( $caSettings['hideIncompatible'] == "true" && ! versionCheck($template)) continue;
+					if ( ! checkRandomApp($template) ) continue;
 					
 					$appOfDay[] = $template['ID'];
 					if ( count($appOfDay) == 7 ) break;
