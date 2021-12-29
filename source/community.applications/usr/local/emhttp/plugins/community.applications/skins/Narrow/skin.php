@@ -935,6 +935,7 @@ function displayCard($template) {
 			$supportContext[] = array("icon"=>"ca_fa-support","link"=>$Support,"text"=> $SupportLanguage ?: tr("Support Forum"));
 
 	} else {
+		$holderClass='repositoryCard';
 		$cardClass = "ca_repoinfo";
 		$ID = str_replace(" ","",$RepoName);
 		$supportContext = array();
@@ -962,15 +963,15 @@ function displayCard($template) {
 	if ( $DockerHub ) {
 		$backgroundClickable = "dockerCardBackground";
 		$card .= "
-			<div class='ca_holder $class'>
+			<div class='dockerHubHolder $class $popupType'>
 			<div class='ca_bottomLine $bottomClass'>
 			<div class='infoButton_docker dockerPopup' data-dockerHub='$DockerHub'>".tr("Docker Hub")."</div>";
 	} else {
 		$backgroundClickable = "ca_backgroundClickable";
 		$card .= "
-			<div class='ca_holder $class'>
+			<div class='ca_holder $class $popupType $holderClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
 			<div class='ca_bottomLine $bottomClass'>
-			<div class='infoButton $cardClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>".tr("Info")."</div>
+			<div class='infoButton $cardClass'>".tr("Info")."</div>
 		";
 	}
 	if ( count($supportContext) == 1)
@@ -990,9 +991,9 @@ function displayCard($template) {
 	$card .= "<span class='$appType' title='".htmlentities($typeTitle)."'></span>";
 	if ( $ca_fav ) {
 		$favText = $RepositoryTemplate ? tr("This is your favourite repository") : tr("This application is from your favourite repository");
-		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
+		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."'></span>";
 	}	else
-		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."' style='display:none;' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'></span>";
+		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."' style='display:none;'></span>";
 	if ( ! $Pinned )
 		$pinStyle = "display:none;";
 
@@ -1005,7 +1006,7 @@ function displayCard($template) {
 		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";
 	}
 	$card .= "</div>";
-	$card .= "<div class='$cardClass $backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>";
+	$card .= "<div class='$cardClass $backgroundClickable'>";
 	$card .= "<div class='ca_iconArea'>";
 	if ( $DockerHub )
 		$imageNoClick = "noClick";
@@ -1017,7 +1018,7 @@ function displayCard($template) {
 	else {
 		$displayIcon = $template['IconFA'] ?: $template['Icon'];
 		$displayIconClass = startsWith($displayIcon,"icon-") ? $displayIcon : "fa fa-$displayIcon";
-		$card  .= "<i class='ca_appPopup $displayIconClass displayIcon $imageNoClick' data-apppath='$Path' data-appname='$Name'></i>";
+		$card  .= "<i class='ca_appPopup $displayIconClass displayIcon $imageNoClick'></i>";
 	}
 	$card .= "</div>";
 
@@ -1067,10 +1068,10 @@ function displayCard($template) {
 	$ovr = str_replace("\n","<br>",$ovr);
 	$Overview = str_replace("<br>"," ",$ovr);
 	$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
-	$card .= "<div class='$descClass $backgroundClickable' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'><div class='cardDesc'>$Overview</div></div>";
+	$card .= "<div class='$descClass $backgroundClickable'><div class='cardDesc'>$Overview</div></div>";
 	if ( $RecommendedDate ) {
 		$card .= "
-			<div class='homespotlightIconArea ca_center' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
+			<div class='homespotlightIconArea ca_center''>
 	<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}'></img></div>
 				<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
 			</div>
