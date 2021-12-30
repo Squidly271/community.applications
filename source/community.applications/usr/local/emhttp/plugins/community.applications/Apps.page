@@ -348,7 +348,12 @@ $(function(){
 				break;
 		}
 	});
-
+	
+	$("body").on("click",".repoPopup,.ca_repoinfo,.ca_reporeadmore,.ca_repoFromPopUp,.cardDescriptionRepo", function() {
+		var repository = $(this).data("repository");
+		showRepoPopup(repository);
+	});
+	
 	$('body').on("click",".ca_holder",function(event) {
 		if (data.actions) {
 			data.actions = false;
