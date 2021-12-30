@@ -5,7 +5,7 @@ ed2883d6c44c19304c431079596a1731  ./default.cfg
 3074017521ca2512e5c9990b1a9f864d  ./include/exec.php
 96ca7bc670ede6df1e170eaff98a7af9  ./include/helpers.php
 95709ae0ed53e2889a93849a69b37892  ./include/paths.php
-410c0166bae560754e231486050621f6  ./javascript/libraries.js
+532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 b398273cf7daa62ab00d2de2336ca25f  ./README.md
 717f49d6faabd7e1d7cf0940beb5cd5e  ./scripts/checkForUpdates.php
 1e2b902321d4bb7efe0d0b78c8130a73  ./scripts/installMulti.php
