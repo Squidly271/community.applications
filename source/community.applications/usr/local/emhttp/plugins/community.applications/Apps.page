@@ -27,7 +27,7 @@ $DockerTemplates = new DockerTemplates();
 exec("rm -rf {$caPaths['CA_logs']}");
 exec("mkdir -p {$caPaths['CA_logs']}");
 exec("mkdir -p {$caPaths['tempFiles']}");
-exec("rm /usr/local/emhttp/CA-Logging*.zip");
+exec("rm $docroot/CA-Logging*.zip");
 
 $diagnosticsFile = htmlspecialchars(str_replace(' ','_',strtolower($var['NAME'])));
 
