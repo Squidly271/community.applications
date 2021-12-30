@@ -514,7 +514,6 @@ function appOfDay($file) {
 				}
 			}
 			break;
-
 	}
 	return $appOfDay ?: array();
 }
@@ -648,7 +647,6 @@ function get_content() {
 		$displayApplications['community'] = [];
 		if ( count($file) > 200) {
 			$startupTypes = [
-
 				[
 					"type"=>"onlynew",
 					"text1"=>tr("Recently Added"),
@@ -664,7 +662,6 @@ function get_content() {
 					"cat"=>"spotlight:",
 					"sortby"=> "RecommendedDate",
 					"sortdir"=> "Down",
-					"class"=>"spotlightHome"
 				],
 				[
 					"type"=>"trending",
