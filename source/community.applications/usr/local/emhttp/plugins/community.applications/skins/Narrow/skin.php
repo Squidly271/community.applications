@@ -547,7 +547,8 @@ function getPopupDescriptionSkin($appNumber) {
 				}
 			} else {
 				if ( file_exists("/var/log/plugins/$pluginName") ) {
-					if ( plugin("version","/var/log/plugins/$pluginName") != $template['pluginVersion'] ) {
+					$template['installedVersion'] = plugin("version","/var/log/plugins/$pluginName");
+					if ( $template['installedVersion'] != $template['pluginVersion'] ) {
 						@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 						$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
 					}
@@ -1269,7 +1270,13 @@ function displayPopup($template) {
 	if ($stars)
 		$card .= "<tr><td class='popupTableLeft'>".tr("DockerHub Stars:")."</td><td class='popupTableRight'>$stars <span class='dockerHubStar'></span></td></tr>";
 
-
+	if ( $Plugin ) {
+		$card .= "<tr><td class='popupTableLeft'>".tr("Installed Version")."</td><td class='popupTableRight'>$installedVersion</td></tr>";
+		if ( $installedVersion != $pluginVersion ) {
+			$card .= "<tr><td class='popupTableLeft'>".tr("Upgrade Version")."</td><td class='popupTableRight'>$pluginVersion</td></tr>";
+		}
+	}
+	
 	if ( $Plugin || ! $Compatible) {
 		if ( $MinVer )
 			$card .= "<tr><td class='popupTableLeft'>".tr("Min OS")."</td><td class='popupTableRight'>$MinVer</td></tr>";
