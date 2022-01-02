@@ -1224,26 +1224,78 @@ function pinnedApps() {
 	});
 }
 
-function displayTags(leadTemplate,rename=false) {
+function displayTags(leadTemplate,rename=false,comment="",ports="") {
 	event.stopPropagation();
 	closeSidebar();
-	post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true,rename:rename},function(result) {
-		disableSearch();
+	var flag = false;
+
+	if ( ports ) {
+		ports = JSON.parse(ports);
+		if ( ports ) {
+			ports.forEach(function(port){
+				portsInUse.forEach(function(used) {
+					if (port == used)
+						flag = true;
+				});
+			});
+		}
+		if (flag) {
+			comment = comment.concat("<br><?tr("One or more ports used by this application are already in use by another service or app running on your server.  You will need to adjust the host ports accordingly on the template")?>");
+		}
+	}		
+	if (comment) {
 		swal({
-			title: "<?tr("Choose A Branch To Install")?>",
-			text: result.tags,
-			html: true,
-			type: "warning",
+			title: "<?tr("Attention")?>",
+			text: comment,
+			allowOutsideClick: true,
+			showConfirmButton: true,
 			showCancelButton: true,
-			showConfirmButton: false,
+			confirmButtonText: "<?tr("OK")?>",
 			cancelButtonText: "<?tr("Cancel")?>",
-			allowOutsideClick: true
-		}, function(isConfirm) {
-			if ( ! isConfirm ) {
-				enableSearch();
+			animation: false,
+			type: "warning",
+			html: true,
+			closeOnConfirm: false
+		},function(isConfirm) {
+			if (isConfirm) {
+				post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true,rename:rename},function(result) {
+					disableSearch();
+					swal({
+						title: "<?tr("Choose A Branch To Install")?>",
+						text: result.tags,
+						html: true,
+						type: "warning",
+						showCancelButton: true,
+						showConfirmButton: false,
+						cancelButtonText: "<?tr("Cancel")?>",
+						allowOutsideClick: true
+					}, function(isConfirm) {
+						if ( ! isConfirm ) {
+							enableSearch();
+						}
+					});
+				});
 			}
 		});
-	});
+	} else {
+		post({action:'displayTags',leadTemplate:leadTemplate,noSpinner:true,rename:rename},function(result) {
+			disableSearch();
+			swal({
+				title: "<?tr("Choose A Branch To Install")?>",
+				text: result.tags,
+				html: true,
+				type: "warning",
+				showCancelButton: true,
+				showConfirmButton: false,
+				cancelButtonText: "<?tr("Cancel")?>",
+				allowOutsideClick: true
+			}, function(isConfirm) {
+				if ( ! isConfirm ) {
+					enableSearch();
+				}
+			});
+		});		
+	}
 }
 
 function makePlural(string,count) {

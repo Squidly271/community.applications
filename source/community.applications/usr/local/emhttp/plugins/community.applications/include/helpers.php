@@ -662,18 +662,17 @@ function debug($str) {
 # Gets the default ports in a template #
 ########################################
 function portsUsed($template) {
-	if ( $template['Network'] !== "bridge" || ! is_array($template['Config']) )
+	if ( $template['Network'] !== "bridge")
 		return;
-	
 	$portsUsed = [];
 	if ( $template['Config']['@attributes'] )
 		$template['Config'] = ['@attributes'=>$template['Config']];
-	
-	foreach ($template['Config'] as $config) {
-		if ( $config['@attributes']['Type'] !== "Port" ) continue;
-		$portsUsed[] = $config['value'] ?: $config['@attributes']['Default'];
-	}
-	
+	if ( is_array($template['Config']) ) {
+		foreach ($template['Config'] as $config) {
+			if ( $config['@attributes']['Type'] !== "Port" ) continue;
+			$portsUsed[] = $config['value'] ?: $config['@attributes']['Default'];
+		}
+	}	
 	return json_encode($portsUsed);
 }
 	
