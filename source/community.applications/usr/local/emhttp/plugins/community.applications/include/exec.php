@@ -181,6 +181,9 @@ switch ($_POST['action']) {
 	case 'search_dockerhub':
 		search_dockerhub();
 		break;
+	case 'getPortsInUse':
+		postReturn(["portsInUse"=>getPortsInUse()]);
+		break;
 	###############################################
 	# Return an error if the action doesn't exist #
 	###############################################

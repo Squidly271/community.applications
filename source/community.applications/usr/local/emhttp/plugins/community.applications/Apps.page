@@ -1153,7 +1153,10 @@ function uninstallDocker(application,humanName) {
 					$(menuItem).addClass("selectedMenu");
 					$(menuItem).next().show("slow");
 				}
-				previousApps(true,false,data.previousAppsSection);
+				post({action:'getPortsInUse'},function(data) {
+					portsInUse = data.portsInUse;
+					previousApps(true,false,data.previousAppsSection);
+				});
 			});
 		} else {
 			enableSearch();
