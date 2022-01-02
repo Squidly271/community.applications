@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2021.12.18">
-<!ENTITY md5       "ae38ebfb405a09df6fd20b63fd898abb">
+<!ENTITY version   "2022.01.02">
+<!ENTITY md5       "daa22752be655cf789e482a7f0a3246b">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,18 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.01.02
+- Fixed: If a spotlighted app was incompatible with a user's system it would still display in spotlight section
+- Added: Display warning to change host ports when installing a new app that has port conflicts with an already running container or service
+- Fixed: Comments etc weren't displaying when installing an app from the card that had branches
+- Added: Show installed / upgrade versions for plugin on sidebar
+- Removed: Extraneous file only used for compatibility with &lt;6.9.0
+- Fixed: Apps with video's would autoplay on chrome
+- Fixed: Memory leak from debugging being enabled
+- Possible Fix: Rare race condition
+- Changed: Simpler skinning
+- Fixed: Entire card is clickable for displaying the sidebar
+
 ###2021.12.18
 - Prep work for next release
 - Added: Ability to cancel installation from card if there's a warning popup
@@ -1851,7 +1863,7 @@ if [[ ! -e /usr/local/emhttp/plugins/dynamix/styles/font-cases.ttf ]]; then sed 
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."
-echo " Copyright 2015-2021, Andrew Zawadzki"
+echo " Copyright 2015-2022, Andrew Zawadzki"
 echo " Version: &version;"
 echo "----------------------------------------------------"
 echo ""
