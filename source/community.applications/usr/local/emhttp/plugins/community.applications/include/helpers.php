@@ -302,7 +302,7 @@ function versionCheck($template) {
 ###############################################
 # Function to read a template XML to an array #
 ###############################################
-function readXmlFile($xmlfile,$generic=false) {
+function readXmlFile($xmlfile,$generic=false,$stats=true) {
 	global $statistics;
 
 	if ( ! is_file($xmlfile) ) return false;
@@ -326,15 +326,16 @@ function readXmlFile($xmlfile,$generic=false) {
 	if ( $o['Config']['@attributes'] )
 		$o['Config'] = array('@attributes'=>$o['Config']['@attributes'],'value'=>$o['Config']['value']);
 
-	if ( $o['Plugin'] ) {
-		$o['Author']     = $o['PluginAuthor'];
-		$o['Repository'] = $o['PluginURL'];
-		$o['SortAuthor'] = $o['Author'];
-		$o['SortName']   = $o['Name'];
-		$statistics['plugin']++;
-	} else
-		$statistics['docker']++;
-
+	if ( $stats) {
+		if ( $o['Plugin'] ) {
+			$o['Author']     = $o['PluginAuthor'];
+			$o['Repository'] = $o['PluginURL'];
+			$o['SortAuthor'] = $o['Author'];
+			$o['SortName']   = $o['Name'];
+			$statistics['plugin']++;
+		} else
+			$statistics['docker']++;
+	}
 	return $o;
 }
 ###################################################################
@@ -657,7 +658,71 @@ function debug($str) {
 	if ( $caSettings['debugging'] == "yes" )
 		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  $str\n",FILE_APPEND);
 }
+########################################
+# Gets the default ports in a template #
+########################################
+function portsUsed($template) {
+	if ( $template['Network'] !== "bridge" || ! is_array($template['Config']) )
+		return;
+	
+	$portsUsed = [];
+	if ( $template['Config']['@attributes'] )
+		$template['Config'] = ['@attributes'=>$template['Config']];
+	
+	foreach ($template['Config'] as $config) {
+		if ( $config['@attributes']['Type'] !== "Port" ) continue;
+		$portsUsed[] = $config['value'] ?: $config['@attributes']['Default'];
+	}
+	
+	return json_encode($portsUsed);
+}
+	
+########################
+# Get the ports in use #
+########################
+function getPortsInUse() {
+	global $var, $caPaths;
+	
+	if ( !$var ) 
+		$var = parse_ini_file($caPaths['unRaidVars']);
+	
+	$portsInUse = [];
+	exec("lsof -Pni|awk '/LISTEN/ && \$9!~/127.0.0.1/ && \$9!~/\\[::1\\]/{print \$9}'|sort -u", $output);
 
+	$bind = $var['BIND_MGT']=='yes';
+	$list = is_array($addr) ? array_merge(['*'],$addr) : ['*',$addr];
+	$addr = ipaddr("eth0");
+
+	foreach ($output as $line) {
+		[$ip, $port] = my_explode(':', $line);
+		if (!in_array($port,$portsInUse) && (!$bind || in_array(plain($ip),$list)))
+			if ( is_numeric($port) )
+				$portsInUse[] = $port;
+	}
+
+	return $portsInUse;
+}
+####################################################
+# Define ipaddr if it doesn't already exist < 6.10 #
+####################################################
+if (!function_exists('ipaddr')) { 
+	function ipaddr($ethX='eth0') {
+		global $caPaths;
+		
+		$net = parse_ini_file($caPaths['network_ini'],true);
+		$eth = $net[$ethX];
+		switch ($eth['PROTOCOL:0']) {
+		case 'ipv4':
+			return $eth['IPADDR:0'];
+		case 'ipv6':
+			return $eth['IPADDR6:0'];
+		case 'ipv4+ipv6':
+			return [$eth['IPADDR:0'],$$ethX['IPADDR6:0']];
+		default:
+			return $eth['IPADDR:0'];
+		}
+	}
+}
 /**
  * @copyright Copyright 2006-2012, Miles Johnson - http://milesj.me
  * @license   http://opensource.org/licenses/mit-license.php - Licensed under the MIT License

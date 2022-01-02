@@ -36,6 +36,7 @@ $caPaths['moderationURL']                       = "https://raw.githubusercontent
 $caPaths['moderation']                          = $caPaths['tempFiles']."/moderation.json";                    /* json file that has all of the moderation */
 $caPaths['unRaidVersion']                       = "/etc/unraid-version";
 $caPaths['unRaidVars']                          = "/var/local/emhttp/var.ini";
+$caPaths['network_ini']                         = "/var/local/emhttp/network.ini";
 $caPaths['docker_cfg']                          = "/boot/config/docker.cfg";
 $caPaths['dockerUpdateStatus']                  = "/var/lib/docker/unraid-update-status.json";
 $caPaths['pinnedV2']                            = "{$caPaths['flashDrive']}/pinned_appsV2.json";

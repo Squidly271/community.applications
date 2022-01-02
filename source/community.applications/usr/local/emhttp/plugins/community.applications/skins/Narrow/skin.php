@@ -122,7 +122,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									if ( $template['BranchID'] )
 										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true);");
 									else
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second');");
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second','','".portsUsed($template)."');");
 								}
 								$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$ind]['template'])."','edit');");
 								$actionsContext[] = array("divider"=>true);
@@ -133,7 +133,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								}
 							} elseif ( ! $template['Blacklist'] || ! $template['Compatible']) {
 								if ( $template['InstallPath'] ) {
-									$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user');");
+									$userTemplate = readXmlFile($template['InstallPath'],false,false);
+									$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user','','".portsUsed($userTemplate)."');");
 									$actionsContext[] = array("divider"=>true);
 									$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
 								}	else {
@@ -144,15 +145,15 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 										if ( is_file("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml") ) {
 											$test = readXmlFile("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml",true);
 											if ( $template['Repository'] == $test['Repository'] ) {
-												
-												$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"<span class='ca_red'>".tr("Reinstall From Previous Apps")."</span>","action"=>"popupInstallXML('".addslashes("{$caPaths['dockerManTemplates']}/my-{$template['Name']}").".xml','user');");
+												$userTemplate = readXmlFile($template['InstallPath'],false,false);
+												$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"<span class='ca_red'>".tr("Reinstall From Previous Apps")."</span>","action"=>"popupInstallXML('".addslashes("{$caPaths['dockerManTemplates']}/my-{$template['Name']}").".xml','user','','".portsUsed($userTemplate)."');");
 												$actionsContext[] = array("divider"=>true);
 											}
 										}
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32",htmlspecialchars($installComment))."');");
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32",htmlspecialchars($installComment))."','".portsUsed($template)."');");
 									} else {
 									
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"displayTags('{$template['ID']}',false,'".str_replace(" ","&#32",htmlspecialchars($installComment))."');");
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"displayTags('{$template['ID']}',false,'".str_replace(" ","&#32",htmlspecialchars($installComment))."','','".portsUsed($userTemplate)."');");
 									}
 								}
 							}
@@ -521,7 +522,7 @@ function getPopupDescriptionSkin($appNumber) {
 							if ( $template['BranchID'] )
 								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true);");
 							else
-								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second');");
+								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second','','".portsUsed($template)."');");
 						}
 						$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$name]['template'])."','edit');");
 						$actionsContext[] = array("divider"=>true);
@@ -529,14 +530,15 @@ function getPopupDescriptionSkin($appNumber) {
 
 					} elseif ( ! $template['Blacklist'] ) {
 						if ( $template['InstallPath'] ) {
-							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user');");
+							$userTemplate = readXmlFile($template['InstallPath'],false,false);
+							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user','','".portsUsed($userTemplate)."');");
 							$actionsContext[] = array("divider"=>true);
 							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
 						}	else {
 							if ( ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true" )  ) {
 								if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
 									if ( ! $template['BranchID'] ) {
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default');");
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default','','".portsUsed($userTemplate)."');");
 									} else {
 										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}');");
 									}

@@ -56,17 +56,17 @@ if ( !is_dir($caPaths['templates-community']) ) {
 	@unlink($caPaths['community-templates-info']);
 }
 
-	if ( ! is_file($caPaths['logging']) ) {
-		$caVersion = plugin("version","/var/log/plugins/community.applications.plg");
+if ( ! is_file($caPaths['logging']) ) {
+	$caVersion = plugin("version","/var/log/plugins/community.applications.plg");
 
-		debug("Community Applications Version: $caVersion");
-		debug("Unraid version: {$caSettings['unRaidVersion']}");
-		debug("MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5"));
-		$lingo = $_SESSION['locale'] ?: "en_US";
-		debug("Language: $lingo");
-		debug("Settings:\n".print_r($caSettings,true));
-	}
-	debug("POST CALLED ({$_POST['action']})\n".print_r($_POST,true));
+	debug("Community Applications Version: $caVersion");
+	debug("Unraid version: {$caSettings['unRaidVersion']}");
+	debug("MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5"));
+	$lingo = $_SESSION['locale'] ?: "en_US";
+	debug("Language: $lingo");
+	debug("Settings:\n".print_r($caSettings,true));
+}
+debug("POST CALLED ({$_POST['action']})\n".print_r($_POST,true));
 
 
 $sortOrder = readJsonFile($caPaths['sortOrder']);

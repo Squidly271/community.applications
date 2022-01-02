@@ -110,6 +110,7 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 
 getAllInfo(true);
 
+
 function tr($string,$ret=false) {
 	$string = str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
 	if ( $ret )
@@ -117,6 +118,7 @@ function tr($string,$ret=false) {
 	else
 		echo $string;
 }
+
 
 ?>
 
@@ -166,6 +168,7 @@ var repoBanner = false;
 var repoBannerTimer = false;
 var unRaidFontSize = $("html").css("font-size").replace("px","");
 var resizeTimer;
+var portsInUse = <? echo json_encode(getPortsInUse()); ?>;
 
 $(function(){
 	window.onerror = function(msg,url,lineNo,columnNo, error) {
@@ -227,7 +230,7 @@ $(function(){
 	$(".sidebarClose").on("click",function(e) {
 		closeSidebar();
 	});
-	$(".mainArea").on("click",".actionsButtonContext,.actionsButton,.supportButton,.supportButtonCardContext",function() {
+	$(".mainArea").on("click",".actionsButtonContext,.actionsButton,.supportButton,.supportButtonCardContext,.ca_multiselect",function() {
 		data.actions = true;
 	});
 	$("#searchBox").keydown(function(e) {
@@ -243,7 +246,7 @@ $(function(){
 			closeSidebar();
 		}
 	});
-
+	
 	$('.caChangeLog').on("click",function() {disableSort();scrollToTop();caChangeLog();});
 	$('.mainArea').on("click",'.ca_multiselect',function() {enableMultiInstall();});
 
@@ -1910,9 +1913,24 @@ function setFavourite(button) {
 	});
 }
 
-function popupInstallXML(xml,type,comment="") {
+function popupInstallXML(xml,type,comment="",ports="") {
 	event.stopPropagation();
 	saveState();
+	var flag = false;
+	if ( ports ) {
+		ports = JSON.parse(ports);
+		if ( ports ) {
+			ports.forEach(function(port){
+				portsInUse.forEach(function(used) {
+					if (port == used)
+						flag = true;
+				});
+			});
+		}
+		if (flag) {
+			comment = comment.concat("<br><?tr("One or more ports used by this application are already in use by another service or app running on your server.  You will need to adjust the host ports accordingly on the template")?>");
+		}			
+	}
 	if ( $.trim(comment) ) {
 		swal({
 			title: "<?tr("Attention")?>",
