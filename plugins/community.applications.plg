@@ -2,7 +2,7 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.01.02">
+<!ENTITY version   "2022.01.02a">
 <!ENTITY md5       "daa22752be655cf789e482a7f0a3246b">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
@@ -18,7 +18,7 @@
 - Added: Display warning to change host ports when installing a new app that has port conflicts with an already running container or service
 - Fixed: Comments etc weren't displaying when installing an app from the card that had branches
 - Added: Show installed / upgrade versions for plugin on sidebar
-- Removed: Extraneous file only used for compatibility with &lt;6.9.0
+- Removed: Extraneous file only used for compatibility with less than 6.9.0
 - Fixed: Apps with video's would autoplay on chrome
 - Fixed: Memory leak from debugging being enabled
 - Possible Fix: Rare race condition
