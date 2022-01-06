@@ -168,8 +168,8 @@ var repoBanner = false;
 var repoBannerTimer = false;
 var unRaidFontSize = $("html").css("font-size").replace("px","");
 var resizeTimer;
-var portsInUse = <? echo json_encode(getPortsInUse()); ?>;
-
+//var portsInUse = 123<? echo json_encode(getPortsInUse()); ?>;
+var portsInUse = [];
 $(function(){
 	window.onerror = function(msg,url,lineNo,columnNo, error) {
 		post({action:'javascriptError',msg:msg,url:url,lineNo:lineNo,columnNo:columnNo,error:error});
