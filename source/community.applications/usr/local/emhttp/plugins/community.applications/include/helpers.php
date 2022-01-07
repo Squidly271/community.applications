@@ -721,8 +721,11 @@ function ca_ipaddr($ethX='eth0') {
 	}
 }
 function ca_explode($split,$text,$count=2) {
-  return array_pad(explode($split,$text,$count),$count,'');
+	return array_pad(explode($split,$text,$count),$count,'');
 }
+function plain($ip) {
+	return str_replace(['[',']'],'',$ip);
+}	
 /**
  * @copyright Copyright 2006-2012, Miles Johnson - http://milesj.me
  * @license   http://opensource.org/licenses/mit-license.php - Licensed under the MIT License

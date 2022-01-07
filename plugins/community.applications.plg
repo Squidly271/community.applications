@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.01.02a">
-<!ENTITY md5       "daa22752be655cf789e482a7f0a3246b">
+<!ENTITY version   "2022.01.07">
+<!ENTITY md5       "6862a510c529b01a3ff09050f597d34b">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.01.07
+- Fixed: Crashes with certain network configurations
+
 ###2022.01.02
 - Fixed: If a spotlighted app was incompatible with a user's system it would still display in spotlight section
 - Added: Display warning to change host ports when installing a new app that has port conflicts with an already running container or service
