@@ -22,7 +22,7 @@
 - Fixed: Comments etc weren't displaying when installing an app from the card that had branches
 - Added: Show installed / upgrade versions for plugin on sidebar
 - Removed: Extraneous file only used for compatibility with less than 6.9.0
-- Fixed: Apps with video's would autoplay on chrome
+- Fixed: Apps with video's would not autoplay on chrome
 - Fixed: Memory leak from debugging being enabled
 - Possible Fix: Rare race condition
 - Changed: Simpler skinning
