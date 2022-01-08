@@ -131,7 +131,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								}
 								$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$ind]['template'])."','edit');");
 								$actionsContext[] = array("divider"=>true);
-								$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallDocker('".addslashes($info[$ind]['template'])."','{$template['Name']}');");
+								if ($info[$ind]['template'])
+									$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallDocker('".addslashes($info[$ind]['template'])."','{$template['Name']}');");
 								if ( $template['DonateLink'] ) {
 									$actionsContext[] = array("divider"=>true);
 									$actionsContext[] = array("icon"=>"ca_fa-money","text"=>tr("Donate"),"action"=>"openNewWindow('".addslashes($template['DonateLink'])."','_blank');");
@@ -527,7 +528,8 @@ function getPopupDescriptionSkin($appNumber) {
 						}
 						$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$name]['template'])."','edit');");
 						$actionsContext[] = array("divider"=>true);
-						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallDocker('".addslashes($info[$name]['template'])."','{$template['Name']}');");
+						if ( $info[$name]['template'] )
+							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallDocker('".addslashes($info[$name]['template'])."','{$template['Name']}');");
 
 					} elseif ( ! $template['Blacklist'] ) {
 						if ( $template['InstallPath'] ) {
