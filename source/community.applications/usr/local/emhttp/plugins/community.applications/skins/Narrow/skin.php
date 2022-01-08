@@ -97,8 +97,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$selected = false;
 			$installComment = $template['CAComment'];
 			
-			if ( ! $installComment && $template['Requires'] )
-				$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires']);
+			if ( $template['Requires'] )
+				$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires'])."<br>$installComment";
 									
 			if ( ! $template['Language'] ) {
 				if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
