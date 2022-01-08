@@ -813,7 +813,7 @@ function getRepoDescriptionSkin($repository) {
 			$t .= "
 				<tr><td class='repoLeft''>".tr("Total Languages")."</td><td class='repoRight'>$totalLanguage</td></tr>
 			";
-	if ( $caSettings['dev'] == "yes")
+	if ( $caSettings['dev'] == "yes" && $repo['url'])
 		$t .= "
 				<tr><td class='repoLeft'><a class='popUpLink' href='{$repo['url']}' target='_blank'>".tr("Repository URL")."</a></td></tr>
 		";
