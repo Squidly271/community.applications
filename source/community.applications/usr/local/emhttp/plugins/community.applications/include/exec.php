@@ -1244,6 +1244,7 @@ function pinnedApps() {
 	@unlink($caPaths['startupDisplayed']);
 	@unlink($caPaths['dockerSearchActive']);
 
+	$displayed = [];
 	foreach ($pinnedApps as $pinned) {
 		$startIndex = 0;
 		$search = explode("&",$pinned);
