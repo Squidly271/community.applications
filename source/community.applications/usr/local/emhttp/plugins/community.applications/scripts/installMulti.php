@@ -28,23 +28,8 @@ function startsWith($haystack, $needle) {
 	return $needle === "" || strripos($haystack, $needle, -strlen($haystack)) !== FALSE;
 }
 
-# Modify the system file to avoid a harmless error from being displayed under normal circumstances
-# Not needed under unRaid 6.6.2+
+$exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";
 
-if ( version_compare($unRaidVersion['version'],"6.6.2",">=") ) {
-	$exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";
-} else {
-	$exeFile = "/tmp/community.applications/tempFiles/newCreateDocker.php";
-	$dockerInstall = file("/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php",FILE_IGNORE_NEW_LINES);
-	foreach ($dockerInstall as $line) {
-		if ( startsWith(trim($line),"removeContainer(") ) {
-			$line = "#$line";
-		}
-		$newInstall[] = $line;
-	}
-	file_put_contents($exeFile,implode("\n",$newInstall));
-	chmod($exeFile,0777);
-}
 $javascript = file_get_contents("/usr/local/emhttp/plugins/dynamix/javascript/dynamix.js");
 echo "<script>$javascript</script>";
 

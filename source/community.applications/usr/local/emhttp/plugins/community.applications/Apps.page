@@ -174,21 +174,6 @@ $(function(){
 	window.onerror = function(msg,url,lineNo,columnNo, error) {
 		post({action:'javascriptError',msg:msg,url:url,lineNo:lineNo,columnNo:columnNo,error:error});
 	}
-
-	// don't run this through the wrapper so that if it hangs up it won't delay anything else
-	$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'getPortsInUse'},function(data) {
-		var ret = JSON.parse(data);
-		portsInUse = ret.portsInUse;
-		console.log("Ports In Use:" + portsInUse);
-	});
-
-	if ( "<?=$killCookie?>" == "true" ) { // This is needed so that if language gets switched on the home page the home page gets regenerated correctly
-		$.cookie("ca_languageSwitch","");
-	}
-
-	<? if ( $cfg['debugging'] == "yes" ):?>
-		addBannerWarning("<?tr("Debugging enabled.  This significantly increases the memory used by your browser");?>"),true,true;
-	<?endif;?>
 	<? if ( ! is_file($caPaths['docker_cfg']) ): ?>
 		// This file is guaranteed to exist on the flash drive.  Even though 6.10Beta3+ includes similar code, keep this code because CA just can't function properly with a flash offline / corrupted.
 		$(".mainArea,.menuItems").html("");
@@ -207,6 +192,21 @@ $(function(){
 		});
 		return;
 	<?endif;?>
+	// don't run this through the wrapper so that if it hangs up it won't delay anything else
+	$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'getPortsInUse'},function(data) {
+		var ret = JSON.parse(data);
+		portsInUse = ret.portsInUse;
+		console.log("Ports In Use:" + portsInUse);
+	});
+
+	if ( "<?=$killCookie?>" == "true" ) { // This is needed so that if language gets switched on the home page the home page gets regenerated correctly
+		$.cookie("ca_languageSwitch","");
+	}
+
+	<? if ( $cfg['debugging'] == "yes" ):?>
+		addBannerWarning("<?tr("Debugging enabled.  This significantly increases the memory used by your browser");?>"),true,true;
+	<?endif;?>
+
 
 	caPluginUpdateCheck("community.applications.plg",{
 			noDismiss:true,
