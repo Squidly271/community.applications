@@ -239,7 +239,7 @@ a.ca_repoPopup:hover{color:<?=$unRaid66color?>;}
 .changelogMessage{font-size:1rem;line-height:1rem;margin-top:1rem;}
 .cardCategory{font-size:1rem;margin-left:0.75rem;}
 .cardDescription{cursor: pointer;display: block;position: relative;top:0.5rem;max-height: 7rem;overflow: hidden;}
-.cardDesc{display:inline-block;max-height:7rem;overflow:hidden;}
+.cardDesc{display:inline-block;max-height:6rem;overflow:hidden;}
 .card_readmore{color:<?=$unRaid66color?>;}
 .cardWarning{font-size:1.5rem;color:#bdbd14;}
 #Category{font-size:2rem;margin-bottom:0.5rem;}

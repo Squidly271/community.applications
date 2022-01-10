@@ -1070,10 +1070,9 @@ function displayCard($template) {
 
 	$ovr = str_replace("    ","&nbsp;&nbsp;&nbsp;&nbsp;",$ovr);
 	$ovr = markdown(strip_tags($ovr,"<br>"));
-	$ovr = str_replace(["<h1>","<h2>","<h3>"],"",$ovr);
 
 	$ovr = str_replace("\n","<br>",$ovr);
-	$Overview = str_replace("<br>"," ",$ovr);
+	$Overview = strip_tags(str_replace("<br>"," ",$ovr));
 	
 	$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
 	$card .= "<div class='$descClass $backgroundClickable'><div class='cardDesc'>$Overview</div></div>";
