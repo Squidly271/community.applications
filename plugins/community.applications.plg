@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.01.07">
-<!ENTITY md5       "6862a510c529b01a3ff09050f597d34b">
+<!ENTITY version   "2022.01.15">
+<!ENTITY md5       "fca8a8885a688e3721b6793809eb8668">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,16 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.01.15
+- Fixed: Race conditions on setting the proper sort order after navigating from Home, Show More to anywhere else
+- Fixed: Don't allow CA to update itself from the card or sidebar (only allow from banner) as crashes would result
+- Fixed: Certain templates wouldn't display correctly on the cards
+- Fixed: Regression error would appear if the flash drive wasn't present
+- Fixed: If an app had additional requirements and a comment, only the comment would appear when installing from the card
+- Fixed: Prevent deletion of an installed app if no template exists on the flash drive (errors would result)
+- Fixed: A link to a profile was appearing on private apps
+- Fixed: If all pinned apps were no longer available within CA, errors would appear when going to Pinned Apps
+
 ###2022.01.07
 - Fixed: Crashes with certain network configurations
 
