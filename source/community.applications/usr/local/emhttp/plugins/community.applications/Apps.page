@@ -243,8 +243,22 @@ $(function(){
 	$("#searchBox").keydown(function(e) {
 		if (e.which === 13) {
 			searchBoxAwesomplete.close();
-			checkSortOrder();
-			doSearch();
+			// this is the check sort order function
+			var sortButton = false;
+			$(".sortIcons").each(function() {
+				if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+					sortButton = true;
+				}
+			});
+			if ( !sortButton) {
+				$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+				post({action:"defaultSortOrder"},function(data) {
+					$("#defaultSort").addClass("enabledIcon");
+					doSearch();
+				});
+			} else {
+				doSearch();
+			}
 		}
 	});
 
@@ -302,16 +316,42 @@ $(function(){
 	$('body').on("click",".ca_repoSearch,.ca_repoSearchPopUp",function() {
 		closeSidebar();
 		var repo = $(this).data("repository");
-		checkSortOrder();
-		doSearch(false,repo);
+		var sortButton = false;
+		$(".sortIcons").each(function() {
+			if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+				sortButton = true;
+			}
+		});
+		if ( !sortButton) {
+			$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+			post({action:"defaultSortOrder"},function(data) {
+				$("#defaultSort").addClass("enabledIcon");
+				doSearch(false,repo);
+			});
+		} else {
+			doSearch(false,repo);
+		}
 	});
 
 	$('.favouriteRepo').on("click",function() {
 		if ( $(this).hasClass("caMenuDisabled") )
 			return;
 		var repo = $(this).attr("data-repository");
-		checkSortOrder();
-		doSearch(false,repo);
+		var sortButton = false;
+		$(".sortIcons").each(function() {
+			if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+				sortButton = true;
+			}
+		});
+		if ( !sortButton) {
+			$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+			post({action:"defaultSortOrder"},function(data) {
+				$("#defaultSort").addClass("enabledIcon");
+				doSearch(false,repo);
+			});
+		} else {
+			doSearch(false,repo);
+		}
 	});
 
 	$('body').on("click",".templateSearch",function() {
@@ -410,10 +450,25 @@ $(function(){
 		if ( ! data.searchFlag ) {
 			$("#searchBox").val("");
 		}
-		checkSortOrder();
 		showSortIcons();
 		scrollToTop();
-		changeCategory(menu,false);
+		
+		// This is the checkSortOrder function to prevent a race condition
+		var sortButton = false;
+		$(".sortIcons").each(function() {
+			if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+				sortButton = true;
+			}
+		});
+		if ( !sortButton) {
+			$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+			post({action:"defaultSortOrder"},function(data) {
+				$("#defaultSort").addClass("enabledIcon");
+				changeCategory(menu,false);
+			});
+		}	else {
+			changeCategory(menu,false);
+		}
 	});
 
 	$('.menuItems').on("mouseover",".caMenuItem",function() {
@@ -516,11 +571,7 @@ $(function(){
 			var sortOrder = new Object();
 			sortOrder.sortBy = sortBy;
 			sortOrder.sortDir = sortDir;
-			$(".sortIcons").each(function() {
-				if ( $(this).data("sortby") == sortBy && $(this).data("sortdir") == sortDir ) {
-					$(this).addClass("enabledIcon").addClass("startupMore");
-				}
-			});
+			$(".sortIcons").addClass("startupMore");
 		}
 		$("#CategoryLine").html($(this).data("des"));
 		scrollToTop();
@@ -541,8 +592,21 @@ $(function(){
 
 	$(".clearSearch").click(function() {
 		if ( $(this).hasClass("caMenuEnabled") ) {
-			checkSortOrder();
-			doSearch(true);
+			var sortButton = false;
+			$(".sortIcons").each(function() {
+				if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+					sortButton = true;
+				}
+			});
+			if ( !sortButton) {
+				$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+				post({action:"defaultSortOrder"},function(data) {
+					$("#defaultSort").addClass("enabledIcon");
+					doSearch(true);
+				});
+			} else {
+				doSearch(true);
+			}
 		}
 	});
 
@@ -726,7 +790,24 @@ function setToolTip() {
 }
 
 function showSpecialCategory(button) {
-	checkSortOrder();
+	var sortButton = false;
+	$(".sortIcons").each(function() {
+		if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+			sortButton = true;
+		}
+	});
+	if ( !sortButton) {
+		$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+		post({action:"defaultSortOrder"},function(data) {
+			$("#defaultSort").addClass("enabledIcon");
+			showSpecials(button)
+		});
+	} else {
+		showSpecials(button);
+	}
+}
+
+function showSpecials(button) {
 	showSortIcons();
 	$(".caMenuItem").removeClass("selectedMenu");
 	$(".multi_installDiv").hide();
@@ -944,7 +1025,22 @@ function populateAutoComplete() {
 }
 
 function awesompleteSearch() {
-	doSearch(false);
+	// this is the check sort order function
+	var sortButton = false;
+	$(".sortIcons").each(function() {
+		if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+			sortButton = true;
+		}
+	});
+	if ( !sortButton) {
+		$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+		post({action:"defaultSortOrder"},function(data) {
+			$("#defaultSort").addClass("enabledIcon");
+			doSearch(false);
+		});
+	} else {
+		doSearch(false);
+	}
 }
 
 
@@ -1038,7 +1134,6 @@ function showModeration(script,title) {
 }
 
 function previousApps(installed,dontClear=false,filter="") {
-	checkSortOrder();
 	clearCategory();
 	setPageOne();
 	data.docker = "";
@@ -1046,7 +1141,25 @@ function previousApps(installed,dontClear=false,filter="") {
 	clearSearchBox();
 	$(".dockerSearch").hide();
 	showSortIcons();
-
+	
+	// this is the checkSortOrder function running to prevent a race condition
+	var sortButton = false;
+	$(".sortIcons").each(function() {
+		if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+			sortButton = true;
+		}
+	});
+	if ( !sortButton) {
+		$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+		post({action:"defaultSortOrder"},function(data) {
+			$("#defaultSort").addClass("enabledIcon");
+			getPrevApps(installed,filter,dontClear);
+		});
+	} else {
+		getPrevApps(installed,filter,dontClear);
+	}
+}
+function getPrevApps(installed,filter,dontClear) {
 	post({action:'previous_apps',installed:installed,filter:filter},function(result) {
 		if ( installed ) {
 			$(".multi_installDiv").hide();
@@ -1220,7 +1333,24 @@ function clearCategory() {
 }
 
 function pinnedApps() {
-	checkSortOrder();
+	var sortButton = false;
+	$(".sortIcons").each(function() {
+		if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+			sortButton = true;
+		}
+	});
+	if ( !sortButton) {
+		$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+		post({action:"defaultSortOrder"},function(data) {
+			$("#defaultSort").addClass("enabledIcon");
+			pins();
+		});
+	} else {
+		pins();
+	}
+}
+	
+function pins() {
 	setPageOne();
 	data.docker = "";
 	clearSearchBox();

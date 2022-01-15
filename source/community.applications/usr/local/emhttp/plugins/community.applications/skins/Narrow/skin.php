@@ -163,7 +163,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					} else {
 						$pluginName = basename($template['PluginURL']);
 						if ( file_exists("/var/log/plugins/$pluginName") ) {
-							if ( plugin("version","/var/log/plugins/$pluginName") != $template['pluginVersion'] ) {
+							if ( plugin("version","/var/log/plugins/$pluginName") != $template['pluginVersion'] && $template['Name'] !== "Community Applications"  ) {
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 								$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
 							}
@@ -553,7 +553,7 @@ function getPopupDescriptionSkin($appNumber) {
 			} else {
 				if ( file_exists("/var/log/plugins/$pluginName") ) {
 					$template['installedVersion'] = plugin("version","/var/log/plugins/$pluginName");
-					if ( $template['installedVersion'] != $template['pluginVersion'] ) {
+					if ( $template['installedVersion'] != $template['pluginVersion'] && $template['Name'] !== "Community Applications") {
 						@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 						$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
 					}
