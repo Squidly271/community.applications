@@ -690,7 +690,6 @@ function getPortsInUse() {
 
 	$bind = $var['BIND_MGT']=='yes';
 	$list = is_array($addr) ? array_merge(['*'],$addr) : ['*',$addr];
-	$addr = ca_ipaddr("eth0");
 
 	foreach ($output as $line) {
 		[$ip, $port] = ca_explode(':', $line);
@@ -701,25 +700,7 @@ function getPortsInUse() {
 
 	return $portsInUse;
 }
-####################################################
-# Define ipaddr if it doesn't already exist < 6.10 #
-####################################################
-function ca_ipaddr($ethX='eth0') {
-	global $caPaths;
-	
-	$net = parse_ini_file($caPaths['network_ini'],true);
-	$eth = $net[$ethX];
-	switch ($eth['PROTOCOL:0']) {
-	case 'ipv4':
-		return $eth['IPADDR:0'];
-	case 'ipv6':
-		return $eth['IPADDR6:0'];
-	case 'ipv4+ipv6':
-		return [$eth['IPADDR:0'],$$ethX['IPADDR6:0']];
-	default:
-		return $eth['IPADDR:0'];
-	}
-}
+
 function ca_explode($split,$text,$count=2) {
 	return array_pad(explode($split,$text,$count),$count,'');
 }
