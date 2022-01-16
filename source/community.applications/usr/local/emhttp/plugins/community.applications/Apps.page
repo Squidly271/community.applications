@@ -504,10 +504,18 @@ $(function(){
 		if ( $(this).hasClass("selectedMenu") ) {
 			return;
 		}
+		var slideFlag = true;
+		var currentCat = $(".selectedMenu").data("category");
+		var newCat = $(this).data("category");
+		if ( currentCat && currentCat.startsWith(newCat) ) 
+			slideFlag = false;		
+		
 		if ( ! $(this).hasClass("caRepositoryMenu") ) {
 			$(".caMenuItem").removeClass("selectedMenu");
 			if ( ! $(this).parent().hasClass("subCategory") ) {
-				$(".subCategory").hide("slow");
+
+				if ( slideFlag )
+					$(".subCategory").hide("fast");
 			}
 		}
 		if ( $(this).hasClass("caRepositoryMenu") && $(".startupButton").hasClass("selectedMenu") ) {
@@ -516,7 +524,8 @@ $(function(){
 		}
 
 		$(this).addClass("selectedMenu");
-		$(this).next().show("slow");
+		if ( slideFlag )
+			$(this).next().show("fast");
 	});
 
 	$(".sectionMenu").on("click",function() {

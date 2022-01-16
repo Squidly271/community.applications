@@ -296,7 +296,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 
 	$totalPages = ceil($totalApps / $caSettings['maxPerPage']);
 
-	if ($totalPages == 1) return;
+	if ($totalPages == 1) return "<script>data.currentpage = 1;</script>";
 
 	$startApp = ($pageNumber - 1) * $caSettings['maxPerPage'] + 1;
 	$endApp = $pageNumber * $caSettings['maxPerPage'];
