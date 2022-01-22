@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.01.15">
-<!ENTITY md5       "fca8a8885a688e3721b6793809eb8668">
+<!ENTITY version   "2022.01.22">
+<!ENTITY md5       "e58970ad8c9b497745a3fe0dee1a2695">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.01.22
+- Fixed: After browsing and switching to page 2 then doing a search that only had a single page of results and installing No Apps Found would appear when returning to CA
+- Fixed: Don't re open/close the category when going from a subcategory back to the parent
+- Cleanup: Remove some unnecessary code
+- Fixed: Installing from a card wouldn't display both a CAComment and Additional Requirements if both were present
+- Appfeed: Security enhancements
+
 ###2022.01.15
 - Fixed: Race conditions on setting the proper sort order after navigating from Home, Show More to anywhere else
 - Fixed: Don't allow CA to update itself from the card or sidebar (only allow from banner) as crashes would result
