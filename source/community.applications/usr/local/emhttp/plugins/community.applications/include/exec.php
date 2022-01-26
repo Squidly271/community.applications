@@ -643,7 +643,7 @@ function get_content() {
 	}
 	if ( empty($file)) return;
 
-	if ( $category === "/NONE/i" ) {
+	if ( !$filter && $category === "/NONE/i" ) {
 		file_put_contents($caPaths['startupDisplayed'],"startup");
 		$displayApplications = [];
 		$displayApplications['community'] = [];

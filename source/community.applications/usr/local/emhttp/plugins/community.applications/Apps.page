@@ -169,6 +169,7 @@ var repoBannerTimer = false;
 var unRaidFontSize = $("html").css("font-size").replace("px","");
 var resizeTimer;
 var portsInUse = [];
+var startupSearch = "<?=$_GET['search']?>";
 
 $(function(){
 	window.onerror = function(msg,url,lineNo,columnNo, error) {
@@ -772,8 +773,14 @@ function updateContent(button) {
 			if ( result.data ) {
 				updateDisplay(result.data);
 			} else {
-				data.searchActive = true;
-				getContent(true,'INITIALIZE',"","",startupScreen);
+				data.searchActive = false;
+				if ( startupSearch ) {
+					doSearch(false,startupSearch);
+					populateAutoComplete();
+					startupSearch = "";
+				} else {
+					getContent(true,'INITIALIZE',"","",startupScreen);
+				}
 			}
 		}
 		getCategories();
