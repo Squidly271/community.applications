@@ -1045,7 +1045,7 @@ function displayCard($template) {
 		if ( $Deprecated )
 			$warning = tr("This application template has been deprecated");
 		if ( ! $Compatible )
-			$warning = tr("This application is not compatible with your version of Unraid");
+			$warning = $VerMessage ?: tr("This application is not compatible with your version of Unraid");
 		if ( $Blacklist )
 			$warning = tr("This application template has been blacklisted");
 
@@ -1098,9 +1098,10 @@ function displayCard($template) {
 			</div>
 		";		
 	} elseif ( isset($Compatible) && ! $Compatible ) {
+		$verMsg = $VerMessage ?: tr("This application is not compatible with your version of Unraid");
 		$card .= "
 			<div class='warningCardBackground'>
-				<div class='betaPopupText ca_center' title='".tr("This application is not compatible with your version of Unraid")."'>$flagTextStart".tr("Incompatible")."$flagTextEnd</div>
+				<div class='betaPopupText ca_center' title='$verMsg'>$flagTextStart".tr("Incompatible")."$flagTextEnd</div>
 			</div>
 		";
 	} elseif ( $Deprecated ) {
@@ -1200,7 +1201,7 @@ function displayPopup($template) {
 	if ( $Deprecated )
 		$ModeratorComment .= "<br>".tr("This application template has been deprecated");
 	if ( ! $Compatible && ! $UnknownCompatible )
-		$ModeratorComment .= "<br>".tr("This application is not compatible with your version of Unraid");
+		$ModeratorComment .= $VerMessage ?: "<br>".tr("This application is not compatible with your version of Unraid");
 	if ( $Blacklist )
 		$ModeratorComment .= "<br>".tr("This application template has been blacklisted");
 
