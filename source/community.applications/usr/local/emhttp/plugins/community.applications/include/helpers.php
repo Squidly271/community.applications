@@ -65,6 +65,7 @@ function writeJsonFile($filename,$jsonArray) {
 		debug("Write error $filename");
 		
 }
+
 function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	global $caSettings, $caPaths;
 
@@ -92,7 +93,7 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	debug("DOWNLOAD URL: $url\nRESULT:\n".var_dump_ret($out));
 	return $out ?: false;
 }
-function download_json($url,$path) {
+function download_json($url,$path="") {
 	return json_decode(download_url($url,$path),true);
 }
 function getPost($setting,$default) {
@@ -707,6 +708,7 @@ function ca_explode($split,$text,$count=2) {
 function plain($ip) {
 	return str_replace(['[',']'],'',$ip);
 }	
+
 /**
  * @copyright Copyright 2006-2012, Miles Johnson - http://milesj.me
  * @license   http://opensource.org/licenses/mit-license.php - Licensed under the MIT License

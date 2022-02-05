@@ -1159,7 +1159,6 @@ function displayPopup($template) {
 	$FirstSeen = ($FirstSeen < 1433649600 ) ? 1433000000 : $FirstSeen;
 	$DateAdded = date("M j, Y",$FirstSeen);
 	$favRepoClass = ($caSettings['favourite'] == $Repo) ? "fav" : "nonfav";
-
 	$card = "
 		<div class='popup'>
 		<div><span class='popUpClose'>".tr("CLOSE")."</span></div>
@@ -1264,7 +1263,7 @@ function displayPopup($template) {
 		<div class='popupInfoSection'>
 			<div class='popupInfoLeft'>
 			<div class='rightTitle'>".tr("Details")."</div>
-			<table style='display:initial;'>
+			<table style='display:initial;width:100%;'>
 				<tr><td class='popupTableLeft'>".tr("Application Type")."</td><td class='popupTableRight'>$appType</td></tr>
 				<tr><td class='popupTableLeft'>".tr("Categories")."</td><td class='popupTableRight'>$Category</td></tr>
 				<tr><td class='popupTableLeft'>".tr("Added")."</td><td class='popupTableRight'>$DateAdded</td></tr>
@@ -1273,10 +1272,14 @@ function displayPopup($template) {
 	if ($downloadText)
 		$card .= "<tr><td class='popupTableLeft'>".tr("Downloads")."</td><td class='popupTableRight'>$downloadText</td></tr>";
 	if (!$Plugin && !$LanguagePack)
-		$card .= "<tr><td class='popupTableLeft'>".tr("Repository")."</td><td class='popupTableRight'>$Repository</td></tr>";
+		$card .= "<tr><td class='popupTableLeft'>".tr("Repository")."</td><td class='popupTableRight' style='white-space:nowrap;'>$Repository</td></tr>";
 	if ($stars)
 		$card .= "<tr><td class='popupTableLeft'>".tr("DockerHub Stars:")."</td><td class='popupTableRight'>$stars <span class='dockerHubStar'></span></td></tr>";
-
+	if ( ! $Plugin && ! $Language ) {
+		if ( $LastUpdate ) {
+			$card .= "<tr><td class='popupTableLeft'>".tr("Last Update:")."</td><td class='popupTableRight'>".date("M n, Y",$LastUpdate)." <span class='ca_note' title='".tr("Only accurate to within 30 days")."'><span class='ca_fa-asterisk'></span></span></td></tr>";
+		}
+	}
 	if ( $Plugin ) {
 		$card .= "<tr><td class='popupTableLeft'>".tr("Installed Version")."</td><td class='popupTableRight'>$installedVersion</td></tr>";
 		if ( $installedVersion != $pluginVersion ) {
@@ -1346,7 +1349,9 @@ function displayPopup($template) {
 			$card .= "<li class='templateErrorsList'>$error</li>";
 		}
 	}
-
+	if ( ! $Plugin && ! $Language ){
+		$card .= "<div><br><span class='ca_note ca_bold'><span class='ca_fa-asterisk'></span> ".tr("Note: All statistics are only accurate to within 30 days")."</span></div>";
+	}
 	if ( $Beta ) {
 		$card .= "
 			<div class='betaPopupBackground'>

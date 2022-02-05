@@ -169,6 +169,7 @@ a.ca_categories{text-decoration:none;color:inherit;}
 .ca_discord_popup::before{content:"\e988";font-family:Unraid;font-size:2.2rem;vertical-align:middle;}
 img.ca_displayIcon{height:8rem;width:8rem;}
 .ca_fa-additional::before{content:"\f055";font-family:fontAwesome;}
+.ca_fa-asterisk::before{content:"\f069";font-family:fontAwesome;}
 .ca_fa-comment::before{content:"\f075";font-family:fontAwesome;}
 .ca_fa-delete{color:#882626;}
 .ca_fa-delete::before{content:"\f00d";font-family:fontAwesome;}
@@ -214,6 +215,7 @@ li.caMenuItem{padding:0px 0px 5px 0px; width:fit-content;}
 .ca_non_favouriteRepo::before{content:"\f2be";font-family:fontAwesome;}
 ul.nonselectMenu{list-style-type: none;margin:0px 0px 20px 0px;padding: 0;font-size:1.5rem;}
 .ca_normal{font-size:1.4rem !important;}
+.ca_note{color:#d67777;}
 .ca_popupIconArea{height:14.4rem;}
 .ca_private::after{content:"\f069";font-family:fontAwesome;}
 .ca_private{color:#882626;}

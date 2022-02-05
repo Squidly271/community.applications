@@ -2420,7 +2420,7 @@ function showSidebarApp(apppath,appname) {
 				});
 				context.attach("#actionsPopup",opts);
 			}
-			$(".popupName,.betaPopupText").each(function() {
+			$(".popupName,.betaPopupText,.popupTableRight,.popupTableLeft").each(function() {
 				while (isOverflown(this)) {
 					var existingSize = $(this).css("font-size");
 					var size = existingSize.replace("px","");
