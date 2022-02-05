@@ -1289,7 +1289,7 @@ function displayPopup($template) {
 		$card .= "<tr><td class='popupTableLeft'>".tr("DockerHub Stars:")."</td><td class='popupTableRight'>$stars <span class='dockerHubStar'></span></td></tr>";
 	if ( ! $Plugin && ! $Language ) {
 		if ( $LastUpdate ) {
-			$card .= "<tr><td class='popupTableLeft'>".tr("Last Update:")."</td><td class='popupTableRight'>".date("M n, Y",$LastUpdate)." <span class='ca_note' title='".tr("Only accurate to within 30 days")."'><span class='ca_fa-asterisk'></span></span></td></tr>";
+			$card .= "<tr><td class='popupTableLeft'>".tr("Last Update:")."</td><td class='popupTableRight'>".date("M n, Y",$LastUpdate)." <span class='ca_note'><span class='ca_fa-asterisk'></span></span></td></tr>";
 		}
 	}
 	if ( $Plugin ) {
@@ -1362,7 +1362,7 @@ function displayPopup($template) {
 		}
 	}
 	if ( ! $Plugin && ! $Language ){
-		$card .= "<div><br><span class='ca_note ca_bold'><span class='ca_fa-asterisk'></span> ".tr("Note: All statistics are only accurate to within 30 days")."</span></div>";
+		$card .= "<div><br><span class='ca_note ca_bold'><span class='ca_fa-asterisk'></span> ".tr("Note: All statistics are only gathered every 30 days")."</span></div>";
 	}
 	if ( $Beta ) {
 		$card .= "
