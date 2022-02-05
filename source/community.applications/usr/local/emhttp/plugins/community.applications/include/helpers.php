@@ -254,6 +254,13 @@ function makeXML($template) {
 	fixAttributes($template,"Network");
 	fixAttributes($template,"Config");
 
+# Sanitize the Requires entry if there is any CA links within it
+	preg_match_all("/\/\/(.*?)&#92;/m",$template['Requires'],$searchMatches);
+	if ( count($searchMatches[1]) ) {
+		foreach ($searchMatches[1] as $searchResult) {
+			$template['Requires'] = str_replace("//$searchResult\\\\",$searchResult,$template['Requires']);
+		}
+	}
 	$Array2XML = new Array2XML();
 	$xml = $Array2XML->createXML("Container",$template);
 	return $xml->saveXML();

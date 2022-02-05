@@ -186,8 +186,16 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
 							if ( ! $template['InstallPath'] ) {
 								$installComment = $template['CAComment'];
-								if ( ! $installComment && $template['Requires'] )
+								if ( ! $installComment && $template['Requires'] ){
+									// Remove the flags to indicate a search taking place
+									preg_match_all("/\/\/(.*?)\\\\/m",$template['Requires'],$searchMatches);
+									if ( count($searchMatches[1]) ) {
+										foreach ($searchMatches[1] as $searchResult) {
+											$template['Requires'] = str_replace("//$searchResult\\\\",$searchResult,$template['Requires']);
+										}
+									}									
 									$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires']);
+								}
 							}
 							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}','','".str_replace(" ","&#32",htmlspecialchars($installComment))."');");
 							if ( $template['InstallPath'] ) {
@@ -459,7 +467,6 @@ function getPopupDescriptionSkin($appNumber) {
 		rsort($allTrends);
 		$trendRank = array_search($template['trending'],$allTrends) + 1;
 	}
-
 	$template['Category'] = categoryList($template['Category'],true);
 	$template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
 	if ( $template['Overview'] )
@@ -504,8 +511,13 @@ function getPopupDescriptionSkin($appNumber) {
 
 	if ( $template['Requires'] ) {
 		$template['Requires'] = Markdown(strip_tags(str_replace(["\r","\n","&#xD;"],["","<br>",""],trim($template['Requires'])),"<br>"));
+		preg_match_all("/\/\/(.*?)&#92;/m",$template['Requires'],$searchMatches);
+		if ( count($searchMatches[1]) ) {
+			foreach ($searchMatches[1] as $searchResult) {
+				$template['Requires'] = str_replace("//$searchResult&#92;","<a style='cursor:pointer;' onclick='doSidebarSearch(&quot;$searchResult&quot;);'>$searchResult</a>",$template['Requires']);
+			}
+		}
 	}
-
 	$actionsContext = [];
 	if ( ! $template['Language'] ) {
 		if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {

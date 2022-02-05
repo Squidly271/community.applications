@@ -297,6 +297,11 @@ input[type=button]{background:none;font-size:1.5rem;}
 input:hover[type=button]{color:<?=$unRaid66color?>;background:none !important;}
 input:hover[type=button][disabled]{background:none !important;color:currentColor !important;font-size:1.5rem;}
 input[type=button][disabled]{background:none;}
+
+.linkButton{color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #000000;  padding: 1px 10px 1px 10px;}
+.linkButton:hover{text-decoration:none;background-color:<?=$unRaid66color?>;}
+.linkButton a{text-decoration:none;color:<?=$supportPopupText?>}
+
 .mainArea{position:absolute;left:18.5rem;right:0px;top:2rem;display:block;overflow-x:hidden;min-height:90vh;}
 .menuHeader{ font-size:2rem; margin-bottom:1rem;margin-top:1rem;}
 .menuItems{position:absolute;top:2rem;left:0px;width:14rem;height:auto;}
