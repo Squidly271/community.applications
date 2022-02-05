@@ -1169,7 +1169,7 @@ function displayPopup($template) {
 	if ( $RepoShort ) $RepoName = $RepoShort;
 
 	$FirstSeen = ($FirstSeen < 1433649600 ) ? 1433000000 : $FirstSeen;
-	$DateAdded = date("M j, Y",$FirstSeen);
+	$DateAdded = tr(date("M j, Y",$FirstSeen),0);
 	$favRepoClass = ($caSettings['favourite'] == $Repo) ? "fav" : "nonfav";
 	$card = "
 		<div class='popup'>
@@ -1275,7 +1275,7 @@ function displayPopup($template) {
 		<div class='popupInfoSection'>
 			<div class='popupInfoLeft'>
 			<div class='rightTitle'>".tr("Details")."</div>
-			<table style='display:initial;width:100%;'>
+			<table style='display:initial;'>
 				<tr><td class='popupTableLeft'>".tr("Application Type")."</td><td class='popupTableRight'>$appType</td></tr>
 				<tr><td class='popupTableLeft'>".tr("Categories")."</td><td class='popupTableRight'>$Category</td></tr>
 				<tr><td class='popupTableLeft'>".tr("Added")."</td><td class='popupTableRight'>$DateAdded</td></tr>
@@ -1288,7 +1288,7 @@ function displayPopup($template) {
 	if ($stars)
 		$card .= "<tr><td class='popupTableLeft'>".tr("DockerHub Stars:")."</td><td class='popupTableRight'>$stars <span class='dockerHubStar'></span></td></tr>";
 	if ( ! $Plugin && ! $Language ) {
-		$lastUpdateMsg = $LastUpdate ? date("M j, Y",$LastUpdate) : "Unknown";
+		$lastUpdateMsg = $LastUpdate ? tr(date("M j, Y",$LastUpdate),0) : tr("Unknown");
 		$card .= "<tr><td class='popupTableLeft'>".tr("Last Update:")."</td><td class='popupTableRight'><span id='template{$template['ID']}'>$lastUpdateMsg <span class='ca_note'><span class='ca_fa-asterisk'></span></span></span></td></tr>";
 	}
 	if ( $Plugin ) {

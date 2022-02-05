@@ -2065,19 +2065,25 @@ function getLastUpdate($ID) {
 		return "Unknown";
 	
 	$app = $templates[$index];
+	if ( $app['PluginURL'] || $app['LanguageURL'] )
+		return;
+	
 	if ( strpos($app['Repository'],"ghcr.io") !== false || strpos($app['Repository'],"cr.hotio.dev") !== false || strpos($app['Repository'],"lscr.io") !== false) { // try dockerhub for info on ghcr stuff
 		$info = pathinfo($app['Repository']);
 		$regs = basename($info['dirname'])."/".$info['filename'];
 	} else {
 		$regs = $app['Repository'];
 	}
-	$reg = explode(":",$regs)[0];
-	$registry = download_url("https://registry.hub.docker.com/v2/repositories/$reg");
+	$reg = explode(":",$regs);
+	if ( $reg[1] && $reg[1] !== "latest" )
+		return tr("Unknown");
+	
+	$registry = download_url("https://registry.hub.docker.com/v2/repositories/{$reg[0]}");
 	$registry_json = json_decode($registry,true);
 	if ( ! $registry_json['last_updated'] )
 		return;
-	
-	$lastUpdated = $registry_json['last_updated'] ? date("M j, Y",strtotime(explode("T",$registry_json['last_updated'])[0])) : "Unknown";
+
+	$lastUpdated = $registry_json['last_updated'] ? tr(date("M j, Y",strtotime($registry_json['last_updated'])),0) : "Unknown";
 	
 	return $lastUpdated;
 }
