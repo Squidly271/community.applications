@@ -183,6 +183,9 @@ switch ($_POST['action']) {
 	case 'getPortsInUse':
 		postReturn(["portsInUse"=>getPortsInUse()]);
 		break;
+	case 'getLastUpdate':
+		postReturn(['lastUpdate'=>getLastUpdate(getPost("ID","Unknown"))]);
+		break;
 	###############################################
 	# Return an error if the action doesn't exist #
 	###############################################
@@ -2046,6 +2049,37 @@ function search_dockerhub() {
 
 	writeJsonFile($caPaths['dockerSearchResults'],$dockerFile);
 	postReturn(['display'=>displaySearchResults($pageNumber)]);
+}
+##############################################
+# Gets the last update issued to a container #
+##############################################
+function getLastUpdate($ID) {
+	global $caPaths;
+	
+	while ( ! $templates ) {
+		$templates = readJsonFile($caPaths['community-templates-info']);
+		sleep(1); # keep trying in case of a collision between reading and writing
+	}
+	$index = searchArray($templates,"ID",$ID);
+	if ( $index === false )
+		return "Unknown";
+	
+	$app = $templates[$index];
+	if ( strpos($app['Repository'],"ghcr.io") !== false || strpos($app['Repository'],"cr.hotio.dev") !== false || strpos($app['Repository'],"lscr.io") !== false) { // try dockerhub for info on ghcr stuff
+		$info = pathinfo($app['Repository']);
+		$regs = basename($info['dirname'])."/".$info['filename'];
+	} else {
+		$regs = $app['Repository'];
+	}
+	$reg = explode(":",$regs)[0];
+	$registry = download_url("https://registry.hub.docker.com/v2/repositories/$reg");
+	$registry_json = json_decode($registry,true);
+	if ( ! $registry_json['last_updated'] )
+		return;
+	
+	$lastUpdated = $registry_json['last_updated'] ? date("M j, Y",strtotime(explode("T",$registry_json['last_updated'])[0])) : "Unknown";
+	
+	return $lastUpdated;
 }
 #######################################
 # Logs Javascript errors being caught #

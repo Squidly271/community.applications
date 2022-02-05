@@ -1837,6 +1837,71 @@ String.prototype.escapeHTML = function() {
 	return this.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
+function postNoSpin(options,callback) {
+	var URL = "/plugins/<?=$plugin?>/include/exec.php";
+
+	if ( typeof options === "function" ) {
+		callback = options;
+	} else {
+		<? if ( $cfg['debugging'] == "yes" ):?>
+			var msg = "No Spin Post: ";
+			console.log(msg+JSON.stringify(options));
+		<?endif;?>
+	}	
+	var URL = "/plugins/<?=$plugin?>/include/exec.php";
+
+	if ( typeof options === "function" ) {
+		callback = options;
+	} else {
+		<? if ( $cfg['debugging'] == "yes" ):?>
+			var msg = "No Spin Post: ";
+			console.log(msg+JSON.stringify(options));
+		<?endif;?>
+	}	
+	if ( typeof callback === "function" ) {
+		$.post(URL,options,function(retval){
+			try {
+				var result = JSON.parse(retval);
+				if (result.error) {
+					alert(result.error);
+				}
+			} catch(e) {
+				myCloseAlert();
+				myCloseSpinner();
+				if ( ! $.trim(retval) ) {
+					retval = "<?tr("No data was returned.  It is probable that another browser session has rebooted your server.  Reloading this browser tab will probably fix this error")?>";
+				}
+				if ( retval.indexOf("<!DOCTYPE html>") === 0 ) {
+					alert("<?tr("You have been logged out")?>");
+					window.location.reload();
+				}	else {
+					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
+					throw new Error("Something went badly wrong!"+options.action);
+				}
+			}
+			<? if ( $cfg['debugging'] == "yes" ):?>
+				console.groupCollapsed("Result "+options.action);
+				console.log(result);
+				console.groupEnd();
+			<?endif;?>
+			try {
+				eval(callback(result));
+			} catch(e) {
+				post({action:'javascriptError',postCall:options.action,retval:result});
+				alert("Fatal error during "+options.action+" "+e);
+			}
+			if (result.script) {
+				try {
+					eval(result.script);
+				} catch(e) {
+					alert("Could not execute Script "+e);
+				}
+			}
+		});
+	} else {
+		$.post(URL,options);
+	}
+}	
 function post(options,callback) {
 	var URL = "/plugins/<?=$plugin?>/include/exec.php";
 
@@ -2428,6 +2493,11 @@ function showSidebarApp(apppath,appname) {
 						return false;
 
 					$(this).css("font-size",newSize+"px");
+				}
+			});
+			postNoSpin({action:'getLastUpdate',ID:result.ID},function(lastUpdate) {
+				if (lastUpdate.lastUpdate) {
+					$("#template"+result.ID).html(lastUpdate.lastUpdate);
 				}
 			});
 		})

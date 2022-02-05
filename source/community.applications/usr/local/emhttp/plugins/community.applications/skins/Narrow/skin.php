@@ -98,7 +98,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$installComment = $template['CAComment'];
 			
 			if ( $template['Requires'] )
-				$installComment .= tr("This application has additional requirements")."<br>".markdown($template['Requires'])."<br>$installComment";
+				$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires'])."<br>$installComment";
 									
 			if ( ! $template['Language'] ) {
 				if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
@@ -704,7 +704,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$template['supportContext'] = $supportContext;
 	@unlink($caPaths['pluginTempDownload']);
 
-	return array("description"=>displayPopup($template),"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel,"supportContext"=>$supportContext,"actionsContext"=>$actionsContext);
+	return array("description"=>displayPopup($template),"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel,"supportContext"=>$supportContext,"actionsContext"=>$actionsContext,"ID"=>$template['ID']);
 }
 
 #####################################
@@ -1288,9 +1288,8 @@ function displayPopup($template) {
 	if ($stars)
 		$card .= "<tr><td class='popupTableLeft'>".tr("DockerHub Stars:")."</td><td class='popupTableRight'>$stars <span class='dockerHubStar'></span></td></tr>";
 	if ( ! $Plugin && ! $Language ) {
-		if ( $LastUpdate ) {
-			$card .= "<tr><td class='popupTableLeft'>".tr("Last Update:")."</td><td class='popupTableRight'>".date("M n, Y",$LastUpdate)." <span class='ca_note'><span class='ca_fa-asterisk'></span></span></td></tr>";
-		}
+		$lastUpdateMsg = $LastUpdate ? date("M j, Y",$LastUpdate) : "Unknown";
+		$card .= "<tr><td class='popupTableLeft'>".tr("Last Update:")."</td><td class='popupTableRight'><span id='template{$template['ID']}'>$lastUpdateMsg <span class='ca_note'><span class='ca_fa-asterisk'></span></span></span></td></tr>";
 	}
 	if ( $Plugin ) {
 		$card .= "<tr><td class='popupTableLeft'>".tr("Installed Version")."</td><td class='popupTableRight'>$installedVersion</td></tr>";
