@@ -19,6 +19,7 @@
 - Fixed: Not all dates present in the sidebar would get translated
 - Added: Ability in additional requirements to have a link for CA to perform a search
 - Added: Support for additional moderation options
+- Fixed: Install Multiple containers progress window was displaying white text on a white background (RC3 and possibly RC1/2)
 
 ###2022.01.28
 - Maintenance release
