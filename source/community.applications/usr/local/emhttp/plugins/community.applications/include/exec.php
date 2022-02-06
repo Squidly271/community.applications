@@ -2075,14 +2075,19 @@ function getLastUpdate($ID) {
 		$regs = $app['Repository'];
 	}
 	$reg = explode(":",$regs);
-	if ( $reg[1] && $reg[1] !== "latest" )
+	if ( $reg[1] && strtolower($reg[1]) !== "latest" )
 		return tr("Unknown");
-	
-	$registry = download_url("https://registry.hub.docker.com/v2/repositories/{$reg[0]}");
-	$registry_json = json_decode($registry,true);
-	if ( ! $registry_json['last_updated'] )
-		return;
 
+	while ( ! $registry && $count < 5 ) {
+		if ( $registry ) break;
+		sleep(1);
+		$count++;
+		$registry = download_url("https://registry.hub.docker.com/v2/repositories/{$reg[0]}");
+		$registry_json = json_decode($registry,true);
+		if ( ! $registry_json['last_updated'] )
+			return;
+	}
+	
 	$lastUpdated = $registry_json['last_updated'] ? tr(date("M j, Y",strtotime($registry_json['last_updated'])),0) : "Unknown";
 	
 	return $lastUpdated;

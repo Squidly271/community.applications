@@ -5,10 +5,15 @@
 #                   Licenced under GPLv2                      #
 #                                                             #
 ###############################################################
+?>
+<style>
+.logLine{color:black !important;}
+</style>
+<?php
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 $_SERVER['REQUEST_URI'] = "docker/apps";
-require_once "$docroot/plugins/dynamix/include/Translations.php";
+@require_once "$docroot/plugins/dynamix/include/Translations.php";
 
 require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
@@ -44,6 +49,7 @@ if ( $_GET['docker'] ) {
 	@include($exeFile); # under new GUI, this line returns a duplicated session_start() error.  
 	echo "</div>";
 ?>
+
 <script>
 $("input,#output").hide();
 

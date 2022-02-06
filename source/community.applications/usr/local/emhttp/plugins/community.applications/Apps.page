@@ -2497,7 +2497,10 @@ function showSidebarApp(apppath,appname) {
 			});
 			postNoSpin({action:'getLastUpdate',ID:result.ID},function(lastUpdate) {
 				if (lastUpdate.lastUpdate) {
-					$("#template"+result.ID).html(lastUpdate.lastUpdate);
+					$("#template"+result.ID).fadeOut("slow","linear",function() {
+						$("#template"+result.ID).html(lastUpdate.lastUpdate);
+						$("#template"+result.ID).fadeIn("slow");
+					});
 				}
 			});
 		})

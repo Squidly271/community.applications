@@ -1288,8 +1288,11 @@ function displayPopup($template) {
 	if ($stars)
 		$card .= "<tr><td class='popupTableLeft'>".tr("DockerHub Stars:")."</td><td class='popupTableRight'>$stars <span class='dockerHubStar'></span></td></tr>";
 	if ( ! $Plugin && ! $Language ) {
-		$lastUpdateMsg = $LastUpdate ? tr(date("M j, Y",$LastUpdate),0) : tr("Unknown");
-		$card .= "<tr><td class='popupTableLeft'>".tr("Last Update:")."</td><td class='popupTableRight'><span id='template{$template['ID']}'>$lastUpdateMsg <span class='ca_note'><span class='ca_fa-asterisk'></span></span></span></td></tr>";
+		$tag = explode(":",$Repository)[1];
+		if ( ! $tag || strtolower($tag) === "latest" ) {
+			$lastUpdateMsg = $LastUpdate ? tr(date("M j, Y",$LastUpdate),0) : tr("Unknown");
+			$card .= "<tr><td class='popupTableLeft'>".tr("Last Update:")."</td><td class='popupTableRight'><span id='template{$template['ID']}'>$lastUpdateMsg <span class='ca_note'><span class='ca_fa-asterisk'></span></span></span></td></tr>";
+		}
 	}
 	if ( $Plugin ) {
 		$card .= "<tr><td class='popupTableLeft'>".tr("Installed Version")."</td><td class='popupTableRight'>$installedVersion</td></tr>";
