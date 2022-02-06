@@ -2078,6 +2078,9 @@ function getLastUpdate($ID) {
 	if ( $reg[1] && strtolower($reg[1]) !== "latest" )
 		return tr("Unknown");
 
+	if ( !strpos($reg[0],"/") )
+		$reg[0] = "library/{$reg[0]}";
+	
 	while ( ! $registry && $count < 5 ) {
 		if ( $registry ) break;
 		sleep(1);
