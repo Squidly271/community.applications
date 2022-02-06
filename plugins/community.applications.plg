@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.01.28">
-<!ENTITY md5       "12d9f41ca35916610e5a415bcf84abfc">
+<!ENTITY version   "2022.02.06">
+<!ENTITY md5       "f35abba3fe809c2d193fd407487b591b">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,13 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.02.06
+- Added: Date updated for docker containers
+- Changed: Graphs going forward will now only populate to 7 months
+- Fixed: Not all dates present in the sidebar would get translated
+- Added: Ability in additional requirements to have a link for CA to perform a search
+- Added: Support for additional moderation options
+
 ###2022.01.28
 - Maintenance release
 - Added: Support direct search results from the URL
