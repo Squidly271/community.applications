@@ -1782,6 +1782,16 @@ function createXML() {
 			$template['Config'] = $testarray;
 		}
 		$template['Name'] = str_replace(" ","-",$template['Name']);
+		$alreadyInstalled = getAllInfo();
+		foreach ( $alreadyInstalled as $installed ) {
+			if ( strtolower($template['Name']) == $installed['Name'] ) {
+				for ( ;; ) {
+					if (is_file("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml") ) {
+						$template['Name'] .= "-1";
+					} else break;
+				}
+			}
+		}
 		for ( ;; ) {
 			if ($type == "second" && is_file("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml") ) {
 				$template['Name'] .= "-1";
