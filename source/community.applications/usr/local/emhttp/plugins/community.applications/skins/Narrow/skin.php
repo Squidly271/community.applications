@@ -1307,6 +1307,10 @@ function displayPopup($template) {
 		if ( $MaxVer )
 			$card .= "<tr><td class='popupTableLeft'>".tr("Max OS")."</td><td class='popupTableRight'>$MaxVer</td></tr>";
 	}
+	$Licence = $Licence ?: $License;
+	if ( $Licence )
+		$card .= "<tr><td class='popupTableLeft'>".tr("Licence")."</td><td class='popupTableRight'>$Licence</td></tr>";
+	
 	$card .= "</table>";
 	if ( $Repo || $Private ) {
 		$card .= "
