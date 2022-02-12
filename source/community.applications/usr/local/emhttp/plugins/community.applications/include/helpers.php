@@ -190,7 +190,7 @@ function favouriteSort($a,$b) {
 ###############################################
 function searchArray($array,$key,$value,$startingIndex=0) {
 	$result = false;
-	if (count($array) ) {
+	if (is_array($array) && count($array) ) {
 		for ($i = $startingIndex; $i <= max(array_keys($array)); $i++) {
 			if ( $array[$i][$key] == $value ) {
 				$result = $i;
