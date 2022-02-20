@@ -43,7 +43,9 @@ function randomFile() {
 function readJsonFile($filename) {
 	global $caSettings, $caPaths;
 	
-	debug("Read JSON file $filename");
+	debug("CA Read JSON file $filename");
+	debug(print_r(debug_backtrace(),true));
+
 
 	$json = json_decode(@file_get_contents($filename),true);
 	if ( $json === false ) {
