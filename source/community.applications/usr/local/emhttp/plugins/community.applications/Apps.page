@@ -1653,14 +1653,14 @@ function installMulti() {
 	});
 }
 
-function updateDisplay(data) {
+function updateDisplay(content) {
 	// This has to be first.  If this doesn't happen, performance gets worse the more you click around
 	$(".supportButtonCardContext,.actionsButtonContext").each(function() {
 		var ID = $(this).attr("id");
 		context.destroy("#"+ID);
 	});
 
-	$("#templates_content").html(data);
+	$("#templates_content").html(content);
 	setToolTip();
 	enableSearch();
 	$('img').on("error",function() {
@@ -1707,7 +1707,11 @@ function updateDisplay(data) {
 			$(this).css("font-size",newSize+"px");
 		}
 	});
-
+	if ( $("html").hasClass("translated-ltr") || $("html").hasClass("translated-rtl") || $("head").hasClass("translated-ltr") || $("head").hasClass("translated-rtl") ) {
+		data.translationBanner = addBannerWarning("<?=tr("Browser translation detected.  Display issues may result")?>");
+	}	else {
+		removeBannerWarning(data.translationBanner);
+	}
 	saveState();
 }
 
