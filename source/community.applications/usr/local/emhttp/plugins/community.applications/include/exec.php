@@ -1532,6 +1532,7 @@ function removePrivateApp() {
 ####################################################
 function populateAutoComplete() {
 	global $caPaths, $caSettings;
+	
 	$templates = readJsonFile($caPaths['community-templates-info']);
 	$autoComplete = array_map(function($x){return str_replace(":","",tr($x['Cat']));},readJsonFile($caPaths['categoryList']));
 	foreach ($templates as $template) {
@@ -2066,8 +2067,10 @@ function search_dockerhub() {
 function getLastUpdate($ID) {
 	global $caPaths;
 	
-	while ( ! $templates ) {
+	$count = 0;
+	while ( $count < 5 ) {
 		$templates = readJsonFile($caPaths['community-templates-info']);
+		if ( $templates ) break;
 		sleep(1); # keep trying in case of a collision between reading and writing
 	}
 	$index = searchArray($templates,"ID",$ID);
@@ -2091,14 +2094,18 @@ function getLastUpdate($ID) {
 	if ( !strpos($reg[0],"/") )
 		$reg[0] = "library/{$reg[0]}";
 	
+	$count = 0;
 	while ( ! $registry && $count < 5 ) {
-		if ( $registry ) break;
-		sleep(1);
-		$count++;
 		$registry = download_url("https://registry.hub.docker.com/v2/repositories/{$reg[0]}");
+		if ( ! $registry ) {
+			$count++;
+			sleep(1);
+			continue;
+		}
 		$registry_json = json_decode($registry,true);
 		if ( ! $registry_json['last_updated'] )
 			return;
+		
 	}
 	
 	$lastUpdated = $registry_json['last_updated'] ? tr(date("M j, Y",strtotime($registry_json['last_updated'])),0) : "Unknown";
