@@ -1533,7 +1533,11 @@ function removePrivateApp() {
 function populateAutoComplete() {
 	global $caPaths, $caSettings;
 	
-	$templates = readJsonFile($caPaths['community-templates-info']);
+	while ( ! $templates ) {
+		$templates = readJsonFile($caPaths['community-templates-info']);
+		if ( ! $templates )
+			sleep(1);
+	}
 	$autoComplete = array_map(function($x){return str_replace(":","",tr($x['Cat']));},readJsonFile($caPaths['categoryList']));
 	foreach ($templates as $template) {
 		if ( $template['RepoTemplate'] )

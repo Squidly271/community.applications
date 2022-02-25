@@ -1036,7 +1036,7 @@ function getContent(init,category,description,newApp,startupDisplay) {
 }
 
 function populateAutoComplete() {
-	post({action:'populateAutoComplete'},function(result) {
+	postNoSpin({action:'populateAutoComplete'},function(result) {
 		searchBoxAwesomplete.list = result.autocomplete;
 		searchBoxAwesomplete.maxItems = 20;
 		searchBoxAwesomplete.minChars = 3;
