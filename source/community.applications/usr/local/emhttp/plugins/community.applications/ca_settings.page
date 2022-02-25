@@ -18,14 +18,14 @@ require_once "$docroot/plugins/$plugin/include/paths.php";
 require_once "$docroot/plugins/$plugin/include/helpers.php";
 
 $cfg = parse_plugin_cfg($plugin);
-$apps = readJsonFile($caPaths['community-templates-info']);
+/* $apps = readJsonFile($caPaths['community-templates-info']);
 $repositories = [];
 
 foreach ($apps as $template) {
 	if ($template['BranchID'] || $template['Blacklist'] || $template['Deprecated']) continue;
 	$repositories[str_replace("'","*",$template['Repo'])]++;
 }
-arsort($repositories);
+arsort($repositories); */
 
 
 function tr($string,$ret=false) {

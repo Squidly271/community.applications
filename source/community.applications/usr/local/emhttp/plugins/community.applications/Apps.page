@@ -235,6 +235,14 @@ $(function(){
 
 	context.init({preventDoubleContext:false,left:false,above:true,right:false,bottom:true});
 
+	$(".maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>","<?=$cfg['maxPerPage']?>"));
+	var opts = [
+		{text:sprintf("<?tr("%s Results Per Page")?>",24),action:function(){ changeMax(24);}},
+		{text:sprintf("<?tr("%s Results Per Page")?>",48),action:function(){ changeMax(48);}},
+		{text:sprintf("<?tr("%s Results Per Page")?>",96),action:function(){ changeMax(96);}}
+	];
+	context.attach("#maxPerPage",opts);
+	
 	$(".sidebarClose").on("click",function(e) {
 		closeSidebar();
 	});
@@ -356,6 +364,7 @@ $(function(){
 	});
 
 	$('body').on("click",".templateSearch",function() {
+		$(".maxPerPage").show();
 		doSearch(false);
 	});
 
@@ -625,7 +634,7 @@ $(function(){
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
 	$(".multi_deleteButton").click(function()   { deleteMulti(); });
 	$(".multi_installAll").click(function()     { selectAllPrevious(); enableMultiInstall(); });
-	$(".startupButton").click(function()        { hideSortIcons();updateContent(this); });
+	$(".startupButton").click(function()        { $(".maxPerPage").hide();hideSortIcons();updateContent(this); });
 
 	$(".sortIcons").click(function() {
 		$(".sortIcons").removeClass("enabledIcon");
@@ -1713,6 +1722,11 @@ function updateDisplay(content) {
 		removeBannerWarning(data.translationBanner);
 	}
 	saveState();
+	
+	if ( ! $(".startupButton").hasClass("selectedMenu") && ! data.docker) {
+		$(".maxPerPage").show();
+	}
+
 }
 
 function isOverflown(element){
@@ -2582,6 +2596,7 @@ function initDockerSearch() {
 	$(".nonDockerSearch").removeClass("caMenuEnabled").addClass("caMenuDisabled");
 	hideSortIcons();
 	$(".subCategory").hide();
+	$(".maxPerPage").hide();
 }
 
 function dockerSearch(pageNumber) {
@@ -2606,6 +2621,17 @@ function dockerConvert(dockerID) {
 	});
 }
 
+function changeMax(max) {
+	$("#maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>",max));
+	post({action:"changeMaxPerPage",max:max},function(done) {
+		if (done) {
+			if ( ! $(".startupButton").hasClass("selectedMenu") ) {
+				data.currentpage = 1;
+				changeSortOrder(null,null,null);
+			}
+		}
+	});
+}
 </script>
 
 <?include "/usr/local/emhttp/plugins/$plugin/skins/Narrow/skin.html"?>

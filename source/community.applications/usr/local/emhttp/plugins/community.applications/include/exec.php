@@ -29,7 +29,6 @@ require_once "$docroot/webGui/include/Markdown.php";
 $caSettings = parse_plugin_cfg("community.applications");
 
 $caSettings['dockerSearch']  = "yes";
-$caSettings['maxPerPage']    = 24;
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
 $caSettings['favourite']     = str_replace("*","'",$caSettings['favourite']);
 
@@ -185,6 +184,9 @@ switch ($_POST['action']) {
 		break;
 	case 'getLastUpdate':
 		postReturn(['lastUpdate'=>getLastUpdate(getPost("ID","Unknown"))]);
+		break;
+	case 'changeMaxPerPage':
+		changeMaxPerPage();
 		break;
 	###############################################
 	# Return an error if the action doesn't exist #
@@ -420,7 +422,7 @@ function getConvertedTemplates() {
 function appOfDay($file) {
 	global $caPaths,$caSettings,$sortOrder;
 
-	$max = 7;
+	$max = 12;
 
 	switch ($caSettings['startup']) {
 		case "random":
@@ -513,7 +515,7 @@ function appOfDay($file) {
 					if ( ! checkRandomApp($template) ) continue;
 					
 					$appOfDay[] = $template['ID'];
-					if ( count($appOfDay) == 7 ) break;
+					if ( count($appOfDay) == $max ) break;
 				} else {
 					break;
 				}
@@ -2116,6 +2118,21 @@ function getLastUpdate($ID) {
 	
 	return $lastUpdated;
 }
+
+function changeMaxPerPage() {
+	global $caPaths, $caSettings;
+	
+	$max = getPost("max",24);
+	if ($caSettings['maxPerPage'] == $max)
+		postReturn(["status"=>"same"]);
+	else {
+		$caSettings['maxPerPage'] = $max;
+		write_ini_file($caPaths['pluginSettings'],$caSettings);
+		postReturn(["status"=>"updated"]);
+	}
+}
+		
+	
 #######################################
 # Logs Javascript errors being caught #
 #######################################
