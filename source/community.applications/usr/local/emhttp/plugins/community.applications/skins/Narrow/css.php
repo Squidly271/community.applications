@@ -303,6 +303,7 @@ input[type=button][disabled]{background:none;}
 .linkButton a{text-decoration:none;color:<?=$supportPopupText?>}
 
 .maxPerPage{float:right;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
+.maxPerPage:hover{text-decoration:none;background-color:<?=$unRaid66color?>;}
 
 .mainArea{position:absolute;left:18.5rem;right:0px;top:2rem;display:block;overflow-x:hidden;min-height:90vh;}
 .menuHeader{ font-size:2rem; margin-bottom:1rem;margin-top:1rem;}

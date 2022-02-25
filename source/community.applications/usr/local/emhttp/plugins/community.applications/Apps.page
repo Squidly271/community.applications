@@ -233,7 +233,7 @@ $(function(){
 	if ( "<?=$date?>" == "1/01" )  addBannerWarning("<?tr("Happy New Year!")?>",false);
 	if ( "<?=$date?>" == "12/31" ) addBannerWarning("<?tr("Happy New Year!")?> <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> <?tr("Please Enjoy Responsibly")?>",false);
 
-	context.init({preventDoubleContext:false,left:false,above:true,right:false,bottom:true});
+	context.init({preventDoubleContext:false,left:false,right:false,bottom:true,above:true});
 
 	$(".maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>","<?=$cfg['maxPerPage']?>"));
 	var opts = [
@@ -2624,7 +2624,7 @@ function dockerConvert(dockerID) {
 function changeMax(max) {
 	$("#maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>",max));
 	post({action:"changeMaxPerPage",max:max},function(done) {
-		if (done) {
+		if (done.status == "updated") {
 			if ( ! $(".startupButton").hasClass("selectedMenu") ) {
 				data.currentpage = 1;
 				changeSortOrder(null,null,null);
