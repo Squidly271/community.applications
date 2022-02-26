@@ -877,6 +877,8 @@ function displaySearchResults($pageNumber) {
 		$result['Description'] = $result['Description'] ?: "No description present";
 		$result['Compatible'] = true;
 		$result['actionsContext'] = [["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"dockerConvert({$result['ID']});"]];
+		if ( searchArray($templates,"Repository",$result['Repository']) !== false || searchArray($templates,"Repository","{$result['Repository']}.latest") !== false ) 
+			$result['caTemplateExists'] = true;
 
 		$ct .= displayCard($result);
 		$count++;
@@ -1109,6 +1111,12 @@ function displayCard($template) {
 				<div class='betaPopupText ca_center' title='".tr("This application template / has been blacklisted")."'>$flagTextStart".tr("Blacklisted")."$flagTextEnd</div>
 			</div>
 		";		
+	} elseif ( $caTemplateExists ) {
+		$card .= "
+			<div class='warningCardBackground'>
+				<div class='betaPopupText ca_center' title='".tr("Template already exists in Apps")."'>".tr("Template Exists")."</div>
+			</div>
+		";
 	} elseif ( isset($Compatible) && ! $Compatible ) {
 		$verMsg = $VerMessage ?: tr("This application is not compatible with your version of Unraid");
 		$card .= "
