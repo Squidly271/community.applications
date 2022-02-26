@@ -874,7 +874,7 @@ function displaySearchResults($pageNumber) {
 		$result['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
 		$result['display_dockerName'] = "<a class='ca_tooltip ca_applicationName' style='cursor:pointer;' onclick='mySearch(this.innerText);' title='".tr("Search for similar containers")."'>{$result['Name']}</a>";
 		$result['Category'] = "Docker&nbsp;Hub&nbsp;Search";
-		$result['Description'] = $result['Description'] ?: "No description present";
+		$result['Description'] = $result['Description'] ?: tr("No description present");
 		$result['Compatible'] = true;
 		$result['actionsContext'] = [["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"dockerConvert({$result['ID']});"]];
 	
