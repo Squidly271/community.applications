@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.02.06">
-<!ENTITY md5       "f35abba3fe809c2d193fd407487b591b">
+<!ENTITY version   "2022.02.26">
+<!ENTITY md5       "bfe61c8d75ff5b1b7a656d226a534e9a">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,21 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.02.26
+- Changed: Support ultra-wide displays up to 5120 pixels on home screen if Unlimited Width plugin installed
+- Added: Support displaying of License in sidebar
+- Fixed: Handle the situation where if some other application inadvertently deleted CA's data files, don't return PHP errors
+- Added: If when installing an app and there is already an app installed and a naming collision would result (eg: NZBGet already installed and you're attempting to install nzbget) rename the second app accordingly
+- Added: Detect if your browser is automatically translating the Apps tab and display a warning banner (Very mixed results in having the browser perform an automatic translation from no affect at all to many buttons will not work - YMMV)
+- Removed: Redundant file
+- Fixed: Under extremely rare circumstances a task could be spawned which would never complete
+- Changed: Speed up the gathering of Last Updated information when going to the sidebar
+- Changed: How certain errors are handled in the Statistics section to make maintenance easier
+- Changed: Minor skin tweaks
+- Changed: Populate autocomplete lists in background
+- Added: Link the CA requires internet access error to a forum post
+- Added: Ability to select the number of search results per page on the fly
+
 ###2022.02.06
 - Added: Date updated for docker containers
 - Changed: Graphs going forward will now only populate to 7 months

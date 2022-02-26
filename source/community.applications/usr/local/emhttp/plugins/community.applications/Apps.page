@@ -960,11 +960,12 @@ function doSearch(button,newSearch) {
 	data.searchInProgress = true;
 	post({action:'get_content',filter:filter},function(result) {
 		enableButtons();
-		updateDisplay(result.display);
-		data.section = "AppStore";
 		$(".selectedMenu").removeClass("selectedMenu");
 		$(".subCategory").hide();
 		$(".allApps").addClass("selectedMenu");
+		updateDisplay(result.display);
+		data.section = "AppStore";
+
 		post({action:'getCategoriesPresent'},function(result) {
 			$(".categoryMenu").removeClass("caMenuEnabled").addClass("caMenuDisabled");
 			result.forEach(function(category) {

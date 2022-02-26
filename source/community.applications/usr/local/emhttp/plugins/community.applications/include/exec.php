@@ -31,6 +31,7 @@ $caSettings = parse_plugin_cfg("community.applications");
 $caSettings['dockerSearch']  = "yes";
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
 $caSettings['favourite']     = str_replace("*","'",$caSettings['favourite']);
+$caSettings['maxPerPage']    = (integer)$caSettings['maxPerPage'] ?: "24"; // Handle possible corruption on file
 
 if ( ! is_file($caPaths['warningAccepted']) )
 	$caSettings['NoInstalls'] = true;
