@@ -171,6 +171,7 @@ var resizeTimer;
 var portsInUse = [];
 var startupSearch = "<?=$_GET['search']?>";
 
+
 $(function(){
 	window.onerror = function(msg,url,lineNo,columnNo, error) {
 		post({action:'javascriptError',msg:msg,url:url,lineNo:lineNo,columnNo:columnNo,error:error});
@@ -236,12 +237,8 @@ $(function(){
 	context.init({preventDoubleContext:false,left:false,right:false,bottom:true,above:true});
 
 	$(".maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>","<?=$cfg['maxPerPage']?>"));
-	var opts = [
-		{text:sprintf("<?tr("%s Results Per Page")?>",24),action:function(){ changeMax(24);}},
-		{text:sprintf("<?tr("%s Results Per Page")?>",48),action:function(){ changeMax(48);}},
-		{text:sprintf("<?tr("%s Results Per Page")?>",96),action:function(){ changeMax(96);}}
-	];
-	context.attach("#maxPerPage",opts);
+
+	context.attach("#maxPerPage",getPerPageOpts(<?=$cfg['maxPerPage']?>));
 	
 	$(".sidebarClose").on("click",function(e) {
 		closeSidebar();
@@ -1871,11 +1868,6 @@ function postNoSpin(options,callback) {
 
 	if ( typeof options === "function" ) {
 		callback = options;
-	} else {
-		<? if ( $cfg['debugging'] == "yes" ):?>
-			var msg = "No Spin Post: ";
-			console.log(msg+JSON.stringify(options));
-		<?endif;?>
 	}	
 	if ( typeof callback === "function" ) {
 		$.post(URL,options,function(retval){
@@ -2624,6 +2616,8 @@ function dockerConvert(dockerID) {
 
 function changeMax(max) {
 	$("#maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>",max));
+	context.destroy("#maxPerPage");
+	context.attach("#maxPerPage",getPerPageOpts(max));
 	post({action:"changeMaxPerPage",max:max},function(done) {
 		if (done.status == "updated") {
 			if ( ! $(".startupButton").hasClass("selectedMenu") ) {
@@ -2632,6 +2626,20 @@ function changeMax(max) {
 			}
 		}
 	});
+}
+
+function getPerPageOpts(value) {
+	var perPage = [24,48,96];
+	var maxPerPageOpts = [];
+	perPage.forEach(function(entry) {
+		if ( entry != value ) {
+			maxPerPageOpts.push({icon:" ",text:sprintf("<?tr("%s Results Per Page")?>",entry),action:function(){ changeMax(entry);}});
+		} else {
+			maxPerPageOpts.push({icon:"ca_fa-checkmark",text:"<span class='ca_green'>"+sprintf("<?tr("%s Results Per Page")?>",entry)+"</span>",action:function(){ changeMax(entry);}});
+		}
+	});
+
+	return maxPerPageOpts;
 }
 </script>
 

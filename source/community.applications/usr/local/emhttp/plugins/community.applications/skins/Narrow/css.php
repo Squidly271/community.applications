@@ -170,6 +170,8 @@ a.ca_categories{text-decoration:none;color:inherit;}
 img.ca_displayIcon{height:8rem;width:8rem;}
 .ca_fa-additional::before{content:"\f055";font-family:fontAwesome;}
 .ca_fa-asterisk::before{content:"\f069";font-family:fontAwesome;}
+.ca_fa-checkmark{color:#038503;}
+.ca_fa-checkmark::before{content:"\f00c";font-family:fontAwesome;}
 .ca_fa-comment::before{content:"\f075";font-family:fontAwesome;}
 .ca_fa-delete{color:#882626;}
 .ca_fa-delete::before{content:"\f00d";font-family:fontAwesome;}
@@ -194,6 +196,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-
 .ca_favouriteRepo{margin-right:1rem;margin-bottom:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .ca_favouriteRepo:hover{text-decoration:none;background-color:<?=$unRaid66color?>;}
 .ca_forum::before{content:"\f1cd";font-family:fontAwesome;}
+.ca_green{color:#038503;}
 .ca_holder{background-color:<?=$templateBackground?>;display:inline-block;float:left;height:20rem;min-width:24rem;max-width:24rem;overflow:hidden;padding:20px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;cursor:pointer;}
 .ca_holder:hover{background-color:<?=$templateHoverBackground?>;}
 .dockerHubHolder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:20rem;min-width:24rem;max-width:24rem;overflow:hidden;padding:20px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;cursor:pointer;}
