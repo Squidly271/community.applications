@@ -877,9 +877,17 @@ function displaySearchResults($pageNumber) {
 		$result['Description'] = $result['Description'] ?: "No description present";
 		$result['Compatible'] = true;
 		$result['actionsContext'] = [["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"dockerConvert({$result['ID']});"]];
-		if ( searchArray($templates,"Repository",$result['Repository']) !== false || searchArray($templates,"Repository","{$result['Repository']}.latest") !== false ) 
-			$result['caTemplateExists'] = true;
+	
+		$templateSearch = searchArray($templates,"Repository",$result['Repository']);
+		if ( $templateSearch === false )
+			$templateSearch = searchArray($templates,"Repository","{$result['Repository']}.latest");
 
+		if ( $templateSearch !== false ) {
+			$result['caTemplateExists'] = true;
+			$result['Icon'] = $templates[$templateSearch]['Icon'];
+			unset($result['IconFA']);
+			unset($result['actionsContext']);
+		}
 		$ct .= displayCard($result);
 		$count++;
 	}
