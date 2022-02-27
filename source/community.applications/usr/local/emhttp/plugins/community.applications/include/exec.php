@@ -809,18 +809,22 @@ function get_content() {
 				$searchResults['favNameHit'][] = $template;
 				continue;
 			}
-			if ( filterMatch($filter,array($template['SortName'],$template['RepoShort'],$template['Language'],$template['LanguageLocal'],$template['ExtraSearchTerms'])) ) {
-				if ( filterMatch($filter,array($template['ExtraSearchTerms'])) && $template['Plugin'] && $template['Author'] == "limetech" )
-					$searchResults['extraHit'][] = $template;
-				else
-					$searchResults['nameHit'][] = $template;
-			} elseif ( filterMatch($filter,array($template['Author'],$template['RepoName'],$template['Overview'],$template['translatedCategories'])) ) {
-				if ( $template['RepoName'] == $caSettings['favourite'] ) {
-					$searchResults['nameHit'][] = $template;
-				} else {
-					$searchResults['anyHit'][] = $template;
-				}
-			} else continue;
+			if ( strpos($filter,"/") && filterMatch($filter,array($template['Repository'])) ) 
+				$searchResults['nameHit'][] = $template;
+			else {
+				if ( filterMatch($filter,array($template['SortName'],$template['RepoShort'],$template['Language'],$template['LanguageLocal'],$template['ExtraSearchTerms'])) ) {
+					if ( filterMatch($filter,array($template['ExtraSearchTerms'])) && $template['Plugin'] && $template['Author'] == "limetech" )
+						$searchResults['extraHit'][] = $template;
+					else
+						$searchResults['nameHit'][] = $template;
+				} elseif ( filterMatch($filter,array($template['Author'],$template['RepoName'],$template['Overview'],$template['translatedCategories'])) ) {
+					if ( $template['RepoName'] == $caSettings['favourite'] ) {
+						$searchResults['nameHit'][] = $template;
+					} else {
+						$searchResults['anyHit'][] = $template;
+					}
+				} else continue;
+			}
 		}
 
 		$display[] = $template;
