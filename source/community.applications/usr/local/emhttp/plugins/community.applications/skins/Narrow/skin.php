@@ -882,11 +882,12 @@ function displaySearchResults($pageNumber) {
 		if ( $templateSearch === false )
 			$templateSearch = searchArray($templates,"Repository","{$result['Repository']}.latest");
 
-		if ( $templateSearch !== false ) {
+		if ( $templateSearch !== false && ! $templates[$templateSearch]['Deprecated'] && ! $templates[$templateSearch]['Blacklist']) {
 			$result['caTemplateExists'] = true;
 			$result['Icon'] = $templates[$templateSearch]['Icon'];
+			$result['Description'] = $templates[$templateSearch]['Overview'] ?: $templates[$templateSearch]['Description'];
 			unset($result['IconFA']);
-			unset($result['actionsContext']);
+			$result['actionsContext'] = [["icon"=>"ca_fa-template","text"=>tr("Show Template"),"action"=>"doSearch(false,'{$templates[$templateSearch]['Repository']}');"]];
 		}
 		$ct .= displayCard($result);
 		$count++;
