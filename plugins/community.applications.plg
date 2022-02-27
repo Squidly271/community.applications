@@ -1835,7 +1835,7 @@ THIS IS A REQUIRED UPDATE
   {
     echo "********************************************************************\n";
     echo "\n";
-    echo "Community Applications Requires unRaid version 6.9.0 or greater to run\n";
+    echo "Community Applications Requires Unraid version 6.9.0 or greater to run\n";
     echo "\n";
     echo "********************************************************************\n";
     exit(1);

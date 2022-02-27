@@ -6,7 +6,7 @@ e718d7825dbdc96a17a915079222b098  ./default.cfg
 51a726cbd05fecf5ec30000b29581de7  ./include/helpers.php
 d827ebdf8c29aa6a9818df043a37721e  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
-b398273cf7daa62ab00d2de2336ca25f  ./README.md
+71f911a818d88d3d567f8a2898094ee2  ./README.md
 79f3093f42415484944e6aa2863ee30a  ./scripts/checkForUpdates.php
 78912ecc112fd6cc6ca49b4b30197ba0  ./scripts/installMulti.php
 be74e770cdc8938200fc29580be4e3a1  ./scripts/installMultiPlugin.php
