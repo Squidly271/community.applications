@@ -813,7 +813,7 @@ function get_content() {
 				$searchResults['nameHit'][] = $template;
 			else {
 				if ( filterMatch($filter,array($template['SortName'],$template['RepoShort'],$template['Language'],$template['LanguageLocal'],$template['ExtraSearchTerms'])) ) {
-					if ( filterMatch($filter,array($template['ExtraSearchTerms'])) && $template['Plugin'] && $template['Author'] == "limetech" )
+					if ( filterMatch($filter,array($template['ExtraSearchTerms'])) && $template['Plugin'] && ($template['Author'] == "limetech" || $template['Author'] == "dlandon") )
 						$searchResults['extraHit'][] = $template;
 					else
 						$searchResults['nameHit'][] = $template;

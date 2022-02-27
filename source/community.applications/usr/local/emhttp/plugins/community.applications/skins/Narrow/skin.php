@@ -887,6 +887,7 @@ function displaySearchResults($pageNumber) {
 			$result['Icon'] = $templates[$templateSearch]['Icon'];
 			$result['Description'] = $templates[$templateSearch]['Overview'] ?: $templates[$templateSearch]['Description'];
 			unset($result['IconFA']);
+			$result['ID'] = $templates[$templateSearch]['ID'];
 			$result['actionsContext'] = [["icon"=>"ca_fa-template","text"=>tr("Show Template"),"action"=>"doSearch(false,'{$templates[$templateSearch]['Repository']}');"]];
 		}
 		$ct .= displayCard($result);
