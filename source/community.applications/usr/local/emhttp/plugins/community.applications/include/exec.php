@@ -241,8 +241,10 @@ function DownloadApplicationFeed() {
 			}
 		}
 		$o['Category'] = trim($o['Category']);
-		if ( $o['RecommendedDate'] )
+		if ( $o['RecommendedRaw'] ) {
+			$o['RecommendedDate'] = strtotime($o['RecommendedRaw']);
 			$o['Category'] .= " spotlight:";
+		}
 
 		if ( $o['Language'] ) {
 			$o['Category'] = "Language:";
