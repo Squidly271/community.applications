@@ -197,7 +197,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires']);
 								}
 							}
-							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}','','".str_replace(" ","&#32",htmlspecialchars($installComment))."');");
+							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}','','".str_replace([" ","\n"],["&#32",""],htmlspecialchars($installComment))."');");
 							if ( $template['InstallPath'] ) {
 								if ( ! empty($actionsContext) )
 									$actionsContext[] = array("divider"=>true);
