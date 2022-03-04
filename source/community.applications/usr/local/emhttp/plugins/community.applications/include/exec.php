@@ -41,11 +41,9 @@ $DockerTemplates = new DockerTemplates();
 
 if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 	$caSettings['dockerRunning'] = true;
-//	$dockerRunning = $DockerClient->getDockerContainers();
 } else {
 	$caSettings['dockerSearch'] = "no";
 	unset($caSettings['dockerRunning']);
-//	$dockerRunning = array();
 }
 
 @mkdir($caPaths['tempFiles'],0777,true);
