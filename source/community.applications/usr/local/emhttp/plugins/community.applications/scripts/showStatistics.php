@@ -105,7 +105,6 @@ switch ($_GET['arg1']) {
 		}
 		$templates = readJsonFile($caPaths['community-templates-info']);
 		foreach ($templates as $template) {
-			unset($dupe);
 			$template['Repository'] = str_replace(":latest","",$template['Repository']);
 			$count = 0;
 			foreach ($templates as $searchTemplates) {
@@ -114,11 +113,10 @@ switch ($_GET['arg1']) {
 					if ( $searchTemplates['BranchName'] || $searchTemplates['Blacklist'] || $searchTemplates['Deprecated']) {
 						continue;
 					}
-					$dupe[$searchTemplates['Repository']][$searchTemplates['RepoName']]++;
 					$count++;
 				}
 			}
-			if ($count > 1 && $dupe[$template['Repository']][$template['RepoName']] !== $count) {
+			if ($count > 1 ) {
 				$dupeRepos .= "Duplicated Template: {$template['RepoName']} - {$template['Repository']} - {$template['Name']}<br>";
 			}
 		}

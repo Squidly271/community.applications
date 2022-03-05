@@ -15,7 +15,7 @@ f1e435bc2543dd7a9f6495fbc2533f2b  ./scripts/installUpdate.php
 5846421e95b475e1156c3f68164ccc4f  ./scripts/languageInstall.sh
 d4770cba925e913500e0085b79267d3e  ./scripts/notices.php
 a1401a0bed89c182b69f0c7508282c1f  ./scripts/pluginInstall.php
-e19c8f05c687dcf03ea0ba2ed7099a6e  ./scripts/showStatistics.php
+da3b4f9b73c5c3bf65be6c42d68b51f9  ./scripts/showStatistics.php
 4425f8fd4ef662a7dc65cee01de3e419  ./scripts/updatePLG.sh
 34554a56611dfe625889c82afd5138de  ./scripts/updatePluginSupport.php
 2da35d3042b93459f171595811d534b3  ./skins/Narrow/css.php
