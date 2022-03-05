@@ -259,8 +259,10 @@ function DownloadApplicationFeed() {
 		$o['SortName']      = str_replace("-"," ",$o['Name']);
 		$o['SortName']      = preg_replace('/\s+/',' ',$o['SortName']);
 		$o['random']        = rand();
-		
-		if ( $o['CAComment'] ) $o['CAComment'] = tr($o['CAComment']);
+
+		if ( $o['CAComment'] ) 		$o['CAComment'] = tr($o['CAComment']);
+		if ( $o['RequiresFile'] ) $o['RequiresFile'] = trim($o['RequiresFile']);
+		if ( $o['Requires'] ) 		$o['Requires'] = trim($o['Requires']);
 
 		$des = $o['OriginalOverview'] ?: $o['Overview'];
 		$des = $o['Language'] ? $o['Description'] : $des;
@@ -514,7 +516,7 @@ function appOfDay($file) {
 			foreach($file as $template) {
 				if ($template['RecommendedDate']) {
 					if ( ! checkRandomApp($template) ) continue;
-					
+
 					$appOfDay[] = $template['ID'];
 					if ( count($appOfDay) == $max ) break;
 				} else {
@@ -809,7 +811,7 @@ function get_content() {
 				$searchResults['favNameHit'][] = $template;
 				continue;
 			}
-			if ( strpos($filter,"/") && filterMatch($filter,array($template['Repository'])) ) 
+			if ( strpos($filter,"/") && filterMatch($filter,array($template['Repository'])) )
 				$searchResults['nameHit'][] = $template;
 			else {
 				if ( filterMatch($filter,array($template['SortName'],$template['RepoShort'],$template['Language'],$template['LanguageLocal'],$template['ExtraSearchTerms'])) ) {
@@ -1539,7 +1541,7 @@ function removePrivateApp() {
 ####################################################
 function populateAutoComplete() {
 	global $caPaths, $caSettings;
-	
+
 	while ( ! $templates ) {
 		$templates = readJsonFile($caPaths['community-templates-info']);
 		if ( ! $templates )
@@ -1742,9 +1744,9 @@ function createXML() {
 						$valueReferenced = array_values(array_filter(explode("/",$config['value'])));
 						if ( $valueReferenced[0] == "mnt" && $valueReferenced[1] && ! in_array($valueReferenced[1],$disksPresent) )
 							$config['value'] = str_replace("/mnt/{$valueReferenced[1]}/","/mnt/{$disksPresent[0]}/",$config['value']);
-						
+
 						// Check for pre-existing folders only differing by "case" and adjust accordingly
-					
+
 						// Default path
 						if ( ! $config['value'] ) { // Don't override default if value exists
 							$configPath = explode("/",$config['@attributes']['Default']);
@@ -1758,7 +1760,7 @@ function createXML() {
 									if ( strtolower($testDir) == strtolower($entry) ) {
 										if ( $testDir == $entry )
 											break;
-										
+
 										$entry = $testDir;
 									}
 								}
@@ -1766,7 +1768,7 @@ function createXML() {
 							}
 							$config['@attributes']['Default'] = implode("/",$configPath);
 						}
-						
+
 						// entered path
 						if ( $config['value'] ) {
 							$configPath = explode("/",$config['value']);
@@ -1780,7 +1782,7 @@ function createXML() {
 									if ( strtolower($testDir) == strtolower($entry) ) {
 										if ( $testDir == $entry )
 											break;
-										
+
 										$entry = $testDir;
 									}
 								}
@@ -2077,7 +2079,7 @@ function search_dockerhub() {
 ##############################################
 function getLastUpdate($ID) {
 	global $caPaths;
-	
+
 	$count = 0;
 	while ( $count < 5 ) {
 		$templates = readJsonFile($caPaths['community-templates-info']);
@@ -2087,11 +2089,11 @@ function getLastUpdate($ID) {
 	$index = searchArray($templates,"ID",$ID);
 	if ( $index === false )
 		return "Unknown";
-	
+
 	$app = $templates[$index];
 	if ( $app['PluginURL'] || $app['LanguageURL'] )
 		return;
-	
+
 	if ( strpos($app['Repository'],"ghcr.io") !== false || strpos($app['Repository'],"cr.hotio.dev") !== false || strpos($app['Repository'],"lscr.io") !== false) { // try dockerhub for info on ghcr stuff
 		$info = pathinfo($app['Repository']);
 		$regs = basename($info['dirname'])."/".$info['filename'];
@@ -2104,7 +2106,7 @@ function getLastUpdate($ID) {
 
 	if ( !strpos($reg[0],"/") )
 		$reg[0] = "library/{$reg[0]}";
-	
+
 	$count = 0;
 	while ( ! $registry && $count < 5 ) {
 		$registry = download_url("https://registry.hub.docker.com/v2/repositories/{$reg[0]}");
@@ -2116,17 +2118,17 @@ function getLastUpdate($ID) {
 		$registry_json = json_decode($registry,true);
 		if ( ! $registry_json['last_updated'] )
 			return;
-		
+
 	}
-	
+
 	$lastUpdated = $registry_json['last_updated'] ? tr(date("M j, Y",strtotime($registry_json['last_updated'])),0) : "Unknown";
-	
+
 	return $lastUpdated;
 }
 
 function changeMaxPerPage() {
 	global $caPaths, $caSettings;
-	
+
 	$max = getPost("max",24);
 	if ($caSettings['maxPerPage'] == $max)
 		postReturn(["status"=>"same"]);
@@ -2136,8 +2138,8 @@ function changeMaxPerPage() {
 		postReturn(["status"=>"updated"]);
 	}
 }
-		
-	
+
+
 #######################################
 # Logs Javascript errors being caught #
 #######################################

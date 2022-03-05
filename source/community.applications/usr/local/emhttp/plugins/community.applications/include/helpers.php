@@ -42,7 +42,7 @@ function randomFile() {
 ##################################################################
 function readJsonFile($filename) {
 	global $caSettings, $caPaths;
-	
+
 	debug("CA Read JSON file $filename");
 
 	$json = json_decode(@file_get_contents($filename),true);
@@ -56,14 +56,14 @@ function readJsonFile($filename) {
 }
 function writeJsonFile($filename,$jsonArray) {
 	global $caSettings, $caPaths;
-	
+
 	debug("Write JSON File $filename");
 
 	$result = file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-	
+
 	if ( ! $result )
 		debug("Write error $filename");
-		
+
 }
 
 function download_url($url, $path = "", $bg = false, $timeout = 45) {
@@ -662,7 +662,7 @@ function getAllInfo($force=false) {
 #######################
 function debug($str) {
 	global $caSettings, $caPaths;
-	
+
 	if ( $caSettings['debugging'] == "yes" )
 		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  $str\n",FILE_APPEND);
 }
@@ -680,19 +680,19 @@ function portsUsed($template) {
 			if ( $config['@attributes']['Type'] !== "Port" ) continue;
 			$portsUsed[] = $config['value'] ?: $config['@attributes']['Default'];
 		}
-	}	
+	}
 	return json_encode($portsUsed);
 }
-	
+
 ########################
 # Get the ports in use #
 ########################
 function getPortsInUse() {
 	global $var, $caPaths;
-	
-	if ( !$var ) 
+
+	if ( !$var )
 		$var = parse_ini_file($caPaths['unRaidVars']);
-	
+
 	$portsInUse = [];
 	exec("lsof -Pni|awk '/LISTEN/ && \$9!~/127.0.0.1/ && \$9!~/\\[::1\\]/{print \$9}'|sort -u", $output);
 
@@ -714,7 +714,7 @@ function ca_explode($split,$text,$count=2) {
 }
 function plain($ip) {
 	return str_replace(['[',']'],'',$ip);
-}	
+}
 
 /**
  * @copyright Copyright 2006-2012, Miles Johnson - http://milesj.me

@@ -96,10 +96,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$actionsContext = [];
 			$selected = false;
 			$installComment = $template['CAComment'];
-			
+
 			if ( $template['Requires'] )
 				$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires'])."<br>$installComment";
-									
+
 			if ( ! $template['Language'] ) {
 				if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
 					if ( ! $template['Plugin'] ) {
@@ -193,7 +193,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 										foreach ($searchMatches[1] as $searchResult) {
 											$template['Requires'] = str_replace("//$searchResult\\\\",$searchResult,$template['Requires']);
 										}
-									}									
+									}
 									$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires']);
 								}
 							}
@@ -388,7 +388,7 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$index = searchArray($displayed['community'],"InstallPath",$appNumber);
 	if ( $index === false ) {
- 		$ind = $index;
+		$ind = $index;
 		while ( true ) {
 			$template = $displayed[$ind];
 			if ( $template['Name'] == $displayed['community'][$ind]['Name'] ) {
@@ -400,7 +400,7 @@ function getPopupDescriptionSkin($appNumber) {
 				unset($template);
 				break;
 			}
-		} 
+		}
 	}
 
 	if ( $index !== false ) {
@@ -641,11 +641,11 @@ function getPopupDescriptionSkin($appNumber) {
 	elseif ( $allRepositories[$template['Repo']]['Discord'] )
 		$supportContext[] = array("icon"=>"ca_discord","link"=>$allRepositories[$template['Repo']]['Discord'],"text"=>tr("Discord"));
 
-	if ( $template['Facebook'] ) 
+	if ( $template['Facebook'] )
 		$supportContext[] = array("icon"=>"ca_facebook","link"=>$template['Facebook'],"text"=>tr("Facebook"));
 	if ( $template['Reddit'] )
 		$supportContext[] = array("icon"=>"ca_reddit","link"=>$template['Reddit'],"text"=>tr("Reddit"));
-	
+
 	if ( $template['Support'] )
 		$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support Forum"));
 
@@ -878,7 +878,7 @@ function displaySearchResults($pageNumber) {
 		$result['Description'] = $result['Description'] ?: tr("No description present");
 		$result['Compatible'] = true;
 		$result['actionsContext'] = [["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"dockerConvert({$result['ID']});"]];
-	
+
 		$templateSearch = searchArray($templates,"Repository",$result['Repository']);
 		if ( $templateSearch === false )
 			$templateSearch = searchArray($templates,"Repository","{$result['Repository']}.latest");
@@ -1093,7 +1093,7 @@ function displayCard($template) {
 		";
 
 	$Overview = $Overview ?: $Description;
-	
+
 	$ovr = html_entity_decode($Overview);
 	$ovr = trim($ovr);
 	$ovr = str_replace(["[","]"],["<",">"],$ovr);
@@ -1104,7 +1104,7 @@ function displayCard($template) {
 
 	$ovr = str_replace("\n","<br>",$ovr);
 	$Overview = strip_tags(str_replace("<br>"," ",$ovr));
-	
+
 	$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
 	$card .= "<div class='$descClass $backgroundClickable'><div class='cardDesc'>$Overview</div></div>";
 	if ( $RecommendedDate ) {
@@ -1127,7 +1127,7 @@ function displayCard($template) {
 			<div class='warningCardBackground'>
 				<div class='betaPopupText ca_center' title='".tr("This application template / has been blacklisted")."'>$flagTextStart".tr("Blacklisted")."$flagTextEnd</div>
 			</div>
-		";		
+		";
 	} elseif ( $caTemplateExists ) {
 		$card .= "
 			<div class='warningCardBackground'>
@@ -1151,7 +1151,7 @@ function displayCard($template) {
 		$card .= "
 			<div class='installedCardBackground'>
 				<div class='installedCardText ca_center'>".tr("INSTALLED")."</div>
-			</div>";		
+			</div>";
 	} elseif ( $Official ) {
 		$card .= "
 			<div class='officialCardBackground'>
@@ -1325,7 +1325,7 @@ function displayPopup($template) {
 			$card .= "<tr><td class='popupTableLeft'>".tr("Upgrade Version")."</td><td class='popupTableRight'>$pluginVersion</td></tr>";
 		}
 	}
-	
+
 	if ( $Plugin || ! $Compatible) {
 		if ( $MinVer )
 			$card .= "<tr><td class='popupTableLeft'>".tr("Min OS")."</td><td class='popupTableRight'>$MinVer</td></tr>";
@@ -1335,7 +1335,7 @@ function displayPopup($template) {
 	$Licence = $Licence ?: $License;
 	if ( $Licence )
 		$card .= "<tr><td class='popupTableLeft'>".tr("Licence")."</td><td class='popupTableRight'>$Licence</td></tr>";
-	
+
 	$card .= "</table>";
 	if ( $Repo || $Private ) {
 		$card .= "

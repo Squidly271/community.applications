@@ -239,7 +239,7 @@ $(function(){
 	$(".maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>","<?=$cfg['maxPerPage']?>"));
 
 	context.attach("#maxPerPage",getPerPageOpts(<?=$cfg['maxPerPage']?>));
-	
+
 	$(".sidebarClose").on("click",function(e) {
 		closeSidebar();
 	});
@@ -273,7 +273,7 @@ $(function(){
 			closeSidebar();
 		}
 	});
-	
+
 	$('.caChangeLog').on("click",function() {disableSort();scrollToTop();caChangeLog();});
 	$('.mainArea').on("click",'.ca_multiselect',function() {enableMultiInstall();});
 
@@ -405,12 +405,12 @@ $(function(){
 				break;
 		}
 	});
-	
+
 	$("body").on("click",".repoPopup,.ca_repoinfo,.ca_reporeadmore,.ca_repoFromPopUp,.cardDescriptionRepo", function() {
 		var repository = $(this).data("repository");
 		showRepoPopup(repository);
 	});
-	
+
 	$('body').on("click",".ca_holder",function(event) {
 		if (data.actions) {
 			data.actions = false;
@@ -459,7 +459,7 @@ $(function(){
 		}
 		showSortIcons();
 		scrollToTop();
-		
+
 		// This is the checkSortOrder function to prevent a race condition
 		var sortButton = false;
 		$(".sortIcons").each(function() {
@@ -514,9 +514,9 @@ $(function(){
 		var slideFlag = true;
 		var currentCat = $(".selectedMenu").data("category");
 		var newCat = $(this).data("category");
-		if ( currentCat && currentCat.startsWith(newCat) ) 
-			slideFlag = false;		
-		
+		if ( currentCat && currentCat.startsWith(newCat) )
+			slideFlag = false;
+
 		if ( ! $(this).hasClass("caRepositoryMenu") ) {
 			$(".caMenuItem").removeClass("selectedMenu");
 			if ( ! $(this).parent().hasClass("subCategory") ) {
@@ -906,10 +906,10 @@ function doSidebarSearch(newSearch) {
 function doSearch(button,newSearch) {
 	if ( data.searchInProgress )
 		return;
-	
+
 	data.searchInProgress = true;
 
-	
+
 	if ( ! newSearch === false ) {
 		$('#searchBox').val(newSearch);
 	}
@@ -1125,10 +1125,10 @@ function installPlugin(pluginURL,update=false,comment="") {
 			if (isConfirm) {
 				openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
 			}
-		});	
+		});
 	} else {
 		openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
-	}		
+	}
 
 }
 
@@ -1170,7 +1170,7 @@ function previousApps(installed,dontClear=false,filter="") {
 	clearSearchBox();
 	$(".dockerSearch").hide();
 	showSortIcons();
-	
+
 	// this is the checkSortOrder function running to prevent a race condition
 	var sortButton = false;
 	$(".sortIcons").each(function() {
@@ -1378,7 +1378,7 @@ function pinnedApps() {
 		pins();
 	}
 }
-	
+
 function pins() {
 	setPageOne();
 	data.docker = "";
@@ -1411,7 +1411,7 @@ function displayTags(leadTemplate,rename=false,comment="",ports="") {
 		if (flag) {
 			comment = comment.concat("<br><?tr("One or more ports used by this application are already in use by another service or app running on your server.  You will need to adjust the host ports accordingly on the template")?>");
 		}
-	}		
+	}
 	if (comment) {
 		swal({
 			title: "<?tr("Attention")?>",
@@ -1463,7 +1463,7 @@ function displayTags(leadTemplate,rename=false,comment="",ports="") {
 					enableSearch();
 				}
 			});
-		});		
+		});
 	}
 }
 
@@ -1720,7 +1720,7 @@ function updateDisplay(content) {
 		removeBannerWarning(data.translationBanner);
 	}
 	saveState();
-	
+
 	if ( ! $(".startupButton").hasClass("selectedMenu") && ! data.docker) {
 		$(".maxPerPage").show();
 	}
@@ -1863,12 +1863,12 @@ function postNoSpin(options,callback) {
 			var msg = "No Spin Post: ";
 			console.log(msg+JSON.stringify(options));
 		<?endif;?>
-	}	
+	}
 	var URL = "/plugins/<?=$plugin?>/include/exec.php";
 
 	if ( typeof options === "function" ) {
 		callback = options;
-	}	
+	}
 	if ( typeof callback === "function" ) {
 		$.post(URL,options,function(retval){
 			try {
@@ -1912,7 +1912,7 @@ function postNoSpin(options,callback) {
 	} else {
 		$.post(URL,options);
 	}
-}	
+}
 function post(options,callback) {
 	var URL = "/plugins/<?=$plugin?>/include/exec.php";
 
@@ -2219,7 +2219,7 @@ function popupInstallXML(xml,type,comment="",ports="") {
 		}
 		if (flag) {
 			comment = comment.concat("<br><?tr("One or more ports used by this application are already in use by another service or app running on your server.  You will need to adjust the host ports accordingly on the template")?>");
-		}			
+		}
 	}
 	if ( $.trim(comment) ) {
 		swal({
