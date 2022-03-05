@@ -197,16 +197,15 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires']);
 								}
 							}
-							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}','','".str_replace([" ","\n"],["&#32",""],htmlspecialchars($installComment))."');");
+							if ( ! $template['RequiresFile'] || ($template['RequiresFile'] && is_file($template['RequiresFile'])) ) {
+								$installComment = $template['RequiresFile'] ? "" : $installComment;
+								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}','','".str_replace([" ","\n"],["&#32",""],htmlspecialchars($installComment))."');");
+							}
 							if ( $template['InstallPath'] ) {
 								if ( ! empty($actionsContext) )
 									$actionsContext[] = array("divider"=>true);
 								$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"action"=>"removeApp('{$template['InstallPath']}','$pluginName');");
 							}
-/* 							if ( count($actionsContext) == 1 ) {
-								$template['newInstallAction'] = "installPlugin('{$template['PluginURL']}')";
-								unset($actionsContext);
-							} */
 						}
 					}
 				}
@@ -582,8 +581,10 @@ function getPopupDescriptionSkin($appNumber) {
 				} elseif ( ! $template['Blacklist']  ) {
 					if ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true") {
 						if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
-							$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
-							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
+							if ( $template['RequiresFile'] && is_file($template['RequiresFile']) ) {
+								$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
+								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
+							}
 						}
 					}
 					if ( $template['InstallPath'] ) {
@@ -1056,23 +1057,29 @@ function displayCard($template) {
 	$card .= "
 				<div class='ca_applicationName'>$Name
 	";
-	$commentIcon = "ca_fa-warning";
 	if ( $CAComment || $ModeratorComment || $Deprecated || (isset($Compatible) && ! $Compatible) || $Blacklist || $Requires) {
 		if ( $CAComment || $ModeratorComment) {
 			$commentIcon = "ca_fa-comment";
 			$warning = tr("Click info to see the notes regarding this application");
 		}
-		if ( $Requires) {
-			$commentIcon = "ca_fa-additional";
-			$warning = tr("This application has additional requirements");
+		if ( $Requires ) {
+			if ( $RequiresFile && ! is_file($RequiresFile) ) {
+				$commentIcon = "ca_fa-additional";
+				$warning = tr("This application has additional requirements");
+			}
 		}
-		if ( $Deprecated )
+		if ( $Deprecated ) {
 			$warning = tr("This application template has been deprecated");
-		if ( ! $Compatible )
+			$commentIcon = "ca_fa-warning";
+		}
+		if ( ! $Compatible ) {
+			$commentIcon = "ca_fa-warning";
 			$warning = $VerMessage ?: tr("This application is not compatible with your version of Unraid");
-		if ( $Blacklist )
+		}
+		if ( $Blacklist ) {
+			$commentIcon = "ca_fa-warning";
 			$warning = tr("This application template has been blacklisted");
-
+		}
 		$card .= "&nbsp;<span class='$commentIcon cardWarning' title='".htmlentities($warning,ENT_QUOTES)."'></span>";
 	}
 	$card .= "
@@ -1224,7 +1231,7 @@ function displayPopup($template) {
 		</div>
 		<div class='popupDescription popup_readmore'>$display_ovr</div>
 	";
-	if ( $Requires )
+	if ( $Requires && ! is_file($RequiresFile) )
 		$card .= "<div class='additionalRequirementsHeader'>".tr("Additional Requirements")."</div><div class='additionalRequirements'>{$template['Requires']}</div>";
 
 	if ( $Deprecated )
