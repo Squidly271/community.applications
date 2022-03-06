@@ -695,11 +695,13 @@ function getPopupDescriptionSkin($appNumber) {
 	}
 
 	if ( $pinnedApps["{$template['Repository']}&{$template['SortName']}"] ) {
-		$template['pinned'] = "pinned";
+		$template['pinned'] = tr("Unpin App");
 		$template['pinnedTitle'] = tr("Click to unpin this application");
+		$template['pinnedClass'] = "pinned";
 	} else {
-		$template['pinned'] = "unpinned";
+		$template['pinned'] = tr("Pin App");
 		$template['pinnedTitle'] = tr("Click to pin this application");
+		$template['pinnedClass'] = "unpinned";
 	}
 	$template['actionsContext'] = $actionsContext;
 	$template['supportContext'] = $supportContext;
@@ -1055,7 +1057,7 @@ function displayCard($template) {
 
 
 	$card .= "
-				<div class='ca_applicationName'>$Name
+		<div class='ca_applicationName'>$Name
 	";
 	if ( $CAComment || $ModeratorComment || $Deprecated || (isset($Compatible) && ! $Compatible) || $Blacklist || $Requires) {
 		if ( $CAComment || $ModeratorComment) {
@@ -1222,7 +1224,7 @@ function displayPopup($template) {
 		elseif ( count($supportContext) )
 			$card.= "<div class='supportPopup' id='supportPopup'><span class='ca_fa-support'> ".tr("Support")."</div>";
 
-		$card .= $LanguagePack != "en_US" ? "<div class='$pinned' style='display:inline-block' title='$pinnedTitle' data-repository='$Repository' data-name='$SortName'></div>" : "";
+		$card .= $LanguagePack != "en_US" ? "<div class='pinPopup $pinnedClass' title='$pinnedTitle' data-repository='$Repository' data-name='$SortName'><span>$pinned</span></div>" : "";
 		if ( ! $caSettings['dockerRunning'] && (! $Plugin && ! $Language) ) {
 			$card .= "<div class='ca_red'>".tr("Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed")."</div>";
 		}

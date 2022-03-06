@@ -247,6 +247,7 @@ function DownloadApplicationFeed() {
 		if ( $o['Language'] ) {
 			$o['Category'] = "Language:";
 			$o['Compatible'] = true;
+			$o['Repository'] = "library/";
 		}
 
 		# Move the appropriate stuff over into a CA data file

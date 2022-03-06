@@ -277,7 +277,7 @@ $(function(){
 	$('.caChangeLog').on("click",function() {disableSort();scrollToTop();caChangeLog();});
 	$('.mainArea').on("click",'.ca_multiselect',function() {enableMultiInstall();});
 
-	$('#sidenavContent').on("click",".unpinned,.pinned",function() {
+	$('#sidenavContent').on("click",".pinPopup",function() {
 		var repository = $(this).data("repository");
 		var name = $(this).data("name");
 		pinApp(this,repository,name);
@@ -1339,8 +1339,10 @@ function checkPLGupdate() {
 function pinApp(button,repository,name) {
 	$(button).toggleClass("pinned unpinned");
 	var pinned = ( $(button).hasClass("unpinned") ) ? "<?tr("Click to pin this application")?>" : "<?tr("Click to unpin this application")?>";
+	var pinnedText = ( $(button).hasClass("unpinned") ) ? "<?tr("Pin app")?>" : "<?tr("Unpin App")?>";
 	$(button).attr('title',pinned);
-
+	$(button).text(pinnedText);
+	
 	var app = $.find(".pinnedCard[data-pindata='"+repository+name+"']");
 	$(app).toggle("slow");
 

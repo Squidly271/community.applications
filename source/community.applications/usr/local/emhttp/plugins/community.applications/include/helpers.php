@@ -450,27 +450,6 @@ function getAuthor($template) {
 
 	return strip_tags(explode(":",$repoEntry[count($repoEntry)-2])[0]);
 }
-#########################################
-# Gets the running/installed containers #
-#########################################
-function getRunningContainers() {
-	global $caSettings, $DockerClient, $DockerTemplates;
-
-	if ( $caSettings['dockerRunning'] ) {
-		$info = $DockerTemplates->getAllInfo();
-# workaround for incorrect caching in dockerMan
-		$containers = $DockerClient->getDockerContainers();
-		foreach ($containers as $container) {
-			$info[$container['Name']]['running'] = $container['Running'];
-			$info[$container['Name']]['repository'] = $container['Image'];
-			$info[$container['Name']]['ImageId'] = $container['ImageId'];
-			$info[$container['Name']]['Id'] = $container['Id'];
-			$info[$container['Name']]['Name'] = $container['Name'];
-			$infoTmp[$container['Name']] = $info[$container['Name']];
-		}
-	}
-	return $infoTmp ?: array();
-}
 ############################
 # Trims the category lists #
 ############################

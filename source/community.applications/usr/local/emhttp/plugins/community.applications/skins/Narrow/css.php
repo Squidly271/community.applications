@@ -258,6 +258,7 @@ ul.context{list-style-type:none;padding:0;margin:0;}
 a.context{text-decoration:none;color:currentColor;margin:5px;}
 li.context{margin-top:0.5rem;margin-bottom:0.5rem;font-size:1.5rem;}
 li.context:hover{color:<?=$unRaid66color?>;}
+.credits{overflow:scroll;overflow-x:hidden; overflow-y:auto;margin:auto;width:600px;padding-bottom:50px;background-image: linear-gradient(to bottom, royalblue 50%, yellow 50%);-webkit-background-clip: text;-moz-background-clip: text;background-clip: text;color: transparent;}
 li.debugging{cursor:pointer;}
 .dimScreenShot{overflow:unset !important;}
 .disabledIcon{color:#040404;font-size:2.5rem;}
@@ -334,11 +335,10 @@ p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling 
 .pageNumber:hover{color:<?=$unRaid66color?>;}
 .pageRight::after{content:"\f138";font-family:fontAwesome;}
 .pageSelected{cursor:default;color:<?=$unRaid66color?>;}
-.pinned{margin-left:1rem;font-size:2rem;cursor:pointer;padding-left:.5rem;padding-right:.5rem;cursor:pointer;color:#1fa67a;padding:.3rem;}
-.pinned::after{content:"\f08d";font-family:fontAwesome;}
 .pinnedCard{float:right;color:#1fa67a;font-size:1.75rem;}
 .pinnedCard::before{content:"\f08d";font-family:fontAwesome;}
-.pinned:hover{text-decoration:none;color:<?=$unRaid66color?>;}
+.pinPopup{margin-right:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
+.pinPopup:hover{text-decoration:none;background-color:<?=$unRaid66color?>;}
 .plugin::after{font-family:'Unraid';content:'\e986';font-size:2.5rem;}
 .popup-donate{background:white;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),              linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;  text-shadow: 1px 1px 5px #666;}
 .popupAuthor{font-size:1.7rem;line-height:2rem;;margin-bottom:0.5rem;margin-top:0.5rem;display:inline-block;}
@@ -438,9 +438,6 @@ table {background-color:transparent;}
 .templateSearch:hover{color:<?=$unRaid66color?>;}
 .trendingDown::before{content:"\f063";font-family:fontAwesome;}
 .trendingUp::before{content:"\f062";font-family:fontAwesome;}
-.unpinned{font-size:2rem;cursor:pointer;margin-left:1rem;padding-left:.5rem;padding-right:.5rem;cursor:pointer;padding:.3rem;}
-.unpinned::after {content:"\f08d";font-family:fontAwesome;display:inline-block;-webkit-transform: rotate(20deg);-moz-transform: rotate(20deg);-ms-transform: rotate(20deg); -o-transform: rotate(20deg);  transform: rotate(20deg);}
-.unpinned:hover{text-decoration:none;color:<?=$unRaid66color?>;}
 .unraidIcon{margin-top:4rem;}
 .vid{display:inline-block;font-size:8rem;position:relative;top:-0.5rem;color:<?=$sidebarText?>;opacity:70%;padding-right:10px;}
 .vid:hover{color:<?=$unRaid66color;?>}
