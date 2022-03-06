@@ -1262,6 +1262,10 @@ function pinnedApps() {
 		$search = explode("&",$pinned);
 		for ($i=0;$i<10;$i++) {
 			$index = searchArray($file,"Repository",$search[0],$startIndex);
+			if ( $index === false && (strpos($search[0],"library/") !== false)) {
+				$index = searchArray($file,"Repository",str_replace("library/","",$search[0]),$startIndex);
+			}
+				
 			if ( $index !== false ) {
 				if ( $file[$index]['Blacklist'] ) { #This handles things like duplicated templates
 					$startIndex = $index + 1;

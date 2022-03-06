@@ -243,7 +243,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['actionsContext'] = $actionsContext;
 
 			$template['ca_fav'] = $caSettings['favourite'] && ($caSettings['favourite'] == $template['RepoName']);
-			$template['Pinned'] = $pinnedApps["{$template['Repository']}&{$template['SortName']}"];
+			if ( strpos($template['Repository'],"/") === false )
+				$template['Pinned'] = $pinnedApps["library/{$template['Repository']}&{$template['SortName']}"];
+			else 
+				$template['Pinned'] = $pinnedApps["{$template['Repository']}&{$template['SortName']}"];
 			$template['Twitter'] = $template['Twitter'] ?: $repositories[$template['Repo']]['Twitter'];
 			$template['Reddit'] = $template['Reddit'] ?: $repositories[$template['Repo']]['Reddit'];
 			$template['Facebook'] = $template['Facebook'] ?: $repositories[$template['Repo']]['Facebook'];
@@ -1030,7 +1033,8 @@ function displayCard($template) {
 	if ( ! $Pinned )
 		$pinStyle = "display:none;";
 
-	$card .= "<span class='pinnedCard' title='".htmlentities(tr("This application is pinned for later viewing"))."' data-pindata='$Repository$SortName' style='$pinStyle'></span>";
+	$pindata = (strpos($Repository,"/") !== false) ? $Repository : "library/$Repository";
+	$card .= "<span class='pinnedCard' title='".htmlentities(tr("This application is pinned for later viewing"))."' data-pindata='$pindata$SortName' style='$pinStyle'></span>";
 
 
 	if ($Removable && !$DockerInfo  && ! $Installed) {
