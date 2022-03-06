@@ -121,6 +121,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								}
 
 								if ( ! filter_var($dockerUpdateStatus[$tmpRepo]['status'],FILTER_VALIDATE_BOOLEAN) ) {
+									$template['UpdateAvailable'] = true;
 									$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
 								}
 								if ( $caSettings['defaultReinstall'] == "true" ) {
@@ -165,6 +166,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 						if ( file_exists("/var/log/plugins/$pluginName") ) {
 							if ( plugin("version","/var/log/plugins/$pluginName") != $template['pluginVersion'] && $template['Name'] !== "Community Applications"  ) {
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
+								$template['UpdateAvailable'] = true;
 								$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
 							}
 							$pluginSettings = ($pluginName == "community.applications.plg") ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
@@ -230,6 +232,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				if ( file_exists("/var/log/plugins/lang-$countryCode.xml") ) {
 					$template['Installed'] = true;
 					if ( languageCheck($template) ) {
+						$template['UpdateAvailable'] = true;
 						$actionsContext[] = array("icon"=>"ca_fa-update","text"=>$template['UpdateLanguage'],"action"=>"updateLanguage('$countryCode');");
 					}
 					if ( $currentLanguage != $countryCode ) {
@@ -532,6 +535,7 @@ function getPopupDescriptionSkin($appNumber) {
 						$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
 						$tmpRepo = strpos($tmpRepo,"/") ? $tmpRepo : "library/$tmpRepo";
 						if ( ! filter_var($dockerUpdateStatus[$tmpRepo]['status'],FILTER_VALIDATE_BOOLEAN) ) {
+							$template['UpdateAvailable'] = true;
 							$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
 						}
 						if ( $caSettings['defaultReinstall'] == "true" ) {
@@ -569,6 +573,7 @@ function getPopupDescriptionSkin($appNumber) {
 					$template['installedVersion'] = plugin("version","/var/log/plugins/$pluginName");
 					if ( $template['installedVersion'] != $template['pluginVersion'] && $template['Name'] !== "Community Applications") {
 						@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
+						$template['UpdateAvailable'] = true;
 						$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
 					}
 					$pluginSettings = ($pluginName == "community.applications.plg") ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
@@ -618,6 +623,7 @@ function getPopupDescriptionSkin($appNumber) {
 		}
 		if ( file_exists("/var/log/plugins/lang-$countryCode.xml") ) {
 			if ( languageCheck($template) ) {
+				$template['UpdateAvailable'] = true;
 				$actionsContext[] = array("icon"=>"ca_fa-update","text"=>$template['UpdateLanguage'],"action"=>"updateLanguage('$countryCode');");
 			}
 			if ( $currentLanguage != $countryCode ) {
@@ -1153,6 +1159,11 @@ function displayCard($template) {
 				<div class='betaPopupText ca_center' title='".tr("This application template has been deprecated")."'>$flagTextStart".tr("Deprecated")."$flagTextEnd</div>
 			</div>
 		";
+} elseif ( $UpdateAvailable ) {
+		$card .= "
+			<div class='betaCardBackground'>
+				<div class='installedCardText ca_center'>".tr("Update Available")."</div>
+			</div>";
 	} elseif ( $Installed || $Uninstall) {
 		$card .= "
 			<div class='installedCardBackground'>
@@ -1401,7 +1412,12 @@ function displayPopup($template) {
 	if ( ! $Plugin && ! $Language ){
 		$card .= "<div><br><span class='ca_note ca_bold'><span class='ca_fa-asterisk'></span> ".tr("Note: All statistics are only gathered every 30 days")."</span></div>";
 	}
-	if ( $Beta ) {
+	if ( $UpdateAvailable ) {
+		$card .= "
+			<div class='upgradePopupBackground'>
+			<div class='upgradePopupText ca_center'>".tr("Update Available")."</div></div>
+		";
+	} elseif ( $Beta ) {
 		$card .= "
 			<div class='betaPopupBackground'>
 			<div class='betaPopupText ca_center'>".tr("BETA")."</div></div>

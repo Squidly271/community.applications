@@ -1705,7 +1705,7 @@ function updateDisplay(content) {
 			$(this).html(description + "... <span class='card_readmore'><?=tr("Read more")?></span>");
 		}
 	});
-	$(".ca_applicationName,.betaPopupText,.installedCardText").each(function() {
+	$(".ca_applicationName,.betaPopupText,.installedCardText,.upgradePopupText").each(function() {
 		while (isOverflown(this)) {
 			var existingSize = $(this).css("font-size");
 			var size = existingSize.replace("px","");
@@ -2497,7 +2497,7 @@ function showSidebarApp(apppath,appname) {
 				});
 				context.attach("#actionsPopup",opts);
 			}
-			$(".popupName,.betaPopupText,.popupTableRight,.popupTableLeft").each(function() {
+			$(".popupName,.betaPopupText,.popupTableRight,.popupTableLeft,.upgradePopupText").each(function() {
 				while (isOverflown(this)) {
 					var existingSize = $(this).css("font-size");
 					var size = existingSize.replace("px","");
