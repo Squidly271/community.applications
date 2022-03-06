@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.02.26">
-<!ENTITY md5       "bfe61c8d75ff5b1b7a656d226a534e9a">
+<!ENTITY version   "2022.03.06">
+<!ENTITY md5       "fc0f1665f429ce6b765afd463bd140f2">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,19 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.03.06
+- Added: Checkmark indicating currently selected Max Per Page on dropdown
+- Added: Identify apps in a dockerHub search that currently exist within Apps as a template (must install via templates)
+- Fixed: DockerHub search phrase 'no description present' couldn't be translated
+- Added: Direct searching for specific docker repository in templates
+- Added: Minor tweaking to search engine
+- Fixed: Roughly 50% of the world was seeing the incorrect month on Spotlight Apps
+- Fixed: If (for whatever reason) the home screen was unable to display any apps within a section, the page navigation buttons would appear
+- Fixed: Certain plugins with additional requirements couldn't be reinstalled by themselves from Previous Apps
+- Added: Ability for CA to check a plugin's requirements and not allow any attempted install if not met
+- Fixed: Couldn't pin a language or an official (library) dockerHub app
+- Changed: UI consistency on the pin / unpin within the sidebar
+
 ###2022.02.26
 - Changed: Support ultra-wide displays up to 5120 pixels on home screen if Unlimited Width plugin installed
 - Added: Support displaying of License in sidebar
