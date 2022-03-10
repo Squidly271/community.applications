@@ -164,7 +164,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					} else {
 						$pluginName = basename($template['PluginURL']);
 						if ( file_exists("/var/log/plugins/$pluginName") ) {
-							if ( plugin("version","/var/log/plugins/$pluginName") != $template['pluginVersion'] && $template['Name'] !== "Community Applications"  ) {
+							if ( (strcmp(plugin("version","/var/log/plugins/$pluginName"),$template['pluginVersion']) < 0) && $template['Name'] !== "Community Applications"  ) {
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 								$template['UpdateAvailable'] = true;
 								$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
