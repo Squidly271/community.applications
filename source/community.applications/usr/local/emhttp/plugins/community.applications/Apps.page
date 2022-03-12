@@ -1816,6 +1816,7 @@ function showCredits() {
 	clearCategory(); clearSearchBox();
 	var credits = $('#caCredits').html();
 	updateDisplay(credits);
+	$(".maxPerPage").hide();
 }
 
 function showStatistics() {
@@ -1823,6 +1824,7 @@ function showStatistics() {
 	clearCategory(); clearSearchBox();
 	post({action:'statistics'},function(result) {
 		updateDisplay(result.statistics);
+		$(".maxPerPage").hide();
 	});
 }
 
