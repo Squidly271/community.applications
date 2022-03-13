@@ -1336,11 +1336,14 @@ function displayPopup($template) {
 			$card .= "<tr><td class='popupTableLeft'>".tr("Last Update:")."</td><td class='popupTableRight'><span id='template{$template['ID']}'>$lastUpdateMsg <span class='ca_note'><span class='ca_fa-asterisk'></span></span></span></td></tr>";
 		}
 	}
-	if ( $Plugin ) {
+	if ( $Plugin && $installedVersion) {
 		$card .= "<tr><td class='popupTableLeft'>".tr("Installed Version")."</td><td class='popupTableRight'>$installedVersion</td></tr>";
 		if ( $installedVersion != $pluginVersion ) {
 			$card .= "<tr><td class='popupTableLeft'>".tr("Upgrade Version")."</td><td class='popupTableRight'>$pluginVersion</td></tr>";
 		}
+	}
+	if ( $Plugin && ! $installedVersion ) {
+		$card .= "<tr><td calss='popupTableLeft'>".tr("Current Version")."</td><td class='popupTableRight'>$pluginVersion</td></tr>";
 	}
 
 	if ( $Plugin || ! $Compatible) {
