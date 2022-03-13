@@ -1126,6 +1126,8 @@ function installPlugin(pluginURL,update=false,comment="") {
 		}, function (isConfirm) {
 			if (isConfirm) {
 				openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
+			} else {
+				enableSearch();
 			}
 		});
 	} else {
