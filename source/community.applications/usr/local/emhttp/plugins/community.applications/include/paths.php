@@ -68,4 +68,5 @@ $caPaths['dockerSearchResults']                 = $caPaths['tempFiles']."/docker
 $caPaths['dockerSearchInstall']                 = $caPaths['tempFiles']."/dockerConvert.xml";
 $caPaths['dockerSearchActive']                  = $caPaths['tempFiles']."/dockerSearchActive";
 $caPaths['SpotlightIcon']                       = "https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Unraid.svg";
+$caPaths['dockerConvertFlash']                  = $dockerManPaths['templates-user']."/my-CA_TEST_CONTAINER_DOCKERHUB.xml";
 ?>

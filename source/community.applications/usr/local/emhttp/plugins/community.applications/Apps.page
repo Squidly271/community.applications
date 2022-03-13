@@ -2615,11 +2615,28 @@ function dockerSearch(pageNumber) {
 }
 
 function dockerConvert(dockerID) {
-	post({action:'convert_docker',ID:dockerID},function(result) {
-		myCloseAlert();
-		templateURL = "/Apps/AddContainer?xmlTemplate=default:" + $.trim(result.xml);
-		openNewWindow(templateURL);
-	});
+	swal({
+		title: "<?tr("Determine configuration?")?>",
+		text: '<?tr('Would you like CA to attempt to determine any applicable paths, ports, and variables for the template?  This will entail performing a test installation of the container.  It will be automatically deleted after processing.')?>',
+		html: true,
+		type: 'info',
+		showCancelButton: true,
+		showConfirmButton: true,
+		confirmButtonText: "<?tr('Yes')?>",
+		cancelButtonText: "<?tr('No')?>"
+	}, function (isConfirm) {
+		if ( isConfirm ) {
+			$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
+			openBox('/plugins/<?=$plugin?>/scripts/dockerConvert.php?ID='+dockerID,tr('Docker Test Install'),600,1100,true);
+		} else {
+			post({action:'convert_docker',ID:dockerID},function(result) {
+				myCloseAlert();
+				templateURL = "/Apps/AddContainer?xmlTemplate=default:" + $.trim(result.xml);
+				openNewWindow(templateURL);
+			});
+		}
+	});		
+
 }
 
 function changeMax(max) {
