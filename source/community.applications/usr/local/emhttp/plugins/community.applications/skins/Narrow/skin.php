@@ -214,7 +214,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			}
 			if ( $template['Language'] ) {
 				$countryCode = $template['LanguageDefault'] ? "en_US" : $template['LanguagePack'];
-				$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
+				$dynamixSettings = @parse_ini_file($caPaths['dynamixSettings'],true);
 				$currentLanguage = $dynamixSettings['display']['locale'] ?: "en_US";
 				$installedLanguages = array_diff(scandir("/usr/local/emhttp/languages"),array(".",".."));
 				$installedLanguages = array_filter($installedLanguages,function($v) {
