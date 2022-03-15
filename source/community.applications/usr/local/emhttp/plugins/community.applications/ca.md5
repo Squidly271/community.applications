@@ -8,11 +8,11 @@ d9b0dc98ee598d44633341ac199a43e0  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
 79f3093f42415484944e6aa2863ee30a  ./scripts/checkForUpdates.php
-2fa3740b320ae1981511ae07f9fe101c  ./scripts/dockerConvert.php
+496387a0bcb82280347d756a1d3cc30d  ./scripts/dockerConvert.php
 78912ecc112fd6cc6ca49b4b30197ba0  ./scripts/installMulti.php
 be74e770cdc8938200fc29580be4e3a1  ./scripts/installMultiPlugin.php
 524afab04ca930f59117a846f819fb2f  ./scripts/installPluginUpdate.sh
-f1e435bc2543dd7a9f6495fbc2533f2b  ./scripts/installUpdate.php
+5319e550a7b7a1c216eda8c7f2f0f4ef  ./scripts/installUpdate.php
 5846421e95b475e1156c3f68164ccc4f  ./scripts/languageInstall.sh
 d4770cba925e913500e0085b79267d3e  ./scripts/notices.php
 a1401a0bed89c182b69f0c7508282c1f  ./scripts/pluginInstall.php

@@ -5,6 +5,11 @@
 #                   Licenced under GPLv2                      #
 #                                                             #
 ###############################################################
+?>
+<style>
+.logLine{color:black !important;}
+</style>
+<?
 require_once "/usr/local/emhttp/plugins/dynamix/include/Helpers.php";
 
 $_GET['updateContainer'] = "true";

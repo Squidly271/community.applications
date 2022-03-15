@@ -59,6 +59,7 @@ if ( $_GET['ID'] !== false) {
 ?>
 
 <script>
+$("button").hide();
 var cursor = "";
 function addLog(logLine) {
 	var scrollTop = (window.pageYOffset !== undefined) ? window.pageYOffset : (document.documentElement || document.body.parentNode).scrollTop;
@@ -136,8 +137,9 @@ function addCloseButton() {
 <script>
 	<? if ( $json ): ?>
 		window.parent.location = "/Apps/AddContainer?xmlTemplate=default:<?=$caPaths['dockerSearchInstall']?>";
+
 	<? else: ?>
-		alert("An error occurred - Could not determine configuration");
+		alert("<?tr("An error occurred - Could not determine configuration")?>");
 		window.parent.location = "/Apps/AddContainer?xmlTemplate=default:<?=$caPaths['dockerSearchInstall']?>";
 	
 	<? endif; ?>
