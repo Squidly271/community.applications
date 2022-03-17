@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.03.13">
-<!ENTITY md5       "3c61b4f0ce29fea08e08b597ab805db6">
+<!ENTITY version   "2022.03.17">
+<!ENTITY md5       "5e71c3fddc23d0af62b69b2ece69570b">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,12 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.03.17
+- Added: Option to determine automatically any paths, ports, variables used by a dockerHub search install
+- Fixed: A dockerHub search install could overwrite an existing user template if the same name was used
+- Fixed: PHP error if no change to Settings - Display Settings had ever been made
+- Fixed: White on white text would appear on 6.10-rc3 during a container update
+
 ###2022.03.13
 - Maintenance Release
 - Fixed: Cancelling a plugin installation from the card if there was a warning popup would disable the search box
