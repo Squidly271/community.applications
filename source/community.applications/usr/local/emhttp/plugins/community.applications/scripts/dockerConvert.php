@@ -20,7 +20,7 @@ require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 require_once "$docroot/plugins/community.applications/include/helpers.php";
 
 $unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
-
+$unRaid69 = version_compare($unRaidVersion['version'],"6.9.9","<=");
 $exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";
 
 $javascript = file_get_contents("/usr/local/emhttp/plugins/dynamix/javascript/dynamix.js");
@@ -109,6 +109,7 @@ function addCloseButton() {
 		$count = 1;
 		foreach ($paths as $path) {
 			$p = ["Name"=>"Container Path $count",'Type'=>"Path","Target"=>$path['Destination'],"Default"=>"","Mode"=>"rw","Display"=>"always","Required"=>"false","Mask"=>"false"];
+			if ( $unRaid69 ) $p['Description'] = "Container Path: {$path['Destination']}";
 			$Config[]['@attributes'] = $p;
 			$count++;
 		}
@@ -116,6 +117,7 @@ function addCloseButton() {
 		foreach ($ports as $port => $name) {
 			$pp = explode("/",$port);
 			$p = ["Name"=>"Container Port $count",'Type'=>"Port","Target"=>$pp[0],"Default"=>$pp[0],"Mode"=>$pp[1],"Display"=>"always","Required"=>"false","Mask"=>"false","Description"=>""];
+			if ( $unRaid69 ) $p['Description'] = "Container Port: {$pp[0]}";
 			$Config[]['@attributes'] = $p;
 			$count++;
 		}
@@ -128,8 +130,10 @@ function addCloseButton() {
 		foreach ($testvars as $var => $varcont) {
 			if ( in_array($var,$defaultvars) )
 				continue;
-			
-			$Config[]['@attributes'] = ["Name"=>"Container Variable $count",'Target'=>$var,"Type"=>"Variable","Default"=>$varcont,"Description"=>"","Required"=>"false","Mask"=>"false","Display"=>"always"];
+
+			$p = ["Name"=>"Container Variable $count",'Target'=>$var,"Type"=>"Variable","Default"=>$varcont,"Description"=>"","Required"=>"false","Mask"=>"false","Display"=>"always"];
+			if ( $unRaid69 ) $p['Description'] = "Container Variable: $var";
+			$Config[]['@attributes'] = $p;
 			$count++;
 		}
 		$Config[]['@attributes'] = ["Name"=>"Community Applications Conversion",'Target'=>"Community_Applications_Conversion","Type"=>"Variable","Default"=>"true","Description"=>"","Required"=>"false","Mask"=>"false","Display"=>"always"];

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.03.17">
-<!ENTITY md5       "5e71c3fddc23d0af62b69b2ece69570b">
+<!ENTITY version   "2022.03.17a">
+<!ENTITY md5       "5840fc5f85de12c5a4d42594c12215f3">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.03.17a
+- Fixed: Display aberration on dockerHub installs when running Unraid 6.9.x
+
 ###2022.03.17
 - Added: Option to determine automatically any paths, ports, variables used by a dockerHub search install
 - Fixed: A dockerHub search install could overwrite an existing user template if the same name was used
