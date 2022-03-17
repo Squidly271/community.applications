@@ -106,31 +106,47 @@ function addCloseButton() {
 		$ports = isset($json[0]['Config']['ExposedPorts']) ? $json[0]['Config']['ExposedPorts'] : [];
 		$vars = isset($json[0]['Config']['Env']) ? $json[0]['Config']['Env'] : [];
 		
+		$count = 1;
 		foreach ($paths as $path) {
-			$p = ["Name"=>"Path",'Type'=>"Path","Target"=>$path['Destination'],"Default"=>"","Mode"=>"rw","Display"=>"always","Required"=>"false","Mask"=>"false"];
+			$p = ["Name"=>"Container Path $count",'Type'=>"Path","Target"=>$path['Destination'],"Default"=>"","Mode"=>"rw","Display"=>"always","Required"=>"false","Mask"=>"false"];
 			$Config[]['@attributes'] = $p;
-			
+			$count++;
 		}
+		$count = 1;
 		foreach ($ports as $port => $name) {
 			$pp = explode("/",$port);
-			$p = ["Name"=>"Port",'Type'=>"Port","Target"=>$pp[0],"Default"=>$pp[0],"Mode"=>$pp[1],"Display"=>"always","Required"=>"false","Mask"=>"false","Description"=>""];
+			$p = ["Name"=>"Container Port $count",'Type'=>"Port","Target"=>$pp[0],"Default"=>$pp[0],"Mode"=>$pp[1],"Display"=>"always","Required"=>"false","Mask"=>"false","Description"=>""];
 			$Config[]['@attributes'] = $p;
+			$count++;
 		}
 		foreach ($vars as $var) {
 			$textvars .= "$var\n";
 		}
 		$testvars = parse_ini_string($textvars);
 		$defaultvars = ["HOST_HOSTNAME","HOST_OS","HOST_CONTAINERNAME","TZ","PATH"];
+		$count = 1;
 		foreach ($testvars as $var => $varcont) {
 			if ( in_array($var,$defaultvars) )
 				continue;
-			$p = ["Name"=>"Variable",'Target'=>$var,"Type"=>"Variable","Default"=>$varcont,"Description"=>"","Required"=>"false","Mask"=>"false","Display"=>"always"];
-			$Config[]['@attributes'] = $p;
+			
+			$Config[]['@attributes'] = ["Name"=>"Container Variable $count",'Target'=>$var,"Type"=>"Variable","Default"=>$varcont,"Description"=>"","Required"=>"false","Mask"=>"false","Display"=>"always"];
+			$count++;
 		}
+		$Config[]['@attributes'] = ["Name"=>"Community Applications Conversion",'Target'=>"Community_Applications_Conversion","Type"=>"Variable","Default"=>"true","Description"=>"","Required"=>"false","Mask"=>"false","Display"=>"always"];
+
 		if ( $Config )
 			$dockerfile['Config'] = $Config;
+	} else {
+		$error = tr("An error occurred - Could not determine configuration");
 	}
 	$dockerfile['Name'] = $docker['Name'];
+
+	$existing_templates = array_diff(scandir($dockerManPaths['templates-user']),[".",".."]);
+	foreach ( $existing_templates as $template ) {
+		if ( strtolower($dockerfile['Name']) == strtolower(str_replace(["my-",".xml"],["",""],$template)) ) 
+			$dockerfile['Name'] .= "-1";
+	}
+		
 	file_put_contents($caPaths['dockerSearchInstall'],makeXML($dockerfile));	
 }
 ?>
@@ -139,7 +155,7 @@ function addCloseButton() {
 		window.parent.location = "/Apps/AddContainer?xmlTemplate=default:<?=$caPaths['dockerSearchInstall']?>";
 
 	<? else: ?>
-		alert("<?tr("An error occurred - Could not determine configuration")?>");
+		alert("<?=$error?>");
 		window.parent.location = "/Apps/AddContainer?xmlTemplate=default:<?=$caPaths['dockerSearchInstall']?>";
 	
 	<? endif; ?>

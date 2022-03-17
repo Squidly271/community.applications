@@ -1996,7 +1996,7 @@ function onStartupScreen() {
 # convert_docker - called when system adds a container from dockerHub #
 #######################################################################
 function convert_docker() {
-	global $caPaths;
+	global $caPaths, $dockerManPaths;
 
 	$dockerID = getPost("ID","");
 
@@ -2015,6 +2015,13 @@ function convert_docker() {
 	$dockerfile['Privileged'] = "false";
 	$dockerfile['Networking']['Mode'] = "bridge";
 	$dockerfile['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
+	
+	$existing_templates = array_diff(scandir($dockerManPaths['templates-user']),[".",".."]);
+	foreach ( $existing_templates as $template ) {
+		if ( strtolower($dockerfile['Name']) == strtolower(str_replace(["my-",".xml"],["",""],$template)) ) 
+			$dockerfile['Name'] .= "-1";
+	}
+	
 	$dockerXML = makeXML($dockerfile);
 
 	file_put_contents($caPaths['dockerSearchInstall'],$dockerXML);

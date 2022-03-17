@@ -2617,7 +2617,7 @@ function dockerSearch(pageNumber) {
 function dockerConvert(dockerID) {
 	swal({
 		title: "<?tr("Determine configuration?")?>",
-		text: '<?tr('Would you like CA to attempt to determine any applicable paths, ports, and variables for the template?  This will entail performing a test installation of the container.  It will be automatically deleted after processing.')?>',
+		text: '<?tr('Would you like CA to attempt to determine any applicable paths, ports, and variables for the template?  This will entail performing a test installation of the container.  It will be automatically deleted after processing.  The container will not be started.')?>',
 		html: true,
 		type: 'info',
 		showCancelButton: true,
