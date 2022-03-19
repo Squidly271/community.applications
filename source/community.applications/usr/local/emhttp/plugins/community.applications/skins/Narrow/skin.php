@@ -120,7 +120,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									$actionsContext[] = array("icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$ind]['url']}','_blank');");
 								}
 
-								if ( ! filter_var($dockerUpdateStatus[$tmpRepo]['status'],FILTER_VALIDATE_BOOLEAN) ) {
+								if ( $dockerUpdateStatus[$tmpRepo]['status'] == "true" ) {
 									$template['UpdateAvailable'] = true;
 									$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
 								}
@@ -534,7 +534,7 @@ function getPopupDescriptionSkin($appNumber) {
 						}
 						$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
 						$tmpRepo = strpos($tmpRepo,"/") ? $tmpRepo : "library/$tmpRepo";
-						if ( ! filter_var($dockerUpdateStatus[$tmpRepo]['status'],FILTER_VALIDATE_BOOLEAN) ) {
+						if ( $dockerUpdateStatus[$tmpRepo]['status'] == "true" ) {
 							$template['UpdateAvailable'] = true;
 							$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
 						}
