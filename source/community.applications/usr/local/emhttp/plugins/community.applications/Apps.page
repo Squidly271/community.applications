@@ -1844,8 +1844,19 @@ function scrollToTop() {
 
 function addDockerWarning(enableDisable) {
 	if (enableDisable) {
+		switch (enableDisable) {
+			case 1:
+				var msg = "<?tr('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed')?>";
+				break;
+			case 2:
+				var msg = "<?tr('Docker system failed to start - Only Plugins Available To Be Installed Or Managed')?>";
+				break;
+			case 3:
+				var msg = "<?tr('Array not started - Only Plugins Available To Be Installed Or Managed')?>";
+				break;
+		}
 		if ( dockerWarningAdded === false) {
-			dockerWarningAdded = addBannerWarning("<?tr('Docker Service Not Enabled - Only Plugins Available To Be Installed Or Managed')?>",true,false);
+			dockerWarningAdded = addBannerWarning(msg,true,false);
 			$(".dockerSpecific").removeClass("caMenuEnabled").addClass("caMenuDisabled");
 		}
 	} else {

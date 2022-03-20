@@ -45,9 +45,21 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	if ( ! $selectedApps )
 		$selectedApps = array();
 
-	$dockerNotEnabled = (! $caSettings['dockerRunning'] && ! $caSettings['NoInstalls']) ? "true" : "false";
-	$displayHeader = "<script>addDockerWarning($dockerNotEnabled);var dockerNotEnabled = $dockerNotEnabled;</script>";
+	$dockerWarningFlag = $dockerNotEnabled = (! $caSettings['dockerRunning'] && ! $caSettings['NoInstalls']) ? "true" : "false";
 
+	if ( $dockerNotEnabled == "true" ) {
+		$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
+		$dockerVars = parse_ini_file($caPaths['docker_cfg']);
+		file_put_contents("/tmp/blah",print_r($dockerVars,true));
+		if ( $unRaidVars['mdState'] == "STARTED" && $dockerVars['DOCKER_ENABLED'] !== "yes" )
+			$dockerNotEnabled = 1; // Array started, docker not enabled
+		if ( $unRaidVars['mdState'] == "STARTED" && $dockerVars['DOCKER_ENABLED'] == "yes" )
+			$dockerNotEnabled = 2; // Docker failed to start
+		if ( $unRaidVars['mdState'] !== "STARTED" )
+			$dockerNotEnabled = 3; // Array not started
+	}		
+	$displayHeader = "<script>addDockerWarning($dockerNotEnabled);var dockerNotEnabled = $dockerWarningFlag;</script>";
+		
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
@@ -120,7 +132,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									$actionsContext[] = array("icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$ind]['url']}','_blank');");
 								}
 
-								if ( $dockerUpdateStatus[$tmpRepo]['status'] == "true" ) {
+								if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
 									$template['UpdateAvailable'] = true;
 									$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
 								}
@@ -534,7 +546,7 @@ function getPopupDescriptionSkin($appNumber) {
 						}
 						$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
 						$tmpRepo = strpos($tmpRepo,"/") ? $tmpRepo : "library/$tmpRepo";
-						if ( $dockerUpdateStatus[$tmpRepo]['status'] == "true" ) {
+						if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
 							$template['UpdateAvailable'] = true;
 							$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
 						}
