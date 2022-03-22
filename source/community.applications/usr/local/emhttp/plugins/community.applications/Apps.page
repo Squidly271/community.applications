@@ -2526,6 +2526,9 @@ function showSidebarApp(apppath,appname) {
 				while (isOverflown(this)) {
 					var existingSize = $(this).css("font-size");
 					var size = existingSize.replace("px","");
+					if ( size == newSize + 1 ) {  // looks like browsers in Chinese have a minimum enforced font-size
+						return false;
+					}
 					var newSize = size - 1;
 					if (newSize == 0)
 						return false;
