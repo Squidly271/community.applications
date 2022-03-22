@@ -16,6 +16,7 @@
 ###2022.03.22
 - Fixed: Compatibility with browsers having Chinese set as their language (not the OS set as Chinese)
 - Added: Better banner warnings on why docker applications may not be available to install
+- Fixed: Update Available would erroneously appear if Unraid was unable to check for updates to a docker app
 
 ###2022.03.17a
 - Fixed: Display aberration on dockerHub installs when running Unraid 6.9.x
