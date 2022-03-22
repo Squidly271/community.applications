@@ -188,6 +188,8 @@ switch ($_POST['action']) {
 	case 'changeMaxPerPage':
 		changeMaxPerPage();
 		break;
+	case 'var_dump':
+		break;
 	###############################################
 	# Return an error if the action doesn't exist #
 	###############################################

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.03.17a">
-<!ENTITY md5       "5840fc5f85de12c5a4d42594c12215f3">
+<!ENTITY version   "2022.03.22">
+<!ENTITY md5       "4a326ef4ce3593d92861701eddb370bd">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.03.22
+- Fixed: Compatibility with browsers having Chinese set as their language (not the OS set as Chinese)
+- Added: Better banner warnings on why docker applications may not be available to install
+
 ###2022.03.17a
 - Fixed: Display aberration on dockerHub installs when running Unraid 6.9.x
 

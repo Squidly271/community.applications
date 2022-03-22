@@ -1702,17 +1702,22 @@ function updateDisplay(content) {
 		});
 		context.attach('#'+ID, opts);
 	});
-	$(".cardDesc").each(function() {
+ 	$(".cardDesc").each(function() {
 		var description = $(this).html();
 		while (isOverflown(this)) {
 			description = description.slice(0,-5);
+			console.log(description);
 			$(this).html(description + "... <span class='card_readmore'><?=tr("Read more")?></span>");
 		}
 	});
 	$(".ca_applicationName,.betaPopupText,.installedCardText,.upgradePopupText").each(function() {
 		while (isOverflown(this)) {
 			var existingSize = $(this).css("font-size");
+
 			var size = existingSize.replace("px","");
+			if ( size == newSize + 1 ) {  // looks like browsers in Chinese have a minimum enforced font-size
+				return false;
+			}
 			var newSize = size - 1;
 			if (newSize == 0)
 				return false;
@@ -1733,8 +1738,8 @@ function updateDisplay(content) {
 
 }
 
-function isOverflown(element){
-	return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+function isOverflown(el){
+	return el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth;
 }
 
 function saveState() {
@@ -1853,6 +1858,9 @@ function addDockerWarning(enableDisable) {
 				break;
 			case 3:
 				var msg = "<?tr('Array not started - Only Plugins Available To Be Installed Or Managed')?>";
+				break;
+			default:
+				var msg = "Docker apps not available to install - Unknown reason why";
 				break;
 		}
 		if ( dockerWarningAdded === false) {
