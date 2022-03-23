@@ -1149,7 +1149,7 @@ function displayCard($template) {
 	if ( $Blacklist ) {
 		$card .= "
 			<div class='warningCardBackground'>
-				<div class='betaPopupText ca_center' title='".tr("This application template / has been blacklisted")."'>$flagTextStart".tr("Blacklisted")."$flagTextEnd</div>
+				<div class='betaPopupText ca_center' title='".tr("This application template / has been blacklisted")."'>".tr("Blacklisted")."$flagTextEnd</div>
 			</div>
 		";
 	} elseif ( $caTemplateExists ) {
@@ -1168,13 +1168,13 @@ function displayCard($template) {
 	} elseif ( $Deprecated ) {
 		$card .= "
 			<div class='warningCardBackground'>
-				<div class='betaPopupText ca_center' title='".tr("This application template has been deprecated")."'>$flagTextStart".tr("Deprecated")."$flagTextEnd</div>
+				<div class='betaPopupText ca_center' title='".tr("This application template has been deprecated")."'>".tr("Deprecated")."$flagTextEnd</div>
 			</div>
 		";
 } elseif ( $UpdateAvailable ) {
 		$card .= "
 			<div class='betaCardBackground'>
-				<div class='installedCardText ca_center'>".tr("Update Available")."</div>
+				<div class='installedCardText ca_center'>".tr("UPDATED")."</div>
 			</div>";
 	} elseif ( $Installed || $Uninstall) {
 		$card .= "
@@ -1430,7 +1430,7 @@ function displayPopup($template) {
 	if ( $UpdateAvailable ) {
 		$card .= "
 			<div class='upgradePopupBackground'>
-			<div class='upgradePopupText ca_center'>".tr("Update Available")."</div></div>
+			<div class='upgradePopupText ca_center'>".tr("UPDATED")."</div></div>
 		";
 	} elseif ( $Beta ) {
 		$card .= "
