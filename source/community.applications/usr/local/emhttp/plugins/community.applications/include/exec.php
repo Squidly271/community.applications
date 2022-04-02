@@ -13,7 +13,7 @@ $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 $_SERVER['REQUEST_URI'] = "docker/apps";
 
-require_once("$docroot/plugins/dynamix/include/Translations.php");
+require_once "$docroot/plugins/dynamix/include/Translations.php";
 require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php"; # must be first include due to paths defined
 require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/community.applications/include/helpers.php";
@@ -832,7 +832,6 @@ function get_content() {
 				} else continue;
 			}
 		}
-
 		$display[] = $template;
 	}
 	if ( $filter ) {

@@ -601,7 +601,7 @@ function getPopupDescriptionSkin($appNumber) {
 				} elseif ( ! $template['Blacklist']  ) {
 					if ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true") {
 						if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
-							if ( $template['RequiresFile'] && is_file($template['RequiresFile']) ) {
+							if ( ($template['RequiresFile'] && is_file($template['RequiresFile']) ) || ! $template['RequiresFile'] ) {
 								$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
 								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
 							}
