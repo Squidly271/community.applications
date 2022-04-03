@@ -316,6 +316,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$displayHeader .= "<script>showSidebarApp('{$template['Path']}','{$template['Name']}');</script>";
 		}
 	}
+	// Handle MaxPerPage changing on a different tab
+	$displayHeader .= "<script>changeMax({$caSettings['maxPerPage']});</script>";
+	
 	return "$displayHeader$ct";
 }
 
