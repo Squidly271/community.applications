@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.03.22a">
-<!ENTITY md5       "0a181d39785635832afd846c619160bf">
+<!ENTITY version   "2022.04.03">
+<!ENTITY md5       "f0932d9d1e9fbde63ab05cb6efd5588c">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,16 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.04.03
+- Fixed: Extraneous debugging spamming browser console log
+- Improved: Security / Privacy updates on cookies
+- Changed: Slight wording changes on app flags
+- Fixed: Regression error - plugins couldn't install from the sidebar
+- Changed: Easier identification if there is a video attached to the app
+- Fixed: Removing a previous app would wind up highlighting Installed Apps
+- Added: If only a single app is present in a search, automatically open up the sidebar
+- Fixed: If multiple browser tabs were open simultaneously to CA and the Max Per Page was changed on one of them, the Max Per Page dropdown on the other wouldn't update accordingly
+
 ###2022.03.22
 - Fixed: Compatibility with browsers having Chinese set as their language (not the OS set as Chinese)
 - Added: Better banner warnings on why docker applications may not be available to install

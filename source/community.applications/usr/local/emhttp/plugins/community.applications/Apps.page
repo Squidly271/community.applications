@@ -1672,7 +1672,7 @@ function updateDisplay(content) {
 		var ID = $(this).attr("id");
 		context.destroy("#"+ID);
 	});
-
+	
 	$("#templates_content").html(content);
 	setToolTip();
 	enableSearch();
