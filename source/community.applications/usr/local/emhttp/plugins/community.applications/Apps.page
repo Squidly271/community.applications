@@ -1346,7 +1346,7 @@ function pinApp(button,repository,name) {
 	var pinnedText = ( $(button).hasClass("unpinned") ) ? "<?tr("Pin app")?>" : "<?tr("Unpin App")?>";
 	$(button).attr('title',pinned);
 	$(button).text(pinnedText);
-	
+
 	var app = $.find(".pinnedCard[data-pindata='"+repository+name+"']");
 	$(app).toggle("slow");
 
@@ -1672,7 +1672,7 @@ function updateDisplay(content) {
 		var ID = $(this).attr("id");
 		context.destroy("#"+ID);
 	});
-	
+
 	$("#templates_content").html(content);
 	setToolTip();
 	enableSearch();
@@ -1702,7 +1702,7 @@ function updateDisplay(content) {
 		});
 		context.attach('#'+ID, opts);
 	});
- 	$(".cardDesc").each(function() {
+	$(".cardDesc").each(function() {
 		var description = $(this).html();
 		while (isOverflown(this)) {
 			description = description.slice(0,-5);
@@ -2656,7 +2656,7 @@ function dockerConvert(dockerID) {
 				openNewWindow(templateURL);
 			});
 		}
-	});		
+	});
 
 }
 

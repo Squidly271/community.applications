@@ -57,9 +57,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$dockerNotEnabled = 2; // Docker failed to start
 		if ( $unRaidVars['mdState'] !== "STARTED" )
 			$dockerNotEnabled = 3; // Array not started
-	}		
+	}
 	$displayHeader = "<script>addDockerWarning($dockerNotEnabled);var dockerNotEnabled = $dockerWarningFlag;</script>";
-		
+
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
@@ -260,7 +260,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['ca_fav'] = $caSettings['favourite'] && ($caSettings['favourite'] == $template['RepoName']);
 			if ( strpos($template['Repository'],"/") === false )
 				$template['Pinned'] = $pinnedApps["library/{$template['Repository']}&{$template['SortName']}"];
-			else 
+			else
 				$template['Pinned'] = $pinnedApps["{$template['Repository']}&{$template['SortName']}"];
 			$template['Twitter'] = $template['Twitter'] ?: $repositories[$template['Repo']]['Twitter'];
 			$template['Reddit'] = $template['Reddit'] ?: $repositories[$template['Repo']]['Reddit'];
@@ -312,13 +312,13 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		} else {
 			if ($template['InstallPath'])
 				$template['Path'] = $template['InstallPath'];
-			
+
 			$displayHeader .= "<script>showSidebarApp('{$template['Path']}','{$template['Name']}');</script>";
 		}
 	}
 	// Handle MaxPerPage changing on a different tab
 	$displayHeader .= "<script>changeMax({$caSettings['maxPerPage']});</script>";
-	
+
 	return "$displayHeader$ct";
 }
 
@@ -1325,11 +1325,11 @@ function displayPopup($template) {
 			}
 			$card .= "</div>";
 		}
-		
+
 		if ( $Video ) {
 			if ( ! is_array($Video) )
 				$Video = [$Video];
-			
+
 			$vidText = (count($Video) == 1) ? "Play Video" : "Play Video %s";
 			$card .= "<div>";
 			$count = 1;
