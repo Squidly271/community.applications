@@ -1301,25 +1301,31 @@ function displayPopup($template) {
 		";
 	}
 	if ( $Screenshot || $Photo || $Video) {
-		$card .= "<div>";
 		if ( $Screenshot || $Photo ) {
 			$pictures = $Screenshot ? $Screenshot : $Photo;
 			if ( ! is_array($pictures) )
 				$pictures = [$pictures];
 
+			$card .= "<div>";
 			foreach ($pictures as $shot) {
 				$card .= "<a class='screenshot mfp-image' href='".trim($shot)."'><img class='screen' src='".trim($shot)."'></img></a>";
 			}
+			$card .= "</div>";
 		}
+		
 		if ( $Video ) {
 			if ( ! is_array($Video) )
 				$Video = [$Video];
-
+			
+			$vidText = (count($Video) == 1) ? "Play Video" : "Play Video %s";
+			$card .= "<div>";
+			$count = 1;
 			foreach ( $Video as $vid ) {
-				$card .= "<a class='screenshot mfp-iframe' href='".trim($vid)."'><div class='vid ca_fa-film'></div></a>";
+				$card .= "<a class='screenshot videoButton mfp-iframe' href='".trim($vid)."'><div class='ca_fa-film'> ".sprintf(tr($vidText),$count)."</div></a>";
+				$count++;
 			}
+			$card .= "</div>";
 		}
-		$card .= "</div>";
 	}
 	$appType = $Plugin ? tr("Plugin") : tr("Docker");
 	$appType = $Language ? tr("Language") : $appType;

@@ -178,7 +178,7 @@ img.ca_displayIcon{height:8rem;width:8rem;}
 a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-0.25rem;cursor:pointer;float:right;}
 .ca_fa-docker::before{font-family:'Unraid';content:'\e90b';}
 .ca_fa-edit::before{content:"\f044";font-family:fontAwesome;}
-.ca_fa-film::before{content:"\f008";font-family:fontAwesome;}
+.ca_fa-film::before{content:"\f04b";font-family:fontAwesome;}
 .ca_fa-globe::before{content:"\f0ac";font-family:fontAwesome;}
 .ca_fa-info::before{content:"\f05a";font-family:fontAwesome;}
 .ca_fa-install::before{content:"\f019";font-family:fontAwesome;}
@@ -443,6 +443,9 @@ table {background-color:transparent;}
 .upgradePopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.25rem;right:-1rem;width:100%;overflow:hidden;height:2.5rem;}
 .vid{display:inline-block;font-size:8rem;position:relative;top:-0.5rem;color:<?=$sidebarText?>;opacity:70%;padding-right:10px;}
 .vid:hover{color:<?=$unRaid66color;?>}
+.videoButton{margin-left:1rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;text-decoration:none !important;}
+.videoButton:hover{background:<?=$unRaid66color?>}
+
 .warningCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #810000;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 #warningNotAccepted{display:none;}
 
