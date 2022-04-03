@@ -306,6 +306,16 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	if ( ! $count )
 		$displayHeader .= "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div><script>hideSortIcons();</script>";
 
+	if ( $count == 1 ) {
+		if ( $template['RepositoryTemplate'] ) {
+			$displayHeader .= "<script>showRepoPopup('".htmlentities($template['RepoName'],ENT_QUOTES)."');</script>";
+		} else {
+			if ($template['InstallPath'])
+				$template['Path'] = $template['InstallPath'];
+			
+			$displayHeader .= "<script>showSidebarApp('{$template['Path']}','{$template['Name']}');</script>";
+		}
+	}
 	return "$displayHeader$ct";
 }
 
