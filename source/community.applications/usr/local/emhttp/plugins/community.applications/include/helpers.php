@@ -594,7 +594,7 @@ function languageCheck($template) {
 	$xmlFile = readXmlFile($installedLanguage,true);
 
 	if ( !$xmlFile['Version'] ) return false;
-
+	
 	return (strcmp($template['Version'],$xmlFile['Version']) > 0) || (strcmp($OSupdates['Version'],$xmlFile['Version']) > 0);
 }
 ######################

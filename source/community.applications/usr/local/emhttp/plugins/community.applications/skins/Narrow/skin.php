@@ -537,7 +537,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? "{$template['IconFA']} unraidIcon" : "fa fa-{$template['IconFA']}";
 		$template['display_icon'] = "<i class='$templateIcon popupIcon'></i>";
 	} else
-		$template['display_icon'] = "<img class='popupIcon' src='{$template['Icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>";
+		$template['display_icon'] = "<img class='popupIcon' src='{$template['Icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;' alt='Application Icon'>";
 
 	if ( $template['Requires'] ) {
 		$template['Requires'] = Markdown(strip_tags(str_replace(["\r","\n","&#xD;"],["","<br>",""],trim($template['Requires'])),"<br>"));
@@ -1081,7 +1081,7 @@ function displayCard($template) {
 
 	if ( ! $IconFA )
 		$card .= "
-			<img class='ca_displayIcon $imageNoClick' src='$Icon'></img>
+			<img class='ca_displayIcon $imageNoClick' src='$Icon' alt='Application Icon'></img>
 		";
 	else {
 		$displayIcon = $template['IconFA'] ?: $template['Icon'];
@@ -1147,7 +1147,7 @@ function displayCard($template) {
 	if ( $RecommendedDate ) {
 		$card .= "
 			<div class='homespotlightIconArea ca_center''>
-				<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}'></img></div>
+				<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}' alt='Spotlight'></img></div>
 				<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
 			</div>
 		";
@@ -1301,7 +1301,7 @@ function displayPopup($template) {
 		$card .= "
 			<div class='spotlightPopup'>
 				<div class='spotlightIconArea ca_center'>
-					<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}'></img></div>
+					<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}' alt='Spotlight'></img></div>
 					<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
 				</div>
 				<div class='spotlightInfoArea'>
@@ -1394,7 +1394,7 @@ function displayPopup($template) {
 			<div class='popupInfoRight'>
 					<div class='popupAuthorTitle'>".($Plugin ? tr("Author") : tr("Maintainer"))."</div>
 					<div><div class='popupAuthor'>".($Plugin ? $Author : $RepoName)."</div>
-					<div class='popupAuthorIcon'><img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'></img></div>
+					<div class='popupAuthorIcon'><img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;' alt='Repository Icon'></img></div>
 					</div>
 					<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("All Apps")."</div>
 					<div class='repoPopup' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Profile")."</div>
