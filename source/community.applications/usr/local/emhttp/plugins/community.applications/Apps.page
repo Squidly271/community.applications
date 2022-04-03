@@ -1229,7 +1229,7 @@ function removeApp(application, humanName) {
 			post({action:'remove_application',application:application}, function(result) {
 				enableSearch();
 				$(".caMenuItem").removeClass("selectedMenu");
-				var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
+				var menuItem = $.find(".caMenuItem[data-category='previous_apps']");
 				$(menuItem).addClass("selectedMenu");
 				previousApps(false,true,data.previousAppsSection);
 			});
