@@ -99,20 +99,17 @@ function addCloseButton() {
 			echo "<br>";
 		}
 	}
-	echo "<br>".tr("Setting installed applications to autostart")."<br>";
-	$autostartFile = @file("/var/lib/docker/unraid-autostart",FILE_IGNORE_NEW_LINES);
-	if ( ! $autostartFile ) {
+	if ( ! is_file("/var/lib/docker/unraid-autostart") ) {
+		echo "<br>".tr("Setting installed applications to autostart")."<br>";
 		$autostartFile = array();
-	}
-	foreach ($autostartFile as $line) {
-		$autostart[$line] = true;
-	}
-	foreach ($dockers as $docker) {
-		$autostart[$docker] = true;
-	}
-	$autostartFile = implode("\n",array_keys($autostart));
-	file_put_contents("/var/lib/docker/unraid-autostart",$autostartFile);
 
+		foreach ($dockers as $docker) {
+			$autostart[$docker] = true;
+		}
+		$autostartFile = implode("\n",array_keys($autostart));
+		file_put_contents("/var/lib/docker/unraid-autostart",$autostartFile);
+	}
+	
 	if ( $failFlag || !$_GET['plugin']) {
 		echo "<br>".tr("Docker Application Installation finished")."<br><script>addCloseButton();</script>";
 	} else {
