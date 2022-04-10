@@ -1214,6 +1214,7 @@ function uninstall_docker() {
 
 	$DockerClient->removeContainer($containerName,$dockerRunning[$container]['Id']);
 	$DockerClient->removeImage($dockerRunning[$container]['ImageId']);
+	exec("/usr/bin/docker volume prune");
 
 	$info = getAllInfo(true);
 
