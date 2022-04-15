@@ -910,7 +910,7 @@ function force_update() {
 			@unlink($caPaths['community-templates-info']);
 	}
 
-	if (!file_exists($caPaths['community-templates-info'])) {
+	if (!file_exists($caPaths['community-templates-info']) || !readJsonFile($caPaths['community-templates-info'])) {
 		$updatedSyncFlag = true;
 		if (! DownloadApplicationFeed() ) {
 			$o['script'] = "$('.onlyShowWithFeed').hide();";
