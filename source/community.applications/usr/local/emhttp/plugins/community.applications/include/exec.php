@@ -1043,7 +1043,7 @@ function previous_apps() {
 					if ( $runningflag ) {
 						$o['Uninstall'] = true;
 						$o['ID'] = $containerID;
-						if ( $o['Blacklist'] ) 	continue;
+		//				if ( $o['Blacklist'] ) 	continue;
 
 						$displayed[] = $o;
 					}
