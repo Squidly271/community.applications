@@ -78,6 +78,7 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	curl_setopt($ch,CURLOPT_ENCODING,"");
 	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_FAILONERROR,true);
 
 	if ( is_file("/boot/config/plugins/community.applications/proxy.cfg") ) {
 		$proxyCFG = parse_ini_file("/boot/config/plugins/community.applications/proxy.cfg");

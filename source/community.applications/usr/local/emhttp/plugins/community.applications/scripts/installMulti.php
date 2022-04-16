@@ -17,6 +17,7 @@ $_SERVER['REQUEST_URI'] = "docker/apps";
 
 require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
+require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
 
 $unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
 
@@ -109,6 +110,9 @@ function addCloseButton() {
 		$autostartFile = implode("\n",array_keys($autostart));
 		file_put_contents("/var/lib/docker/unraid-autostart",$autostartFile);
 	}
+	
+	echo "<br>".tr("Downloading docker icons")."<br>";
+	$DockerTemplates->getAllInfo();
 	
 	if ( $failFlag || !$_GET['plugin']) {
 		echo "<br>".tr("Docker Application Installation finished")."<br><script>addCloseButton();</script>";
