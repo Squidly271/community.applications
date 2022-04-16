@@ -1111,7 +1111,7 @@ function previous_apps() {
 				$filename = pathinfo($template['Repository'],PATHINFO_BASENAME);
 
 				if ( checkInstalledPlugin($template) ) {
-					if ( $template['Blacklist'] ) continue;
+//					if ( $template['Blacklist'] ) continue;
 
 					$template['InstallPath'] = "/var/log/plugins/$filename";
 					$template['Uninstall'] = true;
