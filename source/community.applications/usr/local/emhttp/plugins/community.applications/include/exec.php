@@ -1288,10 +1288,12 @@ function pinnedApps() {
 		}
 	}
 	usort($displayed,"mySort");
+	if ( empty($displayed) )
+		$script = "$('.caPinnedMenu').addClass('caMenuDisabled').removeClass('caMenuEnabled');";
 	$displayedApplications['community'] = $displayed;
 	$displayedApplications['pinnedFlag']  = true;
 	writeJsonFile($caPaths['community-templates-displayed'],$displayedApplications);
-	postReturn(["status"=>"ok"]);
+	postReturn(["status"=>"ok","script"=>$script]);
 }
 
 ################################################
