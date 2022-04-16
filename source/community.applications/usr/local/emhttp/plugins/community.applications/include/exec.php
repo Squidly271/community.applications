@@ -1035,6 +1035,8 @@ function previous_apps() {
 									$o['CardDescription'] = $tmpOvr;
 									$o['InstallPath'] = $tempPath;
 									$o['SortName'] = str_replace("-"," ",$installedName);
+									if ( $installedName !== $file[$searchResult]['Name'] )
+										$o['NoPin'] = true;  # This is renamed and effectively outside of CA's control
 								}
 								break;
 							}
@@ -1091,6 +1093,7 @@ function previous_apps() {
 								$o['InstallPath'] = $tempPath;
 								$o['Name'] = $tempName;
 								$o['SortName'] = str_replace("-"," ",$o['Name']);
+								$o['NoPin'] = true;
 								break;
 							}
 						}
