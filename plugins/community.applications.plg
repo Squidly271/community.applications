@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.04.03">
-<!ENTITY md5       "f0932d9d1e9fbde63ab05cb6efd5588c">
+<!ENTITY version   "2022.04.17">
+<!ENTITY md5       "bda5768c4ad8ae1c6771fa3a06887162">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,18 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.04.17
+- Fixed: Don't allow renamed containers to be pinned
+- Fixed: If pinned apps comes up with No Matching Content Found (due to all pinned apps being incompatible etc) then disable the button
+- Fixed: Don't allow blacklisted apps to be pinned
+- Enhanced: Better handling of cURL download failures
+- Added: When installing multiple containers via Previous Apps, automatically download the icons - Speeds up the first access to Docker / Dashboard tabs
+- Fixed: Blacklisted apps wouldn't appear within Installed Apps, preventing their uninstallation via CA
+- Added: Handle in memory corruption of downloaded files - Redownload them if this is detected
+- Added: Delete unused volumes when uninstalling a container
+- Enhanced: If autostart selections are already made in docker tab, then do not override the settings to have everything set to autostart when doing a multiple install from Previous Apps
+- Added: Better WCAG 1.x compliance
+
 ###2022.04.03
 - Fixed: Extraneous debugging spamming browser console log
 - Improved: Security / Privacy updates on cookies
