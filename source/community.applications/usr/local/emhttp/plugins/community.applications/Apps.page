@@ -568,6 +568,10 @@ $(function(){
 				data.previousAppsSection = "plugins";
 				previousApps(false,false,"plugins");
 				break;
+			case "action_centre":
+				data.previousAppsSection = "";
+				actionCentre();
+				break;
 			case "pinned_apps":
 				pinnedApps();
 				break;
@@ -1192,6 +1196,33 @@ function previousApps(installed,dontClear=false,filter="") {
 		getPrevApps(installed,filter,dontClear);
 	}
 }
+function actionCentre() {
+	clearCategory();
+	setPageOne();
+	data.docker = "";
+	clearSearchBox();
+	$(".dockerSearch").hide();
+	showSortIcons();
+	
+	// this is the checkSortOrder function running to prevent a race condition
+	var sortButton = false;
+	$(".sortIcons").each(function() {
+		if ($(this).hasClass("enabledIcon") && ( ! $(this).hasClass("startupMore") ) ) {
+			sortButton = true;
+		}
+	});
+	if ( !sortButton) {
+		$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
+		post({action:"defaultSortOrder"},function(data) {
+			$("#defaultSort").addClass("enabledIcon");
+			getPrevApps("action");
+		});
+	} else {
+		getPrevApps("action");
+	}	
+}
+
+	
 function getPrevApps(installed,filter,dontClear) {
 	post({action:'previous_apps',installed:installed,filter:filter},function(result) {
 		if ( installed ) {
@@ -1202,7 +1233,17 @@ function getPrevApps(installed,filter,dontClear) {
 				clearMultiInstall();
 			}
 		}
-		var msg = installed ? "<?tr("Installed Apps");?>" : "<?tr("Previous Apps");?>";
+		switch(installed) {
+			case true:
+				var msg = "<?tr("Installed Apps");?>";
+				break;
+			case false:
+				var msg = "<?tr("Previous Apps");?>";
+				break;
+			case "action":
+				var msg = "<?tr("Action Centre");?>";
+				break;
+		}
 		$("#Category").html(msg);
 		changeSortOrder(null,null,"true");
 		saveState();

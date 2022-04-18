@@ -996,6 +996,13 @@ function previous_apps() {
 	@unlink($caPaths['dockerSearchActive']);
 
 	$file = readJsonFile($caPaths['community-templates-info']);
+	
+	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
+		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
+	} else {
+		$dockerUpdateStatus = array();
+	}
+	
 
 # $info contains all installed containers
 # now correlate that to a template;
@@ -1003,7 +1010,7 @@ function previous_apps() {
 	if ( $caSettings['dockerRunning'] ) {
 		$all_files = glob("{$caPaths['dockerManTemplates']}/*.xml");
 		$all_files = $all_files ?: array();
-		if ( $installed == "true" ) {
+		if ( $installed == "true" || $installed == "action") {
 			if ( !$filter || $filter == "docker" ) {
 				foreach ($all_files as $xmlfile) {
 					$o = readXmlFile($xmlfile);
@@ -1045,8 +1052,16 @@ function previous_apps() {
 					if ( $runningflag ) {
 						$o['Uninstall'] = true;
 						$o['ID'] = $containerID;
-		//				if ( $o['Blacklist'] ) 	continue;
 
+						if ( $installed == "action" ) {
+							$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
+							
+							if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
+								$o['UpdateAvailable'] = true;
+
+							if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['UpdateAvailable']  )
+								continue;
+						}
 						$displayed[] = $o;
 					}
 				}
@@ -1106,7 +1121,7 @@ function previous_apps() {
 		}
 	}
 # Now work on plugins
-	if ( $installed == "true" ) {
+	if ( $installed == "true" || $installed == "action" ) {
 		if ( ! $filter || $filter == "plugins" ) {
 			foreach ($file as $template) {
 				if ( ! $template['Plugin'] ) continue;
@@ -1114,10 +1129,14 @@ function previous_apps() {
 				$filename = pathinfo($template['Repository'],PATHINFO_BASENAME);
 
 				if ( checkInstalledPlugin($template) ) {
-//					if ( $template['Blacklist'] ) continue;
-
 					$template['InstallPath'] = "/var/log/plugins/$filename";
 					$template['Uninstall'] = true;
+					
+					if ( $installed == "action" && $template['PluginURL'] )
+						$template['UpdateAvailable'] = checkPluginUpdate(basename($template['PluginURL']));
+
+					if ( $installed == "action" && !$template['Blacklist'] && !$template['Deprecated'] && !$template['UpdateAvailable'] )
+						continue;
 					$displayed[] = $template;
 				}
 			}
@@ -1127,6 +1146,10 @@ function previous_apps() {
 				if ( $index !== false ) {
 					$tmpL = $file[$index];
 					$tmpL['Uninstall'] = true;
+					
+					if ( $installed == "action" && !languageCheck($tmpL) )
+						continue;
+										
 					$displayed[] = $tmpL;
 				}
 			}
