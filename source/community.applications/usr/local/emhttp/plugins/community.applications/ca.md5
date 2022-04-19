@@ -12,7 +12,7 @@ ff03c8ebd7f4acd3a664933cf6a1c20a  ./include/paths.php
 07684bde8ccd13523f62c69bb492fc27  ./scripts/installMulti.php
 be74e770cdc8938200fc29580be4e3a1  ./scripts/installMultiPlugin.php
 524afab04ca930f59117a846f819fb2f  ./scripts/installPluginUpdate.sh
-5319e550a7b7a1c216eda8c7f2f0f4ef  ./scripts/installUpdate.php
+afa5771f344d0600a7b3bbc40bd32d29  ./scripts/installUpdate.php
 5846421e95b475e1156c3f68164ccc4f  ./scripts/languageInstall.sh
 d4770cba925e913500e0085b79267d3e  ./scripts/notices.php
 a1401a0bed89c182b69f0c7508282c1f  ./scripts/pluginInstall.php
@@ -21,4 +21,4 @@ da3b4f9b73c5c3bf65be6c42d68b51f9  ./scripts/showStatistics.php
 34554a56611dfe625889c82afd5138de  ./scripts/updatePluginSupport.php
 0254b0a66007c3f6e32e7d259e8ee443  ./skins/Narrow/css.php
 0bdefa4e915c02ed3310c39eb5a1cef5  ./skins/Narrow/skin.html
-c23b1771106700f37171894f29975ccb  ./skins/Narrow/skin.php
+acd6d0c6e62684521709c1f8daa43f5a  ./skins/Narrow/skin.php

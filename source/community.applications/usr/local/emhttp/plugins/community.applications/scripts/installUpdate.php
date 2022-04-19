@@ -10,6 +10,11 @@
 .logLine{color:black !important;}
 </style>
 <?
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
+
+$_SERVER['REQUEST_URI'] = "docker/apps";
+@require_once "$docroot/plugins/dynamix/include/Translations.php";
+
 require_once "/usr/local/emhttp/plugins/dynamix/include/Helpers.php";
 
 $_GET['updateContainer'] = "true";

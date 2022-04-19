@@ -142,6 +142,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
 									$template['UpdateAvailable'] = true;
 									$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
+								} else {
+									$template['UpdateAvailable'] = false;
 								}
 								if ( $caSettings['defaultReinstall'] == "true" && ! $template['Blacklist']) {
 									if ( $template['ID'] !== false ) { # don't allow 2nd if there's not a "default" within CA
@@ -166,7 +168,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user','','".portsUsed($userTemplate)."');");
 										$actionsContext[] = array("divider"=>true);
 									}
-									$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
+									$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"alternate"=>tr("Remove"),"action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
 								}	else {
 									if ( ! $template['BranchID'] ) {
 										if ( is_file("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml") ) {
@@ -191,6 +193,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 								$template['UpdateAvailable'] = true;
 								$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
+							} else {
+								$template['UpdateAvailable'] = false;
 							}
 							$pluginSettings = ($pluginName == "community.applications.plg") ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 							if ( $pluginSettings ) {
@@ -1073,8 +1077,10 @@ function displayCard($template) {
 		";
 
 	if ( $actionsContext ) {
-		if ( count($actionsContext) == 1)
-			$card .= "<div class='actionsButton' onclick={$actionsContext[0]['action']}>{$actionsContext[0]['text']}</div>";
+		if ( count($actionsContext) == 1) {
+			$dispText = $actionsContext[0]['alternate'] ?: $actionsContext[0]['text'];
+			$card .= "<div class='actionsButton' onclick={$actionsContext[0]['action']}>$dispText</div>";
+		}
 		else
 			$card .= "<div class='actionsButton actionsButtonContext' id='actions".preg_replace("/[^a-zA-Z0-9]+/", "",$Name)."$ID' data-context='".json_encode($actionsContext,JSON_HEX_QUOT | JSON_HEX_APOS)."'>".tr("Actions")."</div>";
 	}
