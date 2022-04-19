@@ -998,6 +998,8 @@ function previous_apps() {
 	@unlink($caPaths['dockerSearchActive']);
 
 	$file = readJsonFile($caPaths['community-templates-info']);
+	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
+	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
 	
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
@@ -1062,7 +1064,18 @@ function previous_apps() {
 							
 							if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
 								$o['UpdateAvailable'] = true;
-
+							
+							if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
+								if ( $extraBlacklist[$o['Repository']] ) {
+									$o['Blacklist'] = true;
+									$o['ModeratorComment'] = $extraBlacklist[$o['Repository']];
+								}
+								if ( $extraDeprecated[$o['Repository']] ) {
+									$o['Deprecated'] = true;
+									$o['ModeratorComment'] = $extraDeprecated[$o['Deprecated']];
+								}
+							}
+							
 							if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['UpdateAvailable']  )
 								continue;
 						}
