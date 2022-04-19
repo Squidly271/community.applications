@@ -71,8 +71,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$displayedTemplates = array();
 	foreach ($file as $template) {
-		if ( $template['Blacklist'] && ! $template['NoInstall'] )
-			continue;
+/* 		if ( $template['Blacklist'] && ! $template['NoInstall'] )
+			continue; */
 
 		$startingAppCounter++;
 		if ( $startingAppCounter < $startingApp ) continue;
@@ -136,7 +136,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									$template['UpdateAvailable'] = true;
 									$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
 								}
-								if ( $caSettings['defaultReinstall'] == "true" ) {
+								if ( $caSettings['defaultReinstall'] == "true" && ! $template['Blacklist']) {
 									if ( $template['BranchID'] )
 										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true,'".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');");
 									else
@@ -563,7 +563,7 @@ function getPopupDescriptionSkin($appNumber) {
 							$template['UpdateAvailable'] = true;
 							$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
 						}
-						if ( $caSettings['defaultReinstall'] == "true" ) {
+						if ( $caSettings['defaultReinstall'] == "true" && ! $template['Blacklist']) {
 							if ( $template['BranchID'] )
 								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true,'','".portsUsed($template)."');");
 							else
@@ -577,16 +577,20 @@ function getPopupDescriptionSkin($appNumber) {
 					} elseif ( ! $template['Blacklist'] ) {
 						if ( $template['InstallPath'] ) {
 							$userTemplate = readXmlFile($template['InstallPath'],false,false);
-							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user','','".portsUsed($userTemplate)."');");
-							$actionsContext[] = array("divider"=>true);
+							if ( ! $template['Blacklist'] ) {
+								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user','','".portsUsed($userTemplate)."');");
+								$actionsContext[] = array("divider"=>true);
+							}
 							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
 						}	else {
-							if ( ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true" )  ) {
-								if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
-									if ( ! $template['BranchID'] ) {
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default','','".portsUsed($template)."');");
-									} else {
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}',false,'','".portsUsed($template)."');");
+							if ( ! $template['Blacklist'] ) {
+								if ( ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true" )  ) {
+									if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
+										if ( ! $template['BranchID'] ) {
+											$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default','','".portsUsed($template)."');");
+										} else {
+											$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}',false,'','".portsUsed($template)."');");
+										}
 									}
 								}
 							}
