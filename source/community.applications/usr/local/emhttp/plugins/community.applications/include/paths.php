@@ -27,6 +27,7 @@ $caPaths['appFeedDownloadError']                = $caPaths['tempFiles']."/downlo
 $caPaths['categoryList']                        = $caPaths['tempFiles']."/categoryList.json";
 $caPaths['repositoryList']                      = $caPaths['tempFiles']."/repositoryList.json";
 $caPaths['extraBlacklist']                      = $caPaths['tempFiles']."/extraBlacklist.json";
+$caPaths['extraDeprecated']                     = $caPaths['tempFiles']."/extraDeprecated.json";
 $caPaths['sortOrder']                           = $caPaths['tempFiles']."/sortOrder.json";
 $caPaths['currentServer']                       = $caPaths['tempFiles']."/currentServer.txt";
 $caPaths['lastUpdated']                         = $caPaths['tempFiles']."/lastUpdated.json";

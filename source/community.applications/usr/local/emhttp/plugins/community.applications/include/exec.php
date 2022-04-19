@@ -378,6 +378,7 @@ function DownloadApplicationFeed() {
 
 	writeJsonFile($caPaths['repositoryList'],$ApplicationFeed['repositories']);
 	writeJsonFile($caPaths['extraBlacklist'],$ApplicationFeed['blacklisted']);
+	writeJsonFile($caPaths['extraDeprecated'],$ApplicationFeed['deprecated']);
 	return true;
 }
 

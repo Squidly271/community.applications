@@ -32,6 +32,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	$repositories = readJsonFile($caPaths['repositoryList']);
 	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
+	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$caSettings['dockerRunning'] = "true";
@@ -90,6 +91,11 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$template['ModeratorComment'] = $extraBlacklist[$template['Repository']];
 			}
 		}
+		if ( ! $template['Deprecated'] && $extraDeprecated[$template['Repository']] ) {
+			$template['Deprecated'] = true;
+			$template['ModeratorComment'] = $extraDeprecated[$template['Repository']];
+		}
+		
 		if ( $template['RepositoryTemplate'] ) {
 			$template['Icon'] = $template['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 
@@ -406,7 +412,8 @@ function getPopupDescriptionSkin($appNumber) {
 
 	$allRepositories = readJsonFile($caPaths['repositoryList']);
 	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
-	
+	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
+		
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 	if ( ! is_file($caPaths['statistics']) )
 		download_json($caPaths['statisticsURL'],$caPaths['statistics']);
@@ -477,6 +484,11 @@ function getPopupDescriptionSkin($appNumber) {
 			$template['ModeratorComment'] = $extraBlacklist[$template['Repository']];
 		}
 	}
+	if ( ! $template['Deprecated'] && $extraDeprecated[$template['Repository']] ) {
+		$template['Deprecated'] = true;
+		$template['ModeratorComment'] = $extraDeprecated[$template['Repository']];
+	}
+	
 	$ID = $template['ID'];
 
 	$template['Profile'] = $allRepositories[$template['RepoName']]['profile'];
