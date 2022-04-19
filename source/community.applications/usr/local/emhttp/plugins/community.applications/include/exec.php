@@ -1044,6 +1044,8 @@ function previous_apps() {
 									$o['SortName'] = str_replace("-"," ",$installedName);
 									if ( $installedName !== $file[$searchResult]['Name'] )
 										$o['NoPin'] = true;  # This is renamed and effectively outside of CA's control
+								} else {
+									$runningFlag = true;
 								}
 								break;
 							}
@@ -1095,6 +1097,7 @@ function previous_apps() {
 					if ( ! $flag ) {
 						$testRepo = explode(":",$o['Repository'])[0];
 		# now associate the template back to a template in the appfeed
+						
 						foreach ($file as $appTemplate) {
 							if (startsWith($appTemplate['Repository'],$testRepo)) {
 								$tempPath = $o['InstallPath'];
