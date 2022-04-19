@@ -586,6 +586,8 @@ function getPopupDescriptionSkin($appNumber) {
 						if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
 							$template['UpdateAvailable'] = true;
 							$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
+						} else {
+							$template['UpdateAvailable'] = false;
 						}
 						if ( $caSettings['defaultReinstall'] == "true" && ! $template['Blacklist'] && $template['ID'] !== false) {
 							if ( $template['BranchID'] )
@@ -628,6 +630,8 @@ function getPopupDescriptionSkin($appNumber) {
 						@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 						$template['UpdateAvailable'] = true;
 						$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
+					} else {
+						$template['UpdateAvailable'] = false;
 					}
 					$pluginSettings = ($pluginName == "community.applications.plg") ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 					if ( $pluginSettings ) {
