@@ -1140,7 +1140,7 @@ function displayCard($template) {
 	$card .= "
 		<div class='ca_applicationName'>$Name
 	";
-	if ( $CAComment || $ModeratorComment || $Deprecated || (isset($Compatible) && ! $Compatible) || $Blacklist || $Requires) {
+	if ( $CAComment || $ModeratorComment || $Requires) {
 		if ( $CAComment || $ModeratorComment) {
 			$commentIcon = "ca_fa-comment";
 			$warning = tr("Click info to see the notes regarding this application");
@@ -1151,18 +1151,7 @@ function displayCard($template) {
 				$warning = tr("This application has additional requirements");
 			}
 		}
-		if ( $Deprecated ) {
-			$warning = tr("This application template has been deprecated");
-			$commentIcon = "ca_fa-warning";
-		}
-		if ( ! $Compatible ) {
-			$commentIcon = "ca_fa-warning";
-			$warning = $VerMessage ?: tr("This application is not compatible with your version of Unraid");
-		}
-		if ( $Blacklist ) {
-			$commentIcon = "ca_fa-warning";
-			$warning = tr("This application template has been blacklisted");
-		}
+
 		$card .= "&nbsp;<span class='$commentIcon cardWarning' title='".htmlentities($warning,ENT_QUOTES)."'></span>";
 	}
 	$card .= "
