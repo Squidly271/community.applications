@@ -377,6 +377,7 @@ function DownloadApplicationFeed() {
 	}
 
 	writeJsonFile($caPaths['repositoryList'],$ApplicationFeed['repositories']);
+	writeJsonFile($caPaths['extraBlacklist'],$ApplicationFeed['blacklisted']);
 	return true;
 }
 

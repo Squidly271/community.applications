@@ -31,6 +31,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	$repositories = readJsonFile($caPaths['repositoryList']);
+	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$caSettings['dockerRunning'] = "true";
@@ -73,7 +74,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	foreach ($file as $template) {
 /* 		if ( $template['Blacklist'] && ! $template['NoInstall'] )
 			continue; */
-
+		
 		$startingAppCounter++;
 		if ( $startingAppCounter < $startingApp ) continue;
 		$displayedTemplates[] = $template;
@@ -83,6 +84,12 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	# Create entries for skins.
 	foreach ($displayedTemplates as $template) {
+		if ( ! $template['Blacklist'] ) {
+			if ( $extraBlacklist[$template['Repository']] ) {
+				$template['Blacklist'] = true;
+				$template['ModeratorComment'] = $extraBlacklist[$template['Repository']];
+			}
+		}
 		if ( $template['RepositoryTemplate'] ) {
 			$template['Icon'] = $template['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 
@@ -137,7 +144,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
 								}
 								if ( $caSettings['defaultReinstall'] == "true" && ! $template['Blacklist']) {
-									if ( $template['ID'] !== false ) {
+									if ( $template['ID'] !== false ) { # don't allow 2nd if there's not a "default" within CA
 										if ( $template['BranchID'] )
 											$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true,'".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');");
 										else
@@ -155,8 +162,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							} elseif ( ! $template['Blacklist'] || ! $template['Compatible']) {
 								if ( $template['InstallPath'] ) {
 									$userTemplate = readXmlFile($template['InstallPath'],false,false);
-									$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user','','".portsUsed($userTemplate)."');");
-									$actionsContext[] = array("divider"=>true);
+									if ( ! $template['Blacklist'] ) {
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user','','".portsUsed($userTemplate)."');");
+										$actionsContext[] = array("divider"=>true);
+									}
 									$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
 								}	else {
 									if ( ! $template['BranchID'] ) {
@@ -392,6 +401,8 @@ function getPopupDescriptionSkin($appNumber) {
 	$tabMode = '_parent';
 
 	$allRepositories = readJsonFile($caPaths['repositoryList']);
+	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
+	
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 	if ( ! is_file($caPaths['statistics']) )
 		download_json($caPaths['statisticsURL'],$caPaths['statistics']);
@@ -455,6 +466,13 @@ function getPopupDescriptionSkin($appNumber) {
 /* 	if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
 		$template['Icon'] = $template['IconHTTPS'];
  */
+ 
+	if ( ! $template['Blacklist'] ) {
+		if ( $extraBlacklist[$template['Repository']] ) {
+			$template['Blacklist'] = true;
+			$template['ModeratorComment'] = $extraBlacklist[$template['Repository']];
+		}
+	}
 	$ID = $template['ID'];
 
 	$template['Profile'] = $allRepositories[$template['RepoName']]['profile'];
@@ -1074,7 +1092,7 @@ function displayCard($template) {
 	$card .= "<span class='pinnedCard' title='".htmlentities(tr("This application is pinned for later viewing"))."' data-pindata='$pindata$SortName' style='$pinStyle'></span>";
 
 
-	if ($Removable && !$DockerInfo  && ! $Installed) {
+	if ($Removable && !$DockerInfo  && ! $Installed && ! $Blacklist) {
 		$previousAppName = $Plugin ? $PluginURL : $Name;
 		$type = ($appType == "appDocker") ? "docker" : "plugin";
 		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";

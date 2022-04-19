@@ -26,6 +26,7 @@ $caPaths['application-feed-last-updatedBackup'] = "https://s3.amazonaws.com/dnld
 $caPaths['appFeedDownloadError']                = $caPaths['tempFiles']."/downloaderror.txt";
 $caPaths['categoryList']                        = $caPaths['tempFiles']."/categoryList.json";
 $caPaths['repositoryList']                      = $caPaths['tempFiles']."/repositoryList.json";
+$caPaths['extraBlacklist']                      = $caPaths['tempFiles']."/extraBlacklist.json";
 $caPaths['sortOrder']                           = $caPaths['tempFiles']."/sortOrder.json";
 $caPaths['currentServer']                       = $caPaths['tempFiles']."/currentServer.txt";
 $caPaths['lastUpdated']                         = $caPaths['tempFiles']."/lastUpdated.json";
