@@ -195,12 +195,13 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					} else {
 						$pluginName = basename($template['PluginURL']);
 						if ( file_exists("/var/log/plugins/$pluginName") ) {
-							if ( (strcmp(plugin("version","/var/log/plugins/$pluginName"),$template['pluginVersion']) < 0) && $template['Name'] !== "Community Applications"  ) {
+							if ( ( strcmp(plugin("version","/var/log/plugins/$pluginName"),$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 								$template['UpdateAvailable'] = true;
 								$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
 							} else {
-								$template['UpdateAvailable'] = false;
+								if ( ! $template['UpdateAvailable'] ) # this handles if the feed hasn't caught up to the update yet
+									$template['UpdateAvailable'] = false;
 							}
 							$pluginSettings = ($pluginName == "community.applications.plg") ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 							if ( $pluginSettings ) {
@@ -1219,15 +1220,15 @@ function displayCard($template) {
 				<div class='betaPopupText ca_center' title='".tr("This application template has been deprecated")."'>".tr("Deprecated")."$flagTextEnd</div>
 			</div>
 		";
-} elseif ( $UpdateAvailable ) {
+	} elseif ( $UpdateAvailable ) {	
 		$card .= "
 			<div class='betaCardBackground'>
 				<div class='installedCardText ca_center'>".tr("UPDATED")."</div>
 			</div>";
 	} elseif ( $Installed || $Uninstall) {
-		$card .= "
-			<div class='installedCardBackground'>
-				<div class='installedCardText ca_center'>".tr("INSTALLED")."</div>
+		 $card .= "
+			 <div class='installedCardBackground'>
+			   <div class='installedCardText ca_center'>".tr("INSTALLED")."</div>
 			</div>";
 	} elseif ( $Official ) {
 		$card .= "
