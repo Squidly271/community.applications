@@ -42,7 +42,6 @@ if ( $_GET['ID'] !== false) {
 	$dockerfile['BindTime'] = "true";
 	$dockerfile['Privileged'] = "false";
 	$dockerfile['Networking']['Mode'] = "bridge";
-	$dockerfile['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
 	$dockerXML = makeXML($dockerfile);
 	file_put_contents("/boot/config/plugins/dockerMan/templates-user/my-CA_TEST_CONTAINER_DOCKERHUB.xml",$dockerXML);
 	

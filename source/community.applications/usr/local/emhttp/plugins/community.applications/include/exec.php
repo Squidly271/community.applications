@@ -2062,7 +2062,6 @@ function convert_docker() {
 	$dockerfile['BindTime'] = "true";
 	$dockerfile['Privileged'] = "false";
 	$dockerfile['Networking']['Mode'] = "bridge";
-	$dockerfile['Icon'] = "/plugins/dynamix.docker.manager/images/question.png";
 
 	$existing_templates = array_diff(scandir($dockerManPaths['templates-user']),[".",".."]);
 	foreach ( $existing_templates as $template ) {
