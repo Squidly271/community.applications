@@ -1063,7 +1063,7 @@ function previous_apps() {
 							$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
 							
 							if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
-								$o['UpdateAvailable'] = true;
+								$o['actionCenter'] = true;
 							
 							if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
 								if ( $extraBlacklist[$o['Repository']] ) {
@@ -1076,7 +1076,7 @@ function previous_apps() {
 								}
 							}
 							
-							if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['UpdateAvailable']  )
+							if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['actionCenter']  )
 								continue;
 						}
 						$displayed[] = $o;
@@ -1150,10 +1150,13 @@ function previous_apps() {
 					$template['InstallPath'] = "/var/log/plugins/$filename";
 					$template['Uninstall'] = true;
 					
-					if ( $installed == "action" && $template['PluginURL'] )
-						$template['UpdateAvailable'] = checkPluginUpdate(basename($template['PluginURL']));
+					if ( $installed == "action" && $template['PluginURL'] ) {
+							if ( ( strcmp(plugin("version","/var/log/plugins/$filename"),$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
+								$template['actionCenter'] = true;
+							}
+					}
 
-					if ( $installed == "action" && !$template['Blacklist'] && !$template['Deprecated'] && !$template['UpdateAvailable'] )
+					if ( $installed == "action" && !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCenter'] )
 						continue;
 					$displayed[] = $template;
 				}

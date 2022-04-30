@@ -97,12 +97,11 @@ $dockerSearchActive = is_file($caPaths['dockerSearchActive']);
 
 // Only check for updates to containers / plugins max once per hour
 exec("mkdir -p {$caPaths['tempFiles']}");
-if ( $cfg['updateCheck'] == "yes" ) {
-	if ( ( time() - @filemtime($caPaths['updateTime']) ) > 3600 ) {
-		touch($caPaths['updateTime']);
-		exec("echo '/usr/local/emhttp/plugins/community.applications/scripts/checkForUpdates.php >/dev/null 2>&1' | at now >/dev/null");
-	}
+if ( ($cfg['updateCheck'] == "yes") && ( (time() - @filemtime($caPaths['updateTime']) ) > 3600 ) ) {
+	touch($caPaths['updateTime']);	
+	exec("echo '/usr/local/emhttp/plugins/community.applications/scripts/checkForUpdates.php >/dev/null 2>&1' | at now >/dev/null");
 }
+
 if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 	$caSettings['dockerRunning'] = true;
 } else {

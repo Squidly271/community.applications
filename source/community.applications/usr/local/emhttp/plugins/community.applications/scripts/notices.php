@@ -7,6 +7,8 @@
 ###############################################################
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
+$login_locale = true;
+
 require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
 require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
