@@ -1129,13 +1129,23 @@ function installPlugin(pluginURL,update=false,comment="") {
 			html: true
 		}, function (isConfirm) {
 			if (isConfirm) {
-				openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
+				if ( $(".selectedMenu").data("category") == "action_centre" ) {
+					var postFunction = "actionCentre";
+				} else {
+					var postFunction = "OpenSidebarAndRefreshDisplay";
+				}
+				openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,postFunction);
 			} else {
 				enableSearch();
 			}
 		});
 	} else {
-		openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,"OpenSidebarAndRefreshDisplay");
+		if ( $(".selectedMenu").data("category") == "action_centre" ) {
+			var postFunction = "actionCentre";
+		} else {
+			var postFunction = "OpenSidebarAndRefreshDisplay";
+		}
+		openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,postFunction);
 	}
 
 }
@@ -2189,7 +2199,6 @@ function installLanguage(languageURL,language) {
 }
 
 function updateLanguage(language) {
-
 	disableSearch();
 	$.cookie("updateLanguage",language,{SameSite:'Lax'});
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"postUpdateLanguage");
@@ -2202,10 +2211,14 @@ function postUpdateLanguage() {
 	if (languageUpdate == currentLanguage)
 		window.location.reload();
 	else {
-		var apppath = $.cookie("sidebarAppPath");
-		var appname = $.cookie("sidebarAppName");
-		showSidebarApp(apppath,appname);
-		refreshDisplay();
+		if ( $(".selectedMenu").data("category") == "action_centre" ) {
+			actionCentre();
+		} else {
+			var apppath = $.cookie("sidebarAppPath");
+			var appname = $.cookie("sidebarAppName");
+			showSidebarApp(apppath,appname);
+			refreshDisplay();
+		}
 	}
 }
 function removeLanguage(language) {
@@ -2234,7 +2247,12 @@ function postLanguageRemove() {
 function updateDocker(container) {
 	closeSidebar();
 	$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
-	openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,"refreshDisplay");
+	if ( $(".selectedMenu").data("category") == "action_centre" ) {
+		var postFunction = "actionCentre";
+	} else {
+		var postFunction = "refreshDisplay";
+	}
+	openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,postFunction);
 }
 
 function setToolTipForFavourite() {
