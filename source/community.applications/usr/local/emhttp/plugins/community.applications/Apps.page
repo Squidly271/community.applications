@@ -748,9 +748,17 @@ $(function(){
 				}
 			});
 		}
+		
 		// set up action centre - run in background without tying anything up
-/* 		$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'getPortsInUse'},function(data) {
-			var ret = JSON.parse(data);		 */
+		$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'enableActionCentre'},function(data) {
+			console.log("Action Centre");
+			console.log(data);
+			var ret = JSON.parse(data);		
+			if ( ret.status == "action" )
+				$(".actionCentre").show();
+			else
+				$(".actionCentre").hide();
+		});
 	}
 });
 

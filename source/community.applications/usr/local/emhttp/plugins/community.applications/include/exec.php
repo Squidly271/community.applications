@@ -188,6 +188,9 @@ switch ($_POST['action']) {
 	case 'changeMaxPerPage':
 		changeMaxPerPage();
 		break;
+	case 'enableActionCentre':
+		enableActionCentre();
+		break;
 	case 'var_dump':
 		break;
 	###############################################
@@ -1205,7 +1208,11 @@ function previous_apps() {
 	}
 	$displayedApplications['community'] = $displayed;
 	writeJsonFile($caPaths['community-templates-displayed'],$displayedApplications);
-	postReturn(['status'=>"ok"]);
+	if ( $installed == "action" && empty($displayed) ) {
+		postReturn(['status'=>"ok",'script'=>'$(".actionCentre").hide();']);
+	} else {
+		postReturn(['status'=>"ok"]);
+	}
 }
 
 ####################################################################################
@@ -2189,6 +2196,9 @@ function getLastUpdate($ID) {
 	return $lastUpdated;
 }
 
+######################################
+# Changes the max per page displayed #
+######################################
 function changeMaxPerPage() {
 	global $caPaths, $caSettings;
 
@@ -2201,6 +2211,169 @@ function changeMaxPerPage() {
 		postReturn(["status"=>"updated"]);
 	}
 }
+
+################################################################
+# Enables if necessary the action centre                       #
+# Basically a duplicate of action centre code in previous apps #
+################################################################
+function enableActionCentre() {
+	global $caPaths, $caSettings, $DockerClient;
+
+# wait til check for updates is finished
+	for ( ;; ) {
+		if ( is_file($caPaths['updateRunning']) && file_exists("/proc/".@file_get_contents($caPaths['updateRunning'])) ) {
+			debug("sleeping -> update running");
+			sleep(5);
+		}
+		else break;
+	}
+
+# wait til templates are downloaded
+	for ( ;; ) {
+		$file = readJsonFile($caPaths['community-templates-info']);
+		if ( ! $file ) {
+			debug("sleeping - no templates");
+			sleep(5);
+		} else {
+			debug("action centre: have templates");
+			break;
+		}
+	}
+	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
+	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
+	
+	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
+		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
+	} else {
+		$dockerUpdateStatus = array();
+	}
+	$info = getAllInfo();
+
+# $info contains all installed containers
+# now correlate that to a template;
+# this section handles containers that have not been renamed from the appfeed
+	if ( $caSettings['dockerRunning'] ) {
+		$all_files = glob("{$caPaths['dockerManTemplates']}/*.xml");
+		$all_files = $all_files ?: array();
+		foreach ($all_files as $xmlfile) {
+			$o = readXmlFile($xmlfile);
+			$o['Overview'] = fixDescription($o['Overview']);
+			$o['Description'] = $o['Overview'];
+			$o['CardDescription'] = $o['Overview'];
+			$o['InstallPath'] = $xmlfile;
+			$o['UnknownCompatible'] = true;
+			$containerID = false;
+
+			$runningflag = false;
+			foreach ($info as $installedDocker) {
+				$installedImage = str_replace("library/","",$installedDocker['Image']);
+				$installedName = $installedDocker['Name'];
+				if ( $installedName == $o['Name'] ) {
+					if ( startsWith($installedImage, $o['Repository']) ) {
+						$runningflag = true;
+						$searchResult = searchArray($file,'Repository',$o['Repository']);
+						if ( $searchResult === false) {
+							$searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
+						}
+						if ( $searchResult === false ) {
+							$tempPath = $o['InstallPath'];
+							$containerID = $file[$searchResult]['ID'];
+							$tmpOvr = $o['Overview'];
+							$o = $file[$searchResult];
+							$o['Name'] = $installedName;
+							$o['Overview'] = $tmpOvr;
+							$o['CardDescription'] = $tmpOvr;
+							$o['InstallPath'] = $tempPath;
+							$o['SortName'] = str_replace("-"," ",$installedName);
+							if ( $installedName !== $file[$searchResult]['Name'] )
+								$o['NoPin'] = true;  # This is renamed and effectively outside of CA's control
+						} else {
+							$runningFlag = true;
+						}
+						break;
+					}
+				}
+			}
+			if ( $runningflag ) {
+				$o['Uninstall'] = true;
+				$o['ID'] = $containerID;
+
+				$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
+				
+				if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
+					$o['actionCenter'] = true;
+				
+				if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
+					if ( $extraBlacklist[$o['Repository']] ) {
+						$o['Blacklist'] = true;
+						$o['ModeratorComment'] = $extraBlacklist[$o['Repository']];
+					}
+					if ( $extraDeprecated[$o['Repository']] ) {
+						$o['Deprecated'] = true;
+						$o['ModeratorComment'] = $extraDeprecated[$o['Deprecated']];
+					}
+				}
+				
+				if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['actionCenter']  )
+					continue;
+				
+				$displayed[] = $o;
+			}
+		}
+		
+		
+	}
+# Now work on plugins
+	foreach ($file as $template) {
+		if ( ! $template['Plugin'] ) continue;
+
+		$filename = pathinfo($template['Repository'],PATHINFO_BASENAME);
+
+		if ( checkInstalledPlugin($template) ) {
+			$template['InstallPath'] = "/var/log/plugins/$filename";
+			$template['Uninstall'] = true;
+			
+			if ( $template['PluginURL'] ) {
+					if ( ( strcmp(plugin("version","/var/log/plugins/$filename"),$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
+						$template['actionCenter'] = true;
+					}
+			}
+
+			if ( !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCenter'] )
+				continue;
+			$displayed[] = $template;
+		}
+	}
+	$installedLanguages = array_diff(scandir($caPaths['languageInstalled']),array(".","..","en_US"));
+	foreach ($installedLanguages as $language) {
+		$index = searchArray($file,"LanguagePack",$language);
+		if ( $index !== false ) {
+			$tmpL = $file[$index];
+			$tmpL['Uninstall'] = true;
+			
+			if ( !languageCheck($tmpL) )
+				continue;
+								
+			$displayed[] = $tmpL;
+		}
+	}
+	
+	file_put_contents("/tmp/blah",print_r($displayed,true));
+	if ( isset($displayed) ) {
+		debug("action center enabled");
+		postReturn(['status'=>"action"]);
+	} else {
+		debug("action centre disabled");
+		postReturn(['status'=>"noaction"]);
+	}
+	
+/* 	if ( is_array($displayed) ) {
+		usort($displayed,"mySort");
+	}
+	$displayedApplications['community'] = $displayed;
+	writeJsonFile($caPaths['community-templates-displayed'],$displayedApplications); */
+}
+
 
 
 #######################################
