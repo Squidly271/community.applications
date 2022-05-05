@@ -748,6 +748,9 @@ $(function(){
 				}
 			});
 		}
+		// set up action centre - run in background without tying anything up
+/* 		$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'getPortsInUse'},function(data) {
+			var ret = JSON.parse(data);		 */
 	}
 });
 

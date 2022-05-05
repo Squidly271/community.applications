@@ -7,6 +7,15 @@
 #                                                             #
 ###############################################################
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
+
+require_once "$docroot/plugins/community.applications/include/paths.php";
+
+if ( is_file($caPaths['updateRunning']) && file_exists("/proc/".@file_get_contents($caPaths['updateRunning'])) ) {
+	exit();
+}
+
+file_put_contents($caPaths['Running'],getmypid());
+
 $updateFile = is_file("$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate") ? "dockerupdate" : "dockerupdate.php";
 exec("$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate check nonotify > /dev/null 2>&1");
 foreach (glob("/var/log/plugins/*.plg") as $plg) {
@@ -15,4 +24,5 @@ foreach (glob("/var/log/plugins/*.plg") as $plg) {
 
 	exec("$docroot/plugins/dynamix.plugin.manager/scripts/plugin check ".escapeshellarg(basename($plg))." > /dev/null 2>&1");
 }
+@unlink($caPaths['updateRunning']);
 ?>

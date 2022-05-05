@@ -64,6 +64,7 @@ $caPaths['CA_logs']                             = "/tmp/CA_logs";
 $caPaths['logging']                             = "{$caPaths['CA_logs']}/ca_log.txt";
 $caPaths['languageInstalled']                   = "/usr/local/emhttp/languages/";
 $caPaths['updateTime']                          = "/tmp/$CA/checkForUpdatesTime"; # can't be in /tmp/community.applications/tempFiles because new feed downloads erases everything there
+$caPaths['updateRunning']                       = "/tmp/$CA/updateRunning";
 $caPaths['dockerWriteTest']                     = "/var/lib/docker/communityApplicationsWriteTest";
 $caPaths['info']                                = $caPaths['tempFiles']."/info.json";
 $caPaths['dockerSearchResults']                 = $caPaths['tempFiles']."/dockerSearch.json";
