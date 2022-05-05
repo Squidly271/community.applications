@@ -64,7 +64,6 @@ switch ($theme) {
 		$swalBackground = "white";
 		$tooltipsterContent = "#101010";
 		$chartGrid = "#dddddd";
-
 		break;
 	case 'gray':
 		$swalBackground = "black";

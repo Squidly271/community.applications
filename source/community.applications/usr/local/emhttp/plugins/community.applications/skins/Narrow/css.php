@@ -191,6 +191,8 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-
 .ca_fa-template::before{content:"\f08e";font-family:fontAwesome;}
 .ca_fa-uninstall::before{content:"\e92f";font-family:Unraid;}
 .ca_fa-update::before{content:"\f0ed";font-family:fontAwesome;}
+.ca_fa-warning::before{content:"\f071";font-family:fontAwesome;}
+.ca_fa-warning{animation:cycleRed 2s infinite;}
 .ca_facebook::before{content:"\f09a";font-family:fontAwesome;}
 .ca_favouriteRepo{margin-right:1rem;margin-bottom:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$supportPopupText?>!important;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .ca_favouriteRepo:hover{text-decoration:none;background-color:<?=$unRaid66color?>;}
@@ -285,7 +287,7 @@ img.displayIcon{height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .homeMore{color:<?=$unRaid66color?>;cursor:pointer;}
 .homeMore:hover{color:#d67777;}
 .homespotlightIconArea{display: inline-block;position: relative;top: -25rem;left: 24rem;cursor:pointer;}
-.hoverMenu{color:<?=$unRaid66color?>;}
+.hoverMenu{color:<?=$unRaid66color?> !important;}
 .infoButton{line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .infoButton:hover{background:<?=$unRaid66color?>}
 .infoButton_docker{line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
@@ -448,6 +450,11 @@ table {background-color:transparent;}
 .warningCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #810000;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 #warningNotAccepted{display:none;}
 
+
+@keyframes cycleRed {
+	0% {color: inherit;}
+	50% {color: #882626;}
+}
 .awesomplete [hidden] {display: none;}
 .awesomplete .visually-hidden {position: absolute;clip: rect(0, 0, 0, 0);}
 .awesomplete {display: inline-block;position: relative;color: red;}

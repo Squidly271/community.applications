@@ -2195,7 +2195,6 @@ function getLastUpdate($ID) {
 
 	return $lastUpdated;
 }
-
 ######################################
 # Changes the max per page displayed #
 ######################################
@@ -2211,7 +2210,6 @@ function changeMaxPerPage() {
 		postReturn(["status"=>"updated"]);
 	}
 }
-
 ################################################################
 # Enables if necessary the action centre                       #
 # Basically a duplicate of action centre code in previous apps #
@@ -2222,7 +2220,7 @@ function enableActionCentre() {
 # wait til check for updates is finished
 	for ( ;; ) {
 		if ( is_file($caPaths['updateRunning']) && file_exists("/proc/".@file_get_contents($caPaths['updateRunning'])) ) {
-			debug("sleeping -> update running");
+			debug("Action Centre sleeping -> update running");
 			sleep(5);
 		}
 		else break;
@@ -2232,7 +2230,7 @@ function enableActionCentre() {
 	for ( ;; ) {
 		$file = readJsonFile($caPaths['community-templates-info']);
 		if ( ! $file ) {
-			debug("sleeping - no templates");
+			debug("Action Centre sleeping - no templates yet");
 			sleep(5);
 		} else {
 			debug("action centre: have templates");
@@ -2320,8 +2318,6 @@ function enableActionCentre() {
 				$displayed[] = $o;
 			}
 		}
-		
-		
 	}
 # Now work on plugins
 	foreach ($file as $template) {
@@ -2334,9 +2330,9 @@ function enableActionCentre() {
 			$template['Uninstall'] = true;
 			
 			if ( $template['PluginURL'] ) {
-					if ( ( strcmp(plugin("version","/var/log/plugins/$filename"),$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
-						$template['actionCenter'] = true;
-					}
+				if ( ( strcmp(plugin("version","/var/log/plugins/$filename"),$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
+					$template['actionCenter'] = true;
+				}
 			}
 
 			if ( !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCenter'] )
@@ -2366,16 +2362,7 @@ function enableActionCentre() {
 		debug("action centre disabled");
 		postReturn(['status'=>"noaction"]);
 	}
-	
-/* 	if ( is_array($displayed) ) {
-		usort($displayed,"mySort");
-	}
-	$displayedApplications['community'] = $displayed;
-	writeJsonFile($caPaths['community-templates-displayed'],$displayedApplications); */
 }
-
-
-
 #######################################
 # Logs Javascript errors being caught #
 #######################################
