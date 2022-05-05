@@ -451,9 +451,10 @@ $(function(){
 			if ( $(menu).hasClass("caRepositoryMenu") ) {
 				return;
 			}
-			if ( ! $(".caRepositoryMenu").hasClass("selectedMenu") ) {
+/* 			if ( ! $(".caRepositoryMenu").hasClass("selectedMenu") ) {
+				alert("here");
 				return;
-			}
+			} */
 			$(".caRepositoryMenu").removeClass("selectedMenu");
 		}
 		if ( ! data.searchFlag ) {
@@ -510,9 +511,10 @@ $(function(){
 		if ( $(this).hasClass("caMenuDisabled") ) {
 			return;
 		}
-		if ( $(this).hasClass("selectedMenu") ) {
+/* 		if ( $(this).hasClass("selectedMenu") ) {
+			alert();
 			return;
-		}
+		} */
 		var slideFlag = true;
 		var currentCat = $(".selectedMenu").data("category");
 		var newCat = $(this).data("category");
@@ -1327,7 +1329,9 @@ function uninstallApp(application,humanName) {
 }
 
 function postUninstallPlugin() {
-	if ( $(".selectedMenu").data("category") == "action_centre" ) {
+	enableSearch();
+	$(".selectedMenu").trigger("click");
+/* 	if ( $(".selectedMenu").data("category") == "action_centre" ) {
 		actionCentre();
 	} else {
 		if ( $(".selectedMenu").data("category") !== "inst_docker" && $(".selectedMenu").data("category") !== "inst_plugin") {
@@ -1338,7 +1342,7 @@ function postUninstallPlugin() {
 		}
 		previousApps(true,false,data.previousAppsSection);
 		enableSearch();
-	}
+	} */
 }
 
 String.prototype.basename = function() {
@@ -1372,15 +1376,16 @@ function uninstallDocker(application,humanName) {
 						actionCentre();
 					});		
 				} else {
-					if ( $(".selectedMenu").data("category") !== "inst_docker" && $(".selectedMenu").data("category") !== "inst_plugin") {
+/* 					if ( $(".selectedMenu").data("category") !== "inst_docker" && $(".selectedMenu").data("category") !== "inst_plugin") {
 						$(".caMenuItem").removeClass("selectedMenu");
 						var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
 						$(menuItem).addClass("selectedMenu");
 						$(menuItem).next().show("slow");
-					}
+					} */
 					post({action:'getPortsInUse'},function(data) {
 						portsInUse = data.portsInUse;
-						previousApps(true,false,data.previousAppsSection);
+	//					previousApps(true,false,data.previousAppsSection);
+						$(".selectedMenu").trigger("click");
 					});
 				}
 			});
@@ -2247,12 +2252,13 @@ function postLanguageRefresh() {
 }
 
 function postLanguageRemove() {
-	var cat = $(".selectedMenu").data("category");
+	$(".selectedMenu").trigger("click");
+/* 	var cat = $(".selectedMenu").data("category");
 	if ( cat == "installed_apps" || cat == "inst_plugins" || cat == "inst_docker" ) {
 		postUninstallPlugin();
 		return;
 	}
-	postLanguageRefresh();
+	postLanguageRefresh(); */
 }
 
 function updateDocker(container) {
