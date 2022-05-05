@@ -1209,7 +1209,7 @@ function previous_apps() {
 	$displayedApplications['community'] = $displayed;
 	writeJsonFile($caPaths['community-templates-displayed'],$displayedApplications);
 	if ( $installed == "action" && empty($displayed) ) {
-		postReturn(['status'=>"ok",'script'=>'$(".actionCentre").hide();']);
+		postReturn(['status'=>"ok",'script'=>'$(".actionCentre").hide();$(".startupButton").trigger("click");']);
 	} else {
 		postReturn(['status'=>"ok"]);
 	}
