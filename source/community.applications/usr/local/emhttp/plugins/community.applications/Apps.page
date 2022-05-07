@@ -563,11 +563,11 @@ $(function(){
 				break;
 			case "prev_docker":
 				data.previousAppsSection = "docker";
-				previousApps(false,false,"docker");
+				previousApps(false,true,"docker");
 				break;
 			case "prev_plugins":
 				data.previousAppsSection = "plugins";
-				previousApps(false,false,"plugins");
+				previousApps(false,true,"plugins");
 				break;
 			case "action_centre":
 				data.previousAppsSection = "";
