@@ -158,6 +158,8 @@ data.searchFlag = false;
 data.searchActive = false; // Sets whether changepage re-sorts the displayed templates.
 data.previousAppsSection = ""; // The section the user is on within previous apps
 data.searchInProgress = false;
+data.deprecated = false; // Only set by reinstalling a deprecated plugin
+
 var dockerNotEnabled;
 var postCount = 0;
 var cookieWarning = false;
@@ -1114,6 +1116,7 @@ function closeSidebar(cookie=false,visible=false) {
 }
 
 function installPlugin(pluginURL,update=false,comment="") {
+	alert(pluginURL);
 	type = update ? "update" : "install";
 	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
 	closeSidebar(true);
@@ -1137,6 +1140,11 @@ function installPlugin(pluginURL,update=false,comment="") {
 				} else {
 					var postFunction = "OpenSidebarAndRefreshDisplay";
 				}
+				data.deprecated = false; // global var here to trigger a rescan of action centre
+				if ( pluginURL.includes("&deprecated")  ) {
+					data.deprecated = true;
+					pluginURL.replace("&deprecated","");
+				}
 				openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,postFunction);
 			} else {
 				enableSearch();
@@ -1148,6 +1156,11 @@ function installPlugin(pluginURL,update=false,comment="") {
 		} else {
 			var postFunction = "OpenSidebarAndRefreshDisplay";
 		}
+		data.deprecated = false; // global var here to trigger a rescan of action centre
+		if ( pluginURL.includes("&deprecated")  ) {
+			data.deprecated = true;
+			pluginURL.replace("&deprecated","");
+		}		
 		openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,postFunction);
 	}
 
@@ -1167,6 +1180,11 @@ function OpenSidebarAndRefreshDisplay() {
 			if ( $.trim(apppath) ) {
 				showSidebarApp(apppath,appname);
 			}
+		if ( data.deprecated ) {
+			data.deprecated = false;
+			setupActionCentre();
+		}
+		
 		}
 	});
 }

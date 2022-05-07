@@ -235,7 +235,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							}
 							if ( ! $template['RequiresFile'] || ($template['RequiresFile'] && is_file($template['RequiresFile'])) ) {
 								$installComment = $template['RequiresFile'] ? "" : $installComment;
-								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}','','".str_replace([" ","\n"],["&#32;",""],htmlspecialchars($installComment))."');");
+								$isDeprecated = $template['Deprecated'] ? "&deprecated" : "";
+								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated','','".str_replace([" ","\n"],["&#32;",""],htmlspecialchars($installComment))."');");
 							}
 							if ( $template['InstallPath'] ) {
 								if ( ! empty($actionsContext) )
@@ -662,7 +663,8 @@ function getPopupDescriptionSkin($appNumber) {
 						if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
 							if ( ($template['RequiresFile'] && is_file($template['RequiresFile']) ) || ! $template['RequiresFile'] ) {
 								$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
-								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}');");
+								$isDeprecated = $template['Deprecated'] ? "&deprecated" : "";
+								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated');");
 							}
 						}
 					}
