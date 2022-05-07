@@ -98,7 +98,7 @@ $dockerSearchActive = is_file($caPaths['dockerSearchActive']);
 exec("mkdir -p {$caPaths['tempFiles']}");
 if ( ($cfg['updateCheck'] == "yes") && ( (time() - @filemtime($caPaths['updateTime']) ) > 3600 ) ) {
 	touch($caPaths['updateTime']);	
-	exec("echo '/usr/local/emhttp/plugins/community.applications/scripts/checkForUpdates.php >/dev/null 2>&1' | at now >/dev/null");
+	exec("echo '/usr/local/emhttp/plugins/community.applications/scripts/checkForUpdates.php >/dev/null 2>&1' | at now -M >/dev/null");
 }
 
 if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
@@ -750,16 +750,7 @@ $(function(){
 			});
 		}
 		
-		// set up action centre - run in background without tying anything up
-		$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'enableActionCentre'},function(data) {
-			console.log("Action Centre");
-			console.log(data);
-			var ret = JSON.parse(data);		
-			if ( ret.status == "action" )
-				$(".actionCentre").show();
-			else
-				$(".actionCentre").hide();
-		});
+		setupActionCentre();
 	}
 });
 
@@ -1330,6 +1321,7 @@ function uninstallApp(application,humanName) {
 function postUninstallPlugin() {
 	enableSearch();
 	$(".selectedMenu").trigger("click");
+	setupActionCentre();
 /* 	if ( $(".selectedMenu").data("category") == "action_centre" ) {
 		actionCentre();
 	} else {
@@ -2769,6 +2761,17 @@ function getPerPageOpts(value) {
 	});
 
 	return maxPerPageOpts;
+}
+
+function setupActionCentre() {
+	// set up action centre - run in background without tying anything up
+	$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'enableActionCentre'},function(data) {
+		var ret = JSON.parse(data);		
+		if ( ret.status == "action" )
+			$(".actionCentre").show();
+		else
+			$(".actionCentre").hide();
+	});
 }
 </script>
 

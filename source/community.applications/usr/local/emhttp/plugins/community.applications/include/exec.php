@@ -956,7 +956,6 @@ function display_content() {
 	$pageNumber = getPost("pageNumber","1");
 	$startup = getPost("startup",false);
 	$selectedApps = json_decode(getPost("selected",false),true);
-
 	$o['display'] = "";
 	if ( file_exists($caPaths['community-templates-displayed']) || file_exists($caPaths['repositoriesDisplayed']) ) {
 		$o['display'] = "<div class='ca_templatesDisplay'>".display_apps($pageNumber,$selectedApps,$startup)."</div>";

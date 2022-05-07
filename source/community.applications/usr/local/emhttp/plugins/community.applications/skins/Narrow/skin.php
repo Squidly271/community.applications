@@ -289,6 +289,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['Facebook'] = $template['Facebook'] ?: $repositories[$template['Repo']]['Facebook'];
 			$template['Discord'] = $template['Discord'] ?: $repositories[$template['RepoName']]['Discord'];
 
+			$previousAppName = $template['Plugin'] ? $template['PluginURL'] : $template['Name'];
 			$template['checked'] = $checkedOffApps[$previousAppName] ? "checked" : "";
 
 			if ( ! $template['Plugin'] ) {
