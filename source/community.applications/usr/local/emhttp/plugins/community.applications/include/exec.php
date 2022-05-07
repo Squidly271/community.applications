@@ -1081,6 +1081,9 @@ function previous_apps() {
 							if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['actionCenter']  )
 								continue;
 						}
+						if ( $installed == "action" )
+							$o['actionCenter'] = true;
+						
 						$displayed[] = $o;
 					}
 				}
@@ -1160,6 +1163,8 @@ function previous_apps() {
 
 					if ( $installed == "action" && !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCenter'] )
 						continue;
+					if ( $installed == "action" )
+						$template['actionCenter'] = true;
 					$displayed[] = $template;
 				}
 			}

@@ -1198,7 +1198,12 @@ function displayCard($template) {
 		$flagTextStart = "&nbsp;";
 		$flagTextEnd = "&nbsp;";
 	}
-	if ( $Blacklist ) {
+	if ( ($Installed || $Uninstall) && !$actionCenter) {
+		 $card .= "
+			 <div class='installedCardBackground'>
+			   <div class='installedCardText ca_center'>".tr("INSTALLED")."</div>
+			</div>";
+	} elseif ( $Blacklist ) {
 		$card .= "
 			<div class='warningCardBackground'>
 				<div class='betaPopupText ca_center' title='".tr("This application template / has been blacklisted")."'>".tr("Blacklisted")."$flagTextEnd</div>
@@ -1227,11 +1232,6 @@ function displayCard($template) {
 		$card .= "
 			<div class='betaCardBackground'>
 				<div class='installedCardText ca_center'>".tr("UPDATED")."</div>
-			</div>";
-	} elseif ( $Installed || $Uninstall) {
-		 $card .= "
-			 <div class='installedCardBackground'>
-			   <div class='installedCardText ca_center'>".tr("INSTALLED")."</div>
 			</div>";
 	} elseif ( $Official ) {
 		$card .= "
