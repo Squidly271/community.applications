@@ -660,13 +660,13 @@ function getPopupDescriptionSkin($appNumber) {
 					}
 				} elseif ( ! $template['Blacklist']  ) {
 					if ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true") {
-						if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
+		//				if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
 							if ( ($template['RequiresFile'] && is_file($template['RequiresFile']) ) || ! $template['RequiresFile'] ) {
 								$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
 								$isDeprecated = $template['Deprecated'] ? "&deprecated" : "";
 								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated');");
 							}
-						}
+				//		}
 					}
 					if ( $template['InstallPath'] ) {
 						if ( ! empty($actionsContext) )

@@ -1116,7 +1116,6 @@ function closeSidebar(cookie=false,visible=false) {
 }
 
 function installPlugin(pluginURL,update=false,comment="") {
-	alert(pluginURL);
 	type = update ? "update" : "install";
 	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
 	closeSidebar(true);
