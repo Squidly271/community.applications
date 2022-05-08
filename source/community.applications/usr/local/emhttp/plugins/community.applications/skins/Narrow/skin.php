@@ -1198,7 +1198,7 @@ function displayCard($template) {
 		$flagTextStart = "&nbsp;";
 		$flagTextEnd = "&nbsp;";
 	}
-	if ( ($Installed || $Uninstall) && !$actionCenter) {
+	if ( ($Installed || $Uninstall) && !$actionCentre) {
 		 $card .= "
 			 <div class='installedCardBackground'>
 			   <div class='installedCardText ca_center'>".tr("INSTALLED")."</div>

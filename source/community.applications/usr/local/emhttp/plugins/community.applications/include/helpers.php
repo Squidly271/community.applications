@@ -147,16 +147,19 @@ function last_str_replace($haystack, $needle, $replace) {
 #######################
 function mySort($a, $b) {
 	global $sortOrder;
+	
+	debug("sort order: {$sortOrder['sortBy']}");
 
 	if ( $sortOrder['sortBy'] == "Name" )
 		$sortOrder['sortBy'] = "SortName";
-	if ( $sortOrder['sortBy'] != "downloads" ) {
+	if ( $sortOrder['sortBy'] != "downloads" && $sortOrder['sortBy'] != "trendDelta") {
 		$c = strtolower($a[$sortOrder['sortBy']]);
 		$d = strtolower($b[$sortOrder['sortBy']]);
 	} else {
 		$c = $a[$sortOrder['sortBy']];
 		$d = $b[$sortOrder['sortBy']];
 	}
+	
 	$return1 = ($sortOrder['sortDir'] == "Down") ? -1 : 1;
 	$return2 = ($sortOrder['sortDir'] == "Down") ? 1 : -1;
 

@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.04.17">
-<!ENTITY md5       "bda5768c4ad8ae1c6771fa3a06887162">
+<!ENTITY version   "2022.05.08">
+<!ENTITY md5       "61ed2e70c65f9984ba8d3d358f6816b2">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,22 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.05.08
+- Added: Action Centre
+- Fixed: Blacklisted Apps wouldn't appear within Installed Apps
+- Fixed: Allow non-CA apps to appear within Installed / Previous Apps
+- Added: Infrastructure to still know if an app is blacklisted even if its no longer within the appfeed
+- Fixed: 6.10.0-RC series - Headers already sent error when updating a container within CA
+- Fixed: Updated flag wouldn't always disappear from sidebar after updating
+- Removed: Extraneous warning icon for deprecated / blacklisted on the cards
+- Fixed: Improper IconURL was being added to dockerHub conversions
+- Fixed: Extra sessions were being created by a background process
+- Changed: Uninstalling no longer automatically goes to Installed Apps after completion
+- Fixed: Prevent a background process from being spawned multiple times if it takes longer than 60 minutes to complete
+- Fixed: Selected apps in Previous Apps would get cleared when page switching, deleting a template via actions etc
+- Fixed: Sidebar wouldn't allow a deprecated app (in previous apps) to be reinstalled
+- Changed: Installed flag takes precedence of deprecated / blacklisted flags
+
 ###2022.04.17
 - Fixed: Don't allow renamed containers to be pinned
 - Fixed: If pinned apps comes up with No Matching Content Found (due to all pinned apps being incompatible etc) then disable the button

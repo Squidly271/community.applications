@@ -300,8 +300,8 @@ function DownloadApplicationFeed() {
 		if ( ! $o ) continue;
 
 		if ( is_array($o['trends']) && count($o['trends']) > 1 ) {
-			$o['trendDelta'] = end($o['trends']) - $o['trends'][0];
-			$o['trendAverage'] = array_sum($o['trends'])/count($o['trends']);
+			$o['trendDelta'] = round(end($o['trends']) - $o['trends'][0],4);
+			$o['trendAverage'] = round(array_sum($o['trends'])/count($o['trends']),4);
 		}
 
 		$o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
@@ -1065,7 +1065,7 @@ function previous_apps() {
 							$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
 							
 							if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
-								$o['actionCenter'] = true;
+								$o['actionCentre'] = true;
 							
 							if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
 								if ( $extraBlacklist[$o['Repository']] ) {
@@ -1078,11 +1078,11 @@ function previous_apps() {
 								}
 							}
 							
-							if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['actionCenter']  )
+							if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['actionCentre']  )
 								continue;
 						}
 						if ( $installed == "action" )
-							$o['actionCenter'] = true;
+							$o['actionCentre'] = true;
 						
 						$displayed[] = $o;
 					}
@@ -1157,14 +1157,14 @@ function previous_apps() {
 					
 					if ( $installed == "action" && $template['PluginURL'] ) {
 							if ( ( strcmp(plugin("version","/var/log/plugins/$filename"),$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
-								$template['actionCenter'] = true;
+								$template['actionCentre'] = true;
 							}
 					}
 
-					if ( $installed == "action" && !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCenter'] )
+					if ( $installed == "action" && !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCentre'] )
 						continue;
 					if ( $installed == "action" )
-						$template['actionCenter'] = true;
+						$template['actionCentre'] = true;
 					$displayed[] = $template;
 				}
 			}
@@ -2303,7 +2303,7 @@ function enableActionCentre() {
 				$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
 				
 				if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
-					$o['actionCenter'] = true;
+					$o['actionCentre'] = true;
 				
 				if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
 					if ( $extraBlacklist[$o['Repository']] ) {
@@ -2316,7 +2316,7 @@ function enableActionCentre() {
 					}
 				}
 				
-				if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['actionCenter']  )
+				if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['actionCentre']  )
 					continue;
 				
 				$displayed[] = $o;
@@ -2335,11 +2335,11 @@ function enableActionCentre() {
 			
 			if ( $template['PluginURL'] ) {
 				if ( ( strcmp(plugin("version","/var/log/plugins/$filename"),$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
-					$template['actionCenter'] = true;
+					$template['actionCentre'] = true;
 				}
 			}
 
-			if ( !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCenter'] )
+			if ( !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCentre'] )
 				continue;
 			$displayed[] = $template;
 		}
