@@ -2358,7 +2358,7 @@ function enableActionCentre() {
 		}
 	}
 	
-	file_put_contents("/tmp/blah",print_r($displayed,true));
+//	file_put_contents("/tmp/blah",print_r($displayed,true));
 	if ( isset($displayed) ) {
 		debug("action center enabled");
 		postReturn(['status'=>"action"]);

@@ -52,7 +52,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	if ( $dockerNotEnabled == "true" ) {
 		$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
 		$dockerVars = parse_ini_file($caPaths['docker_cfg']);
-		file_put_contents("/tmp/blah",print_r($dockerVars,true));
+
 		if ( $unRaidVars['mdState'] == "STARTED" && $dockerVars['DOCKER_ENABLED'] !== "yes" )
 			$dockerNotEnabled = 1; // Array started, docker not enabled
 		if ( $unRaidVars['mdState'] == "STARTED" && $dockerVars['DOCKER_ENABLED'] == "yes" )
