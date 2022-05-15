@@ -2278,6 +2278,17 @@ function enableActionCentre() {
 							$searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
 						}
 						if ( $searchResult === false ) {
+							$runningFlag = true;
+							if ( $extraBlacklist[$o['Repository']] ) {
+								$o['Blacklist'] = true;
+								$o['ModeratorComment'] = $extraBlacklist[$o['Repository']];
+							}
+							if ( $extraDeprecated[$o['Repository']] ) {
+								$o['Deprecated'] = true;
+								$o['ModeratorComment'] = $extraDeprecated[$o['Deprecated']];
+							}						
+						}
+/* 						if ( $searchResult === false ) {
 							$tempPath = $o['InstallPath'];
 							$containerID = $file[$searchResult]['ID'];
 							$tmpOvr = $o['Overview'];
@@ -2291,7 +2302,7 @@ function enableActionCentre() {
 								$o['NoPin'] = true;  # This is renamed and effectively outside of CA's control
 						} else {
 							$runningFlag = true;
-						}
+						} */
 						break;
 					}
 				}
@@ -2358,7 +2369,6 @@ function enableActionCentre() {
 		}
 	}
 	
-//	file_put_contents("/tmp/blah",print_r($displayed,true));
 	if ( isset($displayed) ) {
 		debug("action center enabled");
 		postReturn(['status'=>"action"]);
