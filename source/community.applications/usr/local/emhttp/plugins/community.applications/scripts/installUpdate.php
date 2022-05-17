@@ -26,4 +26,5 @@ $_GET['mute'] = false;
 <script>
 // Redefine the done button to something CA can use
 $(":button").attr("onclick","top.Shadowbox.close();");
+window.scrollTo(0,1e10);
 </script>

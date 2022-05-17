@@ -2,8 +2,8 @@ c553881600c51459abaa336c920cd923  ./Apps.page
 4e55f7483b661af21a25b677179baffe  ./CA_notices.page
 42a1658a916a3a3eed2a9f2af80603c4  ./ca_settings.page
 e718d7825dbdc96a17a915079222b098  ./default.cfg
-30b69ec0b0fc6219d61f8114b3b70ad2  ./include/exec.php
-1acc7a5c3489b25a895b5decac043dee  ./include/helpers.php
+084221f469c97f34ed4e8576730ead78  ./include/exec.php
+fb690feab69575af4da39d58a9e51340  ./include/helpers.php
 fc87642746ba4f324537bc381b78e982  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
@@ -12,7 +12,7 @@ fc87642746ba4f324537bc381b78e982  ./include/paths.php
 07684bde8ccd13523f62c69bb492fc27  ./scripts/installMulti.php
 be74e770cdc8938200fc29580be4e3a1  ./scripts/installMultiPlugin.php
 524afab04ca930f59117a846f819fb2f  ./scripts/installPluginUpdate.sh
-afa5771f344d0600a7b3bbc40bd32d29  ./scripts/installUpdate.php
+25b6119a7ce9330fe8a16f4eb969512d  ./scripts/installUpdate.php
 5846421e95b475e1156c3f68164ccc4f  ./scripts/languageInstall.sh
 76d678b918109e2d7dad6c17c7a80881  ./scripts/notices.php
 a1401a0bed89c182b69f0c7508282c1f  ./scripts/pluginInstall.php
@@ -21,4 +21,4 @@ da3b4f9b73c5c3bf65be6c42d68b51f9  ./scripts/showStatistics.php
 34554a56611dfe625889c82afd5138de  ./scripts/updatePluginSupport.php
 ce8e45452d3b63b5943b6f39c817bbf9  ./skins/Narrow/css.php
 c4d6ce8de3baff1c9de2b7f348b2f340  ./skins/Narrow/skin.html
-49c6b9e4f5fab4c4ce299b8c65d56a15  ./skins/Narrow/skin.php
+3ee5f4855b7eacfdcc9cf107d0af2428  ./skins/Narrow/skin.php

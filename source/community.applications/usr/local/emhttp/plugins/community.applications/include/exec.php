@@ -2259,12 +2259,12 @@ function enableActionCentre() {
 		$all_files = $all_files ?: array();
 		foreach ($all_files as $xmlfile) {
 			$o = readXmlFile($xmlfile);
-			$o['Overview'] = fixDescription($o['Overview']);
+/* 			$o['Overview'] = fixDescription($o['Overview']);
 			$o['Description'] = $o['Overview'];
 			$o['CardDescription'] = $o['Overview'];
 			$o['InstallPath'] = $xmlfile;
 			$o['UnknownCompatible'] = true;
-			$containerID = false;
+			$containerID = false; */
 
 			$runningflag = false;
 			foreach ($info as $installedDocker) {
@@ -2281,11 +2281,11 @@ function enableActionCentre() {
 							$runningFlag = true;
 							if ( $extraBlacklist[$o['Repository']] ) {
 								$o['Blacklist'] = true;
-								$o['ModeratorComment'] = $extraBlacklist[$o['Repository']];
+//								$o['ModeratorComment'] = $extraBlacklist[$o['Repository']];
 							}
 							if ( $extraDeprecated[$o['Repository']] ) {
 								$o['Deprecated'] = true;
-								$o['ModeratorComment'] = $extraDeprecated[$o['Deprecated']];
+//								$o['ModeratorComment'] = $extraDeprecated[$o['Deprecated']];
 							}						
 						}
 /* 						if ( $searchResult === false ) {
@@ -2308,9 +2308,9 @@ function enableActionCentre() {
 				}
 			}
 			if ( $runningflag ) {
-				$o['Uninstall'] = true;
+/* 				$o['Uninstall'] = true;
 				$o['ID'] = $containerID;
-
+ */
 				$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
 				
 				if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
@@ -2319,11 +2319,11 @@ function enableActionCentre() {
 				if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
 					if ( $extraBlacklist[$o['Repository']] ) {
 						$o['Blacklist'] = true;
-						$o['ModeratorComment'] = $extraBlacklist[$o['Repository']];
+//						$o['ModeratorComment'] = $extraBlacklist[$o['Repository']];
 					}
 					if ( $extraDeprecated[$o['Repository']] ) {
 						$o['Deprecated'] = true;
-						$o['ModeratorComment'] = $extraDeprecated[$o['Deprecated']];
+//						$o['ModeratorComment'] = $extraDeprecated[$o['Deprecated']];
 					}
 				}
 				
@@ -2331,6 +2331,7 @@ function enableActionCentre() {
 					continue;
 				
 				$displayed[] = $o;
+				break;
 			}
 		}
 	}
@@ -2353,6 +2354,7 @@ function enableActionCentre() {
 			if ( !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCentre'] )
 				continue;
 			$displayed[] = $template;
+			break;
 		}
 	}
 	$installedLanguages = array_diff(scandir($caPaths['languageInstalled']),array(".","..","en_US"));
@@ -2366,6 +2368,7 @@ function enableActionCentre() {
 				continue;
 								
 			$displayed[] = $tmpL;
+			break;
 		}
 	}
 	

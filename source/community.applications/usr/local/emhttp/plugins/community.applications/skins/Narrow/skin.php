@@ -377,7 +377,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 	if ($startingPage < 3 )
 		$startingPage = 1;
 	else
-		$o .= "<a class='ca_tooltip pageNumber' onclick='$pageFunction(&quot;1&quot;);'>1</a><span class='pageNumber pageDots'></span>";
+		$o .= "<a class='ca_tooltip pageNumber' onclick='$pageFunction(&quot;1&quot;);'>1</a><span class='pageDots'></span>";
 
 	$endingPage = $pageNumber + 5;
 	if ( $endingPage > $totalPages )
@@ -388,7 +388,7 @@ function getPageNavigation($pageNumber,$totalApps,$dockerSearch,$displayCount = 
 
 	if ( $endingPage != $totalPages) {
 		if ( ($totalPages - $pageNumber ) > 6)
-			$o .= "<span class='pageNumber pageDots'></span>";
+			$o .= "<span class='pageDots'></span>";
 
 		if ( ($totalPages - $pageNumber ) >5 )
 			$o .= "<a class='ca_tooltip pageNumber' onclick='$pageFunction(&quot;$totalPages&quot;);'>$totalPages</a>";
