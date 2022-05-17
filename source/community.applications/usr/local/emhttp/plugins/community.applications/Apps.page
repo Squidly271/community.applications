@@ -1913,10 +1913,11 @@ function showCredits() {
 
 function showStatistics() {
 	$(".multi_installDiv,.dockerSearch").hide();
-	clearCategory(); clearSearchBox();
+	clearCategory(); clearSearchBox(); 
 	post({action:'statistics'},function(result) {
 		updateDisplay(result.statistics);
 		$(".maxPerPage").hide();
+		disableSearch();
 	});
 }
 
