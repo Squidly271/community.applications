@@ -683,13 +683,13 @@ $(function(){
 	});
 
 	var iconHoverTimer;
-	$("body").on("mouseover",".ca_displayIcon,.infoButton",function() {
+	$("body").on("mouseover",".ca_displayIcon,.infoButton,.displayIcon,.card_readmore",function() {
 		var icon = this;
 		iconHoverTimer = setTimeout(function() {
 			icon.click();
 		},4000);
 	});
-	$("body").on("mouseout",".ca_displayIcon,.infoButton",function() {
+	$("body").on("mouseout",".ca_displayIcon,.infoButton,displayIcon,.card_readmore",function() {
 		clearTimeout(iconHoverTimer);
 	});
 

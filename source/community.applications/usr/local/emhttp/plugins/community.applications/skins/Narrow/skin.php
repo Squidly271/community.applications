@@ -641,7 +641,7 @@ function getPopupDescriptionSkin($appNumber) {
 			} else {
 				if ( file_exists("/var/log/plugins/$pluginName") ) {
 					$template['installedVersion'] = plugin("version","/var/log/plugins/$pluginName");
-					if ( $template['installedVersion'] != $template['pluginVersion'] && $template['Name'] !== "Community Applications") {
+					if ( ($template['installedVersion'] != $template['pluginVersion'] || $template['installedVersion'] != plugin("version","/tmp/plugins/$pluginName") ) && $template['Name'] !== "Community Applications") {
 						@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 						$template['UpdateAvailable'] = true;
 						$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
