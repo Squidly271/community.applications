@@ -567,6 +567,9 @@ function postReturn($retArray) {
 if ( ! function_exists("tr") ) {
 	function tr($string,$options=-1) {
 		$translated = _($string,$options);
+		if ( ! trim($translated) ) 
+			$translated = $string;
+		
 		if ( startsWith($translated,"&#34;") && endsWith($translated,"&#34;") )
 			$translated = first_str_replace(last_str_replace($translated,"&#34;",""),"&#34;","");
 

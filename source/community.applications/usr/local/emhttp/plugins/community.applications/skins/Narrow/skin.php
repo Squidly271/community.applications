@@ -1198,7 +1198,12 @@ function displayCard($template) {
 		$flagTextStart = "&nbsp;";
 		$flagTextEnd = "&nbsp;";
 	}
-	if ( ($Installed || $Uninstall) && !$actionCentre) {
+	if ( $UpdateAvailable ) {	
+		$card .= "
+			<div class='betaCardBackground'>
+				<div class='installedCardText ca_center'>".tr("UPDATED")."</div>
+			</div>";
+	} elseif ( ($Installed || $Uninstall) && !$actionCentre) {
 		 $card .= "
 			 <div class='installedCardBackground'>
 			   <div class='installedCardText ca_center'>".tr("INSTALLED")."</div>
@@ -1228,11 +1233,6 @@ function displayCard($template) {
 				<div class='betaPopupText ca_center' title='".tr("This application template has been deprecated")."'>".tr("Deprecated")."$flagTextEnd</div>
 			</div>
 		";
-	} elseif ( $UpdateAvailable ) {	
-		$card .= "
-			<div class='betaCardBackground'>
-				<div class='installedCardText ca_center'>".tr("UPDATED")."</div>
-			</div>";
 	} elseif ( $Official ) {
 		$card .= "
 			<div class='officialCardBackground'>
