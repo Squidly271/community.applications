@@ -1155,10 +1155,16 @@ function previous_apps() {
 					$template['InstallPath'] = "/var/log/plugins/$filename";
 					$template['Uninstall'] = true;
 					
-					if ( $installed == "action" && $template['PluginURL'] ) {
-							if ( ( strcmp(plugin("version","/var/log/plugins/$filename"),$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
-								$template['actionCentre'] = true;
-							}
+					if ( $installed == "action" && $template['PluginURL'] && $template['Name'] !== "Community Applications") {
+						$installedVersion = plugin("version","/var/log/plugins/$filename");
+						if ( ( strcmp($installedVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) ) {
+							$template['actionCentre'] = true;
+							$template['UpdateAvailable'] = true;
+						}
+						if ( is_file("/tmp/plugins/$filename") && strcmp($installedVersion,plugin("version","/tmp/plugins/$filename")) < 0 ) {
+							$template['actionCentre'] = true;
+							$template['UpdateAvailable'] = true;
+						}
 					}
 
 					if ( $installed == "action" && !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCentre'] )
@@ -2339,16 +2345,21 @@ function enableActionCentre() {
 	foreach ($file as $template) {
 		if ( ! $template['Plugin'] ) continue;
 
+		if ( $template['Name'] == "Community Applications" )
+			continue;
+
 		$filename = pathinfo($template['Repository'],PATHINFO_BASENAME);
 
 		if ( checkInstalledPlugin($template) ) {
 			$template['InstallPath'] = "/var/log/plugins/$filename";
 			$template['Uninstall'] = true;
-			
-			if ( $template['PluginURL'] ) {
-				if ( ( strcmp(plugin("version","/var/log/plugins/$filename"),$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
+			$installedVersion = plugin("version","/var/log/plugins/$filename");
+			if ( ( strcmp($installedVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) ) {
+				$template['actionCentre'] = true;
+			}
+			if ( ! $template['actionCentre'] && is_file("/tmp/plugins/$filename") ) {
+				if ( strcmp($installedVersion,plugin("version","/tmp/plugins/$filename")) < 0 )
 					$template['actionCentre'] = true;
-				}
 			}
 
 			if ( !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCentre'] )
