@@ -682,6 +682,17 @@ $(function(){
 		removeApp(path,name);
 	});
 
+	var iconHoverTimer;
+	$("body").on("mouseover",".ca_displayIcon,.infoButton",function() {
+		var icon = this;
+		iconHoverTimer = setTimeout(function() {
+			icon.click();
+		},4000);
+	});
+	$("body").on("mouseout",".ca_displayIcon,.infoButton",function() {
+		clearTimeout(iconHoverTimer);
+	});
+
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
 	  $(".ca_templatesDisplay").hide();

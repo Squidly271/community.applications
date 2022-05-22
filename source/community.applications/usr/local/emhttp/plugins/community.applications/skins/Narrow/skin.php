@@ -860,16 +860,22 @@ function getRepoDescriptionSkin($repository) {
 		$t .= "<div>";
 		if ( $repo['Photo'] ) {
 			$photos = is_array($repo['Photo']) ? $repo['Photo'] : [$repo['Photo']];
-
+			$t .= "<div>";
 			foreach ($photos as $shot) {
 				$t .= "<a class='screenshot' href='".trim($shot)."'><img class='screen' src='".trim($shot)."' onerror='this.style.display=&quot;none&quot;'></img></a>";
 			}
+			$t .= "</div>";
 		}
 		if ( $repo['Video'] ) {
 			$videos = is_array($repo['Video']) ? $repo['Video'] : [$repo['Video']];
+			$vidText = (count($videos) == 1) ? "Play Video" : "Play Video %s";
+			$t .= "<div>";
+			$count = 1;
 			foreach ($videos as $vid) {
-				$t .= "<a class='screenshot mfp-iframe' href='".trim($vid)."'><div class='vid ca_fa-film'></div></a>";
+				$t .= "<a class='screenshot videoButton mfp-iframe' href='".trim($vid)."'><div class='ca_fa-film'> ".sprintf(tr($vidText),$count)."</div></a>";
+				$count++;
 			}
+			$t .= "</div>";
 		}
 
 		$t .= "</div>";
