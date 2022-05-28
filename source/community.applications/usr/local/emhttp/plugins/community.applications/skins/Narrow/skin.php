@@ -125,6 +125,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			if ( $template['Requires'] )
 				$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires'])."<br>$installComment";
 
+			$installComment = str_replace("\n","",$installComment);
 			if ( ! $template['Language'] ) {
 				if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
 					if ( ! $template['Plugin'] ) {
@@ -185,9 +186,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 												$actionsContext[] = array("divider"=>true);
 											}
 										}
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32",htmlspecialchars($installComment))."','".portsUsed($template)."');");
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32",htmlspecialchars($installComment))."','".portsUsed($template)."');");
 									} else {
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"Install","action"=>"displayTags('{$template['ID']}',false,'".str_replace(" ","&#32",htmlspecialchars($installComment))."','".portsUsed($template)."');");
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}',false,'".str_replace(" ","&#32",htmlspecialchars($installComment))."','".portsUsed($template)."');");
 									}
 								}
 							}
