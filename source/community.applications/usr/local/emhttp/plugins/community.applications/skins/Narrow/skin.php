@@ -112,7 +112,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$niceRepoName = str_replace("'s Repository","",$template['RepoName']);
 			$niceRepoName = str_replace("' Repository","",$niceRepoName);
 			$niceRepoName = str_replace(" Repository","",$niceRepoName);
-			$favMsg = ($favClass == "ca_favouriteRepo") ? tr("Click to remove favourite repository") : tr(sprintf("Click to set %s as favourite repository",$niceRepoName));
+//			$favMsg = ($favClass == "ca_favouriteRepo") ? tr("Click to remove favourite repository") : tr(sprintf("Click to set %s as favourite repository",$niceRepoName));
 
 			$ct .= displayCard($template);
 			$count++;
@@ -1039,11 +1039,20 @@ function displayCard($template) {
 	else
 		$author = $Author;
 
-	if ( $Plugin )
+/* 	if ( $Plugin )
 		$author = $Author;
 	if ( $Language )
-		$author = "Unraid";
-
+		$author = "Unraid"; */
+	
+	if ( $author == $RepoName ) {
+		if (strpos($author,"' Repository") )
+			$author = sprintf(tr("%s's Repository"),str_replace("' Repository","",$author));
+		elseif (strpos($author,"'s Repository"))
+			$author = sprintf(tr("%s's Repository"),str_replace("'s Repository","",$author));
+		elseif (strpos($author," Repository") )
+			$author = sprintf(tr("%s Repository"),str_replace(" Repository","",$author));
+	}
+		
 	if ( !$RepositoryTemplate ) {
 		$cardClass = "ca_appPopup";
 		$supportContext = array();
@@ -1079,7 +1088,7 @@ function displayCard($template) {
 		$author = "";
 	}
 
-	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
+//	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
 
 	$bottomClass = "ca_bottomLineSpotLight";
 	if ( $DockerHub ) {
