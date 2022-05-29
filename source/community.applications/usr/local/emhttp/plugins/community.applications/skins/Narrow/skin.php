@@ -1473,7 +1473,7 @@ function displayPopup($template) {
 	if (is_array($trends) && (count($trends) > 1) ){
 		if ( $downloadtrend ) {
 			$card .= "
-				<div class='charts chartTitle'>Trends</div>
+				<div class='charts chartTitle'>".tr("Trends")."</div>
 				<div><span class='charts'>Show: <span class='chartMenu selectedMenu' data-chart='trendChart'>".tr("Trend Per Month")."</span><span class='chartMenu' data-chart='downloadChart'>".tr("Downloads Per Month")."</span><span class='chartMenu' data-chart='totalDownloadChart'>".tr("Total Downloads")."</span></div>
 				<div>
 				<div><canvas id='trendChart' class='caChart' height=1 width=3></canvas></div>
