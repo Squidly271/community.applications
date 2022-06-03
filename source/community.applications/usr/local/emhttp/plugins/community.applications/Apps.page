@@ -687,7 +687,7 @@ $(function(){
 		var icon = this;
 		iconHoverTimer = setTimeout(function() {
 			icon.click();
-		},4000);
+		},3000);
 	});
 	$("body").on("mouseout",".ca_displayIcon,.infoButton,displayIcon,.card_readmore",function() {
 		clearTimeout(iconHoverTimer);
@@ -1126,7 +1126,31 @@ function closeSidebar(cookie=false,visible=false) {
 	$(".sidebar").fadeOut();
 }
 
-function installPlugin(pluginURL,update=false,comment="") {
+function installPlugin(pluginURL,update=false,comment="",requires="") {
+	if ( update && requires ) {
+		post({action:"checkRequirements",requires:requires},function(data) {
+			if (! data.met) {
+				swal({
+					title: "<?tr("Requirements not met")?>",
+					text: "<?tr("The requirements for this upgrade have not been met on your system")?>",
+					allowOutsideClick: false,
+					showConfirmButton: true,
+					showCancelButton: false,
+					confirmButtonText: "<?tr("OK")?>",
+					type: "error"
+				},function(isConfirm) {
+					enableSearch();
+				});
+			} else {
+				actuallyInstallPlugin(pluginURL,update,comment);
+			}
+		});
+	} else {
+		actuallyInstallPlugin(pluginURL,update,comment);
+	}
+}
+
+function actuallyInstallPlugin(pluginURL,update=false,comment="") {	
 	type = update ? "update" : "install";
 	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
 	closeSidebar(true);

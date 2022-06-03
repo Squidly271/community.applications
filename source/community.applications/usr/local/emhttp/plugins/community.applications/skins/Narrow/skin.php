@@ -199,7 +199,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							if ( ( strcmp(plugin("version","/var/log/plugins/$pluginName"),$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 								$template['UpdateAvailable'] = true;
-								$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
+								$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true,'','{$template['RequiresFile']}');");
 							} else {
 								if ( ! $template['UpdateAvailable'] ) # this handles if the feed hasn't caught up to the update yet
 									$template['UpdateAvailable'] = false;

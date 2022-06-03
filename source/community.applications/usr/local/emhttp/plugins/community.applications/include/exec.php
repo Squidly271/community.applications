@@ -193,6 +193,9 @@ switch ($_POST['action']) {
 		break;
 	case 'var_dump':
 		break;
+	case 'checkRequirements':
+		checkRequirements();
+		break;
 	###############################################
 	# Return an error if the action doesn't exist #
 	###############################################
@@ -2391,6 +2394,19 @@ function enableActionCentre() {
 		postReturn(['status'=>"noaction"]);
 	}
 }
+
+###################################################
+# Checks the requirements being met on an upgrade #
+###################################################
+function checkRequirements() {
+	$requiresFile = getPost("requires","");
+	if (! $requiresFile || ($requiresFile && is_file($requiresFile) ) ) {
+		postReturn(['met'=>true]);
+	} else {
+		postReturn(['met'=>""]);
+	}
+}
+
 #######################################
 # Logs Javascript errors being caught #
 #######################################
