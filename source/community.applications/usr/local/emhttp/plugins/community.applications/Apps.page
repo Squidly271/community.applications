@@ -173,6 +173,7 @@ var unRaidFontSize = $("html").css("font-size").replace("px","");
 var resizeTimer;
 var portsInUse = [];
 var startupSearch = "<?=$_GET['search']?>";
+var iconHoverTimer;
 
 
 $(function(){
@@ -682,14 +683,13 @@ $(function(){
 		removeApp(path,name);
 	});
 
-	var iconHoverTimer;
 	$("body").on("mouseover",".ca_displayIcon,.infoButton,.displayIcon,.card_readmore",function() {
 		var icon = this;
 		iconHoverTimer = setTimeout(function() {
 			icon.click();
 		},3000);
 	});
-	$("body").on("mouseout",".ca_displayIcon,.infoButton,displayIcon,.card_readmore",function() {
+	$("body").on("mouseout",".ca_displayIcon,.infoButton,.displayIcon,.card_readmore",function() {
 		clearTimeout(iconHoverTimer);
 	});
 
@@ -1149,7 +1149,6 @@ function installPlugin(pluginURL,update=false,comment="",requires="") {
 		actuallyInstallPlugin(pluginURL,update,comment);
 	}
 }
-
 function actuallyInstallPlugin(pluginURL,update=false,comment="") {	
 	type = update ? "update" : "install";
 	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
@@ -2591,6 +2590,7 @@ function popUpChart(descData) {
 }
 
 function showSidebarApp(apppath,appname) {
+	clearTimeout(iconHoverTimer);
 	$.cookie("sidebarAppPath",apppath,{path:"/;SameSite=Lax"});
 	$.cookie("sidebarAppName",appname,{path:"/;SameSite=Lax"});
 	data.sidebarapppath = apppath;
