@@ -868,6 +868,9 @@ function getRepoDescriptionSkin($repository) {
 			$t .= "</div>";
 		}
 		if ( $repo['Video'] ) {
+			if ( $repo['Photo'] )
+				$t .= "<div><hr></div>";
+			
 			$videos = is_array($repo['Video']) ? $repo['Video'] : [$repo['Video']];
 			$vidText = (count($videos) == 1) ? "Play Video" : "Play Video %s";
 			$t .= "<div>";
@@ -1138,7 +1141,10 @@ function displayCard($template) {
 		$previousAppName = $Plugin ? $PluginURL : $Name;
 		$type = ($appType == "appDocker") ? "docker" : "plugin";
 		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";
-	}
+	} elseif ( $actionCentre && $UpdateAvailable ) {
+		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";
+	}		
+	
 	$card .= "</div>";
 	$card .= "<div class='$cardClass $backgroundClickable'>";
 	$card .= "<div class='ca_iconArea'>";
@@ -1382,6 +1388,9 @@ function displayPopup($template) {
 		}
 
 		if ( $Video ) {
+			if ( $Screenshot || $Photo ) {
+				$card .= "<div><hr></div>";
+			}
 			if ( ! is_array($Video) )
 				$Video = [$Video];
 

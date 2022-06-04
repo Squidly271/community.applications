@@ -1250,16 +1250,23 @@ function previousApps(installed,dontClear=false,filter="") {
 			sortButton = true;
 		}
 	});
+	if ( installed == "action" )
+		$(".multi_installButton").addClass("actionCenter");
+	else
+		$(".multi_installButton").removeClass("actionCenter");
+
 	if ( !sortButton) {
 		$(".sortIcons").removeClass("enabledIcon").removeClass("startupMore");
 		post({action:"defaultSortOrder"},function(data) {
 			$("#defaultSort").addClass("enabledIcon");
 			getPrevApps(installed,filter,dontClear);
+			enableMultiInstall();
 		});
 	} else {
 		getPrevApps(installed,filter,dontClear);
 	}
 }
+
 function actionCentre() {
 	clearCategory();
 	setPageOne();
@@ -1289,13 +1296,17 @@ function actionCentre() {
 	
 function getPrevApps(installed,filter,dontClear) {
 	post({action:'previous_apps',installed:installed,filter:filter},function(result) {
-		if ( installed ) {
+		if ( installed == true ) {
 			$(".multi_installDiv").hide();
 		} else {
 			$(".multi_installDiv").show();
 			if ( ! dontClear ) {
 				clearMultiInstall();
 			}
+			if ( installed == "action" )
+				$(".multi_deleteButton,.multi_installButton").addClass("actionCenter");
+			else
+				$(".multi_deleteButton,.multi_installButton").removeClass("actionCenter");
 		}
 		switch(installed) {
 			case true:
@@ -1310,6 +1321,7 @@ function getPrevApps(installed,filter,dontClear) {
 		}
 		$("#Category").html(msg);
 		changeSortOrder(null,null,"true");
+		enableMultiInstall();
 		saveState();
 	});
 }
@@ -1661,14 +1673,16 @@ function uniqueArrayElements(sourceArray) {
 function enableMultiInstall() {
 	var selected = getSelectedApps();
 	var count = selected.plugin.length + selected.docker.length;
+	var actionText = $(".multi_installButton").hasClass("actionCenter") ? "Update" : "Install";
 	if ( count == 0 ) {
 		$(".multi_install,.multi_installClear").attr("disabled",true);
 		$(".multi_deleteButton").css("visibility","hidden");
-		$(".multi_installButton").val("<?tr("Install Selected Applications")?>");
+		$(".multi_installButton").val(tr(actionText + " Selected Applications"));
 	} else {
 		$(".multi_install,.multi_installClear").attr("disabled",false);
-		$(".multi_deleteButton").css("visibility","visible");
-		var buttonText = (count == 1) ? sprintf(tr("Install %s Selected Application"),count) : sprintf(tr("Install %s Selected Applications"),count);
+		if ( ! $(".multi_deleteButton").hasClass("actionCenter") )
+			$(".multi_deleteButton").css("visibility","visible");
+		var buttonText = (count == 1) ? sprintf(tr(actionText + " %s Selected Application"),count) : sprintf(tr(actionText + " %s Selected Applications"),count);
 		$(".multi_installButton").val(buttonText);
 	}
 	getSelectedApps();

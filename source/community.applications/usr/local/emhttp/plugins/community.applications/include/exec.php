@@ -1067,8 +1067,11 @@ function previous_apps() {
 						if ( $installed == "action" ) {
 							$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
 							
-							if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
+							if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
 								$o['actionCentre'] = true;
+								$o['updateAvailable'] = true;
+								$updateCount++;
+							}
 							
 							if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
 								if ( $extraBlacklist[$o['Repository']] ) {
@@ -1163,10 +1166,12 @@ function previous_apps() {
 						if ( ( strcmp($installedVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) ) {
 							$template['actionCentre'] = true;
 							$template['UpdateAvailable'] = true;
+							$updateCount++;
 						}
 						if ( is_file("/tmp/plugins/$filename") && strcmp($installedVersion,plugin("version","/tmp/plugins/$filename")) < 0 ) {
 							$template['actionCentre'] = true;
 							$template['UpdateAvailable'] = true;
+							$updateCount++;
 						}
 					}
 
@@ -1184,8 +1189,13 @@ function previous_apps() {
 					$tmpL = $file[$index];
 					$tmpL['Uninstall'] = true;
 					
-					if ( $installed == "action" && !languageCheck($tmpL) )
-						continue;
+					if ( $installed == "action" ) {
+						$tmpL['actionCentre'] = true;
+						if ( !languageCheck($tmpL) )
+							continue;
+						$tmpL['Updated'] = true;
+						$updateCount++;
+					}
 										
 					$displayed[] = $tmpL;
 				}
@@ -1224,7 +1234,7 @@ function previous_apps() {
 	if ( $installed == "action" && empty($displayed) ) {
 		postReturn(['status'=>"ok",'script'=>'$(".actionCentre").hide();$(".startupButton").trigger("click");']);
 	} else {
-		postReturn(['status'=>"ok"]);
+		postReturn(['status'=>"ok",'updateCount'=>$updateCount]);
 	}
 }
 
