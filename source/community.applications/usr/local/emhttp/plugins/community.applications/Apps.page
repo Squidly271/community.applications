@@ -637,11 +637,18 @@ $(function(){
 	});
 
 	$(".initDockerSearch").click(function()     { initDockerSearch(); });
-	$(".multi_installButton").click(function()  { installMulti(); });
 	$(".multi_installClear").click(function()   { clearMultiInstall(); });
 	$(".multi_deleteButton").click(function()   { deleteMulti(); });
 	$(".multi_installAll").click(function()     { selectAllPrevious(); enableMultiInstall(); });
 	$(".startupButton").click(function()        { $(".maxPerPage").hide();hideSortIcons();updateContent(this); });
+
+	$(".multi_installButton").click(function()  { 
+		if ( $(".multi_installButton").hasClass("actionCenter") ) {
+			updateMulti();
+		} else {
+			installMulti();
+		}
+	});
 
 	$(".sortIcons").click(function() {
 		$(".sortIcons").removeClass("enabledIcon");
@@ -762,7 +769,7 @@ $(function(){
 				}
 			});
 		}
-		
+
 		setupActionCentre();
 	}
 });
@@ -1749,7 +1756,68 @@ function deleteMulti() {
 		}
 	});
 }
+function updateMulti() {
+	var docker = new Array();
+	var pluginArray = new Array();
+	var language = new Array();
+	var plugin = "";
+	var pluginCount = 0;
+	var dockerCount = 0;
+	var languageCount = 0;
+	var selected = getSelectedApps();
+	var cookieWarning = "";
 
+	$.each(selected.plugin,function(i,el) {
+		pluginArray.push([el.basename().replace(".plg",""),el]);
+		pluginCount += 1;
+	});
+
+	if (pluginCount) {
+		pluginArray.forEach( function(value) {
+			plugin += value[1] + "*";
+		});
+	}
+
+	$.each(selected.docker,function(i,el) {
+		docker.push(el);
+		dockerCount += 1;
+	});
+	
+	$.each(selected.language,function(i,el) {
+		language.push(el);
+		languageCount += 1;
+	});
+	swal({
+		title: "<?tr("Update Applications")?>",
+		text: sprintf(tr("Are you sure you want to update %s applications?"),languageCount+dockerCount+pluginCount),
+		type: "info",
+		showCancelButton: true,
+		cancelButtonText: "<?tr("Cancel")?>",
+		showConfirmButton: true,
+		confirmButtonText: "<?tr("OK")?>",
+		closeOnConfirm: false,
+		showLoaderOnConfirm: true,
+		allowOutsideClick: true,
+		html: true
+	}, function( isConfirm ) {
+		if ( isConfirm ) {
+			myCloseAlert();
+			if ( docker.length && plugin.length ) {
+				$.cookie("ca_plugininstallpending",plugin,{path:"/;SameSite=Lax"});
+			}
+			if ( docker.length ) {
+				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
+				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,tr('Install '+makePlural("Application",dockerCount)),600,1100,true);
+			} else {
+				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugin,tr('Install '+makePlural("Application",pluginCount)),600,900,true);
+				enableSearch();
+			}
+		} else {
+			enableSearch();
+		}
+	});
+}
+	
 function installMulti() {
 	var docker = new Array();
 	var pluginArray = new Array();
