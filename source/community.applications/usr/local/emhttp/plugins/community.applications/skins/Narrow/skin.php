@@ -1137,22 +1137,21 @@ function displayCard($template) {
 	$card .= "<span class='pinnedCard' title='".htmlentities(tr("This application is pinned for later viewing"))."' data-pindata='$pindata$SortName' style='$pinStyle'></span>";
 
 	$previousAppName = $Plugin ? $PluginURL : $Name;
-	
+	switch ($appType) {
+		case 'appDocker':
+			$type = "docker";
+			break;
+		case 'appPlugin':
+			$type = "plugin";
+			break;
+		case 'appLanguage':
+			$type = "language";
+			break;
+	}	
 	if ($Removable && !$DockerInfo  && ! $Installed && ! $Blacklist) {
 		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";
 	} elseif ( $actionCentre && $UpdateAvailable ) {
-		switch ($appType) {
-			case 'appDocker':
-				$type = "docker";
-				break;
-			case 'appPlugin':
-				$type = "plugin";
-				break;
-			case 'appLanguage':
-				$type = "language";
-				break;
-		}
-		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple updates")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$appType' data-deletepath='$InstallPath' data-language='$LanguagePack' $checked>";
+		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple updates")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-language='$LanguagePack' $checked>";
 	}		
 	
 	$card .= "</div>";

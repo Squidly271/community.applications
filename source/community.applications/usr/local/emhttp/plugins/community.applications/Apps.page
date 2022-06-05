@@ -1621,23 +1621,38 @@ function getSelectedApps() {
 		var deletePaths = selected.deletePaths;
 		var docker = selected.docker;
 		var plugin = selected.plugin;
+		var language = selected.language;
 	} else {
 		var selected = new Object();
 		var deletePaths = new Array();
 		var docker = new Array();
 		var plugin = new Array();
+		var language = new Array();
 	}
 
 	$(".ca_multiselect").each(function() {
 		var name = $(this).attr("data-name");
+		var lingo = $(this).attr("data-language");
 		var deletechecked = $(this).attr("data-deletepath");
 		if ( $(this).is(':checked') ) {
 			deletePaths.push(deletechecked);
-			if ( $(this).attr("data-type") == "plugin" ) {
+			switch ( $(this).attr("data-type") ) {
+				case 'plugin':
+					plugin.push(name);
+					break;
+				case 'docker':
+					docker.push(name);
+					break;
+				case 'language':
+					language.push(lingo);
+					break;
+			}
+					
+/* 			if ( $(this).attr("data-type") == "plugin" ) {
 				plugin.push(name);
 			} else {
 				docker.push(name);
-			}
+			} */
 		} else {
 			var index= deletePaths.indexOf(deletechecked);
 			if ( index > -1 ) {
@@ -1651,10 +1666,15 @@ function getSelectedApps() {
 			if (index > -1 ) {
 				docker.splice(index,1);
 			}
+			var index = language.indexOf(lingo);
+			if (index > -1) {
+				language.splice(index,1);
+			}
 		}
 	});
 	selected.docker = uniqueArrayElements(docker);
 	selected.plugin = uniqueArrayElements(plugin);
+	selected.language = uniqueArrayElements(language);
 	selected.deletePaths = uniqueArrayElements(deletePaths);
 	data.selected = JSON.stringify(selected);
 	return selected;
@@ -1672,7 +1692,7 @@ function uniqueArrayElements(sourceArray) {
 
 function enableMultiInstall() {
 	var selected = getSelectedApps();
-	var count = selected.plugin.length + selected.docker.length;
+	var count = selected.plugin.length + selected.docker.length + selected.language.length;
 	var actionText = $(".multi_installButton").hasClass("actionCenter") ? "Update" : "Install";
 	if ( count == 0 ) {
 		$(".multi_install,.multi_installClear").attr("disabled",true);
