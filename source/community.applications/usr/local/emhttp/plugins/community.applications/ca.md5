@@ -1,4 +1,4 @@
-d44ba1953e1f99edfadac123401c938a  ./Apps.page
+2faae5a00e9cbfb73002febd04a1b0d0  ./Apps.page
 4e55f7483b661af21a25b677179baffe  ./CA_notices.page
 42a1658a916a3a3eed2a9f2af80603c4  ./ca_settings.page
 e718d7825dbdc96a17a915079222b098  ./default.cfg
@@ -7,7 +7,8 @@ e564b860fa0d5022df83c103922665d7  ./include/helpers.php
 fc87642746ba4f324537bc381b78e982  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
-06d41d04294a4cc64130003083e2dd4a  ./scripts/checkForUpdates.php
+d3d8286046cc7d6edf8f596067c163a2  ./scripts/checkForUpdates.php
+99a9d58a49a7f6812f18bd4be2b563b9  ./scripts/checkForUpdates.sh
 677ac9a29993ec57e09ec6a1856f1a11  ./scripts/dockerConvert.php
 07684bde8ccd13523f62c69bb492fc27  ./scripts/installMulti.php
 e54e7ec1cbc312c11900977181b71380  ./scripts/installMultiPlugin.php

@@ -395,7 +395,6 @@ $(function(){
 		installPlugin(plugin,type);
 	});
 
-
 	$("body").on("click",".uninstallApp",function() {
 		var type = $(this).data("type");
 		var name = $(this).data("name");
@@ -635,6 +634,11 @@ $(function(){
 	$(".multi_deleteButton").click(function()   { deleteMulti(); });
 	$(".multi_installAll").click(function()     { selectAllPrevious(); enableMultiInstall(); });
 	$(".startupButton").click(function()        { $(".maxPerPage").hide();hideSortIcons();updateContent(this); });
+
+	$(".checkForUpdatesButton").click(function() {
+		openBox('/plugins/<?=$plugin?>/scripts/checkForUpdates.sh',tr('Check For Updates'),600,1100,true,"postCheckForUpdates");
+	});
+		
 
 	$(".multi_installButton").click(function()  { 
 		if ( $(".multi_installButton").hasClass("actionCenter") ) {
@@ -2930,6 +2934,12 @@ function setupActionCentre() {
 		else
 			$(".actionCentre").hide();
 	});
+}
+
+function postCheckForUpdates() {
+	alert("got here");
+	setupActionCentre();
+	refreshDisplay();
 }
 </script>
 
