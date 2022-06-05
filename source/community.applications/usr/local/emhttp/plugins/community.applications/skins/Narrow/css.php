@@ -255,6 +255,7 @@ a.ca_repoPopup:hover{color:<?=$unRaid66color?>;}
 .chartMenu:hover{color:<?=$unRaid66color?>;}
 .charts{font-size:1.5rem;}
 .chartTitle{margin-top:1.5rem;font-size:2.5rem;}
+.checkForUpdates{width:100%; display:none;padding-bottom:20px;}
 ul.context{list-style-type:none;padding:0;margin:0;}
 a.context{text-decoration:none;color:currentColor;margin:5px;}
 li.context{margin-top:0.5rem;margin-bottom:0.5rem;font-size:1.5rem;}

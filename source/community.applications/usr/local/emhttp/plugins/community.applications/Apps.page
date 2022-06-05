@@ -453,10 +453,7 @@ $(function(){
 			if ( $(menu).hasClass("caRepositoryMenu") ) {
 				return;
 			}
-/* 			if ( ! $(".caRepositoryMenu").hasClass("selectedMenu") ) {
-				alert("here");
-				return;
-			} */
+
 			$(".caRepositoryMenu").removeClass("selectedMenu");
 		}
 		if ( ! data.searchFlag ) {
@@ -513,10 +510,7 @@ $(function(){
 		if ( $(this).hasClass("caMenuDisabled") ) {
 			return;
 		}
-/* 		if ( $(this).hasClass("selectedMenu") ) {
-			alert();
-			return;
-		} */
+
 		var slideFlag = true;
 		var currentCat = $(".selectedMenu").data("category");
 		var newCat = $(this).data("category");
@@ -862,7 +856,7 @@ function showSpecialCategory(button) {
 function showSpecials(button) {
 	showSortIcons();
 	$(".caMenuItem").removeClass("selectedMenu");
-	$(".multi_installDiv").hide();
+	$(".multi_installDiv,.checkForUpdates").hide();
 	data.selected_category = "DOESNTMATTERWHATSHERE";
 	data.section = "AppStore";
 	changeCategory(button,false);
@@ -873,7 +867,7 @@ function changeCategory(button,subSwitch) {
 	var description = $(button).text();
 	var category = $(button).attr("data-category");
 
-	$(".multi_installDiv").hide();
+	$(".multi_installDiv,.checkForUpdates").hide();
 	getContent(false,category,description,false);
 }
 
@@ -954,7 +948,7 @@ function doSearch(button,newSearch) {
 	data.section = "AppStore";
 
 	$('#searchBox').val(filter);
-	$(".multi_installDiv").hide();
+	$(".multi_installDiv,.checkForUpdates").hide();
 
 	if ($('#searchButton').hasClass('fa-search')) {
 		if (filter) {
@@ -1305,8 +1299,10 @@ function getPrevApps(installed,filter,dontClear) {
 	post({action:'previous_apps',installed:installed,filter:filter},function(result) {
 		if ( installed == true ) {
 			$(".multi_installDiv").hide();
+			$(".checkForUpdates").show();
 		} else {
 			$(".multi_installDiv").show();
+			$(".checkForUpdates").hide();
 			if ( ! dontClear ) {
 				clearMultiInstall();
 			}
@@ -1468,7 +1464,7 @@ function appStore() {
 function initializeAppStore() {
 	data.section = "AppStore";
 	data.selected_category = "";
-	$(".multi_installDiv").hide();
+	$(".multi_installDiv,.checkForUpdates").hide();
 }
 
 function checkPLGupdate() {
@@ -1531,7 +1527,7 @@ function pins() {
 	clearCategory();
 	showSortIcons();
 	$("#Category").html("<?tr("Pinned Apps");?>");
-	$(".dockerSearch,.multi_installDiv").hide();
+	$(".dockerSearch,.multi_installDiv,.checkForUpdates").hide();
 	post({action:'pinnedApps'},function(result) {
 		refreshDisplay();
 		myCloseAlert();
@@ -1759,8 +1755,9 @@ function deleteMulti() {
 function updateMulti() {
 	var docker = new Array();
 	var pluginArray = new Array();
-	var language = new Array();
+	var languageArray = new Array();
 	var plugin = "";
+	var language = "";
 	var pluginCount = 0;
 	var dockerCount = 0;
 	var languageCount = 0;
@@ -1784,9 +1781,15 @@ function updateMulti() {
 	});
 	
 	$.each(selected.language,function(i,el) {
-		language.push(el);
+		languageArray.push(el);
 		languageCount += 1;
 	});
+	if ( languageCount ) {
+		languageArray.forEach( function(value) {
+			plugin += value + "*";
+		});
+	}
+		
 	swal({
 		title: "<?tr("Update Applications")?>",
 		text: sprintf(tr("Are you sure you want to update %s applications?"),languageCount+dockerCount+pluginCount),
@@ -2040,7 +2043,7 @@ function cookiesEnabled() {
 }
 
 function showCredits() {
-	$(".multi_installDiv,.dockerSearch").hide();
+	$(".multi_installDiv,.dockerSearch,.checkForUpdates").hide();
 	clearCategory(); clearSearchBox();
 	var credits = $('#caCredits').html();
 	updateDisplay(credits);
@@ -2048,7 +2051,7 @@ function showCredits() {
 }
 
 function showStatistics() {
-	$(".multi_installDiv,.dockerSearch").hide();
+	$(".multi_installDiv,.dockerSearch,.checkForUpdates").hide();
 	clearCategory(); clearSearchBox(); 
 	post({action:'statistics'},function(result) {
 		updateDisplay(result.statistics);
@@ -2058,7 +2061,7 @@ function showStatistics() {
 }
 
 function caChangeLog() {
-	$(".multi_installDiv,.dockerSearch").hide();
+	$(".multi_installDiv,.dockerSearch,.checkForUpdates").hide();
 	clearCategory(); clearSearchBox();
 	post({action:'caChangeLog'},function(result) {
 		updateDisplay(result.changelog);
@@ -2858,7 +2861,7 @@ function dockerSearch(pageNumber) {
 	var filter = $('#searchBox').val();
 	var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
 	data.docker = "searching docker";
-	$(".dockerSearch,.multi_installDiv").hide();
+	$(".dockerSearch,.multi_installDiv,.checkForUpdates").hide();
 	$("#Category").html(sprintf(tr("DockerHub Search for %s"),filter)+" <span id='pageNumber'></span>");
 	post({action:'search_dockerhub',filter:filter,page:pageNumber},function(result) {
 		updateDisplay(result.display);
