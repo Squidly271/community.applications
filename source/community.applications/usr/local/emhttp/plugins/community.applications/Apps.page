@@ -2939,7 +2939,7 @@ function setupActionCentre() {
 
 function postCheckForUpdates() {
 	setupActionCentre();
-	refreshDisplay();
+	$(".selectedMenu").click();
 }
 </script>
 

@@ -109,7 +109,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$niceRepoName = str_replace("'s Repository","",$template['RepoName']);
 			$niceRepoName = str_replace("' Repository","",$niceRepoName);
 			$niceRepoName = str_replace(" Repository","",$niceRepoName);
-//			$favMsg = ($favClass == "ca_favouriteRepo") ? tr("Click to remove favourite repository") : tr(sprintf("Click to set %s as favourite repository",$niceRepoName));
 
 			$ct .= displayCard($template);
 			$count++;
@@ -193,7 +192,15 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					} else {
 						$pluginName = basename($template['PluginURL']);
 						if ( file_exists("/var/log/plugins/$pluginName") ) {
-							if ( ( strcmp(plugin("version","/var/log/plugins/$pluginName"),$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
+							$pluginInstalledVersion = plugin("version","/var/log/plugins/$pluginName");
+							if ( file_exists("/tmp/plugins/$pluginName") ) {
+								$tmpPluginVersion = plugin("version","/tmp/plugins/$pluginName");
+								if (strcmp($template['pluginVersion'],$tmpPluginVersion) < 0)
+									$template['pluginVersion'] = $tmpPluginVersion;
+							}
+							$template['pluginVersion'] = plugin("version","/tmp/plugins/$pluginName");
+							
+							if ( ( strcmp($pluginInstalledVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 								$template['UpdateAvailable'] = true;
 								$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true,'','{$template['RequiresFile']}');");
