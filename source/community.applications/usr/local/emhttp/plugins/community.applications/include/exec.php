@@ -2245,6 +2245,7 @@ function enableActionCentre() {
 		if ( is_file($caPaths['updateRunning']) && file_exists("/proc/".@file_get_contents($caPaths['updateRunning'])) ) {
 			debug("Action Centre sleeping -> update running");
 			sleep(5);
+			clearstatcache();
 		}
 		else break;
 	}
