@@ -73,9 +73,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	$displayedTemplates = array();
 	foreach ($file as $template) {
-/* 		if ( $template['Blacklist'] && ! $template['NoInstall'] )
-			continue; */
-		
 		$startingAppCounter++;
 		if ( $startingAppCounter < $startingApp ) continue;
 		$displayedTemplates[] = $template;
@@ -477,10 +474,6 @@ function getPopupDescriptionSkin($appNumber) {
 		$template = $file[$index];
 	}
 	$currentServer = file_get_contents($caPaths['currentServer']);
-
-/* 	if ( $currentServer == "Primary Server" && $template['IconHTTPS'])
-		$template['Icon'] = $template['IconHTTPS'];
- */
  
 	if ( ! $template['Blacklist'] ) {
 		if ( $extraBlacklist[$template['Repository']] ) {

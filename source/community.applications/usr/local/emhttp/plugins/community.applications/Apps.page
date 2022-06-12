@@ -108,7 +108,8 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 	unset($caSettings['dockerRunning']);
 }
 
-getAllInfo(true);
+if ( is_file($caPaths['docker_cfg']) )
+	getAllInfo(true);
 
 
 function tr($string,$ret=false) {
@@ -197,7 +198,7 @@ $(function(){
 			}
 		});
 		return;
-	<?endif;?>
+	<?else:?>
 	// don't run this through the wrapper so that if it hangs up it won't delay anything else
 	$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'getPortsInUse'},function(data) {
 		var ret = JSON.parse(data);
@@ -771,7 +772,7 @@ $(function(){
 		setupActionCentre();
 	}
 });
-
+	<?endif;?>
 function disableSort() {
 	hideSortIcons();
 }
@@ -2937,7 +2938,6 @@ function setupActionCentre() {
 }
 
 function postCheckForUpdates() {
-	alert("got here");
 	setupActionCentre();
 	refreshDisplay();
 }
