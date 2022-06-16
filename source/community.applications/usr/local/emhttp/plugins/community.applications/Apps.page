@@ -2928,7 +2928,13 @@ function getPerPageOpts(value) {
 
 function setupActionCentre() {
 	// set up action centre - run in background without tying anything up
+	var acBanner = false;
+	var bannerTimeout = setTimeout(function(){
+		acBanner = addBannerWarning("<?tr("Running Background Application Tests")?>");
+	},1000);
 	$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'enableActionCentre'},function(data) {
+		clearTimeout(bannerTimeout);
+		removeBannerWarning(acBanner);
 		var ret = JSON.parse(data);		
 		if ( ret.status == "action" )
 			$(".actionCentre").show();
