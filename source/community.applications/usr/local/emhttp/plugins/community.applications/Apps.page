@@ -943,6 +943,7 @@ function doSearch(button,newSearch) {
 	}
 	var filter = $('#searchBox').val();
 	filter = $.trim(filter);
+	filter = stripTags(filter);
 	if ( ! filter ) {
 		$("#searchBox").val(filter);
 		data.searchInProgress = false;
@@ -1330,7 +1331,7 @@ function getPrevApps(installed,filter,dontClear) {
 		$("#Category").html(msg);
 		changeSortOrder(null,null,"true");
 		enableMultiInstall();
-		saveState();
+//		saveState();
 	});
 }
 
@@ -1393,18 +1394,6 @@ function postUninstallPlugin() {
 	enableSearch();
 	$(".selectedMenu").trigger("click");
 	setupActionCentre();
-/* 	if ( $(".selectedMenu").data("category") == "action_centre" ) {
-		actionCentre();
-	} else {
-		if ( $(".selectedMenu").data("category") !== "inst_docker" && $(".selectedMenu").data("category") !== "inst_plugin") {
-			$(".caMenuItem").removeClass("selectedMenu");
-			var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
-			$(menuItem).addClass("selectedMenu");
-			$(menuItem).next().show("slow");
-		}
-		previousApps(true,false,data.previousAppsSection);
-		enableSearch();
-	} */
 }
 
 String.prototype.basename = function() {
@@ -1959,7 +1948,7 @@ function updateDisplay(content) {
 	}	else {
 		removeBannerWarning(data.translationBanner);
 	}
-	saveState();
+//	saveState();
 
 	if ( ! $(".startupButton").hasClass("selectedMenu") && ! data.docker) {
 		$(".maxPerPage").show();
@@ -1987,7 +1976,7 @@ function saveState() {
 	$(".caMenuEnabled").each(function(){
 		categoriesEnabled.push($(this).data("category"));
 	});
-	$.cookie("ca_categories_enabled",JSON.stringify(categoriesEnabled),{path:"/;SameSite=Lax"});
+//	$.cookie("ca_categories_enabled",JSON.stringify(categoriesEnabled),{path:"/;SameSite=Lax"});
 	$.cookie("ca_selectedMenu",selectedMenu,{path:"/;SameSite=Lax"});
 	$.cookie("ca_filter",$("#searchBox").val(),{path:"/;SameSite=Lax"});
 	$.cookie("ca_categoryName",$(".categoryMenuName").html(),{path:"/;SameSite=Lax"});
@@ -2007,7 +1996,10 @@ function restoreState() {
 	} else {
 		$(".multi_installDiv").hide();
 	}
+	$.removeCookie("ca_categoryText");
+	
 	data = JSON.parse($.cookie("ca_data"));
+	$.removeCookie("ca_data");
 	data.searchActive = evaluateBoolean($.cookie("ca_searchActive"));
 	restoreStateMenu = $.cookie("ca_selectedMenu");
 	$(".categoryMenuName").html($.cookie("ca_categoryName"));
@@ -2930,15 +2922,19 @@ function setupActionCentre() {
 	// set up action centre - run in background without tying anything up
 	var acBanner = false;
 	var bannerTimeout = setTimeout(function(){
-		acBanner = addBannerWarning("<?tr("Running Background Application Tests")?>");
+		acBanner = addBannerWarning("<?tr("Running Background Application Tests")?>",false,true);
 	},1000);
 	$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'enableActionCentre'},function(data) {
 		clearTimeout(bannerTimeout);
 		removeBannerWarning(acBanner);
 		var ret = JSON.parse(data);		
-		if ( ret.status == "action" )
+		if ( ret.status == "action" ) {
+			acBanner = addBannerWarning("<?tr("Action Centre Enabled")?>",false,true);
+			setTimeout(function() {
+				removeBannerWarning(acBanner);
+			},10000);
 			$(".actionCentre").show();
-		else
+		} else
 			$(".actionCentre").hide();
 	});
 }

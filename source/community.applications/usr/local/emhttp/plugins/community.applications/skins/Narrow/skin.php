@@ -238,11 +238,19 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires']);
 								}
 							}
-							if ( ! $template['RequiresFile'] || ($template['RequiresFile'] && is_file($template['RequiresFile'])) ) {
-								$installComment = $template['RequiresFile'] ? "" : $installComment;
+					//		if ( ! $template['RequiresFile'] || ($template['RequiresFile'] && is_file($template['RequiresFile'])) ) {
+						//		$installComment = ! is_file($template['RequiresFile']) ? "Requirements Not Met" : $installComment;
+			//					$installComment = $template['RequiresFile'] ? "" : $installComment;
+								
 								$isDeprecated = $template['Deprecated'] ? "&deprecated" : "";
-								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated','','".str_replace([" ","\n"],["&#32;",""],htmlspecialchars($installComment))."');");
-							}
+								if ( $template['RequiresFile'] && ! is_file($template['RequiresFile']) ) {
+									$installComment = tr("Cannot Install.  Requirements Not Met");
+									$installAction = "alert";
+								} else {
+									$installAction = "installPlugin";
+								}
+								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"$installAction('{$template['PluginURL']}$isDeprecated','','".str_replace([" ","\n"],["&#32;",""],htmlspecialchars($installComment))."');");
+				//			}
 							if ( $template['InstallPath'] ) {
 								if ( ! empty($actionsContext) )
 									$actionsContext[] = array("divider"=>true);
@@ -662,11 +670,11 @@ function getPopupDescriptionSkin($appNumber) {
 				} elseif ( ! $template['Blacklist']  ) {
 					if ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true") {
 		//				if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
-							if ( ($template['RequiresFile'] && is_file($template['RequiresFile']) ) || ! $template['RequiresFile'] ) {
+//							if ( ($template['RequiresFile'] && is_file($template['RequiresFile']) ) || ! $template['RequiresFile'] ) {
 								$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
 								$isDeprecated = $template['Deprecated'] ? "&deprecated" : "";
 								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated');");
-							}
+//							}
 				//		}
 					}
 					if ( $template['InstallPath'] ) {
