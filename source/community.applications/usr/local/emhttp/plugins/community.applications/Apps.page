@@ -2929,11 +2929,13 @@ function setupActionCentre() {
 		removeBannerWarning(acBanner);
 		var ret = JSON.parse(data);		
 		if ( ret.status == "action" ) {
-			acBanner = addBannerWarning("<?tr("Action Centre Enabled")?>",false,true);
-			setTimeout(function() {
-				removeBannerWarning(acBanner);
-			},10000);
-			$(".actionCentre").show();
+			if ( !$(".actionCentre").is(":visible") ) {
+				acBanner = addBannerWarning("<?tr("Action Centre Enabled")?>",false,true);
+				setTimeout(function() {
+					removeBannerWarning(acBanner);
+				},10000);
+				$(".actionCentre").show();
+			}
 		} else
 			$(".actionCentre").hide();
 	});

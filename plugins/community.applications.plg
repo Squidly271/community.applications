@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.05.15">
-<!ENTITY md5       "1fb30723307e3170dc8cd1ce5a925961">
+<!ENTITY version   "2022.06.18">
+<!ENTITY md5       "c6c3c2ed87bc09ac1cf231d01eaa5309">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,7 +13,30 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
-###2022.08.15
+###2022.06.18
+- Fixed: XSS vulnerability on search strings
+- Fixed: Less cookie use
+- Changed: Show Install on card, even if requirements are not met to lessen confusion (show a popup that requirements are not met after clicking)
+- Added: Show banner when background tasks looking for actionable items in action centre are running
+- Fixed: Application cards wouldn't reflect a plugin update being available unless the application feed knew about it
+- Fixed: Fatal flash drive error popup wouldn't appear under any circumstance
+- Fixed: On occasion Action Centre would never appear even if it should have
+- Added: Add check for updates and ability to update all from Installed Apps
+- Fixed: Background check for updates were not checking for language updates
+- Fixed: Clicking on the icon for certain plugins would open, close, and then reopen the sidebar
+- Added: Check for additional requirements not being met if updating a plugin
+- Fixed: Some text never had the ability to be translated
+- Fixed: A previously installed app couldn't be reinstalled from the card if it had multiple line comments included
+- Fixed: Any embedded videos within a profile wouldn't display the proper display video link
+- Added: Hovering over the app's icon or info button for 4 seconds will automatically open the sidebar
+- Added: Handle a specific error that may be made by language translators
+- Changed: Updated flag now takes precedence over Installed
+- Fixed: Disallow an inadvertent search against blacklisted / deprecated / incompatible applications
+- Changed: Automatically scroll to bottom of popup on installs / updates
+- Fixed: Display aberration on the page numberubg
+- Enhanced: Simpler and faster background processing for Action Centre
+
+###2022.05.15
 - Fixed: Action centre would appear even if nothing was present if templates outside of CA's control were installed
 
 ###2022.05.08
