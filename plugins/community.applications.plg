@@ -2029,6 +2029,7 @@ removepkg &name;-&version;-x86_64-1
 rm -rf &plugdir;
 rm -rf /boot/config/plugins/&name;
 rm -rf /var/lib/docker/unraid/templates-community
+/usr/local/sbin/update_cron
 </INLINE>
 </FILE> 
 </PLUGIN>

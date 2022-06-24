@@ -2,7 +2,7 @@ Menu="Tasks:80"
 Name="Apps"
 Type="xmenu"
 Tabs="true"
-Code="e942"
+Code="f0db"
 ---
 <?
 ###############################################################
@@ -48,6 +48,7 @@ if ( ! is_file($caPaths['docker_cfg']) ) {
 
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 $unRaid610      = version_compare($unRaidSettings['version'],"6.10.0-beta17",">");
+$nchanCom       = file_exists('/boot/config/plugins/dynamix.bleeding.edge.plg');
 
 // Check md5's of files
 exec("cd /usr/local/emhttp/plugins/$plugin/ && md5sum -c ca.md5",$output,$md5Error);
@@ -97,7 +98,7 @@ $dockerSearchActive = is_file($caPaths['dockerSearchActive']);
 // Only check for updates to containers / plugins max once per hour
 exec("mkdir -p {$caPaths['tempFiles']}");
 if ( ($cfg['updateCheck'] == "yes") && ( (time() - @filemtime($caPaths['updateTime']) ) > 3600 ) ) {
-	touch($caPaths['updateTime']);	
+	touch($caPaths['updateTime']);
 	exec("echo '/usr/local/emhttp/plugins/community.applications/scripts/checkForUpdates.php >/dev/null 2>&1' | at now -M >/dev/null");
 }
 
@@ -139,6 +140,7 @@ function tr($string,$ret=false) {
 <?endif;?>
 
 <script>
+
 var searchBoxInput;
 var searchBoxAwesomplete;
 var pluginInstallIntervalTimer;
@@ -170,7 +172,6 @@ var restoreStateMenu = false;
 var initialStartup = true;
 var repoBanner = false;
 var repoBannerTimer = false;
-var unRaidFontSize = $("html").css("font-size").replace("px","");
 var resizeTimer;
 var portsInUse = [];
 var startupSearch = "<?=$_GET['search']?>";
@@ -639,9 +640,9 @@ $(function(){
 	$(".checkForUpdatesButton").click(function() {
 		openBox('/plugins/<?=$plugin?>/scripts/checkForUpdates.sh',tr('Check For Updates'),600,1100,true,"postCheckForUpdates");
 	});
-		
 
-	$(".multi_installButton").click(function()  { 
+
+	$(".multi_installButton").click(function()  {
 		if ( $(".multi_installButton").hasClass("actionCenter") ) {
 			updateMulti();
 		} else {
@@ -782,6 +783,11 @@ function hideSortIcons() {
 function showSortIcons() {
 	$("#sortIconArea").show();
 }
+<?if ($nchanCom):?>
+function ca_openPlugin(cmd,title,plg,func) {
+  setTimeout(function(){openPlugin(cmd,title,plg,func);},250);
+}
+<?endif;?>
 
 function updateContent(button) {
 	clearSearchBox();
@@ -802,7 +808,11 @@ function updateContent(button) {
 			var plugins = $.cookie("ca_plugininstallpending");
 			$.removeCookie("ca_plugininstallpending");
 			myCloseAlert();
+<?if ($nchanCom):?>
+			ca_openPlugin('multiplugin install '+plugins,"<?tr('Install Plugin Applications')?>",'','refresh');
+<?else:?>
 			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugins,"<?tr('Install Plugin Applications')?>",600,900,true);
+<?endif;?>
 		} else {
 			if ( result.data ) {
 				updateDisplay(result.data);
@@ -1156,7 +1166,7 @@ function installPlugin(pluginURL,update=false,comment="",requires="") {
 		actuallyInstallPlugin(pluginURL,update,comment);
 	}
 }
-function actuallyInstallPlugin(pluginURL,update=false,comment="") {	
+function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 	type = update ? "update" : "install";
 	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
 	closeSidebar(true);
@@ -1185,7 +1195,11 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 					data.deprecated = true;
 					pluginURL.replace("&deprecated","");
 				}
+<?if ($nchanCom):?>
+				ca_openPlugin('plugin '+type+' '+pluginURL,title,'',postFunction);
+<?else:?>
 				openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,postFunction);
+<?endif;?>
 			} else {
 				enableSearch();
 			}
@@ -1200,8 +1214,12 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 		if ( pluginURL.includes("&deprecated")  ) {
 			data.deprecated = true;
 			pluginURL.replace("&deprecated","");
-		}		
+		}
+<?if ($nchanCom):?>
+		ca_openPlugin('plugin '+type+' '+pluginURL,title,'',postFunction);
+<?else:?>
 		openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,postFunction);
+<?endif;?>
 	}
 
 }
@@ -1224,7 +1242,7 @@ function OpenSidebarAndRefreshDisplay() {
 			data.deprecated = false;
 			setupActionCentre();
 		}
-		
+
 		}
 	});
 }
@@ -1281,7 +1299,7 @@ function actionCentre() {
 	clearSearchBox();
 	$(".dockerSearch").hide();
 	showSortIcons();
-	
+
 	// this is the checkSortOrder function running to prevent a race condition
 	var sortButton = false;
 	$(".sortIcons").each(function() {
@@ -1297,10 +1315,10 @@ function actionCentre() {
 		});
 	} else {
 		getPrevApps("action");
-	}	
+	}
 }
 
-	
+
 function getPrevApps(installed,filter,dontClear) {
 	post({action:'previous_apps',installed:installed,filter:filter},function(result) {
 		if ( installed == true ) {
@@ -1383,7 +1401,11 @@ function uninstallApp(application,humanName) {
 	}, function(isConfirm) {
 		if (isConfirm) {
 			application = application.basename();
+<?if ($nchanCom):?>
+			ca_openPlugin('plugin remove '+application,"<?tr('Uninstall Plugin')?>",'','postUninstallPlugin');
+<?else:?>
 			openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin");
+<?endif;?>
 		} else {
 			enableSearch();
 		}
@@ -1425,7 +1447,7 @@ function uninstallDocker(application,humanName) {
 					post({action:'getPortsInUse'},function(data) {
 						portsInUse = data.portsInUse;
 						actionCentre();
-					});		
+					});
 				} else {
 /* 					if ( $(".selectedMenu").data("category") !== "inst_docker" && $(".selectedMenu").data("category") !== "inst_plugin") {
 						$(".caMenuItem").removeClass("selectedMenu");
@@ -1644,7 +1666,7 @@ function getSelectedApps() {
 					language.push(lingo);
 					break;
 			}
-					
+
 /* 			if ( $(this).attr("data-type") == "plugin" ) {
 				plugin.push(name);
 			} else {
@@ -1773,7 +1795,7 @@ function updateMulti() {
 		docker.push(el);
 		dockerCount += 1;
 	});
-	
+
 	$.each(selected.language,function(i,el) {
 		languageArray.push(el);
 		languageCount += 1;
@@ -1783,7 +1805,7 @@ function updateMulti() {
 			plugin += value + "*";
 		});
 	}
-		
+
 	swal({
 		title: "<?tr("Update Applications")?>",
 		text: sprintf(tr("Are you sure you want to update %s applications?"),languageCount+dockerCount+pluginCount),
@@ -1806,7 +1828,11 @@ function updateMulti() {
 				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
 				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,tr('Install '+makePlural("Application",dockerCount)),600,1100,true);
 			} else {
+<?if ($nchanCom):?>
+				ca_openPlugin('multiplugin install '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refresh');
+<?else:?>
 				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugin,tr('Install '+makePlural("Application",pluginCount)),600,900,true);
+<?endif;?>
 				enableSearch();
 			}
 		} else {
@@ -1814,7 +1840,7 @@ function updateMulti() {
 		}
 	});
 }
-	
+
 function installMulti() {
 	var docker = new Array();
 	var pluginArray = new Array();
@@ -1876,7 +1902,11 @@ function installMulti() {
 				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
 				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,tr('Install '+makePlural("Application",dockerCount)),600,1100,true);
 			} else {
+<?if ($nchanCom):?>
+				ca_openPlugin('multiplugin install '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refresh');
+<?else:?>
 				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugin,tr('Install '+makePlural("Application",pluginCount)),600,900,true);
+<?endif;?>
 				enableSearch();
 			}
 		} else {
@@ -1997,7 +2027,7 @@ function restoreState() {
 		$(".multi_installDiv").hide();
 	}
 	$.removeCookie("ca_categoryText");
-	
+
 	data = JSON.parse($.cookie("ca_data"));
 	$.removeCookie("ca_data");
 	data.searchActive = evaluateBoolean($.cookie("ca_searchActive"));
@@ -2049,7 +2079,7 @@ function showCredits() {
 
 function showStatistics() {
 	$(".multi_installDiv,.dockerSearch,.checkForUpdates").hide();
-	clearCategory(); clearSearchBox(); 
+	clearCategory(); clearSearchBox();
 	post({action:'statistics'},function(result) {
 		updateDisplay(result.statistics);
 		$(".maxPerPage").hide();
@@ -2356,13 +2386,21 @@ function CAswitchLanguage(language) {
 
 function installLanguage(languageURL,language) {
 	disableSearch();
+<?if ($nchanCom):?>
+	ca_openPlugin('language install '+languageURL,"<?tr('Install Language Pack')?>",'','postLanguageRefresh');
+<?else:?>
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=install&arg2='+languageURL,"<?tr('Install Language Pack')?>",600,900,true,"postLanguageRefresh");
+<?endif;?>
 }
 
 function updateLanguage(language) {
 	disableSearch();
 	$.cookie("updateLanguage",language,{SameSite:'Lax'});
+<?if ($nchanCom):?>
+	ca_openPlugin('language update '+language,"<?tr('Update Language Pack')?>",'','postUpdateLanguage');
+<?else:?>
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=update&arg2='+language,"<?tr('Update Language Pack')?>",600,900,true,"postUpdateLanguage");
+<?endif;?>
 }
 
 function postUpdateLanguage() {
@@ -2384,7 +2422,11 @@ function postUpdateLanguage() {
 }
 function removeLanguage(language) {
 	closeSidebar();
+<?if ($nchanCom):?>
+	ca_openPlugin('language remove '+language,"<?tr('Remove Language Pack')?>",'','postLanguageRemove');
+<?else:?>
 	openBox('/plugins/community.applications/scripts/languageInstall.sh&arg1=remove&arg2='+language,"<?tr('Remove Language Pack')?>",600,900,true,"postLanguageRemove");
+<?endif;?>
 }
 
 function postLanguageRefresh() {
@@ -2927,7 +2969,7 @@ function setupActionCentre() {
 	$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'enableActionCentre'},function(data) {
 		clearTimeout(bannerTimeout);
 		removeBannerWarning(acBanner);
-		var ret = JSON.parse(data);		
+		var ret = JSON.parse(data);
 		if ( ret.status == "action" ) {
 			if ( !$(".actionCentre").is(":visible") ) {
 				acBanner = addBannerWarning("<?tr("Action Centre Enabled")?>",false,true);
