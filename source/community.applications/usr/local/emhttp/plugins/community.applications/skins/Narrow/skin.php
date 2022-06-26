@@ -117,9 +117,17 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$actionsContext = [];
 			$selected = false;
 			$installComment = $template['CAComment'];
-
-			if ( $template['Requires'] )
-				$installComment = tr("This application has additional requirements")."<br>".markdown($template['Requires'])."<br>$installComment";
+			
+			if ( $template['Requires'] ) {
+				$template['Requires'] = markdown(strip_tags(str_replace(["\r","\n","&#xD;"],["","<br>",""],trim($template['Requires'])),"<br>"));
+				preg_match_all("/\/\/(.*?)&#92;/m",$template['Requires'],$searchMatches);
+				if ( count($searchMatches[1]) ) {
+					foreach ($searchMatches[1] as $searchResult) {
+						$template['Requires'] = str_replace("//$searchResult&#92;","<a style=cursor:pointer; onclick=doSidebarSearch(&quot;$searchResult&quot;);>$searchResult</a>",$template['Requires']);
+					}
+				}
+				$installComment = tr("This application has additional requirements")."<br>{$template['Requires']}<br>$installComment";
+			}			
 
 			$installComment = str_replace("\n","",$installComment);
 			if ( ! $template['Language'] ) {
@@ -668,7 +676,7 @@ function getPopupDescriptionSkin($appNumber) {
 					}
 				} elseif ( ! $template['Blacklist']  ) {
 					if ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true") {
-						if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
+						if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" || ($template['Deprecated'] && $template['InstallPath']) ) {
 							if ( ($template['RequiresFile'] && is_file($template['RequiresFile']) ) || ! $template['RequiresFile'] ) {
 								$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
 								$isDeprecated = $template['Deprecated'] ? "&deprecated" : "";

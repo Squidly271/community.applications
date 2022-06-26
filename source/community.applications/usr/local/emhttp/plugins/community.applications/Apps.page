@@ -99,7 +99,7 @@ $dockerSearchActive = is_file($caPaths['dockerSearchActive']);
 exec("mkdir -p {$caPaths['tempFiles']}");
 if ( ($cfg['updateCheck'] == "yes") && ( (time() - @filemtime($caPaths['updateTime']) ) > 3600 ) ) {
 	touch($caPaths['updateTime']);
-	exec("echo '/usr/local/emhttp/plugins/community.applications/scripts/checkForUpdates.php >/dev/null 2>&1' | at now -M >/dev/null");
+	exec("echo '/usr/local/emhttp/plugins/community.applications/scripts/checkForUpdates.php >/dev/null 2>&1' | at now -M >/dev/null 2>&1");
 }
 
 if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
@@ -176,7 +176,6 @@ var resizeTimer;
 var portsInUse = [];
 var startupSearch = "<?=$_GET['search']?>";
 var iconHoverTimer;
-
 
 $(function(){
 	window.onerror = function(msg,url,lineNo,columnNo, error) {
