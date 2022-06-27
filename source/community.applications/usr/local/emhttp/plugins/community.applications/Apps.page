@@ -1112,6 +1112,7 @@ function awesompleteSearch() {
 
 
 function openNewWindow(newURL,target='_self') {
+	saveState();
 	var popUp = window.open(newURL,target);
 	if ( !popUp || popUp.closed || typeof popUp == "undefined" ) {
 		addBannerWarning("<?tr("Popup Blocked.  CA requires popups to be enabled under certain circumstances.  You must white list your server within your browser to allow popups")?>",true,true);
@@ -1184,6 +1185,8 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 			html: true
 		}, function (isConfirm) {
 			if (isConfirm) {
+				hidePluginPending(pluginURL);
+
 				if ( $(".selectedMenu").data("category") == "action_centre" ) {
 					var postFunction = "actionCentre";
 				} else {
@@ -1204,6 +1207,8 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 			}
 		});
 	} else {
+		hidePluginPending(pluginURL);
+		
 		if ( $(".selectedMenu").data("category") == "action_centre" ) {
 			var postFunction = "actionCentre";
 		} else {
@@ -1221,6 +1226,22 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 <?endif;?>
 	}
 
+}
+
+function hidePluginPending(pluginURL) {
+	if ( pluginURL.includes("/") ) {
+		$(".actionsButton").each(function() {
+			if ( $(this).data("pluginurl") == pluginURL || $(this).data("pluginurl")+"&deprecated" == pluginURL ) {
+				$(this).hide();
+			}
+		});
+	} else {
+		$(".actionsButton").each(function() {
+			if ( $(this).data("pluginurl").basename() == pluginURL ) {
+				$(this).hide();
+			}
+		});
+	}
 }
 
 function OpenSidebarAndRefreshDisplay() {
@@ -1400,6 +1421,7 @@ function uninstallApp(application,humanName) {
 	}, function(isConfirm) {
 		if (isConfirm) {
 			application = application.basename();
+			hidePluginPending(application);
 <?if ($nchanCom):?>
 			ca_openPlugin('plugin remove '+application,"<?tr('Uninstall Plugin')?>",'','postUninstallPlugin');
 <?else:?>
@@ -1901,6 +1923,9 @@ function installMulti() {
 				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
 				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,tr('Install '+makePlural("Application",dockerCount)),600,1100,true);
 			} else {
+			pluginArray.forEach(function(value) {
+				hidePluginPending(value[1]);
+			});
 <?if ($nchanCom):?>
 				ca_openPlugin('multiplugin install '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refresh');
 <?else:?>
@@ -2962,12 +2987,7 @@ function getPerPageOpts(value) {
 function setupActionCentre() {
 	// set up action centre - run in background without tying anything up
 	var acBanner = false;
-	var bannerTimeout = setTimeout(function(){
-		acBanner = addBannerWarning("<?tr("Running Background Application Tests")?>",false,true);
-	},1000);
 	$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'enableActionCentre'},function(data) {
-		clearTimeout(bannerTimeout);
-		removeBannerWarning(acBanner);
 		var ret = JSON.parse(data);
 		if ( ret.status == "action" ) {
 			if ( !$(".actionCentre").is(":visible") ) {

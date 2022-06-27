@@ -1116,9 +1116,14 @@ function displayCard($template) {
 			<div class='ca_bottomLine $bottomClass'>
 			<div class='infoButton_docker dockerPopup' data-dockerHub='$DockerHub'>".tr("Docker Hub")."</div>";
 	} else {
+		if ( $PluginURL ) {
+			$dataPluginURL = "data-pluginurl='$PluginURL'";
+		} else {
+			$dataPluginURL = "";
+		}
 		$backgroundClickable = "ca_backgroundClickable";
 		$card .= "
-			<div class='ca_holder $class $popupType $holderClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."'>
+			<div class='ca_holder $class $popupType $holderClass' data-apppath='$Path' data-appname='$Name' data-repository='".htmlentities($RepoName,ENT_QUOTES)."' $dataPluginURL>
 			<div class='ca_bottomLine $bottomClass'>
 			<div class='infoButton $cardClass'>".tr("Info")."</div>
 		";
@@ -1133,10 +1138,10 @@ function displayCard($template) {
 	if ( $actionsContext ) {
 		if ( count($actionsContext) == 1) {
 			$dispText = $actionsContext[0]['alternate'] ?: $actionsContext[0]['text'];
-			$card .= "<div class='actionsButton' onclick={$actionsContext[0]['action']}>$dispText</div>";
+			$card .= "<div class='actionsButton' data-pluginURL='$PluginURL' onclick={$actionsContext[0]['action']}>$dispText</div>";
 		}
 		else
-			$card .= "<div class='actionsButton actionsButtonContext' id='actions".preg_replace("/[^a-zA-Z0-9]+/", "",$Name)."$ID' data-context='".json_encode($actionsContext,JSON_HEX_QUOT | JSON_HEX_APOS)."'>".tr("Actions")."</div>";
+			$card .= "<div class='actionsButton actionsButtonContext' data-pluginURL='$PluginURL' id='actions".preg_replace("/[^a-zA-Z0-9]+/", "",$Name)."$ID' data-context='".json_encode($actionsContext,JSON_HEX_QUOT | JSON_HEX_APOS)."'>".tr("Actions")."</div>";
 	}
 
 	$card .= "<span class='$appType' title='".htmlentities($typeTitle)."'></span>";
