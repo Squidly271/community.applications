@@ -1846,6 +1846,7 @@ function updateMulti() {
 				$.cookie("ca_plugininstallpending",plugin,{path:"/;SameSite=Lax"});
 			}
 			if ( docker.length ) {
+				saveState();
 				$("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
 				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,tr('Install '+makePlural("Application",dockerCount)),600,1100,true);
 			} else {
