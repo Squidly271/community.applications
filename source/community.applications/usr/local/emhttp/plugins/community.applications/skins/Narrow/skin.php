@@ -264,7 +264,13 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"action"=>"removeApp('{$template['InstallPath']}','$pluginName');");
 							}
 						}
+						if ( file_exists($caPaths['pluginPending'].$pluginName) ) {
+							unset($actionsContext);
+							$actionsContext[] = array("text"=>tr("Pending"));
+						}
 					}
+
+						
 				}
 			}
 			if ( $template['Language'] ) {
@@ -689,7 +695,10 @@ function getPopupDescriptionSkin($appNumber) {
 							$actionsContext[] = array("divider"=>true);
 						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','$pluginName');");
 					}
-
+				}
+				if ( is_file($caPaths['pluginPending'].$pluginName) ) {
+					unset($actionsContext);
+					$actionsContext[] = array("text"=>tr("Pending"));
 				}
 			}
 		}

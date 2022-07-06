@@ -196,6 +196,9 @@ switch ($_POST['action']) {
 	case 'checkRequirements':
 		checkRequirements();
 		break;
+	case 'saveMultiPluginPending':
+		saveMultiPluginPending();
+		break;
 	###############################################
 	# Return an error if the action doesn't exist #
 	###############################################
@@ -2416,6 +2419,23 @@ function checkRequirements() {
 	} else {
 		postReturn(['met'=>""]);
 	}
+}
+
+########################################################
+# Saves the list of plugins which are pending installs #
+########################################################
+function saveMultiPluginPending() {
+	global $caPaths;
+	
+	$plugin = getPost("plugin","");
+	$plugins = explode("*",$plugin);
+	exec("mkdir -p {$caPaths['pluginPending']}");
+	foreach ($plugins as $plg) {
+		if (! $plg ) continue;
+		$pluginName = basename($plg);
+		touch($caPaths['pluginPending'].$pluginName);
+	}
+	postReturn(['status'=>'ok']);
 }
 
 #######################################

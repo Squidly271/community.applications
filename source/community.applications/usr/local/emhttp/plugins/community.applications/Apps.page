@@ -803,31 +803,30 @@ function updateContent(button) {
 	disableSearch();
 
 	post({action:'force_update'}, function(result) {
+		if ( result.data ) {
+			updateDisplay(result.data);
+		} else {
+			data.searchActive = false;
+			if ( startupSearch ) {
+				doSearch(false,startupSearch);
+				populateAutoComplete();
+				startupSearch = "";
+				$(".dockerSearch").hide();
+			} else {
+				getContent(true,'INITIALIZE',"","",startupScreen);
+			}
+		}
+		getCategories();
 		if ( $.cookie("ca_plugininstallpending" || ! button ) ) {
 			var plugins = $.cookie("ca_plugininstallpending");
 			$.removeCookie("ca_plugininstallpending");
 			myCloseAlert();
-<?if ($nchanCom):?>
+	<?if ($nchanCom):?>
 			ca_openPlugin('multiplugin install '+plugins,"<?tr('Install Plugin Applications')?>",'','refresh');
-<?else:?>
+	<?else:?>
 			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugins,"<?tr('Install Plugin Applications')?>",600,900,true);
-<?endif;?>
-		} else {
-			if ( result.data ) {
-				updateDisplay(result.data);
-			} else {
-				data.searchActive = false;
-				if ( startupSearch ) {
-					doSearch(false,startupSearch);
-					populateAutoComplete();
-					startupSearch = "";
-					$(".dockerSearch").hide();
-				} else {
-					getContent(true,'INITIALIZE',"","",startupScreen);
-				}
-			}
-		}
-		getCategories();
+	<?endif;?>
+		}		
 	});
 }
 
@@ -1170,7 +1169,7 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 	type = update ? "update" : "install";
 	title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
 	closeSidebar(true);
-	disableSearch();
+//	disableSearch();
 	if ( $.trim(comment) ) {
 		swal({
 			title: "<?tr("Attention")?>",
@@ -1405,7 +1404,7 @@ function removeApp(application, humanName) {
 
 function uninstallApp(application,humanName) {
 	closeSidebar();
-	disableSearch();
+//	disableSearch();
 	swal({
 		title: "<?tr("Uninstall Application?")?>",
 		text: sprintf(tr("Are you sure you want to uninstall %s?"),"<span class='ca_italic ca_bold caHighlight'>"+humanName+"</span>"),
@@ -1928,7 +1927,10 @@ function installMulti() {
 				hidePluginPending(value[1]);
 			});
 <?if ($nchanCom):?>
-				ca_openPlugin('multiplugin install '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refresh');
+				post({action:'saveMultiPluginPending',plugin:plugin},function(data) {
+					alert(plugin);
+					ca_openPlugin('multiplugin install '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refresh');
+				});
 <?else:?>
 				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugin,tr('Install '+makePlural("Application",pluginCount)),600,900,true);
 <?endif;?>

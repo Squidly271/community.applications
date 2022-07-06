@@ -1,12 +1,14 @@
-a25d5e4df4f1b04bc30371fc79c6c19b  ./Apps.page
+dbc557b8f37a8fda04fd617c0fd5c503  ./Apps.page
 4e55f7483b661af21a25b677179baffe  ./CA_notices.page
 42a1658a916a3a3eed2a9f2af80603c4  ./ca_settings.page
 e718d7825dbdc96a17a915079222b098  ./default.cfg
-e2a1a9120d3fe4673905ef6395c2bca0  ./include/exec.php
+07a72859c0c26030943adf8d379d4074  ./include/exec.php
 e564b860fa0d5022df83c103922665d7  ./include/helpers.php
-fc87642746ba4f324537bc381b78e982  ./include/paths.php
+d9bce32c48b39966cf5e5b6fdf6946ee  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
+ef622baa4b9017a9f907da7c4bd89c8d  ./scripts/caPostHook.sh
+4418a38959208e7d5d5b8a3ed61b1c66  ./scripts/caPreHook.sh
 d3d8286046cc7d6edf8f596067c163a2  ./scripts/checkForUpdates.php
 99a9d58a49a7f6812f18bd4be2b563b9  ./scripts/checkForUpdates.sh
 677ac9a29993ec57e09ec6a1856f1a11  ./scripts/dockerConvert.php
@@ -22,4 +24,4 @@ da3b4f9b73c5c3bf65be6c42d68b51f9  ./scripts/showStatistics.php
 34554a56611dfe625889c82afd5138de  ./scripts/updatePluginSupport.php
 25bdaed6f62ac73f9ef7c3ce0c125ef7  ./skins/Narrow/css.php
 7eb021a105e2f7a15675ec8a14e6f05e  ./skins/Narrow/skin.html
-3ef00a2eb4031263ecf7768680c08234  ./skins/Narrow/skin.php
+c392910a4bdbf892b852c9aa82a476f5  ./skins/Narrow/skin.php
