@@ -7,8 +7,8 @@ e564b860fa0d5022df83c103922665d7  ./include/helpers.php
 d9bce32c48b39966cf5e5b6fdf6946ee  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
-ef622baa4b9017a9f907da7c4bd89c8d  ./scripts/caPostHook.sh
-4418a38959208e7d5d5b8a3ed61b1c66  ./scripts/caPreHook.sh
+aa1520f5576149b5f7734d4f280ba4ee  ./scripts/caPostHook.php
+b45c0067b64f05c3dafc202e423a3151  ./scripts/caPreHook.php
 d3d8286046cc7d6edf8f596067c163a2  ./scripts/checkForUpdates.php
 99a9d58a49a7f6812f18bd4be2b563b9  ./scripts/checkForUpdates.sh
 677ac9a29993ec57e09ec6a1856f1a11  ./scripts/dockerConvert.php
