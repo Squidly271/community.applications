@@ -2010,6 +2010,7 @@ echo ""
 echo "Adjusting icon for unRaid version"
 if [[ -e /usr/local/emhttp/plugins/dynamix/styles/font-cases.ttf ]]; then sed -i 's/f0db/e942/g' /usr/local/emhttp/plugins/community.applications/Apps.page; fi
 if [[ ! -e /usr/local/emhttp/plugins/dynamix/styles/font-cases.ttf ]]; then sed -i 's/e942/f0db/g' /usr/local/emhttp/plugins/community.applications/Apps.page; fi
+
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."
