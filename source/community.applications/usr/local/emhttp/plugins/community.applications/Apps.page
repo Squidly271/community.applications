@@ -531,8 +531,11 @@ $(function(){
 		}
 
 		$(this).addClass("selectedMenu");
-		if ( slideFlag )
-			$(this).next().show("fast");
+		if ( slideFlag ) {
+			if ( ! $(this).next().hasClass("actionCentre") ) {
+				$(this).next().show("fast");
+			}
+		}
 	});
 
 	$(".sectionMenu").on("click",function() {
@@ -1001,7 +1004,6 @@ function doSearch(button,newSearch) {
 		$(".allApps").addClass("selectedMenu");
 		updateDisplay(result.display);
 		data.section = "AppStore";
-
 		post({action:'getCategoriesPresent'},function(result) {
 			$(".categoryMenu").removeClass("caMenuEnabled").addClass("caMenuDisabled");
 			result.forEach(function(category) {
