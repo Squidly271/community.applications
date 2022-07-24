@@ -1176,6 +1176,9 @@ function displayCard($template) {
 		case 'appLanguage':
 			$type = "language";
 			break;
+		case 'appDriver':
+			$type = 'plugin';
+			break;
 	}	
 	if ($Removable && !$DockerInfo  && ! $Installed && ! $Blacklist) {
 		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";
