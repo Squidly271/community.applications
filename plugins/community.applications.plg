@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.06.18">
-<!ENTITY md5       "c6c3c2ed87bc09ac1cf231d01eaa5309">
+<!ENTITY version   "2022.07.26">
+<!ENTITY md5       "071cb0496cd65d4a49901c1805dfeea4">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,14 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.07.26
+- Added: Support for Unraid 6.11
+- Fixed: Action Centre would appear if Favourite Repository was clicked
+- Fixed: Drivers couldn't be updated from within Action Centre
+- Fixed: Going to a plugin's settings from within CA would crash CA when hitting DONE on the plugin's settings
+- Fixed: Direct CA search links displayed were not displayed correctly when installing from a card that where a further requirements popup would 
+- Fixed: Deprecated plugins (Previous Apps Section) couldn't be installed from sidebar
+
 ###2022.06.18
 - Fixed: XSS vulnerability on search strings
 - Fixed: Less cookie use

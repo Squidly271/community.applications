@@ -48,7 +48,7 @@ if ( ! is_file($caPaths['docker_cfg']) ) {
 
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 $unRaid610      = version_compare($unRaidSettings['version'],"6.10.0-beta17",">");
-$nchanCom       = file_exists('/boot/config/plugins/dynamix.bleeding.edge.plg');
+$nchanCom       = version_compare($unRaidSettings['version'],"6.10.3",">");
 
 // Check md5's of files
 exec("cd /usr/local/emhttp/plugins/$plugin/ && md5sum -c ca.md5",$output,$md5Error);
