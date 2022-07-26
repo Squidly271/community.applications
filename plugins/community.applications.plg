@@ -18,7 +18,7 @@
 - Fixed: Action Centre would appear if Favourite Repository was clicked
 - Fixed: Drivers couldn't be updated from within Action Centre
 - Fixed: Going to a plugin's settings from within CA would crash CA when hitting DONE on the plugin's settings
-- Fixed: Direct CA search links displayed were not displayed correctly when installing from a card that where a further requirements popup would 
+- Fixed: Direct CA search links displayed were not displayed correctly when installing from a card that where a further requirements popup would appear
 - Fixed: Deprecated plugins (Previous Apps Section) couldn't be installed from sidebar
 
 ###2022.06.18
@@ -1944,11 +1944,11 @@ THIS IS A REQUIRED UPDATE
   
   if ( version_compare($version['version'],"6.9.0", "<") )
   {
-    echo "********************************************************************\n";
+    echo "**********************************************************************\n";
     echo "\n";
     echo "Community Applications Requires Unraid version 6.9.0 or greater to run\n";
     echo "\n";
-    echo "********************************************************************\n";
+    echo "**********************************************************************\n";
     exit(1);
   }
   echo "Cleaning Up Old Versions\n";
