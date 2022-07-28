@@ -1181,7 +1181,7 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 			allowOutsideClick: true,
 			showConfirmButton: true,
 			showCancelButton: true,
-			confirmButtonText: "<?tr("OK")?>",
+			confirmButtonText: "<?tr("Install")?>",
 			cancelButtonText: "<?tr("CANCEL")?>",
 			animation: false,
 			type: "warning",
