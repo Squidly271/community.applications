@@ -7,8 +7,6 @@ e564b860fa0d5022df83c103922665d7  ./include/helpers.php
 116042a918060278e77379b0dd73482c  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
-ff1fa32f5bc288631673066da4a36ebe  ./scripts/caPostHook.php
-981bc776ea83d2f15387e29870554e3f  ./scripts/caPreHook.php
 d3d8286046cc7d6edf8f596067c163a2  ./scripts/checkForUpdates.php
 99a9d58a49a7f6812f18bd4be2b563b9  ./scripts/checkForUpdates.sh
 677ac9a29993ec57e09ec6a1856f1a11  ./scripts/dockerConvert.php
