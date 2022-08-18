@@ -113,7 +113,8 @@ function addCloseButton() {
 	
 	echo "<br>".tr("Downloading docker icons")."<br>";
 	$DockerTemplates->getAllInfo();
-	
+	exec("$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate check nonotify > /dev/null 2>&1");
+
 	if ( $failFlag || !$_GET['plugin']) {
 		echo "<br>".tr("Docker Application Installation finished")."<br><script>addCloseButton();</script>";
 	} else {
