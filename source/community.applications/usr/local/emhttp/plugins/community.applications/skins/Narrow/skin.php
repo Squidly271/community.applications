@@ -1399,7 +1399,7 @@ function displayPopup($template) {
 		if ( ! $RecommendedReason[$RecommendedLanguage] )
 			$RecommendedLanguage = "en_US";
 
-		preg_preg_match_all("/\/\/(.*?)\\\\/m",$RecommendedReason[$RecommendedLanguage],$searchMatches);
+		preg_match_all("/\/\/(.*?)\\\\/m",$RecommendedReason[$RecommendedLanguage],$searchMatches);
 		if ( count($searchMatches[1]) ) {
 			foreach ($searchMatches[1] as $searchResult) {
 				$RecommendedReason[$RecommendedLanguage] = str_replace("//$searchResult\\\\","<a style=cursor:pointer; onclick=doSidebarSearch(&quot;$searchResult&quot;);>$searchResult</a>",$RecommendedReason[$RecommendedLanguage]);
