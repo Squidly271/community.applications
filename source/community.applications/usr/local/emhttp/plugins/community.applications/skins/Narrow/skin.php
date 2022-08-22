@@ -119,7 +119,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$installComment = $template['CAComment'];
 			
 			if ( $template['Requires'] ) {
-				$template['Requires'] = markdown(strip_tags(str_replace(["\r","\n","&#xD;"],["","<br>",""],trim($template['Requires'])),"<br>"));
+				$template['Requires'] = markdown(strip_tags(str_replace(["\r","\n","&#xD;","'"],["","<br>","","&#39;"],trim($template['Requires'])),"<br>"));
 				preg_match_all("/\/\/(.*?)&#92;/m",$template['Requires'],$searchMatches);
 				if ( count($searchMatches[1]) ) {
 					foreach ($searchMatches[1] as $searchResult) {
@@ -1398,13 +1398,14 @@ function displayPopup($template) {
 		$RecommendedLanguage = $_SESSION['locale'] ?: "en_US";
 		if ( ! $RecommendedReason[$RecommendedLanguage] )
 			$RecommendedLanguage = "en_US";
-
+		
 		preg_match_all("/\/\/(.*?)\\\\/m",$RecommendedReason[$RecommendedLanguage],$searchMatches);
 		if ( count($searchMatches[1]) ) {
 			foreach ($searchMatches[1] as $searchResult) {
 				$RecommendedReason[$RecommendedLanguage] = str_replace("//$searchResult\\\\","<a style=cursor:pointer; onclick=doSidebarSearch(&quot;$searchResult&quot;);>$searchResult</a>",$RecommendedReason[$RecommendedLanguage]);
 			}
 		}
+		
 		if ( ! $RecommendedWho ) $RecommendedWho = tr("Unraid Staff");
 		$card .= "
 			<div class='spotlightPopup'>
