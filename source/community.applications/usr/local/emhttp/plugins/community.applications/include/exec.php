@@ -1178,7 +1178,7 @@ function previous_apps() {
 						}
 					}
 
-					if ( $installed == "action" && !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCentre'] )
+					if ( $installed == "action" && !$template['Blacklist'] && !$template['Deprecated'] && $template['Compatible'] && !$template['actionCentre'] )
 						continue;
 					if ( $installed == "action" )
 						$template['actionCentre'] = true;
@@ -2379,7 +2379,7 @@ function enableActionCentre() {
 					$template['actionCentre'] = true;
 			}
 
-			if ( !$template['Blacklist'] && !$template['Deprecated'] && !$template['actionCentre'] )
+			if ( !$template['Blacklist'] && !$template['Deprecated'] && $template['Compatible'] && !$template['actionCentre'] )
 				continue;
 			$displayed[] = $template;
 			break;

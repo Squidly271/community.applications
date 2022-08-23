@@ -248,6 +248,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							}
 							
 							$isDeprecated = $template['Deprecated'] ? "&deprecated" : "";
+							$isDeprecated = $isDeprecated ?: $template['Compatible'] ? "" : "&incompatible";
 							$updateFlag = false;
 							$requiresText = "";
 							if ( $template['RequiresFile'] && ! is_file($template['RequiresFile']) ) {
@@ -686,6 +687,7 @@ function getPopupDescriptionSkin($appNumber) {
 							if ( ($template['RequiresFile'] && is_file($template['RequiresFile']) ) || ! $template['RequiresFile'] ) {
 								$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
 								$isDeprecated = $template['Deprecated'] ? "&deprecated" : "";
+								$isDeprecated = $isDeprecated ?: $template['Compatible'] ? "" : "&incompatible";
 								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated');");
 							}
 						}

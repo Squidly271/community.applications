@@ -1181,7 +1181,7 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 			allowOutsideClick: true,
 			showConfirmButton: true,
 			showCancelButton: true,
-			confirmButtonText: "<?tr("Install")?>",
+			confirmButtonText: "<?tr("OK")?>",
 			cancelButtonText: "<?tr("CANCEL")?>",
 			animation: false,
 			type: "warning",
@@ -1196,9 +1196,11 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 					var postFunction = "OpenSidebarAndRefreshDisplay";
 				}
 				data.deprecated = false; // global var here to trigger a rescan of action centre
-				if ( pluginURL.includes("&deprecated")  ) {
+				if ( pluginURL.includes("&deprecated") || pluginURL.includes("&incompatible")   ) {
 					data.deprecated = true;
 					pluginURL.replace("&deprecated","");
+					pluginURL.replace("&incompatible","");
+
 				}
 <?if ($nchanCom):?>
 				post({action:'saveMultiPluginPending',plugin:pluginURL},function(data) {
@@ -1220,9 +1222,10 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 			var postFunction = "OpenSidebarAndRefreshDisplay";
 		}
 		data.deprecated = false; // global var here to trigger a rescan of action centre
-		if ( pluginURL.includes("&deprecated")  ) {
+		if ( pluginURL.includes("&deprecated") || pluginURL.includes("&incompatible")  ) {
 			data.deprecated = true;
 			pluginURL.replace("&deprecated","");
+			pluginURL.replace("&incompatible","");
 		}
 <?if ($nchanCom):?>
 		ca_openPlugin('plugin '+type+' '+pluginURL,title,'',postFunction);
@@ -1231,7 +1234,6 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 		openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,postFunction);
 <?endif;?>
 	}
-
 }
 
 function hidePluginPending(pluginURL) {
