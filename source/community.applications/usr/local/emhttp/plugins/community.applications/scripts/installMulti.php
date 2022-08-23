@@ -7,7 +7,8 @@
 ###############################################################
 ?>
 <style>
-.logLine{color:black !important;}
+.logLine{color:black !important;font-size:12px !important;}
+body{font-size:12px !important;}
 </style>
 <?php
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
@@ -83,6 +84,7 @@ function addLog(logLine) {
 	}
 }
 function addCloseButton() {
+	alert();
 	addLog("<p class='centered'><button class='logLine' type='button' onclick='" + (top.Shadowbox ? "top.Shadowbox" : "window") + ".close()'><?=tr("Done")?></button></p>");
 }
 </script>
