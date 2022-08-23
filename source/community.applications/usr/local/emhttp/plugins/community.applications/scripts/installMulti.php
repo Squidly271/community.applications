@@ -84,7 +84,6 @@ function addLog(logLine) {
 	}
 }
 function addCloseButton() {
-	alert();
 	addLog("<p class='centered'><button class='logLine' type='button' onclick='" + (top.Shadowbox ? "top.Shadowbox" : "window") + ".close()'><?=tr("Done")?></button></p>");
 }
 </script>

@@ -10,7 +10,7 @@ e564b860fa0d5022df83c103922665d7  ./include/helpers.php
 d3d8286046cc7d6edf8f596067c163a2  ./scripts/checkForUpdates.php
 99a9d58a49a7f6812f18bd4be2b563b9  ./scripts/checkForUpdates.sh
 677ac9a29993ec57e09ec6a1856f1a11  ./scripts/dockerConvert.php
-30751eeab531eaa3793fb3ab70cc6bac  ./scripts/installMulti.php
+8eb6e62a41113a3bff297bb930d66139  ./scripts/installMulti.php
 e54e7ec1cbc312c11900977181b71380  ./scripts/installMultiPlugin.php
 524afab04ca930f59117a846f819fb2f  ./scripts/installPluginUpdate.sh
 25b6119a7ce9330fe8a16f4eb969512d  ./scripts/installUpdate.php
