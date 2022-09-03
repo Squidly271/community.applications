@@ -69,11 +69,14 @@ function writeJsonFile($filename,$jsonArray) {
 function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	global $caSettings, $caPaths;
 
+	debug("DOWNLOAD starting $url\n");
+	$startTime = time();
+	
 	$ch = curl_init();
 	curl_setopt($ch,CURLOPT_URL,$url);
 	curl_setopt($ch,CURLOPT_FRESH_CONNECT,true);
 	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,30);
+	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
 	curl_setopt($ch,CURLOPT_TIMEOUT,$timeout);
 	curl_setopt($ch,CURLOPT_ENCODING,"");
 	curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
@@ -90,8 +93,9 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	curl_close($ch);
 	if ( $path )
 		file_put_contents($path,$out);
-
-	debug("DOWNLOAD URL: $url\nRESULT:\n".var_dump_ret($out));
+	
+	$totalTime = time() - $startTime;
+	debug("DOWNLOAD $url Time: $totalTime  RESULT:\n".var_dump_ret($out));
 	return $out ?: false;
 }
 function download_json($url,$path="") {

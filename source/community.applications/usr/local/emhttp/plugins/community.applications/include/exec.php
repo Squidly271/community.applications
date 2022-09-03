@@ -199,6 +199,9 @@ switch ($_POST['action']) {
 	case 'saveMultiPluginPending':
 		saveMultiPluginPending();
 		break;
+	case 'downloadStatistics':
+		downloadStatistics();
+		break;
 	###############################################
 	# Return an error if the action doesn't exist #
 	###############################################
@@ -218,7 +221,7 @@ function DownloadApplicationFeed() {
 
 	$currentFeed = "Primary Server";
 	$downloadURL = randomFile();
-	$ApplicationFeed = download_json($caPaths['application-feed'],$downloadURL);
+	$ApplicationFeed = download_json($caPaths['application-feed'],$downloadURL,"",20);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
 		$currentFeed = "Backup Server";
 		$ApplicationFeed = download_json($caPaths['application-feedBackup'],$downloadURL);
@@ -903,7 +906,7 @@ function force_update() {
 	$lastUpdatedOld = readJsonFile($caPaths['lastUpdated-old']);
 
 	@unlink($caPaths['lastUpdated']);
-	$latestUpdate = download_json($caPaths['application-feed-last-updated'],$caPaths['lastUpdated']);
+	$latestUpdate = download_json($caPaths['application-feed-last-updated'],$caPaths['lastUpdated'],"",5);
 	if ( ! $latestUpdate['last_updated_timestamp'] )
 		$latestUpdate = download_json($caPaths['application-feed-last-updatedBackup'],$caPaths['lastUpdated']);
 
@@ -2436,6 +2439,15 @@ function saveMultiPluginPending() {
 		touch($caPaths['pluginPending'].$pluginName);
 	}
 	postReturn(['status'=>'ok']);
+}
+
+##############################################
+# Downloads the stats file in the background #
+##############################################
+function downloadStatistics() {
+	global $caPaths;
+	
+	download_json($caPaths['statisticsURL'],$caPaths['statistics']);
 }
 
 #######################################

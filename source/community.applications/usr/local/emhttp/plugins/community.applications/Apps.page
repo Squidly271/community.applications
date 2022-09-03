@@ -1078,9 +1078,14 @@ function getContent(init,category,description,newApp,startupDisplay) {
 			updateDisplay(result.display);
 			if ( initialize ) {
 				populateAutoComplete();
+				downloadStatistics();
 			}
 		});
 	}
+}
+
+function downloadStatistics() {
+	postNoSpin({action:'downloadStatistics'});
 }
 
 function populateAutoComplete() {

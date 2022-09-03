@@ -445,8 +445,6 @@ function getPopupDescriptionSkin($appNumber) {
 	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
 		
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
-	if ( ! is_file($caPaths['statistics']) )
-		download_json($caPaths['statisticsURL'],$caPaths['statistics']);
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$caSettings['dockerRunning'] = "true";
@@ -576,15 +574,15 @@ function getPopupDescriptionSkin($appNumber) {
 
 	if ( $template['Plugin'] ) {
 		$templateURL = $template['PluginURL'];
-		download_url($templateURL,$caPaths['pluginTempDownload']);
-		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']);
+		download_url($templateURL."1",$caPaths['pluginTempDownload'],"",5);
+		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']) ?: $template['Changes'];
 
 		$template['pluginVersion'] = @plugin("version",$caPaths['pluginTempDownload']) ?: $template['pluginVersion'];
 
 	} else {
 		if ( ! $template['Changes'] && $template['ChangeLogPresent']) {
 			$templateURL = $template['caTemplateURL'] ?: $template['TemplateURL'];
-			download_url($templateURL,$caPaths['pluginTempDownload']);
+			download_url($templateURL,$caPaths['pluginTempDownload'],"",5);
 			$xml = readXmlFile($caPaths['pluginTempDownload']);
 			$template['Changes'] = $xml['Changes'];
 		}
