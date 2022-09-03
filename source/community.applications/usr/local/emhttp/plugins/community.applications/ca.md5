@@ -3,7 +3,7 @@ bcdbfc0c658bcc641a809f45808fbd95  ./Apps.page
 42a1658a916a3a3eed2a9f2af80603c4  ./ca_settings.page
 e718d7825dbdc96a17a915079222b098  ./default.cfg
 69837040d99db6ace79fa8c995579b52  ./include/exec.php
-081c8e7f0937ef2f7d77d1f746a8a4f4  ./include/helpers.php
+f25b1ed0b1cddfb4ff95a10ced212a0d  ./include/helpers.php
 116042a918060278e77379b0dd73482c  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md

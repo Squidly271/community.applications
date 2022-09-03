@@ -98,8 +98,8 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	debug("DOWNLOAD $url Time: $totalTime  RESULT:\n".var_dump_ret($out));
 	return $out ?: false;
 }
-function download_json($url,$path="") {
-	return json_decode(download_url($url,$path),true);
+function download_json($url,$path="",$bg=false,$timeout=45) {
+	return json_decode(download_url($url,$path,$bg,$timeout),true);
 }
 function getPost($setting,$default) {
 	return isset($_POST[$setting]) ? urldecode(($_POST[$setting])) : $default;
