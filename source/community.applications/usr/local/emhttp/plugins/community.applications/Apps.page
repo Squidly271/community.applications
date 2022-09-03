@@ -1864,7 +1864,7 @@ function updateMulti() {
 				openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,tr('Install '+makePlural("Application",dockerCount)),600,1100,true);
 			} else {
 <?if ($nchanCom):?>
-				ca_openPlugin('multiplugin install '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refresh');
+				ca_openPlugin('multiplugin update '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refresh');
 <?else:?>
 				openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugin,tr('Install '+makePlural("Application",pluginCount)),600,900,true);
 <?endif;?>
