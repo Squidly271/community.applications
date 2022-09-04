@@ -908,7 +908,7 @@ function force_update() {
 	@unlink($caPaths['lastUpdated']);
 	$latestUpdate = download_json($caPaths['application-feed-last-updated'],$caPaths['lastUpdated'],"",5);
 	if ( ! $latestUpdate['last_updated_timestamp'] )
-		$latestUpdate = download_json($caPaths['application-feed-last-updatedBackup'],$caPaths['lastUpdated']);
+		$latestUpdate = download_json($caPaths['application-feed-last-updatedBackup'],$caPaths['lastUpdated'],"",5);
 
 	if ( ! $latestUpdate['last_updated_timestamp'] ) {
 		$latestUpdate['last_updated_timestamp'] = INF;
@@ -2447,7 +2447,8 @@ function saveMultiPluginPending() {
 function downloadStatistics() {
 	global $caPaths;
 	
-	download_json($caPaths['statisticsURL'],$caPaths['statistics']);
+	if ( ! is_file($caPaths['statistics']) )
+		download_json($caPaths['statisticsURL'],$caPaths['statistics']);
 }
 
 #######################################
