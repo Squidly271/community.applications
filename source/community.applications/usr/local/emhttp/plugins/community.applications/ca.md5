@@ -7,8 +7,6 @@ f25b1ed0b1cddfb4ff95a10ced212a0d  ./include/helpers.php
 116042a918060278e77379b0dd73482c  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
-ff1fa32f5bc288631673066da4a36ebe  ./scripts/caPostHook.php
-981bc776ea83d2f15387e29870554e3f  ./scripts/caPreHook.php
 d3d8286046cc7d6edf8f596067c163a2  ./scripts/checkForUpdates.php
 99a9d58a49a7f6812f18bd4be2b563b9  ./scripts/checkForUpdates.sh
 677ac9a29993ec57e09ec6a1856f1a11  ./scripts/dockerConvert.php
@@ -24,4 +22,4 @@ da3b4f9b73c5c3bf65be6c42d68b51f9  ./scripts/showStatistics.php
 34554a56611dfe625889c82afd5138de  ./scripts/updatePluginSupport.php
 25bdaed6f62ac73f9ef7c3ce0c125ef7  ./skins/Narrow/css.php
 7eb021a105e2f7a15675ec8a14e6f05e  ./skins/Narrow/skin.html
-360f985a0e0e789a02eb66d7d24a6742  ./skins/Narrow/skin.php
+30432b07beef03988cb3828f81d5ae0b  ./skins/Narrow/skin.php

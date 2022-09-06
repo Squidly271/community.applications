@@ -164,7 +164,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 											$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second','".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');");
 									}
 								}
-								$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$ind]['template'])."','edit');");
+								if ( is_file($info[$ind]['template']) )
+									$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$ind]['template'])."','edit');");
+								
 								$actionsContext[] = array("divider"=>true);
 								if ($info[$ind]['template'])
 									$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallDocker('".addslashes($info[$ind]['template'])."','{$template['Name']}');");
@@ -574,7 +576,7 @@ function getPopupDescriptionSkin($appNumber) {
 
 	if ( $template['Plugin'] ) {
 		$templateURL = $template['PluginURL'];
-		download_url($templateURL."1",$caPaths['pluginTempDownload'],"",5);
+		download_url($templateURL,$caPaths['pluginTempDownload'],"",5);
 		$template['Changes'] = @plugin("changes",$caPaths['pluginTempDownload']) ?: $template['Changes'];
 
 		$template['pluginVersion'] = @plugin("version",$caPaths['pluginTempDownload']) ?: $template['pluginVersion'];
@@ -631,7 +633,9 @@ function getPopupDescriptionSkin($appNumber) {
 							else
 								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second','','".portsUsed($template)."');");
 						}
-						$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$name]['template'])."','edit');");
+						if ( is_file($info[$name]['template']) )
+							$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$name]['template'])."','edit');");
+						
 						$actionsContext[] = array("divider"=>true);
 						if ( $info[$name]['template'] )
 							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallDocker('".addslashes($info[$name]['template'])."','{$template['Name']}');");
