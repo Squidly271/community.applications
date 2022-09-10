@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.07.26">
-<!ENTITY md5       "071cb0496cd65d4a49901c1805dfeea4">
+<!ENTITY version   "2022.09.10">
+<!ENTITY md5       "a5007b53da3e925b5f78bdacc8303064">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,19 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.09.10
+- Tweaked: Various modifications to download timeouts to improve user experience on marginal internet connections
+- Fixed: Don't present edit as an option in the actions dropdown if the xml doesn't actually exist
+- Improved: Revamp debugging information on downloads
+- Changed: Statistics now downloaded asyncronously after an appfeed update instead of first time sidebar opened (Performance improvement)
+- Fixed: CSS changes when running 6.11.0-rc1+
+- Fixed: Action Centre was not being enabled after installing an incompatible application (if settings allowed incompatible installations)
+- Fixed: Action Centre was not being enabled if installing an application deemed to be incompatible via moderation
+- Fixed: Under certain circumstances, an application wouldn't install from the card (only from the sidebar) if extensive use of &lt;Requires&gt; was present
+- Changed: Refined text on Requirements not met messaging
+- Added: Direct CA search links within the reason on Apps of the Month
+- Fixed: Workaround for docker tab still showing updates available after updating all apps within Installed Apps
+
 ###2022.07.26
 - Added: Support for Unraid 6.11
 - Fixed: Action Centre would appear if Favourite Repository was clicked
