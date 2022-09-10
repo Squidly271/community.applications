@@ -21,7 +21,7 @@
 - Fixed: CSS changes when running 6.11.0-rc1+
 - Fixed: Action Centre was not being enabled after installing an incompatible application (if settings allowed incompatible installations)
 - Fixed: Action Centre was not being enabled if installing an application deemed to be incompatible via moderation
-- Fixed: Under certain circumstances, an application wouldn't install from the card (only from the sidebar) if extensive use of &lt;Requires&gt; was present
+- Fixed: Under certain circumstances, an application wouldn't install from the card (only from the sidebar) if extensive use of Requires tag was present
 - Changed: Refined text on Requirements not met messaging
 - Added: Direct CA search links within the reason on Apps of the Month
 - Fixed: Workaround for docker tab still showing updates available after updating all apps within Installed Apps
