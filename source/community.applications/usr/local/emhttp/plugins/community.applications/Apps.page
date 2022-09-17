@@ -198,6 +198,7 @@ $(function(){
 			}
 		});
 		return;
+});
 	<?else:?>
 	// don't run this through the wrapper so that if it hangs up it won't delay anything else
 	$.post("/plugins/<?=$plugin?>/include/exec.php",{action:'getPortsInUse'},function(data) {

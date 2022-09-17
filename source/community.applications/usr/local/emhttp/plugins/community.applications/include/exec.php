@@ -659,8 +659,6 @@ function get_content() {
 	}
 	$category = $category ? "/$category/i" : false;
 
-	getConvertedTemplates();
-
 	if ( strpos($category,":") && $filter ) {
 		$disp = readJsonFile($caPaths['community-templates-allSearchResults']);
 		$file = $disp['community'];
@@ -670,6 +668,8 @@ function get_content() {
 	if ( empty($file)) return;
 
 	if ( !$filter && $category === "/NONE/i" ) {
+		getConvertedTemplates();  // Only scan for private XMLs when going HOME
+		
 		file_put_contents($caPaths['startupDisplayed'],"startup");
 		$displayApplications = [];
 		$displayApplications['community'] = [];
