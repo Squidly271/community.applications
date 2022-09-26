@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.09.10">
-<!ENTITY md5       "a5007b53da3e925b5f78bdacc8303064">
+<!ENTITY version   "2022.09.26">
+<!ENTITY md5       "68f16951889161a237cdfeb3155f3a42">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.09.26
+- Performance improvement: Only scan for new private templates when going Home
+- Fixed: Flash drive offline would crash CA
+
 ###2022.09.10
 - Tweaked: Various modifications to download timeouts to improve user experience on marginal internet connections
 - Fixed: Don't present edit as an option in the actions dropdown if the xml doesn't actually exist
