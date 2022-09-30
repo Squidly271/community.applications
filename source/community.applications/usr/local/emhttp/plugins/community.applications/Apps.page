@@ -1972,25 +1972,30 @@ function updateDisplay(content) {
 	context.init();
 	$('.supportButtonCardContext').each(function() {
 		var supportContext = $(this).data("context");
-		var ID = $(this).attr("id");
-		var opts = [];
-		supportContext.forEach(function(item,index){
-			opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
-		});
-		context.attach('#'+ID, opts);
+		if (supportContext) {
+			var ID = $(this).attr("id");
+			var opts = [];
+			supportContext.forEach(function(item,index){
+				opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
+			});
+			context.attach('#'+ID, opts);
+		}
 	});
+
 	$('.actionsButtonContext').each(function() {
 		var actionsContext = $(this).data("context");
-		var ID = $(this).attr("id");
-		var opts = [];
-		actionsContext.forEach(function(item,index){
-			if ( item.divider ) {
-				opts.push({divider:true});
-			} else {
-				opts.push({text:item.text,icon:item.icon,action:function(){eval(item.action);}});
-			}
-		});
-		context.attach('#'+ID, opts);
+		if (actionsContext) {
+			var ID = $(this).attr("id");
+			var opts = [];
+			actionsContext.forEach(function(item,index){
+				if ( item.divider ) {
+					opts.push({divider:true});
+				} else {
+					opts.push({text:item.text,icon:item.icon,action:function(){eval(item.action);}});
+				}
+			});
+			context.attach('#'+ID, opts);
+		}
 	});
 	$(".cardDesc").each(function() {
 		var description = $(this).html();
