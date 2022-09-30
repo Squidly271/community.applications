@@ -693,16 +693,18 @@ $(function(){
 		removeApp(path,name);
 	});
 
-	$("body").on("mouseover",".ca_displayIcon,.infoButton,.displayIcon,.card_readmore",function() {
-		var icon = this;
-		iconHoverTimer = setTimeout(function() {
-			icon.click();
-		},3000);
-	});
-	$("body").on("mouseout",".ca_displayIcon,.infoButton,.displayIcon,.card_readmore",function() {
-		clearTimeout(iconHoverTimer);
-	});
+	<? if ($cfg['sidebarOpen'] == "yes"):?>
+		$("body").on("mouseover",".ca_displayIcon,.infoButton,.displayIcon,.card_readmore",function() {
+			var icon = this;
+			iconHoverTimer = setTimeout(function() {
+				icon.click();
+			},3000);
+		});
 
+		$("body").on("mouseout",".ca_displayIcon,.infoButton,.displayIcon,.card_readmore",function() {
+			clearTimeout(iconHoverTimer);
+		});
+	<?endif;?>
 	/* Everything is now initialized.  This is the start of the actual "real" code */
 	if ( "<?=$firstRun?>" == "true" ) {
 	  $(".ca_templatesDisplay").hide();
