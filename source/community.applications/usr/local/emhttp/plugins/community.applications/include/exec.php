@@ -2431,12 +2431,14 @@ function saveMultiPluginPending() {
 	global $caPaths;
 	
 	$plugin = getPost("plugin","");
-	$plugins = explode("*",$plugin);
-	exec("mkdir -p {$caPaths['pluginPending']}");
-	foreach ($plugins as $plg) {
-		if (! $plg ) continue;
-		$pluginName = basename($plg);
-		touch($caPaths['pluginPending'].$pluginName);
+	$plugins = array_filter(explode("*",$plugin));
+	if ( count($plugins) > 1 ) {
+		exec("mkdir -p {$caPaths['pluginPending']}");
+		foreach ($plugins as $plg) {
+			if (! $plg ) continue;
+			$pluginName = basename($plg);
+			touch($caPaths['pluginPending'].$pluginName);
+		}
 	}
 	postReturn(['status'=>'ok']);
 }
