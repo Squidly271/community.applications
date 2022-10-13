@@ -1480,6 +1480,9 @@ function displayPopup($template) {
 	$downloadText = getDownloads($downloads);
 	if ($downloadText)
 		$card .= "<tr><td class='popupTableLeft'>".tr("Downloads")."</td><td class='popupTableRight'>$downloadText</td></tr>";
+	elseif ( $topPlugin )
+		$card .= "<tr><td class='popupTableLeft'>".tr("Popularity")."</td><td class='popupTableRight'># $topPlugin</td></tr>";
+	
 	if (!$Plugin && !$LanguagePack)
 		$card .= "<tr><td class='popupTableLeft'>".tr("Repository")."</td><td class='popupTableRight' style='white-space:nowrap;'>$Repository</td></tr>";
 	if ($stars)
