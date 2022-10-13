@@ -276,7 +276,14 @@ function DownloadApplicationFeed() {
 		$o['SortName']      = preg_replace('/\s+/',' ',$o['SortName']);
 		$o['random']        = rand();
 
-		if ( $o['CAComment'] ) 		$o['CAComment'] = tr($o['CAComment']);
+		if ( $o['CAComment'] ) {
+				$tmpComment = explode("&zwj;",$o['CAComment']);  // non printable delimiter character
+				unset($o['CAComment']);
+				foreach ($tmpComment as $comment) {
+					if ( $comment )
+						$o['CAComment'] .= tr($comment)."  ";
+				}
+		}
 		if ( $o['RequiresFile'] ) $o['RequiresFile'] = trim($o['RequiresFile']);
 		if ( $o['Requires'] ) 		$o['Requires'] = trim($o['Requires']);
 

@@ -305,6 +305,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove Language Pack"),"action"=>"removeLanguage('$countryCode');");
 					}
 				}
+				if ( file_exists($caPaths['pluginPending'].$template['LanguagePack']) || file_exists("{$caPaths['pluginPending']}lang-{$template['LanguagePack']}.xml") ) {
+					unset($actionsContext);
+					$actionsContext[] = array("text"=>tr("Pending"));
+				}				
 			}
 
 			$template['actionsContext'] = $actionsContext;
@@ -739,6 +743,10 @@ function getPopupDescriptionSkin($appNumber) {
 		} else {
 			unset($template['Changes']);
 		}
+		if ( file_exists($caPaths['pluginPending'].$template['LanguagePack']) || file_exists("{$caPaths['pluginPending']}lang-{$template['LanguagePack']}.xml") ) {
+			unset($actionsContext);
+			$actionsContext[] = array("text"=>tr("Pending"));
+		}			
 	}
 
 	$supportContext = array();
@@ -1151,10 +1159,10 @@ function displayCard($template) {
 	if ( $actionsContext ) {
 		if ( count($actionsContext) == 1) {
 			$dispText = $actionsContext[0]['alternate'] ?: $actionsContext[0]['text'];
-			$card .= "<div class='actionsButton' data-pluginURL='$PluginURL' onclick={$actionsContext[0]['action']}>$dispText</div>";
+			$card .= "<div class='actionsButton' data-pluginURL='$PluginURL' data-languagePack='$LanguagePack' onclick={$actionsContext[0]['action']}>$dispText</div>";
 		}
 		else
-			$card .= "<div class='actionsButton actionsButtonContext' data-pluginURL='$PluginURL' id='actions".preg_replace("/[^a-zA-Z0-9]+/", "",$Name)."$ID' data-context='".json_encode($actionsContext,JSON_HEX_QUOT | JSON_HEX_APOS)."'>".tr("Actions")."</div>";
+			$card .= "<div class='actionsButton actionsButtonContext' data-pluginURL='$PluginURL' data-languagePack='$LanguagePack' id='actions".preg_replace("/[^a-zA-Z0-9]+/", "",$Name)."$ID' data-context='".json_encode($actionsContext,JSON_HEX_QUOT | JSON_HEX_APOS)."'>".tr("Actions")."</div>";
 	}
 
 	$card .= "<span class='$appType' title='".htmlentities($typeTitle)."'></span>";

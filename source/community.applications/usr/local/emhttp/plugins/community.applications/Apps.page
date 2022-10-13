@@ -1260,6 +1260,20 @@ function hidePluginPending(pluginURL) {
 	}
 }
 
+function hideLanguagePending(language) {
+	language.replace("lang-","");
+	language.replace(".xml","");
+	if ( ! language )
+		return;
+	
+	$(".actionsButton").each(function() {
+		if ( $(this).data("languagepack") == language ) {
+			$(this).hide();
+		}
+	});
+}
+		
+
 function OpenSidebarAndRefreshDisplay() {
 	post({action:"onStartupScreen"},function(result) {
 		if (result.status) {
@@ -2433,6 +2447,7 @@ function CAswitchLanguage(language) {
 }
 
 function installLanguage(languageURL,language) {
+	hideLanguagePending(language);
 	disableSearch();
 <?if ($nchanCom):?>
 	ca_openPlugin('language install '+languageURL,"<?tr('Install Language Pack')?>",'','postLanguageRefresh');
@@ -2442,6 +2457,7 @@ function installLanguage(languageURL,language) {
 }
 
 function updateLanguage(language) {
+	hideLanguagePending(language);
 	disableSearch();
 	$.cookie("updateLanguage",language,{SameSite:'Lax'});
 <?if ($nchanCom):?>
@@ -2469,6 +2485,7 @@ function postUpdateLanguage() {
 	}
 }
 function removeLanguage(language) {
+	hideLanguagePending(language);
 	closeSidebar();
 <?if ($nchanCom):?>
 	ca_openPlugin('language remove '+language,"<?tr('Remove Language Pack')?>",'','postLanguageRemove');
