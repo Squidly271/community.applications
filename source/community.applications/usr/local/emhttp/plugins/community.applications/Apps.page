@@ -1206,8 +1206,8 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 				data.deprecated = false; // global var here to trigger a rescan of action centre
 				if ( pluginURL.includes("&deprecated") || pluginURL.includes("&incompatible")   ) {
 					data.deprecated = true;
-					pluginURL.replace("&deprecated","");
-					pluginURL.replace("&incompatible","");
+					pluginURL = pluginURL.replace("&deprecated","");
+					pluginURL = pluginURL.replace("&incompatible","");
 
 				}
 <?if ($nchanCom):?>
@@ -1232,8 +1232,8 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 		data.deprecated = false; // global var here to trigger a rescan of action centre
 		if ( pluginURL.includes("&deprecated") || pluginURL.includes("&incompatible")  ) {
 			data.deprecated = true;
-			pluginURL.replace("&deprecated","");
-			pluginURL.replace("&incompatible","");
+			pluginURL = pluginURL.replace("&deprecated","");
+			pluginURL = pluginURL.replace("&incompatible","");
 		}
 <?if ($nchanCom):?>
 		ca_openPlugin('plugin '+type+' '+pluginURL,title,'',postFunction);
@@ -1261,8 +1261,8 @@ function hidePluginPending(pluginURL) {
 }
 
 function hideLanguagePending(language) {
-	language.replace("lang-","");
-	language.replace(".xml","");
+	language = language.replace("lang-","");
+	language = language.replace(".xml","");
 	if ( ! language )
 		return;
 	
