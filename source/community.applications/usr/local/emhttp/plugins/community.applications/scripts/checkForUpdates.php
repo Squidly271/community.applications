@@ -25,7 +25,7 @@ echo tr("Checking for docker container updates")."\n";
 exec("$docroot/plugins/dynamix.docker.manager/scripts/dockerupdate check nonotify > /dev/null 2>&1");
 echo tr("Checking for plugin updates")."\n";
 foreach (glob("/var/log/plugins/*.plg") as $plg) {
-	if ( $plg == "/var/log/plugins/community.applications.plg" || $plg == "unRAIDServer.plg" || $plg == "gui.search.plg" || $plg == "page.notes.plg")
+	if ( $plg == "/var/log/plugins/community.applications.plg" || $plg == "/var/log/plugins/unRAIDServer.plg" || $plg == "/var/log/plugins/gui.search.plg" || $plg == "/var/log/plugins/page.notes.plg")
 		continue; // avoid possible race condition since CA / gui.search automatically check for updates for themselves when on Apps tab
 	echo sprintf(tr("Checking %s"),$plg)."\n";
 	exec("$docroot/plugins/dynamix.plugin.manager/scripts/plugin check ".escapeshellarg(basename($plg))." > /dev/null 2>&1");
