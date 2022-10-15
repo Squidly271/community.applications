@@ -398,7 +398,43 @@ function DownloadApplicationFeed() {
 	writeJsonFile($caPaths['repositoryList'],$ApplicationFeed['repositories']);
 	writeJsonFile($caPaths['extraBlacklist'],$ApplicationFeed['blacklisted']);
 	writeJsonFile($caPaths['extraDeprecated'],$ApplicationFeed['deprecated']);
+	
+	updatePluginSupport($myTemplates);
+	
 	return true;
+}
+
+function updatePluginSupport($templates) {
+	$plugins = glob("/boot/config/plugins/*.plg");
+
+	foreach ($plugins as $plugin) {
+		$pluginURL = @plugin("pluginURL",$plugin);
+		$pluginEntry = searchArray($templates,"PluginURL",$pluginURL);
+		if ( $pluginEntry === false ) {
+			$pluginEntry = searchArray($templates,"PluginURL",str_replace("https://raw.github.com/","https://raw.githubusercontent.com/",$pluginURL));
+		}
+		if ( $pluginEntry !== false && $templates[$pluginEntry]['PluginURL']) {
+			$xml = simplexml_load_file($plugin);
+			if ( ! $templates[$pluginEntry]['Support'] ) {
+				continue;
+			}
+			if ( @plugin("support",$plugin) !== $templates[$pluginEntry]['Support'] ) {
+				// remove existing support attribute if it exists
+				if ( @plugin("support",$plugin) ) {
+					$existing_support = $xml->xpath("//PLUGIN/@support");
+					foreach ($existing_support as $node) {
+						unset($node[0]);
+					}
+				}
+				$xml->addAttribute("support",$templates[$pluginEntry]['Support']);
+				$dom = new DOMDocument('1.0');
+				$dom->preserveWhiteSpace = false;
+				$dom->formatOutput = true;
+				$dom->loadXML($xml->asXML());
+				file_put_contents($plugin, $dom->saveXML()); 
+			}
+		}
+	}
 }
 
 function getConvertedTemplates() {
