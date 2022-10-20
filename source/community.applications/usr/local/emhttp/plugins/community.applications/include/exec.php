@@ -254,6 +254,9 @@ function DownloadApplicationFeed() {
 			}
 		}
 		$o['Category'] = trim($o['Category']);
+		if ( ! $o['Category'] )
+			$o['Category'] = "Other:";
+		
 		if ( $o['RecommendedRaw'] ) {
 			$o['RecommendedDate'] = strtotime($o['RecommendedRaw']);
 			$o['Category'] .= " spotlight:";
