@@ -507,6 +507,7 @@ function getPopupDescriptionSkin($appNumber) {
 			return;
 		}
 		$template = $file[$index];
+		unset($file); // not needed anymore and takes up a ton of space
 	}
 	$currentServer = file_get_contents($caPaths['currentServer']);
  
@@ -564,6 +565,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$allTrends = array_unique(array_column($allApps,"trending"));
 		rsort($allTrends);
 		$trendRank = array_search($template['trending'],$allTrends) + 1;
+		unset($allApps); // not needed anymore and takes up a ton of space
 	}
 	$template['Category'] = categoryList($template['Category'],true);
 	$template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
