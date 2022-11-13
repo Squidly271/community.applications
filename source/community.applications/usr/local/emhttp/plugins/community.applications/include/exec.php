@@ -2443,6 +2443,9 @@ function enableActionCentre() {
 		if ( checkInstalledPlugin($template) ) {
 			$template['InstallPath'] = "/var/log/plugins/$filename";
 			$template['Uninstall'] = true;
+			if ( plugin("pluginURL","/var/log/plugins/$filename") !== $template['PluginURL'] )
+				continue;
+			
 			$installedVersion = plugin("version","/var/log/plugins/$filename");
 			if ( ( strcmp($installedVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) ) {
 				$template['actionCentre'] = true;
@@ -2472,7 +2475,6 @@ function enableActionCentre() {
 			break;
 		}
 	}
-	
 	if ( isset($displayed) ) {
 		debug("action center enabled");
 		postReturn(['status'=>"action"]);
