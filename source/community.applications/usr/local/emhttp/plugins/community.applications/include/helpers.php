@@ -360,7 +360,8 @@ function readXmlFile($xmlfile,$generic=false,$stats=true) {
 function moderateTemplates() {
 	global $caPaths,$caSettings;
 
-	$templates = readJsonFile($caPaths['community-templates-info']);
+//	$templates = readJsonFile($caPaths['community-templates-info']);
+	$templates = &$GLOBALS['templates'];
 
 	if ( ! $templates ) return;
 	foreach ($templates as $template) {
@@ -372,6 +373,7 @@ function moderateTemplates() {
 		$o[] = $template;
 	}
 	writeJsonFile($caPaths['community-templates-info'],$o);
+	$GLOBALS['templates'] = $o;
 	pluginDupe($o);
 }
 #######################################################
@@ -535,7 +537,10 @@ function formatTags($leadTemplate,$rename="false") {
 	global $caPaths;
 
 	$type = $rename == "true" ? "second" : "default";
-	$file = readJsonFile($caPaths['community-templates-info']);
+
+//	$file = readJsonFile($caPaths['community-templates-info']);
+	$file = &$GLOBALS['templates'];
+	
 	$template = $file[$leadTemplate];
 	$childTemplates = $file[$leadTemplate]['BranchID'];
 	if ( ! is_array($childTemplates) )

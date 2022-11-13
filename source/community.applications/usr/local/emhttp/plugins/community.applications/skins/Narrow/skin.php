@@ -500,7 +500,8 @@ function getPopupDescriptionSkin($appNumber) {
 
 	# handle case where the app being asked to display isn't on the most recent displayed list (ie: multiple browser tabs open)
 	if ( ! $template ) {
-		$file = readJsonFile($caPaths['community-templates-info']);
+//		$file = readJsonFile($caPaths['community-templates-info']);
+		$file = &$GLOBALS['templates'];
 		$index = searchArray($file,"Path",$appNumber);
 		if ( $index === false ) {
 			echo json_encode(array("description"=>tr("Something really wrong happened.  Reloading the Apps tab will probably fix the problem")));
@@ -560,7 +561,8 @@ function getPopupDescriptionSkin($appNumber) {
 		$pluginName = basename($template['PluginURL']);
 
 	if ( $template['trending'] ) {
-		$allApps = readJsonFile($caPaths['community-templates-info']);
+//		$allApps = readJsonFile($caPaths['community-templates-info']);
+		$allApps = &$GLOBALS['templates'];
 
 		$allTrends = array_unique(array_column($allApps,"trending"));
 		rsort($allTrends);
@@ -843,7 +845,8 @@ function getRepoDescriptionSkin($repository) {
 
 	$dockerVars = parse_ini_file($caPaths['docker_cfg']);
 	$repositories = readJsonFile($caPaths['repositoryList']);
-	$templates = readJsonFile($caPaths['community-templates-info']);
+//	$templates = readJsonFile($caPaths['community-templates-info']);
+	$templates = &$GLOBALS['templates'];
 	$repo = $repositories[$repository];
 	$repo['icon'] = $repo['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 	$repo['bio'] = $repo['bio'] ? markdown($repo['bio']) : "<br><center>".tr("No description present");
@@ -1001,7 +1004,8 @@ function displaySearchResults($pageNumber) {
 	$tempFile = readJsonFile($caPaths['dockerSearchResults']);
 	$num_pages = $tempFile['num_pages'];
 	$file = $tempFile['results'];
-	$templates = readJsonFile($caPaths['community-templates-info']);
+//	$templates = readJsonFile($caPaths['community-templates-info']);
+	$templates = &$GLOBALS['templates'];
 
 	$ct = "<div>".tr("NOTE You must visit the dockerHub page to gather the information required to install correctly")."<span class='templateSearch' style='float:right'>Show CA templates</span></div><br><br>";
 	$ct .= "<div class='ca_templatesDisplay'>";

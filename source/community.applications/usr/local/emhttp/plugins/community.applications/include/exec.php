@@ -73,6 +73,9 @@ if ( ! $sortOrder ) {
 	$sortOrder['sortDir'] = "Up";
 	writeJsonFile($caPaths['sortOrder'],$sortOrder);
 }
+
+$GLOBALS['templates'] = readJsonFile($caPaths['community-templates-info']);
+
 ############################################
 ##                                        ##
 ## BEGIN MAIN ROUTINES CALLED BY THE HTML ##
@@ -390,6 +393,7 @@ function DownloadApplicationFeed() {
 		@unlink($caPaths['invalidXML_txt']);
 
 	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
+	$GLOBALS['templates'] = $myTemplates;
 	writeJsonFile($caPaths['categoryList'],$ApplicationFeed['categories']);
 
 	foreach ($ApplicationFeed['repositories'] as &$repo) {
@@ -444,7 +448,8 @@ function getConvertedTemplates() {
 	global $caPaths, $caSettings, $statistics;
 
 # Start by removing any pre-existing private (converted templates)
-	$templates = readJsonFile($caPaths['community-templates-info']);
+//	$templates = readJsonFile($caPaths['community-templates-info']);
+	$templates = &$GLOBALS['templates'];
 
 	if ( empty($templates) ) return false;
 
@@ -458,6 +463,8 @@ function getConvertedTemplates() {
 
 	if ( ! is_dir($caPaths['convertedTemplates']) ) {
 		writeJsonFile($caPaths['community-templates-info'],$myTemplates);
+		$GLOBALS['templates'] = $myTemplates;
+		
 		return;
 	}
 
@@ -480,6 +487,7 @@ function getConvertedTemplates() {
 		$i = ++$i;
 	}
 	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
+	$GLOBALS['templates'] = $myTemplates;
 	return true;
 }
 
@@ -622,7 +630,8 @@ function displayRepositories() {
 		$templates = $temp['community'];
 	}
 	if ( is_file($caPaths['startupDisplayed']) ) {
-		$templates = readJsonFile($caPaths['community-templates-info']);
+//		$templates = readJsonFile($caPaths['community-templates-info']);
+		$templates = &$GLOBALS['templates'];
 	}
 	$templates = $templates ?: array();
 	$allRepos = array();
@@ -709,7 +718,8 @@ function get_content() {
 		$disp = readJsonFile($caPaths['community-templates-allSearchResults']);
 		$file = $disp['community'];
 	} else {
-		$file = readJsonFile($caPaths['community-templates-info']);
+//		$file = readJsonFile($caPaths['community-templates-info']);
+		$file = &$GLOBALS['templates'];
 	}
 	if ( empty($file)) return;
 
@@ -966,11 +976,13 @@ function force_update() {
 		if ( $latestUpdate['last_updated_timestamp'] != INF )
 			copy($caPaths['lastUpdated'],$caPaths['lastUpdated-old']);
 
-		if ( ! $badDownload )
+		if ( ! $badDownload ) {
 			@unlink($caPaths['community-templates-info']);
+			$GLOBALS['templates'] = [];
+		}
 	}
 
-	if (!file_exists($caPaths['community-templates-info']) || !readJsonFile($caPaths['community-templates-info'])) {
+	if (!file_exists($caPaths['community-templates-info']) || ! $$GLOBALS['templates']) {
 		$updatedSyncFlag = true;
 		if (! DownloadApplicationFeed() ) {
 			$o['script'] = "$('.onlyShowWithFeed').hide();";
@@ -987,6 +999,7 @@ function force_update() {
 			$o['data'] .= "</div>";
 			@unlink($caPaths['appFeedDownloadError']);
 			@unlink($caPaths['community-templates-info']);
+			$GLOBALS['templates'] = [];
 			postReturn($o);
 			return;
 		}
@@ -1054,7 +1067,8 @@ function previous_apps() {
 	@unlink($caPaths['startupDisplayed']);
 	@unlink($caPaths['dockerSearchActive']);
 
-	$file = readJsonFile($caPaths['community-templates-info']);
+//	$file = readJsonFile($caPaths['community-templates-info']);
+	$file = &$GLOBALS['templates'];
 	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
 	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
 	
@@ -1381,7 +1395,8 @@ function pinnedApps() {
 	global $caPaths, $caSettings;
 
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
-	$file = readJsonFile($caPaths['community-templates-info']);
+//	$file = readJsonFile($caPaths['community-templates-info']);
+	$file = &$GLOBALS['templates'];
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);
 	@unlink($caPaths['repositoriesDisplayed']);
@@ -1450,7 +1465,8 @@ function statistics() {
 	download_json($caPaths['moderationURL'],$caPaths['moderation']);
 	$statistics['totalModeration'] = count(readJsonFile($caPaths['moderation']));
 	$repositories = readJsonFile($caPaths['repositoryList']);
-	$templates = readJsonFile($caPaths['community-templates-info']);
+//	$templates = readJsonFile($caPaths['community-templates-info']);
+	$templates = &$GLOBALS['templates'];
 	pluginDupe($templates);
 	$invalidXML = readJsonFile($caPaths['invalidXML_txt']);
 	$statistics['private'] = 0;
@@ -1655,7 +1671,9 @@ function removePrivateApp() {
 		postReturn(["error"=>"Path not contained within /boot/config/community.applications"]);
 		return;
 	}
-	$templates = readJsonFile($caPaths['community-templates-info']);
+//	$templates = readJsonFile($caPaths['community-templates-info']);
+	$templates = &$$GLOBALS['templates'];
+	
 	$displayed = readJsonFile($caPaths['community-templates-displayed']);
 	foreach ( $displayed as &$displayType ) {
 		if ( is_array($displayType) ) {
@@ -1682,7 +1700,8 @@ function populateAutoComplete() {
 	global $caPaths, $caSettings;
 
 	while ( ! $templates ) {
-		$templates = readJsonFile($caPaths['community-templates-info']);
+//		$templates = readJsonFile($caPaths['community-templates-info']);
+		$templates = &$GLOBALS['templates'];
 		if ( ! $templates )
 			sleep(1);
 	}
@@ -1774,7 +1793,8 @@ function get_categories() {
 				$cat .= "</ul>";
 			}
 		}
-		$templates = readJsonFile($caPaths['community-templates-info']);
+//		$templates = readJsonFile($caPaths['community-templates-info']);
+		$templates = &$GLOBALS['templates'];
 		foreach ($templates as $template) {
 			if ($template['Private'] == true && ! $template['Blacklist']) {
 				$cat .= "<li class='categoryMenu caMenuItem nonDockerSearch' data-category='PRIVATE'>".tr("Private Apps")."</li>";
@@ -1813,7 +1833,8 @@ function createXML() {
 		postReturn(["error"=>"CreateXML: XML file was missing"]);
 		return;
 	}
-	$templates = readJsonFile($caPaths['community-templates-info']);
+//	$templates = readJsonFile($caPaths['community-templates-info']);
+	$templates = &$GLOBALS['templates'];
 	if ( ! $templates ) {
 		postReturn(["error"=>"Create XML: templates file missing or empty"]);
 		return;
@@ -2169,7 +2190,8 @@ function search_dockerhub() {
 	$filter     = getPost("filter","");
 	$pageNumber = getPost("page","1");
 
-	$communityTemplates = readJsonFile($caPaths['community-templates-info']);
+//	$communityTemplates = readJsonFile($caPaths['community-templates-info']);
+	$communityTemplates = &$GLOBALS['templates'];
 	$filter = str_replace(" ","%20",$filter);
 	$filter = str_replace("/","%20",$filter);
 	$jsonPage = shell_exec("curl -s -X GET 'https://registry.hub.docker.com/v1/search?q=$filter&page=$pageNumber'");
@@ -2227,7 +2249,8 @@ function getLastUpdate($ID) {
 
 	$count = 0;
 	while ( $count < 5 ) {
-		$templates = readJsonFile($caPaths['community-templates-info']);
+//		$templates = readJsonFile($caPaths['community-templates-info']);
+		$templates = &$GLOBALS['templates'];
 		if ( $templates ) break;
 		sleep(1); # keep trying in case of a collision between reading and writing
 	}
@@ -2304,7 +2327,8 @@ function enableActionCentre() {
 
 # wait til templates are downloaded
 	for ( ;; ) {
-		$file = readJsonFile($caPaths['community-templates-info']);
+//		$file = readJsonFile($caPaths['community-templates-info']);
+		$file = &$GLOBALS['templates'];
 		if ( ! $file ) {
 			debug("Action Centre sleeping - no templates yet");
 			sleep(5);
