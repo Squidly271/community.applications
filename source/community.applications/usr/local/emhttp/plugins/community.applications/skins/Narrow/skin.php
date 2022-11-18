@@ -192,9 +192,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 												$actionsContext[] = array("divider"=>true);
 											}
 										}
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32",htmlspecialchars($installComment))."','".portsUsed($template)."');");
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');");
 									} else {
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}',false,'".str_replace(" ","&#32",htmlspecialchars($installComment))."','".portsUsed($template)."');");
+										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}',false,'".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');");
 									}
 								}
 							}
@@ -1248,6 +1248,9 @@ function displayCard($template) {
 		";
 
 	$Overview = $Overview ?: $Description;
+	
+	if ( ! $Overview )
+		$Overview = tr("No description present");
 
 	$ovr = html_entity_decode($Overview);
 	$ovr = trim($ovr);
