@@ -63,7 +63,6 @@ function writeJsonFile($filename,$jsonArray) {
 
 	if ( ! $result )
 		debug("Write error $filename");
-
 }
 
 function download_url($url, $path = "", $bg = false, $timeout = 45) {
@@ -374,7 +373,7 @@ function moderateTemplates() {
 	}
 	writeJsonFile($caPaths['community-templates-info'],$o);
 	$GLOBALS['templates'] = $o;
-	pluginDupe($o);
+	pluginDupe();
 }
 #######################################################
 # Function to check for a valid URL                   #
@@ -401,12 +400,12 @@ function filterMatch($filter,$searchArray,$exact=true) {
 ##########################################################
 # Used to figure out which plugins have duplicated names #
 ##########################################################
-function pluginDupe($templates) {
+function pluginDupe() {
 	global $caPaths;
 
 	$pluginList = [];
 	$dupeList = [];
-	foreach ($templates as $template) {
+	foreach ($GLOBALS['templates'] as $template) {
 		if ( $template['Plugin'] )
 			$pluginList[basename($template['Repository'])]++;
 	}
@@ -538,8 +537,7 @@ function formatTags($leadTemplate,$rename="false") {
 
 	$type = $rename == "true" ? "second" : "default";
 
-//	$file = readJsonFile($caPaths['community-templates-info']);
-	$file = &$GLOBALS['templates'];
+  	$file = &$GLOBALS['templat`12es'];
 	
 	$template = $file[$leadTemplate];
 	$childTemplates = $file[$leadTemplate]['BranchID'];
@@ -573,19 +571,17 @@ function postReturn($retArray) {
 ####################################
 # Translation backwards compatible #
 ####################################
-if ( ! function_exists("tr") ) {
-	function tr($string,$options=-1) {
-		$translated = _($string,$options);
-		if ( ! trim($translated) ) 
-			$translated = $string;
-		
-		if ( startsWith($translated,"&#34;") && endsWith($translated,"&#34;") )
-			$translated = first_str_replace(last_str_replace($translated,"&#34;",""),"&#34;","");
+function tr($string,$options=-1) {
+	$translated = _($string,$options);
+	if ( ! trim($translated) ) 
+		$translated = $string;
+	
+	if ( startsWith($translated,"&#34;") && endsWith($translated,"&#34;") )
+		$translated = first_str_replace(last_str_replace($translated,"&#34;",""),"&#34;","");
 
-		$translated =  str_replace('"',"&#34;",str_replace("'","&#39;",$translated));
+	$translated =  str_replace('"',"&#34;",str_replace("'","&#39;",$translated));
 
-		return $translated;
-	}
+	return $translated;
 }
 #############################
 # Check for language update #

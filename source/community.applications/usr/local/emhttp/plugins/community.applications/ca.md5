@@ -3,7 +3,7 @@ ae9874967a4715939f3e97c53676cc33  ./Apps.page
 4c5d4598e1bafa46bd90c27cbe302122  ./ca_settings.page
 e8d29607ec792ddf9f6832b10ee70fdc  ./default.cfg
 5865b879fdb3dbfb6c893cb49418c6bd  ./include/exec.php
-58943e7d6c7ded15b71f160bd4493f1d  ./include/helpers.php
+779ead1d9a8859dd9eed735e673dd8f4  ./include/helpers.php
 116042a918060278e77379b0dd73482c  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
