@@ -418,12 +418,12 @@ $(function(){
 	});
 
 	$('body').on("click",".ca_holder",function(event) {
-		event.stopPropagation();
 		if (data.actions) {
 			data.actions = false;
 			return;
 		}
 		data.actions = false;
+		event.stopPropagation();
 		if ( $(this).hasClass("ca_repoPopup") ) {
 			var repository = $(this).data("repository");
 			showRepoPopup(repository);
@@ -1996,6 +1996,7 @@ function updateDisplay(content) {
 			supportContext.forEach(function(item,index){
 				opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
 			});
+			console.log(ID);
 			context.attach('#'+ID, opts);
 		}
 	});
@@ -2806,7 +2807,7 @@ function showSidebarApp(apppath,appname) {
 	$.cookie("sidebarAppName",appname,{path:"/;SameSite=Lax"});
 	data.sidebarapppath = apppath;
 	data.sidebarappname = appname;
-		$("body").addClass("body_sidebarScroll");
+	$("body").addClass("body_sidebarScroll");
 
 	$("#sidenavContent").html("");
 	$(".sidebar").fadeIn();
