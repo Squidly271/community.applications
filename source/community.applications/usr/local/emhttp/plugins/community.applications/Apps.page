@@ -438,6 +438,7 @@ $(function(){
 			var apppath = $(this).data("apppath");
 			var appname = $(this).data("appname");
 			appname = stripTags(appname);
+			if ( !apppath || !appname ) return;
 			showSidebarApp(apppath,appname);
 		}
 	});
@@ -2805,7 +2806,7 @@ function showSidebarApp(apppath,appname) {
 	$.cookie("sidebarAppName",appname,{path:"/;SameSite=Lax"});
 	data.sidebarapppath = apppath;
 	data.sidebarappname = appname;
-	$("body").addClass("body_sidebarScroll");
+		$("body").addClass("body_sidebarScroll");
 
 	$("#sidenavContent").html("");
 	$(".sidebar").fadeIn();
