@@ -259,7 +259,7 @@ function DownloadApplicationFeed() {
 		$o['Category'] = trim($o['Category']);
 		if ( ! $o['Category'] )
 			$o['Category'] = "Other:";
-		
+
 		if ( $o['RecommendedRaw'] ) {
 			$o['RecommendedDate'] = strtotime($o['RecommendedRaw']);
 			$o['Category'] .= " spotlight:";
@@ -405,9 +405,9 @@ function DownloadApplicationFeed() {
 	writeJsonFile($caPaths['repositoryList'],$ApplicationFeed['repositories']);
 	writeJsonFile($caPaths['extraBlacklist'],$ApplicationFeed['blacklisted']);
 	writeJsonFile($caPaths['extraDeprecated'],$ApplicationFeed['deprecated']);
-	
+
 	updatePluginSupport($myTemplates);
-	
+
 	return true;
 }
 
@@ -438,7 +438,7 @@ function updatePluginSupport($templates) {
 				$dom->preserveWhiteSpace = false;
 				$dom->formatOutput = true;
 				$dom->loadXML($xml->asXML());
-				file_put_contents($plugin, $dom->saveXML()); 
+				file_put_contents($plugin, $dom->saveXML());
 			}
 		}
 	}
@@ -463,7 +463,7 @@ function getConvertedTemplates() {
 	if ( ! is_dir($caPaths['convertedTemplates']) ) {
 		writeJsonFile($caPaths['community-templates-info'],$myTemplates);
 		$GLOBALS['templates'] = $myTemplates;
-		
+
 		return;
 	}
 
@@ -718,12 +718,12 @@ function get_content() {
 		$file = $disp['community'];
 	} else
 		$file = &$GLOBALS['templates'];
-	
+
 	if ( empty($file)) return;
 
 	if ( !$filter && $category === "/NONE/i" ) {
 		getConvertedTemplates();  // Only scan for private XMLs when going HOME
-		
+
 		file_put_contents($caPaths['startupDisplayed'],"startup");
 		$displayApplications = [];
 		$displayApplications['community'] = [];
@@ -1068,13 +1068,13 @@ function previous_apps() {
 	$file = &$GLOBALS['templates'];
 	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
 	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
-	
+
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
 		$dockerUpdateStatus = [];
 	}
-	
+
 
 # $info contains all installed containers
 # now correlate that to a template;
@@ -1129,13 +1129,13 @@ function previous_apps() {
 
 						if ( $installed == "action" ) {
 							$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
-							
+
 							if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
 								$o['actionCentre'] = true;
 								$o['updateAvailable'] = true;
 								$updateCount++;
 							}
-							
+
 							if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
 								if ( $extraBlacklist[$o['Repository']] ) {
 									$o['Blacklist'] = true;
@@ -1146,13 +1146,13 @@ function previous_apps() {
 									$o['ModeratorComment'] = $extraDeprecated[$o['Deprecated']];
 								}
 							}
-							
+
 							if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['actionCentre']  )
 								continue;
 						}
 						if ( $installed == "action" )
 							$o['actionCentre'] = true;
-						
+
 						$displayed[] = $o;
 					}
 				}
@@ -1186,7 +1186,7 @@ function previous_apps() {
 					if ( ! $flag ) {
 						$testRepo = explode(":",$o['Repository'])[0];
 		# now associate the template back to a template in the appfeed
-						
+
 						foreach ($file as $appTemplate) {
 							if (startsWith($appTemplate['Repository'],$testRepo)) {
 								$tempPath = $o['InstallPath'];
@@ -1223,7 +1223,7 @@ function previous_apps() {
 				if ( checkInstalledPlugin($template) ) {
 					$template['InstallPath'] = "/var/log/plugins/$filename";
 					$template['Uninstall'] = true;
-					
+
 					if ( $installed == "action" && $template['PluginURL'] && $template['Name'] !== "Community Applications") {
 						$installedVersion = plugin("version","/var/log/plugins/$filename");
 						if ( ( strcmp($installedVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) ) {
@@ -1251,7 +1251,7 @@ function previous_apps() {
 				if ( $index !== false ) {
 					$tmpL = $file[$index];
 					$tmpL['Uninstall'] = true;
-					
+
 					if ( $installed == "action" ) {
 						$tmpL['actionCentre'] = true;
 						if ( !languageCheck($tmpL) )
@@ -1259,7 +1259,7 @@ function previous_apps() {
 						$tmpL['Updated'] = true;
 						$updateCount++;
 					}
-										
+
 					$displayed[] = $tmpL;
 				}
 			}
@@ -1668,7 +1668,7 @@ function removePrivateApp() {
 	}
 //	$templates = readJsonFile($caPaths['community-templates-info']);
 	$templates = &$$GLOBALS['templates'];
-	
+
 	$displayed = readJsonFile($caPaths['community-templates-displayed']);
 	foreach ( $displayed as &$displayType ) {
 		if ( is_array($displayType) ) {
@@ -2329,7 +2329,7 @@ function enableActionCentre() {
 	}
 	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
 	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
-	
+
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
@@ -2364,7 +2364,7 @@ function enableActionCentre() {
 							}
 							if ( $extraDeprecated[$o['Repository']] ) {
 								$o['Deprecated'] = true;
-							}						
+							}
 						}
 						break;
 					}
@@ -2372,10 +2372,10 @@ function enableActionCentre() {
 			}
 			if ( $runningflag ) {
 				$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
-				
+
 				if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
 					$o['actionCentre'] = true;
-				
+
 				if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
 					if ( $extraBlacklist[$o['Repository']] ) {
 						$o['Blacklist'] = true;
@@ -2384,10 +2384,10 @@ function enableActionCentre() {
 						$o['Deprecated'] = true;
 					}
 				}
-				
+
 				if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['actionCentre']  )
 					continue;
-				
+
 				$displayed[] = $o;
 				break;
 			}
@@ -2407,7 +2407,7 @@ function enableActionCentre() {
 			$template['Uninstall'] = true;
 			if ( plugin("pluginURL","/var/log/plugins/$filename") !== $template['PluginURL'] )
 				continue;
-			
+
 			$installedVersion = plugin("version","/var/log/plugins/$filename");
 			if ( ( strcmp($installedVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) ) {
 				$template['actionCentre'] = true;
@@ -2429,10 +2429,10 @@ function enableActionCentre() {
 		if ( $index !== false ) {
 			$tmpL = $file[$index];
 			$tmpL['Uninstall'] = true;
-			
+
 			if ( !languageCheck($tmpL) )
 				continue;
-								
+
 			$displayed[] = $tmpL;
 			break;
 		}
@@ -2463,7 +2463,7 @@ function checkRequirements() {
 ########################################################
 function saveMultiPluginPending() {
 	global $caPaths;
-	
+
 	$plugin = getPost("plugin","");
 	$plugins = array_filter(explode("*",$plugin));
 	if ( count($plugins) > 1 ) {
@@ -2482,7 +2482,7 @@ function saveMultiPluginPending() {
 ##############################################
 function downloadStatistics() {
 	global $caPaths;
-	
+
 	if ( ! is_file($caPaths['statistics']) )
 		download_json($caPaths['statisticsURL'],$caPaths['statistics']);
 }

@@ -92,7 +92,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$template['Deprecated'] = true;
 			$template['ModeratorComment'] = $extraDeprecated[$template['Repository']];
 		}
-		
+
 		if ( $template['RepositoryTemplate'] ) {
 			$template['Icon'] = $template['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 
@@ -117,7 +117,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 			$actionsContext = [];
 			$selected = false;
 			$installComment = $template['CAComment'];
-			
+
 			if ( $template['Requires'] ) {
 				$template['Requires'] = markdown(strip_tags(str_replace(["\r","\n","&#xD;","'"],["","<br>","","&#39;"],trim($template['Requires'])),"<br>"));
 				preg_match_all("/\/\/(.*?)&#92;/m",$template['Requires'],$searchMatches);
@@ -127,7 +127,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 					}
 				}
 				$installComment = tr("This application has additional requirements")."<br>{$template['Requires']}<br>$installComment";
-			}			
+			}
 
 			$installComment = str_replace("\n","",$installComment);
 			if ( ! $template['Language'] ) {
@@ -166,7 +166,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								}
 								if ( is_file($info[$ind]['template']) )
 									$actionsContext[] = ["icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$ind]['template'])."','edit');"];
-								
+
 								$actionsContext[] = ["divider"=>true];
 								if ($info[$ind]['template'])
 									$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallDocker('".addslashes($info[$ind]['template'])."','{$template['Name']}');"];
@@ -209,7 +209,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 									$template['pluginVersion'] = $tmpPluginVersion;
 							}
 							$template['pluginVersion'] = plugin("version","/tmp/plugins/$pluginName");
-							
+
 							if ( ( strcmp($pluginInstalledVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 								$template['UpdateAvailable'] = true;
@@ -252,7 +252,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								$isDeprecated = "&deprecated";
 							if ( ! $template['Compatible'] )
 								$isDeprecated = "&incompatible";
-							
+
 							$updateFlag = false;
 							$requiresText = "";
 							if ( $template['RequiresFile'] && ! is_file($template['RequiresFile']) ) {
@@ -308,7 +308,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				if ( file_exists($caPaths['pluginPending'].$template['LanguagePack']) || file_exists("{$caPaths['pluginPending']}lang-{$template['LanguagePack']}.xml") ) {
 					unset($actionsContext);
 					$actionsContext[] = ["text"=>tr("Pending")];
-				}				
+				}
 			}
 
 			$template['actionsContext'] = $actionsContext;
@@ -449,7 +449,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$allRepositories = readJsonFile($caPaths['repositoryList']);
 	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
 	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
-		
+
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
@@ -507,7 +507,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$template = $file[$index];
 	}
 	$currentServer = file_get_contents($caPaths['currentServer']);
- 
+
 	if ( ! $template['Blacklist'] ) {
 		if ( $extraBlacklist[$template['Repository']] ) {
 			$template['Blacklist'] = true;
@@ -518,7 +518,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$template['Deprecated'] = true;
 		$template['ModeratorComment'] = $extraDeprecated[$template['Repository']];
 	}
-	
+
 	$ID = $template['ID'];
 
 	$template['Profile'] = $allRepositories[$template['RepoName']]['profile'];
@@ -639,7 +639,7 @@ function getPopupDescriptionSkin($appNumber) {
 						}
 						if ( is_file($info[$name]['template']) )
 							$actionsContext[] = ["icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$name]['template'])."','edit');"];
-						
+
 						$actionsContext[] = ["divider"=>true];
 						if ( $info[$name]['template'] )
 							$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallDocker('".addslashes($info[$name]['template'])."','{$template['Name']}');"];
@@ -748,7 +748,7 @@ function getPopupDescriptionSkin($appNumber) {
 		if ( file_exists($caPaths['pluginPending'].$template['LanguagePack']) || file_exists("{$caPaths['pluginPending']}lang-{$template['LanguagePack']}.xml") ) {
 			unset($actionsContext);
 			$actionsContext[] = ["text"=>tr("Pending")];
-		}			
+		}
 	}
 
 	$supportContext = [];
@@ -840,7 +840,7 @@ function getRepoDescriptionSkin($repository) {
 	$dockerVars = parse_ini_file($caPaths['docker_cfg']);
 	$repositories = readJsonFile($caPaths['repositoryList']);
 	$templates = &$GLOBALS['templates'];
-	
+
 	$repo = $repositories[$repository];
 	$repo['icon'] = $repo['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 	$repo['bio'] = $repo['bio'] ? markdown($repo['bio']) : "<br><center>".tr("No description present");
@@ -908,7 +908,7 @@ function getRepoDescriptionSkin($repository) {
 		if ( $repo['Video'] ) {
 			if ( $repo['Photo'] )
 				$t .= "<div><hr></div>";
-			
+
 			$videos = is_array($repo['Video']) ? $repo['Video'] : [$repo['Video']];
 			$vidText = (count($videos) == 1) ? "Play Video" : "Play Video %s";
 			$t .= "<div>";
@@ -1089,7 +1089,7 @@ function displayCard($template) {
 		elseif (strpos($author," Repository") )
 			$author = sprintf(tr("%s Repository"),str_replace(" Repository","",$author));
 	}
-		
+
 	if ( !$RepositoryTemplate ) {
 		$cardClass = "ca_appPopup";
 		$supportContext = [];
@@ -1122,7 +1122,7 @@ function displayCard($template) {
 
 		$Name = str_replace(["' Repository","'s Repository"," Repository"],"",html_entity_decode($author,ENT_QUOTES));
 
-		$Name = str_replace(["&apos;s","'s"],"",$Name); 
+		$Name = str_replace(["&apos;s","'s"],"",$Name);
 		$author = "";
 	}
 
@@ -1188,13 +1188,13 @@ function displayCard($template) {
 		case 'appDriver':
 			$type = 'plugin';
 			break;
-	}	
+	}
 	if ($Removable && !$DockerInfo  && ! $Installed && ! $Blacklist) {
 		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple reinstalls")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-deletepath='$InstallPath' $checked>";
 	} elseif ( $actionCentre && $UpdateAvailable ) {
 		$card .= "<input class='ca_multiselect ca_tooltip' title='".tr("Check off to select multiple updates")."' type='checkbox' data-name='$previousAppName' data-humanName='$Name' data-type='$type' data-language='$LanguagePack' $checked>";
-	}		
-	
+	}
+
 	$card .= "</div>";
 	$card .= "<div class='$cardClass $backgroundClickable'>";
 	$card .= "<div class='ca_iconArea'>";
@@ -1241,7 +1241,7 @@ function displayCard($template) {
 		";
 
 	$Overview = $Overview ?: $Description;
-	
+
 	if ( ! $Overview )
 		$Overview = tr("No description present");
 
@@ -1273,7 +1273,7 @@ function displayCard($template) {
 		$flagTextStart = "&nbsp;";
 		$flagTextEnd = "&nbsp;";
 	}
-	if ( $UpdateAvailable ) {	
+	if ( $UpdateAvailable ) {
 		$card .= "
 			<div class='betaCardBackground'>
 				<div class='installedCardText ca_center'>".tr("UPDATED")."</div>
@@ -1410,14 +1410,14 @@ function displayPopup($template) {
 		$RecommendedLanguage = $_SESSION['locale'] ?: "en_US";
 		if ( ! $RecommendedReason[$RecommendedLanguage] )
 			$RecommendedLanguage = "en_US";
-		
+
 		preg_match_all("/\/\/(.*?)\\\\/m",$RecommendedReason[$RecommendedLanguage],$searchMatches);
 		if ( count($searchMatches[1]) ) {
 			foreach ($searchMatches[1] as $searchResult) {
 				$RecommendedReason[$RecommendedLanguage] = str_replace("//$searchResult\\\\","<a style=cursor:pointer; onclick=doSidebarSearch(&quot;$searchResult&quot;);>$searchResult</a>",$RecommendedReason[$RecommendedLanguage]);
 			}
 		}
-		
+
 		if ( ! $RecommendedWho ) $RecommendedWho = tr("Unraid Staff");
 		$card .= "
 			<div class='spotlightPopup'>
@@ -1482,7 +1482,7 @@ function displayPopup($template) {
 		$card .= "<tr><td class='popupTableLeft'>".tr("Downloads")."</td><td class='popupTableRight'>$downloadText</td></tr>";
 	elseif ( $topPlugin )
 		$card .= "<tr><td class='popupTableLeft'>".tr("Popularity")."</td><td class='popupTableRight'># $topPlugin</td></tr>";
-	
+
 	if (!$Plugin && !$LanguagePack)
 		$card .= "<tr><td class='popupTableLeft'>".tr("Repository")."</td><td class='popupTableRight' style='white-space:nowrap;'>$Repository</td></tr>";
 	if ($stars)

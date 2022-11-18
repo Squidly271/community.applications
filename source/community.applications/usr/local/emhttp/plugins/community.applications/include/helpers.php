@@ -10,7 +10,7 @@
 # Convert Array("one","two","three") to be Array("one"=>$defaultFlag, "two"=>$defaultFlag, "three"=>$defaultFlag #
 ##################################################################################################################
 function arrayEntriesToObject($sourceArray,$defaultFlag=true) {
-	return is_array($sourceArray) ? array_fill_keys($sourceArray,$defaultFlag) : array();
+	return is_array($sourceArray) ? array_fill_keys($sourceArray,$defaultFlag) : []);
 }
 ###########################################################################
 # Helper function to determine if a plugin has an update available or not #
@@ -70,7 +70,7 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 
 	debug("DOWNLOAD starting $url\n");
 	$startTime = time();
-	
+
 	$ch = curl_init();
 	curl_setopt($ch,CURLOPT_URL,$url);
 	curl_setopt($ch,CURLOPT_FRESH_CONNECT,true);
@@ -92,7 +92,7 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	curl_close($ch);
 	if ( $path )
 		file_put_contents($path,$out);
-	
+
 	$totalTime = time() - $startTime;
 	debug("DOWNLOAD $url Time: $totalTime  RESULT:\n".var_dump_ret($out));
 	return $out ?: false;
@@ -150,7 +150,7 @@ function last_str_replace($haystack, $needle, $replace) {
 #######################
 function mySort($a, $b) {
 	global $sortOrder;
-	
+
 	if ( $sortOrder['sortBy'] == "Name" )
 		$sortOrder['sortBy'] = "SortName";
 	if ( $sortOrder['sortBy'] != "downloads" && $sortOrder['sortBy'] != "trendDelta") {
@@ -160,7 +160,7 @@ function mySort($a, $b) {
 		$c = $a[$sortOrder['sortBy']];
 		$d = $b[$sortOrder['sortBy']];
 	}
-	
+
 	$return1 = ($sortOrder['sortDir'] == "Down") ? -1 : 1;
 	$return2 = ($sortOrder['sortDir'] == "Down") ? 1 : -1;
 
@@ -252,7 +252,7 @@ function fixTemplates($template) {
 function makeXML($template) {
 	# ensure its a v2 template if the Config entries exist
 	if ( $template['Config'] && ! $template['@attributes'] )
-		$template['@attributes'] = array("version"=>2);
+		$template['@attributes'] = ["version"=>2];
 
 	if ($template['Overview']) $template['Description'] = $template['Overview'];
 
@@ -286,7 +286,7 @@ function fixAttributes(&$template,$attribute) {
 
 	if ( $template[$attribute] ) {
 		foreach ($template[$attribute] as $tempArray)
-			$tempArray2[] = isset($tempArray['value']) ? array('@attributes'=>$tempArray['@attributes'],'@value'=>$tempArray['value']) : array('@attributes'=>$tempArray['@attributes']);
+			$tempArray2[] = isset($tempArray['value']) ? ['@attributes'=>$tempArray['@attributes'],'@value'=>$tempArray['value']] : ['@attributes'=>$tempArray['@attributes']];
 		$template[$attribute] = $tempArray2;
 	}
 }
@@ -337,7 +337,7 @@ function readXmlFile($xmlfile,$generic=false,$stats=true) {
 # handle the case where there is only a single <Config> entry
 
 	if ( $o['Config']['@attributes'] )
-		$o['Config'] = array('@attributes'=>$o['Config']['@attributes'],'value'=>$o['Config']['value']);
+		$o['Config'] = ['@attributes'=>$o['Config']['@attributes'],'value'=>$o['Config']['value']];
 
 	if ( $stats) {
 		if ( $o['Plugin'] ) {
@@ -461,7 +461,7 @@ function getAuthor($template) {
 # Trims the category lists #
 ############################
 function categoryList($cat,$popUp = false) {
-	$cat = str_replace(array(":,",": "," "),",",$cat);
+	$cat = str_replace([":,",": "," "],",",$cat);
 	$cat = rtrim($cat,": ");
 	$all_cat = explode(",",$cat);
 	foreach ($all_cat as $trcat)
@@ -494,7 +494,7 @@ function languageAuthorList($authors) {
 # Gets a rounded off download count #
 #####################################
 function getDownloads($downloads,$lowFlag=false) {
-	$downloadCount = array("10000000000","5000000000","1000000000","500000000","100000000","50000000","25000000","10000000","5000000","2500000","1000000","500000","250000","100000","50000","25000","10000","5000","1000","500","100");
+	$downloadCount = ["10000000000","5000000000","1000000000","500000000","100000000","50000000","25000000","10000000","5000000","2500000","1000000","500000","250000","100000","50000","25000","10000","5000","1000","500","100"];
 	foreach ($downloadCount as $downloadtmp) {
 		if ($downloads > $downloadtmp) {
 			return sprintf(tr("More than %s"),number_format($downloadtmp));
@@ -537,8 +537,8 @@ function formatTags($leadTemplate,$rename="false") {
 
 	$type = $rename == "true" ? "second" : "default";
 
-  	$file = &$GLOBALS['templat`12es'];
-	
+		$file = &$GLOBALS['templat`12es'];
+
 	$template = $file[$leadTemplate];
 	$childTemplates = $file[$leadTemplate]['BranchID'];
 	if ( ! is_array($childTemplates) )
@@ -574,13 +574,13 @@ function postReturn($retArray) {
 if ( ! function_exists("tr") ) {
 	function tr($string,$options=-1) {
 		$translated = _($string,$options);
-		if ( ! trim($translated) ) 
+		if ( ! trim($translated) )
 			$translated = $string;
-		
+
 		if ( startsWith($translated,"&#34;") && endsWith($translated,"&#34;") )
 			$translated = first_str_replace(last_str_replace($translated,"&#34;",""),"&#34;","");
 
-		$translated =  str_replace('"',"&#34;",str_replace("'","&#39;",$translated));
+		$translated =  str_replace(['"',"'"],["&#34;","&#39;"],$translated));
 
 		return $translated;
 	}
@@ -612,7 +612,7 @@ function languageCheck($template) {
 # Writes an ini file #
 ######################
 function write_ini_file($file,$array) {
-	$res = array();
+	$res = [];
 	foreach($array as $key => $val) {
 		if(is_array($val)) {
 			$res[] = "[$key]";
