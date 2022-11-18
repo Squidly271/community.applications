@@ -18,7 +18,7 @@ function display_apps($pageNumber=1,$selectedApps=false,$startup=false) {
 		else
 			$file = readJsonFile($caPaths['community-templates-displayed']);
 	}
-	$communityApplications = is_array($file['community']) ? $file['community'] : array();
+	$communityApplications = is_array($file['community']) ? $file['community'] : [];
 	$totalApplications = count($communityApplications);
 
 	$display = ( $totalApplications ) ? my_display_apps($communityApplications,$pageNumber,$selectedApps,$startup) : "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div><script>$('.multi_installDiv').hide();hideSortIcons();</script>";
@@ -40,12 +40,12 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
 		unset($caSettings['dockerRunning']);
-		$info = array();
-		$dockerUpdateStatus = array();
+		$info = [];
+		$dockerUpdateStatus = [];
 	}
 
 	if ( ! $selectedApps )
-		$selectedApps = array();
+		$selectedApps = [];
 
 	$dockerWarningFlag = $dockerNotEnabled = (! $caSettings['dockerRunning'] && ! $caSettings['NoInstalls']) ? "true" : "false";
 
@@ -71,7 +71,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$startingApp = ($pageNumber -1) * $caSettings['maxPerPage'] + 1;
 	$startingAppCounter = 0;
 
-	$displayedTemplates = array();
+	$displayedTemplates = [];
 	foreach ($file as $template) {
 		$startingAppCounter++;
 		if ( $startingAppCounter < $startingApp ) continue;
@@ -147,54 +147,54 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							if ( $selected ) {
 								$ind = searchArray($info,"Name",$name);
 								if ( $info[$ind]['url'] && $info[$ind]['running'] ) {
-									$actionsContext[] = array("icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$ind]['url']}','_blank');");
+									$actionsContext[] = ["icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$ind]['url']}','_blank');"];
 								}
 
 								if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
 									$template['UpdateAvailable'] = true;
-									$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
+									$actionsContext[] = ["icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');"];
 								} else {
 									$template['UpdateAvailable'] = false;
 								}
 								if ( $caSettings['defaultReinstall'] == "true" && ! $template['Blacklist']) {
 									if ( $template['ID'] !== false ) { # don't allow 2nd if there's not a "default" within CA
 										if ( $template['BranchID'] )
-											$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true,'".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');");
+											$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true,'".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');"];
 										else
-											$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second','".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');");
+											$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second','".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');"];
 									}
 								}
 								if ( is_file($info[$ind]['template']) )
-									$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$ind]['template'])."','edit');");
+									$actionsContext[] = ["icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$ind]['template'])."','edit');"];
 								
-								$actionsContext[] = array("divider"=>true);
+								$actionsContext[] = ["divider"=>true];
 								if ($info[$ind]['template'])
-									$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallDocker('".addslashes($info[$ind]['template'])."','{$template['Name']}');");
+									$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallDocker('".addslashes($info[$ind]['template'])."','{$template['Name']}');"];
 								if ( $template['DonateLink'] ) {
-									$actionsContext[] = array("divider"=>true);
-									$actionsContext[] = array("icon"=>"ca_fa-money","text"=>tr("Donate"),"action"=>"openNewWindow('".addslashes($template['DonateLink'])."','_blank');");
+									$actionsContext[] = ["divider"=>true];
+									$actionsContext[] = ["icon"=>"ca_fa-money","text"=>tr("Donate"),"action"=>"openNewWindow('".addslashes($template['DonateLink'])."','_blank');"];
 								}
 							} elseif ( ! $template['Blacklist'] || ! $template['Compatible']) {
 								if ( $template['InstallPath'] ) {
 									$userTemplate = readXmlFile($template['InstallPath'],false,false);
 									if ( ! $template['Blacklist'] ) {
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user','','".portsUsed($userTemplate)."');");
-										$actionsContext[] = array("divider"=>true);
+										$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user','','".portsUsed($userTemplate)."');"];
+										$actionsContext[] = ["divider"=>true];
 									}
-									$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"alternate"=>tr("Remove"),"action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
+									$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"alternate"=>tr("Remove"),"action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');"];
 								}	else {
 									if ( ! $template['BranchID'] ) {
 										if ( is_file("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml") ) {
 											$test = readXmlFile("{$caPaths['dockerManTemplates']}/my-{$template['Name']}.xml",true);
 											if ( $template['Repository'] == $test['Repository'] ) {
 												$userTemplate = readXmlFile($template['InstallPath'],false,false);
-												$actionsContext[] = array("icon"=>"ca_fa-install","text"=>"<span class='ca_red'>".tr("Reinstall From Previous Apps")."</span>","action"=>"popupInstallXML('".addslashes("{$caPaths['dockerManTemplates']}/my-{$template['Name']}").".xml','user','','".portsUsed($userTemplate)."');");
-												$actionsContext[] = array("divider"=>true);
+												$actionsContext[] = ["icon"=>"ca_fa-install","text"=>"<span class='ca_red'>".tr("Reinstall From Previous Apps")."</span>","action"=>"popupInstallXML('".addslashes("{$caPaths['dockerManTemplates']}/my-{$template['Name']}").".xml','user','','".portsUsed($userTemplate)."');"];
+												$actionsContext[] = ["divider"=>true];
 											}
 										}
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');");
+										$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default','".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');"];
 									} else {
-										$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}',false,'".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');");
+										$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}',false,'".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');"];
 									}
 								}
 							}
@@ -213,25 +213,25 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							if ( ( strcmp($pluginInstalledVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 								$template['UpdateAvailable'] = true;
-								$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true,'','{$template['RequiresFile']}');");
+								$actionsContext[] = ["icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true,'','{$template['RequiresFile']}');"];
 							} else {
 								if ( ! $template['UpdateAvailable'] ) # this handles if the feed hasn't caught up to the update yet
 									$template['UpdateAvailable'] = false;
 							}
 							$pluginSettings = ($pluginName == "community.applications.plg") ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 							if ( $pluginSettings ) {
-								$actionsContext[] = array("icon"=>"ca_fa-pluginSettings","text"=>tr("Settings"),"action"=>"openNewWindow('/Apps/$pluginSettings');");
+								$actionsContext[] = ["icon"=>"ca_fa-pluginSettings","text"=>tr("Settings"),"action"=>"openNewWindow('/Apps/$pluginSettings');"];
 							}
 
 							if ( $pluginName != "community.applications.plg" ) {
 								if ( ! empty($actionsContext) )
-									$actionsContext[] = array("divider"=>true);
+									$actionsContext[] = ["divider"=>true];
 
-								$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallApp('/var/log/plugins/$pluginName','".str_replace(" ","&#32;",$template['Name'])."');");
+								$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>tr("Uninstall"),"action"=>"uninstallApp('/var/log/plugins/$pluginName','".str_replace(" ","&#32;",$template['Name'])."');"];
 							}
 							if ( $template['DonateLink'] ) {
-									$actionsContext[] = array("divider"=>true);
-									$actionsContext[] = array("icon"=>"ca_fa-money","text"=>tr("Donate"),"action"=>"openNewWindow('".addslashes($template['DonateLink'])."','_blank');");
+									$actionsContext[] = ["divider"=>true];
+									$actionsContext[] = ["icon"=>"ca_fa-money","text"=>tr("Donate"),"action"=>"openNewWindow('".addslashes($template['DonateLink'])."','_blank');"];
 							}
 						} elseif ( ! $template['Blacklist'] || ! $template['Compatible'] ) {
 							$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
@@ -261,28 +261,26 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							} else {
 								$installComment = $template['RequiresFile'] ? "" : $installComment;
 							}
-							$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated','$updateFlag','".str_replace([" ","\n"],["&#32;",""],htmlspecialchars($installComment))."','$requiresText');");
-				//			}
+							$actionsContext[] = ["icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated','$updateFlag','".str_replace([" ","\n"],["&#32;",""],htmlspecialchars($installComment))."','$requiresText');"];
+
 							if ( $template['InstallPath'] ) {
 								if ( ! empty($actionsContext) )
-									$actionsContext[] = array("divider"=>true);
-								$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"action"=>"removeApp('{$template['InstallPath']}','$pluginName');");
+									$actionsContext[] = ["divider"=>true];
+								$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>tr("Remove from Previous Apps"),"action"=>"removeApp('{$template['InstallPath']}','$pluginName');"];
 							}
 						}
 						if ( file_exists($caPaths['pluginPending'].$pluginName) ) {
 							unset($actionsContext);
-							$actionsContext[] = array("text"=>tr("Pending"));
+							$actionsContext[] = ["text"=>tr("Pending")];
 						}
 					}
-
-						
 				}
 			}
 			if ( $template['Language'] ) {
 				$countryCode = $template['LanguageDefault'] ? "en_US" : $template['LanguagePack'];
 				$dynamixSettings = @parse_ini_file($caPaths['dynamixSettings'],true);
 				$currentLanguage = $dynamixSettings['display']['locale'] ?: "en_US";
-				$installedLanguages = array_diff(scandir("/usr/local/emhttp/languages"),array(".",".."));
+				$installedLanguages = array_diff(scandir("/usr/local/emhttp/languages"),[".",".."]);
 				$installedLanguages = array_filter($installedLanguages,function($v) {
 					return is_dir("/usr/local/emhttp/languages/$v");
 				});
@@ -290,26 +288,26 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$currentLanguage = (is_dir("/usr/local/emhttp/languages/$currentLanguage") ) ? $currentLanguage : "en_US";
 				if ( in_array($countryCode,$installedLanguages) ) {
 					if ( $currentLanguage != $countryCode ) {
-						$actionsContext[] = array("icon"=>"ca_fa-switchto","text"=>$template['SwitchLanguage'],"action"=>"CAswitchLanguage('$countryCode');");
+						$actionsContext[] = ["icon"=>"ca_fa-switchto","text"=>$template['SwitchLanguage'],"action"=>"CAswitchLanguage('$countryCode');"];
 					}
 				} else {
-					$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"installLanguage('{$template['TemplateURL']}','$countryCode');");
+					$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"installLanguage('{$template['TemplateURL']}','$countryCode');"];
 				}
 				if ( file_exists("/var/log/plugins/lang-$countryCode.xml") ) {
 					$template['Installed'] = true;
 					if ( languageCheck($template) ) {
 						$template['UpdateAvailable'] = true;
-						$actionsContext[] = array("icon"=>"ca_fa-update","text"=>$template['UpdateLanguage'],"action"=>"updateLanguage('$countryCode');");
+						$actionsContext[] = ["icon"=>"ca_fa-update","text"=>$template['UpdateLanguage'],"action"=>"updateLanguage('$countryCode');"];
 					}
 					if ( $currentLanguage != $countryCode ) {
 						if ( ! empty($actionsContext) )
-							$actionsContext[] = array("divider"=>true);
-						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>tr("Remove Language Pack"),"action"=>"removeLanguage('$countryCode');");
+							$actionsContext[] = ["divider"=>true];
+						$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>tr("Remove Language Pack"),"action"=>"removeLanguage('$countryCode');"];
 					}
 				}
 				if ( file_exists($caPaths['pluginPending'].$template['LanguagePack']) || file_exists("{$caPaths['pluginPending']}lang-{$template['LanguagePack']}.xml") ) {
 					unset($actionsContext);
-					$actionsContext[] = array("text"=>tr("Pending"));
+					$actionsContext[] = ["text"=>tr("Pending")];
 				}				
 			}
 
@@ -464,9 +462,9 @@ function getPopupDescriptionSkin($appNumber) {
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
 		unset($caSettings['dockerRunning']);
-		$info = array();
-		$dockerRunning = array();
-		$dockerUpdateStatus = array();
+		$info = [];
+		$dockerRunning = [];
+		$dockerUpdateStatus = [];
 	}
 	if ( ! is_file($caPaths['warningAccepted']) )
 		$caSettings['NoInstalls'] = true;
@@ -500,15 +498,13 @@ function getPopupDescriptionSkin($appNumber) {
 
 	# handle case where the app being asked to display isn't on the most recent displayed list (ie: multiple browser tabs open)
 	if ( ! $template ) {
-//		$file = readJsonFile($caPaths['community-templates-info']);
 		$file = &$GLOBALS['templates'];
 		$index = searchArray($file,"Path",$appNumber);
 		if ( $index === false ) {
-			echo json_encode(array("description"=>tr("Something really wrong happened.  Reloading the Apps tab will probably fix the problem")));
+			echo json_encode(["description"=>tr("Something really wrong happened.  Reloading the Apps tab will probably fix the problem")]);
 			return;
 		}
 		$template = $file[$index];
-		unset($file); // not needed anymore and takes up a ton of space
 	}
 	$currentServer = file_get_contents($caPaths['currentServer']);
  
@@ -561,13 +557,11 @@ function getPopupDescriptionSkin($appNumber) {
 		$pluginName = basename($template['PluginURL']);
 
 	if ( $template['trending'] ) {
-//		$allApps = readJsonFile($caPaths['community-templates-info']);
 		$allApps = &$GLOBALS['templates'];
 
 		$allTrends = array_unique(array_column($allApps,"trending"));
 		rsort($allTrends);
 		$trendRank = array_search($template['trending'],$allTrends) + 1;
-		unset($allApps); // not needed anymore and takes up a ton of space
 	}
 	$template['Category'] = categoryList($template['Category'],true);
 	$template['Icon'] = $template['Icon'] ? $template['Icon'] : "/plugins/dynamix.docker.manager/images/question.png";
@@ -627,45 +621,45 @@ function getPopupDescriptionSkin($appNumber) {
 				if ( $caSettings['dockerRunning'] ) {
 					if ( $selected ) {
 						if ( $info[$name]['url'] && $info[$name]['running'] ) {
-							$actionsContext[] = array("icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$name]['url']}','_blank');");
+							$actionsContext[] = ["icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$name]['url']}','_blank');"];
 						}
 						$tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
 						$tmpRepo = strpos($tmpRepo,"/") ? $tmpRepo : "library/$tmpRepo";
 						if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
 							$template['UpdateAvailable'] = true;
-							$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');");
+							$actionsContext[] = ["icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');"];
 						} else {
 							$template['UpdateAvailable'] = false;
 						}
 						if ( $caSettings['defaultReinstall'] == "true" && ! $template['Blacklist'] && $template['ID'] !== false) {
 							if ( $template['BranchID'] )
-								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true,'','".portsUsed($template)."');");
+								$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true,'','".portsUsed($template)."');"];
 							else
-								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second','','".portsUsed($template)."');");
+								$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second','','".portsUsed($template)."');"];
 						}
 						if ( is_file($info[$name]['template']) )
-							$actionsContext[] = array("icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$name]['template'])."','edit');");
+							$actionsContext[] = ["icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$name]['template'])."','edit');"];
 						
-						$actionsContext[] = array("divider"=>true);
+						$actionsContext[] = ["divider"=>true];
 						if ( $info[$name]['template'] )
-							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallDocker('".addslashes($info[$name]['template'])."','{$template['Name']}');");
+							$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallDocker('".addslashes($info[$name]['template'])."','{$template['Name']}');"];
 
 					} elseif ( ! $template['Blacklist'] ) {
 						if ( $template['InstallPath'] ) {
 							$userTemplate = readXmlFile($template['InstallPath'],false,false);
 							if ( ! $template['Blacklist'] ) {
-								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user','','".portsUsed($userTemplate)."');");
-								$actionsContext[] = array("divider"=>true);
+								$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Reinstall"),"action"=>"popupInstallXML('".addslashes($template['InstallPath'])."','user','','".portsUsed($userTemplate)."');"];
+								$actionsContext[] = ["divider"=>true];
 							}
-							$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');");
+							$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','{$template['Name']}');"];
 						}	else {
 							if ( ! $template['Blacklist'] ) {
 								if ( ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true" )  ) {
 									if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" ) {
 										if ( ! $template['BranchID'] ) {
-											$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default','','".portsUsed($template)."');");
+											$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','default','','".portsUsed($template)."');"];
 										} else {
-											$actionsContext[] = array("icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}',false,'','".portsUsed($template)."');");
+											$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"displayTags('{$template['ID']}',false,'','".portsUsed($template)."');"];
 										}
 									}
 								}
@@ -679,19 +673,19 @@ function getPopupDescriptionSkin($appNumber) {
 					if ( ($template['installedVersion'] != $template['pluginVersion'] || $template['installedVersion'] != plugin("version","/tmp/plugins/$pluginName") ) && $template['Name'] !== "Community Applications") {
 						@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 						$template['UpdateAvailable'] = true;
-						$actionsContext[] = array("icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);");
+						$actionsContext[] = ["icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);"];
 					} else {
 						$template['UpdateAvailable'] = false;
 					}
 					$pluginSettings = ($pluginName == "community.applications.plg") ? "ca_settings" : plugin("launch","/var/log/plugins/$pluginName");
 					if ( $pluginSettings ) {
-						$actionsContext[] = array("icon"=>"ca_fa-pluginSettings","text"=>tr("Settings"),"action"=>"openNewWindow('/Apps/$pluginSettings');");
+						$actionsContext[] = ["icon"=>"ca_fa-pluginSettings","text"=>tr("Settings"),"action"=>"openNewWindow('/Apps/$pluginSettings');"];
 					}
 					if ( $pluginName != "community.applications.plg" ) {
 						if ( ! empty($actionsContext) )
-							$actionsContext[] = array("divider"=>true);
+							$actionsContext[] = ["divider"=>true];
 
-						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallApp('/var/log/plugins/$pluginName','".str_replace(" ","&nbsp;",$template['Name'])."');");
+						$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallApp('/var/log/plugins/$pluginName','".str_replace(" ","&nbsp;",$template['Name'])."');"];
 					}
 				} elseif ( ! $template['Blacklist']  ) {
 					if ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true") {
@@ -702,19 +696,19 @@ function getPopupDescriptionSkin($appNumber) {
 									$isDeprecated = "&deprecated";
 								if ( ! $template['Compatible'] )
 									$isDeprecated = "&incompatible";
-								$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated');");
+								$actionsContext[] = ["icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated');"];
 							}
 						}
 					}
 					if ( $template['InstallPath'] ) {
 						if ( ! empty($actionsContext) )
-							$actionsContext[] = array("divider"=>true);
-						$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','$pluginName');");
+							$actionsContext[] = ["divider"=>true];
+						$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove from Previous Apps")."</span>","action"=>"removeApp('{$template['InstallPath']}','$pluginName');"];
 					}
 				}
 				if ( is_file($caPaths['pluginPending'].$pluginName) ) {
 					unset($actionsContext);
-					$actionsContext[] = array("text"=>tr("Pending"));
+					$actionsContext[] = ["text"=>tr("Pending")];
 				}
 			}
 		}
@@ -730,20 +724,20 @@ function getPopupDescriptionSkin($appNumber) {
 		$currentLanguage = (is_dir("/usr/local/emhttp/languages/$currentLanguage") ) ? $currentLanguage : "en_US";
 		if ( in_array($countryCode,$installedLanguages) ) {
 			if ( $currentLanguage != $countryCode ) {
-				$actionsContext[] = array("icon"=>"ca_fa-switchto","text"=>$template['SwitchLanguage'],"action"=>"CAswitchLanguage('$countryCode');");
+				$actionsContext[] = ["icon"=>"ca_fa-switchto","text"=>$template['SwitchLanguage'],"action"=>"CAswitchLanguage('$countryCode');"];
 			}
 		} else {
-			$actionsContext[] = array("icon"=>"ca_fa-install","text"=>$template['InstallLanguage'],"action"=>"installLanguage('{$template['TemplateURL']}','$countryCode');");
+			$actionsContext[] = ["icon"=>"ca_fa-install","text"=>$template['InstallLanguage'],"action"=>"installLanguage('{$template['TemplateURL']}','$countryCode');"];
 		}
 		if ( file_exists("/var/log/plugins/lang-$countryCode.xml") ) {
 			if ( languageCheck($template) ) {
 				$template['UpdateAvailable'] = true;
-				$actionsContext[] = array("icon"=>"ca_fa-update","text"=>$template['UpdateLanguage'],"action"=>"updateLanguage('$countryCode');");
+				$actionsContext[] = ["icon"=>"ca_fa-update","text"=>$template['UpdateLanguage'],"action"=>"updateLanguage('$countryCode');"];
 			}
 			if ( $currentLanguage != $countryCode ) {
 				if ( ! empty($actionsContext) )
-					$actionsContext[] = array("divider"=>true);
-				$actionsContext[] = array("icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove Language Pack")."</span>","action"=>"removeLanguage('$countryCode');");
+					$actionsContext[] = ["divider"=>true];
+				$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Remove Language Pack")."</span>","action"=>"removeLanguage('$countryCode');"];
 			}
 		}
 		if ( $countryCode !== "en_US" ) {
@@ -753,33 +747,33 @@ function getPopupDescriptionSkin($appNumber) {
 		}
 		if ( file_exists($caPaths['pluginPending'].$template['LanguagePack']) || file_exists("{$caPaths['pluginPending']}lang-{$template['LanguagePack']}.xml") ) {
 			unset($actionsContext);
-			$actionsContext[] = array("text"=>tr("Pending"));
+			$actionsContext[] = ["text"=>tr("Pending")];
 		}			
 	}
 
-	$supportContext = array();
+	$supportContext = [];
 	if ( $template['ReadMe'] )
-		$supportContext[] = array("icon"=>"ca_fa-readme","link"=>$template['ReadMe'],"text"=>tr("Read Me First"));
+		$supportContext[] = ["icon"=>"ca_fa-readme","link"=>$template['ReadMe'],"text"=>tr("Read Me First")];
 	if ( $template['Project'] )
-		$supportContext[] = array("icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project"));
+		$supportContext[] = ["icon"=>"ca_fa-project","link"=>$template['Project'],"text"=> tr("Project")];
 
 	if ( $template['Discord'] )
-		$supportContext[] = array("icon"=>"ca_discord","link"=>$template['Discord'],"text"=>tr("Discord"));
+		$supportContext[] = ["icon"=>"ca_discord","link"=>$template['Discord'],"text"=>tr("Discord")];
 	elseif ( $allRepositories[$template['Repo']]['Discord'] )
-		$supportContext[] = array("icon"=>"ca_discord","link"=>$allRepositories[$template['Repo']]['Discord'],"text"=>tr("Discord"));
+		$supportContext[] = ["icon"=>"ca_discord","link"=>$allRepositories[$template['Repo']]['Discord'],"text"=>tr("Discord")];
 
 	if ( $template['Facebook'] )
-		$supportContext[] = array("icon"=>"ca_facebook","link"=>$template['Facebook'],"text"=>tr("Facebook"));
+		$supportContext[] = ["icon"=>"ca_facebook","link"=>$template['Facebook'],"text"=>tr("Facebook")];
 	if ( $template['Reddit'] )
-		$supportContext[] = array("icon"=>"ca_reddit","link"=>$template['Reddit'],"text"=>tr("Reddit"));
+		$supportContext[] = ["icon"=>"ca_reddit","link"=>$template['Reddit'],"text"=>tr("Reddit")];
 
 	if ( $template['Support'] )
-		$supportContext[] = array("icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support Forum"));
+		$supportContext[] = ["icon"=>"ca_fa-support","link"=>$template['Support'],"text"=> $template['SupportLanguage'] ?: tr("Support Forum")];
 
 	if ( $template['Registry'] )
-		$supportContext[] = array("icon"=>"ca_fa-docker","link"=>$template['Registry'],"text"=> tr("Registry"));
+		$supportContext[] = ["icon"=>"ca_fa-docker","link"=>$template['Registry'],"text"=> tr("Registry")];
 	if ( $caSettings['dev'] == "yes" )
-		$supportContext[] = array("icon"=>"ca_fa-template","link"=> $template['caTemplateURL'] ?: $template['TemplateURL'],"text"=>tr("Application Template"));
+		$supportContext[] = ["icon"=>"ca_fa-template","link"=> $template['caTemplateURL'] ?: $template['TemplateURL'],"text"=>tr("Application Template")];
 
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
 
@@ -818,7 +812,7 @@ function getPopupDescriptionSkin($appNumber) {
 			}
 			$downloadLabel = $template['trendsDate'];
 		}
-		$down = is_array($down) ? $down : array();
+		$down = is_array($down) ? $down : [];
 	}
 
 	if ( $pinnedApps["{$template['Repository']}&{$template['SortName']}"] ) {
@@ -834,7 +828,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$template['supportContext'] = $supportContext;
 	@unlink($caPaths['pluginTempDownload']);
 
-	return array("description"=>displayPopup($template),"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel,"supportContext"=>$supportContext,"actionsContext"=>$actionsContext,"ID"=>$template['ID']);
+	return ["description"=>displayPopup($template),"trendData"=>$template['trends'],"trendLabel"=>$chartLabel,"downloadtrend"=>$down,"downloadLabel"=>$downloadLabel,"totaldown"=>$totalDown,"totaldownLabel"=>$downloadLabel,"supportContext"=>$supportContext,"actionsContext"=>$actionsContext,"ID"=>$template['ID']];
 }
 
 #####################################
@@ -845,7 +839,6 @@ function getRepoDescriptionSkin($repository) {
 
 	$dockerVars = parse_ini_file($caPaths['docker_cfg']);
 	$repositories = readJsonFile($caPaths['repositoryList']);
-//	$templates = readJsonFile($caPaths['community-templates-info']);
 	$templates = &$GLOBALS['templates'];
 	
 	$repo = $repositories[$repository];
@@ -985,7 +978,7 @@ function getRepoDescriptionSkin($repository) {
 	$t .= "</div>";
 
 	$t = "<div class='popup'>$t</div>";
-	return array("description"=>$t);
+	return ["description"=>$t];
 }
 
 ########################################################################################
@@ -1099,33 +1092,33 @@ function displayCard($template) {
 		
 	if ( !$RepositoryTemplate ) {
 		$cardClass = "ca_appPopup";
-		$supportContext = array();
+		$supportContext = [];
 		if ( $ReadMe )
-			$supportContext[] = array("icon"=>"ca_fa-readme","link"=>$ReadMe,"text"=>tr("Read Me First"));
+			$supportContext[] = ["icon"=>"ca_fa-readme","link"=>$ReadMe,"text"=>tr("Read Me First")];
 		if ( $Project )
-			$supportContext[] = array("icon"=>"ca_fa-project","link"=>$Project,"text"=> tr("Project"));
+			$supportContext[] = ["icon"=>"ca_fa-project","link"=>$Project,"text"=> tr("Project")];
 		if ( $Discord )
-			$supportContext[] = array("icon"=>"ca_discord","link"=>$Discord,"text"=>tr("Discord"));
+			$supportContext[] = ["icon"=>"ca_discord","link"=>$Discord,"text"=>tr("Discord")];
 		if ( $Support )
-			$supportContext[] = array("icon"=>"ca_fa-support","link"=>$Support,"text"=> $SupportLanguage ?: tr("Support Forum"));
+			$supportContext[] = ["icon"=>"ca_fa-support","link"=>$Support,"text"=> $SupportLanguage ?: tr("Support Forum")];
 
 	} else {
 		$holderClass='repositoryCard';
 		$cardClass = "ca_repoinfo";
 		$ID = str_replace(" ","",$RepoName);
-		$supportContext = array();
+		$supportContext = [];
 		if ( $profile )
-			$supportContext[] = array("icon"=>"ca_profile","link"=>$profile,"text"=>tr("Profile"));
+			$supportContext[] = ["icon"=>"ca_profile","link"=>$profile,"text"=>tr("Profile")];
 		if ( $Forum )
-			$supportContext[] = array("icon"=>"ca_forum","link"=>$Forum,"text"=>tr("Forum"));
+			$supportContext[] = ["icon"=>"ca_forum","link"=>$Forum,"text"=>tr("Forum")];
 		if ( $Twitter )
-			$supportContext[] = array("icon"=>"ca_twitter","link"=>$Twitter,"text"=>tr("Twitter"));
+			$supportContext[] = ["icon"=>"ca_twitter","link"=>$Twitter,"text"=>tr("Twitter")];
 		if ( $Reddit )
-			$supportContext[] = array("icon"=>"ca_reddit","link"=>$Reddit,"text"=>tr("Reddit"));
+			$supportContext[] = ["icon"=>"ca_reddit","link"=>$Reddit,"text"=>tr("Reddit")];
 		if ( $Facebook )
-			$supportContext[] = array("icon"=>"ca_facebook","link"=>$Facebook,"text"=>tr("Facebook"));
+			$supportContext[] = ["icon"=>"ca_facebook","link"=>$Facebook,"text"=>tr("Facebook")];
 		if ( $WebPage )
-			$supportContext[] = array("icon"=>"ca_webpage","link"=>$WebPage,"text"=>tr("Web Page"));
+			$supportContext[] = ["icon"=>"ca_webpage","link"=>$WebPage,"text"=>tr("Web Page")];
 
 		$Name = str_replace(["' Repository","'s Repository"," Repository"],"",html_entity_decode($author,ENT_QUOTES));
 

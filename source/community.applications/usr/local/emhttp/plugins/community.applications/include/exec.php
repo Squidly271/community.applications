@@ -239,7 +239,7 @@ function DownloadApplicationFeed() {
 	$i = 0;
 	$lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];
 	writeJsonFile($caPaths['lastUpdated-old'],$lastUpdated);
-	$myTemplates = array();
+	$myTemplates = [];
 
 	foreach ($ApplicationFeed['applist'] as $o) {
 		if ( (! $o['Repository']) && (! $o['Plugin']) && (!$o['Language'])){
@@ -308,7 +308,7 @@ function DownloadApplicationFeed() {
 		}
 
 		$o['Blacklist'] = $o['CABlacklist'] ? true : $o['Blacklist'];
-		$o['MinVer'] = max(array($o['MinVer'],$o['UpdateMinVer']));
+		$o['MinVer'] = max([$o['MinVer'],$o['UpdateMinVer']]);
 		$tag = explode(":",$o['Repository']);
 		if (! $tag[1])
 			$tag[1] = "latest";
@@ -364,7 +364,7 @@ function DownloadApplicationFeed() {
 				$subBranch['ID'] = $i;
 				$subBranch['Overview'] = $o['OriginalOverview'] ?: $o['Overview'];
 				$subBranch['Description'] = $o['OriginalDescription'] ?: $o['Description'];
-				$replaceKeys = array_diff(array_keys($branch),array("Tag","TagDescription"));
+				$replaceKeys = array_diff(array_keys($branch),["Tag","TagDescription"]);
 				foreach ($replaceKeys as $key) {
 					$subBranch[$key] = $branch[$key];
 				}
@@ -448,7 +448,6 @@ function getConvertedTemplates() {
 	global $caPaths, $caSettings, $statistics;
 
 # Start by removing any pre-existing private (converted templates)
-//	$templates = readJsonFile($caPaths['community-templates-info']);
 	$templates = &$GLOBALS['templates'];
 
 	if ( empty($templates) ) return false;
@@ -597,7 +596,7 @@ function appOfDay($file) {
 			}
 			break;
 	}
-	return $appOfDay ?: array();
+	return $appOfDay ?: [];
 }
 
 #####################################################
@@ -633,9 +632,9 @@ function displayRepositories() {
 //		$templates = readJsonFile($caPaths['community-templates-info']);
 		$templates = &$GLOBALS['templates'];
 	}
-	$templates = $templates ?: array();
-	$allRepos = array();
-	$bio = array();
+	$templates = $templates ?: [];
+	$allRepos = [];
+	$bio = [];
 	foreach ($templates as $template) {
 		if ( $template['Blacklist'] ) continue;
 		if ( $template['Deprecated'] && $caSettings['hideDeprecated'] == "true" ) continue;
@@ -717,10 +716,9 @@ function get_content() {
 	if ( strpos($category,":") && $filter ) {
 		$disp = readJsonFile($caPaths['community-templates-allSearchResults']);
 		$file = $disp['community'];
-	} else {
-//		$file = readJsonFile($caPaths['community-templates-info']);
+	} else
 		$file = &$GLOBALS['templates'];
-	}
+	
 	if ( empty($file)) return;
 
 	if ( !$filter && $category === "/NONE/i" ) {
@@ -828,8 +826,8 @@ function get_content() {
 	} else {
 		@unlink($caPaths['startupDisplayed']);
 	}
-	$display  = array();
-	$official = array();
+	$display  = [];
+	$official = [];
 
 	foreach ($file as $template) {
 		$template['NoInstall'] = $noInstallComment;
@@ -881,19 +879,19 @@ function get_content() {
 			if ( endsWith($filter," Repository") && $template['RepoName'] !== $filter) {
 				continue;
 			}
-			if ( filterMatch($filter,array($template['SortName'])) && $caSettings['favourite'] == $template['RepoName']) {
+			if ( filterMatch($filter,[$template['SortName']]) && $caSettings['favourite'] == $template['RepoName']) {
 				$searchResults['favNameHit'][] = $template;
 				continue;
 			}
-			if ( strpos($filter,"/") && filterMatch($filter,array($template['Repository'])) )
+			if ( strpos($filter,"/") && filterMatch($filter,[$template['Repository']]) )
 				$searchResults['nameHit'][] = $template;
 			else {
-				if ( filterMatch($filter,array($template['SortName'],$template['RepoShort'],$template['Language'],$template['LanguageLocal'],$template['ExtraSearchTerms'])) ) {
-					if ( filterMatch($filter,array($template['ExtraSearchTerms'])) && $template['ExtraPriority'] )
+				if ( filterMatch($filter,[$template['SortName'],$template['RepoShort'],$template['Language'],$template['LanguageLocal'],$template['ExtraSearchTerms']]) ) {
+					if ( filterMatch($filter,[$template['ExtraSearchTerms']]) && $template['ExtraPriority'] )
 						$searchResults['extraHit'][] = $template;
 					else
 						$searchResults['nameHit'][] = $template;
-				} elseif ( filterMatch($filter,array($template['Author'],$template['RepoName'],$template['Overview'],$template['translatedCategories'])) ) {
+				} elseif ( filterMatch($filter,[$template['Author'],$template['RepoName'],$template['Overview'],$template['translatedCategories']]) ) {
 					if ( $template['RepoName'] == $caSettings['favourite'] ) {
 						$searchResults['nameHit'][] = $template;
 					} else {
@@ -914,22 +912,22 @@ function get_content() {
 			}
 		}
 		else
-			$searchResults['nameHit'] = array();
+			$searchResults['nameHit'] = [];
 
 		if ( is_array($searchResults['anyHit']) ) {
 			usort($searchResults['anyHit'],"mySort");
 		}
 		else
-			$searchResults['anyHit'] = array();
+			$searchResults['anyHit'] = [];
 		if ( is_array($searchResults['favNameHit']) )
 			usort($searchResults['favNameHit'],"mySort");
 		else
-			$searchResults['favNameHit'] = array();
+			$searchResults['favNameHit'] = [];
 
 		if ( is_array($searchResults['extraHit']) )
 			usort($searchResults['extraHit'],"mySort");
 		else
-			$searchResults['extraHit'] = array();
+			$searchResults['extraHit'] = [];
 
 		$displayApplications['community'] = array_merge($searchResults['extraHit'],$searchResults['favNameHit'],$searchResults['nameHit'],$searchResults['anyHit']);
 	} else {
@@ -1067,7 +1065,6 @@ function previous_apps() {
 	@unlink($caPaths['startupDisplayed']);
 	@unlink($caPaths['dockerSearchActive']);
 
-//	$file = readJsonFile($caPaths['community-templates-info']);
 	$file = &$GLOBALS['templates'];
 	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
 	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
@@ -1075,7 +1072,7 @@ function previous_apps() {
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
-		$dockerUpdateStatus = array();
+		$dockerUpdateStatus = [];
 	}
 	
 
@@ -1084,7 +1081,7 @@ function previous_apps() {
 # this section handles containers that have not been renamed from the appfeed
 	if ( $caSettings['dockerRunning'] ) {
 		$all_files = glob("{$caPaths['dockerManTemplates']}/*.xml");
-		$all_files = $all_files ?: array();
+		$all_files = $all_files ?: [];
 		if ( $installed == "true" || $installed == "action") {
 			if ( !$filter || $filter == "docker" ) {
 				foreach ($all_files as $xmlfile) {
@@ -1248,7 +1245,7 @@ function previous_apps() {
 					$displayed[] = $template;
 				}
 			}
-			$installedLanguages = array_diff(scandir($caPaths['languageInstalled']),array(".","..","en_US"));
+			$installedLanguages = array_diff(scandir($caPaths['languageInstalled']),[".","..","en_US"]);
 			foreach ($installedLanguages as $language) {
 				$index = searchArray($file,"LanguagePack",$language);
 				if ( $index !== false ) {
@@ -1395,7 +1392,6 @@ function pinnedApps() {
 	global $caPaths, $caSettings;
 
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
-//	$file = readJsonFile($caPaths['community-templates-info']);
 	$file = &$GLOBALS['templates'];
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);
@@ -1465,7 +1461,6 @@ function statistics() {
 	download_json($caPaths['moderationURL'],$caPaths['moderation']);
 	$statistics['totalModeration'] = count(readJsonFile($caPaths['moderation']));
 	$repositories = readJsonFile($caPaths['repositoryList']);
-//	$templates = readJsonFile($caPaths['community-templates-info']);
 	$templates = &$GLOBALS['templates'];
 	pluginDupe($templates);
 	$invalidXML = readJsonFile($caPaths['invalidXML_txt']);
@@ -1509,7 +1504,7 @@ function statistics() {
 		$appFeedTime = readJsonFile($caPaths['lastUpdated-old']);
 
 	$updateTime = tr(date("F",$appFeedTime['last_updated_timestamp']),0).date(" d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
-	$defaultArray = Array('caFixed' => 0,'totalApplications' => 0, 'repository' => 0, 'docker' => 0, 'plugin' => 0, 'invalidXML' => 0, 'blacklist' => 0, 'totalIncompatible' =>0, 'totalDeprecated' => 0, 'totalModeration' => 0, 'private' => 0, 'NoSupport' => 0);
+	$defaultArray = ['caFixed' => 0,'totalApplications' => 0, 'repository' => 0, 'docker' => 0, 'plugin' => 0, 'invalidXML' => 0, 'blacklist' => 0, 'totalIncompatible' =>0, 'totalDeprecated' => 0, 'totalModeration' => 0, 'private' => 0, 'NoSupport' => 0];
 	$statistics = array_merge($defaultArray,$statistics);
 
 	foreach ($statistics as &$stat) {
@@ -1700,7 +1695,6 @@ function populateAutoComplete() {
 	global $caPaths, $caSettings;
 
 	while ( ! $templates ) {
-//		$templates = readJsonFile($caPaths['community-templates-info']);
 		$templates = &$GLOBALS['templates'];
 		if ( ! $templates )
 			sleep(1);
@@ -1765,7 +1759,7 @@ function get_categories() {
 		postReturn(['categories'=>$cat]);
 		return;
 	} else {
-		$categories[] = array("Des"=>"Language","Cat"=>"Language:");
+		$categories[] = ["Des"=>"Language","Cat"=>"Language:"];
 
 		foreach ($categories as $category) {
 			$category['Des'] = tr($category['Des']);
@@ -1793,7 +1787,6 @@ function get_categories() {
 				$cat .= "</ul>";
 			}
 		}
-//		$templates = readJsonFile($caPaths['community-templates-info']);
 		$templates = &$GLOBALS['templates'];
 		foreach ($templates as $template) {
 			if ($template['Private'] == true && ! $template['Blacklist']) {
@@ -1833,7 +1826,6 @@ function createXML() {
 		postReturn(["error"=>"CreateXML: XML file was missing"]);
 		return;
 	}
-//	$templates = readJsonFile($caPaths['community-templates-info']);
 	$templates = &$GLOBALS['templates'];
 	if ( ! $templates ) {
 		postReturn(["error"=>"Create XML: templates file missing or empty"]);
@@ -1871,7 +1863,7 @@ function createXML() {
 			array_unshift($cachePools,"cache"); // This will be a duplicate, but it doesn't matter as we only reference item0
 
 		// Prefer cache pools over disks
-		$disksPresent = array_merge($cachePools,$disksPresent,array("disks"));
+		$disksPresent = array_merge($cachePools,$disksPresent,["disks"]);
 
 		// check to see if user shares enabled
 		$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
@@ -1879,7 +1871,7 @@ function createXML() {
 			$disksPresent[] = "user";
 		if ( @is_array($template['Data']['Volume']) ) {
 			$testarray = $template['Data']['Volume'];
-			if ( ! is_array($testarray[0]) ) $testarray = array($testarray);
+			if ( ! is_array($testarray[0]) ) $testarray = [$testarray];
 			foreach ($testarray as &$volume) {
 				$diskReferenced = array_values(array_filter(explode("/",$volume['HostDir'])));
 				if ( $diskReferenced[0] == "mnt" && $diskReferenced[1] && ! in_array($diskReferenced[1],$disksPresent) ) {
@@ -1890,8 +1882,8 @@ function createXML() {
 		}
 
 		if ( $template['Config'] ) {
-			$testarray = $template['Config'] ?: array();
-			if (!$testarray[0]) $testarray = array($testarray);
+			$testarray = $template['Config'] ?: [];
+			if (!$testarray[0]) $testarray = [$testarray];
 
 			foreach ($testarray as &$config) {
 				if ( is_array($config['@attributes']) ) {
@@ -2031,7 +2023,7 @@ function getCategoriesPresent() {
 	else
 		$displayed = readJsonFile($caPaths['community-templates-displayed']);
 
-	$categories = array();
+	$categories = [];
 	foreach ($displayed['community'] as $template) {
 		$cats = explode(" ",$template['Category']);
 		foreach ($cats as $category) {
@@ -2190,7 +2182,6 @@ function search_dockerhub() {
 	$filter     = getPost("filter","");
 	$pageNumber = getPost("page","1");
 
-//	$communityTemplates = readJsonFile($caPaths['community-templates-info']);
 	$communityTemplates = &$GLOBALS['templates'];
 	$filter = str_replace(" ","%20",$filter);
 	$filter = str_replace("/","%20",$filter);
@@ -2249,10 +2240,10 @@ function getLastUpdate($ID) {
 
 	$count = 0;
 	while ( $count < 5 ) {
-//		$templates = readJsonFile($caPaths['community-templates-info']);
 		$templates = &$GLOBALS['templates'];
 		if ( $templates ) break;
 		sleep(1); # keep trying in case of a collision between reading and writing
+		$count++;
 	}
 	$index = searchArray($templates,"ID",$ID);
 	if ( $index === false )
@@ -2327,7 +2318,6 @@ function enableActionCentre() {
 
 # wait til templates are downloaded
 	for ( ;; ) {
-//		$file = readJsonFile($caPaths['community-templates-info']);
 		$file = &$GLOBALS['templates'];
 		if ( ! $file ) {
 			debug("Action Centre sleeping - no templates yet");
@@ -2343,7 +2333,7 @@ function enableActionCentre() {
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
-		$dockerUpdateStatus = array();
+		$dockerUpdateStatus = [];
 	}
 	$info = getAllInfo();
 
@@ -2352,15 +2342,9 @@ function enableActionCentre() {
 # this section handles containers that have not been renamed from the appfeed
 	if ( $caSettings['dockerRunning'] ) {
 		$all_files = glob("{$caPaths['dockerManTemplates']}/*.xml");
-		$all_files = $all_files ?: array();
+		$all_files = $all_files ?: [];
 		foreach ($all_files as $xmlfile) {
 			$o = readXmlFile($xmlfile);
-/* 			$o['Overview'] = fixDescription($o['Overview']);
-			$o['Description'] = $o['Overview'];
-			$o['CardDescription'] = $o['Overview'];
-			$o['InstallPath'] = $xmlfile;
-			$o['UnknownCompatible'] = true;
-			$containerID = false; */
 
 			$runningflag = false;
 			foreach ($info as $installedDocker) {
@@ -2377,36 +2361,16 @@ function enableActionCentre() {
 							$runningFlag = true;
 							if ( $extraBlacklist[$o['Repository']] ) {
 								$o['Blacklist'] = true;
-//								$o['ModeratorComment'] = $extraBlacklist[$o['Repository']];
 							}
 							if ( $extraDeprecated[$o['Repository']] ) {
 								$o['Deprecated'] = true;
-//								$o['ModeratorComment'] = $extraDeprecated[$o['Deprecated']];
 							}						
 						}
-/* 						if ( $searchResult === false ) {
-							$tempPath = $o['InstallPath'];
-							$containerID = $file[$searchResult]['ID'];
-							$tmpOvr = $o['Overview'];
-							$o = $file[$searchResult];
-							$o['Name'] = $installedName;
-							$o['Overview'] = $tmpOvr;
-							$o['CardDescription'] = $tmpOvr;
-							$o['InstallPath'] = $tempPath;
-							$o['SortName'] = str_replace("-"," ",$installedName);
-							if ( $installedName !== $file[$searchResult]['Name'] )
-								$o['NoPin'] = true;  # This is renamed and effectively outside of CA's control
-						} else {
-							$runningFlag = true;
-						} */
 						break;
 					}
 				}
 			}
 			if ( $runningflag ) {
-/* 				$o['Uninstall'] = true;
-				$o['ID'] = $containerID;
- */
 				$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
 				
 				if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
@@ -2415,11 +2379,9 @@ function enableActionCentre() {
 				if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
 					if ( $extraBlacklist[$o['Repository']] ) {
 						$o['Blacklist'] = true;
-//						$o['ModeratorComment'] = $extraBlacklist[$o['Repository']];
 					}
 					if ( $extraDeprecated[$o['Repository']] ) {
 						$o['Deprecated'] = true;
-//						$o['ModeratorComment'] = $extraDeprecated[$o['Deprecated']];
 					}
 				}
 				
@@ -2461,7 +2423,7 @@ function enableActionCentre() {
 			break;
 		}
 	}
-	$installedLanguages = array_diff(scandir($caPaths['languageInstalled']),array(".","..","en_US"));
+	$installedLanguages = array_diff(scandir($caPaths['languageInstalled']),[".","..","en_US"]);
 	foreach ($installedLanguages as $language) {
 		$index = searchArray($file,"LanguagePack",$language);
 		if ( $index !== false ) {
