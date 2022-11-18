@@ -169,6 +169,7 @@ var cookieWarning = false;
 var dockerWarningAdded = false;
 var backupServerWarning = false;
 var restoreStateMenu = false;
+var actionCentreRestoreState = false;
 var initialStartup = true;
 var repoBanner = false;
 var repoBannerTimer = false;
@@ -755,6 +756,7 @@ $(function(){
 			<? if ( $dockerSearchActive ): ?>
 				dockerSearch(data.currentpage);
 			<? else: ?>
+				actionCentreRestoreState = true;
 				refreshDisplay();
 				searchBoxAwesomplete.close();
 				initialStartup = true;
@@ -776,7 +778,8 @@ $(function(){
 				}
 			});
 		}
-
+		if ( document.referrer.indexOf("/Apps/") > 1 )
+			actionCentreRestoreState = true;
 		setupActionCentre();
 	}
 });
@@ -3036,10 +3039,12 @@ function setupActionCentre() {
 		var ret = JSON.parse(data);
 		if ( ret.status == "action" ) {
 			if ( !$(".actionCentre").is(":visible") ) {
-				acBanner = addBannerWarning("<?tr("Action Centre Enabled")?>",false,true);
-				setTimeout(function() {
-					removeBannerWarning(acBanner);
-				},10000);
+				if ( ! actionCentreRestoreState ) {
+					acBanner = addBannerWarning("<?tr("Action Centre Enabled")?>",false,true);
+					setTimeout(function() {
+						removeBannerWarning(acBanner);
+					},10000);
+				}
 				$(".actionCentre").show();
 			}
 		} else

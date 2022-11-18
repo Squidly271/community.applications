@@ -41,7 +41,7 @@ $javascript = file_get_contents("/usr/local/emhttp/plugins/dynamix/javascript/dy
 echo "<script>$javascript</script>";
 
 if ( $_GET['docker'] ) {
-	echo "<div id='output'>";
+/* 	echo "<div id='output'>";
 	$dockers = explode(",",$_GET['docker']);
 	echo sprintf(tr("Installing docker applications %s"),str_replace(",",", ",$_GET['docker']))."<br>";
 	$_GET['updateContainer'] = true;
@@ -49,7 +49,17 @@ if ( $_GET['docker'] ) {
 	$_GET['communityApplications'] = true;
 	$_GET['mute'] = false;
 	@include($exeFile); # under new GUI, this line returns a duplicated session_start() error.  
-	echo "</div>";
+	echo "</div>"; */
+	$dockers = explode(",",$_GET['docker']);
+	foreach ( $dockers as $docker ) {
+		if ( !$docker )
+			continue;
+		
+		$_GET['docker'] = $docker;
+		include "/usr/local/emhttp/plugins/community.applications/scripts/installUpdate.php";
+	}
+}
+		
 ?>
 
 <script>
