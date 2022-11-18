@@ -412,17 +412,18 @@ $(function(){
 	});
 
 	$("body").on("click",".repoPopup,.ca_repoinfo,.ca_reporeadmore,.ca_repoFromPopUp,.cardDescriptionRepo", function() {
+		event.stopPropagation();
 		var repository = $(this).data("repository");
 		showRepoPopup(repository);
 	});
 
 	$('body').on("click",".ca_holder",function(event) {
+		event.stopPropagation();
 		if (data.actions) {
 			data.actions = false;
 			return;
 		}
 		data.actions = false;
-		event.stopPropagation();
 		if ( $(this).hasClass("ca_repoPopup") ) {
 			var repository = $(this).data("repository");
 			showRepoPopup(repository);
@@ -2885,6 +2886,7 @@ function showSidebarApp(apppath,appname) {
 }
 
 function showRepoPopup(repository) {
+	if ( !repository ) return;
 	data.repository = repository;
 	context.destroy("#supportPopup");
 	context.destroy("#actionsPopup");

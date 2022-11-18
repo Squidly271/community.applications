@@ -847,13 +847,13 @@ function getRepoDescriptionSkin($repository) {
 	$repositories = readJsonFile($caPaths['repositoryList']);
 //	$templates = readJsonFile($caPaths['community-templates-info']);
 	$templates = &$GLOBALS['templates'];
+	
 	$repo = $repositories[$repository];
 	$repo['icon'] = $repo['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
 	$repo['bio'] = $repo['bio'] ? markdown($repo['bio']) : "<br><center>".tr("No description present");
 	$favRepoClass = ($caSettings['favourite'] == $repository) ? "fav" : "nonfav";
 
 	$totalApps = $totalPlugins = $totalDocker = $totalDownloads = 0;
-
 	foreach ($templates as $template) {
 		if ( $template['RepoName'] !== $repository ) continue;
 		if ( $template['BranchID'] ) continue;
@@ -879,7 +879,7 @@ function getRepoDescriptionSkin($repository) {
 		$totalApps++;
 	}
 
-	$t .= "
+	$t = "
 		<div class='popUpClose'>".tr("CLOSE")."</div>
 		<div class='popUpBack'>".tr("BACK")."</div>
 		<div class='ca_popupIconArea'>
