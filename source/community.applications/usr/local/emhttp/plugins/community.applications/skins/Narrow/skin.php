@@ -1088,11 +1088,6 @@ function displayCard($template) {
 	else
 		$author = $Author;
 
-/* 	if ( $Plugin )
-		$author = $Author;
-	if ( $Language )
-		$author = "Unraid"; */
-	
 	if ( $author == $RepoName ) {
 		if (strpos($author,"' Repository") )
 			$author = sprintf(tr("%s's Repository"),str_replace("' Repository","",$author));
@@ -1132,12 +1127,11 @@ function displayCard($template) {
 		if ( $WebPage )
 			$supportContext[] = array("icon"=>"ca_webpage","link"=>$WebPage,"text"=>tr("Web Page"));
 
-		$Name = str_replace("' Repository","",str_replace("'s Repository","",$author));
-		$Name = str_replace(" Repository","",$Name);
+		$Name = str_replace(["' Repository","'s Repository"," Repository"],"",html_entity_decode($author,ENT_QUOTES));
+
+		$Name = str_replace(["&apos;s","'s"],"",$Name); 
 		$author = "";
 	}
-
-//	$display_repoName = str_replace("' Repository","",str_replace("'s Repository","",$display_repoName));
 
 	$bottomClass = "ca_bottomLineSpotLight";
 	if ( $DockerHub ) {
