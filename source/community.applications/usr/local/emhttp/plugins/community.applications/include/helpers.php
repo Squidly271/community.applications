@@ -10,7 +10,7 @@
 # Convert Array("one","two","three") to be Array("one"=>$defaultFlag, "two"=>$defaultFlag, "three"=>$defaultFlag #
 ##################################################################################################################
 function arrayEntriesToObject($sourceArray,$defaultFlag=true) {
-	return is_array($sourceArray) ? array_fill_keys($sourceArray,$defaultFlag) : []);
+	return is_array($sourceArray) ? array_fill_keys($sourceArray,$defaultFlag) : [];
 }
 ###########################################################################
 # Helper function to determine if a plugin has an update available or not #
@@ -580,7 +580,7 @@ if ( ! function_exists("tr") ) {
 		if ( startsWith($translated,"&#34;") && endsWith($translated,"&#34;") )
 			$translated = first_str_replace(last_str_replace($translated,"&#34;",""),"&#34;","");
 
-		$translated =  str_replace(['"',"'"],["&#34;","&#39;"],$translated));
+		$translated =  str_replace(['"',"'"],["&#34;","&#39;"],$translated);
 
 		return $translated;
 	}
