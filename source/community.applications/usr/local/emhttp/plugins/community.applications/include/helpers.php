@@ -537,7 +537,7 @@ function formatTags($leadTemplate,$rename="false") {
 
 	$type = $rename == "true" ? "second" : "default";
 
-		$file = &$GLOBALS['templat`12es'];
+	$file = &$GLOBALS['templates'];
 
 	$template = $file[$leadTemplate];
 	$childTemplates = $file[$leadTemplate]['BranchID'];
