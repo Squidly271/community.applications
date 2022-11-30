@@ -514,7 +514,9 @@ $(function(){
 		if ( $(this).hasClass("caMenuDisabled") ) {
 			return;
 		}
-
+		if ( $(this).attr("onclick") ) 
+			return;
+		
 		var slideFlag = true;
 		var currentCat = $(".selectedMenu").data("category");
 		var newCat = $(this).data("category");
@@ -1505,15 +1507,8 @@ function uninstallDocker(application,humanName) {
 						actionCentre();
 					});
 				} else {
-/* 					if ( $(".selectedMenu").data("category") !== "inst_docker" && $(".selectedMenu").data("category") !== "inst_plugin") {
-						$(".caMenuItem").removeClass("selectedMenu");
-						var menuItem = $.find(".caMenuItem[data-category='installed_apps']");
-						$(menuItem).addClass("selectedMenu");
-						$(menuItem).next().show("slow");
-					} */
 					post({action:'getPortsInUse'},function(data) {
 						portsInUse = data.portsInUse;
-	//					previousApps(true,false,data.previousAppsSection);
 						$(".selectedMenu").trigger("click");
 					});
 				}
@@ -2074,7 +2069,6 @@ function saveState() {
 	$(".caMenuEnabled").each(function(){
 		categoriesEnabled.push($(this).data("category"));
 	});
-//	$.cookie("ca_categories_enabled",JSON.stringify(categoriesEnabled),{path:"/;SameSite=Lax"});
 	$.cookie("ca_selectedMenu",selectedMenu,{path:"/;SameSite=Lax"});
 	$.cookie("ca_filter",$("#searchBox").val(),{path:"/;SameSite=Lax"});
 	$.cookie("ca_categoryName",$(".categoryMenuName").html(),{path:"/;SameSite=Lax"});
