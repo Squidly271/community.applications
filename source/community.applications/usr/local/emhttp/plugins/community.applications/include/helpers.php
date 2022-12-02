@@ -636,9 +636,9 @@ function getAllInfo($force=false) {
 			$info = $DockerTemplates->getAllInfo(false,true,true);
 			$containers = $DockerClient->getDockerContainers();
 			foreach ($containers as &$container) {
-				$container['running'] = $info[$container['Name']]['running'];
-				$container['url'] = $info[$container['Name']]['url'];
-				$container['template'] = $info[$container['Name']]['template'];
+				$container['running'] = $info[$container['Name']]['running'] ?? null;
+				$container['url'] = $info[$container['Name']]['url'] ?? null;
+				$container['template'] = $info[$container['Name']]['template'] ?? null;
 			}
 		}
 		debug("Forced info update");

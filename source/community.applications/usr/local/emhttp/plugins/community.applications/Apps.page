@@ -5,6 +5,7 @@ Tabs="true"
 Code="f0db"
 ---
 <?
+error_reporting(E_ALL);
 ###############################################################
 #                                                             #
 # Community Applications copyright 2015-2022, Andrew Zawadzki #
@@ -15,9 +16,14 @@ Code="f0db"
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 $plugin = "community.applications";
 
+$cfg = parse_plugin_cfg($plugin);
+$cfg['dockerSearch'] = "yes";
+$caSettings = $cfg;
+
+require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
 require_once "$docroot/plugins/$plugin/include/paths.php";
 require_once "$docroot/plugins/$plugin/include/helpers.php";
-require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
+
 
 $DockerClient = new DockerClient();
 $DockerTemplates = new DockerTemplates();
@@ -30,8 +36,7 @@ exec("rm $docroot/CA-Logging*.zip");
 
 $diagnosticsFile = htmlspecialchars(str_replace(' ','_',strtolower($var['NAME'])));
 
-$cfg = parse_plugin_cfg($plugin);
-$cfg['dockerSearch'] = "yes";
+
 
 if ( $cfg['maxPerPage'] < 24 ) $cfg['maxPerPage'] = 24;
 

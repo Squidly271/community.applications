@@ -6,6 +6,9 @@
 #                                                             #
 ###############################################################
 
+error_reporting(E_ALL);
+ini_set('error_reporting', E_ALL);
+
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 ### Translations section has to be first so that nothing else winds up caching the file(s)
 
