@@ -154,8 +154,8 @@ function mySort($a, $b) {
 	if ( $sortOrder['sortBy'] == "Name" )
 		$sortOrder['sortBy'] = "SortName";
 	if ( $sortOrder['sortBy'] != "downloads" && $sortOrder['sortBy'] != "trendDelta") {
-		$c = strtolower($a[$sortOrder['sortBy']]);
-		$d = strtolower($b[$sortOrder['sortBy']]);
+		$c = strtolower($a[$sortOrder['sortBy']] ?? "");
+		$d = strtolower($b[$sortOrder['sortBy']] ?? "");
 	} else {
 		$c = $a[$sortOrder['sortBy']];
 		$d = $b[$sortOrder['sortBy']];
@@ -214,10 +214,10 @@ function fixTemplates($template) {
 	if ( ! $template['MinVer'] ) $template['MinVer'] = $template['Plugin'] ? "6.1" : "6.0";
 	if ( ! $template['Date'] ) $template['Date'] = (is_numeric($template['DateInstalled'])) ? $template['DateInstalled'] : 0;
 	$template['Date'] = max($template['Date'],$template['FirstSeen']);
-	if ($template['Date'] == 1) unset($template['Date']);
+	if ($template['Date'] == 1) $template['Date'] = null;
 	if ( ($template['Date'] == $template['FirstSeen']) && ( $template['FirstSeen'] >= 1538357652 )) {# 1538357652 is when the new appfeed first started
 		$template['BrandNewApp'] = true;
-		unset($template['Date']);
+		$template['Date'] = null;
 	}
 
 	# fix where template author includes <Blacklist> or <Deprecated> entries in template (CA used booleans, but appfeed winds up saying "FALSE" which equates to be true
@@ -229,7 +229,7 @@ function fixTemplates($template) {
 
 	if ( version_compare($caSettings['unRaidVersion'],"6.10.0-beta4",">") ) {
 		if ( $template['Config'] ) {
-			if ( $template['Config']['@attributes'] ) {
+			if ( $template['Config']['@attributes'] ?? false ) {
 				if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$template['Config']['@attributes']['Description']) ) {
 					$template['Config']['@attributes']['Description'] = "";
 				}
@@ -321,6 +321,7 @@ function readXmlFile($xmlfile,$generic=false,$stats=true) {
 	if ( ! is_file($xmlfile) ) return false;
 	$xml = file_get_contents($xmlfile);
 	$o = TypeConverter::xmlToArray($xml,TypeConverter::XML_GROUP);
+	$o = addMissingVars($o);
 	if ( ! $o ) return false;
 	if ( $generic ) return $o;
 
@@ -329,17 +330,19 @@ function readXmlFile($xmlfile,$generic=false,$stats=true) {
 	$o['Path']          = $xmlfile;
 	$o['Author']        = getAuthor($o);
 	$o['DockerHubName'] = strtolower($o['Name']);
-	$o['Base']          = $o['BaseImage'];
+	$o['Base']          = $o['BaseImage'] ?? "";
 	$o['SortAuthor']    = $o['Author'];
 	$o['SortName']      = $o['Name'];
-	$o['Forum']         = $Repo['forum'];
+	$o['Forum']         = $Repo['forum'] ?? "";
 # configure the config attributes to same format as appfeed
 # handle the case where there is only a single <Config> entry
 
-	if ( $o['Config']['@attributes'] )
+	if ( isset($o['Config']['@attributes']) )
 		$o['Config'] = ['@attributes'=>$o['Config']['@attributes'],'value'=>$o['Config']['value']];
 
 	if ( $stats) {
+		$statistics['plugin'] = $statistics['plugin'] ?? 0;
+		$statistics['docker'] = $statistics['docker'] ?? 0;
 		if ( $o['Plugin'] ) {
 			$o['Author']     = $o['PluginAuthor'];
 			$o['Repository'] = $o['PluginURL'];
@@ -406,12 +409,15 @@ function pluginDupe() {
 	$pluginList = [];
 	$dupeList = [];
 	foreach ($GLOBALS['templates'] as $template) {
-		if ( $template['Plugin'] )
+		if ( $template['Plugin'] ) {
+			if ( ! isset($pluginList[basename($template['Repository'])]) )
+				$pluginList[basename($template['Repository'])] = 0;
 			$pluginList[basename($template['Repository'])]++;
+		}
 	}
 	foreach (array_keys($pluginList) as $plugin) {
 		if ( $pluginList[$plugin] > 1 )
-			$dupeList[$plugin]++;
+			$dupeList[$plugin] = 1;
 	}
 	writeJsonFile($caPaths['pluginDupes'],$dupeList);
 }
@@ -447,9 +453,9 @@ function isMobile() {
 # Returns the author from the Repository entry #
 ################################################
 function getAuthor($template) {
-	if ( $template['PluginURL'] ) return $template['PluginAuthor'];
+	if ( isset($template['PluginURL']) ) return $template['PluginAuthor'];
 
-	if ( $template['Author'] ) return strip_tags($template['Author']);
+	if ( isset($template['Author']) ) return strip_tags($template['Author']);
 	$template['Repository'] = str_replace(["lscr.io/","ghcr.io/","registry.hub.docker.com/","library/"],"",$template['Repository']);
 	$repoEntry = explode("/",$template['Repository']);
 	if (count($repoEntry) < 2)
@@ -680,8 +686,10 @@ function portsUsed($template) {
 # Get the ports in use #
 ########################
 function getPortsInUse() {
+	return [];
 	global $var, $caPaths;
-
+ 
+	$addr = null;
 	if ( !$var )
 		$var = parse_ini_file($caPaths['unRaidVars']);
 
@@ -706,6 +714,68 @@ function ca_explode($split,$text,$count=2) {
 }
 function plain($ip) {
 	return str_replace(['[',']'],'',$ip);
+}
+
+##################################################################################
+# Adds in all the various missing entries from the templates for PHP8 compliance #
+##################################################################################
+function addMissingVars($o) {
+	if ( ! is_array($o) ) 
+		return $o;
+	$vars = [
+		'Category',
+		'CategoryList',
+		'CABlacklist',
+		'Blacklist',
+		'MinVer',
+		'MaxVer',
+		'UpdateMinVer',
+		'Plugin',
+		'PluginURL',
+		'Date',
+		'DonateText',
+		'DonateLink',
+		'Branch',
+		'OriginalOverview',
+		'DateInstalled',
+		'Config',
+		'trending',
+		'CAComment',
+		'ModeratorComment',
+		'DeprecatedMaxVer',
+		'downloads',
+		'FirstSeen',
+		'OriginalDescription',
+		'Deprecated',
+		'RecommendedRaw',
+		'Language',
+		'RequiresFile',
+		'Requires',
+		'trends',
+		'Description',
+		'OriginalDescription',
+		'Overview',
+		'Repository',
+		'Tag',
+		'Plugin',
+		'CaComment',
+		'IncompatibleVersion',
+		'Private',
+		'BranchName',
+		'display',
+		'RepositoryTemplate',
+		'bio',
+		'NoInstall'
+		
+		
+		
+		];
+	
+	foreach ($vars as $var) {
+		$o[$var] = $o[$var] ?? null;
+	}
+	return $o;
+
 }
 
 /**

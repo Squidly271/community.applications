@@ -6,6 +6,9 @@
 #                                                             #
 ###############################################################
 
+error_reporting(E_ALL);
+ini_set('log_errors',TRUE);
+ini_set('error_log',"/tmp/php");
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 ### Translations section has to be first so that nothing else winds up caching the file(s)
 
@@ -30,7 +33,8 @@ $caSettings = parse_plugin_cfg("community.applications");
 
 $caSettings['dockerSearch']  = "yes";
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
-$caSettings['favourite']     = str_replace("*","'",$caSettings['favourite']);
+$caSettings['favourite']     = isset($caSettings['favourite']) ? str_replace("*","'",$caSettings['favourite']) : "";
+
 $caSettings['maxPerPage']    = (integer)$caSettings['maxPerPage'] ?: "24"; // Handle possible corruption on file
 if ( $caSettings['maxPerPage'] < 24 ) $caSettings['maxPerPage'] = 24;
 
@@ -44,7 +48,7 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 	$caSettings['dockerRunning'] = true;
 } else {
 	$caSettings['dockerSearch'] = "no";
-	unset($caSettings['dockerRunning']);
+	$caSettings['dockerRunning'] = false;
 }
 
 @mkdir($caPaths['tempFiles'],0777,true);
@@ -239,15 +243,15 @@ function DownloadApplicationFeed() {
 	$i = 0;
 	$lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];
 	writeJsonFile($caPaths['lastUpdated-old'],$lastUpdated);
-	$myTemplates = [];
+/* 	$myTemplates = []; */
 
 	foreach ($ApplicationFeed['applist'] as $o) {
-		if ( (! $o['Repository']) && (! $o['Plugin']) && (!$o['Language'])){
+		if ( (! isset($o['Repository']) ) && (! isset($o['Plugin']) ) && (!isset($o['Language']) )){
 			$invalidXML[] = $o;
 			continue;
 		}
-
-		unset($o['Category']);
+		$o = addMissingVars($o);
+		
 		if ( $o['CategoryList'] ) {
 			foreach ($o['CategoryList'] as $cat) {
 				$cat = str_replace("-",":",$cat);
@@ -256,6 +260,8 @@ function DownloadApplicationFeed() {
 				$o['Category'] .= "$cat ";
 			}
 		}
+		if ( $o['Category'] === null )
+			$o['Category'] = "";
 		$o['Category'] = trim($o['Category']);
 		if ( ! $o['Category'] )
 			$o['Category'] = "Other:";
@@ -284,7 +290,7 @@ function DownloadApplicationFeed() {
 
 		if ( $o['CAComment'] ) {
 				$tmpComment = explode("&zwj;",$o['CAComment']);  // non printable delimiter character
-				unset($o['CAComment']);
+				$o['CAComment'] = "";
 				foreach ($tmpComment as $comment) {
 					if ( $comment )
 						$o['CAComment'] .= tr($comment)."  ";
@@ -293,10 +299,10 @@ function DownloadApplicationFeed() {
 		if ( $o['RequiresFile'] ) $o['RequiresFile'] = trim($o['RequiresFile']);
 		if ( $o['Requires'] ) 		$o['Requires'] = trim($o['Requires']);
 
-		$des = $o['OriginalOverview'] ?: $o['Overview'];
+		$des = $o['OriginalOverview'] ?? $o['Overview'];
 		$des = $o['Language'] ? $o['Description'] : $des;
 		if ( ! $des && $o['Description'] ) $des = $o['Description'];
-		if ( ! $Language ) {
+		if ( ! $o['Language'] ) {
 			$des = str_replace(["[","]"],["<",">"],$des);
 			$des = str_replace("\n","  ",$des);
 			$des = html_entity_decode($des);
@@ -310,7 +316,7 @@ function DownloadApplicationFeed() {
 		$o['Blacklist'] = $o['CABlacklist'] ? true : $o['Blacklist'];
 		$o['MinVer'] = max([$o['MinVer'],$o['UpdateMinVer']]);
 		$tag = explode(":",$o['Repository']);
-		if (! $tag[1])
+		if (! isset($tag[1]))
 			$tag[1] = "latest";
 		$o['Path'] = $caPaths['templates-community']."/".alphaNumeric($o['RepoName'])."/".alphaNumeric($o['Author'])."-".alphaNumeric($o['Name'])."-{$tag[1]}";
 		if ( file_exists($o['Path'].".xml") ) {
@@ -330,23 +336,28 @@ function DownloadApplicationFeed() {
 		$o['Category'] = str_replace("Status:Stable","",$o['Category']);
 		$myTemplates[$i] = $o;
 
-		if ( ! $o['DonateText'] && $ApplicationFeed['repositories'][$o['RepoName']]['DonateText'] )
+
+		
+		if ( ! $o['DonateText'] && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateText'] ?? false) )
 			$o['DonateText'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateText'];
-		if ( ! $o['DonateLink'] && $ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'] )
+		if ( ! $o['DonateLink'] && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'] ?? false) )
 			$o['DonateLink'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'];
 
+		$ApplicationFeed['repositories'][$o['RepoName']]['downloads'] = $ApplicationFeed['repositories'][$o['RepoName']]['downloads'] ?? 0;
+		$ApplicationFeed['repositories'][$o['RepoName']]['trending'] = $ApplicationFeed['repositories'][$o['RepoName']]['trending'] ?? 0;
+		
 		$ApplicationFeed['repositories'][$o['RepoName']]['downloads']++;
 		$ApplicationFeed['repositories'][$o['RepoName']]['trending'] += $o['trending'];
 		if ( ! $o['ModeratorComment'] == "Duplicated Template" ) {
-			if ( $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] ) {
+			if ( $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] ?? false) {
 				if ( $o['FirstSeen'] < $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'])
-					$ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] = $o['firstSeen'];
+					$ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] = $o['FirstSeen'];
 			} else {
 				$ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] = $o['FirstSeen'];
 			}
 		}
 		if ( is_array($o['Branch']) ) {
-			if ( ! $o['Branch'][0] ) {
+			if ( ! isset($o['Branch'][0]) ) {
 				$tmp = $o['Branch'];
 				unset($o['Branch']);
 				$o['Branch'][] = $tmp;
@@ -355,9 +366,9 @@ function DownloadApplicationFeed() {
 				$i = ++$i;
 				$subBranch = $o;
 				$masterRepository = explode(":",$subBranch['Repository']);
-				$o['BranchDefault'] = $masterRepository[1];
-				$subBranch['Repository'] = $masterRepository[0].":".$branch['Tag']; #This takes place before any xml elements are overwritten by additional entries in the branch, so you can actually change the repo the app draws from
-				$subBranch['BranchName'] = $branch['Tag'];
+				$o['BranchDefault'] = $masterRepository[1] ?? null;
+				$subBranch['Repository'] = $masterRepository[0].":". ($branch['Tag'] ?? ""); #This takes place before any xml elements are overwritten by additional entries in the branch, so you can actually change the repo the app draws from
+				$subBranch['BranchName'] = $branch['Tag'] ?? "";
 				$subBranch['BranchDescription'] = $branch['TagDescription'] ? $branch['TagDescription'] : $branch['Tag'];
 				$subBranch['Path'] = $caPaths['templates-community']."/".$i.".xml";
 				$subBranch['Displayable'] = false;
@@ -397,7 +408,7 @@ function DownloadApplicationFeed() {
 	writeJsonFile($caPaths['categoryList'],$ApplicationFeed['categories']);
 
 	foreach ($ApplicationFeed['repositories'] as &$repo) {
-		if ( $repo['downloads'] ) {
+		if ( $repo['downloads'] ?? false ) {
 			$repo['trending'] = $repo['trending'] / $repo['downloads'];
 		}
 	}
@@ -445,6 +456,7 @@ function updatePluginSupport($templates) {
 }
 
 function getConvertedTemplates() {
+	return;
 	global $caPaths, $caSettings, $statistics;
 
 # Start by removing any pre-existing private (converted templates)
@@ -452,8 +464,9 @@ function getConvertedTemplates() {
 
 	if ( empty($templates) ) return false;
 
+	$myTemplates = [];
 	foreach ($templates as $template) {
-		if ( ! $template['Private'] )
+		if ( ! ($template['Private'] ?? true) )
 			$myTemplates[] = $template;
 	}
 	$appCount = count($myTemplates);
@@ -469,7 +482,8 @@ function getConvertedTemplates() {
 
 	$privateTemplates = glob($caPaths['convertedTemplates']."*/*.xml");
 	foreach ($privateTemplates as $template) {
-		$o = readXmlFile($template);
+		$o = addMissingVars(readXmlFile($template));
+
 		if ( ! $o['Repository'] ) continue;
 
 		$o['Private']      = true;
@@ -772,14 +786,14 @@ function get_content() {
 			];
 			foreach ($startupTypes as $type) {
 				$display = [];
+				$o['display'] = "";
 				$caSettings['startup'] = $type['type'];
 				$appsOfDay = appOfDay($file);
 
 				for ($i=0;$i<$caSettings['maxPerPage'];$i++) {
-					if ( ! $appsOfDay[$i]) continue;
+					if ( ! isset($appsOfDay[$i])) continue;
 					$file[$appsOfDay[$i]]['NewApp'] = ($caSettings['startup'] != "random");
 					$spot = $file[$appsOfDay[$i]];
-					$spot['class'] = $type['class'];
 
 					$displayApplications['community'][] = $spot;
 					$display[] = $spot;
@@ -963,14 +977,15 @@ function force_update() {
 	$latestUpdate = download_json($caPaths['application-feed-last-updated'],$caPaths['lastUpdated'],"",5);
 	if ( ! $latestUpdate['last_updated_timestamp'] )
 		$latestUpdate = download_json($caPaths['application-feed-last-updatedBackup'],$caPaths['lastUpdated'],"",5);
-
-	if ( ! $latestUpdate['last_updated_timestamp'] ) {
+	
+	$badDownload = false;
+	if ( ! isset($latestUpdate['last_updated_timestamp']) ) {
 		$latestUpdate['last_updated_timestamp'] = INF;
 		$badDownload = true;
 		@unlink($caPaths['lastUpdated']);
 	}
 
-	if ( $latestUpdate['last_updated_timestamp'] > $lastUpdatedOld['last_updated_timestamp'] ) {
+	if ( $latestUpdate['last_updated_timestamp'] ?? 0 > $lastUpdatedOld['last_updated_timestamp'] ?? 0) {
 		if ( $latestUpdate['last_updated_timestamp'] != INF )
 			copy($caPaths['lastUpdated'],$caPaths['lastUpdated-old']);
 
@@ -980,7 +995,7 @@ function force_update() {
 		}
 	}
 
-	if (!file_exists($caPaths['community-templates-info']) || ! $$GLOBALS['templates']) {
+	if (!file_exists($caPaths['community-templates-info']) || ! $GLOBALS['templates']) {
 		$updatedSyncFlag = true;
 		if (! DownloadApplicationFeed() ) {
 			$o['script'] = "$('.onlyShowWithFeed').hide();";
@@ -1029,7 +1044,7 @@ function display_content() {
 
 	$displayedApps = readJsonFile($caPaths['community-templates-displayed']);
 	$currentServer = @file_get_contents($caPaths['currentServer']);
-	$o['script'] .= "feedWarning('$currentServer');";
+	$o['script'] = "feedWarning('$currentServer');";
 	postReturn($o);
 }
 
@@ -1068,6 +1083,8 @@ function previous_apps() {
 	$file = &$GLOBALS['templates'];
 	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
 	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
+	$displayed = [];
+	$updateCount = 0;
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
@@ -1289,7 +1306,7 @@ function previous_apps() {
 			}
 		}
 	}
-	if ( is_array($displayed) ) {
+	if ( isset($displayed) && is_array($displayed) ) {
 		usort($displayed,"mySort");
 	}
 	$displayedApplications['community'] = $displayed;
@@ -1763,7 +1780,7 @@ function get_categories() {
 
 		foreach ($categories as $category) {
 			$category['Des'] = tr($category['Des']);
-			if ( is_array($category['Sub']) ) {
+			if ( isset($category['Sub']) && is_array($category['Sub']) ) {
 				unset($subCat);
 				foreach ($category['Sub'] as $subcategory) {
 					$subcategory['Des'] = tr($subcategory['Des']);
@@ -1777,9 +1794,10 @@ function get_categories() {
 		$sortOrder['sortDir'] = "Up";
 		usort($newCat,"mySort"); // Sort it alphabetically according to the language.  May not work right in non-roman charsets
 
+		$cat = "";
 		foreach ($newCat as $category) {
 			$cat .= "<li class='categoryMenu caMenuItem nonDockerSearch' data-category='{$category['Cat']}'>".$category['Des']."</li>";
-			if (is_array($category['Sub'])) {
+			if (isset($category['Sub']) && is_array($category['Sub'])) {
 				$cat .= "<ul class='subCategory'>";
 				foreach($category['Sub'] as $subcategory) {
 					$cat .= "<li class='categoryMenu caMenuItem nonDockerSearch' data-category='{$subcategory['Cat']}'>".$subcategory['Des']."</li>";
@@ -2304,6 +2322,7 @@ function changeMaxPerPage() {
 # Basically a duplicate of action centre code in previous apps #
 ################################################################
 function enableActionCentre() {
+	return;
 	global $caPaths, $caSettings, $DockerClient;
 
 # wait til check for updates is finished
@@ -2491,6 +2510,7 @@ function downloadStatistics() {
 # Logs Javascript errors being caught #
 #######################################
 function javascriptError() {
+	return;
 	global $caPaths, $caSettings;
 
 	debug("******* ERROR **********\n".print_r($_POST,true));

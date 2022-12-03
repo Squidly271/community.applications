@@ -39,7 +39,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$info = getAllInfo();
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
-		unset($caSettings['dockerRunning']);
+		$caSettings['dockerRunning'] = false;
 		$info = [];
 		$dockerUpdateStatus = [];
 	}
@@ -47,7 +47,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	if ( ! $selectedApps )
 		$selectedApps = [];
 
-	$dockerWarningFlag = $dockerNotEnabled = (! $caSettings['dockerRunning'] && ! $caSettings['NoInstalls']) ? "true" : "false";
+	$dockerWarningFlag = $dockerNotEnabled = (! $caSettings['dockerRunning'] && ! ($caSettings['NoInstalls'] ?? false) ) ? "true" : "false";
 
 	if ( $dockerNotEnabled == "true" ) {
 		$unRaidVars = parse_ini_file($caPaths['unRaidVars']);
@@ -85,12 +85,12 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	# Create entries for skins.
 	foreach ($displayedTemplates as $template) {
 		if ( ! $template['Blacklist'] ) {
-			if ( $extraBlacklist[$template['Repository']] ) {
+			if ( isset($extraBlacklist[$template['Repository']]) ) {
 				$template['Blacklist'] = true;
 				$template['ModeratorComment'] = $extraBlacklist[$template['Repository']];
 			}
 		}
-		if ( ! $template['Deprecated'] && $extraDeprecated[$template['Repository']] ) {
+		if ( ! $template['Deprecated'] && isset($extraDeprecated[$template['Repository']]) ) {
 			$template['Deprecated'] = true;
 			$template['ModeratorComment'] = $extraDeprecated[$template['Repository']];
 		}
@@ -133,7 +133,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 			$installComment = str_replace("\n","",$installComment);
 			if ( ! $template['Language'] ) {
-				if ( ! $template['NoInstall'] && ! $caSettings['NoInstalls']) {
+				if ( ! $template['NoInstall'] && ! ($caSettings['NoInstalls'] ?? false) ) {
 					if ( ! $template['Plugin'] ) {
 						if ( $caSettings['dockerRunning'] ) {
 							foreach ($info as $testDocker) {
@@ -317,9 +317,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 			$template['ca_fav'] = $caSettings['favourite'] && ($caSettings['favourite'] == $template['RepoName']);
 			if ( strpos($template['Repository'],"/") === false )
-				$template['Pinned'] = $pinnedApps["library/{$template['Repository']}&{$template['SortName']}"];
+				$template['Pinned'] = $pinnedApps["library/{$template['Repository']}&{$template['SortName']}"] ?? false;
 			else
-				$template['Pinned'] = $pinnedApps["{$template['Repository']}&{$template['SortName']}"];
+				$template['Pinned'] = $pinnedApps["{$template['Repository']}&{$template['SortName']}"] ?? false;
 			$template['Twitter'] = $template['Twitter'] ?: $repositories[$template['Repo']]['Twitter'];
 			$template['Reddit'] = $template['Reddit'] ?: $repositories[$template['Repo']]['Reddit'];
 			$template['Facebook'] = $template['Facebook'] ?: $repositories[$template['Repo']]['Facebook'];
