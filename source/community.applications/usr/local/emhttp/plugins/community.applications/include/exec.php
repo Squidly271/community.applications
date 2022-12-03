@@ -644,7 +644,6 @@ function displayRepositories() {
 		$templates = $temp['community'];
 	}
 	if ( is_file($caPaths['startupDisplayed']) ) {
-//		$templates = readJsonFile($caPaths['community-templates-info']);
 		$templates = &$GLOBALS['templates'];
 	}
 	$templates = $templates ?: [];
@@ -668,11 +667,13 @@ function displayRepositories() {
 				$bio[$repoName]['RepositoryTemplate'] = true;
 				$bio[$repoName]['RepoName'] = $repoName;
 				$bio[$repoName]['SortName'] = $repoName;
+				$bio[$repoName] = addMissingVars($bio[$repoName]);
 			} else {
 				$allRepos[$repoName] = $repositories[$repoName];
 				$allRepos[$repoName]['RepositoryTemplate'] = true;
 				$allRepos[$repoName]['RepoName'] = $repoName;
 				$allRepos[$repoName]['SortName'] = $repoName;
+				$allRepos[$repoName] = addMissingVars($allRepos[$repoName]);
 			}
 		}
 	}
@@ -681,7 +682,7 @@ function displayRepositories() {
 	$allRepos = array_merge($bio,$allRepos);
 	if ( isset($fav) )
 		array_unshift($allRepos,$fav);
-	$file['community'] = addMissingVars($allRepos);
+	$file['community'] = $allRepos;
 	writeJsonFile($caPaths['repositoriesDisplayed'],$file);
 }
 

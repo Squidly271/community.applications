@@ -101,7 +101,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		if ( $template['RepositoryTemplate'] ) {
 			$template['Icon'] = $template['icon'] ?? "/plugins/dynamix.docker.manager/images/question.png";
 
-			if ( ! $template['bio'] )
+			if ( ! isset($template['bio']) )
 				$template['CardDescription'] = tr("No description present");
 			else {
 				$template['bio'] = strip_tags(markdown($template['bio']));
