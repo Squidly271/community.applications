@@ -63,7 +63,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$displayHeader = "<script>addDockerWarning($dockerNotEnabled);var dockerNotEnabled = $dockerWarningFlag;</script>";
 
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
-
+	
+	$selectedApps['docker'] = $selectedApps['docker'] ?? [];
+	$selectedApps['plugin'] = $selectedApps['plugin'] ?? [];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
 
 	$columnNumber = 0;

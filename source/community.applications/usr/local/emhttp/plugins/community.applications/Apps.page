@@ -5,7 +5,6 @@ Tabs="true"
 Code="f0db"
 ---
 <?
-error_reporting(E_ALL);
 ###############################################################
 #                                                             #
 # Community Applications copyright 2015-2022, Andrew Zawadzki #
