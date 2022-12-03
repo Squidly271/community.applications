@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.11.11">
-<!ENTITY md5       "6d39d3a0dd0ad3831c9d724d1432a7bf">
+<!ENTITY version   "2022.12.03">
+<!ENTITY md5       "6f848427329c24e614a08421f2d5bd18">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,18 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.12.03
+- Fixed: Initial PHP8 compliance
+- Fixed: Don't process menu click events if onclick present
+- Code cleanup
+- Fixed: Infinite loop on sidebar possible in extremely unlikely set of circumstances
+- Changed: Don't redisplay Action Centre enabled banner after installing if it was already enabled
+- Fixed: Display aberration on "Requires" popup when installing from the card if a number was preceded by a space
+- Fixed: Display aberration on Repository cards
+- Fixed: On occasion, side bar would be empty or not populated correctly
+- Fixed: Action Centre would always get enabled if Docker Folder fork was installed
+- Changed: Significantly less memory usage
+
 ###2022.11.11
 - Fixed: Loading sidebar on Papermerge twice would exhaust memory
 - Fixed: Uncategorized applications would not appear within "Other" category
