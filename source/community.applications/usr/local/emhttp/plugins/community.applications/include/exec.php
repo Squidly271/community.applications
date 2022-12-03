@@ -511,7 +511,8 @@ function appOfDay($file) {
 	global $caPaths,$caSettings,$sortOrder;
 
 	$max = 12;
-
+	$appOfDay = null;
+	
 	switch ($caSettings['startup']) {
 		case "random":
 			$oldAppDay = @filemtime($caPaths['appOfTheDay']);
@@ -528,7 +529,7 @@ function appOfDay($file) {
 					}
 				}
 				if ( $flag )
-					unset($appOfDay);
+					$appOfDay = null;
 			}
 			if ( ! $appOfDay ) {
 				shuffle($file);
@@ -698,6 +699,11 @@ function get_content() {
 	@unlink($caPaths['repositoriesDisplayed']);
 	@unlink($caPaths['dockerSearchActive']);
 
+	$noInstallComment = "";
+	$displayBlacklisted = false;
+	$displayDeprecated = false;
+	$displayIncompatible = false;
+	$displayPrivates = false;
 	switch ($category) {
 		case "PRIVATE":
 			$category = false;
@@ -928,17 +934,17 @@ function get_content() {
 		else
 			$searchResults['nameHit'] = [];
 
-		if ( is_array($searchResults['anyHit']) ) {
+		if ( isset($searchResults['anyHit']) ) {
 			usort($searchResults['anyHit'],"mySort");
 		}
 		else
 			$searchResults['anyHit'] = [];
-		if ( is_array($searchResults['favNameHit']) )
+		if ( isset($searchResults['favNameHit']) )
 			usort($searchResults['favNameHit'],"mySort");
 		else
 			$searchResults['favNameHit'] = [];
 
-		if ( is_array($searchResults['extraHit']) )
+		if ( isset($searchResults['extraHit']) )
 			usort($searchResults['extraHit'],"mySort");
 		else
 			$searchResults['extraHit'] = [];
@@ -1711,6 +1717,7 @@ function removePrivateApp() {
 function populateAutoComplete() {
 	global $caPaths, $caSettings;
 
+	$templates = null;
 	while ( ! $templates ) {
 		$templates = &$GLOBALS['templates'];
 		if ( ! $templates )
@@ -1739,7 +1746,7 @@ function populateAutoComplete() {
 			if ( startsWith($autoComplete[$name],"activ ") )
 				$autoComplete[$name] = str_replace("activ ","",$autoComplete[$name]);
 
-			if ( ! $autoComplete[strtolower($template['Author'])."'s Repository"] && ! $autoComplete[strtolower($template['Author']."' Repository")]) {
+			if ( ! isset($autoComplete[strtolower($template['Author'])."'s Repository"]) && ! isset($autoComplete[strtolower($template['Author']."' Repository")])) {
 				$autoComplete[strtolower($template['Author'])] = $template['Author'];
 			}
 
@@ -2278,13 +2285,14 @@ function getLastUpdate($ID) {
 		$regs = $app['Repository'];
 	}
 	$reg = explode(":",$regs);
-	if ( $reg[1] && strtolower($reg[1]) !== "latest" )
+	if ( ($reg[1] ?? "") !== "latest" )
 		return tr("Unknown");
 
 	if ( !strpos($reg[0],"/") )
 		$reg[0] = "library/{$reg[0]}";
 
 	$count = 0;
+	$registry = false;
 	while ( ! $registry && $count < 5 ) {
 		$registry = download_url("https://registry.hub.docker.com/v2/repositories/{$reg[0]}");
 		if ( ! $registry ) {

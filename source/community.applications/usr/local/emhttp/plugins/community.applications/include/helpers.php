@@ -165,8 +165,8 @@ function mySort($a, $b) {
 	$return2 = ($sortOrder['sortDir'] == "Down") ? 1 : -1;
 
 	if ( ! is_numeric($c) ) {
-		$c = strtolower($c);
-		$d = strtolower($d);
+		$c = strtolower($c ?? "");
+		$d = strtolower($d ?? "");
 	}
 	if ($c > $d) return $return1;
 	else if ($c < $d) return $return2;
@@ -389,9 +389,11 @@ function validURL($URL) {
 #######################################################
 function filterMatch($filter,$searchArray,$exact=true) {
 	$filterwords = explode(" ",$filter);
+	$foundword = null;
 	foreach ( $filterwords as $testfilter) {
 		if ( ! trim($testfilter) ) continue;
 		foreach ($searchArray as $search) {
+			if ( ! $search ) continue;
 			if ( stripos($search,$testfilter) !== false ) {
 				$foundword++;
 				break;
@@ -430,7 +432,7 @@ function checkInstalledPlugin($template) {
 	$pluginName = basename($template['PluginURL']);
 	if ( ! file_exists("/var/log/plugins/$pluginName") ) return false;
 	$dupeList = readJsonFile($caPaths['pluginDupes']);
-	if ( ! $dupeList[$pluginName] ) return true;
+	if ( ! isset($dupeList[$pluginName]) ) return true;
 	return strtolower(trim(plugin("pluginURL","/var/log/plugins/$pluginName"))) == strtolower(trim($template['PluginURL']));
 }
 
@@ -765,8 +767,51 @@ function addMissingVars($o) {
 		'display',
 		'RepositoryTemplate',
 		'bio',
-		'NoInstall'
-		
+		'NoInstall',
+		'Twitter',
+		'Discord',
+		'Reddit',
+		'Facebook',
+		'ReadMe',
+		'display_dockerName',
+		'actionCentre',
+		'SupportLanguage',
+		'DockerHub',
+		'Official',
+		'Removable',
+		'IconFA',
+		'imageNoClick',
+		'RecommendedDate',
+		'UpdateAvailable',
+		'Installed',
+		'Uninstall',
+		'caTemplateExists',
+		'Support',
+		'Beta',
+		'Project',
+		'Trusted',
+		'InstallPath',
+		'LanguagePack',
+		'trendDelta',
+		'RepoTemplate',
+		'ExtraSearchTerms',
+		'Icon',
+		'LanguageDefault',
+		'translatedCategories',
+		'RepoShort',
+		'LanguageLocal',
+		'ExtraPriority',
+		'Registry',
+		'caTemplateURL',
+		'Changes',
+		'ChangeLogPresent',
+		'Photo',
+		'Screenshot',
+		'Video',
+		'RecommendedReason',
+		'stars',
+		'LanguageURL',
+		'LastUpdate'
 		
 		
 		];
