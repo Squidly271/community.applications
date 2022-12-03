@@ -251,7 +251,7 @@ function fixTemplates($template) {
 ###############################################
 function makeXML($template) {
 	# ensure its a v2 template if the Config entries exist
-	if ( $template['Config'] && ! $template['@attributes'] )
+	if ( isset($template['Config']) && ! isset($template['@attributes']) )
 		$template['@attributes'] = ["version"=>2];
 
 	if ($template['Overview']) $template['Description'] = $template['Overview'];
@@ -260,8 +260,10 @@ function makeXML($template) {
 	fixAttributes($template,"Config");
 
 # Sanitize the Requires entry if there is any CA links within it
-	preg_match_all("/\/\/(.*?)&#92;/m",$template['Requires'],$searchMatches);
-	if ( count($searchMatches[1]) ) {
+	if ($template['Requires'] && $searchMatches)
+		preg_match_all("/\/\/(.*?)&#92;/m",$template['Requires'],$searchMatches);
+	
+	if ( isset($searchMatches[1]) && count($searchMatches[1]) ) {
 		foreach ($searchMatches[1] as $searchResult) {
 			$template['Requires'] = str_replace("//$searchResult\\\\",$searchResult,$template['Requires']);
 		}
@@ -275,7 +277,7 @@ function makeXML($template) {
 #################################################################################
 function fixAttributes(&$template,$attribute) {
 	if ( ! is_array($template[$attribute]) ) return;
-	if ( $template[$attribute]['@attributes'] ) {
+	if ( isset($template[$attribute]['@attributes']) ) {
 		$template[$attribute][0]['@attributes'] = $template[$attribute]['@attributes'];
 		if ( $template[$attribute]['value'])
 			$template[$attribute][0]['value'] = $template[$attribute]['value'];
@@ -318,7 +320,7 @@ function versionCheck($template) {
 function readXmlFile($xmlfile,$generic=false,$stats=true) {
 	global $statistics;
 
-	if ( ! is_file($xmlfile) ) return false;
+	if ( $xmlfile && ! is_file($xmlfile) ) return false;
 	$xml = file_get_contents($xmlfile);
 	$o = TypeConverter::xmlToArray($xml,TypeConverter::XML_GROUP);
 	$o = addMissingVars($o);
@@ -670,14 +672,15 @@ function debug($str) {
 # Gets the default ports in a template #
 ########################################
 function portsUsed($template) {
-	if ( $template['Network'] !== "bridge")
+	if ( ($template['Network'] ?? "whatever") !== "bridge")
 		return;
 	$portsUsed = [];
-	if ( $template['Config']['@attributes'] )
+	if ( isset($template['Config']['@attributes']) )
 		$template['Config'] = ['@attributes'=>$template['Config']];
 	if ( is_array($template['Config']) ) {
 		foreach ($template['Config'] as $config) {
-			if ( $config['@attributes']['Type'] !== "Port" ) continue;
+			if ( $config['@attributes']['Type'] !== "Port" )
+				continue;
 			$portsUsed[] = $config['value'] ?: $config['@attributes']['Default'];
 		}
 	}
@@ -688,7 +691,6 @@ function portsUsed($template) {
 # Get the ports in use #
 ########################
 function getPortsInUse() {
-	return [];
 	global $var, $caPaths;
  
 	$addr = null;
@@ -812,7 +814,11 @@ function addMissingVars($o) {
 		'stars',
 		'LanguageURL',
 		'LastUpdate',
-		'RecommendedWho'
+		'RecommendedWho',
+		'RepoName',
+		'SortName',
+		'ca_fav',
+		'Pinned'
 		
 		
 		];
@@ -1435,7 +1441,7 @@ class Array2XML {
 				// after we are done with all the keys in the array (if it is one)
 				// we check if it has any text value, if yes, append it.
 				if(!is_array($arr)) {
-						$node->appendChild($xml->createTextNode(self::bool2str($arr)));
+						$node->appendChild($xml->createTextNode(self::bool2str($arr ?? "")));
 				}
 				return $node;
 		}

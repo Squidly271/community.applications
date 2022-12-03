@@ -662,7 +662,7 @@ function displayRepositories() {
 			$fav['RepoName'] = $repoName;
 			$fav['SortName'] = $repoName;
 		} else {
-			if ( $repositories[$repoName]['bio'] ) {
+			if ( isset($repositories[$repoName]['bio']) ) {
 				$bio[$repoName] = $repositories[$repoName];
 				$bio[$repoName] = $repositories[$repoName];
 				$bio[$repoName]['RepositoryTemplate'] = true;
@@ -679,9 +679,9 @@ function displayRepositories() {
 	usort($bio,"mySort");
 	usort($allRepos,"mySort");
 	$allRepos = array_merge($bio,$allRepos);
-	if ( $fav )
+	if ( isset($fav) )
 		array_unshift($allRepos,$fav);
-	$file['community'] = $allRepos;
+	$file['community'] = addMissingVars($allRepos);
 	writeJsonFile($caPaths['repositoriesDisplayed'],$file);
 }
 
@@ -924,7 +924,7 @@ function get_content() {
 		$display[] = $template;
 	}
 	if ( $filter ) {
-		if ( is_array($searchResults['nameHit']) ) {
+		if ( isset($searchResults['nameHit']) ) {
 			usort($searchResults['nameHit'],"mySort");
 			if ( ! strpos($filter," Repository") ) {
 				if ( $caSettings['favourite'] && $caSettings['favourite'] !== "none" ) {
@@ -1394,7 +1394,10 @@ function pinApp() {
 	$repository = getPost("repository","oops");
 	$name = getPost("name","oops");
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
-	$pinnedApps["$repository&$name"] = $pinnedApps["$repository&$name"] ? false : "$repository&$name";
+	if (isset($pinnedApps["$repository&$name"]) )
+		$pinnedApps["$repository&$name"] = false;
+	else
+	$pinnedApps["$repository&$name"] = "$repository&$name";
 	$pinnedApps = array_filter($pinnedApps);
 	writeJsonFile($caPaths['pinnedV2'],$pinnedApps);
 	postReturn(['status' => in_array(true,$pinnedApps)]);
@@ -1457,7 +1460,7 @@ function pinnedApps() {
 	$displayedApplications['community'] = $displayed;
 	$displayedApplications['pinnedFlag']  = true;
 	writeJsonFile($caPaths['community-templates-displayed'],$displayedApplications);
-	postReturn(["status"=>"ok","script"=>$script]);
+	postReturn(["status"=>"ok","script"=>$script ?? ""]);
 }
 
 ################################################
@@ -1915,14 +1918,18 @@ function createXML() {
 				if ( is_array($config['@attributes']) ) {
 					if ( $config['@attributes']['Type'] == "Path" ) {
 						$defaultReferenced = array_values(array_filter(explode("/",$config['@attributes']['Default'])));
-
-						if ( $defaultReferenced[0] == "mnt" && $defaultReferenced[1] && ! in_array($defaultReferenced[1],$disksPresent) )
-							$config['@attributes']['Default'] = str_replace("/mnt/{$defaultReferenced[1]}/","/mnt/{$disksPresent[0]}/",$config['@attributes']['Default']);
+		
+						if ( isset($defaultReferenced[0]) && isset($defaultReferenced[1]) ) {
+							if ( $defaultReferenced[0] == "mnt" && $defaultReferenced[1] && ! in_array($defaultReferenced[1],$disksPresent) )
+								$config['@attributes']['Default'] = str_replace("/mnt/{$defaultReferenced[1]}/","/mnt/{$disksPresent[0]}/",$config['@attributes']['Default']);
+							}
 
 						$valueReferenced = array_values(array_filter(explode("/",$config['value'])));
-						if ( $valueReferenced[0] == "mnt" && $valueReferenced[1] && ! in_array($valueReferenced[1],$disksPresent) )
-							$config['value'] = str_replace("/mnt/{$valueReferenced[1]}/","/mnt/{$disksPresent[0]}/",$config['value']);
-
+						if ( isset($valueReferenced[0]) && isset($valueReferenced[1]) ) {
+							if ( $valueReferenced[0] == "mnt" && $valueReferenced[1] && ! in_array($valueReferenced[1],$disksPresent) )
+								$config['value'] = str_replace("/mnt/{$valueReferenced[1]}/","/mnt/{$disksPresent[0]}/",$config['value']);
+						}
+						
 						// Check for pre-existing folders only differing by "case" and adjust accordingly
 
 						// Default path
@@ -1993,7 +2000,7 @@ function createXML() {
 		@mkdir(dirname($xmlFile));
 		file_put_contents($xmlFile,$xml);
 	}
-	postReturn(["status"=>"ok","cache"=>$cacheVolume]);
+	postReturn(["status"=>"ok","cache"=>$cacheVolume ?? ""]);
 }
 
 ########################
@@ -2248,7 +2255,7 @@ function search_dockerhub() {
 		$searchName = str_replace("docker-","",$o['Name']);
 		$searchName = str_replace("-docker","",$searchName);
 
-		$dockerResults[$i] = $o;
+		$dockerResults[$i] = addMissingVars($o);
 		$i=++$i;
 	}
 	$dockerFile['num_pages'] = $num_pages;
@@ -2265,6 +2272,7 @@ function getLastUpdate($ID) {
 	global $caPaths;
 
 	$count = 0;
+	$registry_json = null;
 	while ( $count < 5 ) {
 		$templates = &$GLOBALS['templates'];
 		if ( $templates ) break;
@@ -2306,7 +2314,7 @@ function getLastUpdate($ID) {
 			return;
 
 	}
-
+	$registry_json['last_updated'] = $registry_json['last_updated'] ??  false;
 	$lastUpdated = $registry_json['last_updated'] ? tr(date("M j, Y",strtotime($registry_json['last_updated'])),0) : "Unknown";
 
 	return $lastUpdated;
