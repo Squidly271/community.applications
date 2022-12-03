@@ -811,7 +811,8 @@ function addMissingVars($o) {
 		'RecommendedReason',
 		'stars',
 		'LanguageURL',
-		'LastUpdate'
+		'LastUpdate',
+		'RecommendedWho'
 		
 		
 		];

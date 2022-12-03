@@ -721,7 +721,7 @@ function getPopupDescriptionSkin($appNumber) {
 	}
 	if ( $template['Language'] ) {
 		$dynamixSettings = parse_ini_file($caPaths['dynamixSettings'],true);
-		$currentLanguage = $dynamixSettings['display']['locale'] ?: "en_US";
+		$currentLanguage = $dynamixSettings['display']['locale'] ?? "en_US";
 		$installedLanguages = array_diff(scandir("/usr/local/emhttp/languages"),array(".",".."));
 		$installedLanguages = array_filter($installedLanguages,function($v) {
 			return is_dir("/usr/local/emhttp/languages/$v");

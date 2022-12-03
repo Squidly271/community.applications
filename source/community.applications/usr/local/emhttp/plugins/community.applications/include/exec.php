@@ -790,9 +790,10 @@ function get_content() {
 					"sortdir"=>"Down"
 				]
 			];
+			$o['display'] = "";
 			foreach ($startupTypes as $type) {
 				$display = [];
-				$o['display'] = "";
+				
 				$caSettings['startup'] = $type['type'];
 				$appsOfDay = appOfDay($file);
 
