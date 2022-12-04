@@ -22,6 +22,7 @@ $caSettings = $cfg;
 require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
 require_once "$docroot/plugins/$plugin/include/paths.php";
 require_once "$docroot/plugins/$plugin/include/helpers.php";
+require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 
 
 $DockerClient = new DockerClient();
@@ -34,8 +35,6 @@ exec("mkdir -p {$caPaths['tempFiles']}");
 exec("rm $docroot/CA-Logging*.zip");
 
 $diagnosticsFile = htmlspecialchars(str_replace(' ','_',strtolower($var['NAME'])));
-
-
 
 if ( $cfg['maxPerPage'] < 24 ) $cfg['maxPerPage'] = 24;
 
@@ -114,7 +113,7 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 }
 
 if ( is_file($caPaths['docker_cfg']) )
-	getAllInfo(true);
+	getAllInfo(true,false);
 
 
 function tr($string,$ret=false) {

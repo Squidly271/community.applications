@@ -1547,7 +1547,7 @@ function displayPopup($template) {
 			</div>
 			<div class='popupInfoRight'>
 					<div class='popupAuthorTitle'>".($Plugin ? tr("Author") : tr("Maintainer"))."</div>
-					<div><div class='popupAuthor'>".($Plugin ? $Author : $RepoName)."</div>
+					<div><div class='popupAuthor'>".($RepoName)."</div>
 					<div class='popupAuthorIcon'><img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;' alt='Repository Icon'></img></div>
 					</div>
 					<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("All Apps")."</div>

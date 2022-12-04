@@ -9,7 +9,7 @@
 error_reporting(E_ALL);
 ini_set('log_errors',TRUE);
 ini_set('error_log',"/tmp/php");
-ini_set('memory_limit','256M');
+ini_set('memory_limit','256M');  // REQUIRED LINE
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 ### Translations section has to be first so that nothing else winds up caching the file(s)
 
@@ -59,16 +59,6 @@ if ( !is_dir($caPaths['templates-community']) ) {
 	@unlink($caPaths['community-templates-info']);
 }
 
-if ( ! is_file($caPaths['logging']) ) {
-	$caVersion = plugin("version","/var/log/plugins/community.applications.plg");
-
-	debug("Community Applications Version: $caVersion");
-	debug("Unraid version: {$caSettings['unRaidVersion']}");
-	debug("MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5"));
-	$lingo = $_SESSION['locale'] ?: "en_US";
-	debug("Language: $lingo");
-	debug("Settings:\n".print_r($caSettings,true));
-}
 debug("POST CALLED ({$_POST['action']})\n".print_r($_POST,true));
 
 
@@ -244,7 +234,6 @@ function DownloadApplicationFeed() {
 	$i = 0;
 	$lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];
 	writeJsonFile($caPaths['lastUpdated-old'],$lastUpdated);
-/* 	$myTemplates = []; */
 
 	foreach ($ApplicationFeed['applist'] as $o) {
 		if ( (! isset($o['Repository']) ) && (! isset($o['Plugin']) ) && (!isset($o['Language']) )){
@@ -337,8 +326,6 @@ function DownloadApplicationFeed() {
 		$o['Category'] = str_replace("Status:Stable","",$o['Category']);
 		$myTemplates[$i] = $o;
 
-
-		
 		if ( ! $o['DonateText'] && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateText'] ?? false) )
 			$o['DonateText'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateText'];
 		if ( ! $o['DonateLink'] && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'] ?? false) )
@@ -639,10 +626,10 @@ function displayRepositories() {
 	$repositories = readJsonFile($caPaths['repositoryList']);
 	if ( is_file($caPaths['community-templates-allSearchResults']) ) {
 		$temp = readJsonFile($caPaths['community-templates-allSearchResults']);
-		$templates = $temp['community'];
+		$templates = &$temp['community'];
 	} else {
 		$temp = readJsonFile($caPaths['community-templates-displayed']);
-		$templates = $temp['community'];
+		$templates = &$temp['community'];
 	}
 	if ( is_file($caPaths['startupDisplayed']) ) {
 		$templates = &$GLOBALS['templates'];
@@ -987,7 +974,6 @@ function force_update() {
 	if ( ! $latestUpdate['last_updated_timestamp'] )
 		$latestUpdate = download_json($caPaths['application-feed-last-updatedBackup'],$caPaths['lastUpdated'],"",5);
 	
-	$badDownload = false;
 	if ( ! isset($latestUpdate['last_updated_timestamp']) ) {
 		$latestUpdate['last_updated_timestamp'] = INF;
 		$badDownload = true;
@@ -998,9 +984,11 @@ function force_update() {
 		if ( $latestUpdate['last_updated_timestamp'] != INF )
 			copy($caPaths['lastUpdated'],$caPaths['lastUpdated-old']);
 
-		if ( ! $badDownload ) {
-			@unlink($caPaths['community-templates-info']);
-			$GLOBALS['templates'] = [];
+		if (isset($badDownload)) {
+			if ( ! $badDownload ) {
+				@unlink($caPaths['community-templates-info']);
+				$GLOBALS['templates'] = [];
+			}
 		}
 	}
 
@@ -1695,7 +1683,6 @@ function removePrivateApp() {
 		postReturn(["error"=>"Path not contained within /boot/config/community.applications"]);
 		return;
 	}
-//	$templates = readJsonFile($caPaths['community-templates-info']);
 	$templates = &$$GLOBALS['templates'];
 
 	$displayed = readJsonFile($caPaths['community-templates-displayed']);
@@ -2356,7 +2343,7 @@ function enableActionCentre() {
 # wait til templates are downloaded
 	for ( ;; ) {
 		$file = &$GLOBALS['templates'];
-		if ( ! $file ) {
+		if ( ! $file || empty($file) ) {
 			debug("Action Centre sleeping - no templates yet");
 			sleep(5);
 		} else {
