@@ -9,6 +9,7 @@
 error_reporting(E_ALL);
 ini_set('log_errors',TRUE);
 ini_set('error_log',"/tmp/php");
+ini_set('memory_limit','256M');
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 ### Translations section has to be first so that nothing else winds up caching the file(s)
 
@@ -736,7 +737,7 @@ function get_content() {
 
 	if ( strpos($category,":") && $filter ) {
 		$disp = readJsonFile($caPaths['community-templates-allSearchResults']);
-		$file = $disp['community'];
+		$file = &$disp['community'];
 	} else
 		$file = &$GLOBALS['templates'];
 
@@ -2340,7 +2341,6 @@ function changeMaxPerPage() {
 # Basically a duplicate of action centre code in previous apps #
 ################################################################
 function enableActionCentre() {
-	return;
 	global $caPaths, $caSettings, $DockerClient;
 
 # wait til check for updates is finished

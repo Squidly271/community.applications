@@ -2,8 +2,8 @@
 4e55f7483b661af21a25b677179baffe  ./CA_notices.page
 4c5d4598e1bafa46bd90c27cbe302122  ./ca_settings.page
 e8d29607ec792ddf9f6832b10ee70fdc  ./default.cfg
-6b8927322c6c479d9422c4818c8c5f3e  ./include/exec.php
-9441e82a241d88d6cdbee4e910a5cdda  ./include/helpers.php
+4b44cdcda03fe86956e0089da72ca41c  ./include/exec.php
+c024b16874373b3d45f3e082a1dfb49b  ./include/helpers.php
 116042a918060278e77379b0dd73482c  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md

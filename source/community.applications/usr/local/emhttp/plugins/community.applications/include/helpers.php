@@ -52,6 +52,7 @@ function readJsonFile($filename) {
 
 		debug("JSON Read Error ($filename)");
 	}
+	debug("Memory Usage:".round(memory_get_usage()/1048576,2)." MB");
 	return is_array($json) ? $json : array();
 }
 function writeJsonFile($filename,$jsonArray) {
