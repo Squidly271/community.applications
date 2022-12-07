@@ -17,6 +17,7 @@ $plugin = "community.applications";
 
 $cfg = parse_plugin_cfg($plugin);
 $cfg['dockerSearch'] = "yes";
+$cfg['unRaidVersion'] = $var['version'];
 $caSettings = $cfg;
 
 require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
