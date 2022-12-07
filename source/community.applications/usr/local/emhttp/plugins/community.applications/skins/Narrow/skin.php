@@ -86,7 +86,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 	# Create entries for skins.
 	foreach ($displayedTemplates as $template) {
-		$template = addMissingVars($template);
 		if ( ! $template['RepositoryTemplate'] ) {
 			if ( ! $template['Blacklist'] ) {
 				if ( isset($extraBlacklist[$template['Repository']]) ) {
@@ -518,7 +517,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$template = $file[$index];
 	}
 	$currentServer = file_get_contents($caPaths['currentServer']);
-	$template = addMissingVars($template);
+
 	if ( ! $template['Blacklist'] ) {
 		if ( isset($extraBlacklist[$template['Repository']]) ) {
 			$template['Blacklist'] = true;
@@ -857,7 +856,6 @@ function getRepoDescriptionSkin($repository) {
 
 	$totalApps = $totalLanguage = $totalPlugins = $totalDocker = $totalDownloads = $downloadDockerCount = 0;
 	foreach ($templates as $template) {
-		$template = addMissingVars($template);
 		if ( $template['RepoName'] !== $repository ) continue;
 		if ( isset($template['BranchID']) ) continue;
 

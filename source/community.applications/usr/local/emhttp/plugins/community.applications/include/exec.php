@@ -240,7 +240,7 @@ function DownloadApplicationFeed() {
 			$invalidXML[] = $o;
 			continue;
 		}
-		$o = $o;
+		$o = addMissingVars($o);
 		
 		if ( $o['CategoryList'] ) {
 			foreach ($o['CategoryList'] as $cat) {
@@ -470,7 +470,7 @@ function getConvertedTemplates() {
 
 	$privateTemplates = glob($caPaths['convertedTemplates']."*/*.xml");
 	foreach ($privateTemplates as $template) {
-		$o = readXmlFile($template);
+		$o = addMissingVars(readXmlFile($template));
 
 		if ( ! $o['Repository'] ) continue;
 
@@ -655,13 +655,13 @@ function displayRepositories() {
 				$bio[$repoName]['RepositoryTemplate'] = true;
 				$bio[$repoName]['RepoName'] = $repoName;
 				$bio[$repoName]['SortName'] = $repoName;
-				$bio[$repoName] = $bio[$repoName];
+				$bio[$repoName] = addMissingVars($bio[$repoName]);
 			} else {
 				$allRepos[$repoName] = $repositories[$repoName];
 				$allRepos[$repoName]['RepositoryTemplate'] = true;
 				$allRepos[$repoName]['RepoName'] = $repoName;
 				$allRepos[$repoName]['SortName'] = $repoName;
-				$allRepos[$repoName] = $allRepos[$repoName];
+				$allRepos[$repoName] = addMissingVars($allRepos[$repoName]);
 			}
 		}
 	}
@@ -2244,7 +2244,7 @@ function search_dockerhub() {
 		$searchName = str_replace("docker-","",$o['Name']);
 		$searchName = str_replace("-docker","",$searchName);
 
-		$dockerResults[$i] = $o;
+		$dockerResults[$i] = addMissingVars($o);
 		$i=++$i;
 	}
 	$dockerFile['num_pages'] = $num_pages;
