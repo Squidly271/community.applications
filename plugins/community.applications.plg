@@ -2062,7 +2062,7 @@ mkdir -p /boot/config/plugins/community.applications
 rm -rf /usr/local/emhttp/plugins/community.applications/CA.page
 echo ""
 # Adjust icon depending on unRaid version
-echo "Adjusting icon for unRaid version"
+echo "Adjusting icon for Unraid version"
 if [[ -e /usr/local/emhttp/plugins/dynamix/styles/font-cases.ttf ]]; then sed -i 's/f0db/e942/g' /usr/local/emhttp/plugins/community.applications/Apps.page; fi
 if [[ ! -e /usr/local/emhttp/plugins/dynamix/styles/font-cases.ttf ]]; then sed -i 's/e942/f0db/g' /usr/local/emhttp/plugins/community.applications/Apps.page; fi
 
