@@ -62,6 +62,8 @@ function writeJsonFile($filename,$jsonArray) {
 
 	$result = file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 
+	debug("Memory Usage:".round(memory_get_usage()/1048576,2)." MB");
+
 	if ( ! $result )
 		debug("Write error $filename");
 }
@@ -578,6 +580,7 @@ function postReturn($retArray) {
 		echo $retArray;
 	flush();
 	debug("POST RETURN ({$_POST['action']})\n".var_dump_ret($retArray));
+	debug("POST RETURN Memory Usage:".round(memory_get_usage()/1048576,2)." MB");
 }
 ####################################
 # Translation backwards compatible #
@@ -666,8 +669,20 @@ function getAllInfo($force=false) {
 function debug($str) {
 	global $caSettings, $caPaths;
 
-	if ( $caSettings['debugging'] == "yes" )
+	if ( $caSettings['debugging'] == "yes" ) {
+		if ( ! is_file($caPaths['logging']) ) {
+			touch($caPaths['logging']);
+			$caVersion = plugin("version","/var/log/plugins/community.applications.plg");
+
+			debug("Community Applications Version: $caVersion");
+			debug("Unraid version: {$caSettings['unRaidVersion']}");
+			debug("MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5"));
+			$lingo = $_SESSION['locale'] ?: "en_US";
+			debug("Language: $lingo");
+			debug("Settings:\n".print_r($caSettings,true));
+		}
 		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  $str\n",FILE_APPEND);
+	}
 }
 ########################################
 # Gets the default ports in a template #
