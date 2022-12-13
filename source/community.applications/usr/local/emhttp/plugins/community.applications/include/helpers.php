@@ -646,7 +646,7 @@ function getAllInfo($force=false) {
 
 	$containers = [];
 	if ( $force ) {
-		if ( $caSettings['dockerRunning'] ) {
+		if ( $caSettings['dockerRunning'] ?? false ) {
 			$info = $DockerTemplates->getAllInfo(false,true,true);
 			$containers = $DockerClient->getDockerContainers();
 			foreach ($containers as &$container) {
