@@ -14,6 +14,7 @@ $caPaths['templates-community']                 = $caPaths['tempFiles']."/templa
 $caPaths['community-templates-url']             = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/Repositories.json";
 $caPaths['PublicServiceAnnouncement']           = "https://raw.githubusercontent.com/Squidly271/Community-Applications-Moderators/master/PublicServiceAnnouncement.txt";
 $caPaths['community-templates-info']            = $caPaths['tempFiles']."/templates.json";                     /* json file containing all of the templates */
+$caPaths['haveTemplates']												= $caPaths['tempFiles']."/haveTemplates";
 $caPaths['community-templates-displayed']       = $caPaths['tempFiles']."/displayed.json";                     /* json file containing all of the templates currently displayed */
 $caPaths['community-templates-allSearchResults']= $caPaths['tempFiles']."/allSearchResults.json";
 $caPaths['community-templates-catSearchResults']= $caPaths['tempFiles']."/catSearchResults.json";
