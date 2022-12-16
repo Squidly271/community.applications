@@ -6,7 +6,6 @@
 #                                                             #
 ###############################################################
 
-error_reporting(E_ALL);
 ini_set('log_errors',TRUE);
 ini_set('error_log',"/tmp/php");
 ini_set('memory_limit','256M');  // REQUIRED LINE
@@ -212,6 +211,7 @@ switch ($_POST['action']) {
 function DownloadApplicationFeed() {
 	global $caPaths, $caSettings, $statistics;
 
+	$lastUpdated = [];
 	$info = readJsonFile($caPaths['info']);
 	exec("rm -rf '{$caPaths['tempFiles']}'");
 	@mkdir($caPaths['templates-community'],0777,true);
@@ -227,10 +227,10 @@ function DownloadApplicationFeed() {
 	@unlink($downloadURL);
 	if ( ! is_array($ApplicationFeed['applist']) ) {
 		@unlink($caPaths['currentServer']);
-		file_put_contents($caPaths['appFeedDownloadError'],$downloadURL);
+		ca_file_put_contents($caPaths['appFeedDownloadError'],$downloadURL);
 		return false;
 	}
-	file_put_contents($caPaths['currentServer'],$currentFeed);
+	ca_file_put_contents($caPaths['currentServer'],$currentFeed);
 	$i = 0;
 	$lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];
 	writeJsonFile($caPaths['lastUpdated-old'],$lastUpdated);
@@ -406,6 +406,7 @@ function DownloadApplicationFeed() {
 	writeJsonFile($caPaths['extraDeprecated'],$ApplicationFeed['deprecated']);
 
 	updatePluginSupport($myTemplates);
+	touch($caPaths['haveTemplates']);
 
 	return true;
 }
@@ -437,7 +438,7 @@ function updatePluginSupport($templates) {
 				$dom->preserveWhiteSpace = false;
 				$dom->formatOutput = true;
 				$dom->loadXML($xml->asXML());
-				file_put_contents($plugin, $dom->saveXML());
+				ca_file_put_contents($plugin, $dom->saveXML());
 			}
 		}
 	}
@@ -733,7 +734,7 @@ function get_content() {
 	if ( !$filter && $category === "/NONE/i" ) {
 		getConvertedTemplates();  // Only scan for private XMLs when going HOME
 
-		file_put_contents($caPaths['startupDisplayed'],"startup");
+		ca_file_put_contents($caPaths['startupDisplayed'],"startup");
 		$displayApplications = [];
 		$displayApplications['community'] = [];
 		if ( count($file) > 200) {
@@ -968,28 +969,24 @@ function force_update() {
 	global $caPaths;
 
 	$lastUpdatedOld = readJsonFile($caPaths['lastUpdated-old']);
-
+	debug("old feed timestamp: {$lastUpdatedOld['last_updated_timestamp']}");
 	@unlink($caPaths['lastUpdated']);
 	$latestUpdate = download_json($caPaths['application-feed-last-updated'],$caPaths['lastUpdated'],"",5);
 	if ( ! $latestUpdate['last_updated_timestamp'] )
 		$latestUpdate = download_json($caPaths['application-feed-last-updatedBackup'],$caPaths['lastUpdated'],"",5);
-	
+	debug("new appfeed timestamp: {$latestUpdate['last_updated_timestamp']}");
 	if ( ! isset($latestUpdate['last_updated_timestamp']) ) {
 		$latestUpdate['last_updated_timestamp'] = INF;
 		$badDownload = true;
 		@unlink($caPaths['lastUpdated']);
 	}
 
-	if ( $latestUpdate['last_updated_timestamp'] ?? 0 > $lastUpdatedOld['last_updated_timestamp'] ?? 0) {
-		if ( $latestUpdate['last_updated_timestamp'] != INF )
-			copy($caPaths['lastUpdated'],$caPaths['lastUpdated-old']);
+	if ( ($latestUpdate['last_updated_timestamp'] ?? 0) != ($lastUpdatedOld['last_updated_timestamp'] ?? 0) ) {
+/* 		if ( $latestUpdate['last_updated_timestamp'] != INF )
+			copy($caPaths['lastUpdated'],$caPaths['lastUpdated-old']); */
 
-		if (isset($badDownload)) {
-			if ( ! $badDownload ) {
-				@unlink($caPaths['community-templates-info']);
-				$GLOBALS['templates'] = [];
-			}
-		}
+		exec("rm -rf '{$caPaths['tempFiles']}'");
+		$GLOBALS['templates'] = [];
 	}
 
 	if (!file_exists($caPaths['community-templates-info']) || ! $GLOBALS['templates']) {
@@ -1051,13 +1048,13 @@ function display_content() {
 function dismiss_warning() {
 	global $caPaths;
 
-	file_put_contents($caPaths['warningAccepted'],"warning dismissed");
+	ca_file_put_contents($caPaths['warningAccepted'],"warning dismissed");
 	postReturn(['status'=>"warning dismissed"]);
 }
 function dismiss_plugin_warning() {
 	global $caPaths;
 
-	file_put_contents($caPaths['pluginWarning'],"disclaimer ok");
+	ca_file_put_contents($caPaths['pluginWarning'],"disclaimer ok");
 	postReturn(['status'=>"disclaimed"]);
 }
 
@@ -1987,7 +1984,7 @@ function createXML() {
 		}
 		$xml = makeXML($template);
 		@mkdir(dirname($xmlFile));
-		file_put_contents($xmlFile,$xml);
+		ca_file_put_contents($xmlFile,$xml);
 	}
 	postReturn(["status"=>"ok","cache"=>$cacheVolume ?? ""]);
 }
@@ -2191,7 +2188,7 @@ function convert_docker() {
 
 	$dockerXML = makeXML($dockerfile);
 
-	file_put_contents($caPaths['dockerSearchInstall'],$dockerXML);
+	ca_file_put_contents($caPaths['dockerSearchInstall'],$dockerXML);
 	postReturn(['xml'=>$caPaths['dockerSearchInstall']]);
 }
 
@@ -2331,7 +2328,7 @@ function enableActionCentre() {
 	global $caPaths, $caSettings, $DockerClient;
 
 # wait til check for updates is finished
-	for ( ;; ) {
+	for ( $i=0;$i<100;$i++ ) {
 		if ( is_file($caPaths['updateRunning']) && file_exists("/proc/".@file_get_contents($caPaths['updateRunning'])) ) {
 			debug("Action Centre sleeping -> update running");
 			sleep(5);
@@ -2339,10 +2336,15 @@ function enableActionCentre() {
 		}
 		else break;
 	}
-
+	if ( $i >= 100 ) {
+		debug("Something went wrong.  EnableActionCentre ran longer than 500 seconds");
+		postReturn(['status'=>"noaction"]);
+		return;
+	}
 # wait til templates are downloaded
-	for ( ;; ) {
-		$file = &$GLOBALS['templates'];
+	for ( $i=0;$i<100;$i++ ) {
+		$file = readJsonFile($caPaths['community-templates-info']);
+
 		if ( ! $file || empty($file) ) {
 			debug("Action Centre sleeping - no templates yet");
 			sleep(5);
@@ -2351,6 +2353,12 @@ function enableActionCentre() {
 			break;
 		}
 	}
+	if ( $i >= 100 ) {
+		debug("Something went wrong.  EnableActionCentre ran longer than 500 seconds");
+		postReturn(['status'=>"noaction"]);
+		return;
+	}
+
 	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
 	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
 
