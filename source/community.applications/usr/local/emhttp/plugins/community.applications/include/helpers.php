@@ -439,7 +439,6 @@ function pluginDupe() {
 function checkInstalledPlugin($template) {
 	global $caPaths;
 
-	debug("checkInstalledPlugin $template");
 	$pluginName = basename($template['PluginURL']);
 	if ( ! file_exists("/var/log/plugins/$pluginName") ) return false;
 	$dupeList = readJsonFile($caPaths['pluginDupes']);

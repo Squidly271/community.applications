@@ -6,8 +6,6 @@
 #                                                             #
 ###############################################################
 
-ini_set('log_errors',TRUE);
-ini_set('error_log',"/tmp/php");
 ini_set('memory_limit','256M');  // REQUIRED LINE
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 ### Translations section has to be first so that nothing else winds up caching the file(s)
@@ -30,6 +28,9 @@ require_once "$docroot/webGui/include/Markdown.php";
 ################################################################################
 
 $caSettings = parse_plugin_cfg("community.applications");
+
+if ($caSettings['dev'] == "yes")
+	error_reporting(E_ALL);
 
 $caSettings['dockerSearch']  = "yes";
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
@@ -969,10 +970,10 @@ function force_update() {
 	global $caPaths;
 
 	$lastUpdatedOld = readJsonFile($caPaths['lastUpdated-old']);
-	debug("old feed timestamp: {$lastUpdatedOld['last_updated_timestamp']}");
+	debug("old feed timestamp: ".($lastUpdatedOld['last_updated_timestamp'] ?? ""));
 	@unlink($caPaths['lastUpdated']);
 	$latestUpdate = download_json($caPaths['application-feed-last-updated'],$caPaths['lastUpdated'],"",5);
-	if ( ! $latestUpdate['last_updated_timestamp'] )
+	if ( ! $latestUpdate['last_updated_timestamp'] ?? false )
 		$latestUpdate = download_json($caPaths['application-feed-last-updatedBackup'],$caPaths['lastUpdated'],"",5);
 	debug("new appfeed timestamp: {$latestUpdate['last_updated_timestamp']}");
 	if ( ! isset($latestUpdate['last_updated_timestamp']) ) {

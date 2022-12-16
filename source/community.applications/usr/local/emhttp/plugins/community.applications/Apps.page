@@ -20,6 +20,12 @@ $cfg['dockerSearch'] = "yes";
 $cfg['unRaidVersion'] = $var['version'];
 $caSettings = $cfg;
 
+
+/* UNCOMMENT once the WebGUI is completely PHP8 compliant.  Especially dockerMan
+if ($caSettings['dev'] == "yes")
+	error_reporting(E_ALL);
+
+ */
 require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
 require_once "$docroot/plugins/$plugin/include/paths.php";
 require_once "$docroot/plugins/$plugin/include/helpers.php";
@@ -57,7 +63,7 @@ $nchanCom       = version_compare($unRaidSettings['version'],"6.10.3",">");
 // Check md5's of files
 exec("cd /usr/local/emhttp/plugins/$plugin/ && md5sum -c ca.md5",$output,$md5Error);
 
-$previousLocale = $_COOKIE["locale"];
+$previousLocale = $_COOKIE["locale"] ?? "";
 
 switch ($theme) {
 	case 'black':
@@ -93,7 +99,7 @@ if ( is_file($caPaths['addConverted']) ) {
 $date = (date("n/d"));
 
 $startupDisplayed = is_file($caPaths['startupDisplayed']) ? "true" : "false";
-if ( $startupDisplayed == "true" && $_COOKIE['ca_languageSwitch'] ) {
+if ( $startupDisplayed == "true" && ($_COOKIE['ca_languageSwitch'] ?? false) ) {
 	$killCookie = "true";
 }
 
@@ -2233,7 +2239,7 @@ function postNoSpin(options,callback) {
 					alert("<?tr("You have been logged out")?>");
 					window.location.reload();
 				}	else {
-					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
+					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=($_SESSION['locale'] ?? null)?><br><br>"+retval.escapeHTML());
 					throw new Error("Something went badly wrong!"+options.action);
 				}
 			}
@@ -2298,7 +2304,7 @@ function post(options,callback) {
 					alert("<?tr("You have been logged out")?>");
 					window.location.reload();
 				}	else {
-					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
+					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=($_SESSION['locale'] ?? "")?><br><br>"+retval.escapeHTML());
 					throw new Error("Something went badly wrong!"+options.action);
 				}
 			}
@@ -2429,7 +2435,7 @@ function feedWarning(currentServer) {
 }
 
 function tr(string) {
-	<?if ( ! ($_SESSION['locale'] == "" || $_SESSION['locale'] == "en_US") ) : ?>
+	<?if ( ! ( ($_SESSION['locale'] ?? "") == "" || ($_SESSION['locale'] ?? "") == "en_US") ) : ?>
 		return _(string);
 	<?else: ?>
 		return string;
@@ -2475,7 +2481,7 @@ function updateLanguage(language) {
 
 function postUpdateLanguage() {
 	var languageUpdate = $.cookie("updateLanguage");
-	var currentLanguage = "<?=$_SESSION['locale']?>";
+	var currentLanguage = "<?=($_SESSION['locale'] ?? "")?>";
 
 	if (languageUpdate == currentLanguage)
 		window.location.reload();

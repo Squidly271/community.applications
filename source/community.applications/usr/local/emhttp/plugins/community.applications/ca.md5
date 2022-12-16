@@ -1,9 +1,9 @@
-253bc8277a96c67716a1376e047570ef  ./Apps.page
+cfefda874e2de863f14da70bafdf70e4  ./Apps.page
 4e55f7483b661af21a25b677179baffe  ./CA_notices.page
 600469ce287cb1ed78dc6cc11675cfaf  ./ca_settings.page
 e8d29607ec792ddf9f6832b10ee70fdc  ./default.cfg
-9ffd40aedffad25c998e947faf169ad3  ./include/exec.php
-3a1e5abf962bd5700e286a48c941b2c9  ./include/helpers.php
+c506f75e86d9f941f11eb4c949f00424  ./include/exec.php
+78d797120193602420951421f8c844ad  ./include/helpers.php
 8d15446d4edf60a1f4ac4493a494a301  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
