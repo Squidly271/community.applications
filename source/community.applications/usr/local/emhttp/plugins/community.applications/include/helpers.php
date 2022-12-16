@@ -60,17 +60,12 @@ function writeJsonFile($filename,$jsonArray) {
 
 	debug("Write JSON File $filename");
 
-	ca_file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	$result = file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 
 	debug("Memory Usage:".round(memory_get_usage()/1048576,2)." MB");
-}
 
-function ca_file_put_contents($filename,$data,$flags = null) {
-	$result = @file_put_contents($filename,$data,$flags);
-	if ($result === false) {
-		debug("Unable to write to $filename");
-		$GLOBALS['script'] = "alert('Error writing to ".htmlentities($filename,ENT_QUOTES)."');";
-	}
+	if ( ! $result )
+		debug("Write error $filename");
 }
 
 function download_url($url, $path = "", $bg = false, $timeout = 45) {
@@ -99,7 +94,7 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	$out = curl_exec($ch);
 	curl_close($ch);
 	if ( $path )
-		ca_file_put_contents($path,$out);
+		file_put_contents($path,$out);
 
 	$totalTime = time() - $startTime;
 	debug("DOWNLOAD $url Time: $totalTime  RESULT:\n".var_dump_ret($out));
@@ -328,7 +323,7 @@ function versionCheck($template) {
 function readXmlFile($xmlfile,$generic=false,$stats=true) {
 	global $statistics;
 
-	if ( ! $xmlfile || ! is_file($xmlfile) ) return false;
+	if ( $xmlfile && ! is_file($xmlfile) ) return false;
 	$xml = file_get_contents($xmlfile);
 	$o = TypeConverter::xmlToArray($xml,TypeConverter::XML_GROUP);
 	$o = addMissingVars($o);
@@ -439,7 +434,6 @@ function pluginDupe() {
 function checkInstalledPlugin($template) {
 	global $caPaths;
 
-	debug("checkInstalledPlugin $template");
 	$pluginName = basename($template['PluginURL']);
 	if ( ! file_exists("/var/log/plugins/$pluginName") ) return false;
 	$dupeList = readJsonFile($caPaths['pluginDupes']);
@@ -580,13 +574,6 @@ function formatTags($leadTemplate,$rename="false") {
 function postReturn($retArray) {
 	global $caSettings, $caPaths;
 
-	
-	if ( isset($_GLOBALS['script']) ) {
-		if ( is_array($retArray) ) {
-			$retArray['script'] = $retArray['script'] ?? null;
-			$retArray['script'] .= $_GLOBALS['script'];
-		}
-	}
 	if (is_array($retArray))
 		echo json_encode($retArray);
 	else
@@ -649,7 +636,7 @@ function write_ini_file($file,$array) {
 		else
 			$res[] = $key.'="'.$val.'"';
 	}
-	ca_file_put_contents($file,implode("\r\n", $res),LOCK_EX);
+	file_put_contents($file,implode("\r\n", $res),LOCK_EX);
 }
 ###################################################
 # Gets all the information about what's installed #
@@ -659,7 +646,7 @@ function getAllInfo($force=false) {
 
 	$containers = [];
 	if ( $force ) {
-		if ( $caSettings['dockerRunning'] ) {
+		if ( $caSettings['dockerRunning'] ?? false ) {
 			$info = $DockerTemplates->getAllInfo(false,true,true);
 			$containers = $DockerClient->getDockerContainers();
 			foreach ($containers as &$container) {
@@ -694,7 +681,7 @@ function debug($str) {
 			debug("Language: $lingo");
 			debug("Settings:\n".print_r($caSettings,true));
 		}
-		ca_file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  $str\n",FILE_APPEND);
+		file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  $str\n",FILE_APPEND);
 	}
 }
 ########################################
