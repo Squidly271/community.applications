@@ -12,6 +12,7 @@ Code="f0db"
 #                                                             #
 ###############################################################
 
+$_SESSION['locale'] = $_SESSION['locale'] ?? null;
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 $plugin = "community.applications";
 
@@ -20,12 +21,6 @@ $cfg['dockerSearch'] = "yes";
 $cfg['unRaidVersion'] = $var['version'];
 $caSettings = $cfg;
 
-
-/* UNCOMMENT once the WebGUI is completely PHP8 compliant.  Especially dockerMan
-if ($caSettings['dev'] == "yes")
-	error_reporting(E_ALL);
-
- */
 require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
 require_once "$docroot/plugins/$plugin/include/paths.php";
 require_once "$docroot/plugins/$plugin/include/helpers.php";
@@ -45,12 +40,15 @@ $diagnosticsFile = htmlspecialchars(str_replace(' ','_',strtolower($var['NAME'])
 
 if ( $cfg['maxPerPage'] < 24 ) $cfg['maxPerPage'] = 24;
 
-if ( ! is_file($caPaths['warningAccepted']) ) {
+if ( ! is_file($caPaths['warningAccepted']) ) 
 	$firstRun = "true";
-}
-if ( ! is_file($caPaths['pluginWarning']) ) {
+else
+	$firstRun = "false";
+
+if ( ! is_file($caPaths['pluginWarning']) )
 	$pluginWarning = "false";
-}
+else
+	$pluginWarning = "true";
 
 if ( ! is_file($caPaths['docker_cfg']) ) {
 	exec("logger -t 'Community Applications' 'Fatal Flash Drive Error: /boot/config/docker.cfg does not exist'");
@@ -93,15 +91,18 @@ switch ($theme) {
 		break;
 }
 
-if ( is_file($caPaths['addConverted']) ) {
+if ( is_file($caPaths['addConverted']) )
 	$dockerConvertFlag = "true";
-}
+else
+	$dockerConvertFlag = "false";
+
 $date = (date("n/d"));
 
 $startupDisplayed = is_file($caPaths['startupDisplayed']) ? "true" : "false";
-if ( $startupDisplayed == "true" && ($_COOKIE['ca_languageSwitch'] ?? false) ) {
+if ( $startupDisplayed == "true" && ($_COOKIE['ca_languageSwitch'] ?? false) )
 	$killCookie = "true";
-}
+else
+	$killCookie = "false";
 
 $dockerSearchActive = is_file($caPaths['dockerSearchActive']);
 
@@ -185,7 +186,7 @@ var repoBanner = false;
 var repoBannerTimer = false;
 var resizeTimer;
 var portsInUse = [];
-var startupSearch = "<?=$_GET['search']?>";
+var startupSearch = "<?=$_GET['search'] ?? ""?>";
 var iconHoverTimer;
 
 $(function(){
@@ -2239,7 +2240,7 @@ function postNoSpin(options,callback) {
 					alert("<?tr("You have been logged out")?>");
 					window.location.reload();
 				}	else {
-					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=($_SESSION['locale'] ?? null)?><br><br>"+retval.escapeHTML());
+					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
 					throw new Error("Something went badly wrong!"+options.action);
 				}
 			}
@@ -2304,7 +2305,7 @@ function post(options,callback) {
 					alert("<?tr("You have been logged out")?>");
 					window.location.reload();
 				}	else {
-					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=($_SESSION['locale'] ?? "")?><br><br>"+retval.escapeHTML());
+					$("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
 					throw new Error("Something went badly wrong!"+options.action);
 				}
 			}
@@ -2322,6 +2323,13 @@ function post(options,callback) {
 			if (result.script) {
 				try {
 					eval(result.script);
+				} catch(e) {
+					alert("Could not execute Script "+e);
+				}
+			}
+			if (result.globalScript) {
+				try {
+					eval(result.globalScript);
 				} catch(e) {
 					alert("Could not execute Script "+e);
 				}
@@ -2435,7 +2443,7 @@ function feedWarning(currentServer) {
 }
 
 function tr(string) {
-	<?if ( ! ( ($_SESSION['locale'] ?? "") == "" || ($_SESSION['locale'] ?? "") == "en_US") ) : ?>
+	<?if ( ! ($_SESSION['locale'] == "" || $_SESSION['locale'] == "en_US") ) : ?>
 		return _(string);
 	<?else: ?>
 		return string;
@@ -2481,7 +2489,7 @@ function updateLanguage(language) {
 
 function postUpdateLanguage() {
 	var languageUpdate = $.cookie("updateLanguage");
-	var currentLanguage = "<?=($_SESSION['locale'] ?? "")?>";
+	var currentLanguage = "<?=$_SESSION['locale']?>";
 
 	if (languageUpdate == currentLanguage)
 		window.location.reload();

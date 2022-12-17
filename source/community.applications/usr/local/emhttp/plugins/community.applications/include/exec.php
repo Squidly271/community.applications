@@ -29,9 +29,6 @@ require_once "$docroot/webGui/include/Markdown.php";
 
 $caSettings = parse_plugin_cfg("community.applications");
 
-if ($caSettings['dev'] == "yes")
-	error_reporting(E_ALL);
-
 $caSettings['dockerSearch']  = "yes";
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
 $caSettings['favourite']     = isset($caSettings['favourite']) ? str_replace("*","'",$caSettings['favourite']) : "";
@@ -212,7 +209,6 @@ switch ($_POST['action']) {
 function DownloadApplicationFeed() {
 	global $caPaths, $caSettings, $statistics;
 
-	$lastUpdated = [];
 	$info = readJsonFile($caPaths['info']);
 	exec("rm -rf '{$caPaths['tempFiles']}'");
 	@mkdir($caPaths['templates-community'],0777,true);
@@ -983,9 +979,6 @@ function force_update() {
 	}
 
 	if ( ($latestUpdate['last_updated_timestamp'] ?? 0) != ($lastUpdatedOld['last_updated_timestamp'] ?? 0) ) {
-/* 		if ( $latestUpdate['last_updated_timestamp'] != INF )
-			copy($caPaths['lastUpdated'],$caPaths['lastUpdated-old']); */
-
 		exec("rm -rf '{$caPaths['tempFiles']}'");
 		$GLOBALS['templates'] = [];
 	}
@@ -2344,9 +2337,7 @@ function enableActionCentre() {
 	}
 # wait til templates are downloaded
 	for ( $i=0;$i<100;$i++ ) {
-		$file = readJsonFile($caPaths['community-templates-info']);
-
-		if ( ! $file || empty($file) ) {
+		if ( ! is_file($caPaths['haveTemplates']) ) {
 			debug("Action Centre sleeping - no templates yet");
 			sleep(5);
 		} else {
@@ -2359,7 +2350,7 @@ function enableActionCentre() {
 		postReturn(['status'=>"noaction"]);
 		return;
 	}
-
+	$file = readJsonFile($caPaths['community-templates-info']);
 	$extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
 	$extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
 

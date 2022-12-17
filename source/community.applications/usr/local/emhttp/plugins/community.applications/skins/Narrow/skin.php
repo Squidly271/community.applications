@@ -457,6 +457,7 @@ function getPopupDescriptionSkin($appNumber) {
 	$selected = null;
 
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
+	$info = [];
 
 	if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var/run/dockerd.pid")) ) {
 		$caSettings['dockerRunning'] = "true";
@@ -468,7 +469,6 @@ function getPopupDescriptionSkin($appNumber) {
 		$dockerUpdateStatus = readJsonFile($caPaths['dockerUpdateStatus']);
 	} else {
 		$caSettings['dockerRunning'] = false;
-		$info = [];
 		$dockerRunning = [];
 		$dockerUpdateStatus = [];
 	}
@@ -850,8 +850,8 @@ function getRepoDescriptionSkin($repository) {
 	$templates = &$GLOBALS['templates'];
 
 	$repo = $repositories[$repository];
-	$repo['icon'] = $repo['icon'] ?: "/plugins/dynamix.docker.manager/images/question.png";
-	$repo['bio'] = $repo['bio'] ? markdown($repo['bio']) : "<br><center>".tr("No description present");
+	$repo['icon'] = $repo['icon'] ?? "/plugins/dynamix.docker.manager/images/question.png";
+	$repo['bio'] = isset($repo['bio']) ? markdown($repo['bio']) : "<br><center>".tr("No description present");
 	$favRepoClass = ($caSettings['favourite'] == $repository) ? "fav" : "nonfav";
 
 	$totalApps = $totalLanguage = $totalPlugins = $totalDocker = $totalDownloads = $downloadDockerCount = 0;

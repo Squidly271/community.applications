@@ -59,20 +59,19 @@ function writeJsonFile($filename,$jsonArray) {
 	global $caSettings, $caPaths;
 
 	debug("Write JSON File $filename");
-
-	ca_file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-
+	$result = ca_file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
 	debug("Memory Usage:".round(memory_get_usage()/1048576,2)." MB");
 }
 
-function ca_file_put_contents($filename,$data,$flags = null) {
+function ca_file_put_contents($filename,$data,$flags=0) {
 	$result = @file_put_contents($filename,$data,$flags);
-	if ($result === false) {
-		debug("Unable to write to $filename");
-		$GLOBALS['script'] = "alert('Error writing to ".htmlentities($filename,ENT_QUOTES)."');";
+	
+	if ( $result === false ) {
+		debug("Failed to write to $filename");
+		$GLOBALS['script'] = "alert('Failed to write to ".htmlentities($filename,ENT_QUOTES)."');";
 	}
+	return $result;
 }
-
 function download_url($url, $path = "", $bg = false, $timeout = 45) {
 	global $caSettings, $caPaths;
 
@@ -328,7 +327,7 @@ function versionCheck($template) {
 function readXmlFile($xmlfile,$generic=false,$stats=true) {
 	global $statistics;
 
-	if ( ! $xmlfile || ! is_file($xmlfile) ) return false;
+	if ( $xmlfile && ! is_file($xmlfile) ) return false;
 	$xml = file_get_contents($xmlfile);
 	$o = TypeConverter::xmlToArray($xml,TypeConverter::XML_GROUP);
 	$o = addMissingVars($o);
@@ -579,16 +578,12 @@ function formatTags($leadTemplate,$rename="false") {
 function postReturn($retArray) {
 	global $caSettings, $caPaths;
 
-	
-	if ( isset($_GLOBALS['script']) ) {
-		if ( is_array($retArray) ) {
-			$retArray['script'] = $retArray['script'] ?? null;
-			$retArray['script'] .= $_GLOBALS['script'];
-		}
-	}
-	if (is_array($retArray))
+	if (is_array($retArray)) {
+		if ( isset($GLOBALS['script']) )
+			$retArray['globalScript'] = $GLOBALS['script'];
+		
 		echo json_encode($retArray);
-	else
+	}	else
 		echo $retArray;
 	flush();
 	debug("POST RETURN ({$_POST['action']})\n".var_dump_ret($retArray));
@@ -658,7 +653,7 @@ function getAllInfo($force=false) {
 
 	$containers = [];
 	if ( $force ) {
-		if ( $caSettings['dockerRunning'] ) {
+		if ( $caSettings['dockerRunning'] ?? false ) {
 			$info = $DockerTemplates->getAllInfo(false,true,true);
 			$containers = $DockerClient->getDockerContainers();
 			foreach ($containers as &$container) {
@@ -689,11 +684,11 @@ function debug($str) {
 			debug("Community Applications Version: $caVersion");
 			debug("Unraid version: {$caSettings['unRaidVersion']}");
 			debug("MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5"));
-			$lingo = $_SESSION['locale'] ?: "en_US";
+			$lingo = $_SESSION['locale'] ?? "en_US";
 			debug("Language: $lingo");
 			debug("Settings:\n".print_r($caSettings,true));
 		}
-		ca_file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  $str\n",FILE_APPEND);
+		@file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  $str\n",FILE_APPEND); //don't run through CA wrapper as this is non-critical
 	}
 }
 ########################################
