@@ -218,7 +218,10 @@ $(function(){
 	}
 
 	<? if ( $cfg['debugging'] == "yes" ):?>
-		addBannerWarning("<?tr("Debugging enabled.  This significantly increases the memory used by your browser");?>"),true,true;
+		var debugBanner = addBannerWarning("<?tr("Debugging enabled.  This significantly increases the memory used by your browser");?>");
+		setTimeout(function() {
+			removeBannerWarning(debugBanner);
+		},20000);
 	<?endif;?>
 
 
@@ -1999,7 +2002,6 @@ function updateDisplay(content) {
 			supportContext.forEach(function(item,index){
 				opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
 			});
-			console.log(ID);
 			context.attach('#'+ID, opts);
 		}
 	});

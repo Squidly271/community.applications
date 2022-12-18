@@ -283,6 +283,7 @@ function makeXML($template) {
 # Function to fix differing schema in the appfeed vs what Array2XML class wants #
 #################################################################################
 function fixAttributes(&$template,$attribute) {
+	if ( ! isset($template[$attribute]) ) return;
 	if ( ! is_array($template[$attribute]) ) return;
 	if ( isset($template[$attribute]['@attributes']) ) {
 		$template[$attribute][0]['@attributes'] = $template[$attribute]['@attributes'];
