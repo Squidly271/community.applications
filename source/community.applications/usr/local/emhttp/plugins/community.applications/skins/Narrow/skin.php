@@ -82,8 +82,6 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 		$displayedTemplates[] = $template;
 	}
 
-	$currentServer = @file_get_contents($caPaths['currentServer']);
-
 	# Create entries for skins.
 	foreach ($displayedTemplates as $template) {
 		if ( ! $template['RepositoryTemplate'] ) {
@@ -516,7 +514,6 @@ function getPopupDescriptionSkin($appNumber) {
 		}
 		$template = $file[$index];
 	}
-	$currentServer = file_get_contents($caPaths['currentServer']);
 
 	if ( ! $template['Blacklist'] ) {
 		if ( isset($extraBlacklist[$template['Repository']]) ) {
