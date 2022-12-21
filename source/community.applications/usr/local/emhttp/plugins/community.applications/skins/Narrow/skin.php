@@ -161,7 +161,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								}
 								if ( $caSettings['defaultReinstall'] == "true" && ! $template['Blacklist']) {
 									if ( $template['ID'] !== false ) { # don't allow 2nd if there's not a "default" within CA
-										if ( $template['BranchID'] )
+										if ( $template['BranchID'] ?? false )
 											$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true,'".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');"];
 										else
 											$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second','".str_replace(" ","&#32;",htmlspecialchars($installComment))."','".portsUsed($template)."');"];
