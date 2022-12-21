@@ -328,7 +328,7 @@ function versionCheck($template) {
 function readXmlFile($xmlfile,$generic=false,$stats=true) {
 	global $statistics;
 
-	if ( $xmlfile && ! is_file($xmlfile) ) return false;
+	if ( ! $xmlfile || ! is_file($xmlfile) ) return false;
 	$xml = file_get_contents($xmlfile);
 	$o = TypeConverter::xmlToArray($xml,TypeConverter::XML_GROUP);
 	$o = addMissingVars($o);
