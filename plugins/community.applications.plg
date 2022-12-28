@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2022.12.03">
-<!ENTITY md5       "6f848427329c24e614a08421f2d5bd18">
+<!ENTITY version   "2022.12.28">
+<!ENTITY md5       "2b6392f807d867b2f645e33caa9e2df5">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,22 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://lime-technology.com/forums/topic/38582-plug-in-community-applications/" icon="users">
 
 <CHANGES>
+###2022.12.28
+- Fixed: PHP8 compliance
+- Changed: Debugging banner enabled now will auto-hide
+- Fixed: v1 only templates were getting an extra invalid entry
+- Added: Better error handling for I/O errors
+- Added: Increase memory limit to 256M
+- Fixed: Prevent possible inifinit loop happening on a background task
+- Fixed: Under certain circumstances possible for CA to think a feed update was downloaded even though it wasn't
+- Fixed: Unraid version in debugging logs could be incorrect
+- Fixed: Feed would redownload every time entering in the apps tab
+- Changed: Always display Maintainer and Repo Name on a plugin's sidebar
+- Fixed: Don't process click events on menu items if onclick attribute present
+- Fixed: On occasion the first click to open a side bar could wind up with an empty sidebar
+- Fixed: Install comments popup could have a display aberration in the text under certain circumstances
+- Changed: More memory usage optimizations
+
 ###2022.12.03
 - Fixed: Initial PHP8 compliance
 - Fixed: Don't process menu click events if onclick present
