@@ -2,8 +2,8 @@ b02e9cd2ed57b27e0d29cef4a759b65f  ./Apps.page
 4e55f7483b661af21a25b677179baffe  ./CA_notices.page
 600469ce287cb1ed78dc6cc11675cfaf  ./ca_settings.page
 e8d29607ec792ddf9f6832b10ee70fdc  ./default.cfg
-e7d0e2bf7aeecb97126436a82f36bebf  ./include/exec.php
-ed2434abe05335b87ddd9d2abc929ea8  ./include/helpers.php
+565e74e0eb829851e13b19a8d7746400  ./include/exec.php
+c0992dbf9aa4f038c7ac2a1c492370f1  ./include/helpers.php
 8d15446d4edf60a1f4ac4493a494a301  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md

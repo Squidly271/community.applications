@@ -212,7 +212,6 @@ function DownloadApplicationFeed() {
 	$info = readJsonFile($caPaths['info']);
 	exec("rm -rf '{$caPaths['tempFiles']}'");
 	@mkdir($caPaths['templates-community'],0777,true);
-	writeJsonFile($caPaths['info'],$info);
 
 	$currentFeed = "Primary Server";
 	$downloadURL = randomFile();
@@ -442,7 +441,6 @@ function updatePluginSupport($templates) {
 }
 
 function getConvertedTemplates() {
-	return;
 	global $caPaths, $caSettings, $statistics;
 
 # Start by removing any pre-existing private (converted templates)
@@ -452,28 +450,25 @@ function getConvertedTemplates() {
 
 	$myTemplates = [];
 	foreach ($templates as $template) {
-		if ( ! ($template['Private'] ?? true) )
+		if ( ! $template['Private'] )
 			$myTemplates[] = $template;
 	}
 	$appCount = count($myTemplates);
 	$i = $appCount;
-	unset($Repos);
 
 	if ( ! is_dir($caPaths['convertedTemplates']) ) {
 		writeJsonFile($caPaths['community-templates-info'],$myTemplates);
 		$GLOBALS['templates'] = $myTemplates;
-
 		return;
 	}
 
 	$privateTemplates = glob($caPaths['convertedTemplates']."*/*.xml");
-	foreach ($privateTemplates as $template) {
-		$o = addMissingVars(readXmlFile($template));
-
+	foreach ($privateTemplates as $templateXML) {
+		$o = addMissingVars(readXmlFile($templateXML));
 		if ( ! $o['Repository'] ) continue;
 
 		$o['Private']      = true;
-		$o['RepoName']     = basename(pathinfo($template,PATHINFO_DIRNAME))." Repository";
+		$o['RepoName']     = basename(pathinfo($templateXML,PATHINFO_DIRNAME))." Repository";
 		$o['ID']           = $i;
 		$o['Displayable']  = true;
 		$o['Date']         = ( $o['Date'] ) ? strtotime( $o['Date'] ) : 0;
@@ -487,7 +482,6 @@ function getConvertedTemplates() {
 	}
 	writeJsonFile($caPaths['community-templates-info'],$myTemplates);
 	$GLOBALS['templates'] = $myTemplates;
-	return true;
 }
 
 #############################

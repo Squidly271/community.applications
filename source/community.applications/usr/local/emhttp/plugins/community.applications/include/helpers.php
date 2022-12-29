@@ -652,8 +652,9 @@ function write_ini_file($file,$array) {
 function getAllInfo($force=false) {
 	global $caSettings, $DockerTemplates, $DockerClient, $caPaths;
 
-	$containers = [];
-	if ( $force ) {
+	$containers = readJsonFile($caPaths['info']);
+	
+	if ( $force || ! $containers || empty($containers) ) {
 		if ( $caSettings['dockerRunning'] ?? false ) {
 			$info = $DockerTemplates->getAllInfo(false,true,true);
 			$containers = $DockerClient->getDockerContainers();
@@ -666,7 +667,6 @@ function getAllInfo($force=false) {
 		debug("Forced info update");
 		writeJsonFile($caPaths['info'],$containers);
 	} else {
-		$containers = readJsonFile($caPaths['info']);
 		debug("Cached info update");
 	}
 	return $containers;
