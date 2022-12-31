@@ -1,7 +1,7 @@
 <?PHP
 ###############################################################
 #                                                             #
-# Community Applications copyright 2015-2022, Andrew Zawadzki #
+# Community Applications copyright 2015-2023, Andrew Zawadzki #
 #                   Licenced under GPLv2                      #
 #                                                             #
 ###############################################################
@@ -116,9 +116,6 @@ switch ($_POST['action']) {
 		break;
 	case 'statistics':
 		statistics();
-		break;
-	case 'removePrivateApp':
-		removePrivateApp();
 		break;
 	case 'populateAutoComplete':
 		populateAutoComplete();
@@ -1649,44 +1646,6 @@ function statistics() {
 	</div>";
 
 	postReturn(['statistics'=>$o]);
-}
-
-#######################################
-# Removes a private app from the list #
-#######################################
-function removePrivateApp() {
-	global $caPaths;
-
-	$path = getPost("path",false);
-
-	if ( ! $path || pathinfo($path,PATHINFO_EXTENSION) != "xml") {
-		postReturn(["error"=>"Something went wrong-> not an xml file: $path"]);
-		return;
-	}
-	$path = realpath($path);
-	if ( strpos($path,"/boot/config/community.applications") !== false ) {
-		postReturn(["error"=>"Path not contained within /boot/config/community.applications"]);
-		return;
-	}
-	$templates = &$$GLOBALS['templates'];
-
-	$displayed = readJsonFile($caPaths['community-templates-displayed']);
-	foreach ( $displayed as &$displayType ) {
-		if ( is_array($displayType) ) {
-			foreach ( $displayType as &$display ) {
-				if ( $display['Path'] == $path )
-					$display['Blacklist'] = true;
-			}
-		}
-	}
-	foreach ( $templates as &$template ) {
-		if ( $template['Path'] == $path )
-			$template['Blacklist'] = true;
-	}
-	writeJsonFile($caPaths['community-templates-info'],$templates);
-	writeJsonFile($caPaths['community-templates-displayed'],$displayed);
-	@unlink($path);
-	postReturn(["status"=>"ok"]);
 }
 
 ####################################################
