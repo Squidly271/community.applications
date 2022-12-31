@@ -1184,9 +1184,9 @@ function displayCard($template) {
 	$card .= "<span class='$appType' title='".htmlentities($typeTitle)."'></span>";
 	if ( $ca_fav ) {
 		$favText = $RepositoryTemplate ? tr("This is your favourite repository") : tr("This application is from your favourite repository");
-		$card .= "<span class='favCardBackground' title='".htmlentities($favText)."'></span>";
+		$card .= "<span class='favCardBackground' data-repository='".str_replace("'","",$RepoName)."' title='".htmlentities($favText)."'></span>";
 	}	else
-		$card .= "<span class='favCardBackground' style='display:none;'></span>";
+		$card .= "<span class='favCardBackground' data-repository='".str_replace("'","",$RepoName)."' style='display:none;'></span>";
 
 	$pinStyle = $Pinned ? "" : "display:none;";
 
