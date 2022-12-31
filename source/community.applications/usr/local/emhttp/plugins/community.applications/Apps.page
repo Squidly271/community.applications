@@ -2570,7 +2570,6 @@ function setFavourite(button) {
 			removeBannerWarning(repoBanner);
 			repoBanner = false;
 		},5000);
-		alert(data.fav);
 		$(".favCardBackground").each(function() {
 			if ( $(this).data("repository") == data.fav.replace("'","") )
 				$(this).show("slow");
