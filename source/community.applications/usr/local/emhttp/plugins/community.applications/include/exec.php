@@ -7,6 +7,7 @@
 ###############################################################
 //error_reporting(E_ALL);
 ini_set('memory_limit','256M');  // REQUIRED LINE
+
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 ### Translations section has to be first so that nothing else winds up caching the file(s)
 
@@ -1449,6 +1450,7 @@ function displayTags() {
 ###########################################
 function statistics() {
 	global $caPaths, $caSettings;
+	
 	@unlink($caPaths['community-templates-displayed']);
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);
@@ -1461,7 +1463,7 @@ function statistics() {
 	$statistics['totalModeration'] = count(readJsonFile($caPaths['moderation']));
 	$repositories = readJsonFile($caPaths['repositoryList']);
 	$templates = &$GLOBALS['templates'];
-	pluginDupe($templates);
+	pluginDupe();
 	$invalidXML = readJsonFile($caPaths['invalidXML_txt']);
 	$statistics['private'] = 0;
 	foreach ($templates as $template) {

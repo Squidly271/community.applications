@@ -6,6 +6,8 @@
 #                                                             #
 ###############################################################
 
+ini_set('memory_limit','256M');  // REQUIRED LINE
+
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
 
 require_once "$docroot/plugins/community.applications/include/paths.php";
