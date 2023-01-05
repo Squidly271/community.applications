@@ -583,8 +583,6 @@ function getPopupDescriptionSkin($appNumber) {
 	$ovr = markdown(strip_tags($ovr,"<br>"));
 	$template['display_ovr'] = $ovr;
 
-	$template['ModeratorComment'] .= $template['CAComment'];
-
 	if ( $template['Plugin'] ) {
 		$templateURL = $template['PluginURL'];
 		download_url($templateURL,$caPaths['pluginTempDownload'],"",5);
