@@ -1412,13 +1412,13 @@ function displayPopup($template) {
 		$card .= "<div class='additionalRequirementsHeader'>".tr("Additional Requirements")."</div><div class='additionalRequirements'>{$template['Requires']}</div>";
 
 	if ( $Deprecated )
-		$ModeratorComment .= "<br>".tr("This application template has been deprecated");
+		$ModeratorComment .= "<br>".tr("This application template has been deprecated.");
 	if ( ! $Compatible && ! $UnknownCompatible )
-		$ModeratorComment .= $VerMessage ?: "<br>".tr("This application is not compatible with your version of Unraid");
+		$ModeratorComment .= $VerMessage ?: "<br>".tr("This application is not compatible with your version of Unraid.");
 	if ( $Blacklist )
-		$ModeratorComment .= "<br>".tr("This application template has been blacklisted");
+		$ModeratorComment .= "<br>".tr("This application template has been blacklisted.");
 
-	$ModeratorComment .= $CAComment;
+	$ModeratorComment .= "  $CAComment";
 	if ( $Language && $LanguagePack !== "en_US" ) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
 	}
