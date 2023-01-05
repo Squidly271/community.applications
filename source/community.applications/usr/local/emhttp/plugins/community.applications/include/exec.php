@@ -2231,7 +2231,7 @@ function getLastUpdate($ID) {
 		$regs = $app['Repository'];
 	}
 	$reg = explode(":",$regs);
-	if ( ($reg[1] ?? "") !== "latest" )
+	if ( ($reg[1] ?? "latest") !== "latest" )
 		return tr("Unknown");
 
 	if ( !strpos($reg[0],"/") )
