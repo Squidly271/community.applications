@@ -1002,6 +1002,7 @@ function displaySearchResults($pageNumber) {
 	$file = $tempFile['results'];
 	$templates = &$GLOBALS['templates'];
 	$count = 0;
+	$caSettings['NoInstalls'] = is_file($caPaths['warningAccepted']) ? false : true;
 	
 	$ct = "<div>".tr("NOTE You must visit the dockerHub page to gather the information required to install correctly")."<span class='templateSearch' style='float:right'>Show CA templates</span></div><br><br>";
 	$ct .= "<div class='ca_templatesDisplay'>";
@@ -1013,7 +1014,8 @@ function displaySearchResults($pageNumber) {
 		$result['Category'] = "Docker&nbsp;Hub&nbsp;Search";
 		$result['Description'] = $result['Description'] ?: tr("No description present");
 		$result['Compatible'] = true;
-		$result['actionsContext'] = [["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"dockerConvert({$result['ID']});"]];
+		if ( ! $caSettings['NoInstalls'] )
+			$result['actionsContext'] = [["icon"=>"ca_fa-install","text"=>tr("Install"),"action"=>"dockerConvert({$result['ID']});"]];
 
 		$templateSearch = searchArray($templates,"Repository",$result['Repository']);
 		if ( $templateSearch === false )
