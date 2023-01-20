@@ -2360,10 +2360,10 @@ function enableActionCentre() {
 					$o['actionCentre'] = true;
 
 				if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
-					if ( $extraBlacklist[$o['Repository']] ) {
+					if ( isset($extraBlacklist[$o['Repository']]) ) {
 						$o['Blacklist'] = true;
 					}
-					if ( $extraDeprecated[$o['Repository']] ) {
+					if ( isset($extraDeprecated[$o['Repository']]) ) {
 						$o['Deprecated'] = true;
 					}
 				}

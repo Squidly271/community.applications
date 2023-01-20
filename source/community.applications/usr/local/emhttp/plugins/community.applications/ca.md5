@@ -2,9 +2,9 @@
 106b521c1feebda4d7b3f558cc016cda  ./CA_notices.page
 eb1f0ee4148747c0473e73e4e973994f  ./ca_settings.page
 e8d29607ec792ddf9f6832b10ee70fdc  ./default.cfg
-d6ad6782e91a4d20d54778cab0f302de  ./include/exec.php
+ca555034b6a9134a338cac8e8acae607  ./include/exec.php
 3f43116c462378d9578a90c413b93afa  ./include/helpers.php
-3dcc75f434545ca6bee2327bf9888a35  ./include/paths.php
+8e053d6cd83fbe2202c13b692beabb4f  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
 ec075d8b9758ba00bda9b02c4692f972  ./scripts/checkForUpdates.php
