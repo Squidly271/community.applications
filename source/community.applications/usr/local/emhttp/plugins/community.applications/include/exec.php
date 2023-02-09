@@ -1270,12 +1270,14 @@ function previous_apps() {
 						if ( ! file_exists("/boot/config/plugins/".basename($oldplug)) ) {
 							if ( $template['Blacklist'] || ( ($caSettings['hideIncompatible'] == "true") && (! $template['Compatible']) ) ) continue;
 							$oldPlugURL = trim(plugin("pluginURL",$oldplug));
+							if ( ! $oldPlugURL )
+								continue;
 							if ( strtolower(trim($template['PluginURL'])) != strtolower(trim($oldPlugURL)) ) {
 								continue;
 							}
 							$template['Removable'] = true;
 							$template['InstallPath'] = $oldplug;
-							if ( $alreadySeen[$oldPlugURL] )
+							if ( isset($alreadySeen[$oldPlugURL]) )
 								continue;
 							$alreadySeen[$oldPlugURL] = true;
 							$displayed[] = $template;
@@ -2342,10 +2344,10 @@ function enableActionCentre() {
 						}
 						if ( $searchResult === false ) {
 							$runningFlag = true;
-							if ( $extraBlacklist[$o['Repository']] ) {
+							if ( $extraBlacklist[$o['Repository']] ?? false ) {
 								$o['Blacklist'] = true;
 							}
-							if ( $extraDeprecated[$o['Repository']] ) {
+							if ( $extraDeprecated[$o['Repository']] ?? false ) {
 								$o['Deprecated'] = true;
 							}
 						}

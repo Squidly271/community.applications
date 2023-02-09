@@ -319,10 +319,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$template['Pinned'] = $pinnedApps["library/{$template['Repository']}&{$template['SortName']}"] ?? false;
 			else
 				$template['Pinned'] = $pinnedApps["{$template['Repository']}&{$template['SortName']}"] ?? false;
-			$template['Twitter'] = $template['Twitter'] ?: ($repositories[$template['Repo']]['Twitter'] ?? null);
-			$template['Reddit'] = $template['Reddit'] ?: ($repositories[$template['Repo']]['Reddit'] ?? null);
-			$template['Facebook'] = $template['Facebook'] ?: ($repositories[$template['Repo']]['Facebook'] ?? null);
-			$template['Discord'] = $template['Discord'] ?: ($repositories[$template['RepoName']]['Discord'] ?? null);
+			$template['Twitter'] = $template['Twitter'] ?? ($repositories[$template['Repo']]['Twitter'] ?? null);
+			$template['Reddit'] = $template['Reddit'] ?? ($repositories[$template['Repo']]['Reddit'] ?? null);
+			$template['Facebook'] = $template['Facebook'] ?? ($repositories[$template['Repo']]['Facebook'] ?? null);
+			$template['Discord'] = $template['Discord'] ?? ($repositories[$template['RepoName']]['Discord'] ?? null);
 
 			$previousAppName = $template['Plugin'] ? $template['PluginURL'] : $template['Name'];
 			if ( isset($checkedOffApps[$previousAppName]) )
@@ -1063,6 +1063,7 @@ function displayCard($template) {
 	extract($template);
 
 	$class = "spotlightHome";
+	$RepoName = $RepoName ?? "";
 
 	if ( $RepositoryTemplate )
 		$appType = "appRepository";
@@ -1100,6 +1101,7 @@ function displayCard($template) {
 	else
 		$author = $Author;
 
+	$author = $author ?? "";
 	if ( $author == $RepoName ) {
 		if (strpos($author,"' Repository") )
 			$author = sprintf(tr("%s's Repository"),str_replace("' Repository","",$author));
