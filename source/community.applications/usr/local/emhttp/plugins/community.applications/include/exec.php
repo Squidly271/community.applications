@@ -1134,11 +1134,11 @@ function previous_apps() {
 							}
 
 							if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
-								if ( $extraBlacklist[$o['Repository']] ) {
+								if ( $extraBlacklist[$o['Repository']] ?? false) {
 									$o['Blacklist'] = true;
 									$o['ModeratorComment'] = $extraBlacklist[$o['Repository']];
 								}
-								if ( $extraDeprecated[$o['Repository']] ) {
+								if ( $extraDeprecated[$o['Repository']] ?? false ) {
 									$o['Deprecated'] = true;
 									$o['ModeratorComment'] = $extraDeprecated[$o['Deprecated']];
 								}
