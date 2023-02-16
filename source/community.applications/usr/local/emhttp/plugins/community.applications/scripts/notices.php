@@ -23,7 +23,7 @@ $paths['local']          = "/tmp/GitHub/CA_notifications/CA_notices.json";  // o
 $paths['dismiss']        = "/boot/config/plugins/community.applications/notifications_dismissed.json";
 
 $caSettings = $cfg = parse_plugin_cfg("community.applications");
-file_put_contents("/tmp/blah",print_r($caPaths,true));
+@mkdir($caPaths['CA_logs'],0777,true);
 if ( $cfg['notifications'] == "no" ) {
 	echo json_encode([]);
 	exit();
