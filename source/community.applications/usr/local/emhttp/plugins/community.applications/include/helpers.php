@@ -59,7 +59,8 @@ function writeJsonFile($filename,$jsonArray) {
 	global $caSettings, $caPaths;
 
 	debug("Write JSON File $filename");
-	$result = ca_file_put_contents($filename,json_encode($jsonArray, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+	$jsonFlags = $caSettings['dev'] == "yes" ? JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT : JSON_UNESCAPED_SLASHES;
+	$result = ca_file_put_contents($filename,json_encode($jsonArray, $jsonFlags));
 	debug("Memory Usage:".round(memory_get_usage()/1048576,2)." MB");
 }
 
