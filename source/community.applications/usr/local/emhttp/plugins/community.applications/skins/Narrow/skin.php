@@ -319,10 +319,17 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$template['Pinned'] = $pinnedApps["library/{$template['Repository']}&{$template['SortName']}"] ?? false;
 			else
 				$template['Pinned'] = $pinnedApps["{$template['Repository']}&{$template['SortName']}"] ?? false;
-			$template['Twitter'] = $template['Twitter'] ?? ($repositories[$template['Repo']]['Twitter'] ?? null);
-			$template['Reddit'] = $template['Reddit'] ?? ($repositories[$template['Repo']]['Reddit'] ?? null);
-			$template['Facebook'] = $template['Facebook'] ?? ($repositories[$template['Repo']]['Facebook'] ?? null);
-			$template['Discord'] = $template['Discord'] ?? ($repositories[$template['RepoName']]['Discord'] ?? null);
+			if ( isset($template['Repo']) ) {
+				$template['Twitter'] = $template['Twitter'] ?? ($repositories[$template['Repo']]['Twitter'] ?? null);
+				$template['Reddit'] = $template['Reddit'] ?? ($repositories[$template['Repo']]['Reddit'] ?? null);
+				$template['Facebook'] = $template['Facebook'] ?? ($repositories[$template['Repo']]['Facebook'] ?? null);
+				$template['Discord'] = $template['Discord'] ?? ($repositories[$template['RepoName']]['Discord'] ?? null);
+			} else {
+				$template['Twitter'] = $template['Twitter'] ?? null;
+				$template['Reddit'] = $template['Reddit'] ?? null;
+				$template['Facebook'] = $template['Facebook'] ?? null;
+				$template['Discord'] = $template['Discord'] ?? null;
+			}				
 
 			$previousAppName = $template['Plugin'] ? $template['PluginURL'] : $template['Name'];
 			if ( isset($checkedOffApps[$previousAppName]) )
@@ -637,7 +644,7 @@ function getPopupDescriptionSkin($appNumber) {
 							$template['UpdateAvailable'] = false;
 						}
 						if ( $caSettings['defaultReinstall'] == "true" && ! $template['Blacklist'] && $template['ID'] !== false) {
-							if ( $template['BranchID'] )
+							if ( $template['BranchID'] ?? false )
 								$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"displayTags('{$template['ID']}',true,'','".portsUsed($template)."');"];
 							else
 								$actionsContext[] = ["icon"=>"ca_fa-install","text"=>tr("Install second instance"),"action"=>"popupInstallXML('".addslashes($template['Path'])."','second','','".portsUsed($template)."');"];
@@ -1101,6 +1108,8 @@ function displayCard($template) {
 	else
 		$author = $Author;
 
+	$ID = $ID ?? "";
+
 	$author = $author ?? "";
 	if ( $author == $RepoName ) {
 		if (strpos($author,"' Repository") )
@@ -1293,6 +1302,7 @@ function displayCard($template) {
 	$card .= "</div>";
 	if ( $Installed || $Uninstall ) {
 		$flagTextStart = tr("Installed")."<br>";
+		$flagTextEnd = "";
 	} else {
 		$flagTextStart = "&nbsp;";
 		$flagTextEnd = "&nbsp;";
@@ -1320,7 +1330,7 @@ function displayCard($template) {
 			</div>
 		";
 	} elseif ( isset($Compatible) && ! $Compatible ) {
-		$verMsg = $VerMessage ?: tr("This application is not compatible with your version of Unraid");
+		$verMsg = $VerMessage ?? tr("This application is not compatible with your version of Unraid");
 		$card .= "
 			<div class='warningCardBackground'>
 				<div class='betaPopupText ca_center' title='$verMsg'>$flagTextStart".tr("Incompatible")."$flagTextEnd</div>
@@ -1417,8 +1427,8 @@ function displayPopup($template) {
 
 	if ( $Deprecated )
 		$ModeratorComment .= "<br>".tr("This application template has been deprecated");
-	if ( ! $Compatible && ! $UnknownCompatible )
-		$ModeratorComment .= $VerMessage ?: "<br>".tr("This application is not compatible with your version of Unraid.");
+	if ( ! $Compatible && ! ($UnknownCompatible ?? false) )
+		$ModeratorComment .= $VerMessage ?? "<br>".tr("This application is not compatible with your version of Unraid.");
 	if ( $Blacklist )
 		$ModeratorComment .= "<br>".tr("This application template has been blacklisted.");
 

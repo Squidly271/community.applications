@@ -26,7 +26,6 @@ require_once "$docroot/plugins/$plugin/include/paths.php";
 require_once "$docroot/plugins/$plugin/include/helpers.php";
 require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 
-
 $DockerClient = new DockerClient();
 $DockerTemplates = new DockerTemplates();
 
@@ -116,6 +115,13 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 if ( is_file($caPaths['docker_cfg']) )
 	getAllInfo(true,false);
 
+// Check memory to see if CA's minimums are met (4G same as base OS)
+
+$memRaw = trim(str_replace("MemTotal:","",exec("cat /proc/meminfo | grep MemTotal:")));
+$memoryInstalled = explode(" ",$memRaw);
+
+$CArequirementsNOTmet = $memoryInstalled[0] < 3000000;
+
 
 function tr($string,$ret=false) {
 	$string = str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
@@ -186,6 +192,22 @@ $(function(){
 	window.onerror = function(msg,url,lineNo,columnNo, error) {
 		post({action:'javascriptError',msg:msg,url:url,lineNo:lineNo,columnNo:columnNo,error:error});
 	}
+		<? if ( $CArequirementsNOTmet ) : ?>
+	  $(".ca_templatesDisplay").hide();
+		swal({
+			title: "<?tr("Not Enough Memory")?>",
+			text: '<?tr('Community Applications (and Unraid OS) have a minimum required memory of 4G.  CA cannot run without those mimimums being met');?>',
+			html: true,
+			type: 'error',
+			showCancelButton: false,
+			showConfirmButton: true,
+			cancelButtonText: "<?tr('Cancel')?>",
+			confirmButtonText: "<?tr('I Understand')?>"
+		}, function (isConfirm) {
+			history.back();
+		});
+		return;
+	<? endif; ?>
 	<? if ( ! is_file($caPaths['docker_cfg']) ): ?>
 		// This file is guaranteed to exist on the flash drive.  Even though 6.10Beta3+ includes similar code, keep this code because CA just can't function properly with a flash offline / corrupted.
 		$(".mainArea,.menuItems").html("");
@@ -719,6 +741,7 @@ $(function(){
 		});
 	<?endif;?>
 	/* Everything is now initialized.  This is the start of the actual "real" code */
+	
 	if ( "<?=$firstRun?>" == "true" ) {
 	  $(".ca_templatesDisplay").hide();
 		swal({

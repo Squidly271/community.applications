@@ -229,6 +229,7 @@ function DownloadApplicationFeed() {
 	$lastUpdated['last_updated_timestamp'] = $ApplicationFeed['last_updated_timestamp'];
 	writeJsonFile($caPaths['lastUpdated-old'],$lastUpdated);
 
+	$invalidXML = [];
 	foreach ($ApplicationFeed['applist'] as $o) {
 		if ( (! isset($o['Repository']) ) && (! isset($o['Plugin']) ) && (!isset($o['Language']) )){
 			$invalidXML[] = $o;
@@ -1127,7 +1128,7 @@ function previous_apps() {
 						if ( $installed == "action" ) {
 							$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
 
-							if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
+							if ( $tmpRepo && ($dockerUpdateStatus[$tmpRepo]['status'] ?? null) == "false" ) {
 								$o['actionCentre'] = true;
 								$o['updateAvailable'] = true;
 								$updateCount++;
@@ -1673,7 +1674,8 @@ function populateAutoComplete() {
 				$autoComplete[strtolower($template['Language'])] = $template['Language'];
 				$autoComplete[strtolower($template['LanguageLocal'])] = $template['LanguageLocal'];
 			} else {
-				$autoComplete[$template['Repo']] = $template['Repo'];
+				if ( isset($template['Repo']) )
+					$autoComplete[$template['Repo']] = $template['Repo'];
 			}
 			$name = trim(strtolower($template['SortName']));
 
