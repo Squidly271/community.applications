@@ -115,12 +115,12 @@ if ( is_file("/var/run/dockerd.pid") && is_dir("/proc/".@file_get_contents("/var
 if ( is_file($caPaths['docker_cfg']) )
 	getAllInfo(true,false);
 
-// Check memory to see if CA's minimums are met (4G same as base OS)
+// Check memory to see if CA's minimums are met (4G same as base OS) - Test is actually for 2.5G though
 
 $memRaw = trim(str_replace("MemTotal:","",exec("cat /proc/meminfo | grep MemTotal:")));
 $memoryInstalled = explode(" ",$memRaw);
 
-$CArequirementsNOTmet = $memoryInstalled[0] < 3000000;
+$CArequirementsNOTmet = $memoryInstalled[0] < 2500000;
 
 
 function tr($string,$ret=false) {
