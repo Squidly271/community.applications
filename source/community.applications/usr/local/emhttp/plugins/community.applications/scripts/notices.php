@@ -13,6 +13,7 @@ require_once "$docroot/plugins/dynamix.docker.manager/include/DockerClient.php";
 require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 require_once "$docroot/plugins/community.applications/include/helpers.php";
+require_once "$docroot/plugins/community.applications/include/paths.php";
 
 $paths['notices_remote'] = "https://raw.githubusercontent.com/Squidly271/CA_notifications/master/CA_notices.json";
 $paths['CA_root']        = "/tmp/ca_notices";
@@ -21,8 +22,8 @@ $paths['bannerNotices']  = "{$paths['CA_root']}/notices";
 $paths['local']          = "/tmp/GitHub/CA_notifications/CA_notices.json";  // only used when run from the command line for debugging
 $paths['dismiss']        = "/boot/config/plugins/community.applications/notifications_dismissed.json";
 
-$cfg = parse_plugin_cfg("community.applications");
-
+$caSettings = $cfg = parse_plugin_cfg("community.applications");
+file_put_contents("/tmp/blah",print_r($caPaths,true));
 if ( $cfg['notifications'] == "no" ) {
 	echo json_encode([]);
 	exit();
@@ -99,11 +100,11 @@ switch ($action) {
 			if ( ! $plugin && $dockerRunning) {
 				$info = $DockerClient->getDockerContainers();
 				$search = explode(":",$app);
-				if ( ! $search[1] )
+				if ( ! ($search[1] ?? false) )
 					$app .= ":latest";
 				
 				foreach($info as $container) {
-					if ( $search[1] == "*" ) {
+					if ( ($search[1] ?? "") == "*" ) {
 						if ( explode(":",$container['Image'])[0] == $search[0])
 							$found = true;
 							break;
@@ -140,7 +141,7 @@ switch ($action) {
 				continue;
 			}
 
-			if ( $plugin && $notice['Conditions']['plugin'] ) {
+			if ( $plugin && ($notice['Conditions']['plugin'] ?? false) ) {
 				$pluginVersion = @plugin("version","/var/log/plugins/".basename($app));
 				if ( ! $pluginVersion ) {
 					debug1("Unable to determine plugin version.  Carrying on");
@@ -213,7 +214,8 @@ switch ($action) {
 				debug1("Executing {$notice['Conditions']['code']}");
 				conditionsMet(eval($notice['Conditions']['code']));
 			}
-
+	
+			$unRaidNotifications = [];
 			if ($conditionsMet) {
 				debug1("Conditions Met.  Send the notification!\n");
 				if ( $sendNotification ) {

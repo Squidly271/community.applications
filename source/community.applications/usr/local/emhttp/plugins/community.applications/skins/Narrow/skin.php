@@ -852,6 +852,9 @@ function getRepoDescriptionSkin($repository) {
 	$templates = &$GLOBALS['templates'];
 
 	$repo = $repositories[$repository];
+	$iconPrefix = $repo['icon'] ? "<a class='screenshot mfp-image' href='{$repo['icon']}'>" : "";
+	$iconPostfix = $repo['icon'] ? "</a>" : "";
+	
 	$repo['icon'] = $repo['icon'] ?? "/plugins/dynamix.docker.manager/images/question.png";
 	$repo['bio'] = isset($repo['bio']) ? markdown($repo['bio']) : "<br><center>".tr("No description present");
 	$favRepoClass = ($caSettings['favourite'] == $repository) ? "fav" : "nonfav";
@@ -887,7 +890,7 @@ function getRepoDescriptionSkin($repository) {
 		<div class='popUpBack'>".tr("BACK")."</div>
 		<div class='ca_popupIconArea'>
 			<div class='popupIcon'>
-				<img class='popupIcon' src='{$repo['icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>
+				$iconPrefix<img class='popupIcon' src='{$repo['icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>$iconPostfix
 			</div>
 			<div class='popupInfo'>
 				<div class='popupName'>$repository</div>
@@ -1554,12 +1557,14 @@ function displayPopup($template) {
 
 	$card .= "</table>";
 	if ( $Repo || $Private ) {
+		$remoteIconPrefix = startsWith($ProfileIcon,"http") ? "<a class='screenshot mfp-image' href='$ProfileIcon'>" : "";
+		$remoteIconPostfix = $remoteIconPrefix ? "</a>" : "";
 		$card .= "
 			</div>
 			<div class='popupInfoRight'>
 					<div class='popupAuthorTitle'>".tr("Maintainer")."</div>
 					<div><div class='popupAuthor'>$RepoName</div>
-					<div class='popupAuthorIcon'><img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;' alt='Repository Icon'></img></div>
+					<div class='popupAuthorIcon'>$remoteIconPrefix<img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;' alt='Repository Icon'></img>$remoteIconPostfix</div>
 					</div>
 					<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("All Apps")."</div>
 					<div class='repoPopup' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Profile")."</div>
