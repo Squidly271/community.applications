@@ -3072,7 +3072,7 @@ function setupActionCentre() {
 		if ( ret.status == "action" ) {
 			if ( !$(".actionCentre").is(":visible") ) {
 				if ( ! actionCentreRestoreState ) {
-					acBanner = addBannerWarning("<?tr("Action Centre Enabled")?>",false,true);
+					acBanner = addBannerWarning("<?tr("Action Centre Enabled")?>",false);
 					setTimeout(function() {
 						removeBannerWarning(acBanner);
 					},10000);

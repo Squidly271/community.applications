@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.02.16">
-<!ENTITY md5       "755b8c3a0f28fd9734a8691b08fbeb85">
+<!ENTITY version   "2023.02.17">
+<!ENTITY md5       "1073cfd6e7170e8dad9883ef3810a7af">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://unraid.net/forums/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2023.02.17
+- Dismissable AC banner warning
+
 ###2023.02.16
 - PHP8 Upgrades
 - Added: Treat developer profile pics as a screenshot (click and zoom)
