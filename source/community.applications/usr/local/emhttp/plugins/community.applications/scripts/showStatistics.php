@@ -62,7 +62,7 @@ switch ($_GET['arg1']) {
 		echo "</table></tt>";
 		break;
 	case 'Invalid':
-		$moderation = @file_get_contents($caPaths['invalidXML_txt']);
+		$moderation = json_encode(json_decode(@file_get_contents($caPaths['invalidXML_txt'])),JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 		if ( ! $moderation ) {
 			echo "<br><br><div class='ca_center'><span class='ca_bold'>".tr("No invalid templates found")."</span></div>";
 			return;
