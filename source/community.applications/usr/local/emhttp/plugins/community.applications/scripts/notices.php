@@ -127,7 +127,7 @@ switch ($action) {
 			if ( $found ) {
 				debug1("   Found  Looking for conditions\n");
 				$conditionsMet = true;
-				if ( $notice['Conditions']['unraid'] ) {
+				if ( $notice['Conditions']['unraid'] ?? false ) {
 					$unraid = parse_ini_file("/etc/unraid-version");
 					$unraidVersion = $unraid['version'];
 					foreach ($notice['Conditions']['unraid'] as $condition) {
@@ -210,7 +210,7 @@ switch ($action) {
 				}
 			}
 
-			if ( $notice['Conditions']['code'] && $conditionsMet) {
+			if ( ($notice['Conditions']['code'] ?? false) && $conditionsMet) {
 				debug1("Executing {$notice['Conditions']['code']}");
 				conditionsMet(eval($notice['Conditions']['code']));
 			}

@@ -1730,7 +1730,6 @@ function getSelectedApps() {
 		var plugin = new Array();
 		var language = new Array();
 	}
-
 	$(".ca_multiselect").each(function() {
 		var name = $(this).attr("data-name");
 		var lingo = $(this).attr("data-language");
@@ -1748,12 +1747,6 @@ function getSelectedApps() {
 					language.push(lingo);
 					break;
 			}
-
-/* 			if ( $(this).attr("data-type") == "plugin" ) {
-				plugin.push(name);
-			} else {
-				docker.push(name);
-			} */
 		} else {
 			var index= deletePaths.indexOf(deletechecked);
 			if ( index > -1 ) {

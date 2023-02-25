@@ -1,4 +1,4 @@
-a99376272564dbc06b7c90bd5248923e  ./Apps.page
+7b855f6ee50b7abfd6c9c35f1de647df  ./Apps.page
 106b521c1feebda4d7b3f558cc016cda  ./CA_notices.page
 eb1f0ee4148747c0473e73e4e973994f  ./ca_settings.page
 e8d29607ec792ddf9f6832b10ee70fdc  ./default.cfg
@@ -15,7 +15,7 @@ fbd7122dbf5312c30d164312aa6c13e4  ./scripts/installMultiPlugin.php
 524afab04ca930f59117a846f819fb2f  ./scripts/installPluginUpdate.sh
 53879be89ce610c57922c1f25ba2b1d2  ./scripts/installUpdate.php
 5846421e95b475e1156c3f68164ccc4f  ./scripts/languageInstall.sh
-73ea7f95eb7dd44beccabc0eef5b30e9  ./scripts/notices.php
+053585561f8764e01787459f4bcf3a2a  ./scripts/notices.php
 ed42a35b3524b55e2024cdd56a795733  ./scripts/pluginInstall.php
 3888e6583182d12a6e993488f0bbbae0  ./scripts/showStatistics.php
 4425f8fd4ef662a7dc65cee01de3e419  ./scripts/updatePLG.sh
