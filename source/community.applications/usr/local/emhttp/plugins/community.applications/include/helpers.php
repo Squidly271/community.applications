@@ -623,9 +623,10 @@ function languageCheck($template) {
 		return false;
 
 	$OSupdates = readXmlFile($dynamixUpdate,true);   // Because the OS might check for an update before the feed
-	if ( ! $OSupdates )
+	if ( ! $OSupdates ) {
+		$OSupdates = [];
 		$OSupdates['Version'] = "1900.01.01";
-
+	} 
 	$xmlFile = readXmlFile($installedLanguage,true);
 
 	if ( !$xmlFile['Version'] ) return false;
