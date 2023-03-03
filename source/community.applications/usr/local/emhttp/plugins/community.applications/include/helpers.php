@@ -268,12 +268,13 @@ function makeXML($template) {
 	fixAttributes($template,"Config");
 
 # Sanitize the Requires entry if there is any CA links within it
-	if ($template['Requires'] && $searchMatches)
+	if ($template['Requires'] ?? false) {
 		preg_match_all("/\/\/(.*?)&#92;/m",$template['Requires'],$searchMatches);
-	
-	if ( isset($searchMatches[1]) && count($searchMatches[1]) ) {
-		foreach ($searchMatches[1] as $searchResult) {
-			$template['Requires'] = str_replace("//$searchResult\\\\",$searchResult,$template['Requires']);
+		
+		if ( isset($searchMatches[1]) && count($searchMatches[1]) ) {
+			foreach ($searchMatches[1] as $searchResult) {
+				$template['Requires'] = str_replace("//$searchResult\\\\",$searchResult,$template['Requires']);
+			}
 		}
 	}
 	$Array2XML = new Array2XML();
