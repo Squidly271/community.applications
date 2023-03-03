@@ -847,7 +847,7 @@ function get_content() {
 			} else continue;
 		}
 		if ( $template['Deprecated'] && $displayDeprecated && ! $template['Blacklist']) {
-			if ( ! $template['BranchID'] )
+			if ( ! ($template['BranchID']??false) )
 				$display[] = $template;
 			continue;
 		}
@@ -1468,29 +1468,30 @@ function statistics() {
 	$templates = &$GLOBALS['templates'];
 	pluginDupe();
 	$invalidXML = readJsonFile($caPaths['invalidXML_txt']);
-	$statistics['private'] = 0;
+	$statistics['blacklist'] = $statistics['plugin'] = $statistics['docker'] = $statistics['private'] = $statistics['totalDeprecated'] = $statistics['totalIncompatible'] = $statistics['official'] = $statistics['invalidXML'] = 0;
+	
 	foreach ($templates as $template) {
-		if ( $template['Deprecated'] && ! $template['Blacklist'] && ! $template['BranchID']) $statistics['totalDeprecated']++;
+		if ( ($template['Deprecated']??false) && ! ($template['Blacklist']??false) && ! ($template['BranchID']??false)) $statistics['totalDeprecated']++;
 
-		if ( ! $template['Compatible'] ) $statistics['totalIncompatible']++;
+		if ( ! ($template['Compatible']??false) ) $statistics['totalIncompatible']++;
 
-		if ( $template['Blacklist'] ) $statistics['blacklist']++;
+		if ( $template['Blacklist']??false ) $statistics['blacklist']++;
 
-		if ( $template['Private'] && ! $template['Blacklist']) {
-			if ( ! ($caSettings['hideDeprecated'] == 'true' && $template['Deprecated']) )
+		if ( ($template['Private']??false) && ! ($template['Blacklist']??false)) {
+			if ( ! ($caSettings['hideDeprecated'] == 'true' && ($template['Deprecated']??false)) )
 				$statistics['private']++;
 		}
 
-		if ( $template['Official'] && ! $template['Blacklist'] )
+		if ( ($template['Official']??false) && ! ($template['Blacklist']??false) )
 			$statistics['official']++;
 
-		if ( ! $template['PluginURL'] && ! $template['Repository'] )
+		if ( ! ($template['PluginURL']??false) && ! ($template['Repository']??false) )
 			$statistics['invalidXML']++;
 		else {
-			if ( $template['PluginURL'] )
+			if ( $template['PluginURL'] ?? false)
 				$statistics['plugin']++;
 			else {
-				if ( $template['BranchID'] ) {
+				if ( $template['BranchID'] ?? false) {
 					continue;
 				} else {
 					$statistics['docker']++;
@@ -1851,7 +1852,7 @@ function createXML() {
 
 		if ( $template['Config'] ) {
 			$testarray = $template['Config'] ?: [];
-			if (!$testarray[0]) $testarray = [$testarray];
+			if (!($testarray[0]??false)) $testarray = [$testarray];
 
 			foreach ($testarray as &$config) {
 				if ( is_array($config['@attributes']) ) {

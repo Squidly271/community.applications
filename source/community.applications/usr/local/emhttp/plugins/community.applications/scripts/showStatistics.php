@@ -16,8 +16,9 @@ require_once "$docroot/plugins/dynamix/include/Helpers.php";
 
 $_SERVER['REQUEST_URI'] = "docker/apps";
 require_once "$docroot/plugins/dynamix/include/Translations.php";
-
 require_once "$docroot/plugins/community.applications/include/helpers.php";
+
+$caSettings = parse_plugin_cfg("community.applications");
 
 function tr($string,$ret=true) {
 	$string =  str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
@@ -98,7 +99,7 @@ switch ($_GET['arg1']) {
 			foreach (array_keys($dupeList) as $dupe) {
 				echo "<span class='ca_bold'>$dupe</span><br>";
 				foreach ($templates as $template) {
-					if ( basename($template['PluginURL']) == $dupe ) {
+					if ( basename($template['PluginURL']??"") == $dupe ) {
 						echo "<tt>{$template['Author']} - {$template['Name']}<br></tt>";
 					}
 				}
@@ -106,6 +107,7 @@ switch ($_GET['arg1']) {
 			}
 		}
 		$templates = readJsonFile($caPaths['community-templates-info']);
+		$dupeRepos = "";
 		foreach ($templates as $template) {
 			$template['Repository'] = str_replace(":latest","",$template['Repository']);
 			$count = 0;
@@ -130,8 +132,9 @@ switch ($_GET['arg1']) {
 	case 'Moderation':
 		echo "<br><div class='ca_center'><strong>".tr("If any of these entries are incorrect then contact the moderators of CA to discuss")."</strong></div><br><br>";
 		$moderation = file_get_contents($caPaths['moderation']);
+		$repoComment = "";
 		foreach ($repositories as $repo) {
-			if ($repo['RepoComment']) {
+			if ($repo['RepoComment']??false) {
 				$repoComment .= "<tr><td>{$repo['name']}</td><td>{$repo['RepoComment']}</td></tr>";
 			}
 		}

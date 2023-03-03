@@ -783,7 +783,7 @@ function getPopupDescriptionSkin($appNumber) {
 	if ( $template['Registry'] )
 		$supportContext[] = ["icon"=>"ca_fa-docker","link"=>$template['Registry'],"text"=> tr("Registry")];
 	if ( $caSettings['dev'] == "yes" )
-		$supportContext[] = ["icon"=>"ca_fa-template","link"=> $template['caTemplateURL'] ?: $template['TemplateURL'],"text"=>tr("Application Template")];
+		$supportContext[] = ["icon"=>"ca_fa-template","link"=> $template['caTemplateURL'] ?: ($template['TemplateURL']??""),"text"=>tr("Application Template")];
 
 	$author = $template['PluginURL'] ? $template['PluginAuthor'] : $template['SortAuthor'];
 

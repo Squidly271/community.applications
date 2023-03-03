@@ -244,7 +244,7 @@ function fixTemplates($template) {
 			} else {
 				if (is_array($template['Config'])) {
 					foreach ($template['Config'] as &$config) {
-						if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$config['@attributes']['Description']) ) {
+						if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$config['@attributes']['Description']??"") ) {
 							$config['@attributes']['Description'] = "";
 						}
 					}
@@ -623,10 +623,9 @@ function languageCheck($template) {
 		return false;
 
 	$OSupdates = readXmlFile($dynamixUpdate,true);   // Because the OS might check for an update before the feed
-	if ( ! $OSupdates ) {
-		$OSupdates = [];
+	if ( ! $OSupdates )
 		$OSupdates['Version'] = "1900.01.01";
-	} 
+
 	$xmlFile = readXmlFile($installedLanguage,true);
 
 	if ( !$xmlFile['Version'] ) return false;
