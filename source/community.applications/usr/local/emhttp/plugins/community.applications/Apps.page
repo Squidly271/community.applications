@@ -815,7 +815,7 @@ $(function(){
 			actionCentreRestoreState = true;
 		setupActionCentre();
 	}
-	if ( true ) {
+	if ( true && "<?=$pluginWarning?>" !== "false"  && "<?=$firstRun?>" !== "true") {
 		swal({
 			title: "Public Service Announcement",
 			text: "In advance of International Bat Appreciation Day on April 17, Limetech is helping to bring attention to the <a href='https://nationaltoday.com/international-bat-appreciation-day/' target='_blank'>plight of the bats</a>.  Would you like to participate?",
