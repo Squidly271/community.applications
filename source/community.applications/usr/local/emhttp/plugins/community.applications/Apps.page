@@ -42,6 +42,10 @@ if ( $cfg['maxPerPage'] < 24 ) $cfg['maxPerPage'] = 24;
 $firstRun = is_file($caPaths['warningAccepted']) ? "false" : "true";
 $pluginWarning = is_file($caPaths['pluginWarning']) ? "true": "false";
 
+// don't run batman on new installations/
+if ( $firstRun == "true" || $pluginWarning == "false" )
+	touch("/boot/config/plugins/community.applications/IamBatman");
+
 if ( ! is_file($caPaths['docker_cfg']) ) {
 	exec("logger -t 'Community Applications' 'Fatal Flash Drive Error: /boot/config/docker.cfg does not exist'");
 }
