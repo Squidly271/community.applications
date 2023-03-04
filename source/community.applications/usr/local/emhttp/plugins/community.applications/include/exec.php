@@ -195,6 +195,9 @@ switch ($_POST['action']) {
 	case 'downloadStatistics':
 		downloadStatistics();
 		break;
+	case 'batman':
+		touch("/boot/config/plugins/community.applications/IamBatman");
+		break;
 	###############################################
 	# Return an error if the action doesn't exist #
 	###############################################
