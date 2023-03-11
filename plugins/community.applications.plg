@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.03.03">
-<!ENTITY md5       "def37490eea07a768c282963303ec4f8">
+<!ENTITY version   "2023.03.11">
+<!ENTITY md5       "07710453ff204cdacbcaaa974611923c">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2023.03.11
+- PHP 8 Upgrades
+
 ###2023.03.03
 - PHP8 Upgrades
 

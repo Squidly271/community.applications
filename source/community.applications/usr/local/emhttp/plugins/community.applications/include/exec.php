@@ -1843,7 +1843,7 @@ function createXML() {
 			$disksPresent[] = "user";
 		if ( @is_array($template['Data']['Volume']) ) {
 			$testarray = $template['Data']['Volume'];
-			if ( ! is_array($testarray[0]) ) $testarray = [$testarray];
+			if ( ( ! isset($testarray[0]) ) || ( ! is_array($testarray[0]) ) ) $testarray = [$testarray];
 			foreach ($testarray as &$volume) {
 				$diskReferenced = array_values(array_filter(explode("/",$volume['HostDir'])));
 				if ( $diskReferenced[0] == "mnt" && $diskReferenced[1] && ! in_array($diskReferenced[1],$disksPresent) ) {

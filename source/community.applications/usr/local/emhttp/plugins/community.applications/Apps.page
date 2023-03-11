@@ -94,9 +94,8 @@ else
 
 $date = (date("n/d"));
 
-if ( true )  // remove on prod version on uncomment next line
-//if ( $date == "4/01" )
-	$batMan = (! is_file("/boot/config/plugins/community.applications/IamBatman")) && ($_SESSION['locale'] == "" || $_COOKIE['locale'] == "en_US");
+if ( $date == "4/01" )
+	$batMan = (! is_file("/boot/config/plugins/community.applications/IamBatman")) && ($_SESSION['locale'] == "" || $SESSION['locale'] == "en_US");
 else
 	$batMan = false;
 
