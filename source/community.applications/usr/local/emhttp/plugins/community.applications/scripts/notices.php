@@ -33,7 +33,7 @@ exec("mkdir -p {$paths['CA_root']}");
 
 $local = false;  // ONLY SET TO TRUE FOR DEBUGGING.  MUST BE FALSE FOR RELEASES
 
-$action = $_POST['action'];
+$action = $_POST['action'] ?? null;
 // check if started from command prompt or gui
 if ( ! $action ){
 	$debugging = true;
