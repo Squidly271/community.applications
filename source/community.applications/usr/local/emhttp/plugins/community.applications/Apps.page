@@ -2942,7 +2942,7 @@ function showRepoPopup(repository) {
 	post({action:'getRepoDescription',repository:repository},function(result) {
 		$("#sidenavContent").html(result.description);
 		$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"});
-		if (fromCard) {alert();
+		if (fromCard) {
 			$(".popUpBack").hide();
 		}
 		$('.screenshot').magnificPopup({
