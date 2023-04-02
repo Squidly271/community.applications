@@ -390,6 +390,7 @@ a.popup-donate:hover{color:<?=$donateText?>;background-color:<?=$unRaid66color?>
 .rightTitle{font-size:2.5rem;margin-top:2rem;margin-bottom:2rem;}
 .screen{border:1px solid; border-radius: 5px 5px 5px 5px; border-color:<?=$unRaid66color?>; vertical-align:top; min-width:8rem;max-width:12rem;height:8rem;margin:10px;}
 .screen:hover{opacity:50%}
+.screenshot{cursor:pointer;}
 .searchArea{z-index:2;width:auto;position:static;}
 .searchSubmit{font-family:'FontAwesome';width:2rem;min-width:2rem;height:3.4rem;font-size:1.1rem;position:relative;padding-top:1.1rem;padding-bottom:1rem;padding-right:1rem;background:<?=$templateHoverBackground?>;border:none;cursor:pointer;background:<?=$templateHoverBackground?>;}
 #searchBox{margin-left:0rem;margin-right:0;margin-bottom:1rem;top:-.6rem;border:none;padding:0.6rem;background:<?=$templateHoverBackground?>;padding-right:0.5rem;}
