@@ -94,12 +94,6 @@ else
 
 $date = (date("n/d"));
 
-if ( $date == "4/01" )
-	$batMan = (! is_file("/boot/config/plugins/community.applications/IamBatman")) && ($_SESSION['locale'] == "" || $SESSION['locale'] == "en_US");
-else
-	$batMan = false;
-
-
 $startupDisplayed = is_file($caPaths['startupDisplayed']) ? "true" : "false";
 if ( $startupDisplayed == "true" && ($_COOKIE['ca_languageSwitch'] ?? false) )
 	$killCookie = "true";
@@ -825,28 +819,6 @@ $(function(){
 			actionCentreRestoreState = true;
 		setupActionCentre();
 	}
-	<? if ( $batMan ): ?>
-		if ( "<?=$pluginWarning?>" !== "false"  && "<?=$firstRun?>" !== "true") {
-			$(".mainArea,.menuItems,.sidebar").css("transform","rotateX(180deg) rotateY(180deg)");
-			setTimeout(function() {
-				swal({
-					title: "Public Service Announcement",
-					text: "Thank you for participating in the advance celebrations of <a href='https://nationaltoday.com/international-bat-appreciation-day/' target='_blank'>International Bat Appreciation Day</a>.  Would you like to continue the celebrations?",
-					type: 'info',
-					html: true,
-					showCancelButton: true,
-					showConfirmButton: true,
-					cancelButtonText: "No",
-					confirmButtonText: "Yes"
-				}, function (isConfirm) {
-					if (!isConfirm) {
-						$(".mainArea,.menuItems,.sidebar").css("transform","");
-						postNoSpin({action:'batman'});
-					}
-				});
-			 },5000);
-		}
-	<? endif; ?>
 });
 	<?endif;?>
 function disableSort() {

@@ -88,6 +88,7 @@ function addCloseButton() {
 }
 </script>
 <?
+	$failFlag = false;
 	foreach ($dockers as $docker) {
 		echo sprintf(tr("Starting %s"),"<span class='ca_bold'>$docker</span>")."<br>";
 		unset($output);
