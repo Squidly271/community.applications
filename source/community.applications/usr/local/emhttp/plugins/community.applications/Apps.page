@@ -2924,12 +2924,15 @@ function showRepoPopup(repository) {
 	data.repository = repository;
 	context.destroy("#supportPopup");
 	context.destroy("#actionsPopup");
+
 	if ( ! $(".sidebar").is(":visible") ) {
 		$.cookie("sidebarAppName","",{path:"/;SameSite=Lax"});
 		$.cookie("sidebarAppPath","",{path:"/;SameSite=Lax"});
 		var fromCard = true;
 	}
-
+	var sidebarAppName = $.cookie("sidebarAppName");
+	var sidebarAppPath = $.cookie("sidebarAppPath");
+	
 	$("#sidenavContent").html("");
 
 	$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
@@ -2939,7 +2942,7 @@ function showRepoPopup(repository) {
 	post({action:'getRepoDescription',repository:repository},function(result) {
 		$("#sidenavContent").html(result.description);
 		$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"});
-		if (fromCard) {
+		if (fromCard) {alert();
 			$(".popUpBack").hide();
 		}
 		$('.screenshot').magnificPopup({
@@ -2960,6 +2963,9 @@ function showRepoPopup(repository) {
 				},
 				close: function() {
 					$('body').removeClass("dimScreenShot");
+					$(".sidebar").show();
+					$.cookie("sidebarAppName",sidebarAppName,{path:"/;SameSite=Lax"});
+					$.cookie("sidebarAppPath",sidebarAppPath,{path:"/;SameSite=Lax"});					
 					showRepoPopup(data.repository);
 				}
 			}
