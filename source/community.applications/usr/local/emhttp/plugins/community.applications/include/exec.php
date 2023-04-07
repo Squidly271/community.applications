@@ -195,8 +195,8 @@ switch ($_POST['action']) {
 	case 'downloadStatistics':
 		downloadStatistics();
 		break;
-	case 'batman':
-		touch("/boot/config/plugins/community.applications/IamBatman");
+	case 'checkPluginInProgress':
+		checkPluginInProgress();
 		break;
 	###############################################
 	# Return an error if the action doesn't exist #
@@ -2522,6 +2522,18 @@ function downloadStatistics() {
 	if ( ! is_file($caPaths['statistics']) )
 		download_json($caPaths['statisticsURL'],$caPaths['statistics']);
 }
+
+###########################################################################
+# Checks to see if a plugin installation or update is already in progress #
+###########################################################################
+function checkPluginInProgress() {
+	global $caPaths;
+	
+	$pluginsPending = glob("{$caPaths['pluginPending']}/*");
+	
+	postReturn(['inProgress'=>empty($pluginsPending)? "" : "true"]);
+}
+	
 
 #######################################
 # Logs Javascript errors being caught #

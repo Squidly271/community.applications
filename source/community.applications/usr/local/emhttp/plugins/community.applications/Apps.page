@@ -679,7 +679,6 @@ $(function(){
 		openBox('/plugins/<?=$plugin?>/scripts/checkForUpdates.sh',tr('Check For Updates'),600,1100,true,"postCheckForUpdates");
 	});
 
-
 	$(".multi_installButton").click(function()  {
 		if ( $(".multi_installButton").hasClass("actionCenter") ) {
 			updateMulti();
@@ -1159,7 +1158,6 @@ function awesompleteSearch() {
 	}
 }
 
-
 function openNewWindow(newURL,target='_self') {
 	saveState();
 	var popUp = window.open(newURL,target);
@@ -1193,27 +1191,43 @@ function closeSidebar(cookie=false,visible=false) {
 }
 
 function installPlugin(pluginURL,update=false,comment="",requires="") {
-	if ( update && requires ) {
-		post({action:"checkRequirements",requires:requires},function(data) {
-			if (! data.met) {
-				swal({
-					title: "<?tr("Requirements not met")?>",
-					text: "<?tr("The requirements for this upgrade have not been met on your system")?>",
-					allowOutsideClick: false,
-					showConfirmButton: true,
-					showCancelButton: false,
-					confirmButtonText: "<?tr("OK")?>",
-					type: "error"
-				},function(isConfirm) {
-					enableSearch();
+	post({action:"checkPluginInProgress"},function(data) {
+		if (data.inProgress) {
+			swal({
+				title: "<?tr("Installation already in progress")?>",
+				text: "<?tr("Another plugin installation or update is already in progress, and this one cannot start.  Wait until the current installation or update is completed and try again")?>",
+				allowOutsideClick: false,
+				showConfirmButton: true,
+				showCancelButton: false,
+				confirmButtonText: "<?tr("OK")?>",
+				type: "error"
+			},function(isConfirm) {
+				enableSearch();
+			});
+		} else {
+			if ( update && requires ) {
+				post({action:"checkRequirements",requires:requires},function(data) {
+					if (! data.met) {
+						swal({
+							title: "<?tr("Requirements not met")?>",
+							text: "<?tr("The requirements for this upgrade have not been met on your system")?>",
+							allowOutsideClick: false,
+							showConfirmButton: true,
+							showCancelButton: false,
+							confirmButtonText: "<?tr("OK")?>",
+							type: "error"
+						},function(isConfirm) {
+							enableSearch();
+						});
+					} else {
+						actuallyInstallPlugin(pluginURL,update,comment);
+					}
 				});
 			} else {
 				actuallyInstallPlugin(pluginURL,update,comment);
 			}
-		});
-	} else {
-		actuallyInstallPlugin(pluginURL,update,comment);
-	}
+		}
+	});
 }
 function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 	type = update ? "update" : "install";
@@ -1275,7 +1289,6 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 		}
 <?if ($nchanCom):?>
 		ca_openPlugin('plugin '+type+' '+pluginURL,title,'',postFunction);
-		
 <?else:?>
 		openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,postFunction);
 <?endif;?>
@@ -1311,7 +1324,6 @@ function hideLanguagePending(language) {
 	});
 }
 		
-
 function OpenSidebarAndRefreshDisplay() {
 	post({action:"onStartupScreen"},function(result) {
 		if (result.status) {
@@ -1473,30 +1485,45 @@ function removeApp(application, humanName) {
 
 function uninstallApp(application,humanName) {
 	closeSidebar();
-//	disableSearch();
-	swal({
-		title: "<?tr("Uninstall Application?")?>",
-		text: sprintf(tr("Are you sure you want to uninstall %s?"),"<span class='ca_italic ca_bold caHighlight'>"+humanName+"</span>"),
-		type: "warning",
-		showCancelButton: true,
-		showConfirmButton: true,
-		cancelButtonText: "<?tr("Cancel")?>",
-		confirmButtonText: "<?tr("Yes uninstall it")?>",
-		closeOnConfirm: true,
-		showLoaderOnConfirm: false,
-		allowOutsideClick: true,
-		html: true
-	}, function(isConfirm) {
-		if (isConfirm) {
-			application = application.basename();
-			hidePluginPending(application);
-<?if ($nchanCom):?>
-			ca_openPlugin('plugin remove '+application,"<?tr('Uninstall Plugin')?>",'','postUninstallPlugin');
-<?else:?>
-			openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin");
-<?endif;?>
+	post({action:"checkPluginInProgress"},function(data) {
+		if (data.inProgress) {
+			swal({
+				title: "<?tr("Installation already in progress")?>",
+				text: "<?tr("Another plugin installation or update is already in progress, and this one cannot start.  Wait until the current installation or update is completed and try again")?>",
+				allowOutsideClick: false,
+				showConfirmButton: true,
+				showCancelButton: false,
+				confirmButtonText: "<?tr("OK")?>",
+				type: "error"
+			},function(isConfirm) {
+				enableSearch();
+			});
 		} else {
-			enableSearch();
+			swal({
+				title: "<?tr("Uninstall Application?")?>",
+				text: sprintf(tr("Are you sure you want to uninstall %s?"),"<span class='ca_italic ca_bold caHighlight'>"+humanName+"</span>"),
+				type: "warning",
+				showCancelButton: true,
+				showConfirmButton: true,
+				cancelButtonText: "<?tr("Cancel")?>",
+				confirmButtonText: "<?tr("Yes uninstall it")?>",
+				closeOnConfirm: true,
+				showLoaderOnConfirm: false,
+				allowOutsideClick: true,
+				html: true
+			}, function(isConfirm) {
+				if (isConfirm) {
+					application = application.basename();
+					hidePluginPending(application);
+		<?if ($nchanCom):?>
+					ca_openPlugin('plugin remove '+application,"<?tr('Uninstall Plugin')?>",'','postUninstallPlugin');
+		<?else:?>
+					openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1=remove&arg2='+application,"<?tr('Uninstall Plugin')?>",600,900,true,"postUninstallPlugin");
+		<?endif;?>
+				} else {
+					enableSearch();
+				}
+			});
 		}
 	});
 }
