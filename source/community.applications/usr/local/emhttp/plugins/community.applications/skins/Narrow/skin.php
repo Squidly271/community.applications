@@ -1299,14 +1299,14 @@ function displayCard($template) {
 
 	$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
 	$card .= "<div class='$descClass $backgroundClickable'><div class='cardDesc'>$Overview</div></div>";
-	if ( $RecommendedDate ) {
+/* 	if ( $RecommendedDate ) {
 		$card .= "
 			<div class='homespotlightIconArea ca_center''>
 				<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}' alt='Spotlight'></img></div>
 				<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
 			</div>
 		";
-	}
+	} */
 	$card .= "</div>";
 	if ( $Installed || $Uninstall ) {
 		$flagTextStart = tr("Installed")."<br>";
