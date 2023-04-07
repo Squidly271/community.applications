@@ -66,7 +66,7 @@ function writeJsonFile($filename,$jsonArray) {
 
 function ca_file_put_contents($filename,$data,$flags=0) {
 	$result = @file_put_contents($filename,$data,$flags);
-	
+
 	if ( $result === false ) {
 		debug("Failed to write to $filename");
 		$GLOBALS['script'] = "alert('Failed to write to ".htmlentities($filename,ENT_QUOTES)."');";
@@ -270,7 +270,7 @@ function makeXML($template) {
 # Sanitize the Requires entry if there is any CA links within it
 	if ($template['Requires'] ?? false) {
 		preg_match_all("/\/\/(.*?)&#92;/m",$template['Requires'],$searchMatches);
-		
+
 		if ( isset($searchMatches[1]) && count($searchMatches[1]) ) {
 			foreach ($searchMatches[1] as $searchResult) {
 				$template['Requires'] = str_replace("//$searchResult\\\\",$searchResult,$template['Requires']);
@@ -584,7 +584,7 @@ function postReturn($retArray) {
 	if (is_array($retArray)) {
 		if ( isset($GLOBALS['script']) )
 			$retArray['globalScript'] = $GLOBALS['script'];
-		
+
 		echo json_encode($retArray);
 	}	else
 		echo $retArray;
@@ -655,7 +655,7 @@ function getAllInfo($force=false) {
 	global $caSettings, $DockerTemplates, $DockerClient, $caPaths;
 
 	$containers = readJsonFile($caPaths['info']);
-	
+
 	if ( $force || ! $containers || empty($containers) ) {
 		if ( $caSettings['dockerRunning'] ?? false ) {
 			$info = $DockerTemplates->getAllInfo(false,true,true);
@@ -718,7 +718,7 @@ function portsUsed($template) {
 ########################
 function getPortsInUse() {
 	global $var, $caPaths;
- 
+
 	$addr = null;
 	if ( !$var )
 		$var = parse_ini_file($caPaths['unRaidVars']);
@@ -750,7 +750,7 @@ function plain($ip) {
 # Adds in all the various missing entries from the templates for PHP8 compliance #
 ##################################################################################
 function addMissingVars($o) {
-	if ( ! is_array($o) ) 
+	if ( ! is_array($o) )
 		return $o;
 	$vars = [
 		'Category',
@@ -845,10 +845,10 @@ function addMissingVars($o) {
 		'SortName',
 		'ca_fav',
 		'Pinned'
-		
-		
+
+
 		];
-	
+
 	foreach ($vars as $var) {
 		$o[$var] = $o[$var] ?? null;
 	}

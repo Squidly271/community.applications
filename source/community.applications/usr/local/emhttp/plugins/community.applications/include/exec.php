@@ -239,7 +239,7 @@ function DownloadApplicationFeed() {
 			continue;
 		}
 		$o = addMissingVars($o);
-		
+
 		if ( $o['CategoryList'] ) {
 			foreach ($o['CategoryList'] as $cat) {
 				$cat = str_replace("-",":",$cat);
@@ -331,7 +331,7 @@ function DownloadApplicationFeed() {
 
 		$ApplicationFeed['repositories'][$o['RepoName']]['downloads'] = $ApplicationFeed['repositories'][$o['RepoName']]['downloads'] ?? 0;
 		$ApplicationFeed['repositories'][$o['RepoName']]['trending'] = $ApplicationFeed['repositories'][$o['RepoName']]['trending'] ?? 0;
-		
+
 		$ApplicationFeed['repositories'][$o['RepoName']]['downloads']++;
 		$ApplicationFeed['repositories'][$o['RepoName']]['trending'] += $o['trending'];
 		if ( ! $o['ModeratorComment'] == "Duplicated Template" ) {
@@ -494,7 +494,7 @@ function appOfDay($file) {
 
 	$max = 12;
 	$appOfDay = null;
-	
+
 	switch ($caSettings['startup']) {
 		case "random":
 			$oldAppDay = @filemtime($caPaths['appOfTheDay']);
@@ -592,7 +592,7 @@ function appOfDay($file) {
 				}
 			}
 			break;
-		case "featured": 
+		case "featured":
 			$containers = getAllInfo();
 			$sortOrder['sortBy'] = "Featured";
 			$sortOrder['sortDir'] = "Down";
@@ -600,7 +600,7 @@ function appOfDay($file) {
 			foreach($file as $template) {
 				if ( ! isset($template['Featured'] ) )
 					break;
-				if ( ! checkRandomApp($template) ) 
+				if ( ! checkRandomApp($template) )
 					continue;
 				// Don't show it if the plugin is installed
 				if ( $template['PluginURL'] && is_file("/var/log/plugins/".basename($template['PluginURL'])) )
@@ -615,9 +615,9 @@ function appOfDay($file) {
 								$selected = true;
 								break;
 							}
-						}					
+						}
 					}
-					if ( $selected ) 
+					if ( $selected )
 						continue;
 				}
 				$appOfDay[] = $template['ID'];
@@ -814,13 +814,13 @@ function get_content() {
 			$o['display'] = "";
 			foreach ($startupTypes as $type) {
 				$display = [];
-				
+
 				$caSettings['startup'] = $type['type'];
 				$appsOfDay = appOfDay($file);
 
 				if ( ! $appsOfDay || empty($appsOfDay) )
 					continue;
-				
+
 				for ($i=0;$i<$caSettings['maxPerPage'];$i++) {
 					if ( ! isset($appsOfDay[$i])) continue;
 					$file[$appsOfDay[$i]]['NewApp'] = ($caSettings['startup'] != "random");
@@ -1499,7 +1499,7 @@ function displayTags() {
 ###########################################
 function statistics() {
 	global $caPaths, $caSettings;
-	
+
 	@unlink($caPaths['community-templates-displayed']);
 	@unlink($caPaths['community-templates-allSearchResults']);
 	@unlink($caPaths['community-templates-catSearchResults']);
@@ -1515,7 +1515,7 @@ function statistics() {
 	pluginDupe();
 	$invalidXML = readJsonFile($caPaths['invalidXML_txt']);
 	$statistics['blacklist'] = $statistics['plugin'] = $statistics['docker'] = $statistics['private'] = $statistics['totalDeprecated'] = $statistics['totalIncompatible'] = $statistics['official'] = $statistics['invalidXML'] = 0;
-	
+
 	foreach ($templates as $template) {
 		if ( ($template['Deprecated']??false) && ! ($template['Blacklist']??false) && ! ($template['BranchID']??false)) $statistics['totalDeprecated']++;
 
@@ -1904,7 +1904,7 @@ function createXML() {
 				if ( is_array($config['@attributes']) ) {
 					if ( $config['@attributes']['Type'] == "Path" ) {
 						$defaultReferenced = array_values(array_filter(explode("/",$config['@attributes']['Default'])));
-		
+
 						if ( isset($defaultReferenced[0]) && isset($defaultReferenced[1]) ) {
 							if ( $defaultReferenced[0] == "mnt" && $defaultReferenced[1] && ! in_array($defaultReferenced[1],$disksPresent) )
 								$config['@attributes']['Default'] = str_replace("/mnt/{$defaultReferenced[1]}/","/mnt/{$disksPresent[0]}/",$config['@attributes']['Default']);
@@ -1915,7 +1915,7 @@ function createXML() {
 							if ( $valueReferenced[0] == "mnt" && $valueReferenced[1] && ! in_array($valueReferenced[1],$disksPresent) )
 								$config['value'] = str_replace("/mnt/{$valueReferenced[1]}/","/mnt/{$disksPresent[0]}/",$config['value']);
 						}
-						
+
 						// Check for pre-existing folders only differing by "case" and adjust accordingly
 
 						// Default path
@@ -2407,7 +2407,7 @@ function enableActionCentre() {
 			if ( $runningflag ) {
 				$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
 				$tmpRepo = strpos($tmpRepo,"/") ?: "library/$tmpRepo";
-				
+
 				if ( $tmpRepo ) {
 					if ( isset($dockerUpdateStatus[$tmpRepo]['status']) && $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
 						$o['actionCentre'] = true;
@@ -2528,12 +2528,12 @@ function downloadStatistics() {
 ###########################################################################
 function checkPluginInProgress() {
 	global $caPaths;
-	
+
 	$pluginsPending = glob("{$caPaths['pluginPending']}/*");
-	
+
 	postReturn(['inProgress'=>empty($pluginsPending)? "" : "true"]);
 }
-	
+
 
 #######################################
 # Logs Javascript errors being caught #

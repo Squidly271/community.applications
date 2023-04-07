@@ -544,9 +544,9 @@ $(function(){
 		if ( $(this).hasClass("caMenuDisabled") ) {
 			return;
 		}
-		if ( $(this).attr("onclick") ) 
+		if ( $(this).attr("onclick") )
 			return;
-		
+
 		var slideFlag = true;
 		var currentCat = $(".selectedMenu").data("category");
 		var newCat = $(this).data("category");
@@ -740,7 +740,7 @@ $(function(){
 		});
 	<?endif;?>
 	/* Everything is now initialized.  This is the start of the actual "real" code */
-	
+
 	if ( "<?=$firstRun?>" == "true" ) {
 	  $(".ca_templatesDisplay").hide();
 		swal({
@@ -827,7 +827,7 @@ function showSortIcons() {
 }
 <?if ($nchanCom):?>
 function ca_openPlugin(cmd,title,plg,func) {
-  setTimeout(function(){openPlugin(cmd,title,plg,func,"");},250);
+	setTimeout(function(){openPlugin(cmd,title,plg,func,"");},250);
 }
 <?endif;?>
 
@@ -871,7 +871,7 @@ function updateContent(button) {
 	<?else:?>
 			openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugins,"<?tr('Install Plugin Applications')?>",600,900,true);
 	<?endif;?>
-		}		
+		}
 	});
 }
 
@@ -1264,7 +1264,7 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 				}
 <?if ($nchanCom):?>
 				post({action:'saveMultiPluginPending',plugin:pluginURL},function(data) {
-					ca_openPlugin('plugin '+type+' '+pluginURL,title,'',postFunction);	
+					ca_openPlugin('plugin '+type+' '+pluginURL,title,'',postFunction);
 				});
 <?else:?>
 				openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,postFunction);
@@ -1275,7 +1275,7 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 		});
 	} else {
 		hidePluginPending(pluginURL);
-		
+
 		if ( $(".selectedMenu").data("category") == "action_centre" ) {
 			var postFunction = "actionCentre";
 		} else {
@@ -1316,14 +1316,14 @@ function hideLanguagePending(language) {
 	language = language.replace(".xml","");
 	if ( ! language )
 		return;
-	
+
 	$(".actionsButton").each(function() {
 		if ( $(this).data("languagepack") == language ) {
 			$(this).hide();
 		}
 	});
 }
-		
+
 function OpenSidebarAndRefreshDisplay() {
 	post({action:"onStartupScreen"},function(result) {
 		if (result.status) {
@@ -2955,7 +2955,7 @@ function showRepoPopup(repository) {
 	}
 	var sidebarAppName = $.cookie("sidebarAppName");
 	var sidebarAppPath = $.cookie("sidebarAppPath");
-	
+
 	$("#sidenavContent").html("");
 
 	$(".sidenav").removeClass("sidenavHide").addClass("sidenavShow");
@@ -2988,7 +2988,7 @@ function showRepoPopup(repository) {
 					$('body').removeClass("dimScreenShot");
 					$(".sidebar").show();
 					$.cookie("sidebarAppName",sidebarAppName,{path:"/;SameSite=Lax"});
-					$.cookie("sidebarAppPath",sidebarAppPath,{path:"/;SameSite=Lax"});					
+					$.cookie("sidebarAppPath",sidebarAppPath,{path:"/;SameSite=Lax"});
 					showRepoPopup(data.repository);
 				}
 			}
