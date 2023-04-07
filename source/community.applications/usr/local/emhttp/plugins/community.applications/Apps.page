@@ -1326,10 +1326,10 @@ function OpenSidebarAndRefreshDisplay() {
 			if ( $.trim(apppath) ) {
 				showSidebarApp(apppath,appname);
 			}
-		if ( data.deprecated ) {
-			data.deprecated = false;
-			setupActionCentre();
-		}
+			if ( data.deprecated ) {
+				data.deprecated = false;
+				setupActionCentre();
+			}
 
 		}
 	});
@@ -2889,7 +2889,7 @@ function showSidebarApp(apppath,appname) {
 				});
 				context.attach("#actionsPopup",opts);
 			}
-			$(".popupName,.betaPopupText,.popupTableRight,.popupTableLeft,.upgradePopupText").each(function() {
+			$(".popupName,.betaPopupText,.popupTableRight,.popupTableLeft,.upgradePopupText,.installedPopupText").each(function() {
 				while (isOverflown(this)) {
 					var existingSize = $(this).css("font-size");
 					var size = existingSize.replace("px","");

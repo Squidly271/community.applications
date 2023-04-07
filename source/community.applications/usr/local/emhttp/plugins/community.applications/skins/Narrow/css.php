@@ -452,6 +452,11 @@ table {background-color:transparent;}
 .warningCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #810000;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 #warningNotAccepted{display:none;}
 
+.installedPopup{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #322fff;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
+.installedPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.5rem;right:-1rem;width:100%;overflow:hidden;height:2rem;}
+
+
+
 
 @keyframes cycleRed {
 	0% {color: inherit;}

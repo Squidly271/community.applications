@@ -592,6 +592,22 @@ function appOfDay($file) {
 				}
 			}
 			break;
+		case "featured": 
+			$sortOrder['sortBy'] = "Name";
+			$sortOrder['sortDir'] = "Up";
+			usort($file,"mySort");
+			foreach($file as $template) {
+				if ( ! isset($template['Featured'] ) )
+					continue;
+				if ( ! checkRandomApp($template) ) 
+					continue;
+				// Don't show it if the plugin is installed
+				if ( $template['PluginURL'] && is_file("/var/log/plugins/".basename($template['PluginURL'])) )
+					continue;
+				
+				$appOfDay[] = $template['ID'];
+				if ( count($appOfDay) == $max ) break;
+			}
 	}
 	return $appOfDay ?: [];
 }
@@ -733,6 +749,13 @@ function get_content() {
 		if ( count($file) > 200) {
 			$startupTypes = [
 				[
+					"type"=>"featured",
+					"text1"=>tr("Featured Applications"),
+					"text2"=>"",
+					"sortby"=>"Name",
+					"sortdir"=>"Up"
+				],
+				[
 					"type"=>"onlynew",
 					"text1"=>tr("Recently Added"),
 					"text2"=>tr("Check out these newly added applications from our awesome community"),
@@ -780,18 +803,21 @@ function get_content() {
 				$caSettings['startup'] = $type['type'];
 				$appsOfDay = appOfDay($file);
 
+				if ( ! $appsOfDay || empty($appsOfDay) )
+					continue;
+				
 				for ($i=0;$i<$caSettings['maxPerPage'];$i++) {
 					if ( ! isset($appsOfDay[$i])) continue;
 					$file[$appsOfDay[$i]]['NewApp'] = ($caSettings['startup'] != "random");
 					$spot = $file[$appsOfDay[$i]];
-
+					$spot['homeScreen'] = true;
 					$displayApplications['community'][] = $spot;
 					$display[] = $spot;
 				}
 				if ( $displayApplications['community'] ) {
 					$o['display'] .= "<div class='ca_homeTemplatesHeader'>{$type['text1']}</div>";
 					$o['display'] .= "<div class='ca_homeTemplatesLine2'>{$type['text2']} ";
-					if ( $type['cat'] )
+					if ( $type['cat'] ?? false )
 						$o['display'] .= "<span class='homeMore' data-des='{$type['text1']}' data-category='{$type['cat']}' data-sortby='{$type['sortby']}' data-sortdir='{$type['sortdir']}'>".tr("SHOW MORE");
 					$o['display'] .= "</div>";
 					$homeClass = "caHomeSpotlight";
@@ -811,6 +837,8 @@ function get_content() {
 							$startupType = "Random"; break;
 						case "upandcoming":
 							$startupType = "Trending"; break;
+						case "featured":
+							$startupType = "Featured"; break;
 					}
 
 					$o['display'] .=  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>".sprintf(tr("An error occurred.  Could not find any %s Apps"),$startupType)."</span></font><br><br>";

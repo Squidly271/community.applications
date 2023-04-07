@@ -147,7 +147,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								}
 							}
 
+							$template['Installed'] = $selected;
 							if ( $selected ) {
+								
 								$ind = searchArray($info,"Name",$name);
 								if ( $info[$ind]['url'] && $info[$ind]['running'] ) {
 									$actionsContext[] = ["icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$ind]['url']}','_blank');"];
@@ -204,7 +206,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 						}
 					} else {
 						$pluginName = basename($template['PluginURL']);
-						if ( file_exists("/var/log/plugins/$pluginName") ) {
+						$template['Installed'] = file_exists("/var/log/plugins/$pluginName");
+						if ( $template['Installed'] )  {
 							$pluginInstalledVersion = plugin("version","/var/log/plugins/$pluginName");
 							if ( file_exists("/tmp/plugins/$pluginName") ) {
 								$tmpPluginVersion = plugin("version","/tmp/plugins/$pluginName");
@@ -372,7 +375,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	if ( ! $count )
 		$displayHeader .= "<div class='ca_NoAppsFound'>".tr("No Matching Applications Found")."</div><script>hideSortIcons();</script>";
 
-	if ( $count == 1 ) {
+	if ( $count == 1 && ! isset($template['homeScreen']) ) {
 		if ( $template['RepositoryTemplate'] ) {
 			$displayHeader .= "<script>showRepoPopup('".htmlentities($template['RepoName'],ENT_QUOTES)."');</script>";
 		} else {
@@ -653,9 +656,10 @@ function getPopupDescriptionSkin($appNumber) {
 							$actionsContext[] = ["icon"=>"ca_fa-edit","text"=>tr("Edit"),"action"=>"popupInstallXML('".addslashes($info[$name]['template'])."','edit');"];
 
 						$actionsContext[] = ["divider"=>true];
-						if ( $info[$name]['template'] )
+						if ( $info[$name]['template'] ) {
 							$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallDocker('".addslashes($info[$name]['template'])."','{$template['Name']}');"];
-
+							$template['Installed'] = true;
+						}
 					} elseif ( ! $template['Blacklist'] ) {
 						if ( $template['InstallPath'] ) {
 							$userTemplate = readXmlFile($template['InstallPath'],false,false);
@@ -681,6 +685,7 @@ function getPopupDescriptionSkin($appNumber) {
 				}
 			} else {
 				if ( file_exists("/var/log/plugins/$pluginName") ) {
+					$template['Installed'] = true;
 					$template['installedVersion'] = plugin("version","/var/log/plugins/$pluginName");
 					if ( ($template['installedVersion'] != $template['pluginVersion'] || $template['installedVersion'] != plugin("version","/tmp/plugins/$pluginName") ) && $template['Name'] !== "Community Applications") {
 						@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
@@ -1629,7 +1634,12 @@ function displayPopup($template) {
 	} elseif ( $RecommendedDate ) {
 		$card .= "
 			<div class='spotlightPopupBackground'>
-			<div class='spotlightPopupText'></div>
+			<div class='spotlightPopupText'></div></div>
+		";
+	} elseif ( $Installed ) {
+		$card .= "
+			<div class='installedPopup'>
+			<div class='installedPopupText ca_center'>".tr("INSTALLED")."</div></div>
 		";
 	}
 
