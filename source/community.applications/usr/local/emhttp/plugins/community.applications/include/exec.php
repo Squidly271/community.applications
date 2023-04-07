@@ -593,18 +593,33 @@ function appOfDay($file) {
 			}
 			break;
 		case "featured": 
-			$sortOrder['sortBy'] = "Name";
-			$sortOrder['sortDir'] = "Up";
+			$containers = getAllInfo();
+			$sortOrder['sortBy'] = "Featured";
+			$sortOrder['sortDir'] = "Down";
 			usort($file,"mySort");
 			foreach($file as $template) {
 				if ( ! isset($template['Featured'] ) )
-					continue;
+					break;
 				if ( ! checkRandomApp($template) ) 
 					continue;
 				// Don't show it if the plugin is installed
 				if ( $template['PluginURL'] && is_file("/var/log/plugins/".basename($template['PluginURL'])) )
 					continue;
-				
+				// Don't show it if the container is installed
+				if ( ! $template['PluginURL'] ) {
+					if ( $caSettings['dockerRunning'] ) {
+						$selected = false;
+
+						foreach ($containers as $testDocker) {
+							if ( ($template['Repository'] == $testDocker['Image'] ) || ($template['Repository'].":latest" == $testDocker['Image']) || (str_replace(":latest","",$template['Repository']) == $testDocker['Image']) ) {
+								$selected = true;
+								break;
+							}
+						}					
+					}
+					if ( $selected ) 
+						continue;
+				}
 				$appOfDay[] = $template['ID'];
 				if ( count($appOfDay) == $max ) break;
 			}
