@@ -2406,10 +2406,12 @@ function enableActionCentre() {
 			}
 			if ( $runningflag ) {
 				$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
-
-				if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
-					$o['actionCentre'] = true;
-
+				$tmpRepo = strpos($tmpRepo,"/") ?: "library/$tmpRepo";
+				
+				if ( $tmpRepo ) {
+					if ( isset($dockerUpdateStatus[$tmpRepo]['status']) && $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
+						$o['actionCentre'] = true;
+				}
 				if ( ! $o['Blacklist'] && ! $o['Deprecated'] ) {
 					if ( isset($extraBlacklist[$o['Repository']]) ) {
 						$o['Blacklist'] = true;
