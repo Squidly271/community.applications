@@ -285,6 +285,7 @@ img.displayIcon{height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .favCardSpotlight{left:-40.25rem !important;}
 .favCardBackground{float:right;color:#bb0000;padding-top:.25rem;margin-left:1rem;}
 .favCardBackground::before{content:"\f004";font-family:fontAwesome;}
+.featuredIncompatible{color:#FF8C2F;}
 .homeMore{color:<?=$unRaid66color?>;cursor:pointer;}
 .homeMore:hover{color:#d67777;}
 .homespotlightIconArea{display: inline-block;position: relative;top: -25rem;left: 24rem;cursor:pointer;}
@@ -411,7 +412,8 @@ a.popup-donate:hover{color:<?=$donateText?>;background-color:<?=$unRaid66color?>
 .specialCategory{font-size:1.5rem;}
 .spinner{z-index:999999 !important;} /* ensure always ontop */
 .spinnerBackground{position:fixed;top:0;left:0;width:100%;height:100vh;display:none;background:transparent;z-index:9999;}
-.spotlightDate{font-size:1.5rem;margin-left:-3rem;}
+.spotlightDate{font-size:1.5rem;margin-left:-2rem;}
+.spotlightDateSidebar{margin-left:0.5rem !important;}
 .spotlightCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .spotlightHome{min-width:36rem !important;max-width:36rem !important;height:24rem !important;margin-bottom:1rem;}
 .spotlightPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}

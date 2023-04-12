@@ -1299,7 +1299,7 @@ function displayCard($template) {
 	$Overview = strip_tags(str_replace("<br>"," ",$ovr));
 	
 	if ( ! $Compatible && $Featured )
-		$Overview = "<span style='color:#FF8C2F'>Recommended to upgrade the OS to enjoy the additional features of $Name</span>&nbsp;&nbsp;$Overview";
+		$Overview = "<span class='featuredIncompatible'>".sprintf(tr("Recommended to upgrade the OS to enjoy the additional features of %s"),$Name)."</span>&nbsp;&nbsp;$Overview";
 
 	$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
 	$card .= "<div class='$descClass $backgroundClickable'><div class='cardDesc'>$Overview</div></div>";
@@ -1457,7 +1457,7 @@ function displayPopup($template) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
 	}
 	if ( !$Compatible && $Featured )
-		$ModeratorComment = "Recommended to upgrade the OS to enjoy the additional features of $Name";
+		$ModeratorComment = "<span class='featuredIncompatible'>".sprintf(tr("Recommended to upgrade the OS to enjoy the additional features of %s"),$Name)."</span>";
 	
 	if ( $ModeratorComment ) {
 		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div></div>";
@@ -1480,7 +1480,7 @@ function displayPopup($template) {
 			<div class='spotlightPopup'>
 				<div class='spotlightIconArea ca_center'>
 					<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}' alt='Spotlight'></img></div>
-					<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
+					<div class='spotlightDate spotlightDateSidebar'>".tr(date("M Y",$RecommendedDate),0)."</div>
 				</div>
 				<div class='spotlightInfoArea'>
 					<div class='spotlightHeader'></div>
