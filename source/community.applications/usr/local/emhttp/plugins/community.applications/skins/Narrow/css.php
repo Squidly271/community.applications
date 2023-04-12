@@ -326,6 +326,10 @@ input[type=button][disabled]{background:none;}
 .notice.shift{margin-top:0px;}
 .officialCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #854153;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .officialPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.25rem;right:-1rem;width:100%;overflow:hidden;height:2.5rem;}
+.LTOfficialCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #F15A2C;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
+.ltofficialPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.25rem;right:-1rem;width:100%;overflow:hidden;height:2.5rem;}
+
+
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 .pageDots::after{content:"...";}
 .pageDots{color:grey;cursor:default;}
@@ -407,13 +411,13 @@ a.popup-donate:hover{color:<?=$donateText?>;background-color:<?=$unRaid66color?>
 .specialCategory{font-size:1.5rem;}
 .spinner{z-index:999999 !important;} /* ensure always ontop */
 .spinnerBackground{position:fixed;top:0;left:0;width:100%;height:100vh;display:none;background:transparent;z-index:9999;}
-.spotlightDate{font-size:1.5rem;}
+.spotlightDate{font-size:1.5rem;margin-left:-3rem;}
 .spotlightCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .spotlightHome{min-width:36rem !important;max-width:36rem !important;height:24rem !important;margin-bottom:1rem;}
 .spotlightPopupBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #009900;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
 .spotlightHeader{font-size:2rem;}
 .spotlightIconArea{display:inline-block;float:left;width:10rem;}
-.spotlightIcon{height:3.6rem;margin-top:1rem;margin-bottom:0.5rem;}
+.spotlightIcon{height:15rem;margin-bottom:-2.5rem;margin-left:-3rem;margin-top:-2rem;}
 .spotlightInfoArea{margin-left:2rem;padding-left:10rem;}
 .spotlightPopup{display:inline-block;}
 .spotlightPopupText{position:absolute;color:white;font-size:2rem;position:absolute;top:1.2rem;right:2rem;}

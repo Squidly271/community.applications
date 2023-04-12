@@ -86,7 +86,10 @@ $caPaths['info']                                = $caPaths['tempFiles']."/info.j
 $caPaths['dockerSearchResults']                 = $caPaths['tempFiles']."/dockerSearch.json";
 $caPaths['dockerSearchInstall']                 = $caPaths['tempFiles']."/dockerConvert.xml";
 $caPaths['dockerSearchActive']                  = $caPaths['tempFiles']."/dockerSearchActive";
-$caPaths['SpotlightIcon']                       = "https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Unraid.svg";
 $caPaths['dockerConvertFlash']                  = $dockerManPaths['templates-user']."/my-CA_TEST_CONTAINER_DOCKERHUB.xml";
 $caPaths['pluginPending']                       = "/tmp/plugins/pluginPending/";
+//$caPaths['SpotlightIcon']                       = "https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Unraid.svg";
+
+$dynamixSettings = parse_ini_file($caPaths['dynamixSettings']);
+$caPaths['SpotlightIcon']					 							= "https://github.com/Squidly271/community.applications/raw/master/webImages/spotlight_{$dynamixSettings['theme']}.png";
 ?>

@@ -1489,7 +1489,7 @@ function uninstallApp(application,humanName) {
 		if (data.inProgress) {
 			swal({
 				title: "<?tr("Installation already in progress")?>",
-				text: "<?tr("Another plugin installation or update is already in progress, and this one cannot start.  Wait until the current installation or update is completed and try again")?>",
+				text: "<?tr("Another plugin installation or update is already in progress and this one cannot start.  Wait until the current installation or update is completed and try again")?>",
 				allowOutsideClick: false,
 				showConfirmButton: true,
 				showCancelButton: false,
@@ -2071,7 +2071,7 @@ function updateDisplay(content) {
 			$(this).html(description + "... <span class='card_readmore'><?=tr("Read more")?></span>");
 		}
 	});
-	$(".ca_applicationName,.betaPopupText,.installedCardText,.upgradePopupText").each(function() {
+	$(".ca_applicationName,.betaPopupText,.installedCardText,.upgradePopupText,.ltofficialPopupText").each(function() {
 		while (isOverflown(this)) {
 			var existingSize = $(this).css("font-size");
 

@@ -1299,14 +1299,14 @@ function displayCard($template) {
 
 	$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
 	$card .= "<div class='$descClass $backgroundClickable'><div class='cardDesc'>$Overview</div></div>";
-/* 	if ( $RecommendedDate ) {
+	if ( $RecommendedDate ) {
 		$card .= "
 			<div class='homespotlightIconArea ca_center''>
 				<div><img class='spotlightIcon' src='{$caPaths['SpotlightIcon']}' alt='Spotlight'></img></div>
 				<div class='spotlightDate'>".tr(date("M Y",$RecommendedDate),0)."</div>
 			</div>
 		";
-	} */
+	}
 	$card .= "</div>";
 	if ( $Installed || $Uninstall ) {
 		$flagTextStart = tr("Installed")."<br>";
@@ -1353,7 +1353,13 @@ function displayCard($template) {
 	} elseif ( $Official ) {
 		$card .= "
 			<div class='officialCardBackground'>
-				<div class='officialPopupText ca_center' title='This is an official container'>".tr("OFFICIAL")."</div>
+				<div class='officialPopupText ca_center' title='".tr('This is an official container')."'>".tr("OFFICIAL")."</div>
+			</div>
+		";
+	} elseif ( $LTOfficial ) {
+		$card .= "
+			<div class='LTOfficialCardBackground'>
+				<div class='ltofficialPopupText ca_center' title='".tr("This is an offical plugin")."'>".tr("OFFICIAL")."</div>
 			</div>
 		";
 	} elseif ( $Beta ) {
@@ -1362,13 +1368,13 @@ function displayCard($template) {
 				<div class='betaPopupText ca_center'>".tr("BETA")."</div>
 			</div>
 		";
-	} elseif ( $RecommendedDate ) {
+	}/*  elseif ( $RecommendedDate ) {
 		$card .= "
 			<div class='spotlightCardBackground'>
 				<div class='spotlightPopupText' title='".tr("This is a spotlight application")."'></div>
 			</div>
 		";
-	} elseif ( $Trusted ) {
+	} */ elseif ( $Trusted ) {
 		$card .= "
 			<div class='spotlightCardBackground'>
 				<div class='betaPopupText ca_center' title='".tr("This container is digitally signed")."'>".tr("Digitally Signed")."</div>
