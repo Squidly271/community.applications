@@ -600,9 +600,11 @@ function appOfDay($file) {
 			foreach($file as $template) {
 				if ( ! isset($template['Featured'] ) )
 					break;
-				if ( ! checkRandomApp($template) )
-					continue;
-				// Don't show it if the plugin is installed
+				if ( ! $template['PluginURL'] == "https://unraid-dl.sfo2.cdn.digitaloceanspaces.com/unraid-api/dynamix.unraid.net.plg" ) {
+					if ( ! checkRandomApp($template) )
+						continue;
+				}
+					// Don't show it if the plugin is installed
 				if ( $template['PluginURL'] && is_file("/var/log/plugins/".basename($template['PluginURL'])) )
 					continue;
 				// Don't show it if the container is installed

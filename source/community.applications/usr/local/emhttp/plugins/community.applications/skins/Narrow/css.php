@@ -418,7 +418,7 @@ a.popup-donate:hover{color:<?=$donateText?>;background-color:<?=$unRaid66color?>
 .spotlightHeader{font-size:2rem;}
 .spotlightIconArea{display:inline-block;float:left;width:10rem;}
 .spotlightIcon{height:15rem;margin-bottom:-2.5rem;margin-left:-3rem;margin-top:-2rem;}
-.spotlightInfoArea{margin-left:2rem;padding-left:10rem;}
+.spotlightInfoArea{margin-left:2rem;padding-left:10rem;margin-top:2rem;}
 .spotlightPopup{display:inline-block;}
 .spotlightPopupText{position:absolute;color:white;font-size:2rem;position:absolute;top:1.2rem;right:2rem;}
 .spotlightPopupText::after{content:"\f005";font-family:fontAwesome;}

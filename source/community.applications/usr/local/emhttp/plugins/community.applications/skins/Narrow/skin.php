@@ -265,7 +265,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							} else {
 								$installComment = $template['RequiresFile'] ? "" : $installComment;
 							}
-							$actionsContext[] = ["icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated','$updateFlag','".str_replace([" ","\n"],["&#32;",""],htmlspecialchars($installComment ?? ""))."','$requiresText');"];
+							if ( $template['Compatible'] ) 
+								$actionsContext[] = ["icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated','$updateFlag','".str_replace([" ","\n"],["&#32;",""],htmlspecialchars($installComment ?? ""))."','$requiresText');"];
 
 							if ( $template['InstallPath'] ) {
 								if ( ! empty($actionsContext) )
@@ -1285,7 +1286,7 @@ function displayCard($template) {
 
 	if ( ! $Overview )
 		$Overview = tr("No description present");
-
+	
 	$ovr = html_entity_decode($Overview);
 	$ovr = trim($ovr);
 	$ovr = str_replace(["[","]"],["<",">"],$ovr);
@@ -1296,6 +1297,9 @@ function displayCard($template) {
 
 	$ovr = str_replace("\n","<br>",$ovr);
 	$Overview = strip_tags(str_replace("<br>"," ",$ovr));
+	
+	if ( ! $Compatible && $homeScreen )
+		$Overview = "<span style='color:#FF8C2F'>Recommended to upgrade the OS to enjoy the additional features of MyServers</span>&nbsp;&nbsp;$Overview";
 
 	$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
 	$card .= "<div class='$descClass $backgroundClickable'><div class='cardDesc'>$Overview</div></div>";
@@ -1452,7 +1456,9 @@ function displayPopup($template) {
 	if ( $Language && $LanguagePack !== "en_US" ) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
 	}
-
+	if ( !$Compatible && $PluginURL == "https://unraid-dl.sfo2.cdn.digitaloceanspaces.com/unraid-api/dynamix.unraid.net.plg" )
+		$ModeratorComment = "Recommended to upgrade the OS to enjoy the additional features of MyServers";
+	
 	if ( $ModeratorComment ) {
 		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div></div>";
 	}
