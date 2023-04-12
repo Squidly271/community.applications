@@ -1298,8 +1298,8 @@ function displayCard($template) {
 	$ovr = str_replace("\n","<br>",$ovr);
 	$Overview = strip_tags(str_replace("<br>"," ",$ovr));
 	
-	if ( ! $Compatible && $homeScreen )
-		$Overview = "<span style='color:#FF8C2F'>Recommended to upgrade the OS to enjoy the additional features of MyServers</span>&nbsp;&nbsp;$Overview";
+	if ( ! $Compatible && $Featured )
+		$Overview = "<span style='color:#FF8C2F'>Recommended to upgrade the OS to enjoy the additional features of $Name</span>&nbsp;&nbsp;$Overview";
 
 	$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
 	$card .= "<div class='$descClass $backgroundClickable'><div class='cardDesc'>$Overview</div></div>";
@@ -1456,8 +1456,8 @@ function displayPopup($template) {
 	if ( $Language && $LanguagePack !== "en_US" ) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
 	}
-	if ( !$Compatible && $PluginURL == "https://unraid-dl.sfo2.cdn.digitaloceanspaces.com/unraid-api/dynamix.unraid.net.plg" )
-		$ModeratorComment = "Recommended to upgrade the OS to enjoy the additional features of MyServers";
+	if ( !$Compatible && $Featured )
+		$ModeratorComment = "Recommended to upgrade the OS to enjoy the additional features of $Name";
 	
 	if ( $ModeratorComment ) {
 		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div></div>";

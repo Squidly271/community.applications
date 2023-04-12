@@ -600,10 +600,10 @@ function appOfDay($file) {
 			foreach($file as $template) {
 				if ( ! isset($template['Featured'] ) )
 					break;
-				if ( ! $template['PluginURL'] == "https://unraid-dl.sfo2.cdn.digitaloceanspaces.com/unraid-api/dynamix.unraid.net.plg" ) {
+/* 				if ( ! $template['PluginURL'] == "https://unraid-dl.sfo2.cdn.digitaloceanspaces.com/unraid-api/dynamix.unraid.net.plg" ) {
 					if ( ! checkRandomApp($template) )
 						continue;
-				}
+				} */
 					// Don't show it if the plugin is installed
 				if ( $template['PluginURL'] && is_file("/var/log/plugins/".basename($template['PluginURL'])) )
 					continue;
@@ -902,7 +902,7 @@ function get_content() {
 		if ( ($caSettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) continue;
 		if ( $displayDeprecated && ! $template['Deprecated'] ) continue;
 		if ( ! $template['Displayable'] ) continue;
-		if ( $caSettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible) continue;
+		if ( $caSettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible  && ! $template['Featured']) continue;
 		if ( $template['Blacklist'] ) continue;
 
 		$name = $template['Name'];
@@ -1718,7 +1718,7 @@ function populateAutoComplete() {
 	foreach ($templates as $template) {
 		if ( $template['RepoTemplate'] )
 			continue;
-		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $caSettings['hideDeprecated'] == "true") && ($template['Compatible'] || $caSettings['hideIncompatible'] != "true") ) {
+		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $caSettings['hideDeprecated'] == "true") && ($template['Compatible'] || $caSettings['hideIncompatible'] != "true") || $template['Featured'] ) {
 			if ( $template['Language'] && $template['LanguageLocal'] ) {
 				$autoComplete[strtolower($template['Language'])] = $template['Language'];
 				$autoComplete[strtolower($template['LanguageLocal'])] = $template['LanguageLocal'];
