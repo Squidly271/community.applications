@@ -1718,7 +1718,7 @@ function populateAutoComplete() {
 	foreach ($templates as $template) {
 		if ( $template['RepoTemplate'] )
 			continue;
-		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $caSettings['hideDeprecated'] == "true") && ($template['Compatible'] || $caSettings['hideIncompatible'] != "true") || $template['Featured'] ) {
+		if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $caSettings['hideDeprecated'] == "true") && ($template['Compatible'] || $caSettings['hideIncompatible'] != "true") || ($template['Featured']??false) ) {
 			if ( $template['Language'] && $template['LanguageLocal'] ) {
 				$autoComplete[strtolower($template['Language'])] = $template['Language'];
 				$autoComplete[strtolower($template['LanguageLocal'])] = $template['LanguageLocal'];

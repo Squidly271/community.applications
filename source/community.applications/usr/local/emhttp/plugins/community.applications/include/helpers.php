@@ -380,6 +380,9 @@ function moderateTemplates() {
 	if ( ! $templates ) return;
 	foreach ($templates as $template) {
 		$template['Compatible'] = versionCheck($template);
+		if ( $template['MaxVer'] && version_compare($template['MaxVer'],$caSettings['unRaidVersion']) < 0 )
+			$template['Featured'] = false;
+		
 		if ( $template["DeprecatedMaxVer"] && version_compare($caSettings['unRaidVersion'],$template["DeprecatedMaxVer"],">") )
 			$template['Deprecated'] = true;
 

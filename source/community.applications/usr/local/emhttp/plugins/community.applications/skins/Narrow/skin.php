@@ -1360,7 +1360,7 @@ function displayCard($template) {
 				<div class='officialPopupText ca_center' title='".tr('This is an official container')."'>".tr("OFFICIAL")."</div>
 			</div>
 		";
-	} elseif ( $LTOfficial ) {
+	} elseif ( $LTOfficial ?? false ) {
 		$card .= "
 			<div class='LTOfficialCardBackground'>
 				<div class='ltofficialPopupText ca_center' title='".tr("This is an offical plugin")."'>".tr("OFFICIAL")."</div>
