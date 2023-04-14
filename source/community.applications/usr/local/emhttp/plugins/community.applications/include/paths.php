@@ -37,8 +37,8 @@ $caPaths['startupDisplayed']                    = $caPaths['tempFiles']."/startu
 $caPaths['repositoriesDisplayed']               = $caPaths['tempFiles']."/repositoriesDisplayed.json";
 $caPaths['application-feed']                    = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/applicationFeed.json";
 $caPaths['application-feed-last-updated']       = "https://raw.githubusercontent.com/Squidly271/AppFeed/master/applicationFeed-lastUpdated.json";
-$caPaths['application-feedBackup']              = "https://s3.amazonaws.com/dnld.lime-technology.com/appfeed/master/applicationFeed.json";
-$caPaths['application-feed-last-updatedBackup'] = "https://s3.amazonaws.com/dnld.lime-technology.com/appfeed/master/applicationFeed-lastUpdated.json";
+$caPaths['application-feedBackup']              = "https://dnld.lime-technology.com/appfeed/master/applicationFeed.json";
+$caPaths['application-feed-last-updatedBackup'] = "https://dnld.lime-technology.com/appfeed/master/applicationFeed-lastUpdated.json";
 $caPaths['appFeedDownloadError']                = $caPaths['tempFiles']."/downloaderror.txt";
 $caPaths['categoryList']                        = $caPaths['tempFiles']."/categoryList.json";
 $caPaths['repositoryList']                      = $caPaths['tempFiles']."/repositoryList.json";
@@ -88,8 +88,8 @@ $caPaths['dockerSearchInstall']                 = $caPaths['tempFiles']."/docker
 $caPaths['dockerSearchActive']                  = $caPaths['tempFiles']."/dockerSearchActive";
 $caPaths['dockerConvertFlash']                  = $dockerManPaths['templates-user']."/my-CA_TEST_CONTAINER_DOCKERHUB.xml";
 $caPaths['pluginPending']                       = "/tmp/plugins/pluginPending/";
-//$caPaths['SpotlightIcon']                       = "https://raw.githubusercontent.com/Squidly271/community.applications/master/webImages/Unraid.svg";
 
 $dynamixSettings = parse_ini_file($caPaths['dynamixSettings']);
 $caPaths['SpotlightIcon']					 							= "https://github.com/Squidly271/community.applications/raw/master/webImages/spotlight_{$dynamixSettings['theme']}.png";
+$caPaths['SpotlightIcon-backup']                = "https://s3.amazonaws.com/dnld.lime-technology.com/community-apps/assets/spotlight/spotlight_{$dynamixSettings['theme']}.png";
 ?>

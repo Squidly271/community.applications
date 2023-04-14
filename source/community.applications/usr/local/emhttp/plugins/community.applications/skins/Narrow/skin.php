@@ -619,7 +619,7 @@ function getPopupDescriptionSkin($appNumber) {
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? "{$template['IconFA']} unraidIcon" : "fa fa-{$template['IconFA']}";
 		$template['display_icon'] = "<i class='$templateIcon popupIcon'></i>";
 	} else
-		$template['display_icon'] = "<img class='popupIcon screenshot' href='{$template['Icon']}' src='{$template['Icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;' alt='Application Icon'>";
+		$template['display_icon'] = "<img class='popupIcon screenshot' href='{$template['Icon']}' src='{$template['Icon']}' alt='Application Icon'>";
 
 	if ( $template['Requires'] ) {
 		$template['Requires'] = Markdown(strip_tags(str_replace(["\r","\n","&#xD;"],["","<br>",""],trim($template['Requires'])),"<br>"));
@@ -896,7 +896,7 @@ function getRepoDescriptionSkin($repository) {
 		<div class='popUpBack'>".tr("BACK")."</div>
 		<div class='ca_popupIconArea'>
 			<div class='popupIcon'>
-				$iconPrefix<img class='popupIcon' src='{$repo['icon']}' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;'>$iconPostfix
+				$iconPrefix<img class='popupIcon' src='{$repo['icon']}'>$iconPostfix
 			</div>
 			<div class='popupInfo'>
 				<div class='popupName'>$repository</div>
@@ -1581,7 +1581,7 @@ function displayPopup($template) {
 			<div class='popupInfoRight'>
 					<div class='popupAuthorTitle'>".tr("Maintainer")."</div>
 					<div><div class='popupAuthor'>$RepoName</div>
-					<div class='popupAuthorIcon'>$remoteIconPrefix<img class='popupAuthorIcon' src='$ProfileIcon' onerror='this.src=&quot;/plugins/dynamix.docker.manager/images/question.png&quot;' alt='Repository Icon'></img>$remoteIconPostfix</div>
+					<div class='popupAuthorIcon'>$remoteIconPrefix<img class='popupAuthorIcon' src='$ProfileIcon' alt='Repository Icon'></img>$remoteIconPostfix</div>
 					</div>
 					<div class='ca_repoSearchPopUp popupProfile' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("All Apps")."</div>
 					<div class='repoPopup' data-repository='".htmlentities($Repo,ENT_QUOTES)."'>".tr("Profile")."</div>

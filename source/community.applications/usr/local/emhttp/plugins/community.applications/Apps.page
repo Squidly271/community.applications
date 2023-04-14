@@ -2034,7 +2034,10 @@ function updateDisplay(content) {
 	setToolTip();
 	enableSearch();
 	$('img').on("error",function() {
-		$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+		if ( $(this).hasClass("spotlightIcon") ) 
+			$(this).attr('src','<?=$caPaths['SpotlightIcon-backup']?>');
+		else
+			$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
 	});
 	context.init();
 	$('.supportButtonCardContext').each(function() {
