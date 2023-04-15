@@ -217,12 +217,12 @@ function DownloadApplicationFeed() {
 	$currentFeed = "Primary Server";
 	$downloadURL = randomFile();
 	$ApplicationFeed = download_json($caPaths['application-feed'],$downloadURL,"",20);
-	if ( ! is_array($ApplicationFeed['applist']) ) {
+	if ( (! is_array($ApplicationFeed['applist'])) || empty($ApplicationFeed['applist']) ) {
 		$currentFeed = "Backup Server";
 		$ApplicationFeed = download_json($caPaths['application-feedBackup'],$downloadURL);
 	}
 	@unlink($downloadURL);
-	if ( ! is_array($ApplicationFeed['applist']) ) {
+	if ( (! is_array($ApplicationFeed['applist'])) || empty($ApplicationFeed['applist']) ) {
 		@unlink($caPaths['currentServer']);
 		ca_file_put_contents($caPaths['appFeedDownloadError'],$downloadURL);
 		return false;
