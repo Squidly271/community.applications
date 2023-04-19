@@ -492,7 +492,7 @@ function getConvertedTemplates() {
 function appOfDay($file) {
 	global $caPaths,$caSettings,$sortOrder;
 
-	$max = 12;
+	$max = is_file("/boot/config/plugins/unlimited-width.plg") ? 12 : 5;
 	$appOfDay = null;
 
 	switch ($caSettings['startup']) {
