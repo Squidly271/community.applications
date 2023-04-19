@@ -1299,7 +1299,7 @@ function displayCard($template) {
 	$Overview = strip_tags(str_replace("<br>"," ",$ovr));
 	
 	if ( ! $Compatible && $Featured )
-		$Overview = "<span class='featuredIncompatible'>".sprintf(tr("Recommended to upgrade the OS to enjoy the additional features of %s"),$Name)."</span>&nbsp;&nbsp;$Overview";
+		$Overview = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Please update the OS to proceed"),$Name)."</span>&nbsp;&nbsp;$Overview";
 
 	$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
 	$card .= "<div class='$descClass $backgroundClickable'><div class='cardDesc'>$Overview</div></div>";
@@ -1457,7 +1457,7 @@ function displayPopup($template) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
 	}
 	if ( !$Compatible && $Featured )
-		$ModeratorComment = "<span class='featuredIncompatible'>".sprintf(tr("Recommended to upgrade the OS to enjoy the additional features of %s"),$Name)."</span>";
+		$ModeratorComment = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Please update the OS to proceed"),$Name)."</span>";
 	
 	if ( $ModeratorComment ) {
 		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div></div>";
