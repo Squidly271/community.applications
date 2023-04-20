@@ -2874,6 +2874,12 @@ function showSidebarApp(apppath,appname) {
 	setTimeout(function() {
 		post({action:'getPopupDescription',appName:appname,appPath:apppath},function(result) {
 			$("#sidenavContent").html(result.description);
+			$('img').on("error",function() {
+				if ( $(this).hasClass("spotlightIcon") ) 
+					$(this).attr('src','<?=$caPaths['SpotlightIcon-backup']?>');
+				else
+					$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+			});
 			$('.screenshot').magnificPopup({
 				closeMarkup: "<span class='mfp-close narrow'>"+tr("CLOSE")+"</span>",
 				closeOnContentClick: true,
