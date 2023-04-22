@@ -216,7 +216,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							}
 							$template['pluginVersion'] = plugin("version","/tmp/plugins/$pluginName");
 
-							if ( ( strcmp($pluginInstalledVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications") {
+							if ( ( strcmp($pluginInstalledVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) && $template['Name'] !== "Community Applications" && ( ! ($template['UninstallOnly'] ?? false) ) ) {
 								@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
 								$template['UpdateAvailable'] = true;
 								$actionsContext[] = ["icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true,'','{$template['RequiresFile']}');"];
@@ -265,9 +265,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 							} else {
 								$installComment = $template['RequiresFile'] ? "" : $installComment;
 							}
-							if ( $template['Compatible'] ) 
-								$actionsContext[] = ["icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated','$updateFlag','".str_replace([" ","\n"],["&#32;",""],htmlspecialchars($installComment ?? ""))."','$requiresText');"];
-
+							if ( ! ($template['UninstallOnly'] ?? false) ) {
+								if ( $template['Compatible'] ) 
+									$actionsContext[] = ["icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated','$updateFlag','".str_replace([" ","\n"],["&#32;",""],htmlspecialchars($installComment ?? ""))."','$requiresText');"];
+							}
 							if ( $template['InstallPath'] ) {
 								if ( ! empty($actionsContext) )
 									$actionsContext[] = ["divider"=>true];
@@ -706,7 +707,7 @@ function getPopupDescriptionSkin($appNumber) {
 						$actionsContext[] = ["icon"=>"ca_fa-delete","text"=>"<span class='ca_red'>".tr("Uninstall")."</span>","action"=>"uninstallApp('/var/log/plugins/$pluginName','".str_replace(" ","&nbsp;",$template['Name'])."');"];
 					}
 				} elseif ( ! $template['Blacklist']  ) {
-					if ( $template['Compatible'] || $caSettings['hideIncompatible'] !== "true") {
+					if ( ($template['Compatible'] || $caSettings['hideIncompatible'] !== "true") && !($template['UninstallOnly'] ?? false) ) {
 						if ( !$template['Deprecated'] || $caSettings['hideDeprecated'] !== "true" || ($template['Deprecated'] && $template['InstallPath']) ) {
 							if ( ($template['RequiresFile'] && is_file($template['RequiresFile']) ) || ! $template['RequiresFile'] ) {
 								$buttonTitle = $template['InstallPath'] ? tr("Reinstall") : tr("Install");
@@ -1298,8 +1299,12 @@ function displayCard($template) {
 	$ovr = str_replace("\n","<br>",$ovr);
 	$Overview = strip_tags(str_replace("<br>"," ",$ovr));
 	
-	if ( ! $Compatible && $Featured )
-		$Overview = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Please update the OS to proceed"),$Name)."</span>&nbsp;&nbsp;$Overview";
+	if ( ($UninstallOnly ?? false) && $Featured && is_file("/var/log/plugins/".basename($PluginURL)) )
+		$Overview = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Either uninstall %s or update the OS"),$Name,$Name)."</span>&nbsp;&nbsp;$Overview";
+	else
+		if ( (! $Compatible || ($UninstallOnly ?? false) ) && $Featured )
+			$Overview = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Please update the OS to proceed"),$Name)."</span>&nbsp;&nbsp;$Overview";
+
 
 	$descClass= $RepositoryTemplate ? "cardDescriptionRepo" : "cardDescription";
 	$card .= "<div class='$descClass $backgroundClickable'><div class='cardDesc'>$Overview</div></div>";
@@ -1456,7 +1461,7 @@ function displayPopup($template) {
 	if ( $Language && $LanguagePack !== "en_US" ) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
 	}
-	if ( !$Compatible && $Featured )
+	if ( !$Compatible || ($UninstallOnly ?? false) && $Featured )
 		$ModeratorComment = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Please update the OS to proceed"),$Name)."</span>";
 	
 	if ( $ModeratorComment ) {
