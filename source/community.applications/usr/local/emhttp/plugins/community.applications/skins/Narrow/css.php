@@ -19,7 +19,7 @@ $theme = $dynamix['theme'];
 
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
-$mobile = isMobile();
+//$mobile = isMobile();
 
 $unRaid66color = "#FF8C2F";
 $linkColor = "#486dba";
@@ -404,7 +404,7 @@ a.popup-donate:hover{color:<?=$donateText?>;background-color:<?=$unRaid66color?>
 .sidebarClose{width: 100%;height: 100vh;position: fixed;top: 0;left: 0;}
 .selectedMenu{color:<?=$unRaid66color?>;font-weight:bold;}
 .sidenavHide{width:0px;}
-.sidenavShow{width:<?=($mobile ? "90rem;" : "70rem;")?> }
+.sidenavShow{width:70rem; }
 .sidenav{position:fixed;top:0;right:0;bottom:1.6rem;margin-bottom:10px;background-color:<?=$sidebarBackground?>;color:<?=$sidebarText?>;overflow-x:hidden;transition:0.5s;padding-top:60px;overflow-y:scroll;}
 #sortIconArea{padding-bottom:1rem;}
 .sortIcons{font-size:1.2rem;margin-right:10px;margin-left:10px;cursor:pointer;text-decoration:none !important;color:<?=$sidebarText?>;}

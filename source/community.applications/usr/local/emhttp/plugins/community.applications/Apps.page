@@ -134,7 +134,7 @@ function tr($string,$ret=false) {
 ?>
 
 
-<link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/css.php")?>" >
+<link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/$theme.css")?>" >
 <? if ( is_file("$docroot/plugins/dynamix/styles/community.applications-$theme.css") ):?>
 <link type='text/css' rel='stylesheet' href='<?=autov("/plugins/dynamix/styles/community.applications-$theme.css")?>'>
 <? endif; ?>
