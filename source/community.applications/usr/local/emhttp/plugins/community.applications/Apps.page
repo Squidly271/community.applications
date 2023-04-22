@@ -1262,13 +1262,11 @@ function actuallyInstallPlugin(pluginURL,update=false,comment="") {
 					pluginURL = pluginURL.replace("&incompatible","");
 
 				}
-<?if ($nchanCom):?>
-				post({action:'saveMultiPluginPending',plugin:pluginURL},function(data) {
+				<?if ($nchanCom):?>
 					ca_openPlugin('plugin '+type+' '+pluginURL,title,'',postFunction);
-				});
-<?else:?>
-				openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,postFunction);
-<?endif;?>
+				<?else:?>
+					openBox('/plugins/community.applications/scripts/pluginInstall.php&arg1='+type+'&arg2='+pluginURL,title,600,900,true,postFunction);
+				<?endif;?>
 			} else {
 				enableSearch();
 			}

@@ -30,6 +30,7 @@ foreach ($plugins as $plugin) {
 		}
 	} else
 		echo "$plugin not found in application feed\n";
+	@unlink("{$caPaths['pluginPending']}/$pluginName");
 }
 passthru("/usr/local/emhttp/plugins/community.applications/scripts/updatePluginSupport.php");
 ?>
