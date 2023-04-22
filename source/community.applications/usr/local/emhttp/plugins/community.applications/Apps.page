@@ -2071,16 +2071,15 @@ function updateDisplay(content) {
 		var description = $(this).html();
 		while (isOverflown(this)) {
 			description = description.slice(0,-5);
-			if ( description.length < 5 )
+			if ( description.length < 5 ) // Safari under certain circumstances thinks that non-displayed cards are always overflown
 				return false;
 			$(this).html(description + "... <span class='card_readmore'><?=tr("Read more")?></span>");
 		}
 	});
-var newSize = 100;
+	var newSize;
 	$(".ca_applicationName,.betaPopupText,.installedCardText,.upgradePopupText,.ltofficialPopupText").each(function() {
 		while (isOverflown(this)) {
 			var existingSize = $(this).css("font-size");
- //			var size = existingSize.replace("px","");
 			var size = parseInt(existingSize);
 			if ( size == newSize + 1 ) {  // looks like browsers in Chinese have a minimum enforced font-size
 				return false;
@@ -2106,7 +2105,7 @@ var newSize = 100;
 }
 
 function isOverflown(el){
-	return el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth;
+	return (el.scrollHeight > el.clientHeight) || (el.scrollWidth > el.clientWidth);
 }
 
 function saveState() {
@@ -2928,10 +2927,11 @@ function showSidebarApp(apppath,appname) {
 				});
 				context.attach("#actionsPopup",opts);
 			}
+			var newSize;
 			$(".popupName,.betaPopupText,.popupTableRight,.popupTableLeft,.upgradePopupText,.installedPopupText").each(function() {
 				while (isOverflown(this)) {
 					var existingSize = $(this).css("font-size");
-					var size = existingSize.replace("px","");
+					var size = parseInt(existingSize);
 					if ( size == newSize + 1 ) {  // looks like browsers in Chinese have a minimum enforced font-size
 						return false;
 					}

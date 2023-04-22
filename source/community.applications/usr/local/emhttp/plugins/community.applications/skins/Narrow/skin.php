@@ -1327,7 +1327,7 @@ function displayCard($template) {
 	} elseif ( ($Installed || $Uninstall) && !$actionCentre) {
 		 $card .= "
 			 <div class='installedCardBackground'>
-			   <div class='installedCardText ca_center'>".tr("INSTALLED")."</div>
+			   <div class='installedCardText ca_center'>&nbsp;&nbsp;".tr("INSTALLED")."&nbsp;&nbsp;</div>
 			</div>";
 	} elseif ( $Blacklist ) {
 		$card .= "

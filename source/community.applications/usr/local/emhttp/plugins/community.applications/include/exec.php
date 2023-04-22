@@ -840,7 +840,7 @@ function get_content() {
 					$homeClass = "caHomeSpotlight";
 
 					$o['display'] .= "<div class='ca_homeTemplates $homeClass'>".my_display_apps($display,"1")."</div>";
-					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();$('.ca_holder').addClass('mobileHolderFix');";
+					$o['script'] = "$('#templateSortButtons,#sortButtons,.maxPerPage').hide();$('.ca_holder').addClass('mobileHolderFix');";
 
 				} else {
 					switch ($caSettings['startup']) {
@@ -859,7 +859,7 @@ function get_content() {
 					}
 
 					$o['display'] .=  "<br><div class='ca_center'><font size='4' color='purple'><span class='ca_bold'>".sprintf(tr("An error occurred.  Could not find any %s Apps"),$startupType)."</span></font><br><br>";
-					$o['script'] = "$('#templateSortButtons,#sortButtons').hide();";
+					$o['script'] = "$('#templateSortButtons,#sortButtons,.maxPerPage').hide();";
 
 					writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
 					postReturn($o);
