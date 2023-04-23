@@ -2950,6 +2950,7 @@ function showSidebarApp(apppath,appname) {
 			});
 		})
 	},500);
+	$(".sidebar").focus();
 }
 
 function showRepoPopup(repository) {
