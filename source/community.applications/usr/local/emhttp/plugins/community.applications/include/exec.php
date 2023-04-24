@@ -601,7 +601,7 @@ function appOfDay($file) {
 				if ( ! isset($template['Featured'] ) )
 					break;
 					// Don't show it if the plugin is installed
-				
+
 				if ( $template['PluginURL'] && is_file("/var/log/plugins/".basename($template['PluginURL'])) ) {
 					if ( checkPluginUpdate($template['PluginURL']) ) {
 						$appOfDay[] = $template['ID'];

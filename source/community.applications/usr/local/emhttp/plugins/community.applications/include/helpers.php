@@ -385,7 +385,7 @@ function moderateTemplates() {
 		if ( $template['CAMinVer'] ?? false ) {
 			$template['UninstallOnly'] = version_compare($template['CAMinVer'],$caSettings['unRaidVersion'],">=");
 		}
-		
+
 		if ( $template["DeprecatedMaxVer"] && version_compare($caSettings['unRaidVersion'],$template["DeprecatedMaxVer"],">") )
 			$template['Deprecated'] = true;
 

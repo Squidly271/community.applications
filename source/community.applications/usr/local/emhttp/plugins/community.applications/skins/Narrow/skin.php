@@ -65,7 +65,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 	$displayHeader = "<script>addDockerWarning($dockerNotEnabled);var dockerNotEnabled = $dockerWarningFlag;</script>";
 
 	$pinnedApps = readJsonFile($caPaths['pinnedV2']);
-	
+
 	$selectedApps['docker'] = $selectedApps['docker'] ?? [];
 	$selectedApps['plugin'] = $selectedApps['plugin'] ?? [];
 	$checkedOffApps = arrayEntriesToObject(@array_merge(@array_values($selectedApps['docker']),@array_values($selectedApps['plugin'])));
@@ -149,7 +149,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
 							$template['Installed'] = $selected;
 							if ( $selected ) {
-								
+
 								$ind = searchArray($info,"Name",$name);
 								if ( $info[$ind]['url'] && $info[$ind]['running'] ) {
 									$actionsContext[] = ["icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$ind]['url']}','_blank');"];
@@ -266,7 +266,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 								$installComment = $template['RequiresFile'] ? "" : $installComment;
 							}
 							if ( ! ($template['UninstallOnly'] ?? false) ) {
-								if ( $template['Compatible'] ) 
+								if ( $template['Compatible'] )
 									$actionsContext[] = ["icon"=>"ca_fa-install","text"=>$buttonTitle,"action"=>"installPlugin('{$template['PluginURL']}$isDeprecated','$updateFlag','".str_replace([" ","\n"],["&#32;",""],htmlspecialchars($installComment ?? ""))."','$requiresText');"];
 							}
 							if ( $template['InstallPath'] ) {
@@ -334,7 +334,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$template['Reddit'] = $template['Reddit'] ?? null;
 				$template['Facebook'] = $template['Facebook'] ?? null;
 				$template['Discord'] = $template['Discord'] ?? null;
-			}				
+			}
 
 			$previousAppName = $template['Plugin'] ? $template['PluginURL'] : $template['Name'];
 			if ( isset($checkedOffApps[$previousAppName]) )
@@ -861,7 +861,7 @@ function getRepoDescriptionSkin($repository) {
 	$repo = $repositories[$repository];
 	$iconPrefix = $repo['icon'] ? "<a class='screenshot mfp-image' href='{$repo['icon']}'>" : "";
 	$iconPostfix = $repo['icon'] ? "</a>" : "";
-	
+
 	$repo['icon'] = $repo['icon'] ?? "/plugins/dynamix.docker.manager/images/question.png";
 	$repo['bio'] = isset($repo['bio']) ? markdown($repo['bio']) : "<br><center>".tr("No description present");
 	$favRepoClass = ($caSettings['favourite'] == $repository) ? "fav" : "nonfav";
@@ -1020,7 +1020,7 @@ function displaySearchResults($pageNumber) {
 	$templates = &$GLOBALS['templates'];
 	$count = 0;
 	$caSettings['NoInstalls'] = is_file($caPaths['warningAccepted']) ? false : true;
-	
+
 	$ct = "<div>".tr("NOTE You must visit the dockerHub page to gather the information required to install correctly")."<span class='templateSearch' style='float:right'>Show CA templates</span></div><br><br>";
 	$ct .= "<div class='ca_templatesDisplay'>";
 
@@ -1061,10 +1061,10 @@ function displayCard($template) {
 	$appName = str_replace("-"," ",$template['display_dockerName'] ?? "");
 	$holderClass = "";
 	$card = "";
-	
+
 	if ( $template['RepositoryTemplate'] )
 		$template['DockerHub'] = false;
-	
+
 	if ( $template['DockerHub'] )
 		$popupType = null;
 	else {
@@ -1076,7 +1076,7 @@ function displayCard($template) {
 			$template['Category'] = "";
 		}
 	}
-	
+
 	extract($template);
 
 	$class = "spotlightHome";
@@ -1108,7 +1108,7 @@ function displayCard($template) {
 	}
 	if ($InstallPath ?? false)
 		$Path = $InstallPath;
-	
+
 	$Category = $Category ?? "";
 	$Category = explode(" ",$Category)[0];
 	$Category = explode(":",$Category)[0];
@@ -1287,7 +1287,7 @@ function displayCard($template) {
 
 	if ( ! $Overview )
 		$Overview = tr("No description present");
-	
+
 	$ovr = html_entity_decode($Overview);
 	$ovr = trim($ovr);
 	$ovr = str_replace(["[","]"],["<",">"],$ovr);
@@ -1298,7 +1298,7 @@ function displayCard($template) {
 
 	$ovr = str_replace("\n","<br>",$ovr);
 	$Overview = strip_tags(str_replace("<br>"," ",$ovr));
-	
+
 	if ( ($UninstallOnly ?? false) && $Featured && is_file("/var/log/plugins/".basename($PluginURL)) )
 		$Overview = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Either uninstall %s or update the OS"),$Name,$Name)."</span>&nbsp;&nbsp;$Overview";
 	else
@@ -1457,13 +1457,13 @@ function displayPopup($template) {
 
 	if ( $CAComment )
 		$ModeratorComment .= "  $CAComment";
-	
+
 	if ( $Language && $LanguagePack !== "en_US" ) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
 	}
 	if ( !$Compatible || ($UninstallOnly ?? false) && $Featured )
 		$ModeratorComment = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Please update the OS to proceed"),$Name)."</span>";
-	
+
 	if ( $ModeratorComment ) {
 		$card .= "<div class='modComment'><div class='moderatorCommentHeader'> ".tr("Attention:")."</div><div class='moderatorComment'>$ModeratorComment</div></div>";
 	}
