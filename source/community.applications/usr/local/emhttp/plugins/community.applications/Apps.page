@@ -132,11 +132,12 @@ function tr($string,$ret=false) {
 }
 
 ?>
+<style>
+<?include "/$docroot/plugins/$plugin/skins/Narrow/css.php"?>
+</style>
 
-
-<link type='text/css' rel='stylesheet' href="<?=autov("/plugins/$plugin/skins/Narrow/$theme.css")?>" >
 <? if ( is_file("$docroot/plugins/dynamix/styles/community.applications-$theme.css") ):?>
-<link type='text/css' rel='stylesheet' href='<?=autov("/plugins/dynamix/styles/community.applications-$theme.css")?>'>
+	<link type='text/css' rel='stylesheet' href='<?=autov("/plugins/dynamix/styles/community.applications-$theme.css")?>'>
 <? endif; ?>
 
 <script src='<?autov("/plugins/community.applications/javascript/libraries.js")?>'></script>
