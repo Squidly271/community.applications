@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.03.11">
-<!ENTITY md5       "07710453ff204cdacbcaaa974611923c">
+<!ENTITY version   "2023.04.26">
+<!ENTITY md5       "5badde0adb4aa1f5e59f61e42a0da25f">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,22 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2023.04.26
+- Fixed: Various Safari issues
+- Fixed: Prevent main area scrolling if sidebar open
+- Fixed: Attempting to install / update a plugin with an invalid .plg would leave pending state always active
+- Fixed: MaxPerPage shouldn't appear on home page
+- Fixed: 404 on application icon on sidebar wouldn't display the default question mark
+- Changed: If Unlimited Width plugin not installed, limit number of non-displayed cards to a more reasonable value
+- Fixed: Under certain circumstances, switching over to backup application feed wouldn't happen
+- Changed: Spotlight icons
+- Added: Popup if attempting to install a plugin while one is already in progress
+- Added: Allow zoom on sidebar application icon
+- Added: Show Installed flag on sidebar
+- Fixed: Under certain circumstances the BACK button on sidebar could disappear
+- Changed: Switch backup application feed to faster server
+- Added: Ability to display Featured Apps
+
 ###2023.03.11
 - PHP 8 Upgrades
 
