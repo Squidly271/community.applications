@@ -6,6 +6,9 @@
 #                                                             #
 ###############################################################
 
+$docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
+require_once "$docroot/plugins/dynamix/include/Wrappers.php";
+
 $CA = "community.applications";
 
 if ( ! isset($dockerManPaths) ) {

@@ -4,7 +4,7 @@ eb1f0ee4148747c0473e73e4e973994f  ./ca_settings.page
 e8d29607ec792ddf9f6832b10ee70fdc  ./default.cfg
 7e22b781295bbf10fe0089378b9ba76b  ./include/exec.php
 6315b71595f089a310861ef2e1954d84  ./include/helpers.php
-d44d717a911db11ea41eea01fadb3968  ./include/paths.php
+3f6ae4c4fef3077dd2ca45117f780846  ./include/paths.php
 532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
 ec075d8b9758ba00bda9b02c4692f972  ./scripts/checkForUpdates.php
