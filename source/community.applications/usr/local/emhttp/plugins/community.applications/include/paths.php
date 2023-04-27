@@ -89,7 +89,7 @@ $caPaths['dockerSearchActive']                  = $caPaths['tempFiles']."/docker
 $caPaths['dockerConvertFlash']                  = $dockerManPaths['templates-user']."/my-CA_TEST_CONTAINER_DOCKERHUB.xml";
 $caPaths['pluginPending']                       = "/tmp/plugins/pluginPending/";
 
-$dynamixSettings = parse_ini_file($caPaths['dynamixSettings']);
+$dynamixSettings = parse_plugin_cfg("dynamix");
 $caPaths['SpotlightIcon']					 							= "https://github.com/Squidly271/community.applications/raw/master/webImages/spotlight_{$dynamixSettings['theme']}.png";
 $caPaths['SpotlightIcon-backup']                = "https://s3.amazonaws.com/dnld.lime-technology.com/community-apps/assets/spotlight/spotlight_{$dynamixSettings['theme']}.png";
 ?>
