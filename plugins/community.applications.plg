@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.04.26a">
-<!ENTITY md5       "7b54504de48d089dd89152cc81ad5d4a">
+<!ENTITY version   "2023.04.26b">
+<!ENTITY md5       "a197bd71b14b549478b001b2af08b654">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2023.04.26b
+- 6.9.2 Compatibility
+
 ###2023.04.26a
 - Regression Error: Handle situation where no changes to display settings have ever taken place
 
