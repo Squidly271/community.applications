@@ -2081,6 +2081,7 @@ THIS IS A REQUIRED UPDATE
 
 	echo "Fixing pinned apps\n";
 	if ( is_file("/boot/config/plugins/community.applications/pinned_appsV2.json") ) {
+	  $pin = [];
 	  $original = json_decode(file_get_contents("/boot/config/plugins/community.applications/pinned_appsV2.json"),true);
 		if ( is_array($original) ) {
 			foreach ($original as $app) {

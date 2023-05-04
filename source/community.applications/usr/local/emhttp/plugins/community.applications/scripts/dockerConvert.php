@@ -19,6 +19,7 @@ require_once "$docroot/plugins/community.applications/include/paths.php";
 require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 require_once "$docroot/plugins/community.applications/include/helpers.php";
 
+$caSettings = parse_plugin_cfg("community.applications");
 $unRaidVersion = parse_ini_file($caPaths['unRaidVersion']);
 $unRaid69 = version_compare($unRaidVersion['version'],"6.9.9","<=");
 $exeFile = "/usr/local/emhttp/plugins/dynamix.docker.manager/include/CreateDocker.php";
@@ -48,7 +49,7 @@ if ( $_GET['ID'] !== false) {
 	
 	echo "<div id='output'>";
 	$dockers = ["CA_TEST_CONTAINER_DOCKERHUB"];
-	echo sprintf(tr("Installing test container"),str_replace(",",", ",$_GET['docker']))."<br>";
+	echo sprintf(tr("Installing test container"),str_replace(",",", ",$_GET['docker'] ?? ""))."<br>";
 	$_GET['updateContainer'] = true;
 	$_GET['ct'] = $dockers;
 	$_GET['communityApplications'] = true;
@@ -88,7 +89,7 @@ function addLog(logLine) {
 	}
 }
 function addCloseButton() {
-	addLog("<p class='centered'><button class='logLine' type='button' onclick='" + (top.Shadowbox ? "top.Shadowbox" : "window") + ".close()'><?=tr("Done")?></button></p>");
+	addLog("<p class='centered'><button class='logLine' type='button' onclick='" + (parent.Shadowbox ? "parent.Shadowbox" : "window") + ".close()'><?=tr("Done")?></button></p>");
 }
 </script>
 <?
@@ -106,6 +107,7 @@ function addCloseButton() {
 		$vars = isset($json[0]['Config']['Env']) ? $json[0]['Config']['Env'] : [];
 		
 		$count = 1;
+		$Config = [];
 		foreach ($paths as $path) {
 			$p = ["Name"=>"Container Path $count",'Type'=>"Path","Target"=>$path['Destination'],"Default"=>"","Mode"=>"rw","Display"=>"always","Required"=>"false","Mask"=>"false"];
 			if ( $unRaid69 ) $p['Description'] = "Container Path: {$path['Destination']}";
@@ -120,10 +122,11 @@ function addCloseButton() {
 			$Config[]['@attributes'] = $p;
 			$count++;
 		}
+		$textvars = "";
 		foreach ($vars as $var) {
 			$textvars .= "$var\n";
 		}
-		$testvars = parse_ini_string($textvars);
+		$testvars = @parse_ini_string($textvars) ?: [];
 		$defaultvars = ["HOST_HOSTNAME","HOST_OS","HOST_CONTAINERNAME","TZ","PATH"];
 		$count = 1;
 		foreach ($testvars as $var => $varcont) {
@@ -137,7 +140,7 @@ function addCloseButton() {
 		}
 		$Config[]['@attributes'] = ["Name"=>"Community Applications Conversion",'Target'=>"Community_Applications_Conversion","Type"=>"Variable","Default"=>"true","Description"=>"","Required"=>"false","Mask"=>"false","Display"=>"always"];
 
-		if ( $Config )
+		if ( !empty($Config) )
 			$dockerfile['Config'] = $Config;
 	} else {
 		$error = tr("An error occurred - Could not determine configuration");

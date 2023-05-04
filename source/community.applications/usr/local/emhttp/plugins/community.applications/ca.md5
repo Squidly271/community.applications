@@ -1,15 +1,15 @@
-f1e084500dd635a56910895207120dc0  ./Apps.page
+649eb1afe81b06e1d93b7431bcc71687  ./Apps.page
 106b521c1feebda4d7b3f558cc016cda  ./CA_notices.page
 eb1f0ee4148747c0473e73e4e973994f  ./ca_settings.page
 e8d29607ec792ddf9f6832b10ee70fdc  ./default.cfg
 7e22b781295bbf10fe0089378b9ba76b  ./include/exec.php
 6315b71595f089a310861ef2e1954d84  ./include/helpers.php
 3f6ae4c4fef3077dd2ca45117f780846  ./include/paths.php
-532fffdf939594c143e679da02bd841e  ./javascript/libraries.js
+12d7ee42aadd961dbbc436ae2fd73d9a  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
 ec075d8b9758ba00bda9b02c4692f972  ./scripts/checkForUpdates.php
 99a9d58a49a7f6812f18bd4be2b563b9  ./scripts/checkForUpdates.sh
-28f1447a5053df2f62ae1d6eb5870169  ./scripts/dockerConvert.php
+d4a279514f1adc0e4e2bbfbab5a82a61  ./scripts/dockerConvert.php
 6ee3b2cdf12209893af916ab0b42152a  ./scripts/installMulti.php
 e549862bcbeed9843b6bdcdb83e1bf3f  ./scripts/installMultiPlugin.php
 524afab04ca930f59117a846f819fb2f  ./scripts/installPluginUpdate.sh
@@ -20,6 +20,6 @@ ed42a35b3524b55e2024cdd56a795733  ./scripts/pluginInstall.php
 f2a86fd875cb73bb095388e69ca035fd  ./scripts/showStatistics.php
 4425f8fd4ef662a7dc65cee01de3e419  ./scripts/updatePLG.sh
 5c088a7cf82229cb64edfd4c415a84a0  ./scripts/updatePluginSupport.php
-59010944c6b3ddf9f71b4ba369029421  ./skins/Narrow/css.php
+c91992cf753a12f379773603c800958c  ./skins/Narrow/css.php
 d642a25efb891e51471fc4c7636da885  ./skins/Narrow/skin.html
 5446bc6588094f9a81c23dcfe6c30266  ./skins/Narrow/skin.php

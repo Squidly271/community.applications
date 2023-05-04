@@ -184,6 +184,9 @@ var resizeTimer;
 var portsInUse = [];
 var startupSearch = "<?=$_GET['search'] ?? ""?>";
 var iconHoverTimer;
+	var wheelActive = false;
+	var swipeBounce = false;
+
 
 $(function(){
 	window.onerror = function(msg,url,lineNo,columnNo, error) {
@@ -723,6 +726,56 @@ $(function(){
 		var name = $(this).data("name");
 		removeApp(path,name);
 	});
+
+	addEventListener("wheel",swipePage);
+
+	
+	function swipePage(event) {
+		console.log(event.deltaX);
+		if (wheelActive)
+			return;
+		if ( $(".sidebar").is(":visible") )
+			return;
+	 if ($("body").width() < 1260 ) return; // dynamix coding
+		event.stopPropagation();
+		event.preventDefault();
+/* 		if (event.deltaX < 100 && event.deltaX > -100) {
+			setTimeout(function() {
+				wheelActive = false;
+			},200);
+			return;
+		} */
+
+
+		if ( $(".pageRight").is(":visible") ) {
+
+			if (event.deltaX >50) {
+				if ( !$(".pageRight").hasClass("pageNavNoClick")) {
+					wheelActive = true;
+					setTimeout(function() {
+						wheelActive = false;
+					},1000);				
+					$(".pageRight").click();
+				}
+				
+			}
+			if (event.deltaX < -50) {
+				if (! $(".pageLeft").hasClass("pageNavNoClick")) {
+					wheelActive = true;
+
+					setTimeout(function() {
+						wheelActive = false;
+					},1000);
+					$(".pageLeft").click();
+				}
+			}
+
+		} else 
+			wheelActive = false;
+
+
+	}
+	
 
 	<? if ($cfg['sidebarOpen'] == "yes"):?>
 		$("body").on("mouseover",".ca_displayIcon,.infoButton,.displayIcon,.card_readmore",function() {
@@ -3047,6 +3100,7 @@ function dockerSearch(pageNumber) {
 }
 
 function dockerConvert(dockerID) {
+	saveState();
 	swal({
 		title: "<?tr("Determine configuration?")?>",
 		text: '<?tr('Would you like CA to attempt to determine any applicable paths, ports, and variables for the template?  This will entail performing a test installation of the container.  It will be automatically deleted after processing.  The container will not be started.')?>',
