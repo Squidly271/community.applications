@@ -89,6 +89,15 @@ function debug() {
 	
 > <?tr("This setting enables CA to check for updates to applications");?>
 
+<?tr("Disable Mouse Wheel Page Changes:");?>
+: <select name="wheelPage" size="1">
+	<?=mk_option($cfg['wheelPage'],"no",tr("No",true))?>
+	<?=mk_option($cfg['wheelPage'],"yes",tr("Yes",true))?>
+	</select>
+	
+> <?tr("This setting disables using left or right on a mouse wheel to change the page");?>
+
+
 <?tr("Allow CA to send any emergency notifications:");?>
 : <select name='notifications' size='1'>
 	<?=mk_option($cfg['notifications'],"yes",tr("Yes",true))?>
