@@ -2380,8 +2380,8 @@ function enableActionCentre() {
 	} else {
 		$dockerUpdateStatus = [];
 	}
-	$info = getAllInfo();
 
+	$info = getAllInfo();
 # $info contains all installed containers
 # now correlate that to a template;
 # this section handles containers that have not been renamed from the appfeed
@@ -2417,8 +2417,7 @@ function enableActionCentre() {
 			}
 			if ( $runningflag ) {
 				$tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
-				$tmpRepo = strpos($tmpRepo,"/") ?: "library/$tmpRepo";
-
+				$tmpRepo = strpos($tmpRepo,"/") ? $tmpRepo : "library/$tmpRepo";
 				if ( $tmpRepo ) {
 					if ( isset($dockerUpdateStatus[$tmpRepo]['status']) && $dockerUpdateStatus[$tmpRepo]['status'] == "false" )
 						$o['actionCentre'] = true;

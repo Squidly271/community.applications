@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.05.07">
-<!ENTITY md5       "8a2f8fe28ba548d0cff806133a177010">
+<!ENTITY version   "2023.05.07a">
+<!ENTITY md5       "873351b428a0a1cc8e5f4227cb2a6177">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -20,6 +20,7 @@
 - Fixed: A spotlighted app that had a description that needed a readmore couldn't easily be expanded to read the entire description on the sidebar
 - Added: Support for magic mouse gesture or mouse wheel left/right to change pages
 - Added: Link to Registry on the support dropdown from the card
+- Regression Error: Action Centre would never show up
 
 ###2023.04.26b
 - 6.9.2 Compatibility
