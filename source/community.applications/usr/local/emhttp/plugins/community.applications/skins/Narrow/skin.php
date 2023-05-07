@@ -96,6 +96,8 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 				$template['ModeratorComment'] = $extraDeprecated[$template['Repository']];
 			}
 		}
+		$template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
+
 		if ( $template['RepositoryTemplate'] ) {
 			$template['Icon'] = $template['icon'] ?? "/plugins/dynamix.docker.manager/images/question.png";
 
@@ -619,9 +621,11 @@ function getPopupDescriptionSkin($appNumber) {
 		$template['IconFA'] = $template['IconFA'] ?: $template['Icon'];
 		$templateIcon = startsWith($template['IconFA'],"icon-") ? "{$template['IconFA']} unraidIcon" : "fa fa-{$template['IconFA']}";
 		$template['display_icon'] = "<i class='$templateIcon popupIcon'></i>";
-	} else
+	} else {
+		$template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
 		$template['display_icon'] = "<img class='popupIcon screenshot' href='{$template['Icon']}' src='{$template['Icon']}' alt='Application Icon'>";
-
+	}
+	
 	if ( $template['Requires'] ) {
 		$template['Requires'] = Markdown(strip_tags(str_replace(["\r","\n","&#xD;"],["","<br>",""],trim($template['Requires'])),"<br>"));
 		preg_match_all("/\/\/(.*?)&#92;/m",$template['Requires'],$searchMatches);
@@ -1141,6 +1145,8 @@ function displayCard($template) {
 			$supportContext[] = ["icon"=>"ca_discord","link"=>$Discord,"text"=>tr("Discord")];
 		if ( $Support )
 			$supportContext[] = ["icon"=>"ca_fa-support","link"=>$Support,"text"=> $SupportLanguage ?: tr("Support Forum")];
+		if ( $Registry ?? false)
+			$supportContext[] = ["icon"=>"docker","link"=>$Registry,"text"=>tr("Registry")];
 	} else {
 		$holderClass='repositoryCard';
 		$cardClass = "ca_repoinfo";

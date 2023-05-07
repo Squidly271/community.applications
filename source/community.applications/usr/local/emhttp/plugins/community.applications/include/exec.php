@@ -9,6 +9,7 @@
 ini_set('memory_limit','256M');  // REQUIRED LINE
 
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
+
 ### Translations section has to be first so that nothing else winds up caching the file(s)
 
 $docroot = $docroot ?? $_SERVER['DOCUMENT_ROOT'] ?: "/usr/local/emhttp";
@@ -29,10 +30,12 @@ require_once "$docroot/webGui/include/Markdown.php";
 ################################################################################
 
 $caSettings = parse_plugin_cfg("community.applications");
+$dynamixSettings = parse_plugin_cfg("dynamix");
 
 $caSettings['dockerSearch']  = "yes";
 $caSettings['unRaidVersion'] = $unRaidSettings['version'];
 $caSettings['favourite']     = isset($caSettings['favourite']) ? str_replace("*","'",$caSettings['favourite']) : "";
+$caSettings['dynamixTheme']  = $dynamixSettings['theme'];
 
 $caSettings['maxPerPage']    = (integer)$caSettings['maxPerPage'] ?: "24"; // Handle possible corruption on file
 if ( $caSettings['maxPerPage'] < 24 ) $caSettings['maxPerPage'] = 24;
@@ -1840,7 +1843,7 @@ function getRepoDescription() {
 # Creates the XML for a container install #
 ###########################################
 function createXML() {
-	global $caPaths;
+	global $caPaths, $caSettings;
 
 	$xmlFile = getPost("xml","");
 	$type = getPost("type","");
@@ -1864,7 +1867,8 @@ function createXML() {
 			$template['Overview'] = $template['OriginalOverview'];
 		if ( $template['OriginalDescription'] )
 			$template['Description'] = $template['OriginalDescription'];
-
+		$template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
+		
 // Handle paths directly referencing disks / poola that aren't present in the user's system, and replace the path with the first disk present
 		$unRaidDisks = parse_ini_file($caPaths['disksINI'],true);
 
