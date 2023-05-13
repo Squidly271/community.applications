@@ -296,7 +296,7 @@ img.displayIcon{height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .initDockerSearch:hover{color:<?=$unRaid66color?>}
 a.initDockerSearch{cursor:pointer;text-decoration:none;color:unset;}
 .installedCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #322fff;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
-.installedCardText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.5rem;right:-1rem;width:100%;overflow:hidden;height:2rem;}
+.installedCardText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2rem;right:0rem;width:6rem;overflow:hidden;height:2.5rem; display:inline;}
 input[type=checkbox]{width:2rem;height:2rem;margin-left:0rem;}
 input[type=button]{background:none;font-size:1.5rem;}
 input:hover[type=button]{color:<?=$unRaid66color?>;background:none !important;}

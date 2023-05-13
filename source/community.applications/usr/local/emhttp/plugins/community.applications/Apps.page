@@ -2105,21 +2105,37 @@ function updateDisplay(content) {
 			$(this).html(description + "... <span class='card_readmore'><?=tr("Read more")?></span>");
 		}
 	});
-	var newSize;
-	$(".ca_applicationName,.betaPopupText,.installedCardText,.upgradePopupText,.ltofficialPopupText").each(function() {
+	$(".ca_applicationName").each(function() {
+		var newSize = 100;
 		while (isOverflown(this)) {
+			console.log(this);
 			var existingSize = $(this).css("font-size");
 			var size = parseInt(existingSize);
 			if ( size == newSize + 1 ) {  // looks like browsers in Chinese have a minimum enforced font-size
-				return false;
+				break;
 			}
 			var newSize = size - 1;
-			if (newSize == 0)
-				return false;
-
+			if (newSize == 8)
+				break;
+			
 			$(this).css("font-size",newSize+"px");
 		}
 	});
+	$(".betaPopupText,.installedCardText,.upgradePopupText,.ltofficialPopupText").each(function() {
+		var newSize = 100;
+		while (isOverflown(this,true)) {
+			var existingSize = $(this).css("font-size");
+			var size = parseInt(existingSize);
+			if ( size == newSize + 1 ) {  // looks like browsers in Chinese have a minimum enforced font-size
+				break;
+			}
+			var newSize = size - 1;
+			if (newSize == 0)
+				break;
+			
+			$(this).css("font-size",newSize+"px");
+		}
+	});	
 	if ( $("html").hasClass("translated-ltr") || $("html").hasClass("translated-rtl") || $("head").hasClass("translated-ltr") || $("head").hasClass("translated-rtl") ) {
 		data.translationBanner = addBannerWarning("<?=tr("Browser translation detected.  Display issues may result")?>");
 	}	else {
@@ -2133,8 +2149,13 @@ function updateDisplay(content) {
 
 }
 
-function isOverflown(el){
-	return (el.scrollHeight > el.clientHeight) || (el.scrollWidth > el.clientWidth);
+function isOverflown(el,type=false){
+	if (type)
+		return (el.scrollWidth > el.clientWidth);
+	else
+		return (el.scrollHeight > el.clientHeight);
+	
+	return (el.scrollHeight > el.clientHeight) || (el.scrollWidth > el.clientWidth)||(el.offsetWidth < el.scrollWidth);
 }
 
 function saveState() {

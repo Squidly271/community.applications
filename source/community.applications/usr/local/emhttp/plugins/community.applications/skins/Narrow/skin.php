@@ -694,9 +694,11 @@ function getPopupDescriptionSkin($appNumber) {
 					$template['Installed'] = true;
 					$template['installedVersion'] = plugin("version","/var/log/plugins/$pluginName");
 					if ( ($template['installedVersion'] != $template['pluginVersion'] || $template['installedVersion'] != plugin("version","/tmp/plugins/$pluginName") ) && $template['Name'] !== "Community Applications") {
-						@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
-						$template['UpdateAvailable'] = true;
-						$actionsContext[] = ["icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);"];
+						if (is_file($caPaths['pluginTempDownload'])) {
+							@copy($caPaths['pluginTempDownload'],"/tmp/plugins/$pluginName");
+							$template['UpdateAvailable'] = true;
+							$actionsContext[] = ["icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"installPlugin('$pluginName',true);"];
+						}
 					} else {
 						$template['UpdateAvailable'] = false;
 					}
@@ -1343,44 +1345,44 @@ function displayCard($template) {
 	} elseif ( $Blacklist ) {
 		$card .= "
 			<div class='warningCardBackground'>
-				<div class='betaPopupText ca_center' title='".tr("This application template / has been blacklisted")."'>".tr("Blacklisted")."$flagTextEnd</div>
+				<div class='installedCardText ca_center' title='".tr("This application template / has been blacklisted")."'>".tr("Blacklisted")."$flagTextEnd</div>
 			</div>
 		";
 	} elseif ( $caTemplateExists ) {
 		$card .= "
 			<div class='warningCardBackground'>
-				<div class='betaPopupText ca_center' title='".tr("Template already exists in Apps")."'>".tr("Template Exists")."</div>
+				<div class='installedCardText ca_center' title='".tr("Template already exists in Apps")."'>".tr("Template Exists")."</div>
 			</div>
 		";
 	} elseif ( isset($Compatible) && ! $Compatible ) {
 		$verMsg = $VerMessage ?? tr("This application is not compatible with your version of Unraid");
 		$card .= "
 			<div class='warningCardBackground'>
-				<div class='betaPopupText ca_center' title='$verMsg'>$flagTextStart".tr("Incompatible")."$flagTextEnd</div>
+				<div class='installedCardText ca_center' title='$verMsg'>$flagTextStart".tr("Incompatible")."$flagTextEnd</div>
 			</div>
 		";
 	} elseif ( $Deprecated ) {
 		$card .= "
 			<div class='warningCardBackground'>
-				<div class='betaPopupText ca_center' title='".tr("This application template has been deprecated")."'>".tr("Deprecated")."$flagTextEnd</div>
+				<div class='installedCardText ca_center' title='".tr("This application template has been deprecated")."'>".tr("Deprecated")."$flagTextEnd</div>
 			</div>
 		";
 	} elseif ( $Official ) {
 		$card .= "
 			<div class='officialCardBackground'>
-				<div class='officialPopupText ca_center' title='".tr('This is an official container')."'>".tr("OFFICIAL")."</div>
+				<div class='installedCardText ca_center' title='".tr('This is an official container')."'>".tr("OFFICIAL")."</div>
 			</div>
 		";
 	} elseif ( $LTOfficial ?? false ) {
 		$card .= "
 			<div class='LTOfficialCardBackground'>
-				<div class='ltofficialPopupText ca_center' title='".tr("This is an offical plugin")."'>".tr("OFFICIAL")."</div>
+				<div class='installedCardText ca_center' title='".tr("This is an offical plugin")."'>".tr("OFFICIAL")."</div>
 			</div>
 		";
 	} elseif ( $Beta ) {
 		$card .= "
 			<div class='betaCardBackground'>
-				<div class='betaPopupText ca_center'>".tr("BETA")."</div>
+				<div class='installedCardText ca_center'>".tr("BETA")."</div>
 			</div>
 		";
 	}/*  elseif ( $RecommendedDate ) {
@@ -1392,7 +1394,7 @@ function displayCard($template) {
 	} */ elseif ( $Trusted ) {
 		$card .= "
 			<div class='spotlightCardBackground'>
-				<div class='betaPopupText ca_center' title='".tr("This container is digitally signed")."'>".tr("Digitally Signed")."</div>
+				<div class='installedCardText ca_center' title='".tr("This container is digitally signed")."'>".tr("Digitally Signed")."</div>
 			</div>
 		";
 	}
