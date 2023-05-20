@@ -1469,7 +1469,7 @@ function displayPopup($template) {
 	if ( $Language && $LanguagePack !== "en_US" ) {
 		$ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
 	}
-	if ( !$Compatible || ($UninstallOnly ?? false) && $Featured )
+	if ( (!$Compatible || ($UninstallOnly ?? false)) && $Featured )
 		$ModeratorComment = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Please update the OS to proceed"),$Name)."</span>";
 
 	if ( $ModeratorComment ) {
@@ -1655,11 +1655,6 @@ function displayPopup($template) {
 		$card .= "
 			<div class='betaPopupBackground'>
 			<div class='betaPopupText ca_center'>".tr("BETA")."</div></div>
-		";
-	} elseif ( $RecommendedDate ) {
-		$card .= "
-			<div class='spotlightPopupBackground'>
-			<div class='spotlightPopupText'></div></div>
 		";
 	} elseif ( $Installed ) {
 		$card .= "
