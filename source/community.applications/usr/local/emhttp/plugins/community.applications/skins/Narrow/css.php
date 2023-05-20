@@ -197,7 +197,7 @@ a.ca_fa-delete{text-decoration:none;margin-left:1rem;font-size:2rem;margin-top:-
 .ca_forum::before{content:"\f1cd";font-family:fontAwesome;}
 .ca_green{color:#038503;}
 .ca_holder{background-color:<?=$templateBackground?>;display:inline-block;float:left;height:20rem;min-width:24rem;max-width:24rem;overflow:hidden;padding:20px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;cursor:pointer;}
-.ca_holder:hover{background-color:<?=$templateHoverBackground?>;}
+.ca_holder:hover{background-color:<?=$templateHoverBackground?>;box-shadow: 5px 5px 5px rgba(255,140,47,.5);}
 .dockerHubHolder {background-color:<?=$templateBackground?>;display:inline-block;float:left;height:20rem;min-width:24rem;max-width:24rem;overflow:hidden;padding:20px;margin-top:0px;margin-bottom:1rem;margin-right:1rem;border:1px solid;border-color:<?=$borderColor?>;cursor:pointer;}
 .dockerHubHolder:hover{background-color:<?=$templateHoverBackground?>;}
 .ca_holderFav{background-color:<?=$templateFavourite?> !important;}
