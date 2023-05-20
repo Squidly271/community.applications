@@ -48,6 +48,7 @@ if ( ! is_file($caPaths['docker_cfg']) ) {
 
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
 $unRaid610      = version_compare($unRaidSettings['version'],"6.10.0-beta17",">");
+$unRaid612      = version_compare($unRaidSettings['version'],"6.12.0-beta1",">");
 $nchanCom       = version_compare($unRaidSettings['version'],"6.10.3",">");
 
 // Check md5's of files
@@ -1219,6 +1220,9 @@ function closeSidebar(cookie=false,visible=false) {
 	$(".back_to_top").removeClass("back_to_top_hide");
 	$("body").removeClass("body_sidebarScroll");
 	$(".sidebar").fadeOut();
+	<? if ($unRaid612): ?>
+		$(".nav-user.show").show();
+	<?endif;?>		
 }
 
 function installPlugin(pluginURL,update=false,comment="",requires="") {
@@ -2918,7 +2922,9 @@ function showSidebarApp(apppath,appname) {
 	data.sidebarapppath = apppath;
 	data.sidebarappname = appname;
 	$("body").addClass("body_sidebarScroll");
-
+	<? if ($unRaid612): ?>
+		$(".nav-user.show").hide();
+	<?endif;?>
 	$("#sidenavContent").html("");
 	$(".sidebar").fadeIn();
 	$(".back_to_top").addClass("back_to_top_hide");
@@ -3026,6 +3032,10 @@ function showRepoPopup(repository) {
 	$(".sidebar").fadeIn();
 	$("body").addClass("body_sidebarScroll");
 	$("body").css("overflow","hidden !important");
+	<? if ($unRaid612): ?>
+		$(".nav-user.show").hide();
+	<?endif;?>	
+
 	post({action:'getRepoDescription',repository:repository},function(result) {
 		$("#sidenavContent").html(result.description);
 		$('.popup_readmore').readmore({maxHeight:250,moreLink:"<i class='ca_readmore fa fa-chevron-down'> <?=tr("SHOW MORE")?></i>",lessLink:"<i class='ca_readmore fa fa-chevron-up'> <?=tr("SHOW LESS")?></i>"});
