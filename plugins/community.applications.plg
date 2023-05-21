@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.05.07a">
-<!ENTITY md5       "873351b428a0a1cc8e5f4227cb2a6177">
+<!ENTITY version   "2023.05.21">
+<!ENTITY md5       "2249b5f04dc5781584d9ac589b1ec3e4">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,14 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2023.05.21
+- Fixed: Wrong message appearing on the incompatible section in sidebar
+- Removed: Spotlight Flag in sidebar
+- Added: Better highlighting on card when hovering
+- Fixed: Display aberrations on sidebar on 6.12+ when using Azure or Gray themes
+- Changed: All flag text is now forced uppercase for consistency
+- Fixed: Safari was not resizing flag text correctly
+
 ###2023.05.07
 - Added: Ability for authors to override Icon entry based upon theme
 - PHP8 fixes
