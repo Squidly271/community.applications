@@ -617,7 +617,6 @@ $(function(){
 	$(".mainArea").on("click",".homeMore",function() {
 		var description = $(this).data("des");
 		var category = $(this).data("category");
-
 		var menuItem = $.find(".caMenuItem[data-category='"+category+"']");
 		$('.caMenuItem').removeClass('selectedMenu');
 		$(menuItem).addClass('selectedMenu');
@@ -632,6 +631,7 @@ $(function(){
 			$(".sortIcons").addClass("startupMore");
 		}
 		$("#CategoryLine").html($(this).data("des"));
+		$("#searchBox").val("");
 		scrollToTop();
 		post({action:"changeSortOrder",sortOrder:sortOrder},function() {
 			getContent(false,category,description,false);
