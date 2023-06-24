@@ -2936,7 +2936,9 @@ function showSidebarApp(apppath,appname) {
 				if ( $(this).hasClass("spotlightIcon") )
 					$(this).attr('src','<?=$caPaths['SpotlightIcon-backup']?>');
 				else
-					$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+					if ( ! $(this).hasClass("licence") ) {
+						$(this).attr('src',"/plugins/dynamix.docker.manager/images/question.png");
+					}
 			});
 			$('.screenshot').magnificPopup({
 				closeMarkup: "<span class='mfp-close narrow'>"+tr("CLOSE")+"</span>",

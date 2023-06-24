@@ -263,6 +263,7 @@ li.debugging{cursor:pointer;}
 .dimScreenShot{overflow:unset !important;}
 .disabledIcon{color:#040404;font-size:2.5rem;}
 i.displayIcon{font-size:5.5rem;color:#626868;padding-top:0.25rem;}
+img.licence{max-height:2rem;max-width:10rem;}
 img.displayIcon{height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 #cookieWarning{display:none;}
 .docker::after{font-family:'Unraid';content:'\e90b';font-size:2.5rem;}

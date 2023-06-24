@@ -1583,6 +1583,9 @@ function displayPopup($template) {
 	}
 	$Licence = $Licence ?? ($License ?? "");
 	if ( $Licence )
+		if ( validURL($Licence) )
+			$Licence = "<img class='licence' src='$Licence' onerror='this.outerHTML=&quot;<a href=$Licence target=_blank>".tr("Click Here")."</a>&quot;;this.onerror=null;' ></img>";
+		
 		$card .= "<tr><td class='popupTableLeft'>".tr("Licence")."</td><td class='popupTableRight'>$Licence</td></tr>";
 
 	$card .= "</table>";
