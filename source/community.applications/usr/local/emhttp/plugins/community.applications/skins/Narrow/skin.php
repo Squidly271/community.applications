@@ -1582,12 +1582,12 @@ function displayPopup($template) {
 			$card .= "<tr><td class='popupTableLeft'>".tr("Max OS")."</td><td class='popupTableRight'>$MaxVer</td></tr>";
 	}
 	$Licence = $Licence ?? ($License ?? "");
-	if ( $Licence )
+	if ( $Licence ) {
 		if ( validURL($Licence) )
 			$Licence = "<img class='licence' src='$Licence' onerror='this.outerHTML=&quot;<a href=$Licence target=_blank>".tr("Click Here")."</a>&quot;;this.onerror=null;' ></img>";
 		
 		$card .= "<tr><td class='popupTableLeft'>".tr("Licence")."</td><td class='popupTableRight'>$Licence</td></tr>";
-
+	}
 	$card .= "</table>";
 	if ( $Repo || $Private ) {
 		$remoteIconPrefix = startsWith($ProfileIcon,"http") ? "<a class='screenshot mfp-image' href='$ProfileIcon'>" : "";

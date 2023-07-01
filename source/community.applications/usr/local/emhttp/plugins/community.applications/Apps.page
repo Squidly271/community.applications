@@ -1245,12 +1245,13 @@ function installPlugin(pluginURL,update=false,comment="",requires="") {
 					if (! data.met) {
 						swal({
 							title: "<?tr("Requirements not met")?>",
-							text: "<?tr("The requirements for this upgrade have not been met on your system")?>",
+							text: "<?tr("The requirements for this upgrade have not been met on your system")?><br><br>"+comment,
 							allowOutsideClick: false,
 							showConfirmButton: true,
 							showCancelButton: false,
 							confirmButtonText: "<?tr("OK")?>",
-							type: "error"
+							type: "error",
+							html: true
 						},function(isConfirm) {
 							enableSearch();
 						});
