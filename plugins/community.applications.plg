@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.05.21">
-<!ENTITY md5       "2249b5f04dc5781584d9ac589b1ec3e4">
+<!ENTITY version   "2023.07.03">
+<!ENTITY md5       "f697206bf5040d83ce5424fdd9b139aa">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2023.07.03
+- Added: When requirements not met on a plugin, list the requirements instead of forcing user to go back to sidebar to see what they are
+- Added: Support URL to either image (badge) or website for license in addtion to text
+- Fixed: Search term present in search bar (but not searched) would cause strange results when clicking SHOW MORE from home page
+
 ###2023.05.21
 - Fixed: Wrong message appearing on the incompatible section in sidebar
 - Removed: Spotlight Flag in sidebar
