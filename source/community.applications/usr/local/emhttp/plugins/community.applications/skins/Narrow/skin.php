@@ -1406,9 +1406,10 @@ function displayPopup($template) {
 
 	extract($template);
 
-	if ( !$Private)
+	if ( !$Private) {
 		$RepoName = str_replace("' Repository","",str_replace("'s Repository","",$Repo));
-	else {
+		$RepoName = str_replace("Repository","",$RepoName);
+	} else {
 		$RepoName = str_replace("' Repository","",str_replace("'s Repository","",$RepoName));
 		$Repo = $RepoName;
 	}
