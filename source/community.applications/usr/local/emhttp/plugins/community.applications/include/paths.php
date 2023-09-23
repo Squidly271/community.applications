@@ -12,18 +12,18 @@ require_once "$docroot/plugins/dynamix/include/Wrappers.php";
 $CA = "community.applications";
 
 if ( ! isset($dockerManPaths) ) {
-	$dockerManPaths = [
-		'autostart-file' => "/var/lib/docker/unraid-autostart",
-		'update-status'  => "/var/lib/docker/unraid-update-status.json",
-		'template-repos' => "/boot/config/plugins/dockerMan/template-repos",
-		'templates-user' => "/boot/config/plugins/dockerMan/templates-user",
-		'templates-usb'  => "/boot/config/plugins/dockerMan/templates",
-		'images'         => "/var/lib/docker/unraid/images",
-		'user-prefs'     => "/boot/config/plugins/dockerMan/userprefs.cfg",
-		'plugin'         => "$docroot/plugins/dynamix.docker.manager",
-		'images-ram'     => "$docroot/state/plugins/dynamix.docker.manager/images",
-		'webui-info'     => "$docroot/state/plugins/dynamix.docker.manager/docker.json"
-	];
+  $dockerManPaths = [
+    'autostart-file' => "/var/lib/docker/unraid-autostart",
+    'update-status'  => "/var/lib/docker/unraid-update-status.json",
+    'template-repos' => "/boot/config/plugins/dockerMan/template-repos",
+    'templates-user' => "/boot/config/plugins/dockerMan/templates-user",
+    'templates-usb'  => "/boot/config/plugins/dockerMan/templates",
+    'images'         => "/var/lib/docker/unraid/images",
+    'user-prefs'     => "/boot/config/plugins/dockerMan/userprefs.cfg",
+    'plugin'         => "$docroot/plugins/dynamix.docker.manager",
+    'images-ram'     => "$docroot/state/plugins/dynamix.docker.manager/images",
+    'webui-info'     => "$docroot/state/plugins/dynamix.docker.manager/docker.json"
+  ];
 }
 
 $caPaths['tempFiles']                           = "/tmp/$CA/tempFiles";                            /* path to temporary files */

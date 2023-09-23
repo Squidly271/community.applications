@@ -1,45 +1,45 @@
 <div class='spinnerBackground'></div>
 <div class='menuItems'>
 <ul class='caMenu '>
-	<li class='startupButton caMenuItem onlyShowWithFeed' data-category='new'><?tr("Home");?></li>
-	<hr class='onlyShowWithFeed'>
-	<li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='installed_apps'><?tr("Installed Apps");?></li>
-	<ul class='subCategory onlyShowWithFeed'>
-		<li class='caMenuItem sectionMenu onlyShowWithFeed dockerSpecific' data-category='inst_docker'><?tr("Docker");?></li>
-		<li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='inst_plugins'><?tr("Plugins");?></li>
-	</ul>
-	<li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='previous_apps'><?tr("Previous Apps");?></li>
-	<ul class='subCategory onlyShowWithFeed'>
-		<li class='caMenuItem sectionMenu dockerSpecific' data-category='prev_docker'><?tr("Docker");?></li>
-		<li class='caMenuItem sectionMenu' data-category='prev_plugins'><?tr("Plugins");?></li>
-	</ul>
-	<li class='caMenuItem sectionMenu caPinnedMenu onlyShowWithFeed' data-category='pinned_apps'><?tr("Pinned Apps");?></li>
-	<li class='caMenuItem favouriteRepo onlyShowWithFeed'><?tr("Favourite Repo");?></li>
-	<li class='caMenuItem sectionMenu actionCentre onlyShowWithFeed' style='display:none;' data-category='action_centre'><?tr("Action Centre");?> <span class='ca_fa-warning'></span></li>
-	<hr class='onlyShowWithFeed'>
+  <li class='startupButton caMenuItem onlyShowWithFeed' data-category='new'><?tr("Home");?></li>
+  <hr class='onlyShowWithFeed'>
+  <li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='installed_apps'><?tr("Installed Apps");?></li>
+  <ul class='subCategory onlyShowWithFeed'>
+    <li class='caMenuItem sectionMenu onlyShowWithFeed dockerSpecific' data-category='inst_docker'><?tr("Docker");?></li>
+    <li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='inst_plugins'><?tr("Plugins");?></li>
+  </ul>
+  <li class='caMenuItem sectionMenu onlyShowWithFeed' data-category='previous_apps'><?tr("Previous Apps");?></li>
+  <ul class='subCategory onlyShowWithFeed'>
+    <li class='caMenuItem sectionMenu dockerSpecific' data-category='prev_docker'><?tr("Docker");?></li>
+    <li class='caMenuItem sectionMenu' data-category='prev_plugins'><?tr("Plugins");?></li>
+  </ul>
+  <li class='caMenuItem sectionMenu caPinnedMenu onlyShowWithFeed' data-category='pinned_apps'><?tr("Pinned Apps");?></li>
+  <li class='caMenuItem favouriteRepo onlyShowWithFeed'><?tr("Favourite Repo");?></li>
+  <li class='caMenuItem sectionMenu actionCentre onlyShowWithFeed' style='display:none;' data-category='action_centre'><?tr("Action Centre");?> <span class='ca_fa-warning'></span></li>
+  <hr class='onlyShowWithFeed'>
 
-	<ul class='caMenu'>
-	<span id='category_list' class='onlyShowWithFeed'></span>
-	<li class='categoryMenu caMenuItem allApps onlyShowWithFeed nonDockerSearch' data-category='All'><?tr("All Apps");?></li>
-	<hr class='category_hr'>
-	<li class='categoryMenu caMenuItem caRepositoryMenu onlyShowWithFeed nonDockerSearch' data-category='repos'><?tr("Repositories");?></li>
+  <ul class='caMenu'>
+  <span id='category_list' class='onlyShowWithFeed'></span>
+  <li class='categoryMenu caMenuItem allApps onlyShowWithFeed nonDockerSearch' data-category='All'><?tr("All Apps");?></li>
+  <hr class='category_hr'>
+  <li class='categoryMenu caMenuItem caRepositoryMenu onlyShowWithFeed nonDockerSearch' data-category='repos'><?tr("Repositories");?></li>
 <hr class='category_hr onlyShowWithFeed'>
-	<li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'><?tr("Settings");?></a></li>
-	<li class='caMenuItem statistics' onclick='disableSort();scrollToTop();showStatistics();'><?tr("Statistics");?></li>
-	<li class='caMenuItem' onclick='disableSort();scrollToTop();showCredits();'><?tr("Credits");?></li>
-	<li class='caMenuItem'><a class='caMenuItem' href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank' style='text-decoration:none;color:inherit;'><?tr("Support");?></a></li>
+  <li class='caMenuItem' onclick='window.location="/Apps/ca_settings"'><?tr("Settings");?></a></li>
+  <li class='caMenuItem statistics' onclick='disableSort();scrollToTop();showStatistics();'><?tr("Statistics");?></li>
+  <li class='caMenuItem' onclick='disableSort();scrollToTop();showCredits();'><?tr("Credits");?></li>
+  <li class='caMenuItem'><a class='caMenuItem' href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank' style='text-decoration:none;color:inherit;'><?tr("Support");?></a></li>
 <hr class='category_hr'>
-	</ul>
+  </ul>
 <ul class='nonselectMenu'>
-	<li><?=tr("VERSION");?></li>
-	<li><span id='caInstalledVersion'></span></li>
-	<li class='caMenuItem caChangeLog'><?tr("Change Log");?></li>
+  <li><?=tr("VERSION");?></li>
+  <li><span id='caInstalledVersion'></span></li>
+  <li class='caMenuItem caChangeLog'><?tr("Change Log");?></li>
 <?if ($md5Error):?>
-	<li><font size='0'>Modified</font></li>
+  <li><font size='0'>Modified</font></li>
 <?endif;?>
 <?if ($cfg['debugging'] == "yes"):?>
 <hr>
-	<li class='caMenuItem debugging'><?tr("Debugging");?></li>
+  <li class='caMenuItem debugging'><?tr("Debugging");?></li>
 <?endif;?>
 </ul>
 </div>
@@ -61,22 +61,22 @@
 </div>
 <span id='debugging'></span>
 <span id='caCredits' style='display:none;'>
-	<div class='credits'>
-		<div class='ca_center'><i class='fa fa-users' style='font-size:5rem;margin-top:2rem;'></i></div>
-		<div class='ca_center'><font size='5'>Community Applications</font></div>
-		<div class='ca_center ca_creditheader'><?tr("Development");?></div>
-		<div class='ca_center ca_credit'>Andrew Zawadzki</div>
-		<div class='ca_center ca_creditheader'><?tr("Additional Contributions");?></div>
-		<div class='ca_center ca_credit'>bonienl, Lime Technology Inc</div>
-		<div class='ca_center ca_creditheader'><?tr("GUI Layout Design");?></div>
-		<div class='ca_center ca_credit'>Magnus Engø</div>
-		<div class='ca_center ca_creditheader'><?tr("Application Feed");?></div>
-		<div class='ca_center ca_credit'>Andrew Zawadzki, Kode, Lime Technology Inc</div>
-		<div class='ca_center ca_creditheader'><?tr("Additional Testing");?></div>
-		<div class='ca_center ca_credit'>CHBMB, SpaceInvaderOne, Sparklyballs, wgstarks, DJoss, Zer0Nin3r, Mex, prostuff1, bonienl, ljm42, kizer, trurl, Jos, Lime Technology Inc, SimonF, ich777, jimmy898, Alex.b, neruve, Eugeni_CAT, ChaseCares, TheEyeTGuy, dlandon</div>
-		<div class='ca_center ca_creditheader'><?tr("Additional Libraries");?></div>
-		<div class='ca_center ca_credit'>Awesomeplete (Lea Verou)<br>Chart.js (various)<br>chartjs-plugin-trendline (Marcus Alsterfjord)<br>XML2Array/Array2XML (Miles Johnson)<br>sprintf.js (Alexandru Mărășteanu) (&lt; Unraid 6.10 only)<br>Magnific-Popup (Dmitry Semenov)</div>
-		<br>
-		<div class='ca_center ca_italic'><font size='1rem;'><?tr("Copyright");?> &copy; 2015-2023 Andrew Zawadzki</font></div>
-	</div>
+  <div class='credits'>
+    <div class='ca_center'><i class='fa fa-users' style='font-size:5rem;margin-top:2rem;'></i></div>
+    <div class='ca_center'><font size='5'>Community Applications</font></div>
+    <div class='ca_center ca_creditheader'><?tr("Development");?></div>
+    <div class='ca_center ca_credit'>Andrew Zawadzki</div>
+    <div class='ca_center ca_creditheader'><?tr("Additional Contributions");?></div>
+    <div class='ca_center ca_credit'>bonienl, Lime Technology Inc</div>
+    <div class='ca_center ca_creditheader'><?tr("GUI Layout Design");?></div>
+    <div class='ca_center ca_credit'>Magnus Engø</div>
+    <div class='ca_center ca_creditheader'><?tr("Application Feed");?></div>
+    <div class='ca_center ca_credit'>Andrew Zawadzki, Kode, Lime Technology Inc</div>
+    <div class='ca_center ca_creditheader'><?tr("Additional Testing");?></div>
+    <div class='ca_center ca_credit'>CHBMB, SpaceInvaderOne, Sparklyballs, wgstarks, DJoss, Zer0Nin3r, Mex, prostuff1, bonienl, ljm42, kizer, trurl, Jos, Lime Technology Inc, SimonF, ich777, jimmy898, Alex.b, neruve, Eugeni_CAT, ChaseCares, TheEyeTGuy, dlandon</div>
+    <div class='ca_center ca_creditheader'><?tr("Additional Libraries");?></div>
+    <div class='ca_center ca_credit'>Awesomeplete (Lea Verou)<br>Chart.js (various)<br>chartjs-plugin-trendline (Marcus Alsterfjord)<br>XML2Array/Array2XML (Miles Johnson)<br>sprintf.js (Alexandru Mărășteanu) (&lt; Unraid 6.10 only)<br>Magnific-Popup (Dmitry Semenov)</div>
+    <br>
+    <div class='ca_center ca_italic'><font size='1rem;'><?tr("Copyright");?> &copy; 2015-2023 Andrew Zawadzki</font></div>
+  </div>
 </span>

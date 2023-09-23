@@ -23,96 +23,96 @@ $unRaid66color = "#FF8C2F";
 $linkColor = "#486dba";
 $startupColor = "#FF8C2F";
 switch ($theme) {
-	case 'black':
-		$donateBackground = "#ffffff";
-		$donateText = "#000000";
-		$templateBackground = "#191818";
-		$templateHoverBackground = "#121212";
-		$templateFavourite = "#333333";
-		$hrColor = "#2b2b2b";
-		$borderColor = "#2b2b2b";
-		$watermarkColor = "rgba(43, 43, 43, 0.4)";
-		$aColor = "#00b8d6";
-		$sidebarBackground = "#000000";
-		$sidebarText = "#f2f2f2";
-		$betaPopupOffset = "0";
-		$supportPopupText = "#000000";
-		$supportPopupBackground = "#ffffff";
-		$modCommentBorder = "#cf3131";
-		$sidebarCloseBackground = "rgba(0,0,0,0.7)";
-		break;
-	case 'white':
-		$donateBackground = "#1c1b1b";
-		$donateText = "#f2f2f2";
-		$templateBackground = "#f5f5f5";
-		$templateHoverBackground = "#ffffff";
-		$templateFavourite = "#d0d0d0";
-		$hrColor = "lightgrey";
-		$borderColor = "#e3e3e3";
-		$watermarkColor = "rgba(211, 211, 211, 0.8)";
-		$aColor = "#486dba";
-		$sidebarBackground = "#ffffff";
-		$sidebarText = "#000000";
-		$betaPopupOffset = "0";
-		$supportPopupText = "#f2f2f2";
-		$supportPopupBackground = "#1c1b1b";
-		$modCommentBorder = "#cf3131";
-		$sidebarCloseBackground = "rgba(0,0,0,0.7)";
-		break;
-	case 'azure':
-		$donateBackground = "#606e7f";
-		$donateText = "#e4e2e4";
-		$templateBackground = "transparent";
-		$templateHoverBackground = "#edeaef";
-		$templateFavourite = "#e0e0e0";
-		$hrColor = "#606e7f";
-		$border = "#9794a7";
-		$watermarkColor = "rgba(96, 110, 127, 0.1)";
-		$aColor = "#486dba";
-		$sidebarBackground = "#edeaef";
-		$sidebarText = "#606e7f";
-		$betaPopupOffset = "1.5rem;";
-		$supportPopupText = "#1b1d1b";
-		$supportPopupBackground = "#ffffff";
-		$modCommentBorder = "#cf3131";
-		$sidebarCloseBackground = "rgba(0,0,0,0.7)";
-		break;
-	case 'gray':
-		$donateBackground = "#606e7f";
-		$donateText = "#1b1d1b";
-		$templateBackground = "transparent";
-		$templateHoverBackground = "#0c0f0b";
-		$templateFavourite = "#2b2b2b";
-		$hrColor = "#606e7f";
-		$border = "#606e7f";
-		$watermarkColor = "rgba(96, 110, 127, 0.1)";
-		$aColor = "#00b8d6";
-		$sidebarBackground = "#121510";
-		$sidebarText = "#f2f2f2";
-		$betaPopupOffset = "1.5rem;";
-		$supportPopupText = "#1b1d1b";
-		$supportPopupBackground = "#ffffff";
-		$modCommentBorder = "#cf3131";
-		$sidebarCloseBackground = "rgba(0,0,0,0.7)";
-		break;
+  case 'black':
+    $donateBackground = "#ffffff";
+    $donateText = "#000000";
+    $templateBackground = "#191818";
+    $templateHoverBackground = "#121212";
+    $templateFavourite = "#333333";
+    $hrColor = "#2b2b2b";
+    $borderColor = "#2b2b2b";
+    $watermarkColor = "rgba(43, 43, 43, 0.4)";
+    $aColor = "#00b8d6";
+    $sidebarBackground = "#000000";
+    $sidebarText = "#f2f2f2";
+    $betaPopupOffset = "0";
+    $supportPopupText = "#000000";
+    $supportPopupBackground = "#ffffff";
+    $modCommentBorder = "#cf3131";
+    $sidebarCloseBackground = "rgba(0,0,0,0.7)";
+    break;
+  case 'white':
+    $donateBackground = "#1c1b1b";
+    $donateText = "#f2f2f2";
+    $templateBackground = "#f5f5f5";
+    $templateHoverBackground = "#ffffff";
+    $templateFavourite = "#d0d0d0";
+    $hrColor = "lightgrey";
+    $borderColor = "#e3e3e3";
+    $watermarkColor = "rgba(211, 211, 211, 0.8)";
+    $aColor = "#486dba";
+    $sidebarBackground = "#ffffff";
+    $sidebarText = "#000000";
+    $betaPopupOffset = "0";
+    $supportPopupText = "#f2f2f2";
+    $supportPopupBackground = "#1c1b1b";
+    $modCommentBorder = "#cf3131";
+    $sidebarCloseBackground = "rgba(0,0,0,0.7)";
+    break;
+  case 'azure':
+    $donateBackground = "#606e7f";
+    $donateText = "#e4e2e4";
+    $templateBackground = "transparent";
+    $templateHoverBackground = "#edeaef";
+    $templateFavourite = "#e0e0e0";
+    $hrColor = "#606e7f";
+    $border = "#9794a7";
+    $watermarkColor = "rgba(96, 110, 127, 0.1)";
+    $aColor = "#486dba";
+    $sidebarBackground = "#edeaef";
+    $sidebarText = "#606e7f";
+    $betaPopupOffset = "1.5rem;";
+    $supportPopupText = "#1b1d1b";
+    $supportPopupBackground = "#ffffff";
+    $modCommentBorder = "#cf3131";
+    $sidebarCloseBackground = "rgba(0,0,0,0.7)";
+    break;
+  case 'gray':
+    $donateBackground = "#606e7f";
+    $donateText = "#1b1d1b";
+    $templateBackground = "transparent";
+    $templateHoverBackground = "#0c0f0b";
+    $templateFavourite = "#2b2b2b";
+    $hrColor = "#606e7f";
+    $border = "#606e7f";
+    $watermarkColor = "rgba(96, 110, 127, 0.1)";
+    $aColor = "#00b8d6";
+    $sidebarBackground = "#121510";
+    $sidebarText = "#f2f2f2";
+    $betaPopupOffset = "1.5rem;";
+    $supportPopupText = "#1b1d1b";
+    $supportPopupBackground = "#ffffff";
+    $modCommentBorder = "#cf3131";
+    $sidebarCloseBackground = "rgba(0,0,0,0.7)";
+    break;
 // Use settings for black as a fallback
-	default:
-		$donateBackground = "#f2f2f2";
-		$donateText = "#1c1b1b";
-		$templateBackground = "#0f0f0f";
-		$templateFavourite = "#333333";
-		$hrColor = "#2b2b2b";
-		$borderColor = "#2b2b2b";
-		$watermarkColor = "rgba(43, 43, 43, 0.4)";
-		$aColor = "#00b8d6";
-		$sidebarBackground = "#000000";
-		$sidebarText = "#f2f2f2";
-		$betaPopupOffset = "0";
-		$supportPopupText = "#000000";
-		$supportPopupBackground = "#ffffff";
-		$modCommentBorder = "#cf3131";
-		$sidebarCloseBackground = "rgba(0,0,0,.7)";
-		break;
+  default:
+    $donateBackground = "#f2f2f2";
+    $donateText = "#1c1b1b";
+    $templateBackground = "#0f0f0f";
+    $templateFavourite = "#333333";
+    $hrColor = "#2b2b2b";
+    $borderColor = "#2b2b2b";
+    $watermarkColor = "rgba(43, 43, 43, 0.4)";
+    $aColor = "#00b8d6";
+    $sidebarBackground = "#000000";
+    $sidebarText = "#f2f2f2";
+    $betaPopupOffset = "0";
+    $supportPopupText = "#000000";
+    $supportPopupBackground = "#ffffff";
+    $modCommentBorder = "#cf3131";
+    $sidebarCloseBackground = "rgba(0,0,0,.7)";
+    break;
 }
 ?>
 a {color:<?=$aColor?>;}
@@ -462,8 +462,8 @@ table {background-color:transparent;}
 
 
 @keyframes cycleRed {
-	0% {color: inherit;}
-	50% {color: #882626;}
+  0% {color: inherit;}
+  50% {color: #882626;}
 }
 .awesomplete [hidden] {display: none;}
 .awesomplete .visually-hidden {position: absolute;clip: rect(0, 0, 0, 0);}
@@ -473,7 +473,7 @@ table {background-color:transparent;}
 .awesomplete > ul:empty {display: none;}
 .awesomplete > ul {border-radius: .3em;margin: .2em 0 0;background: hsla(0,0%,100%);background: linear-gradient(to bottom right, white, hsla(0,0%,100%));border: 1px solid rgba(0,0,0,.3);box-shadow: .05em .2em .6em rgba(0,0,0,.2);text-shadow: none;}
 @supports (transform: scale(0)) {.awesomplete > ul {transition: .3s cubic-bezier(.4,.2,.5,1.4);transform-origin: 1.43em -.43em;}
-	.awesomplete > ul[hidden],.awesomplete > ul:empty {opacity: 0;transform: scale(0);display: block;transition-timing-function: ease;}
+  .awesomplete > ul[hidden],.awesomplete > ul:empty {opacity: 0;transform: scale(0);display: block;transition-timing-function: ease;}
 }
 /* Pointer */
 .awesomplete > ul:before {content: "";position: absolute;top: -.43em;left: 1em;width: 0; height: 0;padding: .4em;background: white;border: inherit;border-right: 0;border-bottom: 0;-webkit-transform: rotate(45deg);transform: rotate(45deg);}
@@ -543,22 +543,22 @@ img.mfp-img {width: auto;max-width: 100%;height: auto;display: block;line-height
 .mfp-gallery .mfp-image-holder .mfp-figure {cursor: pointer; }
 @media screen and (max-width: 800px) and (orientation: landscape), screen and (max-height: 300px) {
  /**
-	* Remove all paddings around the image on small screen
+  * Remove all paddings around the image on small screen
  */
-	.mfp-img-mobile .mfp-image-holder {padding-left: 0;padding-right: 0; }
-	.mfp-img-mobile img.mfp-img {padding: 0; }
-	.mfp-img-mobile .mfp-figure:after {top: 0;bottom: 0; }
-	.mfp-img-mobile .mfp-figure small {display: inline;margin-left: 5px; }
-	.mfp-img-mobile .mfp-bottom-bar {background: rgba(0, 0, 0, 0.6);bottom: 0;margin: 0;top: auto;padding: 3px 5px;position: fixed;box-sizing: border-box; }
-		.mfp-img-mobile .mfp-bottom-bar:empty {padding: 0; }
-	.mfp-img-mobile .mfp-counter {right: 5px;top: 3px; }
-	.mfp-img-mobile .mfp-close {top: 0;right: 0;width: 35px;height: 35px;line-height: 35px;background: rgba(0, 0, 0, 0.6);position: fixed;text-align: center;padding: 0; }
+  .mfp-img-mobile .mfp-image-holder {padding-left: 0;padding-right: 0; }
+  .mfp-img-mobile img.mfp-img {padding: 0; }
+  .mfp-img-mobile .mfp-figure:after {top: 0;bottom: 0; }
+  .mfp-img-mobile .mfp-figure small {display: inline;margin-left: 5px; }
+  .mfp-img-mobile .mfp-bottom-bar {background: rgba(0, 0, 0, 0.6);bottom: 0;margin: 0;top: auto;padding: 3px 5px;position: fixed;box-sizing: border-box; }
+    .mfp-img-mobile .mfp-bottom-bar:empty {padding: 0; }
+  .mfp-img-mobile .mfp-counter {right: 5px;top: 3px; }
+  .mfp-img-mobile .mfp-close {top: 0;right: 0;width: 35px;height: 35px;line-height: 35px;background: rgba(0, 0, 0, 0.6);position: fixed;text-align: center;padding: 0; }
 }
 @media all and (max-width: 900px) {
-	.mfp-arrow {-webkit-transform: scale(0.75);transform: scale(0.75); }
-	.mfp-arrow-left {-webkit-transform-origin: 0;transform-origin: 0; }
-	.mfp-arrow-right {-webkit-transform-origin: 100%;transform-origin: 100%; }
-	.mfp-container {padding-left: 6px;padding-right: 6px; }
+  .mfp-arrow {-webkit-transform: scale(0.75);transform: scale(0.75); }
+  .mfp-arrow-left {-webkit-transform-origin: 0;transform-origin: 0; }
+  .mfp-arrow-right {-webkit-transform-origin: 100%;transform-origin: 100%; }
+  .mfp-container {padding-left: 6px;padding-right: 6px; }
 }
 /* overlay at start */
 .mfp-fade.mfp-bg {opacity: 0;-webkit-transition: all 0.5s ease-out;-moz-transition: all 0.5s ease-out;transition: all 0.5s ease-out;}
