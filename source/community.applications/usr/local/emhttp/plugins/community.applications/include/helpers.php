@@ -752,6 +752,25 @@ function plain($ip) {
   return str_replace(['[',']'],'',$ip);
 }
 
+###########################################
+# Checks server date against CA's version #
+###########################################
+# only a quick check if date on server is 30 days before CA's version.  Not 100% accurate to determine if date & time on server is incorrect
+
+function checkServerDate() {
+  $currentDate = strtotime(date("Y-m-d"));
+  $caVersion = preg_replace("/[^0-9.]/","",plugin("version","/var/log/plugins/community.applications.plg"));
+  if ( ! $caVersion )
+    return true;
+  $caVersion = str_replace(".","-",$caVersion);
+  $caVersion = strtotime($caVersion);
+
+  if ( ($caVersion - $currentDate) > 2592000 ) # 30 Days
+    return false;
+  else
+    return true;
+}
+
 ##################################################################################
 # Adds in all the various missing entries from the templates for PHP8 compliance #
 ##################################################################################

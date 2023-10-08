@@ -122,6 +122,7 @@ $memRaw = trim(str_replace("MemTotal:","",exec("cat /proc/meminfo | grep MemTota
 $memoryInstalled = explode(" ",$memRaw);
 
 $CArequirementsNOTmet = $memoryInstalled[0] < 2500000;
+$ServerDateCorrect = checkServerDate() ? "true": "false";
 
 
 function tr($string,$ret=false) {
@@ -269,6 +270,8 @@ $(function(){
   if ( "<?=$date?>" == "12/25" ) addBannerWarning("<i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i> <?tr("Happy Holidays from Andrew, Tracey, and family")?> <i style='float:initial;cursor:initial;' class='fa fa-snowflake-o'></i>",false);
   if ( "<?=$date?>" == "1/01" )  addBannerWarning("<?tr("Happy New Year!")?>",false);
   if ( "<?=$date?>" == "12/31" ) addBannerWarning("<?tr("Happy New Year!")?> <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> <?tr("Please Enjoy Responsibly")?>",false);
+
+  if ( "<?=$ServerDateCorrect?>" == "false" ) addBannerWarning("<?tr("Server Date and Time Incorrect.  Issues will result with Community Applications.  Fix this in Settings - Date And Time")?>",true,true);
 
   context.init({preventDoubleContext:false,left:false,right:false,bottom:true,above:true});
 
