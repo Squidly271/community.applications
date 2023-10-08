@@ -505,6 +505,7 @@ function categoryList($cat,$popUp = false) {
 # Trims the language author list #
 ##################################
 function languageAuthorList($authors) {
+  $newAuthor = "";
   $allAuthors = explode(",",$authors);
   if ( count($allAuthors) > 3 ) {
     $newAuthors = array_slice($allAuthors,0,2);
