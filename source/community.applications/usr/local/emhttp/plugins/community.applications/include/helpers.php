@@ -1333,11 +1333,11 @@ class TypeConverter {
    */
   public static function utf8Encode($data) {
     if (is_string($data)) {
-      return utf8_encode($data);
+      return mb_convert_encoding($data,'UTF-8','ISO-8859-1');
 
     } else if (is_array($data)) {
       foreach ($data as $key => $value) {
-        $data[utf8_encode($key)] = self::utf8Encode($value);
+        $data[mb_convert_encoding($key,'UTF-8','ISO-8859-1')] = self::utf8Encode($value);
       }
 
     } else if (is_object($data)) {
@@ -1359,11 +1359,11 @@ class TypeConverter {
    */
   public static function utf8Decode($data) {
     if (is_string($data)) {
-      return utf8_decode($data);
+      return mb_convert_encoding($data,'UTF-8','ISO-8859-1');
 
     } else if (is_array($data)) {
       foreach ($data as $key => $value) {
-        $data[utf8_decode($key)] = self::utf8Decode($value);
+        $data[mb_convert_encoding($key,'UTF-8','ISO-8859-1')] = self::utf8Decode($value);
       }
 
     } else if (is_object($data)) {
