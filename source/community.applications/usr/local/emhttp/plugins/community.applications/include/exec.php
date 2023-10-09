@@ -2037,6 +2037,8 @@ function remove_multiApplications() {
     postReturn(["error"=>"No apps were in post when trying to remove multiple applications"]);
     return;
   }
+
+  $error = false;
   foreach ($apps as $app) {
     if ( strpos(realpath($app),"/boot/config/") === false ) {
       $error = "Remove multiple apps: $app was not in /boot/config";
