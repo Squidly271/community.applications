@@ -752,7 +752,6 @@ function ca_explode($split,$text,$count=2) {
 function plain($ip) {
   return str_replace(['[',']'],'',$ip);
 }
-
 ###########################################
 # Checks server date against CA's version #
 ###########################################
@@ -1353,7 +1352,7 @@ class TypeConverter {
    * Decode a resource object for UTF-8.
    *
    * @access public
-   * @param mixed $data
+   * @param mixed $data 
    * @return array|string
    * @static
    */

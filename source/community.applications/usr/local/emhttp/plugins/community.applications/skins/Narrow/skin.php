@@ -121,7 +121,26 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
     } else {
       $actionsContext = [];
       $selected = false;
-      $installComment = $template['CAComment'];
+      
+      if ( $template['ModeratorComment'] ) {
+        preg_match_all("/\/\/(.*?)&#92;/m",$template['ModeratorComment'],$searchMatches);
+        if ( count($searchMatches[1]) ) {
+          foreach ($searchMatches[1] as $searchResult) {
+            $template['ModeratorComment'] = str_replace("//$searchResult&#92;","<a style=cursor:pointer; onclick=doSidebarSearch(&quot;$searchResult&quot;);>$searchResult</a>",$template['ModeratorComment']);
+          }
+        }     
+      }
+      if ( $template['CAComment'] ) {
+        preg_match_all("/\/\/(.*?)&#92;/m",$template['CAComment'],$searchMatches);
+        if ( count($searchMatches[1]) ) {
+          foreach ($searchMatches[1] as $searchResult) {
+            $template['CAComment'] = str_replace("//$searchResult&#92;","<a style=cursor:pointer; onclick=doSidebarSearch(&quot;$searchResult&quot;);>$searchResult</a>",$template['CAComment']);
+          }
+        }        
+      }
+      $installComment = $template['ModeratorComment'] ? "<span class=ca_bold>{$template['ModeratorComment']}</span>" : $template['CAComment'];
+
+      
 
       if ( $template['Requires'] ) {
         $template['Requires'] = markdown(strip_tags(str_replace(["\r","\n","&#xD;","'"],["","<br>","","&#39;"],trim($template['Requires'])),"<br>"));
@@ -626,6 +645,22 @@ function getPopupDescriptionSkin($appNumber) {
     $template['display_icon'] = "<img class='popupIcon screenshot' href='{$template['Icon']}' src='{$template['Icon']}' alt='Application Icon'>";
   }
   
+  if ( $template['ModeratorComment'] ) {
+    preg_match_all("/\/\/(.*?)&#92;/m",$template['ModeratorComment'],$searchMatches);
+    if ( count($searchMatches[1]) ) {
+      foreach ($searchMatches[1] as $searchResult) {
+        $template['ModeratorComment'] = str_replace("//$searchResult&#92;","<a style=cursor:pointer; onclick=doSidebarSearch(&quot;$searchResult&quot;);>$searchResult</a>",$template['ModeratorComment']);
+      }
+    }     
+  }
+  if ( $template['CAComment'] ) {
+    preg_match_all("/\/\/(.*?)&#92;/m",$template['CAComment'],$searchMatches);
+    if ( count($searchMatches[1]) ) {
+      foreach ($searchMatches[1] as $searchResult) {
+        $template['CAComment'] = str_replace("//$searchResult&#92;","<a style=cursor:pointer; onclick=doSidebarSearch(&quot;$searchResult&quot;);>$searchResult</a>",$template['CAComment']);
+      }
+    }        
+  }
   if ( $template['Requires'] ) {
     $template['Requires'] = Markdown(strip_tags(str_replace(["\r","\n","&#xD;"],["","<br>",""],trim($template['Requires'])),"<br>"));
     preg_match_all("/\/\/(.*?)&#92;/m",$template['Requires'],$searchMatches);

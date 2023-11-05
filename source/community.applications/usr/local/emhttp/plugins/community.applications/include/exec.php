@@ -1041,7 +1041,7 @@ function force_update() {
       else 
         $o['data'] =  "<div class='ca_center'><font size='4'><span class='ca_bold'>".tr("Download of appfeed failed.")."</span></font><font size='3'><br><br>Community Applications requires your server to have internet access.  This could be because it appears that the current date and time of your server is incorrect.  Correct this within Settings - Date And Time.  See also <a href='https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1101084' target='_blank'>this post</a> for more information";
       
-        $tempFile = @file_get_contents($caPaths['appFeedDownloadError']);
+      $tempFile = @file_get_contents($caPaths['appFeedDownloadError']);
       $downloaded = @file_get_contents($tempFile);
       if (strlen($downloaded) > 100)
         $o['data'] .= "<font size='2' color='red'><br><br>It *appears* that a partial download of the application feed happened (or is malformed), therefore it is probable that the application feed is temporarily down.  Please try again later)</font>";
@@ -2037,8 +2037,6 @@ function remove_multiApplications() {
     postReturn(["error"=>"No apps were in post when trying to remove multiple applications"]);
     return;
   }
-
-  $error = false;
   foreach ($apps as $app) {
     if ( strpos(realpath($app),"/boot/config/") === false ) {
       $error = "Remove multiple apps: $app was not in /boot/config";
@@ -2046,7 +2044,7 @@ function remove_multiApplications() {
     }
     @unlink($app);
   }
-  if ( $error )
+  if ( $error ?? false)
     postReturn(["error"=>$error]);
   else
     postReturn(["status"=>"ok"]);
@@ -2408,6 +2406,9 @@ function enableActionCentre() {
             if ( $searchResult === false) {
               $searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
             }
+            if ( $searchResult !== false ) 
+              $o = $file[$searchResult];
+              
             if ( $searchResult === false ) {
               $runningFlag = true;
               if ( $extraBlacklist[$o['Repository']] ?? false ) {
