@@ -1966,7 +1966,9 @@ function updateMulti() {
       }
       if ( docker.length ) {
         saveState();
-        openDocker('update_container '+docker.join('*'),tr('Install '+makePlural("Application",dockerCount)),'');
+        setTimeout(function(){
+          openDocker('update_container '+docker.join('*'),tr('Install '+makePlural("Application",dockerCount)),'','refresh');
+        },1000);
       } else {
 <?if ($nchanCom):?>
         ca_openPlugin('multiplugin update '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refresh');
