@@ -1450,6 +1450,8 @@ function actionCentre() {
   } else {
     getPrevApps("action");
   }
+
+  
 }
 
 
@@ -1481,6 +1483,7 @@ function getPrevApps(installed,filter,dontClear) {
     $("#Category").html(msg);
     changeSortOrder(null,null,"true");
     enableMultiInstall();
+    
 //		saveState();
   });
 }
@@ -1847,7 +1850,7 @@ function enableMultiInstall() {
   var selected = getSelectedApps();
   var count = selected.plugin.length + selected.docker.length + selected.language.length;
   var actionText = $(".multi_installButton").hasClass("actionCenter") ? "Update" : "Install";
-  if ( count == 0 ) {
+  if ( count == 0 ) { 
     $(".multi_install,.multi_installClear").attr("disabled",true);
     $(".multi_deleteButton").css("visibility","hidden");
     $(".multi_installButton").val(tr(actionText + " Selected Applications"));
@@ -2155,7 +2158,11 @@ function updateDisplay(content) {
   if ( ! $(".startupButton").hasClass("selectedMenu") && ! data.docker) {
     $(".maxPerPage").show();
   }
-
+  if ( $(".ca_multiselect").length ) {
+      $(".multi_installAll").attr("disabled",false);
+  } else {
+    $(".multi_installAll").attr("disabled",true);
+  }
 }
 
 function isOverflown(el,type=false){
