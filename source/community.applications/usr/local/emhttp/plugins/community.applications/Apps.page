@@ -677,10 +677,6 @@ $(function(){
   $(".multi_installAll").click(function()     { selectAllPrevious(); enableMultiInstall(); });
   $(".startupButton").click(function()        { $(".maxPerPage").hide();hideSortIcons();updateContent(this); });
 
-  $(".checkForUpdatesButton").click(function() {
-    openBox('/plugins/<?=$plugin?>/scripts/checkForUpdates.sh',tr('Check For Updates'),600,1100,true,"postCheckForUpdates");
-  });
-
   $(".multi_installButton").click(function()  {
     if ( $(".multi_installButton").hasClass("actionCenter") ) {
       updateMulti();
@@ -949,7 +945,7 @@ function showSpecialCategory(button) {
 function showSpecials(button) {
   showSortIcons();
   $(".caMenuItem").removeClass("selectedMenu");
-  $(".multi_installDiv,.checkForUpdates").hide();
+  $(".multi_installDiv").hide();
   data.selected_category = "DOESNTMATTERWHATSHERE";
   data.section = "AppStore";
   changeCategory(button,false);
@@ -960,7 +956,7 @@ function changeCategory(button,subSwitch) {
   var description = $(button).text();
   var category = $(button).attr("data-category");
 
-  $(".multi_installDiv,.checkForUpdates").hide();
+  $(".multi_installDiv").hide();
   getContent(false,category,description,false);
 }
 
@@ -1043,7 +1039,7 @@ function doSearch(button,newSearch) {
   data.section = "AppStore";
 
   $('#searchBox').val(filter);
-  $(".multi_installDiv,.checkForUpdates").hide();
+  $(".multi_installDiv").hide();
 
   if ($('#searchButton').hasClass('fa-search')) {
     if (filter) {
@@ -1461,10 +1457,8 @@ function getPrevApps(installed,filter,dontClear) {
   post({action:'previous_apps',installed:installed,filter:filter},function(result) {
     if ( installed == true ) {
       $(".multi_installDiv").hide();
-      $(".checkForUpdates").show();
     } else {
       $(".multi_installDiv").show();
-      $(".checkForUpdates").hide();
       if ( ! dontClear ) {
         clearMultiInstall();
       }
@@ -1627,7 +1621,7 @@ function appStore() {
 function initializeAppStore() {
   data.section = "AppStore";
   data.selected_category = "";
-  $(".multi_installDiv,.checkForUpdates").hide();
+  $(".multi_installDiv").hide();
 }
 
 function checkPLGupdate() {
@@ -1690,7 +1684,7 @@ function pins() {
   clearCategory();
   showSortIcons();
   $("#Category").html("<?tr("Pinned Apps");?>");
-  $(".dockerSearch,.multi_installDiv,.checkForUpdates").hide();
+  $(".dockerSearch,.multi_installDiv").hide();
   post({action:'pinnedApps'},function(result) {
     refreshDisplay();
     myCloseAlert();
@@ -1961,22 +1955,28 @@ function updateMulti() {
   }, function( isConfirm ) {
     if ( isConfirm ) {
       myCloseAlert();
-      if ( docker.length && plugin.length ) {
-        $.cookie("ca_plugininstallpending",plugin,{path:"/;SameSite=Lax"});
-      }
+
       if ( docker.length ) {
+        var postUpdateFunction = plugin.length ? "actionCentre" : "installMultiPluginUpdatesAfterDocker";
         saveState();
         setTimeout(function(){
-          openDocker('update_container '+docker.join('*'),tr('Install '+makePlural("Application",dockerCount)),'','reloadPage');
+          openDocker('update_container '+docker.join('*'),tr('Install '+makePlural("Application",dockerCount)),'',postUpdateFunction);
         },1000);
       } else {
-        ca_openPlugin('multiplugin update '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refresh');
+        ca_openPlugin('multiplugin update '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','actionCentre');
         enableSearch();
       }
     } else {
       enableSearch();
     }
   });
+}
+
+function installMultiPluginUpdatesAfterDocker() {
+  setTimeout(function(){
+    ca_openPlugin('multiplugin update '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','actionCentre');
+    enableSearch();
+  },1000);
 }
 
 function reloadPage() {
@@ -2048,7 +2048,7 @@ function installMulti() {
       });
 <?if ($nchanCom):?>
         post({action:'saveMultiPluginPending',plugin:plugin},function(data) {
-          ca_openPlugin('multiplugin install '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refresh');
+          ca_openPlugin('multiplugin install '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refreshDisplay');
         });
 <?else:?>
         openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugin,tr('Install '+makePlural("Application",pluginCount)),600,900,true);
@@ -2246,7 +2246,7 @@ function cookiesEnabled() {
 }
 
 function showCredits() {
-  $(".multi_installDiv,.dockerSearch,.checkForUpdates").hide();
+  $(".multi_installDiv,.dockerSearch").hide();
   clearCategory(); clearSearchBox();
   var credits = $('#caCredits').html();
   updateDisplay(credits);
@@ -2254,7 +2254,7 @@ function showCredits() {
 }
 
 function showStatistics() {
-  $(".multi_installDiv,.dockerSearch,.checkForUpdates").hide();
+  $(".multi_installDiv,.dockerSearch").hide();
   clearCategory(); clearSearchBox();
   post({action:'statistics'},function(result) {
     updateDisplay(result.statistics);
@@ -2264,7 +2264,7 @@ function showStatistics() {
 }
 
 function caChangeLog() {
-  $(".multi_installDiv,.dockerSearch,.checkForUpdates").hide();
+  $(".multi_installDiv,.dockerSearch").hide();
   clearCategory(); clearSearchBox();
   post({action:'caChangeLog'},function(result) {
     updateDisplay(result.changelog);
@@ -3111,7 +3111,7 @@ function dockerSearch(pageNumber) {
   var filter = $('#searchBox').val();
   var dockerURL = "https://registry.hub.docker.com/search?q=" + filter;
   data.docker = "searching docker";
-  $(".dockerSearch,.multi_installDiv,.checkForUpdates").hide();
+  $(".dockerSearch,.multi_installDiv").hide();
   $("#Category").html(sprintf(tr("DockerHub Search for %s"),filter)+" <span id='pageNumber'></span>");
   post({action:'search_dockerhub',filter:filter,page:pageNumber},function(result) {
     updateDisplay(result.display);
