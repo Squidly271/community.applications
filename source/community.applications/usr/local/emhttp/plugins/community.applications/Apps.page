@@ -1967,14 +1967,10 @@ function updateMulti() {
       if ( docker.length ) {
         saveState();
         setTimeout(function(){
-          openDocker('update_container '+docker.join('*'),tr('Install '+makePlural("Application",dockerCount)),'','refresh');
+          openDocker('update_container '+docker.join('*'),tr('Install '+makePlural("Application",dockerCount)),'','reloadPage');
         },1000);
       } else {
-<?if ($nchanCom):?>
         ca_openPlugin('multiplugin update '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','refresh');
-<?else:?>
-        openBox('/plugins/<?=$plugin?>/scripts/installMultiPlugin.php&arg1='+plugin,tr('Install '+makePlural("Application",pluginCount)),600,900,true);
-<?endif;?>
         enableSearch();
       }
     } else {
@@ -1983,6 +1979,9 @@ function updateMulti() {
   });
 }
 
+function reloadPage() {
+  location.reload();
+}
 function installMulti() {
   var docker = new Array();
   var pluginArray = new Array();
@@ -3174,6 +3173,10 @@ function getPerPageOpts(value) {
 }
 
 function setupActionCentre() {
+  // only use action centre on 6.12+
+  <? if ( ! $unRaid612 ) : ?>
+    return;
+  <? endif; ?>  
   // set up action centre - run in background without tying anything up
   var acBanner = false;
   $.post("/plugins/<?=$plugin?>/include/exec.php",{action:'enableActionCentre'},function(data) {
