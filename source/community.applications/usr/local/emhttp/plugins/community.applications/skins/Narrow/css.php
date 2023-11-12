@@ -17,8 +17,6 @@ $theme = $dynamix['theme'];
 
 $unRaidSettings = parse_ini_file("/etc/unraid-version");
 
-//$mobile = isMobile();
-
 $unRaid66color = "#FF8C2F";
 $linkColor = "#486dba";
 $startupColor = "#FF8C2F";
@@ -303,17 +301,16 @@ input[type=button]{background:none;font-size:1.5rem;}
 input:hover[type=button]{color:<?=$unRaid66color?>;background:none !important;}
 input:hover[type=button][disabled]{background:none !important;color:currentColor !important;font-size:1.5rem;}
 input[type=button][disabled]{background:none;}
-
+.installedPopup{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #322fff;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
+.installedPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.5rem;right:-1rem;width:100%;overflow:hidden;height:2rem;}
 .linkButton{color:<?=$supportPopupText?>!important;background: <?=$supportPopupBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 200% 100%;  border-radius: 15px;  color: #000000;  padding: 1px 10px 1px 10px;}
 .linkButton:hover{text-decoration:none;background-color:<?=$unRaid66color?>;}
 .linkButton a{text-decoration:none;color:<?=$supportPopupText?>}
-
 .maxPerPage{float:right;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;}
 .maxPerPage:hover{text-decoration:none;background-color:<?=$unRaid66color?>;}
-
 .mainArea{position:absolute;left:18.5rem;right:0px;top:2rem;display:block;overflow-x:hidden;min-height:90vh;}
 .menuHeader{ font-size:2rem; margin-bottom:1rem;margin-top:1rem;}
-.menuItems{position:absolute;top:2rem;left:0px;width:14rem;height:auto;}
+.menuItems{position:absolute;top:2rem;left:10px;width:14rem;height:auto;}
 .mobileHolderFix{margin-bottom:2rem !important;}
 .modComment{padding:2rem;border:1px solid;border-color:<?=$modCommentBorder?>;}
 .moderatorCommentHeader{font-size:2rem;font-weight:normal;}
@@ -328,8 +325,6 @@ input[type=button][disabled]{background:none;}
 .officialPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.25rem;right:-1rem;width:100%;overflow:hidden;height:2.5rem;}
 .LTOfficialCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #F15A2C;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .ltofficialPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.25rem;right:-1rem;width:100%;overflow:hidden;height:2.5rem;}
-
-
 p {margin:auto;text-align:left;margin-bottom:10px;} /* override dynamix styling for popup */
 .pageDots::after{content:"...";}
 .pageDots{color:grey;cursor:default;}
@@ -420,7 +415,6 @@ a.popup-donate:hover{color:<?=$donateText?>;background-color:<?=$unRaid66color?>
 .spotlightIcon{height:15rem;margin-bottom:-2.5rem;margin-left:-2rem;margin-top:-3rem;}
 .spotlightInfoArea{margin-left:2rem;padding-left:10rem;margin-top:2rem;}
 .spotlightPopup{display:inline-block;margin-top:0.75rem;}
-
 .spotlightWho{font-style:italic;}
 .spotlightWhy{font-weight:bold;font-size:1.6rem;line-height:1.8rem;}
 .spotlightMessage{margin-top:0.8rem;line-height:1.5rem;}
@@ -451,15 +445,8 @@ table {background-color:transparent;}
 .vid:hover{color:<?=$unRaid66color;?>}
 .videoButton{margin-left:1rem;line-height:2rem;cursor:pointer;display:inline-block;color:<?=$donateText?>!important;background: <?=$donateBackground?>;background: -webkit-linear-gradient(top, transparent 0%, rgba(0,0,0,0.4) 100%),-webkit-linear-gradient(left, lighten(<?=$donateBackground?>, 15%) 0%, <?=$donateBackground?> 50%, lighten(<?=$donateBackground?>, 15%) 100%);  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 100%),linear-gradient(to right, lighten(#E68321, 15%) 0%, #E68321 50%, lighten(#E68321, 15%) 100%);  background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  color: #fff;  padding: 1px 10px 1px 10px;text-decoration:none !important;}
 .videoButton:hover{background:<?=$unRaid66color?>}
-
 .warningCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #810000;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 #warningNotAccepted{display:none;}
-
-.installedPopup{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #322fff;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;;top:<?=$betaPopupOffset?>;height:9rem;width:9rem;position: absolute;right: 0;}
-.installedPopupText{position:absolute;transform:rotate(45deg);-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform: rotate(45deg);color:white;font-size:2rem;position:absolute;top:2.5rem;right:-1rem;width:100%;overflow:hidden;height:2rem;}
-
-
-
 
 @keyframes cycleRed {
   0% {color: inherit;}
