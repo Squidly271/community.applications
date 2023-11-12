@@ -1,4 +1,4 @@
-abb05edd9c7754357601fdff36a6238d  ./Apps.page
+2d4665b10d47550f528bb4409b1077ac  ./Apps.page
 385834d91dc8758bfcd5d34f1c3e530e  ./CA_notices.page
 2c2a1b7d148fe51ee38813d1a0e71589  ./ca_settings.page
 01ed7990078dee7cecfeda9a4e49377e  ./default.cfg
@@ -20,7 +20,7 @@ a1cb6e1930f2ad689ce9e7fc2e39c846  ./scripts/notices.php
 47456eef0760a57a792177ea065358c3  ./scripts/showStatistics.php
 4425f8fd4ef662a7dc65cee01de3e419  ./scripts/updatePLG.sh
 52355989c2bec01cfd55fe619588a033  ./scripts/updatePluginSupport.php
-5a0516d49f7c195b67e4d61913b12bd5  ./skins/Narrow/css.php
+a5f4bb693e7e2329dd36982447ecc0ed  ./skins/Narrow/css.php
 269e66607463412a75aca9e7d48b0325  ./skins/Narrow/skin.html
 94d6cdbb0833a08f31457c4d92313630  ./skins/Narrow/skin.php
 c26b187a50c966adff7bfb9cab6fca16  ./event/disks_mounted

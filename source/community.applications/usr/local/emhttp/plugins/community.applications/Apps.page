@@ -121,9 +121,14 @@ if ( is_file($caPaths['docker_cfg']) )
 $memRaw = trim(str_replace("MemTotal:","",exec("cat /proc/meminfo | grep MemTotal:")));
 $memoryInstalled = explode(" ",$memRaw);
 
+$RequirementsBanner = false;
 $CArequirementsNOTmet = $memoryInstalled[0] < 2500000;
-$ServerDateCorrect = checkServerDate() ? "true": "false";
+if ( $CArequirementsNOTmet && isset($_COOKIE['ca_memoryOverride']) && $_COOKIE['ca_memoryOverride']) {
+  $CArequirementsNOTmet = false;
+  $RequirementsBanner = "true";
+}
 
+$ServerDateCorrect = checkServerDate() ? "true": "false";
 
 function tr($string,$ret=false) {
   $string = str_replace('"',"&#34;",str_replace("'","&#39;",_($string)));
@@ -199,12 +204,18 @@ $(function(){
       text: '<?tr('Community Applications (and Unraid OS) have a minimum required memory of 4G.  CA cannot run without those mimimums being met');?>',
       html: true,
       type: 'error',
-      showCancelButton: false,
+      showCancelButton: true,
       showConfirmButton: true,
-      cancelButtonText: "<?tr('Cancel')?>",
+      cancelButtonText: "<?tr('Run Anyways')?>",
       confirmButtonText: "<?tr('I Understand')?>"
     }, function (isConfirm) {
-      history.back();
+      if ( isConfirm ) {
+        $.cookie("ca_memoryOverride","");
+        history.back();
+      } else {
+        $.cookie("ca_memoryOverride","override");
+        location.reload();
+      }
     });
     return;
   <? endif; ?>
@@ -271,8 +282,8 @@ $(function(){
   if ( "<?=$date?>" == "1/01" )  addBannerWarning("<?tr("Happy New Year!")?>",false);
   if ( "<?=$date?>" == "12/31" ) addBannerWarning("<?tr("Happy New Year!")?> <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> <?tr("Please Enjoy Responsibly")?>",false);
   if ( "<?=$ServerDateCorrect?>" == "false" ) addBannerWarning("<?tr("Server Date and Time Incorrect.  Issues will result with Community Applications.  Fix this in Settings - Date And Time")?>",true,true);
-
-
+  if ( "<?=$RequirementsBanner?>" == "true" ) addBannerWarning("<?tr("Memory Requirements not met.  Problems may result")?>");
+  
   context.init({preventDoubleContext:false,left:false,right:false,bottom:true,above:true});
 
   $(".maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>","<?=$cfg['maxPerPage']?>"));
@@ -1222,7 +1233,7 @@ function closeSidebar(cookie=false,visible=false) {
   $(".sidebar").fadeOut();
   <? if ($unRaid612): ?>
     $(".nav-user.show").show();
-  <?endif;?>		
+  <?endif;?>
 }
 
 function installPlugin(pluginURL,update=false,comment="",requires="") {
@@ -1451,7 +1462,7 @@ function actionCentre() {
     getPrevApps("action");
   }
 
-  
+
 }
 
 
@@ -1483,7 +1494,7 @@ function getPrevApps(installed,filter,dontClear) {
     $("#Category").html(msg);
     changeSortOrder(null,null,"true");
     enableMultiInstall();
-    
+
 //		saveState();
   });
 }
@@ -1850,7 +1861,7 @@ function enableMultiInstall() {
   var selected = getSelectedApps();
   var count = selected.plugin.length + selected.docker.length + selected.language.length;
   var actionText = $(".multi_installButton").hasClass("actionCenter") ? "Update" : "Install";
-  if ( count == 0 ) { 
+  if ( count == 0 ) {
     $(".multi_install,.multi_installClear").attr("disabled",true);
     $(".multi_deleteButton").css("visibility","hidden");
     $(".multi_installButton").val(tr(actionText + " Selected Applications"));
@@ -2129,7 +2140,7 @@ function updateDisplay(content) {
       var newSize = size - 1;
       if (newSize == 8)
         break;
-      
+
       $(this).css("font-size",newSize+"px");
     }
   });
@@ -2144,10 +2155,10 @@ function updateDisplay(content) {
       var newSize = size - 1;
       if (newSize == 0)
         break;
-      
+
       $(this).css("font-size",newSize+"px");
     }
-  });	
+  });
   if ( $("html").hasClass("translated-ltr") || $("html").hasClass("translated-rtl") || $("head").hasClass("translated-ltr") || $("head").hasClass("translated-rtl") ) {
     data.translationBanner = addBannerWarning("<?=tr("Browser translation detected.  Display issues may result")?>");
   }	else {
@@ -2170,7 +2181,7 @@ function isOverflown(el,type=false){
     return (el.scrollWidth > el.clientWidth);
   else
     return (el.scrollHeight > el.clientHeight);
-  
+
   return (el.scrollHeight > el.clientHeight) || (el.scrollWidth > el.clientWidth)||(el.offsetWidth < el.scrollWidth);
 }
 
@@ -3048,7 +3059,7 @@ function showRepoPopup(repository) {
   $("body").css("overflow","hidden !important");
   <? if ($unRaid612): ?>
     $(".nav-user.show").hide();
-  <?endif;?>	
+  <?endif;?>
 
   post({action:'getRepoDescription',repository:repository},function(result) {
     $("#sidenavContent").html(result.description);
@@ -3183,7 +3194,7 @@ function setupActionCentre() {
   // only use action centre on 6.12+
   <? if ( ! $unRaid612 ) : ?>
     return;
-  <? endif; ?>  
+  <? endif; ?>
   // set up action centre - run in background without tying anything up
   var acBanner = false;
   $.post("/plugins/<?=$plugin?>/include/exec.php",{action:'enableActionCentre'},function(data) {
