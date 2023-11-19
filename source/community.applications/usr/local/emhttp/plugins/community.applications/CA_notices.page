@@ -11,8 +11,6 @@ Link='nav-user'
 ?>
 
 <?
-$unRaidSettings = parse_ini_file("/etc/unraid-version");
-$unRaid68 = version_compare($unRaidSettings['version'],"6.7.9",">");
 $caCFG = parse_plugin_cfg("community.applications");
 ?>
 
@@ -26,11 +24,7 @@ $(function() {
     console.groupEnd();
     CA_BANNER_NOTICES = JSON.parse(data);
     $.each(CA_BANNER_NOTICES,function(i,el) {
-      <? if ( $unRaid68 ): ?>
-        var dismiss = "<a class='bannerDismiss' onclick='ca_DismissNotice("+i+");'></a>";
-      <? else: ?>
-        var dismiss = "<span class='ca_PluginUpdateDismiss'><i class='fa fa-close' onclick='ca_DismissNotice("+i+");'></i></span>";
-      <? endif; ?>
+      var dismiss = "<a class='bannerDismiss' onclick='ca_DismissNotice("+i+");'></a>";
       CA_BANNER_NOTICES[i]['warning_index'] = addBannerWarning(el.Banner+" <a onclick='ca_Notices("+i+");' style='cursor:pointer;'>More Info</a>"+dismiss,true,true);
     });
   });
