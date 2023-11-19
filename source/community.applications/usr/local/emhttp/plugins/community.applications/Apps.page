@@ -283,7 +283,7 @@ $(function(){
   if ( "<?=$date?>" == "12/31" ) addBannerWarning("<?tr("Happy New Year!")?> <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> <?tr("Please Enjoy Responsibly")?>",false);
   if ( "<?=$ServerDateCorrect?>" == "false" ) addBannerWarning("<?tr("Server Date and Time Incorrect.  Issues will result with Community Applications.  Fix this in Settings - Date And Time")?>",true,true);
   if ( "<?=$RequirementsBanner?>" == "true" ) addBannerWarning("<?tr("Memory Requirements not met.  Problems may result")?>");
-  
+
   context.init({preventDoubleContext:false,left:false,right:false,bottom:true,above:true});
 
   $(".maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>","<?=$cfg['maxPerPage']?>"));
@@ -1971,13 +1971,19 @@ function updateMulti() {
       myCloseAlert();
 
       if ( docker.length ) {
-        var postUpdateFunction = plugin.length ? "actionCentre" : "installMultiPluginUpdatesAfterDocker";
+        var postUpdateFunction = "actionCentre";
+        if ( plugin.length ) {
+          postUpdateFunction = "installMultiPluginUpdatesAfterDocker";
+          $.cookie("pluginVar",plugin);
+          $.cookie("pluginCountVar",pluginCount);
+        }
+
         saveState();
         setTimeout(function(){
-          openDocker('update_container '+docker.join('*'),tr('Install '+makePlural("Application",dockerCount)),'',postUpdateFunction);
+          openDocker('update_container '+docker.join('*'),tr('Update '+makePlural("Application",dockerCount)),'',postUpdateFunction);
         },1000);
       } else {
-        ca_openPlugin('multiplugin update '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','actionCentre');
+        ca_openPlugin('multiplugin update '+plugin,tr('Update '+makePlural("Application",pluginCount)),'','actionCentre');
         enableSearch();
       }
     } else {
@@ -1987,8 +1993,13 @@ function updateMulti() {
 }
 
 function installMultiPluginUpdatesAfterDocker() {
+  var plugin = $.cookie("pluginVar");
+  var pluginCount = $.cookie("pluginCountVar");
+  $.cookie("pluginVar","");-+
+  +
+  $.cookie("pluginCountVar","");
   setTimeout(function(){
-    ca_openPlugin('multiplugin update '+plugin,tr('Install '+makePlural("Application",pluginCount)),'','actionCentre');
+    ca_openPlugin('multiplugin update '+plugin,tr('Update '+makePlural("Application",pluginCount)),'','actionCentre');
     enableSearch();
   },1000);
 }
