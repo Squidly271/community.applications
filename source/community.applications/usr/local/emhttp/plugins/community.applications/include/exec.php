@@ -493,9 +493,9 @@ function getConvertedTemplates() {
 # Selects an app of the day #
 #############################
 function appOfDay($file) {
-  global $caPaths,$caSettings,$sortOrder;
+  global $caPaths,$caSettings,$sortOrder,$dynamixSettings;
 
-  $max = is_file("/boot/config/plugins/unlimited-width.plg") ? 12 : 5;
+  $max = ( is_file("/boot/config/plugins/unlimited-width.plg") || ($dynamixSettings['width'] ?? false) ) ? 12 : 5;
   $appOfDay = null;
 
   switch ($caSettings['startup']) {
