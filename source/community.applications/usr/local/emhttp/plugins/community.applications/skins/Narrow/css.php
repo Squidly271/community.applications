@@ -256,7 +256,7 @@ ul.context{list-style-type:none;padding:0;margin:0;}
 a.context{text-decoration:none;color:currentColor;margin:5px;}
 li.context{margin-top:0.5rem;margin-bottom:0.5rem;font-size:1.5rem;}
 li.context:hover{color:<?=$unRaid66color?>;}
-.credits{overflow:scroll;overflow-x:hidden; overflow-y:auto;margin:auto;width:600px;padding-bottom:50px;background-image: linear-gradient(to bottom, royalblue 50%, #b5b52c 50%);-webkit-background-clip: text;-moz-background-clip: text;background-clip: text;color: transparent;}
+.credits{overflow:scroll;overflow-x:hidden; overflow-y:auto;margin:auto;width:600px;padding-bottom:50px;}
 li.debugging{cursor:pointer;}
 .dimScreenShot{overflow:unset !important;}
 .disabledIcon{color:#040404;font-size:2.5rem;}

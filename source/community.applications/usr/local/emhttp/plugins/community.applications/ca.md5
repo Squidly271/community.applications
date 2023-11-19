@@ -2,7 +2,7 @@ e23a1f42a98de86535c5c42c243a8893  ./Apps.page
 0987a65d249dbec3267b0f4a02aa975a  ./CA_notices.page
 2c2a1b7d148fe51ee38813d1a0e71589  ./ca_settings.page
 01ed7990078dee7cecfeda9a4e49377e  ./default.cfg
-d633adfc1568e9fe791ccaa7a4d58f2c  ./include/exec.php
+0727e7d8314b167a751bb66a93e714ee  ./include/exec.php
 2549b355dfb0f77efa1235cad798cff4  ./include/helpers.php
 343e1d26129551fc142b09b5d6e10503  ./include/paths.php
 7234caf6800479df03abb222aaedaca5  ./javascript/libraries.js
@@ -20,7 +20,7 @@ a1cb6e1930f2ad689ce9e7fc2e39c846  ./scripts/notices.php
 47456eef0760a57a792177ea065358c3  ./scripts/showStatistics.php
 4425f8fd4ef662a7dc65cee01de3e419  ./scripts/updatePLG.sh
 52355989c2bec01cfd55fe619588a033  ./scripts/updatePluginSupport.php
-a5f4bb693e7e2329dd36982447ecc0ed  ./skins/Narrow/css.php
-269e66607463412a75aca9e7d48b0325  ./skins/Narrow/skin.html
+b4e3802d0ddeaf20cdd1b001dab3eeb8  ./skins/Narrow/css.php
+89953dddd75450915c0294a276d331bb  ./skins/Narrow/skin.html
 94d6cdbb0833a08f31457c4d92313630  ./skins/Narrow/skin.php
 c26b187a50c966adff7bfb9cab6fca16  ./event/disks_mounted

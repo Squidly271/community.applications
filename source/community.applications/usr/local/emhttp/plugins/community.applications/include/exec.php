@@ -1012,7 +1012,7 @@ function get_content() {
 # force_update -> forces an update of the applications #
 ########################################################
 function force_update() {
-  global $caPaths;
+  global $caPaths, $caSettings;
 
   $lastUpdatedOld = readJsonFile($caPaths['lastUpdated-old']);
   debug("old feed timestamp: ".($lastUpdatedOld['last_updated_timestamp'] ?? ""));
@@ -1060,12 +1060,21 @@ function force_update() {
   }
   getConvertedTemplates();
   moderateTemplates();
-  $currentServer = @file_get_contents($caPaths['currentServer']);
 
+
+  $currentServer = @file_get_contents($caPaths['currentServer']);
   $appFeedTime = readJsonFile($caPaths['lastUpdated-old']);
   $updateTime = tr(date("F",$appFeedTime['last_updated_timestamp']),0).date(" d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
   $updateTime = str_replace("'","&apos;",$updateTime);
-  postReturn(['status'=>"ok",'script'=>"feedWarning('$currentServer');$('.statistics').attr('title','{$updateTime}');"]);
+  $script = "feedWarning('$currentServer');$('.statistics').attr('title','{$updateTime}');";
+
+  // is CA running on a version of the OS the it no longer supports (ie: no further updates to CA compatible with this OS will be issued)
+  $appfeedCA = searchArray($GLOBALS['templates'],"PluginURL","https://raw.githubusercontent.com/Squidly271/community.applications/master/plugins/community.applications.plg");
+
+  if ( version_compare($caSettings['unRaidVersion'],$GLOBALS['templates'][$appfeedCA]['MinVer'],"<") )
+    $script .= "addBannerWarning('".tr("Deprecated OS version.  No further updates to Community Applications will be issued for this OS version")."');";
+  
+    postReturn(['status'=>"ok",'script'=> $script]);
 }
 
 
