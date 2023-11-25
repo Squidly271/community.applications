@@ -2,17 +2,34 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.09.30">
-<!ENTITY md5       "948d560a8176de2abb8d12019e03fc65">
+<!ENTITY version   "2023.11.25">
+<!ENTITY md5       "397542404bc0af4b7f1269d34e9e03c9">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
 ]>
 
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2023.11.25
+- Changed: Minimum requirements for Community Applications now 6.12.0
+- Added: On feed download failure check date and time of server.  If obviously wrong, display message stating to check date and time as this will preclude being able to successfully download the application feed
+- Fixed: Various PHP8 warnings
+- Added: Ability to directly search from within a moderator comment
+- Fixed: Moderator comments (only CA Comments) wouldn't appear within popup if installing the application directly from the card
+- Fixed: Action Centre wouldn't appear if only deprecated / blacklisted apps were present (would only appear if updates were available to an app)
+- Changed: Include link to support thread on failed to download feed
+- Fixed: Orphan containers were being created if selecting multiple application to update within Action Centre
+- Removed: Check for updates button within Installed Applications - Pointless since CA automatically checks if no update check has been performed within the last hour
+- Fixed: Don't enable "Select All" button if there are no checkboxes present within Action Centre on the cards
+- Changed: Ability to override CA's minimum memory requirements
+- Changed: Various CSS 
+- Changed: Don't reload CA between container and plugin updates when doing multiple simultaneous updates
+- Added: Support for 6.13 unlimited width display setting
+- Added: Display a banner if the next revision of CA is incompatible with your OS version, suggesting to upgrade your OS version
+
 ###2023.09.30
 - Changed: run update_cron at array_start (fixes issue with OS 6.12.4)
 - Changed: Don't use CA's awesomplete library when running OS 6.13.x+
