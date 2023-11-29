@@ -327,11 +327,15 @@ function DownloadApplicationFeed() {
     $o['Category'] = str_replace("Status:Stable","",$o['Category']);
     $myTemplates[$i] = $o;
 
-    if ( ! $o['DonateText'] && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateText'] ?? false) )
-      $o['DonateText'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateText'];
-    if ( ! $o['DonateLink'] && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'] ?? false) )
-      $o['DonateLink'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'];
-
+    if ( ! $o['Official'] ) {
+      if ( ! $o['DonateText'] && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateText'] ?? false) )
+        $o['DonateText'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateText'];
+      if ( ! $o['DonateLink'] && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'] ?? false) )
+        $o['DonateLink'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'];
+    } else {
+      $o['DonateText'] = $o['OfficialDonateText'] ?? null;
+      $o['DonateLink'] = $o['OfficialDonateLink'] ?? null;      
+    }
     $ApplicationFeed['repositories'][$o['RepoName']]['downloads'] = $ApplicationFeed['repositories'][$o['RepoName']]['downloads'] ?? 0;
     $ApplicationFeed['repositories'][$o['RepoName']]['trending'] = $ApplicationFeed['repositories'][$o['RepoName']]['trending'] ?? 0;
 
