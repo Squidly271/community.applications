@@ -159,6 +159,8 @@ function last_str_replace($haystack, $needle, $replace) {
 function mySort($a, $b) {
   global $sortOrder;
 
+  $a['trendDelta'] = $a['trendDelta'] ?? null;
+  $b['trendDelta'] = $b['trendDelta'] ?? null;
   if ( $sortOrder['sortBy'] == "Name" )
     $sortOrder['sortBy'] = "SortName";
   if ( $sortOrder['sortBy'] != "downloads" && $sortOrder['sortBy'] != "trendDelta") {
@@ -205,7 +207,7 @@ function searchArray($array,$key,$value,$startingIndex=0) {
   $result = false;
   if (is_array($array) && count($array) ) {
     for ($i = $startingIndex; $i <= max(array_keys($array)); $i++) {
-      if ( $array[$i][$key] == $value ) {
+      if ( ($array[$i][$key] ?? null) == $value ) {
         $result = $i;
         break;
       }
@@ -309,7 +311,7 @@ function fixAttributes(&$template,$attribute) {
 function versionCheck($template) {
   global $caSettings;
 
-  if ( $template['IncompatibleVersion'] ) {
+  if ( $template['IncompatibleVersion']??null ) {
     if ( ! is_array($template['IncompatibleVersion']) ) {
       $incompatible[] = $template['IncompatibleVersion'];
     } else {
@@ -320,8 +322,8 @@ function versionCheck($template) {
     }
   }
 
-  if ( $template['MinVer'] && ( version_compare($template['MinVer'],$caSettings['unRaidVersion']) > 0 ) ) return false;
-  if ( $template['MaxVer'] && ( version_compare($template['MaxVer'],$caSettings['unRaidVersion']) < 0 ) ) return false;
+  if ( ($template['MinVer']??null) && ( version_compare($template['MinVer'],$caSettings['unRaidVersion']) > 0 ) ) return false;
+  if ( ($template['MaxVer']??null) && ( version_compare($template['MaxVer'],$caSettings['unRaidVersion']) < 0 ) ) return false;
   return true;
 }
 ###############################################
@@ -380,16 +382,16 @@ function moderateTemplates() {
   if ( ! $templates ) return;
   foreach ($templates as $template) {
     $template['Compatible'] = versionCheck($template);
-    if ( $template['MaxVer'] && version_compare($template['MaxVer'],$caSettings['unRaidVersion']) < 0 )
+    if ( ($template['MaxVer']??null) && version_compare($template['MaxVer'],$caSettings['unRaidVersion']) < 0 )
       $template['Featured'] = false;
     if ( $template['CAMinVer'] ?? false ) {
       $template['UninstallOnly'] = version_compare($template['CAMinVer'],$caSettings['unRaidVersion'],">=");
     }
 
-    if ( $template["DeprecatedMaxVer"] && version_compare($caSettings['unRaidVersion'],$template["DeprecatedMaxVer"],">") )
+    if ( ($template["DeprecatedMaxVer"]??null) && version_compare($caSettings['unRaidVersion'],$template["DeprecatedMaxVer"],">") )
       $template['Deprecated'] = true;
 
-    $template['ModeratorComment'] = $template['CaComment'] ?: $template['ModeratorComment'];
+    $template['ModeratorComment'] = $template['CaComment'] ?? ($template['ModeratorComment']??null);
     $o[] = $template;
   }
   writeJsonFile($caPaths['community-templates-info'],$o);
@@ -429,7 +431,7 @@ function pluginDupe() {
   $pluginList = [];
   $dupeList = [];
   foreach ($GLOBALS['templates'] as $template) {
-    if ( $template['Plugin'] ) {
+    if ( ($template['Plugin']??null) ) {
       if ( ! isset($pluginList[basename($template['Repository'])]) )
         $pluginList[basename($template['Repository'])] = 0;
       $pluginList[basename($template['Repository'])]++;

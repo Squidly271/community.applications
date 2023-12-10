@@ -84,6 +84,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
   # Create entries for skins.
   foreach ($displayedTemplates as $template) {
+    $template = addMissingVars($template);
     if ( ! $template['RepositoryTemplate'] ) {
       if ( ! $template['Blacklist'] ) {
         if ( isset($extraBlacklist[$template['Repository']]) ) {

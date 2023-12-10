@@ -241,8 +241,8 @@ function DownloadApplicationFeed() {
       $invalidXML[] = $o;
       continue;
     }
-    $o = addMissingVars($o);
-
+    
+    $o['CategoryList'] = $o['CategoryList'] ?? [];
     if ( $o['CategoryList'] ) {
       foreach ($o['CategoryList'] as $cat) {
         $cat = str_replace("-",":",$cat);
@@ -251,18 +251,21 @@ function DownloadApplicationFeed() {
         $o['Category'] .= "$cat ";
       }
     }
+    
+    $o['Category'] = $o['Category'] ?? null;
     if ( $o['Category'] === null )
       $o['Category'] = "";
     $o['Category'] = trim($o['Category']);
     if ( ! $o['Category'] )
       $o['Category'] = "Other:";
 
-    if ( $o['RecommendedRaw'] ) {
+    
+    if ( $o['RecommendedRaw'] ?? null) {
       $o['RecommendedDate'] = strtotime($o['RecommendedRaw']);
       $o['Category'] .= " spotlight:";
     }
 
-    if ( $o['Language'] ) {
+    if ( $o['Language'] ?? null) {
       $o['Category'] = "Language:";
       $o['Compatible'] = true;
       $o['Repository'] = "library/";
@@ -279,7 +282,7 @@ function DownloadApplicationFeed() {
     $o['SortName']      = preg_replace('/\s+/',' ',$o['SortName']);
     $o['random']        = rand();
 
-    if ( $o['CAComment'] ) {
+    if ( $o['CAComment'] ?? null) {
         $tmpComment = explode("&zwj;",$o['CAComment']);  // non printable delimiter character
         $o['CAComment'] = "";
         foreach ($tmpComment as $comment) {
@@ -287,8 +290,8 @@ function DownloadApplicationFeed() {
             $o['CAComment'] .= tr($comment)."  ";
         }
     }
-    if ( $o['RequiresFile'] ) $o['RequiresFile'] = trim($o['RequiresFile']);
-    if ( $o['Requires'] ) 		$o['Requires'] = trim($o['Requires']);
+    if ( $o['RequiresFile'] ?? null) $o['RequiresFile'] = trim($o['RequiresFile']);
+    if ( $o['Requires'] ?? null) 		$o['Requires'] = trim($o['Requires']);
 
     $des = $o['OriginalOverview'] ?? $o['Overview'];
     $des = $o['Language'] ? $o['Description'] : $des;
@@ -459,7 +462,7 @@ function getConvertedTemplates() {
 
   $myTemplates = [];
   foreach ($templates as $template) {
-    if ( ! $template['Private'] )
+    if ( ! ($template['Private']??null) )
       $myTemplates[] = $template;
   }
   $appCount = count($myTemplates);
@@ -648,7 +651,7 @@ function checkRandomApp($test) {
   global $caSettings;
 
   if ( $test['Name'] == "Community Applications" )  return false;
-  if ( $test['BranchName'] )                        return false;
+  if ( $test['BranchName'] ?? false)                        return false;
   if ( ! $test['Displayable'] )                     return false;
   if ( ! $test['Compatible'] && $caSettings['hideIncompatible'] == "true" ) return false;
   if ( $test['Blacklist'] )                         return false;
@@ -1741,6 +1744,7 @@ function populateAutoComplete() {
   }
   $autoComplete = array_map(function($x){return str_replace(":","",tr($x['Cat']));},readJsonFile($caPaths['categoryList']));
   foreach ($templates as $template) {
+    $template = addMissingVars($template);
     if ( $template['RepoTemplate'] )
       continue;
     if ( ! $template['Blacklist'] && ! ($template['Deprecated'] && $caSettings['hideDeprecated'] == "true") && ($template['Compatible'] || $caSettings['hideIncompatible'] != "true") || ($template['Featured']??false) ) {
@@ -1831,7 +1835,7 @@ function get_categories() {
     }
     $templates = &$GLOBALS['templates'];
     foreach ($templates as $template) {
-      if ($template['Private'] == true && ! $template['Blacklist']) {
+      if ( ($template['Private']??null) == true && ! $template['Blacklist']) {
         $cat .= "<li class='categoryMenu caMenuItem nonDockerSearch' data-category='PRIVATE'>".tr("Private Apps")."</li>";
         break;
       }
@@ -2462,7 +2466,7 @@ function enableActionCentre() {
   }
 # Now work on plugins
   foreach ($file as $template) {
-    if ( ! $template['Plugin'] ) continue;
+    if ( ! ($template['Plugin']??null) ) continue;
 
     if ( $template['Name'] == "Community Applications" )
       continue;
@@ -2476,15 +2480,15 @@ function enableActionCentre() {
         continue;
 
       $installedVersion = plugin("version","/var/log/plugins/$filename");
-      if ( ( strcmp($installedVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) ) {
+      if ( ( strcmp($installedVersion,$template['pluginVersion']) < 0 || ($template['UpdateAvailable']??null) ) ) {
         $template['actionCentre'] = true;
       }
-      if ( ! $template['actionCentre'] && is_file("/tmp/plugins/$filename") ) {
+      if ( ! ($template['actionCentre']??null) && is_file("/tmp/plugins/$filename") ) {
         if ( strcmp($installedVersion,plugin("version","/tmp/plugins/$filename")) < 0 )
           $template['actionCentre'] = true;
       }
 
-      if ( !$template['Blacklist'] && !$template['Deprecated'] && $template['Compatible'] && !$template['actionCentre'] )
+      if ( !$template['Blacklist'] && !$template['Deprecated'] && $template['Compatible'] && !($template['actionCentre']??null) )
         continue;
       $displayed[] = $template;
       break;
