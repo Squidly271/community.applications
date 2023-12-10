@@ -221,9 +221,9 @@ function searchArray($array,$key,$value,$startingIndex=0) {
 function fixTemplates($template) {
   global $statistics, $caSettings;
 
-  if ( ! $template['MinVer'] ) $template['MinVer'] = $template['Plugin'] ? "6.1" : "6.0";
-  if ( ! $template['Date'] ) $template['Date'] = (is_numeric($template['DateInstalled'])) ? $template['DateInstalled'] : 0;
-  $template['Date'] = max($template['Date'],$template['FirstSeen']);
+  if ( ! $template['MinVer'] ) $template['MinVer'] = ($template['Plugin']??false) ? "6.1" : "6.0";
+  if ( ! ($template['Date']??null) ) $template['Date'] = (is_numeric($template['DateInstalled']??null)) ? $template['DateInstalled'] : 0;
+  $template['Date'] = max($template['Date']??null,$template['FirstSeen']??null);
   if ($template['Date'] == 1) $template['Date'] = null;
   if ( ($template['Date'] == $template['FirstSeen']) && ( $template['FirstSeen'] >= 1538357652 )) {# 1538357652 is when the new appfeed first started
     $template['BrandNewApp'] = true;
@@ -231,14 +231,14 @@ function fixTemplates($template) {
   }
 
   # fix where template author includes <Blacklist> or <Deprecated> entries in template (CA used booleans, but appfeed winds up saying "FALSE" which equates to be true
-  $template['Deprecated'] = filter_var($template['Deprecated'],FILTER_VALIDATE_BOOLEAN);
-  $template['Blacklist'] = filter_var($template['Blacklist'],FILTER_VALIDATE_BOOLEAN);
+  $template['Deprecated'] = filter_var($template['Deprecated']??null,FILTER_VALIDATE_BOOLEAN);
+  $template['Blacklist'] = filter_var($template['Blacklist']??null,FILTER_VALIDATE_BOOLEAN);
 
-  if ( $template['DeprecatedMaxVer'] && version_compare($caSettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") )
+  if ( ($template['DeprecatedMaxVer']??null) && version_compare($caSettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") )
     $template['Deprecated'] = true;
 
   if ( version_compare($caSettings['unRaidVersion'],"6.10.0-beta4",">") ) {
-    if ( $template['Config'] ) {
+    if ( $template['Config']??null ) {
       if ( $template['Config']['@attributes'] ?? false ) {
         if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$template['Config']['@attributes']['Description']) ) {
           $template['Config']['@attributes']['Description'] = "";

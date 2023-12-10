@@ -548,7 +548,7 @@ function getPopupDescriptionSkin($appNumber) {
     }
     $template = $file[$index];
   }
-
+  $template = addMissingVars($template);
   if ( ! $template['Blacklist'] ) {
     if ( isset($extraBlacklist[$template['Repository']]) ) {
       $template['Blacklist'] = true;

@@ -244,6 +244,7 @@ function DownloadApplicationFeed() {
     
     $o['CategoryList'] = $o['CategoryList'] ?? [];
     if ( $o['CategoryList'] ) {
+      $o['Category'] = $o['Category'] ?? "";
       foreach ($o['CategoryList'] as $cat) {
         $cat = str_replace("-",":",$cat);
         if ( ! strpos($cat,":") )
@@ -252,9 +253,7 @@ function DownloadApplicationFeed() {
       }
     }
     
-    $o['Category'] = $o['Category'] ?? null;
-    if ( $o['Category'] === null )
-      $o['Category'] = "";
+    $o['Category'] = $o['Category'] ?? "";
     $o['Category'] = trim($o['Category']);
     if ( ! $o['Category'] )
       $o['Category'] = "Other:";
@@ -293,22 +292,23 @@ function DownloadApplicationFeed() {
     if ( $o['RequiresFile'] ?? null) $o['RequiresFile'] = trim($o['RequiresFile']);
     if ( $o['Requires'] ?? null) 		$o['Requires'] = trim($o['Requires']);
 
-    $des = $o['OriginalOverview'] ?? $o['Overview'];
-    $des = $o['Language'] ? $o['Description'] : $des;
-    if ( ! $des && $o['Description'] ) $des = $o['Description'];
-    if ( ! $o['Language'] ) {
+    $des = $o['OriginalOverview'] ?? ($o['Overview']??null);
+    $des = ($o['Language']??null) ? $o['Description'] : $des;
+    if ( ! $des && $o['Description'] )
+      $des = $o['Description'];
+    if ( ! ($o['Language']??null) ) {
       $des = str_replace(["[","]"],["<",">"],$des);
       $des = str_replace("\n","  ",$des);
       $des = html_entity_decode($des);
     }
 
-    if ( $o['PluginURL'] ) {
+    if ( $o['PluginURL'] ?? null ) {
       $o['Author']        = $o['PluginAuthor'];
       $o['Repository']    = $o['PluginURL'];
     }
 
-    $o['Blacklist'] = $o['CABlacklist'] ? true : $o['Blacklist'];
-    $o['MinVer'] = max([$o['MinVer'],$o['UpdateMinVer']]);
+    $o['Blacklist'] = ($o['CABlacklist']??null) ? true : ($o['Blacklist']??false);
+    $o['MinVer'] = max([($o['MinVer']??null),($o['UpdateMinVer']??null)]);
     $tag = explode(":",$o['Repository']);
     if (! isset($tag[1]))
       $tag[1] = "latest";
@@ -321,7 +321,7 @@ function DownloadApplicationFeed() {
     $o = fixTemplates($o);
     if ( ! $o ) continue;
 
-    if ( is_array($o['trends']) && count($o['trends']) > 1 ) {
+    if ( is_array($o['trends']??null) && count($o['trends']) > 1 ) {
       $o['trendDelta'] = round(end($o['trends']) - $o['trends'][0],4);
       $o['trendAverage'] = round(array_sum($o['trends'])/count($o['trends']),4);
     }
@@ -330,10 +330,10 @@ function DownloadApplicationFeed() {
     $o['Category'] = str_replace("Status:Stable","",$o['Category']);
     $myTemplates[$i] = $o;
 
-    if ( ! $o['Official'] ) {
-      if ( ! $o['DonateText'] && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateText'] ?? false) )
+    if ( ! ($o['Official']??null) ) {
+      if ( ! ($o['DonateText']??null) && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateText'] ?? false) )
         $o['DonateText'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateText'];
-      if ( ! $o['DonateLink'] && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'] ?? false) )
+      if ( ! ($o['DonateLink']??null) && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'] ?? false) )
         $o['DonateLink'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'];
     } else {
       $o['DonateText'] = $o['OfficialDonateText'] ?? null;
@@ -343,8 +343,8 @@ function DownloadApplicationFeed() {
     $ApplicationFeed['repositories'][$o['RepoName']]['trending'] = $ApplicationFeed['repositories'][$o['RepoName']]['trending'] ?? 0;
 
     $ApplicationFeed['repositories'][$o['RepoName']]['downloads']++;
-    $ApplicationFeed['repositories'][$o['RepoName']]['trending'] += $o['trending'];
-    if ( ! $o['ModeratorComment'] == "Duplicated Template" ) {
+    $ApplicationFeed['repositories'][$o['RepoName']]['trending'] += $o['trending']??null;
+    if ( ! ($o['ModeratorComment']??null) == "Duplicated Template" ) {
       if ( $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] ?? false) {
         if ( $o['FirstSeen'] < $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'])
           $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] = $o['FirstSeen'];
@@ -352,7 +352,7 @@ function DownloadApplicationFeed() {
         $ApplicationFeed['repositories'][$o['RepoName']]['FirstSeen'] = $o['FirstSeen'];
       }
     }
-    if ( is_array($o['Branch']) ) {
+    if ( is_array($o['Branch']??null) ) {
       if ( ! isset($o['Branch'][0]) ) {
         $tmp = $o['Branch'];
         unset($o['Branch']);
@@ -369,8 +369,8 @@ function DownloadApplicationFeed() {
         $subBranch['Path'] = $caPaths['templates-community']."/".$i.".xml";
         $subBranch['Displayable'] = false;
         $subBranch['ID'] = $i;
-        $subBranch['Overview'] = $o['OriginalOverview'] ?: $o['Overview'];
-        $subBranch['Description'] = $o['OriginalDescription'] ?: $o['Description'];
+        $subBranch['Overview'] = $o['OriginalOverview'] ?? $o['Overview'];
+        $subBranch['Description'] = $o['OriginalDescription'] ?? ($o['Description']??null);
         $replaceKeys = array_diff(array_keys($branch),["Tag","TagDescription"]);
         foreach ($replaceKeys as $key) {
           $subBranch[$key] = $branch[$key];
@@ -383,12 +383,12 @@ function DownloadApplicationFeed() {
     unset($o['Branch']);
     $myTemplates[$o['ID']] = $o;
     $i = ++$i;
-    if ( $o['OriginalOverview'] ) {
+    if ( $o['OriginalOverview']??null ) {
       $o['Overview'] = $o['OriginalOverview'];
       unset($o['OriginalOverview']);
       unset($o['Description']);
     }
-    if ( $o['OriginalDescription'] ) {
+    if ( $o['OriginalDescription']??null ) {
       $o['Description'] = $o['OriginalDescription'];
       unset($o['OriginalDescription']);
     }
@@ -922,7 +922,7 @@ function get_content() {
 
     $name = $template['Name'];
 
-    if ( $template['Plugin'] && file_exists("/var/log/plugins/".basename($template['PluginURL'])) )
+    if ( ($template['Plugin']??null) && file_exists("/var/log/plugins/".basename($template['PluginURL'])) )
       $template['InstallPath'] = $template['PluginURL'];
 
     $template['NewApp'] = $newApp;
@@ -1290,7 +1290,7 @@ function previous_apps() {
   if ( $installed == "true" || $installed == "action" ) {
     if ( ! $filter || $filter == "plugins" ) {
       foreach ($file as $template) {
-        if ( ! $template['Plugin'] ) continue;
+        if ( ! ($template['Plugin']??null) ) continue;
 
         $filename = pathinfo($template['Repository'],PATHINFO_BASENAME);
 
