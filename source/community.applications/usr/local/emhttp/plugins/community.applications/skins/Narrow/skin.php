@@ -901,8 +901,8 @@ function getRepoDescriptionSkin($repository) {
   $templates = &$GLOBALS['templates'];
 
   $repo = $repositories[$repository];
-  $iconPrefix = $repo['icon'] ? "<a class='screenshot mfp-image' href='{$repo['icon']}'>" : "";
-  $iconPostfix = $repo['icon'] ? "</a>" : "";
+  $iconPrefix = ($repo['icon']??false) ? "<a class='screenshot mfp-image' href='{$repo['icon']}'>" : "";
+  $iconPostfix = ($repo['icon']??false) ? "</a>" : "";
 
   $repo['icon'] = $repo['icon'] ?? "/plugins/dynamix.docker.manager/images/question.png";
   $repo['bio'] = isset($repo['bio']) ? markdown($repo['bio']) : "<br><center>".tr("No description present");
@@ -917,17 +917,17 @@ function getRepoDescriptionSkin($repository) {
     if ( $template['Deprecated'] && $caSettings['hideDeprecated'] !== "false" ) continue;
     if ( ! $template['Compatible'] && $caSettings['hideIncompatible'] !== "false" ) continue;
 
-    if ( $template['Registry'] ) {
+    if ( $template['Registry'] ?? null ) {
       $totalDocker++;
-      if ( $template['downloads'] ) {
+      if ( $template['downloads']??null ) {
         $totalDownloads = $totalDownloads + $template['downloads'];
         $downloadDockerCount++;
       }
     }
-    if ( $template['PluginURL'] ) {
+    if ( $template['PluginURL'] ?? null ) {
       $totalPlugins++;
     }
-    if ( $template['Language'] ) {
+    if ( $template['Language'] ?? null ) {
       $totalLanguage++;
     }
 
@@ -1011,7 +1011,7 @@ function getRepoDescriptionSkin($repository) {
     <div class='repoStats'>Statistics</div>
       <table class='repoTable'>
   ";
-  if ( $repo['FirstSeen'] > 1 )
+  if ( ($repo['FirstSeen']?? 0) > 1 )
     $t .= "<tr><td class='repoLeft'>".tr("Added to CA")."</td><td class='repoRight'>".date("F j, Y",$repo['FirstSeen'])."</td></tr>";
 
   $t .= "
@@ -1343,10 +1343,10 @@ function displayCard($template) {
   $ovr = str_replace("\n","<br>",$ovr);
   $Overview = strip_tags(str_replace("<br>"," ",$ovr));
 
-  if ( ($UninstallOnly ?? false) && $Featured && is_file("/var/log/plugins/".basename($PluginURL)) )
+  if ( ($UninstallOnly ?? false) && ($Featured??null) && is_file("/var/log/plugins/".basename($PluginURL)) )
     $Overview = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Either uninstall %s or update the OS"),$Name,$Name)."</span>&nbsp;&nbsp;$Overview";
   else
-    if ( (! $Compatible || ($UninstallOnly ?? false) ) && $Featured )
+    if ( (! ($Compatible??null) || ($UninstallOnly ?? false) ) && ($Featured??null) )
       $Overview = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Please update the OS to proceed"),$Name)."</span>&nbsp;&nbsp;$Overview";
 
 

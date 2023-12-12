@@ -935,6 +935,7 @@ function get_content() {
 
     if ( $displayPrivates && ! $template['Private'] ) continue;
 
+    $template['translatedCategories'] = "";
     if ($filter) {
       # Can't be done at appfeed download time because the translation may or may not exist if the user switches languages
       foreach (explode(" ",$template['Category']) as $trCat) {
@@ -950,13 +951,13 @@ function get_content() {
       if ( strpos($filter,"/") && filterMatch($filter,[$template['Repository']]) )
         $searchResults['nameHit'][] = $template;
       else {
-        if ( filterMatch($filter,[$template['SortName'],$template['RepoShort'],$template['Language'],$template['LanguageLocal'],$template['ExtraSearchTerms']]) ) {
-          if ( filterMatch($filter,[$template['ExtraSearchTerms']]) && $template['ExtraPriority'] )
+        if ( filterMatch($filter,[$template['SortName']??null,$template['RepoShort']??null,$template['Language']??null,$template['LanguageLocal']??null,$template['ExtraSearchTerms']??null]) ) {
+          if ( filterMatch($filter,[$template['ExtraSearchTerms']??null]) && ($template['ExtraPriority']??null) )
             $searchResults['extraHit'][] = $template;
           else
             $searchResults['nameHit'][] = $template;
-        } elseif ( filterMatch($filter,[$template['Author'],$template['RepoName'],$template['Overview'],$template['translatedCategories']]) ) {
-          if ( $template['RepoName'] == $caSettings['favourite'] ) {
+        } elseif ( filterMatch($filter,[$template['Author']??null,$template['RepoName']??null,$template['Overview']??null,$template['translatedCategories']??null]) ) {
+          if ( $template['RepoName'] == $caSettings['favourite']??null ) {
             $searchResults['nameHit'][] = $template;
           } else {
             $searchResults['anyHit'][] = $template;
@@ -986,7 +987,7 @@ function get_content() {
     if ( isset($searchResults['favNameHit']) )
       usort($searchResults['favNameHit'],"mySort");
     else
-      $searchResults['favNameHit'] = [];
+     $searchResults['favNameHit'] = [];
 
     if ( isset($searchResults['extraHit']) )
       usort($searchResults['extraHit'],"mySort");
@@ -1221,7 +1222,7 @@ function previous_apps() {
                 }
               }
 
-              if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['actionCentre']  )
+              if ( !$o['Blacklist'] && !$o['Deprecated'] && !($o['actionCentre']??null)  )
                 continue;
             }
             if ( $installed == "action" )
@@ -1300,7 +1301,7 @@ function previous_apps() {
 
           if ( $installed == "action" && $template['PluginURL'] && $template['Name'] !== "Community Applications") {
             $installedVersion = plugin("version","/var/log/plugins/$filename");
-            if ( ( strcmp($installedVersion,$template['pluginVersion']) < 0 || $template['UpdateAvailable']) ) {
+            if ( ( strcmp($installedVersion,$template['pluginVersion']) < 0 || ($template['UpdateAvailable']??null)) ) {
               $template['actionCentre'] = true;
               $template['UpdateAvailable'] = true;
               $updateCount++;
@@ -1312,7 +1313,7 @@ function previous_apps() {
             }
           }
 
-          if ( $installed == "action" && !$template['Blacklist'] && !$template['Deprecated'] && $template['Compatible'] && !$template['actionCentre'] )
+          if ( $installed == "action" && !$template['Blacklist'] && !$template['Deprecated'] && $template['Compatible'] && !($template['actionCentre']??null) )
             continue;
           if ( $installed == "action" )
             $template['actionCentre'] = true;
@@ -2307,7 +2308,7 @@ function getLastUpdate($ID) {
     return "Unknown";
 
   $app = $templates[$index];
-  if ( $app['PluginURL'] || $app['LanguageURL'] )
+  if ( ($app['PluginURL']??null) || ($app['LanguageURL']??null) )
     return;
 
   if ( strpos($app['Repository'],"ghcr.io") !== false || strpos($app['Repository'],"cr.hotio.dev") !== false || strpos($app['Repository'],"lscr.io") !== false) { // try dockerhub for info on ghcr stuff
