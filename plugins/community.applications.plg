@@ -2192,7 +2192,7 @@ if [[ ! -e /usr/local/emhttp/plugins/dynamix/styles/font-cases.ttf ]]; then sed 
 echo ""
 echo "----------------------------------------------------"
 echo " &name; has been installed."
-echo " Copyright 2015-2023, Andrew Zawadzki"
+echo " Copyright 2015-2024, Andrew Zawadzki"
 echo " Version: &version;"
 echo "----------------------------------------------------"
 echo ""
