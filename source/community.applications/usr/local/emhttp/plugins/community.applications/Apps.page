@@ -2042,9 +2042,8 @@ function installMulti() {
       if ( docker.length ) {
         $("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
         setTimeout(function(){
-          openDocker('update_container '+docker.join('*'),tr('Update '+makePlural("Application",dockerCount)),'',);
+          openDocker('update_container '+docker.join('*'),tr('Install '+makePlural("Application",dockerCount)),'','postMultiDockerInstall');
         },1000);
-        //        openBox('/plugins/<?=$plugin?>/scripts/installMulti.php?plugin='+plugin+'&docker='+docker,tr('Install '+makePlural("Application",dockerCount)),600,1100,true);
       } else {
         pluginArray.forEach(function(value) {
           hidePluginPending(value[1]);
@@ -2061,6 +2060,9 @@ function installMulti() {
   });
 }
 
+function postMultiDockerInstall() {
+  window.location.reload();
+}
 function updateDisplay(content) {
   // This has to be first.  If this doesn't happen, performance gets worse the more you click around
   $(".supportButtonCardContext,.actionsButtonContext").each(function() {
