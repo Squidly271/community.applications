@@ -1621,9 +1621,12 @@ function checkPLGupdate() {
 function pinApp(button,repository,name) {
   $(button).toggleClass("pinned unpinned");
   var pinned = ( $(button).hasClass("unpinned") ) ? "<?tr("Click to pin this application")?>" : "<?tr("Click to unpin this application")?>";
-  var pinnedText = ( $(button).hasClass("unpinned") ) ? "<?tr("Pin app")?>" : "<?tr("Unpin App")?>";
-  $(button).attr('title',pinned);
-  $(button).text(pinnedText);
+  
+  var pin1 = $(button).text();
+  var pin2 = $(button).data('pinnedalt');
+  
+  $(button).text(pin2);
+  $(button).data('pinnedalt',pin1);
 
   var app = $.find(".pinnedCard[data-pindata='"+repository+name+"']");
   $(app).toggle("slow");
