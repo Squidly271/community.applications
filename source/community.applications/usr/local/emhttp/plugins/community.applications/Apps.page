@@ -2621,12 +2621,6 @@ function postLanguageRefresh() {
 
 function postLanguageRemove() {
   $(".selectedMenu").trigger("click");
-/* 	var cat = $(".selectedMenu").data("category");
-  if ( cat == "installed_apps" || cat == "inst_plugins" || cat == "inst_docker" ) {
-    postUninstallPlugin();
-    return;
-  }
-  postLanguageRefresh(); */
 }
 
 function updateDocker(container) {
@@ -2637,7 +2631,11 @@ function updateDocker(container) {
   } else {
     var postFunction = "refreshDisplay";
   }
+  openDocker('update_container '+container,'<?tr('Update Application')?>','',postFunction);
+
+ /*
   openBox('/plugins/community.applications/scripts/installUpdate.php?ct[]='+encodeURIComponent(container),tr('Update Container'),600,1100,true,postFunction);
+  */
 }
 
 function setToolTipForFavourite() {

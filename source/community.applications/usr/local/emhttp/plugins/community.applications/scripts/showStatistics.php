@@ -29,8 +29,11 @@ function tr($string,$ret=true) {
 }
 
 ?>
+<!DOCTYPE html>
 <body bgcolor='white'>
-<link type="text/css" rel="stylesheet" href='<?autov("/plugins/community.applications/skins/Narrow/css.php")?>'>
+<style>
+<?include "/$docroot/plugins/$plugin/skins/Narrow/css.php"?>
+</style>
 <style>
 p {margin-left:2rem;margin-right:2rem;}
 body {margin-left:1.5rem;margin-right:1.5rem;margin-top:1.5rem;font-family:clear-sans;font-size:0.9rem;}
