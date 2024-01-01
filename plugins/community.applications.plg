@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2023.11.28">
-<!ENTITY md5       "43b1fcd35d71e9da9d02011b84514056">
+<!ENTITY version   "2024.01.01">
+<!ENTITY md5       "51fddc10c417227242595cc847232397">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -15,6 +15,13 @@
 <CHANGES>
 ###2023.11.28
 - Fixed: Don't allow donation links for Official containers
+
+###2024.01.01
+- Fixed: Inconsistency in popup window for multiple upgrades vs single upgrade via Action Centre
+- Fixed: Statistics, Moderation list etc wasn't having CSS applied
+- Fixed: Multiple upgrades via Action Centre involving containers and plugins wouldn't install upgrade for containers without manually reloading the Apps Tab
+- Fixed: Pinning / Unpinning a language would revert the text for Pin/Unpin to English instead of staying in the applicable language
+- Changed: Roughly 60% lower memory usage
 
 ###2023.11.25
 - Changed: Minimum requirements for Community Applications now 6.12.0
