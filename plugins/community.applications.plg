@@ -13,15 +13,15 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
-###2023.11.28
-- Fixed: Don't allow donation links for Official containers
-
 ###2024.01.01
 - Fixed: Inconsistency in popup window for multiple upgrades vs single upgrade via Action Centre
 - Fixed: Statistics, Moderation list etc wasn't having CSS applied
 - Fixed: Multiple upgrades via Action Centre involving containers and plugins wouldn't install upgrade for containers without manually reloading the Apps Tab
 - Fixed: Pinning / Unpinning a language would revert the text for Pin/Unpin to English instead of staying in the applicable language
 - Changed: Roughly 60% lower memory usage
+
+###2023.11.28
+- Fixed: Don't allow donation links for Official containers
 
 ###2023.11.25
 - Changed: Minimum requirements for Community Applications now 6.12.0
