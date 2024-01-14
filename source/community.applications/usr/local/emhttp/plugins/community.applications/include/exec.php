@@ -2418,7 +2418,7 @@ function enableActionCentre() {
         $installedImage = str_replace("library/","",$installedDocker['Image']);
         $installedName = $installedDocker['Name'];
         if ( $installedName == $o['Name'] ) {
-          if ( startsWith($installedImage, $o['Repository']) ) {
+          if ( startsWith($installedImage, $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository'])  ) {
             $runningflag = true;
             $searchResult = searchArray($file,'Repository',$o['Repository']);
             if ( $searchResult === false) {
