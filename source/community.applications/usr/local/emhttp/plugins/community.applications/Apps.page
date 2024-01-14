@@ -184,6 +184,7 @@ var portsInUse = [];
 var startupSearch = "<?=$_GET['search'] ?? ""?>";
 var iconHoverTimer;
 var wheelActive = false;
+var ca_done_override = false;
 
 $(function(){
   window.onerror = function(msg,url,lineNo,columnNo, error) {
@@ -908,17 +909,6 @@ function stripTags(string) {
     string = "";
 
   return string.replace(/(<([^>]+)>)/ig,"");
-}
-
-function setToolTip() {
-  $('.ca_tooltip-warning').tooltipster({
-    contentAsHTML:true,
-    interactive:true,
-    multiple:true,
-    trigger:'custom',
-    triggerOpen:{click: true, mouseenter: true},
-    triggerClose:{click:true,scroll:true,mouseleave:true}
-  });
 }
 
 function showSpecialCategory(button) {
@@ -2040,6 +2030,7 @@ function installMulti() {
         $.cookie("ca_plugininstallpending",plugin,{path:"/;SameSite=Lax"});
       }
       if ( docker.length ) {
+        ca_done_override = true;
         $("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
         setTimeout(function(){
           openDocker('update_container '+docker.join('*'),tr('Install '+makePlural("Application",dockerCount)),'','postMultiDockerInstall');
@@ -2071,7 +2062,6 @@ function updateDisplay(content) {
   });
 
   $("#templates_content").html(content);
-  setToolTip();
   enableSearch();
   $('img').on("error",function() {
     if ( $(this).hasClass("spotlightIcon") )

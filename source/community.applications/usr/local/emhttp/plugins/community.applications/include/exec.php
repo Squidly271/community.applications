@@ -1170,10 +1170,10 @@ function previous_apps() {
 
           $runningflag = false;
           foreach ($info as $installedDocker) {
-            $installedImage = str_replace("library/","",$installedDocker['Image']);
+            $installedImage = str_replace("library/","",$installedDocker['Image']); // most apps reference short eg: mysql instead of library/mysql but docker always reports library/...
             $installedName = $installedDocker['Name'];
             if ( $installedName == $o['Name'] ) {
-              if ( startsWith($installedImage, $o['Repository']) ) {
+              if ( startsWith($installedImage, $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository']) ) {
                 $runningflag = true;
                 $searchResult = searchArray($file,'Repository',$o['Repository']);
                 if ( $searchResult === false) {
@@ -1248,10 +1248,9 @@ function previous_apps() {
 
           $flag = false;
           foreach ($info as $installedDocker) {
-            $installedImage = $installedDocker['Image'];
-            $installedImage = str_replace("library/","",$installedImage);
+            $installedImage = str_replace("library/","",$installedDocker['Image']);  // most apps reference short eg: mysql instead of library/mysql but docker always reports library/...
             $installedName = $installedDocker['Name'];
-            if ( startsWith($installedImage, $o['Repository']) ) {
+            if ( startsWith($installedImage, $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository']) ) {
               if ( $installedName == $o['Name'] ) {
                 $flag = true;
                 continue;
