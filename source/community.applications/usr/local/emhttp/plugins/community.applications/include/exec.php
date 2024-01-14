@@ -1170,7 +1170,7 @@ function previous_apps() {
 
           $runningflag = false;
           foreach ($info as $installedDocker) {
-            if ( $$installedDocker['Name'] == $o['Name'] ) {
+            if ( $installedDocker['Name'] == $o['Name'] ) {
               if ( startsWith(str_replace("library/","",$installedDocker['Image']), $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository']) ) {
                 $runningflag = true;
                 $searchResult = searchArray($file,'Repository',$o['Repository']);
@@ -1182,11 +1182,11 @@ function previous_apps() {
                   $containerID = $file[$searchResult]['ID'];
                   $tmpOvr = $o['Overview'];
                   $o = $file[$searchResult];
-                  $o['Name'] = $installedName;
+                  $o['Name'] = $installedDocker['Name'];
                   $o['Overview'] = $tmpOvr;
                   $o['CardDescription'] = $tmpOvr;
                   $o['InstallPath'] = $tempPath;
-                  $o['SortName'] = str_replace("-"," ",$installedName);
+                  $o['SortName'] = str_replace("-"," ",$o['Name']);
                   if ( $installedName !== $file[$searchResult]['Name'] )
                     $o['NoPin'] = true;  # This is renamed and effectively outside of CA's control
                 } else {
@@ -1246,8 +1246,8 @@ function previous_apps() {
 
           $flag = false;
           foreach ($info as $installedDocker) {
-            if ( startsWith($str_replace("library/","",$installedDocker['Image']), $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository']) ) {
-              if ( $$installedDocker['Name'] == $o['Name'] ) {
+            if ( startsWith(str_replace("library/","",$installedDocker['Image']), $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository']) ) {
+              if ( $installedDocker['Name'] == $o['Name'] ) {
                 $flag = true;
                 continue;
               }
@@ -2412,7 +2412,7 @@ function enableActionCentre() {
       $runningflag = false;
       foreach ($info as $installedDocker) {
         if ( $installedDocker['Name'] == $o['Name'] ) {
-          if ( startsWith($str_replace("library/","",$installedDocker['Image']), $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository'])  ) {
+          if ( startsWith(str_replace("library/","",$installedDocker['Image']), $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository'])  ) {
             $runningflag = true;
             $searchResult = searchArray($file,'Repository',$o['Repository']);
             if ( $searchResult === false) {
