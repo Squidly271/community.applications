@@ -1170,10 +1170,8 @@ function previous_apps() {
 
           $runningflag = false;
           foreach ($info as $installedDocker) {
-            $installedImage = str_replace("library/","",$installedDocker['Image']); // most apps reference short eg: mysql instead of library/mysql but docker always reports library/...
-            $installedName = $installedDocker['Name'];
-            if ( $installedName == $o['Name'] ) {
-              if ( startsWith($installedImage, $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository']) ) {
+            if ( $$installedDocker['Name'] == $o['Name'] ) {
+              if ( startsWith(str_replace("library/","",$installedDocker['Image']), $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository']) ) {
                 $runningflag = true;
                 $searchResult = searchArray($file,'Repository',$o['Repository']);
                 if ( $searchResult === false) {
@@ -1248,10 +1246,8 @@ function previous_apps() {
 
           $flag = false;
           foreach ($info as $installedDocker) {
-            $installedImage = str_replace("library/","",$installedDocker['Image']);  // most apps reference short eg: mysql instead of library/mysql but docker always reports library/...
-            $installedName = $installedDocker['Name'];
-            if ( startsWith($installedImage, $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository']) ) {
-              if ( $installedName == $o['Name'] ) {
+            if ( startsWith($str_replace("library/","",$installedDocker['Image']), $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository']) ) {
+              if ( $$installedDocker['Name'] == $o['Name'] ) {
                 $flag = true;
                 continue;
               }
@@ -2415,18 +2411,14 @@ function enableActionCentre() {
 
       $runningflag = false;
       foreach ($info as $installedDocker) {
-        $installedImage = str_replace("library/","",$installedDocker['Image']);
-        $installedName = $installedDocker['Name'];
-        if ( $installedName == $o['Name'] ) {
-          if ( startsWith($installedImage, $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository'])  ) {
+        if ( $installedDocker['Name'] == $o['Name'] ) {
+          if ( startsWith($str_replace("library/","",$installedDocker['Image']), $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository'])  ) {
             $runningflag = true;
             $searchResult = searchArray($file,'Repository',$o['Repository']);
             if ( $searchResult === false) {
               $searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
             }
-            if ( $searchResult !== false ) 
-              $o = $file[$searchResult];
-              
+
             if ( $searchResult === false ) {
               $runningFlag = true;
               if ( $extraBlacklist[$o['Repository']] ?? false ) {
