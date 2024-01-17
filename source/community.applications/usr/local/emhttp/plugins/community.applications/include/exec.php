@@ -1880,9 +1880,9 @@ function createXML() {
       return;
     }
     $template = $templates[$index];
-    if ( $template['OriginalOverview'] )
+    if ( $template['OriginalOverview'] ?? false )
       $template['Overview'] = $template['OriginalOverview'];
-    if ( $template['OriginalDescription'] )
+    if ( $template['OriginalDescription'] ?? false )
       $template['Description'] = $template['OriginalDescription'];
     $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
     
@@ -1924,7 +1924,7 @@ function createXML() {
       $template['Data']['Volume'] = $testarray;
     }
 
-    if ( $template['Config'] ) {
+    if ( $template['Config'] ?? false ) {
       $testarray = $template['Config'] ?: [];
       if (!($testarray[0]??false)) $testarray = [$testarray];
 
