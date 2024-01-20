@@ -1941,6 +1941,7 @@ function updateMulti() {
           postUpdateFunction = "installMultiPluginUpdatesAfterDocker";
           $.cookie("pluginVar",plugin);
           $.cookie("pluginCountVar",pluginCount);
+          ca_done_override = true;
         }
 
         saveState();
@@ -2437,7 +2438,7 @@ function post(options,callback) {
       if ( postCount == 0 && ! options.noSpinner) {
         myCloseSpinner();
       }
-    });
+    }).fail(function(){alert("thest")});
   } else {
     $.post(URL,options);
     postCount--;
