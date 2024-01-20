@@ -2438,7 +2438,22 @@ function post(options,callback) {
       if ( postCount == 0 && ! options.noSpinner) {
         myCloseSpinner();
       }
-    }).fail(function(){alert("thest")});
+    }).fail(function(){
+      myCloseSpinner();
+      swal({
+        title: '<?tr("Browser failed to communicate with Unraid Server")?>',
+        text: '<?tr('For unknown reasons, your browser was unable to communicate with Community Applications running on your server.')?>',
+        html: true,
+        type: 'error',
+        showCancelButton: false,
+        showConfirmButton: true,
+        confirmButtonText: "<?tr('Attempt to Fix Via Reload Page')?>"
+      }, function (isConfirm) {
+        if ( isConfirm ) {
+          window.location.reload();
+        }
+      });
+    });
   } else {
     $.post(URL,options);
     postCount--;
