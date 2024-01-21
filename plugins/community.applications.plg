@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.01.01">
-<!ENTITY md5       "51fddc10c417227242595cc847232397">
+<!ENTITY version   "2024.01.21">
+<!ENTITY md5       "eb6686b129561fb2cc69fb6d61f07cbc">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,16 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.01.21
+- Fixed: Templates referencing br0 instead of eth0 (and vice-versa) would tend to show a network type of none when installing.  Automatically adjust templates referencing br0 to instead say eth0 if br0 is not defined
+- Fixed: Action Centre wouldn't get enabled unless updates were available to an app (IE: A deprecated container by itself installed wouldn't trigger AC unless an update to something else was also available)
+- Fixed: Official containers with updates available wouldn't show within Action Centre
+- Added: Popup error if browser fails to communicate with back end running on your server
+- Added: Support CA being able to override the DONE button on docker installs / updates if circumstances warrant (on supported OS versions)
+- Fixed: Miscellaneous PHP8 errors
+- Fixed: Official apps referencing 'library/repository' instead of simply 'repository' would always appear within Previous Apps when installed
+- Changed: Minor optimizations in coding
+
 ###2024.01.01
 - Fixed: Inconsistency in popup window for multiple upgrades vs single upgrade via Action Centre
 - Fixed: Statistics, Moderation list etc wasn't having CSS applied
