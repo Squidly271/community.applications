@@ -134,7 +134,6 @@ function tr($string,$ret=false) {
   else
     echo $string;
 }
-
 ?>
 <style>
 <?include "/$docroot/plugins/$plugin/skins/Narrow/css.php"?>

@@ -1187,8 +1187,8 @@ function previous_apps() {
                   $o['CardDescription'] = $tmpOvr;
                   $o['InstallPath'] = $tempPath;
                   $o['SortName'] = str_replace("-"," ",$o['Name']);
-                  if ( $installedName !== $file[$searchResult]['Name'] )
-                    $o['NoPin'] = true;  # This is renamed and effectively outside of CA's control
+//                  if ( $installedName !== $file[$searchResult]['Name'] )
+//                    $o['NoPin'] = true;  # This is renamed and effectively outside of CA's control
                 } else {
                   $runningFlag = true;
                 }
@@ -1202,6 +1202,9 @@ function previous_apps() {
 
             if ( $installed == "action" ) {
               $tmpRepo = strpos($o['Repository'],":") ? $o['Repository'] : $o['Repository'].":latest";
+              if ( ! strpos($tmpRepo,"/") ) {
+                $tmpRepo = "library/$tmpRepo";
+              }
 
               if ( $tmpRepo && ($dockerUpdateStatus[$tmpRepo]['status'] ?? null) == "false" ) {
                 $o['actionCentre'] = true;
@@ -1886,6 +1889,17 @@ function createXML() {
       $template['Description'] = $template['OriginalDescription'];
     $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
     
+// switch from br0 to eth0 if necessary
+    if ( isset($template['Networking']['Mode']) || isset($template['Network']) ) {
+      $mode =$template['Network'] = $template['Network'] ?? $template['Networking']['Mode'];
+      $mode = strtolower($template['Network']);
+      if ( $mode && $mode !== "host" && $mode !== "bridge" ) {
+        if ( ! file_exists("/sys/class/net/$mode") ) {
+          $template['Network'] = file_exists('/sys/class/net/br0') ? 'br0' : 'eth0';
+          unset($template['Networking']['Mode']);
+        }
+      }
+    }
 // Handle paths directly referencing disks / poola that aren't present in the user's system, and replace the path with the first disk present
     $unRaidDisks = parse_ini_file($caPaths['disksINI'],true);
 
@@ -2418,6 +2432,8 @@ function enableActionCentre() {
             if ( $searchResult === false) {
               $searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
             }
+            if ( $searchResult !== false )
+              $o = $file[$searchResult];
 
             if ( $searchResult === false ) {
               $runningFlag = true;
@@ -2448,7 +2464,7 @@ function enableActionCentre() {
           }
         }
 
-        if ( !$o['Blacklist'] && !$o['Deprecated'] && !$o['actionCentre']  )
+        if ( !($o['Blacklist']??false) && !($o['Deprecated']??false) && !($o['actionCentre']??false)  )
           continue;
 
         $displayed[] = $o;
