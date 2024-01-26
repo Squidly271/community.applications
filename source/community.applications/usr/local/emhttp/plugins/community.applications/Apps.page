@@ -2033,7 +2033,7 @@ function installMulti() {
         ca_done_override = true;
         $("#sb-nav-close").css("visibility","hidden"); // Because docker install cannot be aborted so why allow window to close
         setTimeout(function(){
-          openDocker('update_container '+docker.join('*'),tr('Install '+makePlural("Application",dockerCount)),'','postMultiDockerInstall');
+          openDocker('update_container '+docker.join('*')+' ca_docker_run_override',tr('Install '+makePlural("Application",dockerCount)),'','postMultiDockerInstall');
         },1000);
       } else {
         pluginArray.forEach(function(value) {
