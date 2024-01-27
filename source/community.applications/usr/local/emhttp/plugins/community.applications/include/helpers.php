@@ -688,20 +688,18 @@ function getAllInfo($force=false) {
 function debug($str) {
   global $caSettings, $caPaths;
 
-  if ( $caSettings['debugging'] == "yes" ) {
-    if ( ! is_file($caPaths['logging']) ) {
-      touch($caPaths['logging']);
-      $caVersion = plugin("version","/var/log/plugins/community.applications.plg");
+  if ( ! is_file($caPaths['logging']) ) {
+    touch($caPaths['logging']);
+    $caVersion = plugin("version","/var/log/plugins/community.applications.plg");
 
-      debug("Community Applications Version: $caVersion");
-      debug("Unraid version: {$caSettings['unRaidVersion']}");
-      debug("MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5"));
-      $lingo = $_SESSION['locale'] ?? "en_US";
-      debug("Language: $lingo");
-      debug("Settings:\n".print_r($caSettings,true));
-    }
-    @file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  $str\n",FILE_APPEND); //don't run through CA wrapper as this is non-critical
+    debug("Community Applications Version: $caVersion");
+    debug("Unraid version: {$caSettings['unRaidVersion']}");
+    debug("MD5's: \n".shell_exec("cd /usr/local/emhttp/plugins/community.applications && md5sum -c ca.md5"));
+    $lingo = $_SESSION['locale'] ?? "en_US";
+    debug("Language: $lingo");
+    debug("Settings:\n".print_r($caSettings,true));
   }
+  @file_put_contents($caPaths['logging'],date('Y-m-d H:i:s')."  $str\n",FILE_APPEND); //don't run through CA wrapper as this is non-critical
 }
 ########################################
 # Gets the default ports in a template #
@@ -715,7 +713,7 @@ function portsUsed($template) {
   if ( is_array($template['Config']) ) {
     foreach ($template['Config'] as $config) {
       if ( $config['@attributes']['Type'] !== "Port" )
-        continue;
+        continue; 
       $portsUsed[] = $config['value'] ?: $config['@attributes']['Default'];
     }
   }

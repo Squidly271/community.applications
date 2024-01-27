@@ -109,6 +109,7 @@ _(Allow CA to send any emergency notifications)_:
 > <?tr("2. Critical security vulnerabilities within Unraid OS");?><br>
 > <?tr("3. Any installed applications which may seriously hinder the operation of your server");?>
 
+<!--
 _(Save CA debugging information)_:
 : <select name='debugging' size='1'>
   <?=mk_option($cfg['debugging'],"yes",tr("Yes",true))?>
@@ -116,6 +117,7 @@ _(Save CA debugging information)_:
   </select>
   
 > <?tr("Only enable this when advised to from the author of Community Applications")?>
+-->
 
 _(Enable developer mode)_:
 : <select name='dev' size='1'>

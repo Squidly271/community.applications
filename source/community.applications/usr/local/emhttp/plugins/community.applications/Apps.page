@@ -242,14 +242,6 @@ $(function(){
     $.cookie("ca_languageSwitch","",{path:"/;SameSite=Lax"});
   }
 
-  <? if ( $cfg['debugging'] == "yes" ):?>
-    var debugBanner = addBannerWarning("<?tr("Debugging enabled.  This significantly increases the memory used by your browser");?>");
-    setTimeout(function() {
-      removeBannerWarning(debugBanner);
-    },20000);
-  <?endif;?>
-
-
   caPluginUpdateCheck("community.applications.plg",{
       noDismiss:true,
       name:"Community Applications",
@@ -2109,7 +2101,6 @@ function updateDisplay(content) {
   $(".ca_applicationName").each(function() {
     var newSize = 100;
     while (isOverflown(this)) {
-      console.log(this);
       var existingSize = $(this).css("font-size");
       var size = parseInt(existingSize);
       if ( size == newSize + 1 ) {  // looks like browsers in Chinese have a minimum enforced font-size
@@ -2164,9 +2155,7 @@ function isOverflown(el,type=false){
 }
 
 function saveState() {
-  <? if ( $cfg['debugging'] == "yes" ):?>
-    console.log("Save State");
-  <?endif;?>
+  console.log("Save State");
   $.cookie("ca_categoryText",$("#Category").html(),{path:"/;SameSite=Lax"});
   $.cookie("ca_data",JSON.stringify(data),{path:"/;SameSite=Lax"});
   $.cookie("ca_searchActive",data.searchActive,{path:"/;SameSite=Lax"});
@@ -2187,9 +2176,7 @@ function saveState() {
 function restoreState() {
   swalBackground("transparent");
 
-  <? if ( $cfg['debugging'] == "yes" ):?>
-    console.log("Restore State");
-  <?endif;?>
+  console.log("Restore State");
   $.removeCookie("ca_languageSwitch",{path:'/'});
 
   $("#Category").html($.cookie("ca_categoryText"));
@@ -2310,10 +2297,8 @@ function postNoSpin(options,callback) {
   if ( typeof options === "function" ) {
     callback = options;
   } else {
-    <? if ( $cfg['debugging'] == "yes" ):?>
-      var msg = "No Spin Post: ";
-      console.log(msg+JSON.stringify(options));
-    <?endif;?>
+    var msg = "No Spin Post: ";
+    console.log(msg+JSON.stringify(options));
   }
   var URL = "/plugins/<?=$plugin?>/include/exec.php";
 
@@ -2323,7 +2308,6 @@ function postNoSpin(options,callback) {
   if ( typeof callback === "function" ) {
     $.post(URL,options,function(retval){
       try {
-        console.log(retval);
         var result = JSON.parse(retval);
         if (result.error) {
           alert(result.error);
@@ -2342,11 +2326,7 @@ function postNoSpin(options,callback) {
           throw new Error("Something went badly wrong!"+options.action);
         }
       }
-      <? if ( $cfg['debugging'] == "yes" ):?>
-        console.groupCollapsed("Result "+options.action);
-        console.log(result);
-        console.groupEnd();
-      <?endif;?>
+
       try {
         eval(callback(result));
       } catch(e) {
@@ -2371,19 +2351,15 @@ function post(options,callback) {
   if ( typeof options === "function" ) {
     callback = options;
   } else {
-    <? if ( $cfg['debugging'] == "yes" ):?>
-      var msg = postCount > 0 ? "Embedded Post: " : "Post: ";
-      console.log(msg+JSON.stringify(options));
-    <?endif;?>
+    var msg = postCount > 0 ? "Embedded Post: " : "Post: ";
+    console.log(msg+JSON.stringify(options));
   }
 
   if ( postCount == 0 && ! options.noSpinner ) {
     mySpinner();
   }
   postCount++;
-  <? if ( $cfg['debugging'] == "yes" ):?>
-    console.log("Post Count: "+postCount);
-  <?endif;?>
+  console.log("Post Count: "+postCount);
   if ( typeof callback === "function" ) {
     $.post(URL,options,function(retval){
       try {
@@ -2407,11 +2383,7 @@ function post(options,callback) {
           throw new Error("Something went badly wrong!"+options.action);
         }
       }
-      <? if ( $cfg['debugging'] == "yes" ):?>
-        console.groupCollapsed("Result "+options.action);
-        console.log(result);
-        console.groupEnd();
-      <?endif;?>
+
       try {
         eval(callback(result));
       } catch(e) {
@@ -2505,9 +2477,7 @@ function getCategories() {
     if ( ! restoreStateMenu )
       restoreStateMenu = $.cookie("ca_startupButton");
 
-    <? if ( $cfg['debugging'] == "yes" ):?>
-      console.log(restoreStateMenu);
-    <?endif;?>
+    console.log(restoreStateMenu);
     var menuItem = $.find(".caMenuItem[data-category='"+restoreStateMenu+"']");
     $(".caMenuItem").each(function(){
       $(this).removeClass("selectedMenu");
