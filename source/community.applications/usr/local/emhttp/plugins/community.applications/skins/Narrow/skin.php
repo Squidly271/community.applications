@@ -201,7 +201,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
                   $actionsContext[] = ["divider"=>true];
                   $actionsContext[] = ["icon"=>"ca_fa-money","text"=>tr("Donate"),"action"=>"openNewWindow('".addslashes($template['DonateLink'])."','_blank');"];
                 }
-              } elseif ( ! $template['Blacklist'] || ! $template['Compatible']) {
+              } elseif ( ! ($template['Blacklist']??false) || ! ($template['Compatible']??false) ) {
                 if ( $template['InstallPath'] ) {
                   $userTemplate = readXmlFile($template['InstallPath'],false,false);
                   if ( ! $template['Blacklist'] ) {
@@ -560,7 +560,7 @@ function getPopupDescriptionSkin($appNumber) {
     $template['ModeratorComment'] = isset($extraDeprecated[$template['Repository']]);
   }
 
-  $ID = $template['ID'];
+  $ID = $template['ID']??false;
 
   $template['Profile'] = $allRepositories[$template['RepoName']]['profile'] ?? "";
   $template['ProfileIcon'] = $allRepositories[$template['RepoName']]['icon'] ?? "";
@@ -818,7 +818,7 @@ function getPopupDescriptionSkin($appNumber) {
 
   if ( $template['Discord'] )
     $supportContext[] = ["icon"=>"ca_discord","link"=>$template['Discord'],"text"=>tr("Discord")];
-  elseif ( isset($allRepositories[$template['Repo']]['Discord']) )
+  elseif ( isset($template['Repo']) && isset($allRepositories[$template['Repo']]['Discord']) )
     $supportContext[] = ["icon"=>"ca_discord","link"=>$allRepositories[$template['Repo']]['Discord'],"text"=>tr("Discord")];
 
   if ( $template['Facebook'] )
@@ -1444,7 +1444,8 @@ function displayPopup($template) {
 
   extract($template);
 
-  if ( !$Private) {
+  $Repo = $Repo ?? "";
+  if ( !$Private ) {
     $RepoName = str_replace("' Repository","",str_replace("'s Repository","",$Repo));
     $RepoName = str_replace("Repository","",$RepoName);
   } else {
@@ -1497,7 +1498,7 @@ function displayPopup($template) {
 
   if ( $Deprecated )
     $ModeratorComment .= "<br>".tr("This application template has been deprecated");
-  if ( ! $Compatible && ! ($UnknownCompatible ?? false) )
+  if ( ! ($Compatible ?? false) && ! ($UnknownCompatible ?? false) )
     $ModeratorComment .= $VerMessage ?? "<br>".tr("This application is not compatible with your version of Unraid.");
   if ( $Blacklist )
     $ModeratorComment .= "<br>".tr("This application template has been blacklisted.");
@@ -1508,7 +1509,7 @@ function displayPopup($template) {
   if ( $Language && $LanguagePack !== "en_US" ) {
     $ModeratorComment .= "<a href='$disclaimLineLink' target='_blank'>$disclaimLine1</a>";
   }
-  if ( (!$Compatible || ($UninstallOnly ?? false)) && $Featured )
+  if ( (!( $Compatible ?? false ) || ($UninstallOnly ?? false)) && ($Featured??false) )
     $ModeratorComment = "<span class='featuredIncompatible'>".sprintf(tr("%s is incompatible with your OS version.  Please update the OS to proceed"),$Name)."</span>";
 
   if ( $ModeratorComment ) {
