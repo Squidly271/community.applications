@@ -293,8 +293,8 @@ function DownloadApplicationFeed() {
     if ( $o['Requires'] ?? null) 		$o['Requires'] = trim($o['Requires']);
 
     $des = $o['OriginalOverview'] ?? ($o['Overview']??null);
-    $des = ($o['Language']??null) ? $o['Description'] : $des;
-    if ( ! $des && $o['Description'] )
+    $des = ($o['Language']??null) ? ($o['Description']??null) : $des;
+    if ( ! $des && ($o['Description']??null) )
       $des = $o['Description'];
     if ( ! ($o['Language']??null) ) {
       $des = str_replace(["[","]"],["<",">"],$des);
