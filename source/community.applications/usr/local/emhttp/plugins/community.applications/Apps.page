@@ -2093,11 +2093,12 @@ function updateDisplay(content) {
   });
   $(".cardDesc").each(function() {
     var description = $(this).html();
+    var readMoreText = $(".dockerHubHolder").length ? "" : "<?=tr("Read more")?>" // Don't show READ MORE on dockerHub searches
     while (isOverflown(this)) {
       description = description.slice(0,-5);
       if ( description.length < 5 ) // Safari under certain circumstances thinks that non-displayed cards are always overflown
         return false;
-      $(this).html(description + "... <span class='card_readmore'><?=tr("Read more")?></span>");
+      $(this).html(description + "... <span class='card_readmore'>"+readMoreText+"</span>");
     }
   });
   $(".ca_applicationName").each(function() {
