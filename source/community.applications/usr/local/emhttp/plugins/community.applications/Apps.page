@@ -267,7 +267,10 @@ $(function(){
   if ( "<?=$date?>" == "12/31" ) addBannerWarning("<?tr("Happy New Year!")?> <i style='float:initial;cursor:initial;' class='fa fa-beer'></i> <?tr("Please Enjoy Responsibly")?>",false);
   if ( "<?=$ServerDateCorrect?>" == "false" ) addBannerWarning("<?tr("Server Date and Time Incorrect.  Issues will result with Community Applications.  Fix this in Settings - Date And Time")?>",true,true);
   if ( "<?=$RequirementsBanner?>" == "true" ) addBannerWarning("<?tr("Memory Requirements not met.  Problems may result")?>");
-
+  <?if ( $caPaths['localONLY'] == true ):?>
+    addBannerWarning("*** LOCAL FEED RUNNING - DO NOT RELEASE ***",true,true);
+  <?endif;?>
+  
   context.init({preventDoubleContext:false,left:false,right:false,bottom:true,above:true});
 
   $(".maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>","<?=$cfg['maxPerPage']?>"));

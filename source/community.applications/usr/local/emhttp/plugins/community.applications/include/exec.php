@@ -218,17 +218,21 @@ function DownloadApplicationFeed() {
   @mkdir($caPaths['templates-community'],0777,true);
 
   $currentFeed = "Primary Server";
-  $downloadURL = randomFile();
-  $ApplicationFeed = download_json($caPaths['application-feed'],$downloadURL,"",20);
-  if ( (! is_array($ApplicationFeed['applist'])) || empty($ApplicationFeed['applist']) ) {
-    $currentFeed = "Backup Server";
-    $ApplicationFeed = download_json($caPaths['application-feedBackup'],$downloadURL);
-  }
-  @unlink($downloadURL);
-  if ( (! is_array($ApplicationFeed['applist'])) || empty($ApplicationFeed['applist']) ) {
-    @unlink($caPaths['currentServer']);
-    ca_file_put_contents($caPaths['appFeedDownloadError'],$downloadURL);
-    return false;
+  if ( $caPaths['localONLY'] ) {
+    $ApplicationFeed = json_decode(file_get_contents($caPaths['application-feed-local']),true);
+  } else {
+    $downloadURL = randomFile();
+    $ApplicationFeed = download_json($caPaths['application-feed'],$downloadURL,"",20);
+    if ( (! is_array($ApplicationFeed['applist'])) || empty($ApplicationFeed['applist']) ) {
+      $currentFeed = "Backup Server";
+      $ApplicationFeed = download_json($caPaths['application-feedBackup'],$downloadURL);
+    }
+    @unlink($downloadURL);
+    if ( (! is_array($ApplicationFeed['applist'])) || empty($ApplicationFeed['applist']) ) {
+      @unlink($caPaths['currentServer']);
+      ca_file_put_contents($caPaths['appFeedDownloadError'],$downloadURL);
+      return false;
+    }
   }
   ca_file_put_contents($caPaths['currentServer'],$currentFeed);
   $i = 0;
@@ -1021,6 +1025,12 @@ function get_content() {
 ########################################################
 function force_update() {
   global $caPaths, $caSettings;
+
+  if ( $caPaths['localONLY'] ) {
+    exec("rm -rf '{$caPaths['tempFiles']}'");
+    @mkdir($caPaths['templates-community'],0777,true);
+    $GLOBALS['templates'] = [];
+  }
 
   $lastUpdatedOld = readJsonFile($caPaths['lastUpdated-old']);
   debug("old feed timestamp: ".($lastUpdatedOld['last_updated_timestamp'] ?? ""));
