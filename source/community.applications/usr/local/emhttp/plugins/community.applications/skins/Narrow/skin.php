@@ -1388,8 +1388,8 @@ function displayCard($template) {
     ";
   } elseif ( $caTemplateExists ) {
     $card .= "
-      <div class='warningCardBackground'>
-        <div class='installedCardText ca_center' title='".tr("Template already exists in Apps")."'>".tr("Template Exists")."</div>
+      <div class='greenCardBackground'>
+        <div class='installedCardText ca_center' title='".tr("Template already exists in Apps")."'>".tr("Template")."</div>
       </div>
     ";
   } elseif ( isset($Compatible) && ! $Compatible ) {

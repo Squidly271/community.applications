@@ -270,7 +270,7 @@ $(function(){
   <?if ( $caPaths['localONLY'] == true ):?>
     addBannerWarning("*** LOCAL FEED RUNNING - DO NOT RELEASE ***",true,true);
   <?endif;?>
-  
+
   context.init({preventDoubleContext:false,left:false,right:false,bottom:true,above:true});
 
   $(".maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>","<?=$cfg['maxPerPage']?>"));
@@ -1933,8 +1933,8 @@ function updateMulti() {
         var postUpdateFunction = "actionCentre";
         if ( plugin.length ) {
           postUpdateFunction = "installMultiPluginUpdatesAfterDocker";
-          $.cookie("pluginVar",plugin);
-          $.cookie("pluginCountVar",pluginCount);
+          $.cookie("pluginVar",plugin,{path:"/;SameSite=Lax"});
+          $.cookie("pluginCountVar",pluginCount,{path:"/;SameSite=Lax"});
           ca_done_override = true;
         }
 
@@ -1955,9 +1955,8 @@ function updateMulti() {
 function installMultiPluginUpdatesAfterDocker() {
   var plugin = $.cookie("pluginVar");
   var pluginCount = $.cookie("pluginCountVar");
-  $.cookie("pluginVar","");-+
-  +
-  $.cookie("pluginCountVar","");
+  $.cookie("pluginVar","",{path:"/;SameSite=Lax"});
+  $.cookie("pluginCountVar","",{path:"/;SameSite=Lax"});
   setTimeout(function(){
     ca_openPlugin('multiplugin update '+plugin,tr('Update '+makePlural("Application",pluginCount)),'','actionCentre');
     enableSearch();

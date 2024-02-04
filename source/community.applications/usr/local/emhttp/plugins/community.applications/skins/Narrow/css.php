@@ -283,6 +283,7 @@ img.displayIcon{height:6.4rem;width:6.4rem;border-radius:1rem 1rem 1rem 1rem;}
 .favCardBackground{float:right;color:#bb0000;padding-top:.25rem;margin-left:1rem;}
 .favCardBackground::before{content:"\f004";font-family:fontAwesome;}
 .featuredIncompatible{color:#FF8C2F;}
+.greenCardBackground{clip-path: polygon(0 0,100% 0, 100% 100%);background-color: #008100;top:0px;height:9rem;width:9rem;position: relative;left:-10rem;margin-right:-9rem;}
 .homeMore{color:<?=$unRaid66color?>;cursor:pointer;}
 .homeMore:hover{color:#d67777;}
 .homespotlightIconArea{display: inline-block;position: relative;top: -25rem;left: 24rem;cursor:pointer;}
