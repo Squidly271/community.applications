@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.01.21">
-<!ENTITY md5       "eb6686b129561fb2cc69fb6d61f07cbc">
+<!ENTITY version   "2024.02.07">
+<!ENTITY md5       "88b6876f04faac6a1e16b976bb3d3de5">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,17 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.02.07
+- Fixed: Unraid Connect (new URL) appearing twice within Apps
+- Changed: Don't display "Read More" on descriptions from dockerHub searches
+- Fixed: Cookies with wrong path being set
+- Fixed: Javascript error on Multi Application Updates (if plugins involved)
+- Changed: Color of card flag if dockerHub search displays an application a template exists for
+- Added: Provisions for a local application feed
+- Changed: Always have debug logs enabled
+- Fixed: Miscellaneous PHP8 warnings
+- Fixed (On supported OS versions): Multi docker installations weren't automatically starting the containers
+
 ###2024.01.21
 - Fixed: Templates referencing br0 instead of eth0 (and vice-versa) would tend to show a network type of none when installing.  Automatically adjust templates referencing br0 to instead say eth0 if br0 is not defined
 - Fixed: Action Centre wouldn't get enabled unless updates were available to an app (IE: A deprecated container by itself installed wouldn't trigger AC unless an update to something else was also available)

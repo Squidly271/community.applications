@@ -213,7 +213,7 @@ switch ($_POST['action']) {
 function DownloadApplicationFeed() {
   global $caPaths, $caSettings, $statistics;
 
-  $info = readJsonFile($caPaths['info']);
+  //$info = readJsonFile($caPaths['info']);
   exec("rm -rf '{$caPaths['tempFiles']}'");
   @mkdir($caPaths['templates-community'],0777,true);
 
@@ -245,7 +245,9 @@ function DownloadApplicationFeed() {
       $invalidXML[] = $o;
       continue;
     }
-    
+    if ( $o['hideFromCA'] ) 
+      continue;
+
     $o['CategoryList'] = $o['CategoryList'] ?? [];
     if ( $o['CategoryList'] ) {
       $o['Category'] = $o['Category'] ?? "";
