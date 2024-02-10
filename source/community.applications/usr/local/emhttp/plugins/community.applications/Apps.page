@@ -47,6 +47,7 @@ if ( ! is_file($caPaths['docker_cfg']) ) {
 }
 
 $unRaidSettings = parse_ini_file($caPaths['unRaidVersion']);
+$phpErrors = @parse_ini_file($caPaths['phpErrorSettings']);
 
 // Check md5's of files
 exec("cd /usr/local/emhttp/plugins/$plugin/ && md5sum -c ca.md5",$output,$md5Error);
@@ -270,7 +271,9 @@ $(function(){
   <?if ( $caPaths['localONLY'] == true ):?>
     addBannerWarning("*** LOCAL FEED RUNNING - DO NOT RELEASE ***",true,true);
   <?endif;?>
-
+  <?if ( boolval($phpErrors['display_errors']??false) ):?>
+    addBannerWarning("PHP errors displayed in Tools-PHP Settings may impact operation of Community Applications");
+  <?endif;?>
   context.init({preventDoubleContext:false,left:false,right:false,bottom:true,above:true});
 
   $(".maxPerPage").html(sprintf("<?tr("Results Per Page: %s")?>","<?=$cfg['maxPerPage']?>"));

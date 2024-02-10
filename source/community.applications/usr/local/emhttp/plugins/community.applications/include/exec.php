@@ -1565,8 +1565,10 @@ function statistics() {
     if ( $template['Blacklist']??false ) $statistics['blacklist']++;
 
     if ( ($template['Private']??false) && ! ($template['Blacklist']??false)) {
-      if ( ! ($caSettings['hideDeprecated'] == 'true' && ($template['Deprecated']??false)) )
+      if ( ! ($caSettings['hideDeprecated'] == 'true' && ($template['Deprecated']??false)) ) {
         $statistics['private']++;
+        continue;
+      }
     }
 
     if ( ($template['Official']??false) && ! ($template['Blacklist']??false) )
