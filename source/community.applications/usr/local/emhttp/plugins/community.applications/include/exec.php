@@ -245,7 +245,7 @@ function DownloadApplicationFeed() {
       $invalidXML[] = $o;
       continue;
     }
-    if ( $o['hideFromCA'] ) 
+    if ( $o['hideFromCA'] ?? false ) 
       continue;
 
     $o['CategoryList'] = $o['CategoryList'] ?? [];

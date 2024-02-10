@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.02.07">
-<!ENTITY md5       "88b6876f04faac6a1e16b976bb3d3de5">
+<!ENTITY version   "2024.02.10">
+<!ENTITY md5       "39a283d1c41c4d7b661436091273e358">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.02.10
+- Fixed: PHP8 Warning
+
 ###2024.02.07
 - Fixed: Unraid Connect (new URL) appearing twice within Apps
 - Changed: Don't display "Read More" on descriptions from dockerHub searches
