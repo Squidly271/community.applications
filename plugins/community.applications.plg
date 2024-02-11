@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.02.10a">
-<!ENTITY md5       "2de05c66856e9231d62b01f7424f38a9">
+<!ENTITY version   "2024.02.10b">
+<!ENTITY md5       "ed86a475cb234d6ba97beafad5365998">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.02.10b
+- Handle privately hosted repositories
+
 ###2024.02.10
 - Fixed: PHP8 Warning
 

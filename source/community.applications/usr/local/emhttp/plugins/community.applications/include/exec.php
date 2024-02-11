@@ -2043,7 +2043,7 @@ function createXML() {
     if ( empty($template['Config']) ) // handles extra garbage entry being created on templates that are v1 only
       unset($template['Config']);
     $xml = makeXML($template);
-    @mkdir(dirname($xmlFile));
+    @mkdir(dirname($xmlFile),0777,true);
     ca_file_put_contents($xmlFile,$xml);
   }
   postReturn(["status"=>"ok","cache"=>$cacheVolume ?? ""]);
