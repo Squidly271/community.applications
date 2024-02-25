@@ -117,7 +117,7 @@ switch ($_GET['arg1']) {
       foreach ($templates as $searchTemplates) {
         if ( $template['Language'] ?? false) continue;
         if ( (str_replace(["lscr.io/","ghcr.io/"],"",$template['Repository']) == str_replace(":latest","",str_replace(["lscr.io/","ghcr.io/"],"",$searchTemplates['Repository'])))  ) {
-          if ( $searchTemplates['BranchName'] || $searchTemplates['Blacklist'] || $searchTemplates['Deprecated']) {
+          if ( ($searchTemplates['BranchName']??false) || ($searchTemplates['Blacklist']??false) || ($searchTemplates['Deprecated']??false) ) {
             continue;
           }
           $count++;
