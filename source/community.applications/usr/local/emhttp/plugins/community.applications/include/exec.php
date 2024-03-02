@@ -1106,7 +1106,7 @@ function force_update() {
       $dynamixSettings = @parse_ini_file($caPaths['dynamixSettings'],true);
       $currentLanguage = $dynamixSettings['display']['locale'] ?? "en_US";
       if ( $currentLanguage == "en_US" || $currentLanguage == "" ) {
-        $script .= "addBannerWarning('Faces of Limetech Edition',false);addBannerWarning('On installations, icons will be what the author specified',false);addBannerWarning('Navigate to Settings - Community Applications to disable',false);";
+        $script .= "addBannerWarning('Faces of Limetech Edition',false,true);addBannerWarning('On installations icons will be what the author specified',false,true);addBannerWarning('Navigate to Settings - Community Applications to disable',false,true);";
       } else {
         touch("/boot/config/plugins/community.applications/larry");
       }
