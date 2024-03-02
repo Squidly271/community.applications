@@ -97,8 +97,9 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
         $template['ModeratorComment'] = $extraDeprecated[$template['Repository']];
       }
     }
-    $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
-
+    if ( ! is_file("/boot/config/plugins/community.applications/larry") ) {
+      $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon']; // remove if clause post 4/1
+    }
     if ( $template['RepositoryTemplate'] ) {
       $template['Icon'] = $template['icon'] ?? "/plugins/dynamix.docker.manager/images/question.png";
 
@@ -513,7 +514,7 @@ function getPopupDescriptionSkin($appNumber) {
   else
     $displayed = readJsonFile($caPaths['community-templates-displayed']);
 
-  $index = searchArray($displayed['community'],"InstallPath",$appNumber);
+  $index = searchArray($displayed['community']??[],"InstallPath",$appNumber);
   if ( $index === false ) {
     $ind = $index;
     while ( true ) {
@@ -526,7 +527,7 @@ function getPopupDescriptionSkin($appNumber) {
           }
         }
       }
-      $ind = searchArray($displayed['community'],"Path",$appNumber,$ind+1);
+      $ind = searchArray($displayed['community']??[],"Path",$appNumber,$ind+1);
       if ( $ind === false ) {
         unset($template);
         break;
@@ -642,7 +643,9 @@ function getPopupDescriptionSkin($appNumber) {
     $templateIcon = startsWith($template['IconFA'],"icon-") ? "{$template['IconFA']} unraidIcon" : "fa fa-{$template['IconFA']}";
     $template['display_icon'] = "<i class='$templateIcon popupIcon'></i>";
   } else {
-    $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
+    if ( ! is_file("/boot/config/plugins/community.applications/larry") ) {
+      $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];  // remove if clause post 4/1
+    }
     $template['display_icon'] = "<img class='popupIcon screenshot' href='{$template['Icon']}' src='{$template['Icon']}' alt='Application Icon'>";
   }
   
@@ -1615,7 +1618,7 @@ function displayPopup($template) {
     $card .= "<tr><td calss='popupTableLeft'>".tr("Current Version")."</td><td class='popupTableRight'>$pluginVersion</td></tr>";
   }
 
-  if ( $Plugin || ! $Compatible) {
+  if ( $Plugin || ! ($Compatible??null)) {
     if ( $MinVer )
       $card .= "<tr><td class='popupTableLeft'>".tr("Min OS")."</td><td class='popupTableRight'>$MinVer</td></tr>";
     if ( $MaxVer )

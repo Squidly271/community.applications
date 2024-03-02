@@ -313,6 +313,12 @@ function DownloadApplicationFeed() {
       $o['Repository']    = $o['PluginURL'];
     }
 
+    // FOR LARRY
+    if ( $o['ForLarry'] ?? false ) {
+      unset($o['Icon-FA']);
+      $o['Icon-black'] = $o['Icon-white'] = $o['Icon-gray'] = $o['Icon-azure'] = $o['ForLarry'];
+    }
+
     $o['Blacklist'] = ($o['CABlacklist']??null) ? true : ($o['Blacklist']??false);
     $o['MinVer'] = max([($o['MinVer']??null),($o['UpdateMinVer']??null)]);
     $tag = explode(":",$o['Repository']);
@@ -334,7 +340,7 @@ function DownloadApplicationFeed() {
 
     $o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
     $o['Category'] = str_replace("Status:Stable","",$o['Category']);
-    $myTemplates[$i] = $o;
+    //$myTemplates[$i] = $o;
 
     if ( ! ($o['Official']??null) ) {
       if ( ! ($o['DonateText']??null) && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateText'] ?? false) )
@@ -387,8 +393,6 @@ function DownloadApplicationFeed() {
       }
     }
     unset($o['Branch']);
-    $myTemplates[$o['ID']] = $o;
-    $i = ++$i;
     if ( $o['OriginalOverview']??null ) {
       $o['Overview'] = $o['OriginalOverview'];
       unset($o['OriginalOverview']);
@@ -398,6 +402,9 @@ function DownloadApplicationFeed() {
       $o['Description'] = $o['OriginalDescription'];
       unset($o['OriginalDescription']);
     }
+    $myTemplates[$o['ID']] = $o;
+    $i = ++$i;
+
   }
 
   if ( $invalidXML )
@@ -1095,7 +1102,15 @@ function force_update() {
     $script .= "addBannerWarning('".tr("Deprecated OS version.  No further updates to Community Applications will be issued for this OS version")."');";
   
   if ( date("n j",$appFeedTime['last_updated_timestamp']) == "4 1") {
-    $script .= "addBannerWarning('Faces of Limetech Edition',false);addBannerWarning('On installations, icons will be what the author specified',false);";
+    if ( ! is_file("/boot/config/plugins/community.applications/larry") ) {
+      $dynamixSettings = @parse_ini_file($caPaths['dynamixSettings'],true);
+      $currentLanguage = $dynamixSettings['display']['locale'] ?? "en_US";
+      if ( $currentLanguage == "en_US" || $currentLanguage == "" ) {
+        $script .= "addBannerWarning('Faces of Limetech Edition',false);addBannerWarning('On installations, icons will be what the author specified',false);addBannerWarning('Navigate to Settings - Community Applications to disable',false);";
+      } else {
+        touch("/boot/config/plugins/community.applications/larry");
+      }
+    }
   }
   postReturn(['status'=>"ok",'script'=> $script]);
 }
@@ -1904,7 +1919,9 @@ function createXML() {
       $template['Overview'] = $template['OriginalOverview'];
     if ( $template['OriginalDescription'] ?? false )
       $template['Description'] = $template['OriginalDescription'];
-    $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
+   
+    // UNCOMMENT after larry is finished
+    // $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
     
 // switch from br0 to eth0 if necessary
     if ( isset($template['Networking']['Mode']) || isset($template['Network']) ) {

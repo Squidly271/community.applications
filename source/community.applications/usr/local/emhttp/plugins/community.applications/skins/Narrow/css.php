@@ -64,7 +64,7 @@ switch ($theme) {
     $templateHoverBackground = "#edeaef";
     $templateFavourite = "#e0e0e0";
     $hrColor = "#606e7f";
-    $border = "#9794a7";
+    $borderColor = "#9794a7";
     $watermarkColor = "rgba(96, 110, 127, 0.1)";
     $aColor = "#486dba";
     $sidebarBackground = "#edeaef";
@@ -82,7 +82,7 @@ switch ($theme) {
     $templateHoverBackground = "#0c0f0b";
     $templateFavourite = "#2b2b2b";
     $hrColor = "#606e7f";
-    $border = "#606e7f";
+    $borderColor = "#606e7f";
     $watermarkColor = "rgba(96, 110, 127, 0.1)";
     $aColor = "#00b8d6";
     $sidebarBackground = "#121510";

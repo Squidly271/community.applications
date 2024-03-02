@@ -27,8 +27,20 @@ function tr($string,$ret=false) {
   else
     echo $string;
 }
+
+if ( date("n j") == "4 1" || date("n j") == "3 31" || date("n j") == "4 2" ) {
+  touch("/boot/config/plugins/community.applications/larry");
+  exec("rm -rf /tmp/community.applications");
+  $larry = true;
+}
+
+
 ?>
 <script>
+<? if ($larry ?? false):?>
+  addBannerWarning("Faces of Limetech Edition Disabled",false);
+<? endif;?>
+
 $(function() {
   <?if ( is_file($caPaths['logging']) ):?>
     $("#debugging").show();
