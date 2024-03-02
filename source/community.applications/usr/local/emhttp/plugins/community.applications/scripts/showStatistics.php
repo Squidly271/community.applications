@@ -32,7 +32,7 @@ function tr($string,$ret=true) {
 <!DOCTYPE html>
 <body bgcolor='white'>
 <style>
-<?include "/$docroot/plugins/$plugin/skins/Narrow/css.php"?>
+<?include "/$docroot/plugins/community.applications/skins/Narrow/css.php"?>
 </style>
 <style>
 p {margin-left:2rem;margin-right:2rem;}

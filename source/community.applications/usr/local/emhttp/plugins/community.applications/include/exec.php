@@ -340,7 +340,7 @@ function DownloadApplicationFeed() {
 
     $o['Category'] = str_replace("Status:Beta","",$o['Category']);    # undo changes LT made to my xml schema for no good reason
     $o['Category'] = str_replace("Status:Stable","",$o['Category']);
-    //$myTemplates[$i] = $o;
+    $myTemplates[$i] = $o;
 
     if ( ! ($o['Official']??null) ) {
       if ( ! ($o['DonateText']??null) && ($ApplicationFeed['repositories'][$o['RepoName']]['DonateText'] ?? false) )
