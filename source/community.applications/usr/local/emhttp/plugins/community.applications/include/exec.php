@@ -1094,7 +1094,10 @@ function force_update() {
   if ( version_compare($caSettings['unRaidVersion'],$GLOBALS['templates'][$appfeedCA]['MinVer'],"<") )
     $script .= "addBannerWarning('".tr("Deprecated OS version.  No further updates to Community Applications will be issued for this OS version")."');";
   
-    postReturn(['status'=>"ok",'script'=> $script]);
+  if ( date("n j",$appFeedTime['last_updated_timestamp']) == "4 1") {
+    $script .= "addBannerWarning('Faces of Limetech Edition',false);addBannerWarning('On installations, icons will be what the author specified',false);";
+  }
+  postReturn(['status'=>"ok",'script'=> $script]);
 }
 
 
