@@ -1637,7 +1637,7 @@ function displayPopup($template) {
     $remoteIconPostfix = $remoteIconPrefix ? "</a>" : "";
     $card .= "
       </div>
-      <div class='popupInfoRight'>
+      <div class='popupInfoLeft'>
           <div class='popupAuthorTitle'>".tr("Maintainer")."</div>
           <div><div class='popupAuthor'>$RepoName</div>
           <div class='popupAuthorIcon'>$remoteIconPrefix<img class='popupAuthorIcon' src='$ProfileIcon' alt='Repository Icon'></img>$remoteIconPostfix</div>

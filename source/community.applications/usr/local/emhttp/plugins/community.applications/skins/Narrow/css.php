@@ -359,9 +359,8 @@ img.popupAuthorIcon{height:7.2rem;width:7.2rem;border-radius:1rem 1rem 1rem 1rem
 i.popupIcon{color:#626868;font-size:10rem;padding-left:1rem;padding-top:2.2rem;}
 img.popupIcon{width:10rem;height:10rem;padding:0.3rem;margin-top:2.2rem;border-radius:1rem 1rem 1rem 1rem;}
 .popupInfo{position:absolute;top:10rem;left:15rem;}
-.popupInfoLeft{min-width:45%;max-width:45%;width:50rem;float:left;display:inline-block;margin-right:10px;}
-.popupInfoRight{min-width:45%;max-width:45%;float:left;display:inline-block;}
-.popupInfoSection{line-height:2rem;font-size:1.5rem;display:inline-block;}
+.popupInfoLeft{margin-right:10px;margin-left:10px;overflow:hidden;}
+.popupInfoSection{line-height:2rem;font-size:1.5rem;}
 .popUpLink{cursor:pointer;color:<?$aColor?>;}
 a.popUpLink{text-decoration:none;}
 a.popUpLink:hover{color:<?=$unRaid66color?>;}
@@ -372,7 +371,7 @@ a.popUpLink:hover{color:<?=$unRaid66color?>;}
 .popupTable td {width:30%;text-align:left;}
 .popupTable{font-size:1.5rem;width:55rem;margin-top:0px;margin-left:auto;}
 .popupTableLeft{vertical-align:top;padding-right:15px;}
-.popupTableRight{max-width:20rem;overflow:hidden;}
+.popupTableRight{overflow:hidden;}
 .popupTitle{margin:auto;text-align:center;font-weight:bold;font-size:2rem;line-height}
 .popup{margin:1.5rem;margin-top:-2rem;}
 a.popup-donate{text-decoration:none;font-style:italic;color:black;font-size:1.5rem;}
@@ -430,7 +429,6 @@ ul.subCategory{list-style-type:none;margin-left:2rem;padding:0px;cursor:pointer;
 .supportPopup{margin-right:1rem;font-size:1.5rem;line-height:2rem;cursor:pointer;display:inline-block;background-position: 0 0;  background-size: 100% 100%;  border-radius: 15px;  padding: 1px 10px 1px 10px;border-style:solid;border-width:1px;}
 .supportPopup:hover{background-color:<?=$unRaid66color?>;}
 .sweet-alert table{margin-top:0px}
-table tbody td {line-height:1.8rem;}
 table {background-color:transparent;}
 #templates_content{overflow-x:hidden;margin-bottom:3rem;}
 .templateErrors{font-size:2.5rem;margin-top:2rem;}
