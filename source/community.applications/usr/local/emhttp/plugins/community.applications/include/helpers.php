@@ -65,13 +65,17 @@ function writeJsonFile($filename,$jsonArray) {
 }
 
 function ca_file_put_contents($filename,$data,$flags=0) {
-  $result = @file_put_contents($filename,$data,$flags);
-
+  $result = @file_put_contents($filename."~",$data,$flags);
+  if ( $result === strlen($data) ) {
+    @rename($filename."~",$filename);
+  }
+  
   if ( $result === false ) {
+    @unlink($filename."~");
     debug("Failed to write to $filename");
     $GLOBALS['script'] = "alert('Failed to write to ".htmlentities($filename,ENT_QUOTES)."');";
   }
-  return $result;
+  return ($result === strlen($data)) ? strlen($data) : false;
 }
 function download_url($url, $path = "", $bg = false, $timeout = 45) {
   global $caSettings, $caPaths;
@@ -237,18 +241,16 @@ function fixTemplates($template) {
   if ( ($template['DeprecatedMaxVer']??null) && version_compare($caSettings['unRaidVersion'],$template['DeprecatedMaxVer'],">") )
     $template['Deprecated'] = true;
 
-  if ( version_compare($caSettings['unRaidVersion'],"6.10.0-beta4",">") ) {
-    if ( $template['Config']??null ) {
-      if ( $template['Config']['@attributes'] ?? false ) {
-        if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$template['Config']['@attributes']['Description']) ) {
-          $template['Config']['@attributes']['Description'] = "";
-        }
-      } else {
-        if (is_array($template['Config'])) {
-          foreach ($template['Config'] as &$config) {
-            if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$config['@attributes']['Description']??"") ) {
-              $config['@attributes']['Description'] = "";
-            }
+  if ( $template['Config']??null ) {
+    if ( $template['Config']['@attributes'] ?? false ) {
+      if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$template['Config']['@attributes']['Description']) ) {
+        $template['Config']['@attributes']['Description'] = "";
+      }
+    } else {
+      if (is_array($template['Config'])) {
+        foreach ($template['Config'] as &$config) {
+          if (preg_match("/^(Container Path:|Container Port:|Container Label:|Container Variable:|Container Device:)/",$config['@attributes']['Description']??"") ) {
+            $config['@attributes']['Description'] = "";
           }
         }
       }

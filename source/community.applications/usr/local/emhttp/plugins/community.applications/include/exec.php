@@ -1088,7 +1088,6 @@ function force_update() {
   getConvertedTemplates();
   moderateTemplates();
 
-
   $currentServer = @file_get_contents($caPaths['currentServer']);
   $appFeedTime = readJsonFile($caPaths['lastUpdated-old']);
   $updateTime = tr(date("F",$appFeedTime['last_updated_timestamp']),0).date(" d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
@@ -1114,7 +1113,6 @@ function force_update() {
   }
   postReturn(['status'=>"ok",'script'=> $script]);
 }
-
 
 ####################################################################################
 # display_content - displays the templates according to view mode, sort order, etc #
@@ -2285,7 +2283,8 @@ function search_dockerhub() {
   $communityTemplates = &$GLOBALS['templates'];
   $filter = str_replace(" ","%20",$filter);
   $filter = str_replace("/","%20",$filter);
-  $jsonPage = shell_exec("curl -s -X GET 'https://registry.hub.docker.com/v1/search?q=$filter&page=$pageNumber'");
+  $jsonPage = download_url("https://registry.hub.docker.com/v1/search?q=$filter&page=$pageNumber");
+  //$jsonPage = shell_exec("curl -s -X GET 'https://registry.hub.docker.com/v1/search?q=$filter&page=$pageNumber'");
   $pageresults = json_decode($jsonPage,true);
   $num_pages = $pageresults['num_pages'];
 
