@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.03.02a">
-<!ENTITY md5       "02f6dec2f939600e1a95ef774cf9887f">
+<!ENTITY version   "2024.03.10">
+<!ENTITY md5       "ea8974e53eec209c90ff9a7330753ef5">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.03.10
+- Fixed: DockerHub searches wouldn't use CA's proxy if set
+- Fixed: CSS issues on sidebar
+- Changed: Always use atomic writes
+
 ###2024.03.02
 - Fixed: PHP errors (and CSS) when running Azure / Gray themes
 - Fixed: Certain code related to appfeed wasn't running and other code was running twice
