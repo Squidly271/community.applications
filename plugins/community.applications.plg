@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.03.10">
-<!ENTITY md5       "ea8974e53eec209c90ff9a7330753ef5">
+<!ENTITY version   "2024.03.17">
+<!ENTITY md5       "d8050f9eb0bc7b13f7ce62cbfe8493de">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,11 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.03.17
+- Fixed: PHP8 errors
+- Fixed: Placement of download log button in settings incorrect in 6.13+
+- Fixed: Apps installed using a different tag than what author specified would appear within Installed Apps with incorrect Action items
+
 ###2024.03.10
 - Fixed: DockerHub searches wouldn't use CA's proxy if set
 - Fixed: CSS issues on sidebar
