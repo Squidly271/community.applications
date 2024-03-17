@@ -139,10 +139,9 @@ _(Enable developer mode)_:
   
 > <?tr("This unlocks some extra features within CA generally only used by developers.  Not recommended to enable")?>
 
-<input id='debugging' type='button' onclick='debug();' value='DOWNLOAD LOG' style='display:none;'></input>
 
 &nbsp;
-: <input type="submit" name="#apply" value="<?tr("Apply");?>" id='Apply'><input type="button" id="DONE" value="<?tr("Done");?>" onclick="done()">
+: <input id='debugging' type='button' onclick='debug();' value='DOWNLOAD LOG' style='display:none;'></input><input type="submit" name="#apply" value="<?tr("Apply");?>" id='Apply'><input type="button" id="DONE" value="<?tr("Done");?>" onclick="done()">
 
 <center><a href="https://forums.unraid.net/topic/38582-plug-in-community-applications/" target="_blank"><?tr("Support Thread");?></a></center>
 
