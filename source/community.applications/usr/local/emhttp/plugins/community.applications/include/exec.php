@@ -1215,6 +1215,7 @@ function previous_apps() {
                   $o['CardDescription'] = $tmpOvr;
                   $o['InstallPath'] = $tempPath;
                   $o['SortName'] = str_replace("-"," ",$o['Name']);
+                  $o['Repository'] = $installedDocker['Image'];
 //                  if ( $installedName !== $file[$searchResult]['Name'] )
 //                    $o['NoPin'] = true;  # This is renamed and effectively outside of CA's control
                 } else {
