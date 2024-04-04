@@ -122,6 +122,7 @@ a {color:<?=$aColor?>;}
 .additionalRequirements{margin-left:2rem;}
 .additionalRequirementsHeader{font-size:1.5rem;color:#d67777;font-weight:bold;}
 .appIconsPopUp{font-size:2rem !important;cursor:pointer;padding-left:.5rem;padding-right:.5rem;color:default;display:inline-block;margin-right:5rem;}
+td.appIconsPopUp{white-space:normal;height:unset;}
 .appIconsPopUp:hover{text-decoration:none;color:<?=$unRaid66color?>;}
 a.appIconsPopUp{text-decoration:none;color:inherit;}
 .appDocker{float:right;font-size:2rem;opacity:0.7;margin-left:1rem;}

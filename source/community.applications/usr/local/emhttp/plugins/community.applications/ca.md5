@@ -20,7 +20,7 @@ c11415ac49ba9cd6af2b5dc022aa3367  ./scripts/notices.php
 17ec6260bb0cd621b5c826d3145503fd  ./scripts/showStatistics.php
 4425f8fd4ef662a7dc65cee01de3e419  ./scripts/updatePLG.sh
 7592f203dca78dce476051b85f7ca133  ./scripts/updatePluginSupport.php
-ab437c882969b479bbb6fbf8efd817f7  ./skins/Narrow/css.php
+a84d40579c8f42498e34b15ff4e2d3b4  ./skins/Narrow/css.php
 f7d48fdb63e116ecc3ec49cbbf6b2dc2  ./skins/Narrow/skin.html
 aca0b8dcd84748efe95d2143ee774259  ./skins/Narrow/skin.php
 c26b187a50c966adff7bfb9cab6fca16  ./event/disks_mounted
