@@ -313,12 +313,6 @@ function DownloadApplicationFeed() {
       $o['Repository']    = $o['PluginURL'];
     }
 
-    // FOR LARRY
-    if ( $o['ForLarry'] ?? false ) {
-      unset($o['Icon-FA']);
-      $o['Icon-black'] = $o['Icon-white'] = $o['Icon-gray'] = $o['Icon-azure'] = $o['ForLarry'];
-    }
-
     $o['Blacklist'] = ($o['CABlacklist']??null) ? true : ($o['Blacklist']??false);
     $o['MinVer'] = max([($o['MinVer']??null),($o['UpdateMinVer']??null)]);
     $tag = explode(":",$o['Repository']);
@@ -1100,17 +1094,6 @@ function force_update() {
   if ( version_compare($caSettings['unRaidVersion'],$GLOBALS['templates'][$appfeedCA]['MinVer'],"<") )
     $script .= "addBannerWarning('".tr("Deprecated OS version.  No further updates to Community Applications will be issued for this OS version")."');";
   
-  if ( date("n j",$appFeedTime['last_updated_timestamp']) == "4 1") {
-    if ( ! is_file("/boot/config/plugins/community.applications/larry") ) {
-      $dynamixSettings = @parse_ini_file($caPaths['dynamixSettings'],true);
-      $currentLanguage = $dynamixSettings['display']['locale'] ?? "en_US";
-      if ( $currentLanguage == "en_US" || $currentLanguage == "" ) {
-        $script .= "addBannerWarning('Faces of Limetech Edition',false,true);addBannerWarning('On installations icons will be what the author specified',false,true);addBannerWarning('Navigate to Settings - Community Applications to disable',false,true);";
-      } else {
-        touch("/boot/config/plugins/community.applications/larry");
-      }
-    }
-  }
   postReturn(['status'=>"ok",'script'=> $script]);
 }
 
@@ -1919,8 +1902,7 @@ function createXML() {
     if ( $template['OriginalDescription'] ?? false )
       $template['Description'] = $template['OriginalDescription'];
    
-    // UNCOMMENT after larry is finished
-    // $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
+    $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
     
 // switch from br0 to eth0 if necessary
     if ( isset($template['Networking']['Mode']) || isset($template['Network']) ) {

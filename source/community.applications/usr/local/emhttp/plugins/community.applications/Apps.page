@@ -89,10 +89,6 @@ else
 
 $date = (date("n/d"));
 
-if ( $firstRun == "true" && ($date == "4/01" || $date == "4/02" || $date == "3/31") )  {
-  touch("/boot/config/plugins/community.applications/larry");
-}
-
 $startupDisplayed = is_file($caPaths['startupDisplayed']) ? "true" : "false";
 if ( $startupDisplayed == "true" && ($_COOKIE['ca_languageSwitch'] ?? false) )
   $killCookie = "true";

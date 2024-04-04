@@ -97,9 +97,7 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
         $template['ModeratorComment'] = $extraDeprecated[$template['Repository']];
       }
     }
-    if ( ! is_file("/boot/config/plugins/community.applications/larry") ) {
-      $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon']; // remove if clause post 4/1
-    }
+
     if ( $template['RepositoryTemplate'] ) {
       $template['Icon'] = $template['icon'] ?? "/plugins/dynamix.docker.manager/images/question.png";
 
@@ -643,9 +641,7 @@ function getPopupDescriptionSkin($appNumber) {
     $templateIcon = startsWith($template['IconFA'],"icon-") ? "{$template['IconFA']} unraidIcon" : "fa fa-{$template['IconFA']}";
     $template['display_icon'] = "<i class='$templateIcon popupIcon'></i>";
   } else {
-    if ( ! is_file("/boot/config/plugins/community.applications/larry") ) {
-      $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];  // remove if clause post 4/1
-    }
+    $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];  // remove if clause post 4/1
     $template['display_icon'] = "<img class='popupIcon screenshot' href='{$template['Icon']}' src='{$template['Icon']}' alt='Application Icon'>";
   }
   
