@@ -245,7 +245,7 @@ function DownloadApplicationFeed() {
       $invalidXML[] = $o;
       continue;
     }
-    if ( $o['hideFromCA'] ?? false ) 
+    if ( $o['hideFromCA'] ?? false )
       continue;
 
     $o['CategoryList'] = $o['CategoryList'] ?? [];
@@ -258,13 +258,13 @@ function DownloadApplicationFeed() {
         $o['Category'] .= "$cat ";
       }
     }
-    
+
     $o['Category'] = $o['Category'] ?? "";
     $o['Category'] = trim($o['Category']);
     if ( ! $o['Category'] )
       $o['Category'] = "Other:";
 
-    
+
     if ( $o['RecommendedRaw'] ?? null) {
       $o['RecommendedDate'] = strtotime($o['RecommendedRaw']);
       $o['Category'] .= " spotlight:";
@@ -343,7 +343,7 @@ function DownloadApplicationFeed() {
         $o['DonateLink'] = $ApplicationFeed['repositories'][$o['RepoName']]['DonateLink'];
     } else {
       $o['DonateText'] = $o['OfficialDonateText'] ?? null;
-      $o['DonateLink'] = $o['OfficialDonateLink'] ?? null;      
+      $o['DonateLink'] = $o['OfficialDonateLink'] ?? null;
     }
     $ApplicationFeed['repositories'][$o['RepoName']]['downloads'] = $ApplicationFeed['repositories'][$o['RepoName']]['downloads'] ?? 0;
     $ApplicationFeed['repositories'][$o['RepoName']]['trending'] = $ApplicationFeed['repositories'][$o['RepoName']]['trending'] ?? 0;
@@ -1059,9 +1059,9 @@ function force_update() {
       $o['script'] = "$('.onlyShowWithFeed').hide();";
       if ( checkServerDate() )
         $o['data'] =  "<div class='ca_center'><font size='4'><span class='ca_bold'>".tr("Download of appfeed failed.")."</span></font><font size='3'><br><br>Community Applications requires your server to have internet access.  The most common cause of this failure is a failure to resolve DNS addresses.  You can try and reset your modem and router to fix this issue, or set static DNS addresses (Settings - Network Settings) of 208.67.222.222 and 208.67.220.220 and try again.<br><br>Alternatively, there is also a chance that the server handling the application feed is temporarily down.  See also <a href='https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1101084' target='_blank'>this post</a> for more information";
-      else 
+      else
         $o['data'] =  "<div class='ca_center'><font size='4'><span class='ca_bold'>".tr("Download of appfeed failed.")."</span></font><font size='3'><br><br>Community Applications requires your server to have internet access.  This could be because it appears that the current date and time of your server is incorrect.  Correct this within Settings - Date And Time.  See also <a href='https://forums.unraid.net/topic/120220-fix-common-problems-more-information/page/2/?tab=comments#comment-1101084' target='_blank'>this post</a> for more information";
-      
+
       $tempFile = @file_get_contents($caPaths['appFeedDownloadError']);
       $downloaded = @file_get_contents($tempFile);
       if (strlen($downloaded) > 100)
@@ -1093,7 +1093,7 @@ function force_update() {
 
   if ( version_compare($caSettings['unRaidVersion'],$GLOBALS['templates'][$appfeedCA]['MinVer'],"<") )
     $script .= "addBannerWarning('".tr("Deprecated OS version.  No further updates to Community Applications will be issued for this OS version")."');";
-  
+
   postReturn(['status'=>"ok",'script'=> $script]);
 }
 
@@ -1189,6 +1189,12 @@ function previous_apps() {
                   $searchResult = searchArray($file,'Repository',explode(":",$o['Repository'])[0]);
                 }
                 if ( $searchResult !== false ) {
+                  if ( ($o['TemplateURL'] ?? false) ) {
+                    if ( ($file[$searchResult]['TemplateURL']??INF) != $o['TemplateURL']) {
+                      $search = searchArray($file,'TemplateURL',$o['TemplateURL']);
+                      $searchResult = $search === false ? $searchResult : $search;
+                    }
+                  }
                   $tempPath = $o['InstallPath'];
                   $containerID = $file[$searchResult]['ID'];
                   $tmpOvr = $o['Overview'];
@@ -1199,8 +1205,6 @@ function previous_apps() {
                   $o['InstallPath'] = $tempPath;
                   $o['SortName'] = str_replace("-"," ",$o['Name']);
                   $o['Repository'] = $installedDocker['Image'];
-//                  if ( $installedName !== $file[$searchResult]['Name'] )
-//                    $o['NoPin'] = true;  # This is renamed and effectively outside of CA's control
                 } else {
                   $runningFlag = true;
                 }
@@ -1268,16 +1272,20 @@ function previous_apps() {
               }
             }
           }
+          $foundViaURL = false;
           if ( ! $flag ) {
+            $foundflag = false;
             $testRepo = explode(":",$o['Repository'])[0];
     # now associate the template back to a template in the appfeed
+            if ($o['TemplateURL'] ?? false ) {
+              $search = searchArray($file,'TemplateURL',$o['TemplateURL']);
+              if ( $search !== false ) {
+                $foundflag = true;
 
-            foreach ($file as $appTemplate) {
-              if (startsWith($appTemplate['Repository'],$testRepo)) {
                 $tempPath = $o['InstallPath'];
                 $tempName = $o['Name'];
                 $tempOvr = $o['Overview'];
-                $o = $appTemplate;
+                $o = $file[$search];
                 $o['Overview'] = $tempOvr;
                 $o['Description'] = $tempOvr;
                 $o['CardDescription'] = $tempOvr;
@@ -1286,7 +1294,26 @@ function previous_apps() {
                 $o['Name'] = $tempName;
                 $o['SortName'] = str_replace("-"," ",$o['Name']);
                 $o['NoPin'] = true;
-                break;
+              }
+
+            }
+            if ( !$foundflag ) {
+              foreach ($file as $appTemplate) {
+                if (startsWith($appTemplate['Repository'],$testRepo)) {
+                  $tempPath = $o['InstallPath'];
+                  $tempName = $o['Name'];
+                  $tempOvr = $o['Overview'];
+                  $o = $appTemplate;
+                  $o['Overview'] = $tempOvr;
+                  $o['Description'] = $tempOvr;
+                  $o['CardDescription'] = $tempOvr;
+                  $o['Removable'] = true;
+                  $o['InstallPath'] = $tempPath;
+                  $o['Name'] = $tempName;
+                  $o['SortName'] = str_replace("-"," ",$o['Name']);
+                  $o['NoPin'] = true;
+                  break;
+                }
               }
             }
 
@@ -1901,9 +1928,9 @@ function createXML() {
       $template['Overview'] = $template['OriginalOverview'];
     if ( $template['OriginalDescription'] ?? false )
       $template['Description'] = $template['OriginalDescription'];
-   
+
     $template['Icon'] = $template["Icon-{$caSettings['dynamixTheme']}"] ?? $template['Icon'];
-    
+
 // switch from br0 to eth0 if necessary
     if ( isset($template['Networking']['Mode']) || isset($template['Network']) ) {
       $mode =$template['Network'] = $template['Network'] ?? $template['Networking']['Mode'];
