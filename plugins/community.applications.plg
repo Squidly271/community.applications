@@ -16,6 +16,7 @@
 ###2024.04.06
 - Fixed: Edge case of installing an application where a duplicate template was present and the other template was deprecated could result in CA thinking the deprecated template was installed
 - Fixed: CSS fixes for Branch selection on 6.13+
+- Changed: Support 6.13 proxies.  (Fallback to CA's existing proxy support)
 
 ###2024.03.17
 - Fixed: PHP8 errors
