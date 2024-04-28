@@ -365,6 +365,8 @@ function DownloadApplicationFeed() {
         $o['Branch'][] = $tmp;
       }
       foreach($o['Branch'] as $branch) {
+        if ( is_array($branch['Tag'] ?? null) ) // if someone listed the same tag twice, drop the tag altogether
+          continue;
         $i = ++$i;
         $subBranch = $o;
         $masterRepository = explode(":",$subBranch['Repository']);
@@ -1172,6 +1174,8 @@ function previous_apps() {
       if ( !$filter || $filter == "docker" ) {
         foreach ($all_files as $xmlfile) {
           $o = readXmlFile($xmlfile);
+          if ( ! $o )
+            continue;
           $o['Overview'] = fixDescription($o['Overview']);
           $o['Description'] = $o['Overview'];
           $o['CardDescription'] = $o['Overview'];
