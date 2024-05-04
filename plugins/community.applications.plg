@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.04.28">
-<!ENTITY md5       "497bf4ed5b9b265931cba151a053f638">
+<!ENTITY version   "2024.05.03">
+<!ENTITY md5       "16ba195670cadafdad7f195f42c87a9d">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.05.03
+- Fixed: curl encoding option of "" no longer works on backup application feed.  Switch to "deflate" as a fallback in case of failure on all downloads
+
 ###2024.04.28
 - Fixed: Any corrupted xml files in /boot/config/plugins/dockerMan/templates-user would crash action centre or Installed / Previous Apps
 - Fixed: If template maintainer listed a "branch" tag twice, fatal errors would happen with PHP error settings set to display
