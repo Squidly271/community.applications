@@ -170,13 +170,12 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
 
               $template['Installed'] = $selected;
               if ( $selected ) {
-
                 $ind = searchArray($info,"Name",$name);
                 if ( $info[$ind]['url'] && $info[$ind]['running'] ) {
                   $actionsContext[] = ["icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$ind]['url']}','_blank');"];
                 }
 
-                if ( $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
+                if ( isset($dockerUpdateStatus[$tmpRepo]) && $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
                   $template['UpdateAvailable'] = true;
                   $actionsContext[] = ["icon"=>"ca_fa-update","text"=>tr("Update"),"action"=>"updateDocker('$name');"];
                 } else {

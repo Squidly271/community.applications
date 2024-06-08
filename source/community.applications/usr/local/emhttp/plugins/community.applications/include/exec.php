@@ -1041,7 +1041,7 @@ function force_update() {
   debug("old feed timestamp: ".($lastUpdatedOld['last_updated_timestamp'] ?? ""));
   @unlink($caPaths['lastUpdated']);
   $latestUpdate = download_json($caPaths['application-feed-last-updated'],$caPaths['lastUpdated'],"",5);
-  if ( ! $latestUpdate['last_updated_timestamp'] ?? false )
+  if ( $latestUpdate === false || ! ($latestUpdate['last_updated_timestamp'] ?? false) )
     $latestUpdate = download_json($caPaths['application-feed-last-updatedBackup'],$caPaths['lastUpdated'],"",5);
   debug("new appfeed timestamp: {$latestUpdate['last_updated_timestamp']}");
   if ( ! isset($latestUpdate['last_updated_timestamp']) ) {
@@ -2469,8 +2469,10 @@ function enableActionCentre() {
     $all_files = $all_files ?: [];
     foreach ($all_files as $xmlfile) {
       $o = readXmlFile($xmlfile);
+      if ( ! $o ) continue;
 
       $runningflag = false;
+      file_put_contents("/tmp/blah",print_r($info,true));
       foreach ($info as $installedDocker) {
         if ( $installedDocker['Name'] == $o['Name'] ) {
           if ( startsWith(str_replace("library/","",$installedDocker['Image']), $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository'])  ) {

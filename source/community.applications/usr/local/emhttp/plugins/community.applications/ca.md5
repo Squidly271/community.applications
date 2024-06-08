@@ -2,8 +2,8 @@
 2defe45163697e40c813a57ae9a50231  ./CA_notices.page
 c12622d8281346d37398e96cbb6b8b69  ./ca_settings.page
 01ed7990078dee7cecfeda9a4e49377e  ./default.cfg
-e3301a1191f42a799769ef8266a78cf5  ./include/exec.php
-cc2d19a7028adfcca362ca7fc2fefe3f  ./include/helpers.php
+c44760a75964777841ac685469001f98  ./include/exec.php
+7f436c88f9b29ecee6bd8eb279f26e22  ./include/helpers.php
 590fb8b29aba360a56dd8338b022f9e0  ./include/paths.php
 7234caf6800479df03abb222aaedaca5  ./javascript/libraries.js
 71f911a818d88d3d567f8a2898094ee2  ./README.md
@@ -22,5 +22,5 @@ c11415ac49ba9cd6af2b5dc022aa3367  ./scripts/notices.php
 7592f203dca78dce476051b85f7ca133  ./scripts/updatePluginSupport.php
 a84d40579c8f42498e34b15ff4e2d3b4  ./skins/Narrow/css.php
 f7d48fdb63e116ecc3ec49cbbf6b2dc2  ./skins/Narrow/skin.html
-06cd05fd7478a8836ad519119cd0fbf1  ./skins/Narrow/skin.php
+6230591d8cf47956420bd7ef6c380076  ./skins/Narrow/skin.php
 c26b187a50c966adff7bfb9cab6fca16  ./event/disks_mounted
