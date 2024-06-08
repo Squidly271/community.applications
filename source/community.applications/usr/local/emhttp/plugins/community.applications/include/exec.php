@@ -2472,7 +2472,6 @@ function enableActionCentre() {
       if ( ! $o ) continue;
 
       $runningflag = false;
-      file_put_contents("/tmp/blah",print_r($info,true));
       foreach ($info as $installedDocker) {
         if ( $installedDocker['Name'] == $o['Name'] ) {
           if ( startsWith(str_replace("library/","",$installedDocker['Image']), $o['Repository']) || startsWith($installedDocker['Image'],$o['Repository'])  ) {
