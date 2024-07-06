@@ -147,7 +147,7 @@ body{scrollbar-gutter:stable;cursor:default !important;}
 .caHomeSpotlight{height:29rem !important;}
 .caMenuDisabled{cursor:default;opacity:0.5;}
 .caMenuEnabled{cursor:pointer;opacity:1;}
-.ca_applicationName{font-size:2rem;max-height:3rem;overflow:hidden;font-weight:bold;padding-top:1.5rem;margin-left:0.75rem;}
+.ca_applicationName{font-size:2rem;width:25rem;max-height:3rem;overflow:hidden;font-weight:bold;padding-top:1.5rem;margin-left:0.75rem;}
 a.ca_appPopup{text-decoration:none;cursor:pointer;}
 .ca_appPopup{cursor:pointer;}
 div.ca_appPopup{cursor:pointer;}
