@@ -169,6 +169,7 @@ data.searchActive = false; // Sets whether changepage re-sorts the displayed tem
 data.previousAppsSection = ""; // The section the user is on within previous apps
 data.searchInProgress = false;
 data.deprecated = false; // Only set by reinstalling a deprecated plugin
+data.loggedOut = false;  // flag to prevent a second alert from popping up if you wind up being logged out due to a fatal error
 
 var dockerNotEnabled;
 var postCount = 0;
@@ -2322,11 +2323,12 @@ function postNoSpin(options,callback) {
       } catch(e) {
         myCloseAlert();
         myCloseSpinner();
-        if ( ! $.trim(retval) ) {
+        var retvalTest = $.trim(retval);
+        if ( ! retvalTest ) {
           retval = "<?tr("No data was returned.  It is probable that another browser session has rebooted your server.  Reloading this browser tab will probably fix this error")?>";
         }
-        if ( retval.indexOf("<!DOCTYPE html>") === 0 ) {
-          alert("<?tr("You have been logged out")?>");
+        if ( retvalTest.indexOf("<!DOCTYPE html>") === 0 ) {
+          data.loggedOut = true;
           window.location.reload();
         }	else {
           $("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?>  <a href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank'>https://forums.unraid.net/topic/38582-plug-in-community-applications/</a><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
@@ -2337,8 +2339,10 @@ function postNoSpin(options,callback) {
       try {
         eval(callback(result));
       } catch(e) {
-        post({action:'javascriptError',postCall:options.action,retval:result});
-        alert("Fatal error during "+options.action+" "+e);
+        if ( ! data.loggedOut ) {
+          post({action:'javascriptError',postCall:options.action,retval:result});
+          alert("Fatal error during "+options.action+" "+e);
+        }
       }
       if (result.script) {
         try {
@@ -2377,13 +2381,12 @@ function post(options,callback) {
       } catch(e) {
         myCloseAlert();
         myCloseSpinner();
-        if ( ! $.trim(retval) ) {
+        var retvalTest = $.trim(retval);
+        if ( ! retvalTest ) {
           retval = "<?tr("No data was returned.  It is probable that another browser session has rebooted your server.  Reloading this browser tab will probably fix this error")?>";
         }
-        if ( retval.indexOf("<!DOCTYPE html>") === 0 ) {
-          myCloseSpinner();
-          myCloseAlert();
-          alert("<?tr("You have been logged out")?>");
+        if ( retvalTest.indexOf("<!DOCTYPE html>") === 0 ) {
+          data.loggedOut = true;
           window.location.reload();
         }	else {
           $("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?>  <a href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank'>https://forums.unraid.net/topic/38582-plug-in-community-applications/</a><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
@@ -2394,8 +2397,10 @@ function post(options,callback) {
       try {
         eval(callback(result));
       } catch(e) {
-        post({action:'javascriptError',postCall:options.action,retval:result});
-        alert("Fatal error during "+options.action+" "+e);
+        if ( ! data.loggedOut ) {
+          post({action:'javascriptError',postCall:options.action,retval:result});
+          alert("Fatal error during "+options.action+" "+e);
+        }
       }
       if (result.script) {
         try {
