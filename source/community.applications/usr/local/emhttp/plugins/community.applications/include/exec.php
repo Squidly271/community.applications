@@ -563,7 +563,7 @@ function appOfDay($file) {
       usort($file,"mySort");
       $repos = [];
       foreach ($file as $template) {
-        if ( ! is_array($template['trends']) ) continue;
+        if ( ! isset($template['trends']) ) continue;
         if ( count($template['trends']) < 6 ) continue;
         if ( startsWith($template['Repository'],"ich777/steamcmd") ) continue; // because a ton of apps all use the same repo
         if ( $template['trending'] && ($template['downloads'] > 100000) ) {
@@ -583,9 +583,9 @@ function appOfDay($file) {
       usort($file,"mySort");
       $repos = [];
       foreach ($file as $template) {
-        if ( count($template['trends'] ) < 3 ) continue;
+        if ( isset($template['trends']) && count($template['trends'] ) < 3 ) continue;
         if ( startsWith($template['Repository'],"ich777/steamcmd") ) continue; // because a ton of apps all use the same repo`
-        if ( $template['trending'] && ($template['downloads'] > 10000) ) {
+        if ( isset($template['trending']) && ($template['downloads'] > 10000) ) {
           if ( checkRandomApp($template) ) {
             if ( in_array($template['Repository'],$repos) )
               continue;
@@ -926,7 +926,7 @@ function get_content() {
     if ( ($caSettings['hideDeprecated'] == "true") && ($template['Deprecated'] && ! $displayDeprecated) ) continue;
     if ( $displayDeprecated && ! $template['Deprecated'] ) continue;
     if ( ! $template['Displayable'] ) continue;
-    if ( $caSettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible  && ! $template['Featured']) continue;
+    if ( $caSettings['hideIncompatible'] == "true" && ! $template['Compatible'] && ! $displayIncompatible  && ! ($template['Featured']??false) ) continue;
     if ( $template['Blacklist'] ) continue;
 
     $name = $template['Name'];

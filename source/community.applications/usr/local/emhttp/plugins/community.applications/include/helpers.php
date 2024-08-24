@@ -175,8 +175,8 @@ function mySort($a, $b) {
     $c = strtolower($a[$sortOrder['sortBy']] ?? "");
     $d = strtolower($b[$sortOrder['sortBy']] ?? "");
   } else {
-    $c = $a[$sortOrder['sortBy']];
-    $d = $b[$sortOrder['sortBy']];
+    $c = $a[$sortOrder['sortBy']]??"";
+    $d = $b[$sortOrder['sortBy']]??"";
   }
 
   $return1 = ($sortOrder['sortDir'] == "Down") ? -1 : 1;

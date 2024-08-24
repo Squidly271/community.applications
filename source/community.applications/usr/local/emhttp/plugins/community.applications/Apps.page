@@ -169,7 +169,6 @@ data.searchActive = false; // Sets whether changepage re-sorts the displayed tem
 data.previousAppsSection = ""; // The section the user is on within previous apps
 data.searchInProgress = false;
 data.deprecated = false; // Only set by reinstalling a deprecated plugin
-data.loggedOut = false;  // flag to prevent a second alert from popping up if you wind up being logged out due to a fatal error
 
 var dockerNotEnabled;
 var postCount = 0;
@@ -2075,7 +2074,7 @@ function updateDisplay(content) {
       var ID = $(this).attr("id");
       var opts = [];
       supportContext.forEach(function(item,index){
-        opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
+        opts.push({text:item.text,icon:item.icon,href:item.link,target:'_blank'});
       });
       context.attach('#'+ID, opts);
     }
@@ -2329,6 +2328,7 @@ function postNoSpin(options,callback) {
         }
         if ( retvalTest.indexOf("<!DOCTYPE html>") === 0 ) {
           data.loggedOut = true;
+          alert("<?tr("You have been logged out")?>");
           window.location.reload();
         }	else {
           $("#templates_content").html(sprintf(tr("Something really wrong went on during %s"),options.action)+"<br><?tr("Post the ENTIRE contents of this message in the Community Applications Support Thread")?>  <a href='https://forums.unraid.net/topic/38582-plug-in-community-applications/' target='_blank'>https://forums.unraid.net/topic/38582-plug-in-community-applications/</a><br><br>OS: <?=$unRaidSettings['version']?> <?=$md5Error ? "<br>Modified CA" : ""?><br>Browser: <?=$_SERVER['HTTP_USER_AGENT']?><br>Language: <?=$_SESSION['locale']?><br><br>"+retval.escapeHTML());
