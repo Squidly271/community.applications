@@ -169,12 +169,13 @@ data.searchActive = false; // Sets whether changepage re-sorts the displayed tem
 data.previousAppsSection = ""; // The section the user is on within previous apps
 data.searchInProgress = false;
 data.deprecated = false; // Only set by reinstalling a deprecated plugin
+data.loggedOut = false; // flag to prevent a second alert from popping up if you wind up being logged out due to a fatal error
 
 var dockerNotEnabled;
 var postCount = 0;
 var cookieWarning = false;
 var dockerWarningAdded = false;
-var backupServerWarning = false;
+// var backupServerWarning = false;  Should no longer be required as concept of backup server isn't relevant anymore
 var restoreStateMenu = false;
 var actionCentreRestoreState = false;
 var initialStartup = true;
@@ -1250,6 +1251,9 @@ function installPlugin(pluginURL,update=false,comment="",requires="") {
 }
 function actuallyInstallPlugin(pluginURL,update=false,comment="") {
   type = update ? "update" : "install";
+  if ( ! update ) {
+    pluginURL = "<?=$caPaths['pluginProxy']?>" + pluginURL;
+  }
   title = update ? "<?tr("Update Plugin")?>" : "<?tr("Install Plugin")?>";
   closeSidebar(true);
 //	disableSearch();
@@ -2519,6 +2523,7 @@ function getCategories() {
   });
 }
 
+// Function should no longer be required
 function feedWarning(currentServer) {
   if ( currentServer != "Primary Server" ) {
     if ( currentServer == "" ) {

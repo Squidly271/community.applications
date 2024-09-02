@@ -1088,9 +1088,13 @@ function force_update() {
   $appFeedTime = readJsonFile($caPaths['lastUpdated-old']);
   $updateTime = tr(date("F",$appFeedTime['last_updated_timestamp']),0).date(" d, Y @ g:i a",$appFeedTime['last_updated_timestamp']);
   $updateTime = str_replace("'","&apos;",$updateTime);
+  /*
+  concept of a backup server is no longer relevant
   $script = "feedWarning('$currentServer');$('.statistics').attr('title','{$updateTime}');";
+*/
+$script = "$('.statistics').attr('title','{$updateTime}');";
 
-  // is CA running on a version of the OS the it no longer supports (ie: no further updates to CA compatible with this OS will be issued)
+// is CA running on a version of the OS the it no longer supports (ie: no further updates to CA compatible with this OS will be issued)
   $appfeedCA = searchArray($GLOBALS['templates'],"PluginURL","https://raw.githubusercontent.com/Squidly271/community.applications/master/plugins/community.applications.plg");
 
   if ( version_compare($caSettings['unRaidVersion'],$GLOBALS['templates'][$appfeedCA]['MinVer'],"<") )
@@ -1115,7 +1119,10 @@ function display_content() {
 
   $displayedApps = readJsonFile($caPaths['community-templates-displayed']);
   $currentServer = @file_get_contents($caPaths['currentServer']);
+ /* concept of a backup server no longer relevant
   $o['script'] = "feedWarning('$currentServer');";
+  */
+  
   postReturn($o);
 }
 

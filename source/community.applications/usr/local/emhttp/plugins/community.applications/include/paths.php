@@ -94,6 +94,7 @@ $caPaths['dockerSearchActive']                  = $caPaths['tempFiles']."/docker
 $caPaths['dockerConvertFlash']                  = $dockerManPaths['templates-user']."/my-CA_TEST_CONTAINER_DOCKERHUB.xml";
 $caPaths['pluginPending']                       = "/tmp/plugins/pluginPending/";
 $caPaths['phpErrorSettings']                    = "/etc/php.d/errors-php.ini";
+$caPaths['pluginProxy']                         = "https://ca.unraid.net/dl/";
 
 $dynamixSettings = parse_plugin_cfg("dynamix");
 $caPaths['SpotlightIcon']					 							= "https://github.com/Squidly271/community.applications/raw/master/webImages/spotlight_{$dynamixSettings['theme']}.png";
