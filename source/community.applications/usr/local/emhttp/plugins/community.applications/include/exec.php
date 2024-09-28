@@ -512,7 +512,7 @@ function appOfDay($file) {
   global $caPaths,$caSettings,$sortOrder,$dynamixSettings;
 
   $max = ( is_file("/boot/config/plugins/unlimited-width.plg") || ($dynamixSettings['width'] ?? false) ) ? 12 : 5;
-  $appOfDay = null;
+  $appOfDay = [];
 
   switch ($caSettings['startup']) {
     case "random":
@@ -1145,11 +1145,16 @@ function dismiss_plugin_warning() {
 ###############################################################
 # Displays the list of installed or previously installed apps #
 ###############################################################
-function previous_apps() {
+function previous_apps($enableActionCentre=false) {
   global $caPaths, $caSettings, $DockerClient;
 
-  $installed = getPost("installed","");
-  $filter = getPost("filter","");
+  if ( $enableActionCentre ) {
+    $installed = "action";
+    $filter = "";
+  } else {
+    $installed = getPost("installed","");
+    $filter = getPost("filter","");
+  }
   $info = getAllInfo();
 
   @unlink($caPaths['community-templates-allSearchResults']);
@@ -1414,6 +1419,14 @@ function previous_apps() {
       }
     }
   }
+ 
+  if ( $enableActionCentre ) {
+    if ( ! $displayed || empty($displayed) )
+      return false;
+    else 
+      return true;
+  }
+
   if ( isset($displayed) && is_array($displayed) ) {
     usort($displayed,"mySort");
   }
@@ -1787,10 +1800,10 @@ function statistics() {
 function populateAutoComplete() {
   global $caPaths, $caSettings;
 
-  $templates = null;
-  while ( ! $templates ) {
+  $templates = [];
+  while ( empty($templates) ) {
     $templates = &$GLOBALS['templates'];
-    if ( ! $templates )
+    if ( ! $templates || empty($templates) )
       sleep(1);
   }
   $autoComplete = array_map(function($x){return str_replace(":","",tr($x['Cat']));},readJsonFile($caPaths['categoryList']));
@@ -2457,6 +2470,9 @@ function enableActionCentre() {
     postReturn(['status'=>"noaction"]);
     return;
   }
+  $displayed = previous_apps(true);
+
+  /*
   $file = readJsonFile($caPaths['community-templates-info']);
   $extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
   $extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
@@ -2571,7 +2587,8 @@ function enableActionCentre() {
       break;
     }
   }
-  if ( isset($displayed) ) {
+*/
+  if ( $displayed ) {
     debug("action center enabled");
     postReturn(['status'=>"action"]);
   } else {
