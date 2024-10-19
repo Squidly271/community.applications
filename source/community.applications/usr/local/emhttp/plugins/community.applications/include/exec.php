@@ -1948,6 +1948,9 @@ function createXML() {
       return;
     }
     $template = $templates[$index];
+
+    download_url($caPaths['RepositoryAssets'].str_replace("/","___",explode(":",$template['Repository'])[0]),"","",5);
+
     if ( $template['OriginalOverview'] ?? false )
       $template['Overview'] = $template['OriginalOverview'];
     if ( $template['OriginalDescription'] ?? false )
