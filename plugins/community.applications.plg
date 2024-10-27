@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.09.07">
-<!ENTITY md5       "53ff763e343fcf63bd1d86e3e6b3b737">
+<!ENTITY version   "2024.10.27">
+<!ENTITY md5       "213cc3b76b512558a02a01e5a7caaf09">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.10.27
+- Fixed: Under certain circumstances, Action Centre could be enabled with no apps to display
+- Added: Infrastructure changes for future releases
+
 ###2024.09.07
 - Added: Infrastructure changes for future releases
 - Removed: Concept of backup server for application feed
