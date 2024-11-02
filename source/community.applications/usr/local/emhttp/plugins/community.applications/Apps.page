@@ -188,6 +188,72 @@ var iconHoverTimer;
 var wheelActive = false;
 var ca_done_override = false;
 
+// handle 3rd party links on older versions of OS
+<? if ( version_compare($unRaidSettings['version'],"7.0.0-beta.5","<") ):?>
+  var gui_pages_available = [];
+  <?
+    $gui_pages = glob("/usr/local/emhttp/plugins/*/*.page");
+    array_walk($gui_pages,function($value,$key){ ?>
+      gui_pages_available.push('<?=basename($value,".page")?>'); <?
+    });
+  ?>
+
+  function isValidURL(url) {
+    try {
+      new URL(url);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  $('body').on("click","a", function(e) {
+    href = $(this).attr("href").trim();
+    target = $(this).attr("target");
+    if ( href ) {
+      if ( href.match('https://[^\.]*.(my)?unraid.net/') || href.indexOf("https://unraid.net/") == 0 || href == "https://unraid.net" || href.indexOf("http://lime-technology.com") == 0) {
+        return;
+      } 
+
+      if (href !== "#" && href.indexOf("javascript") !== 0) {
+        if ( ! isValidURL(href) ) {
+          if ( href.indexOf("/") == 0 ) {   // all internal links start with "/"
+          return;
+        }
+        var baseURLpage = href.split("/");
+          if ( gui_pages_available.includes(baseURLpage[0]) ) {
+            return;
+          }
+        }
+        if ( $(this).hasClass("localURL") ) {
+          return;
+        }
+        e.preventDefault();
+        swal({
+          title: "<?=_('External Link')?>",
+          text: "<span title='"+href+"'><?=_('Clicking OK will take you to a 3rd party website not associated with Limetech')?><br><br><b>"+href+"</span>",
+          html: true,
+          type: 'warning',
+          showCancelButton: true,
+          showConfirmButton: true,
+          cancelButtonText: "<?=_('Cancel')?>",
+          confirmButtonText: "<?=_('OK')?>"
+        },function(isConfirm) {
+          if (isConfirm) {
+            var popupOpen = window.open(href,target);
+            if ( !popupOpen || popupOpen.closed || typeof popupOpen == "undefined" ) {
+              var popupWarning = addBannerWarning("<?=_('Popup Blocked.');?>");
+              setTimeout(function() {
+                removeBannerWarning(popupWarning);}
+              ,10000);
+            }
+          }
+        });
+      }
+    }
+  });
+<?endif;?>
+
 $(function(){
   window.onerror = function(msg,url,lineNo,columnNo, error) {
     post({action:'javascriptError',msg:msg,url:url,lineNo:lineNo,columnNo:columnNo,error:error});
@@ -2955,7 +3021,7 @@ function showSidebarApp(apppath,appname) {
       if ( result.supportContext ) {
         var opts = [];
         result.supportContext.forEach(function(item,index){
-          opts.push({text:item.text,icon:item.icon,action:function(){openNewWindow(item.link,'_blank');}});
+          opts.push({text:item.text,icon:item.icon,href:item.link,target:'_blank'});
         });
         context.attach('#supportPopup', opts)
       }
