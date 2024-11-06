@@ -1585,12 +1585,12 @@ function displayPopup($template) {
         <tr><td class='popupTableLeft'>".tr("Categories")."</td><td class='popupTableRight'>$Category</td></tr>
         <tr><td class='popupTableLeft'>".tr("Added")."</td><td class='popupTableRight'>$DateAdded</td></tr>
   ";
-  $downloadText = getDownloads($downloads);
-  if ($downloadText)
-    $card .= "<tr><td class='popupTableLeft'>".tr("Downloads")."</td><td class='popupTableRight'>$downloadText</td></tr>";
-  elseif ( isset($topPlugin) )
-    $card .= "<tr><td class='popupTableLeft'>".tr("Popularity")."</td><td class='popupTableRight'># $topPlugin</td></tr>";
-
+  if ( !$Plugin ) {
+    $downloadText = getDownloads($downloads);
+    if ($downloadText)
+      $card .= "<tr><td class='popupTableLeft'>".tr("Downloads")."</td><td class='popupTableRight'>$downloadText</td></tr>";
+  }
+  
   if (!$Plugin && !$LanguagePack)
     $card .= "<tr><td class='popupTableLeft'>".tr("Repository")."</td><td class='popupTableRight' style='white-space:nowrap;'>$Repository</td></tr>";
   if ($stars)

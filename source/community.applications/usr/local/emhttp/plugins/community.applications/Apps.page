@@ -206,51 +206,57 @@ var ca_done_override = false;
       return false;
     }
   }
-
-  $('body').on("click","a", function(e) {
-    href = $(this).attr("href").trim();
-    target = $(this).attr("target");
+  function checkURL(href,target="") {
     if ( href ) {
-      if ( href.match('https://[^\.]*.(my)?unraid.net/') || href.indexOf("https://unraid.net/") == 0 || href == "https://unraid.net" || href.indexOf("http://lime-technology.com") == 0) {
-        return;
+      if ( href.match('https?://[^\.]*.(my)?unraid.net/') || href.indexOf("https://unraid.net/") == 0 || href == "https://unraid.net" || href.indexOf("http://lime-technology.com") == 0) {
+        return true;
       } 
 
       if (href !== "#" && href.indexOf("javascript") !== 0) {
         if ( ! isValidURL(href) ) {
           if ( href.indexOf("/") == 0 ) {   // all internal links start with "/"
-          return;
+          return true;
         }
         var baseURLpage = href.split("/");
           if ( gui_pages_available.includes(baseURLpage[0]) ) {
-            return;
+            return true;
           }
         }
         if ( $(this).hasClass("localURL") ) {
-          return;
+          return true;
         }
-        e.preventDefault();
-        swal({
-          title: "<?=_('External Link')?>",
-          text: "<span title='"+href+"'><?=_('Clicking OK will take you to a 3rd party website not associated with Limetech')?><br><br><b>"+href+"</span>",
-          html: true,
-          type: 'warning',
-          showCancelButton: true,
-          showConfirmButton: true,
-          cancelButtonText: "<?=_('Cancel')?>",
-          confirmButtonText: "<?=_('OK')?>"
-        },function(isConfirm) {
-          if (isConfirm) {
-            var popupOpen = window.open(href,target);
-            if ( !popupOpen || popupOpen.closed || typeof popupOpen == "undefined" ) {
-              var popupWarning = addBannerWarning("<?=_('Popup Blocked.');?>");
-              setTimeout(function() {
-                removeBannerWarning(popupWarning);}
-              ,10000);
-            }
-          }
-        });
+        return false;
       }
     }
+    return true;
+  }
+
+  $('body').on("click","a", function(e) {
+    href = $(this).attr("href").trim();
+    target = $(this).attr("target");
+    if ( ! checkURL(href,target) ) {
+      e.preventDefault();
+      swal({
+        title: "<?=_('External Link')?>",
+        text: "<span title='"+href+"'><?=_('Clicking OK will take you to a 3rd party website not associated with Limetech')?><br><br><b>"+href+"</span>",
+        html: true,
+        type: 'warning',
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelButtonText: "<?=_('Cancel')?>",
+        confirmButtonText: "<?=_('OK')?>"
+      },function(isConfirm) {
+        if (isConfirm) {
+          var popupOpen = window.open(href,target);
+          if ( !popupOpen || popupOpen.closed || typeof popupOpen == "undefined" ) {
+            var popupWarning = addBannerWarning("<?=_('Popup Blocked.');?>");
+            setTimeout(function() {
+              removeBannerWarning(popupWarning);}
+            ,10000);
+          }
+        }
+      });
+    } else return;
   });
 <?endif;?>
 
@@ -410,11 +416,36 @@ $(function(){
     });
   });
 
-  $('.mainArea').on("click",".ca_href",function() {
+  $('.mainArea').on("click",".ca_href",function(e) {
     var href = $(this).attr("data-href");
     var target = $(this).attr("data-target");
     if ( ! target ) target = "_blank";
-    window.open(href,target);
+    if ( checkURL(href,target) ) {
+      window.open(href,target);
+    } else {
+      e.preventDefault();
+      swal({
+        title: "<?=_('External Link')?>",
+        text: "<span title='"+href+"'><?=_('Clicking OK will take you to a 3rd party website not associated with Limetech')?><br><br><b>"+href+"</span>",
+        html: true,
+        type: 'warning',
+        showCancelButton: true,
+        showConfirmButton: true,
+        cancelButtonText: "<?=_('Cancel')?>",
+        confirmButtonText: "<?=_('OK')?>"
+      },function(isConfirm) {
+        if (isConfirm) {
+          var popupOpen = window.open(href,target);
+          if ( !popupOpen || popupOpen.closed || typeof popupOpen == "undefined" ) {
+            var popupWarning = addBannerWarning("<?=_('Popup Blocked.');?>");
+            setTimeout(function() {
+              removeBannerWarning(popupWarning);}
+            ,10000);
+          }
+        }
+      });
+                 
+    }
   });
 
   $('body').on("click",".dockerUpdate",function() {

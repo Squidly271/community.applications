@@ -577,6 +577,22 @@ function appOfDay($file) {
         }
       }
       break;
+    case "topPlugins":
+      $sortOrder['sortBy'] = "downloads";
+      $sortOrder['sortDir'] = "Down";
+      usort($file,"mySort");
+      $repos = [];
+      foreach ($file as $template) {
+        if ( !isset($template['PluginURL']) ) continue;
+        if ( ! $template['downloads'] ?? false ) continue;
+        if ( checkRandomApp($template) ) {
+          $repos[] = $template['Repository'];
+          $appOfDay[] = $template['ID'];
+          if ( count($appOfDay) == $max ) break;
+
+        }
+      }
+      break;
     case "trending":
       $sortOrder['sortBy'] = "trendDelta";
       $sortOrder['sortDir'] = "Down";
@@ -829,6 +845,14 @@ function get_content() {
           "sortdir"=>"Down"
         ],
         [
+          "type"=>"topPlugins",
+          "text1"=>tr("Most Popular Plugins"),
+          "text2"=>tr("The most popular plugins installed by other Unraid users"),
+          "cat"=>"plugins:",
+          "sortby"=>"downloads",
+          "sortdir"=>"Down"
+        ],
+        [
           "type"=>"random",
           "text1"=>tr("Random Apps"),
           "text2"=>tr("An assortment of randomly chosen apps"),
@@ -874,6 +898,8 @@ function get_content() {
               $startupType = "Updated"; break;
             case "trending":
               $startupType = "Top Performing"; break;
+            case "topPlugins":
+              $startupType = "Top Plugins"; break;
             case "random":
               $startupType = "Random"; break;
             case "upandcoming":
