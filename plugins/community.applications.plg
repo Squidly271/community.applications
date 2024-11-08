@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.11.05">
-<!ENTITY md5       "d7641ae1fac99162da75e5fafb848d6c">
+<!ENTITY version   "2024.11.08">
+<!ENTITY md5       "0a2b17c3bbfe4892c55ad1be2f9995cd">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.11.08
+- Security Update
+
 ###2024.11.05
 - Added: Most popular plugins section on home page
 - Added: Warning when clicking a link (eg: Project) that is outside of Limetech's control

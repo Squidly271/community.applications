@@ -332,6 +332,20 @@ function versionCheck($template) {
   if ( ($template['MaxVer']??null) && ( version_compare($template['MaxVer'],$caSettings['unRaidVersion']) < 0 ) ) return false;
   return true;
 }
+function removeXMLtags(&$template) {
+  foreach ($template as $key => &$element) {
+    if ( is_array($element) ) {
+        removeXMLtags($element);
+    } else {
+      $tempElement = htmlspecialchars_decode($element);
+      $tempElement = str_replace("<br>","\n",$tempElement);
+      if ( trim($tempElement) !== trim(strip_tags($tempElement)) ) {
+        $tempElement = str_replace(["<",">"],["",""],$tempElement);
+        $element = $tempElement;
+      }
+    }
+  }
+}
 ###############################################
 # Function to read a template XML to an array #
 ###############################################
@@ -341,6 +355,7 @@ function readXmlFile($xmlfile,$generic=false,$stats=true) {
   if ( ! $xmlfile || ! is_file($xmlfile) ) return false;
   $xml = file_get_contents($xmlfile);
   $o = TypeConverter::xmlToArray($xml,TypeConverter::XML_GROUP);
+  removeXMLtags($o);
   $o = addMissingVars($o);
   if ( ! $o ) return false;
   if ( $generic ) return $o;
