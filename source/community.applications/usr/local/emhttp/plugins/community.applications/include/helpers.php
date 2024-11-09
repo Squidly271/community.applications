@@ -337,7 +337,7 @@ function removeXMLtags(&$template) {
     if ( is_array($element) ) {
         removeXMLtags($element);
     } else {
-      $tempElement = htmlspecialchars_decode($element);
+      $tempElement = htmlspecialchars_decode($element??"");
       $tempElement = str_replace("<br>","\n",$tempElement);
       if ( trim($tempElement) !== trim(strip_tags($tempElement)) ) {
         $tempElement = str_replace(["<",">"],["",""],$tempElement);
