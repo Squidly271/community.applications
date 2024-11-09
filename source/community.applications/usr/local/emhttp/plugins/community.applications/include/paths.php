@@ -95,7 +95,7 @@ $caPaths['dockerConvertFlash']                  = $dockerManPaths['templates-use
 $caPaths['pluginPending']                       = "/tmp/plugins/pluginPending/";
 $caPaths['phpErrorSettings']                    = "/etc/php.d/errors-php.ini";
 $caPaths['pluginProxy']                         = "https://ca.unraid.net/dl/";
-$caPaths['RepositoryAssets']                    = "https://assets.ca.unraid.net/feed/repositories/";
+$caPaths['RepositoryAssets']                    = "http://ca.unraid.net/dl/https://assets.ca.unraid.net/feed/repositories/";
 
 $dynamixSettings = parse_plugin_cfg("dynamix");
 $caPaths['SpotlightIcon']					 							= "https://github.com/Squidly271/community.applications/raw/master/webImages/spotlight_{$dynamixSettings['theme']}.png";
