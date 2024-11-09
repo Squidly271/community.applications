@@ -1335,7 +1335,7 @@ function previous_apps($enableActionCentre=false) {
                 $o['InstallPath'] = $tempPath;
                 $o['Name'] = $tempName;
                 $o['SortName'] = str_replace("-"," ",$o['Name']);
-                $o['NoPin'] = true;
+                //$o['NoPin'] = true;
               }
 
             }
