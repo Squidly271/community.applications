@@ -2310,6 +2310,7 @@ function restoreState() {
 
   var ca_sortIcon = $.cookie("ca_sortIcon");
 //	enableIcon("#sortIcon",ca_sortIcon);
+  var restoreDone = false;
   post({action:"getSortOrder"},function(sortOrder) {
     $(".sortIcons").removeClass("enabledIcon");
     $(".sortIcons").each(function() {
@@ -2317,9 +2318,11 @@ function restoreState() {
         $(this).addClass("enabledIcon");
       }
     });
+    populateAutoComplete();
+    clearMultiInstall();
+    restoreDone = true;
   });
-  populateAutoComplete();
-  clearMultiInstall();
+
 }
 
 function disableSearch() {

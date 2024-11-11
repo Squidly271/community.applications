@@ -1043,6 +1043,7 @@ function get_content() {
   }
   if ( ! $filter ) {
     writeJsonFile($caPaths['community-templates-displayed'],$displayApplications);
+
     @unlink($caPaths['community-templates-allsearchResults']);
     @unlink($caPaths['community-templates-catSearchResults']);
   }
@@ -1180,15 +1181,14 @@ function previous_apps($enableActionCentre=false) {
   } else {
     $installed = getPost("installed","");
     $filter = getPost("filter","");
+    @unlink($caPaths['community-templates-allSearchResults']);
+    @unlink($caPaths['community-templates-catSearchResults']);
+    @unlink($caPaths['repositoriesDisplayed']);
+    @unlink($caPaths['startupDisplayed']);
+    @unlink($caPaths['dockerSearchActive']);
   }
   $info = getAllInfo();
-
-  @unlink($caPaths['community-templates-allSearchResults']);
-  @unlink($caPaths['community-templates-catSearchResults']);
-  @unlink($caPaths['repositoriesDisplayed']);
-  @unlink($caPaths['startupDisplayed']);
-  @unlink($caPaths['dockerSearchActive']);
-
+  
   $file = &$GLOBALS['templates'];
   $extraBlacklist = readJsonFile($caPaths['extraBlacklist']);
   $extraDeprecated = readJsonFile($caPaths['extraDeprecated']);
