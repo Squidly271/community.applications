@@ -1959,6 +1959,7 @@ function getRepoDescription() {
 function createXML() {
   global $caPaths, $caSettings;
 
+  $dockerSettings = parse_ini_file($caPaths['dockerSettings']);
   $xmlFile = getPost("xml","");
   $type = getPost("type","");
   if ( ! $xmlFile ) {
@@ -2043,6 +2044,8 @@ function createXML() {
       foreach ($testarray as &$config) {
         if ( is_array($config['@attributes']) ) {
           if ( $config['@attributes']['Type'] == "Path" ) {
+            // handles where a container path is effectively a config path but it doesn't begin with /config
+            $config['value'] = str_replace($caPaths['defaultAppdataPath'],$dockerSettings['DOCKER_APP_CONFIG_PATH'],$config['value']);
             $defaultReferenced = array_values(array_filter(explode("/",$config['@attributes']['Default'])));
 
             if ( isset($defaultReferenced[0]) && isset($defaultReferenced[1]) ) {
