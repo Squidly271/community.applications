@@ -201,6 +201,9 @@ switch ($_POST['action']) {
   case 'checkPluginInProgress':
     checkPluginInProgress();
     break;
+  case 'clearPluginInstallFlag':
+    clearPluginInstallFlag();
+    break;
   ###############################################
   # Return an error if the action doesn't exist #
   ###############################################
@@ -2678,6 +2681,21 @@ function checkPluginInProgress() {
   postReturn(['inProgress'=>empty($pluginsPending)? "" : "true"]);
 }
 
+###################################
+# Clears any plugin pending flags #
+###################################
+function clearPluginInstallFlag() {
+  global $caPaths;
+
+  $pluginsPending = glob("{$caPaths['pluginPending']}/*");
+  file_put_contents("/tmp/blah",print_r($pluginsPending,true));
+  array_walk($pluginsPending,function($val,$key) {
+    @unlink($val);
+  });
+
+  postreturn(['done']);
+
+}
 
 #######################################
 # Logs Javascript errors being caught #

@@ -1317,11 +1317,20 @@ function installPlugin(pluginURL,update=false,comment="",requires="") {
         text: "<?tr("Another plugin installation or update is already in progress, and this one cannot start.  Wait until the current installation or update is completed and try again")?>",
         allowOutsideClick: false,
         showConfirmButton: true,
-        showCancelButton: false,
+        showCancelButton: true,
         confirmButtonText: "<?tr("OK")?>",
-        type: "error"
+        cancelButtonText: "<?tr("Clear Flag")?>",
+        type: "warning"
       },function(isConfirm) {
-        enableSearch();
+        if ( isConfirm ) {
+          enableSearch();
+        } else {
+          post({action:"clearPluginInstallFlag"},function(){
+            setTimeout(function() {
+              installPlugin(pluginURL,update,comment,requires);
+            },1000);
+          });
+        }
       });
     } else {
       if ( update && requires ) {
