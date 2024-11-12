@@ -204,6 +204,9 @@ switch ($_POST['action']) {
   case 'clearPluginInstallFlag':
     clearPluginInstallFlag();
     break;
+  case 'networkAlreadyCreated':
+    networkAlreadyCreated();
+    break;
   ###############################################
   # Return an error if the action doesn't exist #
   ###############################################
@@ -2695,9 +2698,10 @@ function clearPluginInstallFlag() {
   array_walk($pluginsPending,function($val,$key) {
     @unlink($val);
   });
-
   postreturn(['done']);
+}
 
+function networkAlreadyCreated() {
 }
 
 #######################################

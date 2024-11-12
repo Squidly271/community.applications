@@ -29,9 +29,10 @@ require_once "$docroot/plugins/dynamix.plugin.manager/include/PluginHelpers.php"
 $DockerClient = new DockerClient();
 $DockerTemplates = new DockerTemplates();
 
-// Restart logging over at start of every session
-exec("rm -rf {$caPaths['CA_logs']}");
+// Restart logging over at start of every session (save old log) 
 exec("mkdir -p {$caPaths['CA_logs']}");
+@copy($caPaths['logging'],$caPaths['logging'].".old");
+@unlink($caPaths['logging']);
 exec("mkdir -p {$caPaths['tempFiles']}");
 exec("rm $docroot/CA-Logging*.zip");
 
