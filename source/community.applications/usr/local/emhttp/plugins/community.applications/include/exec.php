@@ -2694,7 +2694,6 @@ function clearPluginInstallFlag() {
   global $caPaths;
 
   $pluginsPending = glob("{$caPaths['pluginPending']}/*");
-  file_put_contents("/tmp/blah",print_r($pluginsPending,true));
   array_walk($pluginsPending,function($val,$key) {
     @unlink($val);
   });
