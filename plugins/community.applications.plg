@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.11.16">
-<!ENTITY md5       "03f84a12bde95d1b685f2aceec80e361">
+<!ENTITY version   "2024.11.20">
+<!ENTITY md5       "2c6bd05956cd2f7f8934542187149a42">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.11.20
+- Fixed: Branch selection
+
 ###2024.11.16
 - Added: In the event a plugin after installation didn't clear the "pending" flag, offer the user to clear it when attempting another installation
 - Added: Preserve previous log file for debugging purposes

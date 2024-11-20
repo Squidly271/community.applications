@@ -233,8 +233,11 @@ var ca_done_override = false;
   }
 
   $('body').on("click","a", function(e) {
-    href = $(this).attr("href").trim();
-    target = $(this).attr("target");
+    var href = $(this).attr("href");
+    var target = $(this).attr("target");
+    if ( !href )
+      return;
+    href = href.trim();
     if ( ! checkURL(href,target) ) {
       e.preventDefault();
       swal({
