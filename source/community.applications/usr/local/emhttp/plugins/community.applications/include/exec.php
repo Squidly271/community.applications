@@ -2049,6 +2049,7 @@ function createXML() {
           if ( $config['@attributes']['Type'] == "Path" ) {
             // handles where a container path is effectively a config path but it doesn't begin with /config
             $config['value'] = str_replace($caPaths['defaultAppdataPath'],$dockerSettings['DOCKER_APP_CONFIG_PATH'],$config['value']);
+            $config['@attributes']['Default'] = str_replace($caPaths['defaultAppdataPath'],$dockerSettings['DOCKER_APP_CONFIG_PATH'],$config['@attributes']['Default']);
             $defaultReferenced = array_values(array_filter(explode("/",$config['@attributes']['Default'])));
 
             if ( isset($defaultReferenced[0]) && isset($defaultReferenced[1]) ) {

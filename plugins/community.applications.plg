@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.11.20">
-<!ENTITY md5       "2c6bd05956cd2f7f8934542187149a42">
+<!ENTITY version   "2024.11.21">
+<!ENTITY md5       "37a92200d851783d8a587e96af33ce0f">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,6 +13,9 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.11.21
+- Fixed: Not all paths referencing default appdata path would be adjusted to match user's configuration
+
 ###2024.11.20
 - Fixed: Branch selection
 
