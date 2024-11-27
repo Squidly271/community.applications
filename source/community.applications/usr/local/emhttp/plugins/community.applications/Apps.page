@@ -190,7 +190,7 @@ var wheelActive = false;
 var ca_done_override = false;
 
 // handle 3rd party links on older versions of OS
-<? if ( version_compare($unRaidSettings['version'],"7.0.0-beta.5","<") ):?>
+<? if ( version_compare($unRaidSettings['version'],"6.12.999","<") ):?>
   var gui_pages_available = [];
   <?
     $gui_pages = glob("/usr/local/emhttp/plugins/*/*.page");
