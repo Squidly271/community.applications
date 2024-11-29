@@ -190,59 +190,73 @@ var wheelActive = false;
 var ca_done_override = false;
 
 // handle 3rd party links on older versions of OS
-<? if ( version_compare($unRaidSettings['version'],"6.12.999","<") ):?>
+<? if ( version_compare($unRaidSettings['version'],"7.0.0-rc1","<") ):?>
   var gui_pages_available = [];
-  <?
-    $gui_pages = glob("/usr/local/emhttp/plugins/*/*.page");
-    array_walk($gui_pages,function($value,$key){ ?>
-      gui_pages_available.push('<?=basename($value,".page")?>'); <?
-    });
-  ?>
+<?
+  $gui_pages = glob("/usr/local/emhttp/plugins/*/*.page");
+  array_walk($gui_pages,function($value,$key){ ?>
+    gui_pages_available.push('<?=basename($value,".page")?>'); <?
+  });
+?>
 
-  function isValidURL(url) {
-    try {
-      new URL(url);
-      return true;
-    } catch (err) {
-      return false;
-    }
+function isValidURL(url) {
+  try {
+    var ret = new URL(url);
+    return ret;
+  } catch (err) {
+    return false;
   }
-  function checkURL(href,target="") {
-    if ( href ) {
-      if ( href.match('https?://[^\.]*.(my)?unraid.net/') || href.indexOf("https://unraid.net/") == 0 || href == "https://unraid.net" || href.indexOf("http://lime-technology.com") == 0) {
-        return true;
-      } 
+}
 
-      if (href !== "#" && href.indexOf("javascript") !== 0) {
-        if ( ! isValidURL(href) ) {
-          if ( href.indexOf("/") == 0 ) {   // all internal links start with "/"
-          return true;
-        }
-        var baseURLpage = href.split("/");
-          if ( gui_pages_available.includes(baseURLpage[0]) ) {
-            return true;
-          }
-        }
-        if ( $(this).hasClass("localURL") ) {
-          return true;
-        }
-        return false;
-      }
-    }
-    return true;
-  }
-
-  $('body').on("click","a", function(e) {
+$('body').on("click","a,.ca_href", function(e) {
+  if ($(this).hasClass("ca_href") ) {
+    var ca_href = true;
+    var href=$(this).attr("data-href");
+    var target=$(this).attr("data-target");
+  } else {
+    var ca_href = false;
     var href = $(this).attr("href");
     var target = $(this).attr("target");
-    if ( !href )
-      return;
+  }
+  if ( href ) {
     href = href.trim();
-    if ( ! checkURL(href,target) ) {
+    if ( href.match('https?://[^\.]*.(my)?unraid.net/') || href.indexOf("https://unraid.net/") == 0 || href == "https://unraid.net" || href.indexOf("http://lime-technology.com") == 0) {
+      if ( ca_href ) {
+        window.open(href,target);
+      }
+      return;
+    } 
+
+    if (href !== "#" && href.indexOf("javascript") !== 0) {
+      var dom = isValidURL(href);
+      if ( dom == false ) {
+        if ( href.indexOf("/") == 0 ) {   // all internal links start with "/"
+        return;
+      }
+      var baseURLpage = href.split("/");
+        if ( gui_pages_available.includes(baseURLpage[0]) ) {
+          return;
+        }
+      }
+      if ( $(this).hasClass("localURL") ) {
+        return;
+      }
+
+      try {
+        var domainsAllowed = JSON.parse($.cookie("allowedDomains"));
+      } catch(e) {
+        var domainsAllowed = new Object();
+      }
+      $.cookie("allowedDomains",JSON.stringify(domainsAllowed),{expires:3650}); // rewrite cookie to further extend expiration by 400 days
+
+      if ( domainsAllowed[dom.hostname] ) {
+        return;
+      }
+
       e.preventDefault();
       swal({
         title: "<?=_('External Link')?>",
-        text: "<span title='"+href+"'><?=_('Clicking OK will take you to a 3rd party website not associated with Limetech')?><br><br><b>"+href+"</span>",
+        text: "<span title='"+href+"'><?=_('Clicking OK will take you to a 3rd party website not associated with Limetech')?><br><br><b>"+href+"<br><br><input id='Link_Always_Allow' type='checkbox'></input><?=_('Always Allow')?> "+dom.hostname+"</span>",
         html: true,
         type: 'warning',
         showCancelButton: true,
@@ -251,6 +265,10 @@ var ca_done_override = false;
         confirmButtonText: "<?=_('OK')?>"
       },function(isConfirm) {
         if (isConfirm) {
+          if ( $("#Link_Always_Allow").is(":checked") ) {
+            domainsAllowed[dom.hostname] = true;
+            $.cookie("allowedDomains",JSON.stringify(domainsAllowed),{expires:3650});
+          }
           var popupOpen = window.open(href,target);
           if ( !popupOpen || popupOpen.closed || typeof popupOpen == "undefined" ) {
             var popupWarning = addBannerWarning("<?=_('Popup Blocked.');?>");
@@ -260,8 +278,9 @@ var ca_done_override = false;
           }
         }
       });
-    } else return;
-  });
+    }
+  }
+});
 <?endif;?>
 
 $(function(){
@@ -418,38 +437,6 @@ $(function(){
       },5000);
       setFavRepoSearch();
     });
-  });
-
-  $('.mainArea').on("click",".ca_href",function(e) {
-    var href = $(this).attr("data-href");
-    var target = $(this).attr("data-target");
-    if ( ! target ) target = "_blank";
-    if ( checkURL(href,target) ) {
-      window.open(href,target);
-    } else {
-      e.preventDefault();
-      swal({
-        title: "<?=_('External Link')?>",
-        text: "<span title='"+href+"'><?=_('Clicking OK will take you to a 3rd party website not associated with Limetech')?><br><br><b>"+href+"</span>",
-        html: true,
-        type: 'warning',
-        showCancelButton: true,
-        showConfirmButton: true,
-        cancelButtonText: "<?=_('Cancel')?>",
-        confirmButtonText: "<?=_('OK')?>"
-      },function(isConfirm) {
-        if (isConfirm) {
-          var popupOpen = window.open(href,target);
-          if ( !popupOpen || popupOpen.closed || typeof popupOpen == "undefined" ) {
-            var popupWarning = addBannerWarning("<?=_('Popup Blocked.');?>");
-            setTimeout(function() {
-              removeBannerWarning(popupWarning);}
-            ,10000);
-          }
-        }
-      });
-                 
-    }
   });
 
   $('body').on("click",".dockerUpdate",function() {
