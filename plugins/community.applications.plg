@@ -2,8 +2,8 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.11.29">
-<!ENTITY md5       "d41d6a0ef89fa2c234a8d9171d275971">
+<!ENTITY version   "2024.12.05">
+<!ENTITY md5       "4ba4513a7c6440091d69199c4db96343">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
 <!ENTITY github    "Squidly271/community.applications">
@@ -13,7 +13,10 @@
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
-###2924,11,29
+###2024.12.05
+- Fixed: cURL encoding fallback issue on certain versions of the OS
+
+###2024.11.29
 - Fixed: Attempting to visit the support forum (or project) where there was only the single option (ie: Card said "Support Forum" instead of "Support" with a dropdown would fail
 - Added: Ability to "whitelist" 3rd party external links
 

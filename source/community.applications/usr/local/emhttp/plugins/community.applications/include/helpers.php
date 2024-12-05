@@ -102,7 +102,7 @@ function download_url($url, $path = "", $bg = false, $timeout = 45) {
   }
   $out = curl_exec($ch);
   if ( curl_errno($ch) == 23 ) {
-    curl_setopt($ch,CURLOPT_ENCODING,null);
+    curl_setopt($ch,CURLOPT_ENCODING,"deflate");
     $out = curl_exec($ch);
   }
   curl_close($ch);
