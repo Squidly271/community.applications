@@ -172,7 +172,10 @@ function my_display_apps($file,$pageNumber=1,$selectedApps=false,$startup=false)
               if ( $selected ) {
                 $ind = searchArray($info,"Name",$name);
                 if ( $info[$ind]['url'] && $info[$ind]['running'] ) {
-                  $actionsContext[] = ["icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$ind]['url']}','_blank');"];
+                  $actionsContext[] = ["icon"=>"ca_fa-globe","text"=>tr("WebUI"),"action"=>"openNewWindow('{$info[$ind]['url']}','_blank');"];
+                  if ( $info[$ind]['TSurl'] ?? false)
+                    $actionsContext[] = ["icon"=>"ca_fa-globe","text"=>tr("Tailscale WebUI"),"action"=>"openNewWindow('{$info[$ind]['TSurl']}','_blank');"];
+
                 }
 
                 if ( isset($dockerUpdateStatus[$tmpRepo]) && $dockerUpdateStatus[$tmpRepo]['status'] == "false" ) {
@@ -677,7 +680,9 @@ function getPopupDescriptionSkin($appNumber) {
         if ( $caSettings['dockerRunning'] ) {
           if ( $selected ) {
             if ( $info[$name]['url'] && $info[$name]['running'] ) {
-              $actionsContext[] = ["icon"=>"ca_fa-globe","text"=>"WebUI","action"=>"openNewWindow('{$info[$name]['url']}','_blank');"];
+              $actionsContext[] = ["icon"=>"ca_fa-globe","text"=>tr("WebUI"),"action"=>"openNewWindow('{$info[$name]['url']}','_blank');"];
+              if ( $info[$name]['TSurl'] ?? false )
+                $actionsContext[] = ["icon"=>"ca_fa-globe","text"=>tr("Tailescale WebUI"),"action"=>"openNewWindow('{$info[$name]['TSurl']}','_blank');"];
             }
             $tmpRepo = strpos($template['Repository'],":") ? $template['Repository'] : $template['Repository'].":latest";
             $tmpRepo = strpos($tmpRepo,"/") ? $tmpRepo : "library/$tmpRepo";

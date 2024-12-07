@@ -693,6 +693,7 @@ function getAllInfo($force=false) {
       foreach ($containers as &$container) {
         $container['running'] = $info[$container['Name']]['running'] ?? null;
         $container['url'] = $info[$container['Name']]['url'] ?? null;
+        $container['TSurl'] = $info[$container['Name']]['TSurl'] ?? null;
         $container['template'] = $info[$container['Name']]['template'] ?? null;
       }
     }
