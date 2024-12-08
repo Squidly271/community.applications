@@ -179,7 +179,6 @@ var dockerNotEnabled;
 var postCount = 0;
 var cookieWarning = false;
 var dockerWarningAdded = false;
-// var backupServerWarning = false;  Should no longer be required as concept of backup server isn't relevant anymore
 var restoreStateMenu = false;
 var actionCentreRestoreState = false;
 var initialStartup = true;
@@ -332,7 +331,7 @@ $(function(){
 });
   <?else:?>
   // don't run this through the wrapper so that if it hangs up it won't delay anything else
-  $.post("/plugins/<?=$plugin?>/include/exec.php",{action:'getPortsInUse'},function(data) {
+  $.post(execURL,{action:'getPortsInUse'},function(data) {
     console.log(data);
     var ret = JSON.parse(data);
     portsInUse = ret.portsInUse;
@@ -2989,7 +2988,7 @@ function getPerPageOpts(value) {
 function setupActionCentre() {
   // set up action centre - run in background without tying anything up
   var acBanner = false;
-  $.post("/plugins/<?=$plugin?>/include/exec.php",{action:'enableActionCentre'},function(data) {
+  $.post(execURL,{action:'enableActionCentre'},function(data) {
     var ret = JSON.parse(data);
     if ( ret.status == "action" ) {
       if ( !$(".actionCentre").is(":visible") ) {
