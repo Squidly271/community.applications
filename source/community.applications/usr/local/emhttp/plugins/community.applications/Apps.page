@@ -2209,31 +2209,19 @@ function updateDisplay(content) {
       $(this).html(description + "... <span class='card_readmore'>"+readMoreText+"</span>");
     }
   });
-  $(".ca_applicationName").each(function() {
-    var newSize = 100;
-    while (isOverflown(this)) {
-      var existingSize = $(this).css("font-size");
-      var size = parseInt(existingSize);
-      if ( size == newSize + 1 ) {  // looks like browsers in Chinese have a minimum enforced font-size
-        break;
-      }
-      var newSize = size - 1;
-      if (newSize == 8)
-        break;
 
-      $(this).css("font-size",newSize+"px");
-    }
-  });
-  $(".betaPopupText,.installedCardText,.upgradePopupText,.ltofficialPopupText").each(function() {
+  $(".betaPopupText,.installedCardText,.upgradePopupText,.ltofficialPopupText,.ca_applicationName").each(function() {
     var newSize = 100;
-    while (isOverflown(this,true)) {
+    var minSize = $(this).hasClass("ca_applicationName") ? 8 : 0;
+    var overflowType = ! $(this).hasClass("ca_applicationName");
+    while (isOverflown(this,overflowType)) {
       var existingSize = $(this).css("font-size");
       var size = parseInt(existingSize);
       if ( size == newSize + 1 ) {  // looks like browsers in Chinese have a minimum enforced font-size
         break;
       }
       var newSize = size - 1;
-      if (newSize == 0)
+      if (newSize == minSize)
         break;
 
       $(this).css("font-size",newSize+"px");
