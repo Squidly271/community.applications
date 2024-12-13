@@ -1,4 +1,3 @@
-3408b4638d7eeb91f99ac5b4ed33d6b7  ./Apps.page
 2defe45163697e40c813a57ae9a50231  ./CA_notices.page
 c12622d8281346d37398e96cbb6b8b69  ./ca_settings.page
 01ed7990078dee7cecfeda9a4e49377e  ./default.cfg
@@ -25,3 +24,4 @@ c11415ac49ba9cd6af2b5dc022aa3367  ./scripts/notices.php
 f7d48fdb63e116ecc3ec49cbbf6b2dc2  ./skins/Narrow/skin.html
 1e6c3cce28a13430494c7f5e17b1d92a  ./skins/Narrow/skin.php
 c26b187a50c966adff7bfb9cab6fca16  ./event/disks_mounted
+32e0c3ba2727d260d1a7c723cf13b824  ./Apps.page

@@ -1866,7 +1866,6 @@ function getSelectedApps() {
   selected.language = language.uniqueArrayElements();
   selected.deletePaths = deletePaths.uniqueArrayElements();
   data.selected = JSON.stringify(selected);
-  alert(selected);
   return selected;
 }
 
