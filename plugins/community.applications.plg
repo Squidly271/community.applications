@@ -2,17 +2,24 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "community.applications">
 <!ENTITY author    "Andrew Zawadzki">
-<!ENTITY version   "2024.12.05">
-<!ENTITY md5       "4ba4513a7c6440091d69199c4db96343">
+<!ENTITY version   "2024.12.14">
+<!ENTITY md5       "92a6a2ec642c6d731605317e4df42f56">
 <!ENTITY launch    "Apps">
 <!ENTITY plugdir   "/usr/local/emhttp/plugins/&name;">
-<!ENTITY github    "Squidly271/community.applications">
+<!ENTITY github    "unraid/community.applications">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/&github;/master/plugins/&name;.plg">
 ]>
 
 <PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.12.0" support="https://forums.unraid.net/topic/38582-plug-in-community-applications" icon="users">
 
 <CHANGES>
+###2024.12.14
+- Changed: Relocate GitHub repository to unraid
+- Added: Display TailScale WebUI if present
+- Changed: Rearrange coding
+- Added: In case of fatal PHP error add Cancel button instead of forcing the browser tab to close
+- Changed: Don't display all communication during Something Went Wrong error
+
 ###2024.12.05
 - Fixed: cURL encoding fallback issue on certain versions of the OS
 
