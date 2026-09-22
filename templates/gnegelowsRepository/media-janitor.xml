@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>media-janitor</Name>
+  <Repository>ghcr.io/gnegelow-caylent/media-janitor:latest</Repository>
+  <Registry>https://ghcr.io</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/gnegelow-caylent/media-janitor/issues</Support>
+  <Project>https://github.com/gnegelow-caylent/media-janitor</Project>
+  <Overview>Proactive media library quality monitor for Plex/Radarr/Sonarr. Automatically detects and replaces bad media files.&#xD;
+&#xD;
+Features:&#xD;
+- Web UI dashboard with real-time monitoring&#xD;
+- Validates new imports via webhooks from Radarr/Sonarr&#xD;
+- Background scanning of existing library&#xD;
+- Auto-replaces corrupt or wrong files&#xD;
+- Path mismatch and duplicate detection&#xD;
+- Plex integration (OAuth login, watch-based prioritization)&#xD;
+- Multi-platform notifications (Discord, Slack, Telegram, etc)&#xD;
+&#xD;
+After install, create config.yaml and add media path mappings.</Overview>
+  <Category>MediaServer:Other Tools:</Category>
+  <WebUI>http://[IP]:[PORT:9000]/</WebUI>
+  <TemplateURL>https://raw.githubusercontent.com/gnegelow-caylent/media-janitor/main/unraid/media-janitor.xml</TemplateURL>
+  <Icon>https://raw.githubusercontent.com/gnegelow-caylent/media-janitor/main/unraid/icon2.png</Icon>
+  <ExtraParams/>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires>Radarr and/or Sonarr. Optional: Plex for additional features.</Requires>
+  <Config Name="Web UI Port" Target="9000" Default="9000" Mode="tcp" Description="Port for web UI and webhooks. Configure this URL in Radarr/Sonarr webhooks." Type="Port" Display="always" Required="true" Mask="false">9000</Config>
+  <Config Name="Config File" Target="/data/config.yaml" Default="/mnt/user/appdata/media-janitor/config.yaml" Mode="rw" Description="Path to config.yaml - create this file before starting" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/media-janitor/config.yaml</Config>
+  <Config Name="Logs Directory" Target="/data/logs" Default="/mnt/user/appdata/media-janitor/logs" Mode="rw" Description="Log file location" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/media-janitor/logs</Config>
+  <Config Name="State Directory" Target="/data/state" Default="/mnt/user/appdata/media-janitor/state" Mode="rw" Description="Persistent scan state storage" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/media-janitor/state</Config>
+  <Config Name="Media Path 1" Target="/media1" Default="" Mode="ro" Description="Path to media files (as seen by this container). Add more paths as needed. Use :ro,slave for remote mounts." Type="Path" Display="always" Required="false" Mask="false"/>
+  <Config Name="Media Path 2" Target="/media2" Default="" Mode="ro" Description="Additional media path (optional)" Type="Path" Display="advanced" Required="false" Mask="false"/>
+  <Config Name="Timezone" Target="TZ" Default="America/New_York" Mode="" Description="Timezone for scheduling and logs" Type="Variable" Display="always" Required="false" Mask="false">America/New_York</Config>
+</Container>
